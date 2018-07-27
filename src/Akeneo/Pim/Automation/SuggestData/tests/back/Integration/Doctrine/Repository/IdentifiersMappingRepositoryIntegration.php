@@ -20,10 +20,8 @@ use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
 class IdentifiersMappingRepositoryIntegration extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_creates_an_identifiers_mapping()
+
+    public function test_it_creates_an_identifiers_mapping()
     {
         $mapping = $this->updateMapping(['brand' => $this->getAttribute('sku')]);
 
@@ -35,10 +33,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         ], $mapping);
     }
 
-    /**
-     * @test
-     */
-    public function it_updates_an_identifiers_mapping()
+    public function test_it_updates_an_identifiers_mapping()
     {
         $identifiersMapping = new IdentifiersMapping([
             'brand' => $this->getAttribute('sku'),
@@ -56,10 +51,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         ], $mapping);
     }
 
-    /**
-     * @test
-     */
-    public function it_finds_identifiers_mapping()
+    public function test_it_finds_identifiers_mapping()
     {
         $identifiersMapping = new IdentifiersMapping([
             'brand' => $this->getAttribute('sku'),
