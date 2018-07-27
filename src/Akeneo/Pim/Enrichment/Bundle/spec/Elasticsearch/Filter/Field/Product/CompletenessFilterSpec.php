@@ -34,7 +34,9 @@ class CompletenessFilterSpec extends ObjectBehavior
             '>',
             '>=',
             '<=',
-            '<'
+            '<',
+            'AT LEAST COMPLETE',
+            'AT LEAST INCOMPLETE',
         ];
 
         $this->beConstructedWith($channelRepository, ['completeness'], $operators);
@@ -71,7 +73,9 @@ class CompletenessFilterSpec extends ObjectBehavior
                 '>',
                 '>=',
                 '<=',
-                '<'
+                '<',
+                'AT LEAST COMPLETE',
+                'AT LEAST INCOMPLETE',
             ]
         );
         $this->supportsOperator('NOT EQUALS ON AT LEAST ONE LOCALE')->shouldReturn(true);
@@ -505,5 +509,67 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->addFieldFilter('completeness', Operators::IS_EMPTY, 'IGNORED', null, null, []);
         $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, 'en_US', null, []);
         $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, null, 'ecommerce', []);
+    }
+
+    function it_adds_a_filter_on_AT_LEAST_COMPLETE_operator($sqb, $channelRepository, ChannelInterface $ecommerce)
+    {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $ecommerce->getLocaleCodes()->willReturn(['en_US']);
+        
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [[
+                        'bool' => [
+                            'should' => [
+                                ['term' => ['completeness.ecommerce.en_US' => 100]],
+                                ['term' => ['all_incomplete.ecommerce.en_US' => 0]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ]],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'completeness',
+            Operators::AT_LEAST_COMPLETE,
+            null,
+            null,
+            'ecommerce',
+            ['locales' => ['en_US']]
+        );
+    }
+
+    function it_adds_a_filter_on_AT_LEAST_INCOMPLETE_operator($sqb, $channelRepository, ChannelInterface $ecommerce)
+    {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $ecommerce->getLocaleCodes()->willReturn(['en_US']);
+
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [[
+                        'bool' => [
+                            'should' => [
+                                ['range' => ['completeness.ecommerce.en_US' => ['lt' => 100]]],
+                                ['term' => ['all_complete.ecommerce.en_US' => 0]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ]],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'completeness',
+            Operators::AT_LEAST_INCOMPLETE,
+            null,
+            null,
+            'ecommerce',
+            ['locales' => ['en_US']]
+        );
     }
 }
