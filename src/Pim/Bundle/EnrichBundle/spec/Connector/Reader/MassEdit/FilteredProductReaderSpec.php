@@ -54,9 +54,6 @@ class FilteredProductReaderSpec extends ObjectBehavior
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
-        ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2,
-        ProductModelInterface $productModel3,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -76,6 +73,11 @@ class FilteredProductReaderSpec extends ObjectBehavior
                         'camcorder',
                     ],
                 ],
+                [
+                    'field' => 'entity_type',
+                    'operator' => '=',
+                    'value' => ProductInterface::class,
+                ],
             ],
             'structure' => [
                 'scope'   => 'mobile',
@@ -88,7 +90,11 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCode()->willReturn('mobile');
 
-        $pqbFactory->create(['filters' => $filters['data'], 'default_scope' => 'mobile'])
+        $pqbFactory->create(['filters' => array_merge($filters['data'], [[
+            'field' => 'entity_type',
+            'operator' => '=',
+            'value' => ProductInterface::class,
+        ]]), 'default_scope' => 'mobile'])
             ->shouldBeCalled()
             ->willReturn($pqb);
         $pqb->execute()
@@ -96,7 +102,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
             ->willReturn($cursor);
 
         $completenessManager->generateMissingForChannel($channel)->shouldBeCalled();
-        $products = [$productModel1, $product1, $productModel2, $product2, $product3, $productModel3];
+        $products = [$product1, $product2, $product3];
         $productsCount = count($products);
         $cursor->valid()->will(
             function () use (&$productsCount) {
@@ -106,9 +112,9 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(0);
 
         $this->initialize();
         $this->read()->shouldReturn($product1);

@@ -51,8 +51,8 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
         $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
         $this->updateFamilyPropertiesNotTriggeringCompletenessRecomputation('clothing');
-        $this->launchTimesAndWaitForJobExecutionsToEnd(2, 'compute_completeness_of_products_family');
-        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 2);
+        $this->launchTimesAndWaitForJobExecutionsToEnd(1, 'compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 1);
         $this->assertJobWasExecutedWithStatusAndJobParameters(
             'compute_completeness_of_products_family',
             BatchStatus::COMPLETED,

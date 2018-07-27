@@ -56,9 +56,6 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductModelInterface $productModel3,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
         JobParameters $jobParameters
     ) {
         $filters = [
@@ -87,14 +84,18 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
         $channel->getCode()->willReturn('mobile');
 
-        $pqbFactory->create(['filters' => $filters['data'], 'default_scope' => 'mobile'])
+        $pqbFactory->create(['filters' => array_merge($filters['data'], [[
+            'field' => 'entity_type',
+            'operator' => '=',
+            'value' => ProductModelInterface::class,
+        ]]), 'default_scope' => 'mobile'])
             ->shouldBeCalled()
             ->willReturn($pqb);
         $pqb->execute()
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $products = [$product1, $productModel1, $product2, $productModel2, $productModel3, $product3];
+        $products = [$productModel1, $productModel2, $productModel3];
         $productsCount = count($products);
         $cursor->valid()->will(
             function () use (&$productsCount) {
@@ -104,9 +105,9 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(0);
 
         $this->initialize();
         $this->read()->shouldReturn($productModel1);

@@ -135,7 +135,7 @@ class CountImpactedProducts
     }
 
     /**
-     * Count all products matching the given filters
+     * Count all products (only variants) matching the given filters
      * (except we remove the ID filter and adapt the completeness filter).
      *
      * @param array $filters
@@ -147,7 +147,9 @@ class CountImpactedProducts
         $filters = $this->adaptGridCompletenessFilter($filters);
         $filters = $this->removeIdFilter($filters);
 
-        $pqb = $this->productQueryBuilderFactory->create(['filters' => $filters]);
+        $filters[] = ['field' => 'entity_type', 'operator' => '=', 'value' => ProductInterface::class];
+
+        $pqb = $this->productAndProductModelQueryBuilderFactory->create(['filters' => $filters]);
 
         return $pqb->execute()->count();
     }

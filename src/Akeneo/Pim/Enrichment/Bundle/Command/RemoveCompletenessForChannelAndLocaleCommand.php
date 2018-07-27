@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Process;
 
 /**
  * Command to remove completeness for channel and locale.
@@ -51,11 +55,16 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $localesIdentifiers = explode(',', $input->getArgument('locales-identifier'));
-        $channelCode = $input->getArgument('channel-code');
-        $username = $input->getArgument('username');
-        $notifier = $this->getContainer()->get('pim_notification.notifier');
+        $localesIdentifiers  = explode(',', $input->getArgument('locales-identifier'));
+        $channelCode         = $input->getArgument('channel-code');
+        $username            = $input->getArgument('username');
+        $productBatchSize    = $this->getContainer()->getParameter('pim_job_product_batch_size');
+        $cacheClearer        = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
+        $notifier            = $this->getContainer()->get('pim_notification.notifier');
         $notificationFactory = $this->getContainer()->get('pim_notification.factory.notification');
+        $rootDir             = $this->getContainer()->get('kernel')->getRootDir();
+        $env                 = $this->getContainer()->get('kernel')->getEnvironment();
+
         $output->writeln(
             sprintf(
                 '<info>[%s] Locales "%s" are removed from channel "%s". ' .
@@ -83,17 +92,38 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
             )
         );
 
+        $io = new SymfonyStyle($input, $output);
+        $products = $pqbFactory = $this->getContainer()
+            ->get('pim_catalog.query.product_query_builder_factory')
+            ->create()
+            ->execute();
+
+        $io->progressStart($products->count());
+        $productsToClean = [];
+        foreach ($products as $product) {
+            $productsToClean[] = $product->getIdentifier();
+
+            if (count($productsToClean) >= $productBatchSize) {
+                $this->launchCleanTask($productsToClean, $env, $rootDir);
+                $cacheClearer->clear();
+                $io->progressAdvance(count($productsToClean));
+                $productsToClean = [];
+            }
+        }
+
+        if (!empty($productsToClean)) {
+            $this->launchCleanTask($productsToClean, $env, $rootDir);
+            $io->progressAdvance(count($productsToClean));
+        }
+        $io->progressFinish();
+
         $channel = $this->getContainer()->get('pim_catalog.repository.channel')
             ->findOneByIdentifier($channelCode);
 
         $locales = $this->getContainer()->get('pim_catalog.repository.locale')
             ->findBy(['code' => $localesIdentifiers]);
-
-        $completenessRemover = $this->getContainer()->get('pim_catalog.remover.completeness');
-
         foreach ($locales as $locale) {
             $locale->removeChannel($channel);
-            $completenessRemover->removeForChannelAndLocale($channel, $locale);
         }
 
         if (!empty($locales)) {
@@ -131,5 +161,26 @@ class RemoveCompletenessForChannelAndLocaleCommand extends ContainerAwareCommand
         $datetime = new \DateTime('now');
 
         return $datetime->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Lanches the clean command on given identifiers, channel and locale
+     *
+     * @param array            $productIdentifiers
+     * @param string           $env
+     * @param string           $rootDir
+     */
+    private function launchCleanTask(
+        array $productIdentifiers,
+        string $env,
+        string $rootDir
+    ) {
+        $process = new Process([
+            sprintf('%s/../bin/console', $rootDir),
+            'pim:product:refresh',
+            sprintf('--env=%s', $env),
+            implode(',', $productIdentifiers)
+        ]);
+        $process->run();
     }
 }

@@ -18,6 +18,9 @@ class LocaleNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param UserContext $userContext
      */
@@ -57,7 +60,7 @@ class LocaleNormalizer implements NormalizerInterface
      */
     private function getLocaleLabel($code, $translateIn = null)
     {
-        $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
+        $translateIn = $translateIn ?: $this->userContext->getUiLocaleCode();
 
         return \Locale::getDisplayName($code, $translateIn);
     }

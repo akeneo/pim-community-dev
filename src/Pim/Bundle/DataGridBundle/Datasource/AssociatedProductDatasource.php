@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -62,8 +63,8 @@ class AssociatedProductDatasource extends ProductDatasource
             return ['totalRecords' => 0, 'data' => []];
         }
 
-        $associatedProductsIdentifiers = $this->getAssociatedProductIdentifiers($association);
-        $associatedProductModelsIdentifiers = $this->getAssociatedProductModelIdentifiers($association);
+        $associatedProductsIds = $this->getAssociatedProductIds($association);
+        $associatedProductModelsIds = $this->getAssociatedProductModelIds($association);
 
         $limit = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM, false);
         $locale = $this->getConfiguration('locale_code');
@@ -71,16 +72,16 @@ class AssociatedProductDatasource extends ProductDatasource
         $from = null !== $this->getConfiguration('from', false) ?
             (int) $this->getConfiguration('from', false) : 0;
 
-        $associatedProductsIdentifiersFromParent = [];
-        $associatedProductModelsIdentifiersFromParent = [];
+        $associatedProductsIdsFromParent = [];
+        $associatedProductModelsIdsFromParent = [];
         $parentAssociation = $this->getParentAssociation($sourceProduct, $this->getConfiguration('association_type_id'));
         if (null !== $parentAssociation) {
-            $associatedProductsIdentifiersFromParent = $this->getAssociatedProductIdentifiers($parentAssociation);
-            $associatedProductModelsIdentifiersFromParent = $this->getAssociatedProductModelIdentifiers($parentAssociation);
+            $associatedProductsIdsFromParent = $this->getAssociatedProductIds($parentAssociation);
+            $associatedProductModelsIdsFromParent = $this->getAssociatedProductModelIds($parentAssociation);
         }
 
         $associatedProducts = $this->getAssociatedProducts(
-            $associatedProductsIdentifiers,
+            $associatedProductsIds,
             $limit,
             $from,
             $locale,
@@ -90,9 +91,9 @@ class AssociatedProductDatasource extends ProductDatasource
         $productModelLimit = $limit - $associatedProducts->count();
         $associatedProductModels = [];
         if ($productModelLimit > 0) {
-            $productModelFrom = $from - count($associatedProductsIdentifiers) + $associatedProducts->count();
+            $productModelFrom = $from - count($associatedProductsIds) + $associatedProducts->count();
             $associatedProductModels = $this->getAssociatedProductModels(
-                $associatedProductModelsIdentifiers,
+                $associatedProductModelsIds,
                 $productModelLimit,
                 max($productModelFrom, 0),
                 $locale,
@@ -102,19 +103,19 @@ class AssociatedProductDatasource extends ProductDatasource
 
         $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
             $associatedProducts,
-            $associatedProductsIdentifiersFromParent,
+            $associatedProductsIdsFromParent,
             $locale,
             $scope
         );
 
         $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
             $associatedProductModels,
-            $associatedProductModelsIdentifiersFromParent,
+            $associatedProductModelsIdsFromParent,
             $locale,
             $scope
         );
 
-        $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
+        $rows = ['totalRecords' => count($associatedProductsIds) + count($associatedProductModelsIds)];
         $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
 
         return $rows;
@@ -148,14 +149,14 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * @return string[]
      */
-    protected function getAssociatedProductIdentifiers(AssociationInterface $association): array
+    protected function getAssociatedProductIds(AssociationInterface $association): array
     {
-        $identifiers = [];
+        $ids = [];
         foreach ($association->getProducts() as $associatedProduct) {
-            $identifiers[] = $associatedProduct->getIdentifier();
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getId());
         }
 
-        return $identifiers;
+        return $ids;
     }
 
     /**
@@ -163,18 +164,18 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * @return string[]
      */
-    protected function getAssociatedProductModelIdentifiers(AssociationInterface $association): array
+    protected function getAssociatedProductModelIds(AssociationInterface $association): array
     {
-        $identifiers = [];
+        $ids = [];
         foreach ($association->getProductModels() as $associatedProduct) {
-            $identifiers[] = $associatedProduct->getCode();
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $associatedProduct->getId());
         }
 
-        return $identifiers;
+        return $ids;
     }
 
     /**
-     * @param array  $associatedProductsIdentifiers
+     * @param array  $associatedProductsIds
      * @param int    $limit
      * @param int    $from
      * @param string $locale
@@ -183,21 +184,21 @@ class AssociatedProductDatasource extends ProductDatasource
      * @return CursorInterface
      */
     protected function getAssociatedProducts(
-        array $associatedProductsIdentifiers,
+        array $associatedProductsIds,
         $limit,
         $from,
         $locale,
         $scope
     ) {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
-        $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductsIdentifiers);
+        $pqb->addFilter('id', Operators::IN_LIST, $associatedProductsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
         return $pqb->execute();
     }
 
     /**
-     * @param array  $associatedProductModelsIdentifiers
+     * @param array  $associatedProductModelsIds
      * @param int    $limit
      * @param int    $from
      * @param string $locale
@@ -206,14 +207,14 @@ class AssociatedProductDatasource extends ProductDatasource
      * @return CursorInterface
      */
     protected function getAssociatedProductModels(
-        array $associatedProductModelsIdentifiers,
+        array $associatedProductModelsIds,
         $limit,
         $from,
         $locale,
         $scope
     ) {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
-        $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductModelsIdentifiers);
+        $pqb->addFilter('id', Operators::IN_LIST, $associatedProductModelsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
 
         return $pqb->execute();
@@ -221,7 +222,7 @@ class AssociatedProductDatasource extends ProductDatasource
 
     /**
      * @param CursorInterface $products
-     * @param array           $identifiersFromInheritance
+     * @param array           $idsFromInheritance
      * @param string          $locale
      * @param string          $scope
      *
@@ -229,7 +230,7 @@ class AssociatedProductDatasource extends ProductDatasource
      */
     protected function normalizeProductsAndProductModels(
         CursorInterface $products,
-        array $identifiersFromInheritance,
+        array $idsFromInheritance,
         $locale,
         $scope
     ) {
@@ -257,13 +258,7 @@ class AssociatedProductDatasource extends ProductDatasource
                 ]
             );
 
-            if ($product instanceof ProductModelInterface) {
-                $identifier = $product->getCode();
-            } else {
-                $identifier = $product->getIdentifier();
-            }
-
-            $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
+            $normalized['from_inheritance'] = in_array($product->getId(), $idsFromInheritance);
 
             $data[] = new ResultRecord($normalized);
         }

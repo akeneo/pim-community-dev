@@ -54,6 +54,7 @@ class NumberLocalizer implements LocalizerInterface
             $numberFormatter = $this->numberFactory->create($options);
 
             $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+            $numberFormatter->setSymbol(\NumberFormatter::MINUS_SIGN_SYMBOL, '-');
 
             if (floor($number) != $number) {
                 $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);

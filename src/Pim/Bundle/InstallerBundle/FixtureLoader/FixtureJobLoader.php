@@ -60,7 +60,7 @@ class FixtureJobLoader
         $jobInstances = $this->jobInstancesBuilder->build();
         $configuredJobInstances = $this->configureJobInstances($jobInstances, $replacePaths);
         $saver = $this->getJobInstanceSaver();
-        $saver->saveAll($configuredJobInstances);
+        $saver->saveAll($configuredJobInstances, ['is_installation' => true]);
     }
 
     /**

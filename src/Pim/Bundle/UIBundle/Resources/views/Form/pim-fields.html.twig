@@ -169,12 +169,8 @@
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
         <script type="text/javascript">
-            require(['jquery'], function ($) {
-                'use strict';
-
-                $(function() {
-                    $('#{{ _self.getRootId(form) }}').trigger('change');
-                });
+            $(function() {
+                $('#{{ _self.getRootId(form) }}').trigger('change');
             });
         </script>
         {% if form.parent %}

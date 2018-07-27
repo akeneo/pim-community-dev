@@ -36,6 +36,7 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 1              | 88%   |
       | tablet  | fr_FR  | warning | 2              | 77%   |
       | mobile  | en_US  | success | 0              | 100%  |
       | mobile  | fr_FR  | success | 0              | 100%  |
@@ -43,6 +44,7 @@ Feature: Display the completeness of a product
     And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 6              | 25%   |
       | tablet  | fr_FR  | warning | 4              | 50%   |
       | mobile  | en_US  | warning | 3              | 40%   |
       | mobile  | fr_FR  | warning | 2              | 60%   |
@@ -64,10 +66,10 @@ Feature: Display the completeness of a product
     When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | -     |
+     | complete | 88%   |
     And the row "sandals" should contain:
      | column   | value |
-     | complete | -     |
+     | complete | 25%   |
     When I switch the locale to "fr_FR"
     And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:

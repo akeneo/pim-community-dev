@@ -124,7 +124,7 @@ class GroupController
         $groups = $this->groupRepository->getOptions(
             $dataLocale = $this->userContext->getUiLocaleCode(),
             null,
-            $request->request->get('search'),
+            $request->get('search'),
             $this->parseOptions($request)
         );
 
