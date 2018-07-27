@@ -38,7 +38,8 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
             $bulkProductIndexer,
             $bulkProductModelIndexer,
             $productModelIndexer,
-            $bulkObjectDetacher
+            $bulkObjectDetacher,
+            100
         );
     }
 

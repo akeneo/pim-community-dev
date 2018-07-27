@@ -66,8 +66,6 @@ class ProductModelDescendantsSaver implements SaverInterface
      * @param IndexerInterface                    $productModelIndexer
      * @param BulkObjectDetacherInterface         $bulkObjectDetacher
      * @param integer                             $batchSize
-     *
-     * TODO Merge: Remove default values for the 3 last parameters
      */
     public function __construct(
         ObjectManager $entityManager,
@@ -76,9 +74,9 @@ class ProductModelDescendantsSaver implements SaverInterface
         CompletenessManager $completenessManager,
         BulkIndexerInterface $bulkProductIndexer,
         BulkIndexerInterface $bulkProductModelIndexer,
-        IndexerInterface $productModelIndexer = null,
-        BulkObjectDetacherInterface $bulkObjectDetacher = null,
-        int $batchSize = self::INDEX_BULK_SIZE
+        IndexerInterface $productModelIndexer,
+        BulkObjectDetacherInterface $bulkObjectDetacher,
+        int $batchSize
     ) {
         $this->objectManager = $entityManager;
         $this->productModelRepository = $productModelRepository;
@@ -93,8 +91,6 @@ class ProductModelDescendantsSaver implements SaverInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO Merge: Remove check on nullable cache clearer
      */
     public function save($productModel, array $options = []): void
     {
@@ -107,8 +103,6 @@ class ProductModelDescendantsSaver implements SaverInterface
 
     /**
      * @param ProductModelInterface $productModel
-     *
-     * TODO Merge: Remove check on nullable bulk object detacher
      */
     private function computeCompletenessAndIndexDescendantProducts(ProductModelInterface $productModel): void
     {
@@ -126,9 +120,7 @@ class ProductModelDescendantsSaver implements SaverInterface
                 $this->computeCompletenesses($productsBatch);
                 $this->indexProducts($productsBatch);
 
-                if (null !== $this->bulkObjectDetacher) {
-                    $this->bulkObjectDetacher->detachAll($productsBatch);
-                }
+                $this->bulkObjectDetacher->detachAll($productsBatch);
                 $productsBatch = [];
             }
         }
@@ -136,9 +128,7 @@ class ProductModelDescendantsSaver implements SaverInterface
         if (!empty($productsBatch)) {
             $this->computeCompletenesses($productsBatch);
             $this->indexProducts($productsBatch);
-            if (null !== $this->bulkObjectDetacher) {
-                $this->bulkObjectDetacher->detachAll($productsBatch);
-            }
+            $this->bulkObjectDetacher->detachAll($productsBatch);
         }
     }
 
