@@ -62,7 +62,7 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         AttributeRequirementRepositoryInterface $attributeRequirementRepository,
         string $jobName,
-        FindAttributesForFamily $findAttributesForFamily = null // @pull-up @todo master: remove the = null
+        FindAttributesForFamily $findAttributesForFamily
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->jobLauncher = $jobLauncher;

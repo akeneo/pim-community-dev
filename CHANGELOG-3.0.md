@@ -198,6 +198,7 @@
 - Change constructor of `Akeneo\UserManagement\Bundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Akeneo\UserManagement\Bundle\Form\Subscriber\UserSubscriber` argument
 
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` to add `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` and a `batchSize` parameter.
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributesForFamily` argument
 
 - Move namespace `Pim\Component\Catalog\Value` to `Akeneo\Pim\Enrichment\Component\Product\Value`
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
