@@ -22,9 +22,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class IncompleteValuesNormalizer implements NormalizerInterface
 {
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     /** @var RequiredValueCollectionFactory */
     private $requiredValueCollectionFactory;
 
@@ -32,16 +29,13 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     private $incompleteValueCollectionFactory;
 
     /**
-     * @param NormalizerInterface              $normalizer
      * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
      * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
      */
     public function __construct(
-        NormalizerInterface $normalizer,
         RequiredValueCollectionFactory $requiredValueCollectionFactory,
         IncompleteValueCollectionFactory $incompleteValueCollectionFactory
     ) {
-        $this->normalizer = $normalizer;
         $this->requiredValueCollectionFactory = $requiredValueCollectionFactory;
         $this->incompleteValueCollectionFactory = $incompleteValueCollectionFactory;
     }
