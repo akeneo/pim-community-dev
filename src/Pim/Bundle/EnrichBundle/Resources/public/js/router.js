@@ -223,7 +223,7 @@ define(
              * Redirect to the given route
              */
             redirectToRoute: function (route, routeParams, options) {
-                this.redirect(Routing.generate(route, routeParams), options);
+                return this.redirect(Routing.generate(route, routeParams), options);
             },
 
             /**
