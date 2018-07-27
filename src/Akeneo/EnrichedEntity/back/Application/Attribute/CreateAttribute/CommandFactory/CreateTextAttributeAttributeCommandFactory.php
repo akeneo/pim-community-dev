@@ -22,17 +22,17 @@ class CreateTextAttributeAttributeCommandFactory implements CreateAttributeComma
     {
         $command = new CreateTextAttributeCommand();
         $command->identifier = [
-            'identifier' => $normalizedCommand['identifier']['identifier'],
-            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier']
+            'identifier' => $normalizedCommand['identifier']['identifier'] ?? null,
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null
         ];
-        $command->code = $normalizedCommand['code'];
-        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'];
-        $command->labels = $normalizedCommand['labels'];
-        $command->order = $normalizedCommand['order'];
-        $command->required = $normalizedCommand['required'];
-        $command->valuePerChannel = $normalizedCommand['value_per_channel'];
-        $command->valuePerLocale = $normalizedCommand['value_per_locale'];
-        $command->maxLength = $normalizedCommand['max_length'];
+        $command->code = $normalizedCommand['code'] ?? null;
+        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->labels = $normalizedCommand['labels'] ?? null;
+        $command->order = $normalizedCommand['order'] ?? null;
+        $command->required = $normalizedCommand['required'] ?? null;
+        $command->valuePerChannel = $normalizedCommand['value_per_channel'] ?? null;
+        $command->valuePerLocale = $normalizedCommand['value_per_locale'] ?? null;
+        $command->maxLength = $normalizedCommand['max_length'] ?? null;
 
         return $command;
     }
