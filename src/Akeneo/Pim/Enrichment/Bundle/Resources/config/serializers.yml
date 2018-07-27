@@ -14,15 +14,6 @@ services:
     pim_datagrid_serializer:
         class: 'Symfony\Component\Serializer\Serializer'
 
-    pim_indexing_serializer:
-        class: 'Symfony\Component\Serializer\Serializer'
-
-    pim_storage_serializer:
-        class: 'Symfony\Component\Serializer\Serializer'
-
-    pim_datagrid_serializer:
-        class: 'Symfony\Component\Serializer\Serializer'
-
     pim_serializer:
         class: 'Symfony\Component\Serializer\Serializer'
 
