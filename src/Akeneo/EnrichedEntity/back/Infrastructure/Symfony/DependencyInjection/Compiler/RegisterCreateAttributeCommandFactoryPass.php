@@ -16,15 +16,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Registers all attribute factories
+ * Registers all "create command attribute" factories
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RegisterAttributeFactoryPass implements CompilerPassInterface
+class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.attribute_factory';
-    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.attribute_factory';
+    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.create_attribute_command_factory';
+    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.create_attribute_command_factory';
 
     /**
      * {@inheritdoc}
