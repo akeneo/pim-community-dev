@@ -388,4 +388,14 @@
 - Move `Pim\Bundle\CommentBundle\Model\CommentSubjectInterface` to `Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface`
 - Move `Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer` to `Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer`
 - Move `Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\CurrencyController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\CurrencyController`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\CategoryController` to `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ProductController` to `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ProductModelController` to `Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\ProductRepository`
+- Move `Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer`
+- Move `Akeneo\Tool\Component\Api\Normalizer\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductNormalizer`
+- Move `Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface`
+- Move `Akeneo\Tool\Component\Api\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater`
+- Move `Akeneo\Tool\Component\Api\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater`
 
