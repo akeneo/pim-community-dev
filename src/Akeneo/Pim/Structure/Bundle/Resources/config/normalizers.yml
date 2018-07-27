@@ -64,7 +64,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.attribute_option'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     ### Family
     pim_enrich.normalizer.family:

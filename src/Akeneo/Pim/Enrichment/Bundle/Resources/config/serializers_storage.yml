@@ -15,61 +15,61 @@ services:
             - '@pim_catalog.normalizer.storage.product.properties'
             - '@pim_catalog.normalizer.storage.product.associations'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.storage.product.properties:
         class: '%pim_catalog.normalizer.storage.product.properties.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
         tags:
-            - { name: pim_serializer.normalizer, priority: 40 }
+            - { name: pim_storage_serializer.normalizer, priority: 40 }
 
     pim_catalog.normalizer.storage.product.associations:
         class: '%pim_catalog.normalizer.storage.product.associations.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.associations'
         tags:
-            - { name: pim_serializer.normalizer, priority: 40 }
+            - { name: pim_storage_serializer.normalizer, priority: 40 }
 
     pim_catalog.normalizer.storage.product.product_values:
         class: '%pim_catalog.normalizer.storage.product.product_values.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.product_values'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.storage.product.product_value:
         class: '%pim_catalog.normalizer.storage.product.product_value.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.product_value'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.storage.product.price:
         class: '%pim_catalog.normalizer.storage.product.price.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.price'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.storage.product.metric:
         class: '%pim_catalog.normalizer.storage.product.metric.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.metric'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.storage.datetime:
         class: '%pim_catalog.normalizer.storage.datetime.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.datetime'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.storage.file:
         class: '%pim_catalog.normalizer.storage.file.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.file'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
 
