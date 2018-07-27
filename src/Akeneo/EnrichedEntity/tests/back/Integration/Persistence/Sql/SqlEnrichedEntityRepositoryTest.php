@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
+namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -100,11 +100,6 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB()
     {
-        $resetQuery = <<<SQL
-            DELETE FROM akeneo_enriched_entity_record;
-            DELETE FROM akeneo_enriched_entity_enriched_entity;
-SQL;
-
-        $this->get('database_connection')->executeQuery($resetQuery);
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
     }
 }

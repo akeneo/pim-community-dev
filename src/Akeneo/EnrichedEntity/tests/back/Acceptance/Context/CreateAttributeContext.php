@@ -99,8 +99,11 @@ class CreateAttributeContext implements Context
     /**
      * @When /^the user creates an image attribute "([^"]*)" linked to the enriched entity "([^"]*)" with:$/
      */
-    public function theUserCreatesAnImageAttributeLinkedToTheEnrichedEntityWith($attributeCode, $enrichedEntityIdentifier, TableNode $attributeData)
-    {
+    public function theUserCreatesAnImageAttributeLinkedToTheEnrichedEntityWith(
+        $attributeCode,
+        $enrichedEntityIdentifier,
+        TableNode $attributeData
+    ) {
         $attributeData = current($attributeData->getHash());
         $command = new CreateImageAttributeCommand();
         $command->identifier = [

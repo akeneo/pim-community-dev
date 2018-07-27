@@ -14,6 +14,8 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
  */
 class TextAttribute extends AbstractAttribute
 {
+    private const ATTRIBUTE_TYPE = 'text';
+
     /** @var AttributeMaxLength */
     private $maxLength;
 
@@ -28,7 +30,8 @@ class TextAttribute extends AbstractAttribute
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength
     ) {
-        parent::__construct($identifier, $enrichedEntityIdentifier, $code,$labelCollection,$required,$order,$valuePerChannel,$valuePerLocale);
+        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required,
+            $valuePerChannel, $valuePerLocale);
 
         $this->maxLength = $maxLength;
     }
@@ -61,7 +64,10 @@ class TextAttribute extends AbstractAttribute
     {
         return array_merge(
             parent::normalize(),
-            ['max_length' => $this->maxLength->intValue()]
+            [
+                'type' => self::ATTRIBUTE_TYPE,
+                'max_length' => $this->maxLength->intValue()
+            ]
         );
     }
 

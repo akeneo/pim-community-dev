@@ -40,3 +40,8 @@ services:
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
             - '@validator'
+
+    akeneo_ee_integration_tests.helper.database_helper:
+        class: 'Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Helper\DatabaseHelper'
+        arguments:
+            - '@database_connection'

@@ -53,8 +53,8 @@ abstract class AbstractAttribute
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
-        AttributeRequired $required,
         AttributeOrder $order,
+        AttributeRequired $required,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
     ) {

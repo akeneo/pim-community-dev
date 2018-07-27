@@ -98,9 +98,8 @@ SQL;
         }
     }
 
-    public function getByIdentifier(
-        RecordIdentifier $identifier
-    ): Record {
+    public function getByIdentifier(RecordIdentifier $identifier): Record
+    {
         $fetch = <<<SQL
         SELECT identifier, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record

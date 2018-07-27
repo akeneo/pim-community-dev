@@ -14,6 +14,8 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
  */
 class ImageAttribute extends AbstractAttribute
 {
+    private const ATTRIBUTE_TYPE = 'image';
+
     /** @var AttributeMaxFileSize */
     private $maxFileSize;
 
@@ -32,7 +34,8 @@ class ImageAttribute extends AbstractAttribute
         AttributeMaxFileSize $maxFileSize,
         AttributeAllowedExtensions $extensions
     ) {
-        parent::__construct($identifier, $enrichedEntityIdentifier, $code,$labelCollection,$required,$order,$valuePerChannel,$valuePerLocale);
+        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required,
+            $valuePerChannel, $valuePerLocale);
 
         $this->maxFileSize = $maxFileSize;
         $this->extensions = $extensions;
@@ -69,6 +72,7 @@ class ImageAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
+                'type' => self::ATTRIBUTE_TYPE,
                 'max_file_size' => $this->maxFileSize->floatValue(),
                 'allowed_extensions' => $this->extensions->normalize()
             ]

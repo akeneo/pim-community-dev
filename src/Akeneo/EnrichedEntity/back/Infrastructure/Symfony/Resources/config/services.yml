@@ -68,7 +68,9 @@ services:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.attribute:
-        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryAttributeRepository
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlAttributeRepository'
+        arguments:
+            - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindRecordItemsForEnrichedEntity'
@@ -95,10 +97,10 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute_for_enriched_entity:
-        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryExistsAttributeForEnrichedEntity
+    akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlExistsAttribute'
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@database_connection'
 
     akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler:
         class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler'
@@ -125,4 +127,4 @@ services:
         arguments:
             - '@akeneo_enrichedentity.application.registry.attribute_factory'
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
-            - '@akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute_for_enriched_entity'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute'

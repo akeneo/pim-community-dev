@@ -87,6 +87,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
+                'type'                       => 'text',
                 'max_length'                 => 300,
             ]
         );

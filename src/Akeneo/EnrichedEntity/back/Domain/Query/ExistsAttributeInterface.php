@@ -7,8 +7,9 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
-interface ExistsAttribute
+interface ExistsAttributeInterface
 {
     public function withIdentifier(AttributeIdentifier $attributeIdentifier): bool;
+
     public function withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeOrder $order): bool;
 }

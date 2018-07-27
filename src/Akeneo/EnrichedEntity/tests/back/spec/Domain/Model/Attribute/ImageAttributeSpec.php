@@ -20,9 +20,9 @@ class ImageAttributeSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'image'),
             EnrichedEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('name'),
+            AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeRequired::fromBoolean(true),
@@ -41,9 +41,9 @@ class ImageAttributeSpec extends ObjectBehavior
     function it_cannot_have_an_enriched_entity_identifier_different_from_the_composite_key()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'image'),
             EnrichedEntityIdentifier::fromString('manufacturer'),
-            AttributeCode::fromString('name'),
+            AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeRequired::fromBoolean(true),
@@ -57,7 +57,7 @@ class ImageAttributeSpec extends ObjectBehavior
     function it_cannot_have_a_code_different_from_the_composite_key()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'image'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('birth_date'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
@@ -80,16 +80,17 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
                 'identifier'                 => [
-                    'enriched_entity_identifier' => "designer",
-                    'identifier'                 => "name",
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'image',
                 ],
                 'enriched_entity_identifier' => 'designer',
-                'code'                       => 'name',
+                'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
                 'required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
+                'type'                       => 'image',
                 'max_file_size'              => 300.0,
                 'allowed_extensions'         => ['pdf'],
             ]
