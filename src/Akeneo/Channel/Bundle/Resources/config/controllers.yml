@@ -11,7 +11,7 @@ services:
         class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\LocaleController'
         arguments:
             - '@pim_api.repository.locale'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.checker.query_parameters_locale'
@@ -21,7 +21,7 @@ services:
         class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController'
         arguments:
             - '@pim_api.repository.channel'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_catalog.factory.channel'

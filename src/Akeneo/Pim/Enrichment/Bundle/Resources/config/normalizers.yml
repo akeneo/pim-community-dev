@@ -2,7 +2,7 @@ services:
     pim_comment.normalizer.standard.comment:
         class: 'Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     pim_api.normalizer.product:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductNormalizer'
@@ -11,11 +11,11 @@ services:
             - '@pim_api.repository.attribute'
             - '@router'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     pim_api.normalizer.category:
         class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.category'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }

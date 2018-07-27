@@ -19,7 +19,7 @@ services:
         class: '%pim_api.controller.media_file.class%'
         arguments:
             - '@pim_api.repository.media_file'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
