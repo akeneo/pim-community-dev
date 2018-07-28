@@ -8,8 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalize a product value into an array
@@ -18,19 +16,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductValueNormalizer implements NormalizerInterface
 {
     const DECIMAL_PRECISION = 4;
 
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var NormalizerInterface */
+    private $normalizer;
 
     /**
-     * {@inheritdoc}
+     * @param NormalizerInterface $normalizer
      */
-    public function setSerializer(SerializerInterface $serializer): void
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -78,7 +76,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $value->getAttribute()->isBackendTypeReferenceData()) {
                 $data[] = $item->getCode();
             } else {
-                $data[] = $this->serializer->normalize($item, $format, $context);
+                $data[] = $this->normalizer->normalize($item, $format, $context);
             }
         }
 
@@ -120,6 +118,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             return $value->getData()->getKey();
         }
 
-        return $this->serializer->normalize($value->getData(), $format, $context);
+        return $this->normalizer->normalize($value->getData(), $format, $context);
     }
 }
