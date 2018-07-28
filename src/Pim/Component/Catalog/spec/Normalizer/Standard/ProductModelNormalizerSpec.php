@@ -14,9 +14,12 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
-    function let(CollectionFilterInterface $filter, NormalizerInterface $associationsNormalizer)
-    {
-        $this->beConstructedWith($filter, $associationsNormalizer);
+    function let(
+        CollectionFilterInterface $filter,
+        NormalizerInterface $associationsNormalizer,
+        NormalizerInterface $standardNormalizer
+    ) {
+        $this->beConstructedWith($filter, $associationsNormalizer, $standardNormalizer);
     }
 
     function it_is_initializable()
@@ -29,20 +32,13 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_is_serializer_aware()
-    {
-        $this->shouldImplement(SerializerAwareInterface::class);
-    }
-
     function it_normalizes_product_model_without_parent(
         $filter,
+        $standardNormalizer,
         ProductModelInterface $productModel,
-        Serializer $normalizer,
         FamilyVariantInterface $familyVariant,
         ValueCollection $values
     ) {
-        $this->setSerializer($normalizer);
-
         $productModel->getCode()->willReturn('code');
         $productModel->getParent()->willReturn(null);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -50,7 +46,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $productModel->getValues()->willReturn($values);
 
-        $normalizer
+        $standardNormalizer
             ->normalize($values, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])
             ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
 
@@ -60,11 +56,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $created = new \DateTime('2010-06-23');
         $productModel->getCreated()->willReturn($created);
-        $normalizer->normalize($created, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T00:00:00+01:00');
+        $standardNormalizer->normalize($created, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T00:00:00+01:00');
 
         $updated = new \DateTime('2010-06-23 23:00:00');
         $productModel->getUpdated()->willReturn($updated);
-        $normalizer->normalize($updated, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T23:00:00+01:00');
+        $standardNormalizer->normalize($updated, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($productModel, 'standard')->shouldReturn([
             'code' => 'code',
@@ -88,14 +84,12 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_model_with_parent(
         $filter,
+        $standardNormalizer,
         ProductModelInterface $productModel,
-        Serializer $normalizer,
         FamilyVariantInterface $familyVariant,
         ValueCollection $values,
         ProductModelInterface $parentModel
     ) {
-        $this->setSerializer($normalizer);
-
         $productModel->getCode()->willReturn('code');
         $productModel->getParent()->willReturn($parentModel);
         $parentModel->getCode()->willReturn('parent_code');
@@ -104,7 +98,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $productModel->getValues()->willReturn($values);
 
-        $normalizer
+        $standardNormalizer
             ->normalize($values, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])
             ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
 
@@ -114,11 +108,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $created = new \DateTime('2010-06-23');
         $productModel->getCreated()->willReturn($created);
-        $normalizer->normalize($created, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T00:00:00+01:00');
+        $standardNormalizer->normalize($created, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T00:00:00+01:00');
 
         $updated = new \DateTime('2010-06-23 23:00:00');
         $productModel->getUpdated()->willReturn($updated);
-        $normalizer->normalize($updated, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T23:00:00+01:00');
+        $standardNormalizer->normalize($updated, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($productModel, 'standard')->shouldReturn([
             'code' => 'code',
@@ -146,10 +140,5 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
         $this->supportsNormalization($productModel, 'xml')->shouldReturn(false);
         $this->supportsNormalization($productModel, 'csv')->shouldReturn(false);
-    }
-
-    function it_throws_an_exception_if_the_serializer_is_not_set(ProductModelInterface $productModel)
-    {
-        $this->shouldThrow(\LogicException::class)->during('normalize', [$productModel]);
     }
 }

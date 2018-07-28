@@ -22,7 +22,7 @@ class AssociationTypeIntegration extends TestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.association_type');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('SUBSTITUTION'), 'standard');
 

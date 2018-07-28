@@ -47,7 +47,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
         $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
-        $standardizedProduct = $this->getFromTestContainer('pim_serializer')->normalize($product, 'standard');
+        $standardizedProduct = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($product, 'standard');
         unset($standardizedProduct['categories']);
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);

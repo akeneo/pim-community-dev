@@ -26,7 +26,7 @@ class LocaleNormalizerIntegration extends AbstractNormalizerTestCase
     private function assert($localeCode, array $expected)
     {
         $repository = $this->get('pim_catalog.repository.locale');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier($localeCode), 'external_api');
 

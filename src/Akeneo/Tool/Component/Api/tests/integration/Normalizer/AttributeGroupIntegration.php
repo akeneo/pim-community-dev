@@ -37,7 +37,7 @@ class AttributeGroupIntegration extends AbstractNormalizerTestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.attribute_group');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('attributeGroupA'), 'external_api');
 

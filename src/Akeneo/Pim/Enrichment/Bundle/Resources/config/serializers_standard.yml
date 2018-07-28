@@ -28,8 +28,10 @@ services:
         arguments:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.normalizer.standard.product.associations'
+            - '@pim_standard_format_serializer'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+        lazy: true
 
     pim_catalog.normalizer.standard.product.properties:
         class: '%pim_catalog.normalizer.standard.product.properties.class%'

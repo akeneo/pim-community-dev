@@ -81,7 +81,7 @@ JSON;
         $this->assertSame('', $response->getContent());
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
     }
 
@@ -153,7 +153,7 @@ JSON;
         $this->assertSame('', $response->getContent());
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
     }
 
@@ -387,7 +387,7 @@ JSON;
         $this->assertSame('', $response->getContent());
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optionb_false');
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
         $this->assertSame($standardizedProduct['values']['a_number_float'][0]['data'], '15.3000');
 
     }
@@ -1172,7 +1172,7 @@ JSON;
     protected function assertSameProductModels(array $expectedProductModel, $identifier)
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($identifier);
-        $standardizedProductModel = $this->get('pim_serializer')->normalize($productModel, 'standard');
+        $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($expectedProductModel);
         NormalizedProductCleaner::clean($standardizedProductModel);

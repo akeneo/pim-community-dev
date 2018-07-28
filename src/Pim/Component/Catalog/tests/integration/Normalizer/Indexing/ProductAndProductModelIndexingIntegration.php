@@ -604,7 +604,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
      */
     private function assertIndexingFormat($entity, array $expected)
     {
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_indexing_serializer');
         $actual = $serializer->normalize($entity, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
         NormalizedProductCleaner::clean($actual);

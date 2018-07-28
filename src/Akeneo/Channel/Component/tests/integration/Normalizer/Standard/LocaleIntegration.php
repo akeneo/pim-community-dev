@@ -19,7 +19,7 @@ class LocaleIntegration extends TestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.locale');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('en_US'), 'standard');
 

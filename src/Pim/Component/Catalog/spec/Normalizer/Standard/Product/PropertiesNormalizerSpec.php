@@ -10,16 +10,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class PropertiesNormalizerSpec extends ObjectBehavior
 {
-    function let(CollectionFilterInterface $filter, SerializerInterface $serializer)
+    function let(CollectionFilterInterface $filter, NormalizerInterface $normalizer)
     {
-        $this->beConstructedWith($filter);
-
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->setSerializer($serializer);
+        $this->beConstructedWith($filter, $normalizer);
     }
 
     function it_is_initializable()
@@ -42,7 +40,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_the_properties_of_the_product(
         $filter,
-        $serializer,
+        $normalizer,
         ProductInterface $product,
         FamilyInterface $family,
         ValueCollection $values,
@@ -65,17 +63,17 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $context = ['filter_types' => ['pim.transform.product_value.structured']];
 
-        $serializer
+        $normalizer
             ->normalize($values, 'standard', $context)
             ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
 
         $created = new \DateTime('2010-06-23');
         $product->getCreated()->willReturn($created);
-        $serializer->normalize($created, 'standard')->willReturn('2010-06-23T00:00:00+01:00');
+        $normalizer->normalize($created, 'standard')->willReturn('2010-06-23T00:00:00+01:00');
 
         $updated = new \DateTime('2010-06-23 23:00:00');
         $product->getUpdated()->willReturn($updated);
-        $serializer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
+        $normalizer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
             'identifier'    => 'my_code',
@@ -100,7 +98,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_the_properties_of_the_variant_product(
         $filter,
-        $serializer,
+        $normalizer,
         ProductInterface $product,
         ProductModel $productModel,
         FamilyInterface $family,
@@ -126,17 +124,17 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $context = ['filter_types' => ['pim.transform.product_value.structured']];
 
-        $serializer
+        $normalizer
             ->normalize($values, 'standard', $context)
             ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
 
         $created = new \DateTime('2010-06-23');
         $product->getCreated()->willReturn($created);
-        $serializer->normalize($created, 'standard')->willReturn('2010-06-23T00:00:00+01:00');
+        $normalizer->normalize($created, 'standard')->willReturn('2010-06-23T00:00:00+01:00');
 
         $updated = new \DateTime('2010-06-23 23:00:00');
         $product->getUpdated()->willReturn($updated);
-        $serializer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
+        $normalizer->normalize($updated, 'standard')->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($product, 'standard', $context)->shouldReturn([
             'identifier'    => 'my_code',

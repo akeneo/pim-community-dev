@@ -341,7 +341,7 @@ class ProductIndexingIntegration extends TestCase
         $repository = $this->get('pim_catalog.repository.product');
         $product = $repository->findOneByIdentifier($identifier);
 
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_indexing_serializer');
         $actual = $serializer->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
 
         NormalizedProductCleaner::clean($actual);

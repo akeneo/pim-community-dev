@@ -291,7 +291,7 @@ class ProductStandardIntegration extends TestCase
      */
     private function normalizeProductToStandardFormat(ProductInterface $product)
     {
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         return $serializer->normalize($product, 'standard');
     }
