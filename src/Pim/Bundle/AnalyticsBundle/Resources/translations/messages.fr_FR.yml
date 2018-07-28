@@ -38,11 +38,11 @@ pim_analytics:
     pim_storage_version: Version de stockage
     os_version: Version du système d'exploitation
     php_version: Version de PHP
-    mysql_version: Version de MySQL
     mariadb_version: Version de MariaDB
     mongodb_version: Version de MongoDB
     server_version: Version du serveur
     php_extensions: Extensions PHP
+    elasticsearch_version: Version de Elasticsearch
   acl:
     system_info:
       index: Informations système

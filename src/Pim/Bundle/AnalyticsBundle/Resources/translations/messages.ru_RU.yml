@@ -31,6 +31,7 @@ pim_analytics:
     mongodb_version: Версия MongoDB
     server_version: Версия сервера
     php_extensions: Расширения PHP
+    elasticsearch_version: Версия Elasticsearch
   acl:
     system_info:
       index: Информация о системе
