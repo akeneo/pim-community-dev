@@ -100,4 +100,5 @@ services:
             -
                 - '%index_hosts%'
         tags:
+            - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
