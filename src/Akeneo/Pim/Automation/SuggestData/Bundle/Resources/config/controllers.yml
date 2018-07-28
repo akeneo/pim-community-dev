@@ -1,9 +1,8 @@
 services:
-    akeneo.pim.automation.suggest_data.controller.suggest_data:
-        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\SuggestDataController'
+    akeneo.pim.automation.suggest_data.controller.product_subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\ProductSubscriptionController'
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.service.subscribe_product'
 
     akeneo.pim.automation.suggest_data.controller.pim_ai:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\PimAiConnectionController'

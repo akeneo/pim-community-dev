@@ -11,3 +11,6 @@ services:
               class: Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping
               arguments:
                   - []
+
+    akeneo.pim.automation.suggest_data.repository.product_subscription:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryProductSubscriptionRepository'
