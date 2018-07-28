@@ -35,8 +35,10 @@ services:
         class: '%pim_catalog.normalizer.standard.product.properties.class%'
         arguments:
             - '@pim_catalog.filter.chained'
+            - '@pim_standard_format_serializer'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
+        lazy:  true
 
     pim_catalog.normalizer.standard.product.associations:
         class: '%pim_catalog.normalizer.standard.product.associations.class%'

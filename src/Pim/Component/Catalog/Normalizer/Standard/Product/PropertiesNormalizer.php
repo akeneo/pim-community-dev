@@ -7,8 +7,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Transform the properties of a product object (fields and product values)
@@ -18,10 +16,8 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterface
+class PropertiesNormalizer implements NormalizerInterface
 {
-    use SerializerAwareTrait;
-
     const FIELD_IDENTIFIER = 'identifier';
     const FIELD_LABEL = 'label';
     const FIELD_FAMILY = 'family';
@@ -36,12 +32,17 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     /** @var CollectionFilterInterface */
     private $filter;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /**
      * @param CollectionFilterInterface $filter The collection filter
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(CollectionFilterInterface $filter)
+    public function __construct(CollectionFilterInterface $filter, NormalizerInterface $normalizer)
     {
         $this->filter = $filter;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -49,10 +50,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
-            throw new \LogicException('Serializer must be a normalizer');
-        }
-
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
 
@@ -67,8 +64,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[self::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[self::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
-        $data[self::FIELD_CREATED] = $this->serializer->normalize($product->getCreated(), $format);
-        $data[self::FIELD_UPDATED] = $this->serializer->normalize($product->getUpdated(), $format);
+        $data[self::FIELD_CREATED] = $this->normalizer->normalize($product->getCreated(), $format);
+        $data[self::FIELD_UPDATED] = $this->normalizer->normalize($product->getUpdated(), $format);
 
         return $data;
     }
@@ -96,7 +93,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->serializer->normalize($values, $format, $context);
+        $data = $this->normalizer->normalize($values, $format, $context);
 
         return $data;
     }
