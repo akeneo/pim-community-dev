@@ -649,3 +649,138 @@ pim_enrich:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
+batch_jobs:
+  csv_product_export:
+    label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_category_export:
+    label: Экспорт категорий в CSV
+    export.label: Экспорт категорий
+  csv_attribute_export:
+    label: Экспорт атрибутов в CSV
+    export.label: Экспорт атрибутов
+  csv_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в CSV
+    export.label: Экспорт элементов списочных атрибутов
+  csv_association_type_export:
+    label: Экспорт типов ассоциаций в CSV
+    export.label: Экспорт типов ассоциаций
+  csv_group_export:
+    label: Экспорт групп в CSV
+    export.label: Экспорт групп
+  csv_variant_group_export:
+    label: Экспорт групп вариантов в CSV
+    export.label: Экспорт групп вариантов
+  csv_family_export:
+    label: Экспорт семейств в CSV
+    export.label: Экспорт семейств
+  csv_product_import:
+    label: Импорт продуктов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  csv_category_import:
+    label: Импорт категорий из CSV
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  csv_attribute_import:
+    label: Импорт атрибутов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  csv_attribute_option_import:
+    label: Импорт элементов списочных атрибутов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
+  csv_association_type_import:
+    label: Импорт типов ассоциаций из CSV
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  csv_family_import:
+    label: Импорт семейств из CSV
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  csv_group_import:
+    label: Импорт группы из CSV
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  csv_variant_group_import:
+    label: Импорт группы вариантов в CSV
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
+  csv_channel_import:
+    validation.label: Проверка файла
+  csv_locale_import:
+    validation.label: Проверка файла
+  csv_attribute_group_import:
+    validation.label: Проверка файла
+  csv_currency_import:
+    validation.label: Проверка файла
+  csv_group_type_import:
+    validation.label: Проверка файла
+  xlsx_category_import:
+    label: Импорт категорий из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  xlsx_association_type_import:
+    label: Импорт типов ассоциаций из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  xlsx_attribute_import:
+    label: Импорт атрибутов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  xlsx_attribute_option_import:
+    label: Импорт элементов списочных атрибутов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
+  xlsx_family_import:
+    label: Импорт семейств из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  xlsx_product_export:
+    label: Экспорт продуктов в XLSX
+    export.label: Экспорт продуктов
+  xlsx_product_import:
+    label: Импорт продуктов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_group_export:
+    label: Экспорт групп в XLSX
+    export.label: Экспорт групп
+  xlsx_variant_group_export:
+    label: Экспорт групп вариантов в XLSX
+    export.label: Экспорт групп вариантов
+  xlsx_group_import:
+    label: Импорт групп из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  xlsx_variant_group_import:
+    label: Импорт групп вариантов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт групп вариантов
+  xlsx_family_export:
+    label: Экспорт семейств в XLSX
+    export.label: Экспорт семейств
+  xlsx_category_export:
+    label: Экспорт категорий в XLSX
+    export.label: Экспорт категорий
+  xlsx_attribute_export:
+    label: Экспорт атрибутов в XLSX
+    export.label: Экспорт атрибутов в XLSX
+  xlsx_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в XLSX
+    export.label: Экспорт элементов списочных атрибутов в XLSX
+  xlsx_association_type_export:
+    label: Экспорт типов ассоциаций в XLSX
+    export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_import:
+    validation.label: Проверка файла
+  xlsx_locale_import:
+    validation.label: Проверка файла
+  xlsx_attribute_group_import:
+    validation.label: Проверка файла
+  xlsx_currency_import:
+    validation.label: Проверка файла
+  xlsx_group_type_import:
+    validation.label: Проверка файла
