@@ -1,6 +1,7 @@
 pim_enriched_entity:
   button:
     save: 保存
+    create: 新しく追加
   enriched_entity:
     tab:
       attributes: 属性
@@ -8,6 +9,19 @@ pim_enriched_entity:
     properties:
       identifier: 識別子
       label: ラベル
+    create:
+      header:
+        title: 作成
+      input:
+        label: ラベル
+      confirm: 確認
+  record:
+    create:
+      header:
+        title: 作成
+      input:
+        label: ラベル
+      confirm: 確認
 pim_enrich:
   entity:
     attribute:
