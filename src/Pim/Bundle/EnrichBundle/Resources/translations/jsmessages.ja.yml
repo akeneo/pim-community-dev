@@ -692,3 +692,188 @@ pim_enrich:
       description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデーとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
 pim_enrich.error:
   exception.title: ああスナップ！ {{ status_code }} のエラーが発生しました。
+batch_jobs:
+  csv_product_export:
+    label: 商品をCSV形式でエクスポート
+    export.label: 商品エクスポート
+  csv_category_export:
+    label: カテゴリをCSV形式でエクスポート
+    export.label: カテゴリエクスポート
+  csv_attribute_export:
+    label: 属性をCSV形式でエクスポート
+    export.label: 属性エクスポート
+  csv_attribute_option_export:
+    label: 属性オプションをCSV形式でエクスポート
+    export.label: 属性オプションのエクスポート
+  csv_association_type_export:
+    label: CSVエクスポートで関連付ける種別
+    export.label: エクスポートに関連付ける種別
+  csv_group_export:
+    label: CSVにエクスポートするグループ
+    export.label: グループエクスポート
+  csv_variant_group_export:
+    label: バリアントグループをCSVにエクスポート
+    export.label: バリアントグループをエクスポート
+  csv_family_export:
+    label: ファミリーをCSV形式でエクスポート
+    export.label: ファミリーエクスポート
+  csv_product_import:
+    label: 製品をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  csv_category_import:
+    label: カテゴリをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: カテゴリのインポート
+  csv_attribute_import:
+    label: 属性をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性のインポート
+  csv_attribute_option_import:
+    label: 属性オプションをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性オプションのインポート
+  csv_association_type_import:
+    label: 関連タイプをCSVでインポート
+    validation.label: ファイルの検証
+    import.label: 関連付けタイプのインポート
+  csv_family_import:
+    label: ファミリーをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーインポート
+  csv_group_import:
+    label: グループをCSVでインポート
+    validation.label: ファイルの検証
+    import.label: グループのインポート
+  csv_variant_group_import:
+    label: バリアントグループをCSVからインポート
+    validation.label: ファイルの検証
+    import.label: バリアントグループをインポート
+  csv_channel_export:
+    label: チャネルをCSV形式でエクスポート
+    export.label: チャネルエクスポート
+  csv_locale_export:
+    label: ロケールをCSV形式でエクスポート
+    export.label: ロケールエクスポート
+  csv_attribute_group_export:
+    label: 属性グループをCSV形式でエクスポート
+    export.label: 属性グループエクスポート
+  csv_currency_export:
+    label: 通貨をCSV形式でエクスポート
+    export.label: 通貨エクスポート
+  csv_group_type_export:
+    label: グループタイプをCSV形式でエクスポート
+    export.label: グループタイプエクスポート
+  csv_channel_import:
+    label: チャネルをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: チャネルインポート
+  csv_locale_import:
+    label: ロケールをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ロケールインポート
+  csv_attribute_group_import:
+    label: 属性グループをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性グループインポート
+  csv_currency_import:
+    label: 通貨をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 通貨インポート
+  csv_group_type_import:
+    label: グループタイプをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループタイプインポート
+  xlsx_category_import:
+    label: カテゴリをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: カテゴリのインポート
+  xlsx_association_type_import:
+    label: 関連タイプをXLSXでインポート
+    validation.label: ファイルの検証
+    import.label: 関連付けタイプのインポート
+  xlsx_attribute_import:
+    label: 属性をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性のインポート
+  xlsx_attribute_option_import:
+    label: 属性オプションをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性オプションのインポート
+  xlsx_family_import:
+    label: ファミリーをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーインポート
+  xlsx_product_export:
+    label: 商品をXLSX形式でエクスポート
+    export.label: 商品エクスポート
+  xlsx_product_import:
+    label: 商品をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  xlsx_group_export:
+    label: グループをXLSX形式でインポート
+    export.label: グループエクスポート
+  xlsx_variant_group_export:
+    label: バリアントグループをXLSX形式にエクスポート
+    export.label: バリアントグループをエクスポート
+  xlsx_group_import:
+    label: グループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループのインポート
+  xlsx_variant_group_import:
+    label: バリアントグループをXLSX形式にインポート
+    validation.label: ファイルの検証
+    import.label: バリアントグループをインポート
+  xlsx_family_export:
+    label: ファミリーをXLSX形式でエクスポート
+    export.label: ファミリーエクスポート
+  xlsx_category_export:
+    label: カテゴリをXLSX形式でエクスポート
+    export.label: カテゴリエクスポート
+  xlsx_attribute_export:
+    label: 属性をXLSX形式でエクスポート
+    export.label: 属性をXLSX形式でエクスポート
+  xlsx_attribute_option_export:
+    label: 属性オプションをXLSX形式でエクスポート
+    export.label: 属性オプションをXLSX形式でエクスポート
+  xlsx_association_type_export:
+    label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でインポート
+  xlsx_channel_export:
+    label: チャネルをXLSX形式でエクスポート
+    export.label: チャネルエクスポート
+  xlsx_locale_export:
+    label: ロケールをXLSX形式でエクスポート
+    export.label: ロケールエクスポート
+  xlsx_attribute_group_export:
+    label: 属性グループをXLSX形式でエクスポート
+    export.label: 属性グループエクスポート
+  xlsx_currency_export:
+    label: 通貨をXLSX形式でエクスポート
+    export.label: 通貨エクスポート
+  xlsx_group_type_export:
+    label: グループタイプをXLSX形式でエクスポート
+    export.label: グループタイプエクスポート
+  xlsx_channel_import:
+    label: チャネルをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: チャネルインポート
+  xlsx_locale_import:
+    label: ロケールをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ロケールインポート
+  xlsx_attribute_group_import:
+    label: 属性グループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性グループインポート
+  xlsx_currency_import:
+    label: 通貨をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 通貨インポート
+  xlsx_group_type_import:
+    label: グループタイプをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループタイプインポート

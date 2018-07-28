@@ -537,3 +537,115 @@ pim_enrich:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
+batch_jobs:
+  csv_product_export:
+    label: Eksport produktów do CSV
+    export.label: Eksport produktów
+  csv_category_export:
+    label: Eksport kategorii do CSV
+    export.label: Eksport kategorii
+  csv_attribute_export:
+    label: Eksport atrybutów do CSV
+    export.label: Eksport atrybutów
+  csv_attribute_option_export:
+    label: Eksport opcji atrybutów do CSV
+    export.label: Eksport opcji atrybutów
+  csv_association_type_export:
+    label: Eksport typów powiązań do CSV
+    export.label: Eksport typów powiązań
+  csv_group_export:
+    label: Eksport grup do CSV
+    export.label: Eksport grup
+  csv_variant_group_export:
+    label: Eksport grup wariantów do CSV
+    export.label: Eksport grup wariantów
+  csv_family_export:
+    label: Eksport rodzin do pliku CSV
+    export.label: Eksport rodziny
+  csv_product_import:
+    label: Import produktów z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import Produktu
+    import_associations.label: Import Powiązań
+  csv_category_import:
+    label: Import kategorii z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import kategorii
+  csv_attribute_import:
+    label: Import atrybutów z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import atrybutu
+  csv_attribute_option_import:
+    label: Import ustawień atrybutów z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import ustawień atrybutów
+  csv_association_type_import:
+    label: Import typów powiązań z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import typów powiązań
+  csv_family_import:
+    label: Import rodziny z pliku CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import rodziny
+  csv_group_import:
+    label: Import grup z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import grup
+  csv_variant_group_import:
+    label: Import grup wariantów z CSV
+    validation.label: Sprawdzanie pliku
+    import.label: Import grup wariantów
+  csv_channel_import:
+    validation.label: Sprawdzanie pliku
+  csv_locale_import:
+    validation.label: Sprawdzanie pliku
+  csv_attribute_group_import:
+    validation.label: Sprawdzanie pliku
+  csv_currency_import:
+    validation.label: Sprawdzanie pliku
+  csv_group_type_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_category_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import kategorii
+  xlsx_association_type_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import typów powiązań
+  xlsx_attribute_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import atrybutu
+  xlsx_attribute_option_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import ustawień atrybutów
+  xlsx_family_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import rodziny
+  xlsx_product_export:
+    export.label: Eksport produktów
+  xlsx_product_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import Produktu
+    import_associations.label: Import Powiązań
+  xlsx_group_export:
+    export.label: Eksport grup
+  xlsx_variant_group_export:
+    export.label: Eksport grup wariantów
+  xlsx_group_import:
+    validation.label: Sprawdzanie pliku
+    import.label: Import grup
+  xlsx_variant_group_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_family_export:
+    export.label: Eksport rodziny
+  xlsx_category_export:
+    export.label: Eksport kategorii
+  xlsx_channel_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_locale_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_attribute_group_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_currency_import:
+    validation.label: Sprawdzanie pliku
+  xlsx_group_type_import:
+    validation.label: Sprawdzanie pliku
