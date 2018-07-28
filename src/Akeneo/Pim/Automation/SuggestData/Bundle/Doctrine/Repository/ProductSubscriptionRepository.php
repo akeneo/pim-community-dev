@@ -64,4 +64,12 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
             ]
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function existsForProductId(int $productId): bool
+    {
+        throw new \LogicException('Not yet implemented');
+    }
 }

@@ -59,7 +59,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
      *
      * @return bool
      */
-    public function existsForProductId($productId): bool
+    public function existsForProductId(int $productId): bool
     {
         if (!isset($this->subscriptions[$productId])) {
             return false;
