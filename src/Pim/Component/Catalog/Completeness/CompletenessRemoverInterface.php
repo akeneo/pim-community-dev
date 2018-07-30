@@ -29,6 +29,13 @@ interface CompletenessRemoverInterface
     public function removeForProduct(ProductInterface $product);
 
     /**
+     * Remove completeness of a product without indexing it.
+     *
+     * @param ProductInterface $product
+     */
+    public function removeForProductWithoutIndexing(ProductInterface $product): void;
+
+    /**
      * Remove completenesses for all product of a family
      *
      * @param FamilyInterface $family
