@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;

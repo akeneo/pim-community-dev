@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Exception;
+namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 /**
  * Exception thrown when a provided suggest data configuration does not allow

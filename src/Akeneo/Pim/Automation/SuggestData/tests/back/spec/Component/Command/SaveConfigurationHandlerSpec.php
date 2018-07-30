@@ -15,7 +15,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
