@@ -22,10 +22,7 @@ use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
  */
 class ConfigurationRepositoryIntegration extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_saves_a_suggest_data_configuration()
+    public function test_it_saves_a_suggest_data_configuration()
     {
         $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
@@ -44,10 +41,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         ]], $retrievedConfiguration);
     }
 
-    /**
-     * @test
-     */
-    public function it_updates_a_suggest_data_configuration()
+    public function test_it_updates_a_suggest_data_configuration()
     {
         $configuration = new Configuration('pim-ai', ['token' => 'a_first_token']);
         $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
@@ -70,10 +64,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         ]], $retrievedConfiguration);
     }
 
-    /**
-     * @test
-     */
-    public function it_finds_a_suggest_data_configuration()
+    public function test_it_finds_a_suggest_data_configuration()
     {
         $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
