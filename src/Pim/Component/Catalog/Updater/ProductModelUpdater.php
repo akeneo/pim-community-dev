@@ -31,9 +31,6 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     private $valuesUpdater;
 
     /** @var array */
-    private $supportedFields;
-
-    /** @var array */
     private $ignoredFields;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -51,7 +48,6 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param ParentAssociationsFilter              $parentAssociationsFilter
-     * @param array                                 $supportedFields
      * @param array                                 $ignoredFields
      */
     public function __construct(
@@ -60,14 +56,12 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         ParentAssociationsFilter $parentAssociationsFilter,
-        array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->valuesUpdater = $valuesUpdater;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelRepository = $productModelRepository;
-        $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
         $this->parentAssociationsFilter = $parentAssociationsFilter;
     }

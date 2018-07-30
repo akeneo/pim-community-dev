@@ -28,7 +28,7 @@ class PriceFactorySpec extends ObjectBehavior
         $price->getData()->shouldBeEqualTo(42);
     }
 
-    function it_creates_a_metric_if_provided_data_is_null($currencyRepository, Currency $currency)
+    function it_creates_a_price_if_provided_data_is_null($currencyRepository, Currency $currency)
     {
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($currency);
 
@@ -40,7 +40,7 @@ class PriceFactorySpec extends ObjectBehavior
         $price->getData()->shouldBeEqualTo(null);
     }
 
-    function it_creates_a_metric_if_provided_data_is_not_a_numeric($currencyRepository, Currency $currency)
+    function it_creates_a_price_if_provided_data_is_not_a_numeric($currencyRepository, Currency $currency)
     {
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($currency);
 

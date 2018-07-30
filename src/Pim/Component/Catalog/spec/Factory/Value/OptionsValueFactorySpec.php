@@ -120,6 +120,37 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveTheOptions([$option1, $option2]);
     }
 
+    function it_sorts_options_in_a_multi_select_product_value(
+        $attributeOptionRepository,
+        AttributeInterface $attribute,
+        AttributeOptionInterface $option1,
+        AttributeOptionInterface $option2
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('multi_select_attribute');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
+
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar')->willReturn($option2);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            ['foo', 'bar']
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldHaveAttribute('multi_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHaveTheOptionsSorted([$option2, $option1]);
+    }
+
     function it_creates_a_localizable_and_scopable_multi_select_product_value(
         $attributeOptionRepository,
         AttributeInterface $attribute,
@@ -223,7 +254,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
             'codes',
             'The options do not exist',
             OptionsValueFactory::class,
-            ['foo', 'baz']
+            ['baz', 'foo']
         );
 
         $this
@@ -260,6 +291,20 @@ class OptionsValueFactorySpec extends ObjectBehavior
                 }
 
                 return $result && count($data) === count($expectedOptions);
+            },
+            'haveTheOptionsSorted' => function ($subject, $expectedOptions) {
+                $data = $subject->getData();
+                if (count($data) !== count($expectedOptions)) {
+                    return false;
+                }
+
+                for ($i = 0; $i < count($expectedOptions); $i++) {
+                    if ($expectedOptions[$i] !== $data[$i]) {
+                        return false;
+                    }
+                }
+
+                return true;
             },
         ];
     }

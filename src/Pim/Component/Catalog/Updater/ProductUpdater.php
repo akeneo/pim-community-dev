@@ -29,9 +29,6 @@ class ProductUpdater implements ObjectUpdaterInterface
     protected $valuesUpdater;
 
     /** @var array */
-    protected $supportedFields = [];
-
-    /** @var array */
     protected $ignoredFields = [];
 
     /** @var ParentAssociationsFilter */
@@ -41,19 +38,16 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param PropertySetterInterface  $propertySetter
      * @param ObjectUpdaterInterface   $valuesUpdater
      * @param ParentAssociationsFilter $parentAssociationsFilter
-     * @param array                    $supportedFields
      * @param array                    $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         ParentAssociationsFilter $parentAssociationsFilter,
-        array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->valuesUpdater = $valuesUpdater;
-        $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
         $this->parentAssociationsFilter = $parentAssociationsFilter;
     }

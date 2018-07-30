@@ -116,6 +116,36 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
         $productValue->shouldHavePrices();
     }
 
+    function it_sorts_the_prices_collection_by_currency(
+        $priceFactory,
+        AttributeInterface $attribute,
+        ProductPriceInterface $priceEUR,
+        ProductPriceInterface $priceUSD
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('price_collection_attribute');
+        $attribute->getType()->willReturn('pim_catalog_price_collection');
+        $attribute->getBackendType()->willReturn('prices');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $priceFactory->createPrice(42, 'EUR')->willReturn($priceEUR);
+        $priceFactory->createPrice(63, 'USD')->willReturn($priceUSD);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            [['amount' => 63, 'currency' => 'USD'], ['amount' => 42, 'currency' => 'EUR']]
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldHaveAttribute('price_collection_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHavePricesSortedByCurrency([$priceEUR, $priceUSD]);
+    }
+
     function it_creates_a_price_collection_product_value_when_multiple_amount_are_specified_for_one_currency(
         $priceFactory,
         AttributeInterface $attribute,
@@ -290,6 +320,25 @@ class PriceCollectionValueFactorySpec extends ObjectBehavior
             },
             'havePrices'    => function ($subject) {
                 return $subject->getData() instanceof PriceCollection && [] !== $subject->getData()->toArray();
+            },
+            'havePricesSortedByCurrency' => function ($subject, $expectedPrices) {
+                $data = $subject->getData();
+
+                if (!$data instanceof PriceCollection) {
+                    return false;
+                }
+
+                if (count($data) !== count($expectedPrices)) {
+                    return false;
+                }
+
+                for ($i = 0; $i < count($expectedPrices); $i++) {
+                    if ($expectedPrices[$i] !== $data[$i]) {
+                        return false;
+                    }
+                }
+
+                return true;
             },
         ];
     }
