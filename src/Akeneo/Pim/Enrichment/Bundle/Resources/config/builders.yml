@@ -18,3 +18,13 @@ services:
         arguments:
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.value'
+
+    pim_pdf_generator.builder.dompdf:
+        class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'
+        arguments:
+            - '%kernel.root_dir%'
+
+    pim_comment.builder.comment:
+        class: 'Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder'
+        arguments:
+            - '%pim_comment.entity.comment.class%'

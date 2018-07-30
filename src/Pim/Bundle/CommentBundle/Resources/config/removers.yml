@@ -1,7 +1,0 @@
-services:
-    pim_comment.remover.comment:
-        class: '%pim_catalog.remover.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_comment.entity.comment.class%'

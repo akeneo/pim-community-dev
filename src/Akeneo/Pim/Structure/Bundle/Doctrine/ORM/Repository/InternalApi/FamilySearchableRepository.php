@@ -46,6 +46,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
             if (isset($options['locale'])) {
                 $qb->leftJoin('f.translations', 'ft');
                 $qb->orWhere('ft.label like :search AND ft.locale = :locale');
+                $qb->groupBy('f.code');
                 $qb->setParameter('search', '%' . $search . '%');
                 $qb->setParameter('locale', $options['locale']);
             }

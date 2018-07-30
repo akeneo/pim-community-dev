@@ -15,16 +15,21 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * For each line of the file to import we will:
- * - fetch the corresponding family object
- * - fetch all the products of this family
- * - save theses products
- * This way on family import the family's product completeness will be computed and all family's attributes will be indexed.
+ * For each line of the file of families to import we will:
+ * - fetch the corresponding family object,
+ * - fetch all the products of this family,
+ * - batch save these products.
+ *
+ * This way, on family, import the family's product completeness will be computed
+ * and all family's attributes will be indexed.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -35,34 +40,50 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var ItemReaderInterface */
-    private $familyReader;
-
     /** @var IdentifiableObjectRepositoryInterface */
     private $familyRepository;
-
-    /** @var BulkSaverInterface */
-    private $productSaver;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
 
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
+    /** @var ItemReaderInterface */
+    private $familyReader;
+
+    /** @var KeepOnlyValuesForVariation */
+    private $keepOnlyValuesForVariation;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var BulkSaverInterface */
+    private $productSaver;
+
     /** @var JobRepositoryInterface */
     private $jobRepository;
+
+    /** @var EntityManagerClearerInterface */
+    private $cacheClearer;
 
     /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
+    /** @var int */
+    private $batchSize;
+
     /**
+     * @todo merge master: remove the object detacher, the default value from $batchSize
+     *                     and the "= null" from the validator and keepOnlyValuesForVariation.
+     *
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
      * @param ItemReaderInterface                   $familyReader
      * @param BulkSaverInterface                    $productSaver
-     * @param EntityManagerClearerInterface                 $cacheClearer
+     * @param ObjectDetacherInterface               $objectDetacher
+     * @param EntityManagerClearerInterface         $cacheClearer
      * @param JobRepositoryInterface                $jobRepository
+     * @param KeepOnlyValuesForVariation            $keepOnlyValuesForVariation
+     * @param ValidatorInterface                    $validator
+     * @param int                                   $batchSize
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -71,19 +92,25 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         BulkSaverInterface $productSaver,
         ObjectDetacherInterface $objectDetacher,
         EntityManagerClearerInterface $cacheClearer,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        KeepOnlyValuesForVariation $keepOnlyValuesForVariation = null,
+        ValidatorInterface $validator = null,
+        int $batchSize = 10
     ) {
-        $this->familyReader = $familyReader;
         $this->familyRepository = $familyRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->familyReader = $familyReader;
         $this->productSaver = $productSaver;
-        $this->cacheClearer = $cacheClearer;
         $this->jobRepository = $jobRepository;
         $this->objectDetacher = $objectDetacher;
+        $this->cacheClearer = $cacheClearer;
+        $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
+        $this->validator = $validator;
+        $this->batchSize = $batchSize;
     }
 
     /**
-     * @param StepExecution $stepExecution
+     * {@inheritdoc}
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
@@ -91,7 +118,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     }
 
     /**
-     * Execute the tasklet
+     * {@inheritdoc}
      */
     public function execute()
     {
@@ -113,13 +140,33 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
                 continue;
             }
 
+            $productsToSave = [];
             $products = $this->getProductsForFamily($family);
-            foreach ($products as $product) {
-                $this->productSaver->saveAll([$product]);
-                $this->stepExecution->incrementSummaryInfo('process');
-                $this->jobRepository->updateStepExecution($this->stepExecution);
 
-                $this->objectDetacher->detach($product);
+            foreach ($products as $product) {
+                if (null !== $this->keepOnlyValuesForVariation     // TODO merge master: remove these two "null !=="
+                    && null !== $this->validator
+                    && $product->isVariant()
+                ) {
+                    $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$product]);
+
+                    if (!$this->isValid($product)) {
+                        $this->stepExecution->incrementSummaryInfo('skip');
+                        continue;
+                    }
+                }
+
+                $productsToSave[] = $product;
+
+                if (0 === count($productsToSave) % $this->batchSize) {
+                    $this->saveProducts($productsToSave);
+                    $productsToSave= [];
+                    $this->cacheClearer->clear();
+                }
+            }
+
+            if (!empty($productsToSave)) {
+                $this->saveProducts($productsToSave);
             }
         }
     }
@@ -130,6 +177,28 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function initialize()
     {
         $this->cacheClearer->clear();
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return bool
+     */
+    private function isValid(EntityWithFamilyVariantInterface $entityWithFamilyVariant): bool
+    {
+        $violations = $this->validator->validate($entityWithFamilyVariant);
+
+        return $violations->count() === 0;
+    }
+
+    /**
+     * @param array $products
+     */
+    private function saveProducts(array $products): void
+    {
+        $this->productSaver->saveAll($products);
+        $this->stepExecution->incrementSummaryInfo('process', count($products));
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     /**

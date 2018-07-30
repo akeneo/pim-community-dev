@@ -5,6 +5,9 @@ batch_jobs:
         import_associations: Association import
         import_root_product_model: Root product model import
         import_sub_product_model: Sub product model import
+        compute_data_related_to_family_root_product_models: Compute root product models data
+        compute_data_related_to_family_sub_product_models: Compute sub product models data
+        compute_data_related_to_family_products: Compute products data
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
@@ -54,7 +57,6 @@ batch_jobs:
         label: Family import in CSV
         import.label: Family import
         compute_data_related_to_family_variants.label: Compute product models data
-        compute_data_related_to_family_products.label: Compute products data
     csv_family_variant_import:
         label: Family variant import in CSV
         import.label: Family variant import
@@ -88,8 +90,6 @@ batch_jobs:
     xlsx_family_import:
         label: Family import in XLSX
         import.label: Family import
-        compute_data_related_to_family_variants.label: Compute product models data
-        compute_data_related_to_family_products.label: Compute products data
     xlsx_family_variant_import:
         label: Family variant import in XLSX
         import.label: Family variant import

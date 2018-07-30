@@ -192,11 +192,6 @@ suites:
         psr4_prefix: Pim\Bundle\CatalogBundle
         spec_path: src/Pim/Bundle/CatalogBundle
         src_path: src/Pim/Bundle/CatalogBundle
-    CommentBundle:
-        namespace: Pim\Bundle\CommentBundle
-        psr4_prefix: Pim\Bundle\CommentBundle
-        spec_path: src/Pim/Bundle/CommentBundle
-        src_path: src/Pim/Bundle/CommentBundle
     ConnectorBundle:
         namespace: Pim\Bundle\ConnectorBundle
         psr4_prefix: Pim\Bundle\ConnectorBundle
@@ -242,11 +237,6 @@ suites:
         psr4_prefix: Pim\Bundle\NotificationBundle
         spec_path: src/Pim/Bundle/NotificationBundle
         src_path: src/Pim/Bundle/NotificationBundle
-    PdfGeneratorBundle:
-        namespace: Pim\Bundle\PdfGeneratorBundle
-        psr4_prefix: Pim\Bundle\PdfGeneratorBundle
-        spec_path: src/Pim/Bundle/PdfGeneratorBundle
-        src_path: src/Pim/Bundle/PdfGeneratorBundle
     ReferenceDataBundle:
         namespace: Pim\Bundle\ReferenceDataBundle
         psr4_prefix: Pim\Bundle\ReferenceDataBundle

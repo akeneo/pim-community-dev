@@ -3,6 +3,7 @@ parameters:
     pim_enrich.query.elasticsearch.sorter.in_group.class: Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter
     pim_enrich.elasticsearch.from_size_cursor_factory.class: Pim\Bundle\EnrichBundle\Elasticsearch\FromSizeCursorFactory
     pim_enrich.query.product_and_product_model_query_builder.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
+    pim_enrich.datagrid.product_batch_size: 25
 
 services:
     # Filters
@@ -50,5 +51,5 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
-            - '%pim_job_product_batch_size%'
+            - '%pim_enrich.datagrid.product_batch_size%'
             - 'pim_catalog_product'

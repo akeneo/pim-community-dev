@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Pim\Component\Catalog\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -23,13 +26,15 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $bulkProductSaver,
-        BulkObjectDetacherInterface $bulkObjectDetacher
+        BulkObjectDetacherInterface $bulkObjectDetacher,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $productQueryBuilderFactory,
             $bulkProductSaver,
-            $bulkObjectDetacher
+            $bulkObjectDetacher,
+            $cacheClearer
         );
     }
 
@@ -47,7 +52,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $familyRepository,
         $productQueryBuilderFactory,
         $bulkProductSaver,
-        $bulkObjectDetacher,
+        $cacheClearer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyInterface $family,
@@ -72,7 +77,7 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $cursor->rewind()->shouldBeCalled();
 
         $bulkProductSaver->saveAll([$product1, $product2, $product3])->shouldBeCalled();
-        $bulkObjectDetacher->detachAll([$product1, $product2, $product3])->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();

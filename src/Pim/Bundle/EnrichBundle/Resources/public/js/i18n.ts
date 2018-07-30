@@ -15,7 +15,13 @@ export const getFlag = (locale: string, displayLanguage: boolean = true): string
     return '';
   }
 
-  const [language, country] = locale.split('_');
+  const info = locale.split('_');
+  let language = info[0];
+  let country = info[1];
+
+  if (3 === info.length) {
+      country = info[2];
+  }
 
   return flagTemplate(country.toLowerCase(), language, displayLanguage);
 };

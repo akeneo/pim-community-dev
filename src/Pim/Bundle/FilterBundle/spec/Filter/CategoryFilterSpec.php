@@ -35,10 +35,9 @@ class CategoryFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         CategoryInterface $tree
     ) {
-        $tree->getId()->willReturn(1);
+        $tree->getCode()->willReturn('my_tree');
         $categoryRepo->find(1)->willReturn($tree);
-        $categoryRepo->getAllChildrenCodes($tree)->willReturn(['bar', 'baz']);
-        $utility->applyFilter($datasource, 'categories', 'NOT IN', ['bar', 'baz'])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories', 'NOT IN CHILDREN', ['my_tree'])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => -1, 'treeId' => 1]]);
     }
@@ -64,10 +63,8 @@ class CategoryFilterSpec extends ObjectBehavior
     ) {
         $categoryRepo->find(42)->willReturn($category);
         $category->getCode()->willReturn('foo');
-        $categoryRepo->find(42)->willReturn($category);
-        $categoryRepo->getAllChildrenCodes($category)->willReturn(['bar', 'baz']);
 
-        $utility->applyFilter($datasource, 'categories', 'IN', ['bar', 'baz', 'foo'])->shouldBeCalled();
+        $utility->applyFilter($datasource, 'categories', 'IN CHILDREN', ['foo'])->shouldBeCalled();
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => true]);
     }

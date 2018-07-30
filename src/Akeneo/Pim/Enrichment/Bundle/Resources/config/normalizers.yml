@@ -1,0 +1,5 @@
+services:
+    pim_comment.normalizer.standard.comment:
+        class: 'Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

@@ -7,6 +7,8 @@ use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
@@ -37,8 +39,6 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CommentBundle\Entity\Comment;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
@@ -2375,7 +2375,7 @@ class FixturesContext extends BaseFixturesContext
      * @param array              $data
      * @param CommentInterface[] $comments
      *
-     * @return \Pim\Bundle\CommentBundle\Model\CommentInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
      */
     protected function createComment(array $data, array $comments)
     {

@@ -485,11 +485,12 @@ function($, _, Backbone, app) {
                 }
 
                 let expectedTop = this.$el.offset().top;
-                if ((expectedTop + criteria.outerHeight() > body.height()) &&
-                    expectedTop + this.$el.height() - criteria.outerHeight() > 0) {
+                if (expectedTop + criteria.outerHeight() <= body.height()) {
+                    criteria.css({ top: expectedTop });
+                } else if (expectedTop + this.$el.height() - criteria.outerHeight() > 0) {
                     criteria.css({ top: expectedTop + this.$el.height() - criteria.outerHeight() });
                 } else {
-                    criteria.css({ top: expectedTop });
+                    criteria.css({ top: 0 });
                 }
             }
         },

@@ -1,8 +1,8 @@
 imports:
+    - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
     - { resource: pim_parameters.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
 
 framework:
     translator:      { fallback: en_US }

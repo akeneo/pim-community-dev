@@ -3,9 +3,9 @@
 namespace Context;
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Testwork\Counter\Exception\TimerException;
 use Context\Spin\SpinCapableTrait;
@@ -26,7 +26,6 @@ use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\ImportExportFileContext;
 use Pim\Behat\Context\JobContext;
-use Pim\Behat\Context\PimContext;
 use Pim\Behat\Context\Storage\AttributeOptionStorage;
 use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
@@ -39,7 +38,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FeatureContext extends PimContext implements KernelAwareContext
+class FeatureContext extends MinkContext implements KernelAwareContext
 {
     use SpinCapableTrait;
 
@@ -60,12 +59,10 @@ class FeatureContext extends PimContext implements KernelAwareContext
     /**
      * Register contexts
      *
-     * @param string $mainContextClass
      * @param array $parameters
      */
-    public function __construct(string $mainContextClass, array $parameters)
+    public function __construct(array $parameters)
     {
-        parent::__construct($mainContextClass);
         $this->setTimeout($parameters);
     }
 
@@ -271,20 +268,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
-     * @param PyStringNode $error
-     *
-     * @Then /^I should see:$/
-     */
-    public function iShouldSeeText(PyStringNode $error)
-    {
-        $this->spin(function () use ($error) {
-            $this->assertSession()->pageTextContains((string) $error);
-
-            return true;
-        }, sprintf('Unable to find the text "%s" in the page', $error));
-    }
-
-    /**
      * Clicks link with specified id|title|alt|text
      * Example: When I follow the link "Log In"
      * Example: And I follow the link "Log In"
@@ -299,30 +282,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
             $this->getSession()->getPage()->clickLink($link);
             return true;
         }, sprintf('Link %s is not present on the page', $link));
-    }
-
-    /**
-     * @param PyStringNode $error
-     *
-     * @Then /^I should not see:$/
-     */
-    public function iShouldNotSeeText(PyStringNode $error)
-    {
-        $this->assertSession()->pageTextNotContains((string) $error);
-    }
-
-    /**
-     * Fills in form field with specified id|name|label|value.
-     *
-     * @param string $field
-     * @param string $value
-     *
-     * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
-     * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
-     */
-    public function fillFieldOnCurrentPage($field, $value)
-    {
-        $this->getMainContext()->getSubcontext('navigation')->getCurrentPage()->fillField($field, $value);
     }
 
     /**
@@ -441,6 +400,20 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
+     * Fills in form field with specified id|name|label|value.
+     *
+     * @param string $field
+     * @param string $value
+     *
+     * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
+     * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
+     */
+    public function fillFieldOnCurrentPage($field, $value)
+    {
+        $this->getSubcontext('navigation')->getCurrentPage()->fillField($field, $value);
+    }
+
+    /**
      * Get the mail recorder
      *
      * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
@@ -448,18 +421,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function assertNumElements($num, $element)
-    {
-        $this->spin(function () use ($num, $element) {
-            parent::assertNumElements($num, $element);
-
-            return true;
-        }, sprintf('Spinning for asserting "%d" num elements', $num));
     }
 
     /**
@@ -487,18 +448,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function assertPageContainsText($text)
-    {
-        $this->spin(function () use ($text) {
-            parent::assertPageContainsText($text);
-
-            return true;
-        }, sprintf('Current page does not contains "%s"', $text));
-    }
-
-    /**
      * Set the waiting timeout
      *
      * @param $parameters
@@ -506,5 +455,13 @@ class FeatureContext extends PimContext implements KernelAwareContext
     protected function setTimeout($parameters)
     {
         static::$timeout = $parameters['timeout'];
+    }
+
+    /**
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     */
+    private function getCurrentPage()
+    {
+        return $this->getSubcontext('navigation')->getCurrentPage();
     }
 }

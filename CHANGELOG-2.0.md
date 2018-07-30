@@ -1,5 +1,51 @@
 # 2.0.x
 
+## Technical improvements
+
+- PIM-7396: Improve family import performances.
+
+## Bug fixes
+
+- PIM-7452: Fix a memory leak when computing the completeness of all the products of a family.
+
+## BC Breaks
+
+- PIM-7396: Changes the service `pim_connector.job.csv_family_import` list of job steps
+            to replace `@pim_connector.step.csv_family.compute_data_related_to_family_variants` with
+            `@pim_connector.step.csv_family.compute_data_related_to_family_root_product_models` and `@pim_connector.step.csv_family.compute_data_related_to_family_sub_product_models`
+- PIM-7396: Changes the service `pim_connector.job.xlsx_family_import` list of job steps
+            to replace `@pim_connector.step.xlsx_family.compute_data_related_to_family_variants` with
+            `@pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models` and `@pim_connector.step.xlsx_family.compute_data_related_to_family_sub_product_models`
+
+# 2.0.29 (2018-07-04)
+
+## Bug fixes
+
+- PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+- PIM-7472: Fix username display in user form title
+- PIM-7478: Fix memory leak on quick export
+- PIM-7462: Fix step execution read count
+- PIM-7480: Fix generation of export file name with a date
+
+# 2.0.28 (2018-06-26)
+
+## Bug fixes
+
+- PIM-7425: Prevent job 'compute_completeness_of_products_family' to run in some cases.
+- PIM-7396: Fix memory leak on product model descendants computation
+- PIM-7447: do not trigger caclulation of the completeness before exporting products
+- PIM-7411: Fix Request-URI Too Large issue on category selection for product export builder
+
+# 2.0.27 (2018-06-13)
+
+## Bug fixes
+
+- PIM-7327: Fix memory leak on completeness calculation
+- PIM-7426: Fix search on the product 'add to group' mass edit
+- PIM-7415: Force the minus symbol for number on localization, whatever the locale of the user
+
+# 2.0.26 (2018-06-06)
+
 ## Bug fixes
 
 - PIM-7362: Fix Completeness computing from family keeping in account batch size to free the memory
@@ -12,6 +58,9 @@
 - PIM-7311: Fix the product grid filters list when a sort order is a huge number
 - PIM-7391: Fix offset pagination when listing product models with the API
 - PIM-7009: Fix bug with pagination on associated products page on product edit form
+- PIM-7383: Fix 'in list' product filters with large amount of items
+- PIM-7398: Fix the impossibility to unselect categories in the category tree in case of category with numeric code
+- PIM-7363: Add family filter on remove values at wrong level command
 
 # 2.0.25 (2018-05-21)
 

@@ -16,9 +16,9 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     /** @var Collection */
     private $channels;
 
-    public function __construct()
+    public function __construct(array $channels = [])
     {
-        $this->channels = new ArrayCollection();
+        $this->channels = new ArrayCollection($channels);
     }
 
     /**
@@ -121,7 +121,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_values($this->channels->toArray());
     }
 
     /**
