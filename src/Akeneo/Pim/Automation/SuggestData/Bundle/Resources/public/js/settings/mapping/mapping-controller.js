@@ -1,5 +1,7 @@
 'use strict';
 
+import {isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
+
 /**
  * Mapping controller. Allows to show an empty page if connection is not activated.
  *
@@ -9,10 +11,9 @@ define(
     [
         'underscore',
         'pim/controller/front',
-        'pim/form-builder',
-        'pimee/fetcher/pim-ai-connection'
+        'pim/form-builder'
     ],
-    function (_, BaseController, FormBuilder, ConnectionFetcher) {
+    function (_, BaseController, FormBuilder) {
         return BaseController.extend({
             initialize: function (options) {
                 this.options = options;
@@ -22,7 +23,7 @@ define(
              * {@inheritdoc}
              */
             renderForm: function () {
-                return ConnectionFetcher.isConnectionActivated(this.options.config.connectionCode)
+                return isConnectionActivated(this.options.config.connectionCode)
                     .then(connectionIsActivated => {
                         const entity = this.options.config.entity;
                         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';
