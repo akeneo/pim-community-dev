@@ -366,3 +366,26 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
 - Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`
 - Move namespace `Pim\Bundle\VersioningBundle` to `Akeneo\Tool\Bundle\VersioningBundle`
+- Remove `Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle`
+- Remove `Pim\Bundle\PdfGeneratorBundle\DependencyInjection\PimPdfGeneratorExtension`
+- Move `Pim\Bundle\PdfGeneratorBundle\Controller\ProductController` to `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController`
+- Move `Pim\Bundle\PdfGeneratorBundle\DependencyInjection\Compiler\RegisterRendererPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterRendererPass`
+- Move `Pim\Bundle\PdfGeneratorBundle\Builder\DompdfBuilder` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder`
+- Move `Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface`
+- Move `Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException`
+- Move `Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer`
+- Move `Pim\Bundle\PdfGeneratorBundle\Renderer\RendererInterface` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererInterface`
+- Move `Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry`
+- Remove `Pim\Bundle\CommentBundle\PimCommentBundle`
+- Remove `Pim\Bundle\CommentBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass`
+- Remove `Pim\Bundle\CommentBundle\DependencyInjection\PimCommentExtension`
+- Move `Pim\Bundle\CommentBundle\Controller\CommentController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CommentController`
+- Move `Pim\Bundle\CommentBundle\Repository\CommentRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\CommentRepository`
+- Move `Pim\Bundle\CommentBundle\Form\Type\CommentType` to `Akeneo\Pim\Enrichment\Bundle\Form\Type\CommentType`
+- Move `Pim\Bundle\CommentBundle\Builder\CommentBuilder` to `Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder`
+- Move `Pim\Bundle\CommentBundle\Entity\Comment` to `Akeneo\Pim\Enrichment\Component\Comment\Model\Comment`
+- Move `Pim\Bundle\CommentBundle\Model\CommentInterface` to `Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface`
+- Move `Pim\Bundle\CommentBundle\Model\CommentSubjectInterface` to `Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface`
+- Move `Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer` to `Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer`
+- Move `Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface`
+

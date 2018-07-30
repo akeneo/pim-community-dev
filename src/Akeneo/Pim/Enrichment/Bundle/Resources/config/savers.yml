@@ -75,3 +75,10 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product_model'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '%pim_job_product_batch_size%'
+
+    pim_comment.saver.comment:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_comment.entity.comment.class%'

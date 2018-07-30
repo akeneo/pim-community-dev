@@ -13,9 +13,10 @@ use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterRendererPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterValueFactoryPass;
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
@@ -49,12 +50,14 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterCompleteCheckerPass())
             ->addCompilerPass(new RegisterLocalizersPass())
             ->addCompilerPass(new RegisterPresentersPass())
-            ->addCompilerPass(new RegisterSerializerPass('pim_serializer'));
+            ->addCompilerPass(new RegisterSerializerPass('pim_serializer'))
+            ->addCompilerPass(new RegisterRendererPass());
         ;
 
         $mappings = [
             realpath(__DIR__ . '/Resources/config/doctrine/Product') => 'Akeneo\Pim\Enrichment\Component\Product\Model',
-            realpath(__DIR__ . '/Resources/config/doctrine/Category') => 'Akeneo\Pim\Enrichment\Component\Category\Model'
+            realpath(__DIR__ . '/Resources/config/doctrine/Category') => 'Akeneo\Pim\Enrichment\Component\Category\Model',
+            realpath(__DIR__ . '/Resources/config/doctrine/Comment') => 'Akeneo\Pim\Enrichment\Component\Comment\Model',
         ];
 
         $container->addCompilerPass(

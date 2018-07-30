@@ -1,0 +1,16 @@
+services:
+    pim_comment.form.type.comment:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CommentType'
+        arguments:
+            - '@pim_comment.repository.comment'
+            - '@translator'
+            - '%pim_comment.entity.comment.class%'
+        tags:
+            - { name: form.type, alias: pim_comment_comment }
+
+    pim_comment.form.attribute_group:
+        class: 'Symfony\Component\Form\Form'
+        factory: 'form.factory:createNamed'
+        arguments:
+            - 'pim_comment_comment_form'
+            - 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CommentType'

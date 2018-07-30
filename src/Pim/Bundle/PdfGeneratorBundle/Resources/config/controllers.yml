@@ -1,9 +1,0 @@
-parameters:
-    pim_pdf_generator.controller.product.class: Pim\Bundle\PdfGeneratorBundle\Controller\ProductController
-
-services:
-    pim_pdf_generator.controller.product:
-        class: '%pim_pdf_generator.controller.product.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_pdf_generator.renderer.registry'

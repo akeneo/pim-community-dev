@@ -5,6 +5,9 @@ akeneo_channel:
 akeneo_pim_structure:
     resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
 
+akeneo_pim_enrichment:
+    resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
+
 # PIM
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
@@ -26,12 +29,6 @@ pim_user:
 
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
-
-pim_comment:
-    resource: "@PimCommentBundle/Resources/config/routing.yml"
-
-pim_pdf_generator:
-    resource: "@PimPdfGeneratorBundle/Resources/config/routing.yml"
 
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
