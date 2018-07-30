@@ -46,7 +46,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.product:
-        class: '%pim_api.controller.product.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController'
         arguments:
             - '@pim_catalog.query.product_query_builder_search_after_size_factory'
             - '@pim_serializer'
@@ -73,7 +73,7 @@ services:
             - '%pim_api.configuration%'
 
     pim_api.controller.product_model:
-        class: '%pim_api.controller.product_model.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@pim_catalog.query.product_model_query_builder_from_size_factory'
