@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7453: Forbid to remove a role if user won't have role after deletion
 - PIM-7532: Improve the standard format for products associated to avoid performance impact
 - PIM-7540: Fix translations of boolean attributes
 
