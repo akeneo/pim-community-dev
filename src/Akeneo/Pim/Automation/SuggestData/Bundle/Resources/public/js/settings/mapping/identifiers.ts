@@ -15,12 +15,26 @@ class EditIdentifiersMappingView extends BaseView {
   readonly template = _.template(template);
 
   readonly headers = {
-    'identifiersLabel': __('akeneo_suggest_data.settings.index.tab.identifiers.headers.identifiers_label'),
-    'attributeLabel': __('akeneo_suggest_data.settings.index.tab.identifiers.headers.attribute_label'),
-    'suggestDataLabel': __('akeneo_suggest_data.settings.index.tab.identifiers.headers.suggest_data_label'),
+    'identifiersLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.label'),
+    'attributeLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute'),
+    'suggestDataLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data'),
   };
 
   private identifiersStatuses: {[key: string]: string} = {};
+
+  readonly config: Object = {};
+
+  /**
+   * {@inheritdoc}
+   */
+  constructor(options: { config: Object }) {
+    super({...options, ...{
+        className: 'AknGrid AknGrid--unclickable',
+        tagName: 'table'
+      }});
+
+    this.config = {...this.config, ...options.config};
+  };
 
   /**
    * {@inheritdoc}
@@ -73,9 +87,10 @@ class EditIdentifiersMappingView extends BaseView {
         }
       });
       attributeSelector.setParent(this);
-
       const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
-      $dom.html(attributeSelector.render().$el);
+      attributeSelector.configure().then(() => {
+        $dom.html(attributeSelector.render().$el);
+      });
     });
   }
 

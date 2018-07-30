@@ -1,0 +1,18 @@
+<table class="AknGrid AknGrid--unclickable">
+    <tr class="AknGrid-header">
+        <th class="AknGrid-headerCell"><%- pim_ai_attribute %></th>
+        <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
+        <th class="AknGrid-headerCell"><%- suggest_data %></th>
+    </tr>
+    <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
+        <tr class="AknGrid-bodyRow">
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
+                <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
+            </td>
+            <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute-code="<%- pim_ai_attribute_code %>"></td>
+            <td class="AknGrid-bodyCell">
+                <%- statuses[mapping[pim_ai_attribute_code].status] %>
+            </td>
+        </tr>
+    <% }) %>
+</table>

@@ -20,8 +20,8 @@ define(
         MappingSaver
     ) => {
         return BaseSave.extend({
-            updateSuccessMessage: __('akeneo_suggest_data.settings.index.identifiers_mapping.save.flash.success'),
-            updateFailureMessage: __('akeneo_suggest_data.settings.index.identifiers_mapping.save.flash.fail'),
+            updateSuccessMessage: __('akeneo_suggest_data.entity.identifier_mapping.flash.update.success'),
+            updateFailureMessage: __('akeneo_suggest_data.entity.identifier_mapping.flash.update.fail'),
 
             /**
              * {@inheritdoc}

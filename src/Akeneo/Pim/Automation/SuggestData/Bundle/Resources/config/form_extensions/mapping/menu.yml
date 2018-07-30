@@ -5,5 +5,5 @@ extensions:
         aclResourceId: akeneo_suggest_data_settings_mapping
         position: 210
         config:
-            title: akeneo_suggest_data.settings.menu.item
+            title: pim_menu.item.pim_ai
             to: akeneo_suggest_data_settings_index

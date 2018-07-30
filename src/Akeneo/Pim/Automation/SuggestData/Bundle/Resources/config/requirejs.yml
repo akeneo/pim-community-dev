@@ -4,7 +4,7 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_suggest_data_connection_index:
-                    module: pim/controller/common/index
+                    module: pimee/settings/mapping/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: pim-ai-connection
@@ -12,13 +12,21 @@ config:
                     module: pimee/settings/mapping/controller
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
-                        entity: suggest-data-settings
+                        entity: suggest-data-settings-identifiers-mapping
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
+                akeneo_suggest_data_settings_attributes_index:
+                    module: pimee/controller/attributes_mapping/index
+                    aclResourceId: akeneo_suggest_data_settings_mapping
+                    config:
+                        entity: suggest-data-settings-attributes-mapping
+                akeneo_suggest_data_family_mapping_edit:
+                    module: pimee/controller/attributes_mapping/edit
+                    aclResourceId: akeneo_suggest_data_settings_mapping
 
-        # Savers
         pimee/saver/pim-ai-connection:
             url: akeneo_suggest_data_connection_post
+
         pimee/saver/identifier-mapping:
             url: akeneo_suggest_data_identifiers_mapping_save
 
@@ -30,8 +38,17 @@ config:
                     options:
                         urls:
                             list: akeneo_suggest_data_identifiers_mapping_get
+                suggest_data_family_mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: akeneo_sugggest_data_family_mapping_index
+                            get: akeneo_sugggest_data_family_mapping_get
 
     paths:
+        # Fetchers
+        pimee/fetcher/pim-ai-connection: akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher.ts
+
         # Controller
         pimee/settings/mapping/controller: akeneosuggestdata/js/settings/mapping/mapping-controller
 
@@ -39,13 +56,22 @@ config:
         pimee/saver/pim-ai-connection: akeneosuggestdata/js/pim-ai/saver/connection-saver
         pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
 
+        # Controllers
+        pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index
+        pimee/controller/attributes_mapping/edit: akeneosuggestdata/js/controllers/attributes_mapping/edit
+
         # Forms
         pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push
         pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation
         pimee/pim-ai-connection/edit: akeneosuggestdata/js/pim-ai/form/edit.ts
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
         pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute
-        pimee/settings/mapping/save-form: akeneosuggestdata/js/settings/mapping/save
+        pimee/settings/mapping/save: akeneosuggestdata/js/settings/mapping/save
+        pimee/settings/mapping/tabs: akeneosuggestdata/js/settings/mapping/tabs
+        pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector
+        pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping
+        pimee/settings/mapping/subscribe: akeneosuggestdata/js/settings/mapping/subscribe
+        pimee/settings/mapping/index: akeneosuggestdata/js/settings/mapping/index
 
         # Templates
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
@@ -53,3 +79,8 @@ config:
         pimee/template/pim-ai-connection/edit: akeneosuggestdata/templates/pim-ai/form/edit.html
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
         pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html
+        pimee/template/settings/mapping/attributes-mapping: akeneosuggestdata/templates/settings/mapping/attributes-mapping.html
+        pimee/template/settings/mapping/tabs: akeneosuggestdata/templates/settings/mapping/tabs.html
+        pimee/template/settings/mapping/subscribe: akeneosuggestdata/templates/settings/mapping/subscribe.html
+        pimee/template/settings/mapping/family-mapping: akeneosuggestdata/templates/settings/mapping/family-mapping.html
+        pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html

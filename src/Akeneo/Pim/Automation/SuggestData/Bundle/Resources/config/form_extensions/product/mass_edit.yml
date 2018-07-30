@@ -6,10 +6,10 @@ extensions:
         aclResourceId: akeneo_suggest_data_product_index
         config:
             title: pim_enrich.mass_edit.product.title
-            label: akeneo_suggest_data.product.mass_edit.operation.suggest_data.label
-            labelCount: akeneo_suggest_data.product.mass_edit.operation.suggest_data.label_count
-            description: akeneo_suggest_data.product.mass_edit.operation.suggest_data.description
+            label: akeneo_suggest_data.mass_edit.product.operation.suggest_data.label
+            labelCount: akeneo_suggest_data.mass_edit.product.operation.suggest_data.label_count
+            description: akeneo_suggest_data.mass_edit.product.operation.suggest_data.description
             code: suggest_data
             jobInstanceCode: suggest_data_push_products
-            warning: akeneo_suggest_data.product.mass_edit.operation.suggest_data.warning
+            warning: akeneo_suggest_data.mass_edit.product.operation.suggest_data.warning
             icon: icon-publish
