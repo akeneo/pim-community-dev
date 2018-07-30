@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -210,6 +211,25 @@ class ProductValueNormalizerSpec extends ObjectBehavior
                 'locale' => null,
                 'scope'  => null,
                 'data'   => ['optionA'],
+            ]
+        );
+    }
+
+    function it_normalizes_a_scalar(
+        ScalarValue $value,
+        AttributeInterface $attribute
+    ) {
+        $value->getData()->willReturn('foo');
+        $value->getLocale()->willReturn('en_US');
+        $value->getScope()->willReturn('ecommerce');
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => 'foo',
             ]
         );
     }

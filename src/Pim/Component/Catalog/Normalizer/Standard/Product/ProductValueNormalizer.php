@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -97,7 +98,6 @@ class ProductValueNormalizer implements NormalizerInterface
         }
 
         $attributeType = $value->getAttribute()->getType();
-        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
@@ -107,16 +107,23 @@ class ProductValueNormalizer implements NormalizerInterface
                 : (int) $value->getData();
         }
 
-        if (in_array($attributeType, [
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
-        ])) {
+        if ($value instanceof ScalarValue) {
+            return $value->getData();
+        }
+
+        if ($attributeType === AttributeTypes::OPTION_SIMPLE_SELECT ||
+            $attributeType === AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
+        ) {
             return $value->getData()->getCode();
         }
 
-        if (in_array($attributeType, [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
+        if ($attributeType === AttributeTypes::FILE ||
+            $attributeType === AttributeTypes::IMAGE
+        ) {
             return $value->getData()->getKey();
         }
+
+        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         return $this->normalizer->normalize($value->getData(), $format, $context);
     }
