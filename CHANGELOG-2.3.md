@@ -4,6 +4,7 @@
 
 - PIM-7529: Fix error when a tree is removed
 - PIM-7536: Fix tool-tip error
+- GITHUB-8550: Exclude more folders in typescript to improve build time
 
 # 2.3.2 (2018-07-24)
 

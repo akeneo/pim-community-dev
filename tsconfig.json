@@ -29,7 +29,16 @@
     "node_modules",
     "vendor",
     "src",
-    "tests"
+    "tests",
+    "packages",
+    "app",
+    "web/media",
+    "web/cache",
+    "var",
+    "features",
+    "spec",
+    "upgrades",
+    "web/css"
   ],
   "types": [
     "typePatches",
