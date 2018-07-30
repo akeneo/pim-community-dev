@@ -380,4 +380,3 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\N
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Normalizer\\ProductNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\ExternalApi\\ProductNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Repository\\ProductRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ExternalApi\\ProductRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Updater\\ProductModelUpdater/Akeneo\\Pim\\Enrichment\\Component\\Product\\ExternalApi\\Updater\\ProductModelUpdater/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Updater\\ProductModelUpdater/Akeneo\\Pim\\Enrichment\\Component\\Product\\ExternalApi\\Updater\\ProductModelUpdater/g'

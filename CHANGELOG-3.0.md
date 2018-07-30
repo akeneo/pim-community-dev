@@ -397,5 +397,4 @@
 - Move `Akeneo\Tool\Component\Api\Normalizer\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductNormalizer`
 - Move `Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface`
 - Move `Akeneo\Tool\Component\Api\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater`
-- Move `Akeneo\Tool\Component\Api\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater`
 
