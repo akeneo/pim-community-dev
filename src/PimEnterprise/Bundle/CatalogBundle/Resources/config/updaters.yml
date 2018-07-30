@@ -1,7 +1,5 @@
 parameters:
     pimee_catalog.updater.adder.asset_collection_value.class: PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder
-    pimee_catalog.updater.attribute.properties:
-        - is_read_only
 
 services:
     pimee_catalog.updater.adder.asset_collection_value:
@@ -11,19 +9,3 @@ services:
             - ['pim_assets_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }
-
-    pim_catalog.updater.attribute:
-        class: 'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater'
-        arguments:
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.registry.attribute_type'
-            - '@pim_localization.updater.translatable'
-            - ['auto_option_sorting', 'is_read_only']
-
-    pim_catalog.updater.group:
-        class: '%pim_catalog.updater.group.class%'
-        arguments:
-            - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.product_query_builder_factory_without_permission'
