@@ -10,7 +10,7 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
-    'pimee/template/settings/mapping/subscribe',
+    'pimee/template/settings/mapping/subscribe'
 ], function (
         _,
         __,

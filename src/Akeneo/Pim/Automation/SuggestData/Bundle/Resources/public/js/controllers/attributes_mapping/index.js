@@ -9,13 +9,22 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/controller/front', 'pim/router'],
-    function (BaseController, Router) {
+    [
+        'jquery',
+        'pim/controller/front',
+        'pim/router',
+        'routing'
+    ], function (
+        $,
+        BaseController,
+        Router,
+        Routing
+    ) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
-            renderForm: function (route) {
+            renderForm: function() {
                 $.getJSON(Routing.generate('akeneo_sugggest_data_family_mapping_index', {limit: 1}))
                     .then((data) => {
                         const firstFamily = data[0];

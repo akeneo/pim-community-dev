@@ -123,7 +123,7 @@ class FamilyMappingController
                     ]
                 ]
             ]);
-        } else if ($identifier === 'clothing') {
+        } elseif ($identifier === 'clothing') {
             return new JsonResponse([
                 'code' => 'clothing',
                 'enabled' => true,

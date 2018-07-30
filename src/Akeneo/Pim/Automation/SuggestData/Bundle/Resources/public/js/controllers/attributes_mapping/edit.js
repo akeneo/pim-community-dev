@@ -13,18 +13,17 @@ define(
         'oro/translator',
         'pim/controller/front',
         'pim/form-builder',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/dialog',
-        'pim/page-title'
+        'pim/fetcher-registry'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
             renderForm: function (route) {
-                return FetcherRegistry.getFetcher('suggest_data_family_mapping').fetch(route.params.identifier, {cached: false})
+                return FetcherRegistry
+                    .getFetcher('suggest_data_family_mapping')
+                    .fetch(route.params.identifier, {cached: false})
                     .then((familyMapping) => {
                         if (!this.active) {
                             return;

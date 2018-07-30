@@ -6,12 +6,16 @@
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 define([
+    'jquery',
+    'underscore',
     'pim/form/common/fields/simple-select-async',
     'pim/i18n',
     'pim/user-context',
     'pim/fetcher-registry',
-    'pimee/template/settings/mapping/attribute-line',
+    'pimee/template/settings/mapping/attribute-line'
 ], function (
+    $,
+    _,
     BaseSimpleSelect,
     i18n,
     UserContext,

@@ -13,7 +13,7 @@ define([
     'pim/user-context',
     'pim/i18n',
     'pimee/settings/mapping/simple-select-attribute',
-    'pimee/template/settings/mapping/attributes-mapping',
+    'pimee/template/settings/mapping/attributes-mapping'
 ], function (
         _,
         __,
@@ -44,7 +44,6 @@ define([
                 const familyMapping = this.getFormData();
                 if (familyMapping.hasOwnProperty('mapping') && Object.keys(familyMapping.mapping).length) {
                     const mapping = familyMapping.mapping;
-                    const locale = UserContext.get('uiLocale');
                     const statuses = {
                         0: __(this.config.labels.pending),
                         1: __(this.config.labels.active),
@@ -59,7 +58,9 @@ define([
                     }));
 
                     Object.keys(mapping).forEach((pim_ai_attribute_code) => {
-                        const $dom = this.$el.find('.attribute-selector[data-pim-ai-attribute-code="' + pim_ai_attribute_code + '"]');
+                        const $dom = this.$el.find(
+                            '.attribute-selector[data-pim-ai-attribute-code="' + pim_ai_attribute_code + '"]'
+                        );
                         const attributeSelector = new SimpleSelectAttribute({
                             config: {
                                 /**
