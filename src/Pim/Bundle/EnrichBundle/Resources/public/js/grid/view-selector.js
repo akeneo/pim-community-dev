@@ -279,6 +279,7 @@ define(
                         this.currentView.columns = datagridState.columns.split(',');
                     }
 
+                    DatagridState.set(this.gridAlias, { initialViewState: view.filters })
                     this.getRoot().trigger('grid:view-selector:initialized', this.currentView);
 
                     return initView;

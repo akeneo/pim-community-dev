@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/datagrid/abstract-action'],
-function(_, AbstractAction) {
+define(['underscore', 'oro/datagrid/abstract-action', 'pim/datagrid/state'],
+function(_, AbstractAction, DatagridState) {
     'use strict';
 
     /**
@@ -29,6 +29,7 @@ function(_, AbstractAction) {
                 throw new TypeError("'datagrid' is required");
             }
             this.collection = options.datagrid.collection;
+            this.datagrid = options.datagrid;
 
             AbstractAction.prototype.initialize.apply(this, arguments);
         },
@@ -37,10 +38,16 @@ function(_, AbstractAction) {
          * Execute reset collection
          */
         execute: function() {
-            var initialState = this.collection._initState;
+            var initialState = this.collection.initialState;
+            var view = initialState.parameters.view
 
             if (_.has(initialState, 'filters')) {
                 initialState.filters = _.omit(initialState.filters, 'scope');
+            }
+
+            if (view.id !== '0') {
+                var datagridState = DatagridState.get(this.datagrid.name, ['initialViewState'])
+                initialState = this.collection.decodeStateData(datagridState.initialViewState)
             }
 
             this.collection.updateState(initialState);
