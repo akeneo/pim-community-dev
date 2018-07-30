@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Model;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 

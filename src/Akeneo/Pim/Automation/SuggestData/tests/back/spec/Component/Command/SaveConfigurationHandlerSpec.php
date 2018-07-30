@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfi
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

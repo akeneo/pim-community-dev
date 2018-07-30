@@ -7,8 +7,8 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Suggest
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**

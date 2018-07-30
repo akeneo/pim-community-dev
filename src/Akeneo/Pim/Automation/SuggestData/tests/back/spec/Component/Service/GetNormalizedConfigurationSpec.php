@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Service;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 

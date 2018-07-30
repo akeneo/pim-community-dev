@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**

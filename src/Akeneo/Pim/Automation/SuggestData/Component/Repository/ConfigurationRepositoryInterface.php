@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

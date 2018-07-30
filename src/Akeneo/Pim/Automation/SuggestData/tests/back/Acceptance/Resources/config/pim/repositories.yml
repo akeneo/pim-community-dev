@@ -8,6 +8,6 @@ services:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryIdentifiersMappingRepository'
         arguments:
             - !service
-              class: Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping
+              class: Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping
               arguments:
                   - []

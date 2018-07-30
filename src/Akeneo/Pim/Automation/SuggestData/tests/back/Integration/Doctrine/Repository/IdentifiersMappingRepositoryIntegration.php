@@ -16,7 +16,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Doctrine\Repository
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

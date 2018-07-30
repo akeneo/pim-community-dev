@@ -15,8 +15,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

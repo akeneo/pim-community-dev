@@ -10,8 +10,8 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subs
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**

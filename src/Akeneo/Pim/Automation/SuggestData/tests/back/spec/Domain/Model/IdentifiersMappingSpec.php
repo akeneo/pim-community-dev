@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Model;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;

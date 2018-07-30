@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 
 /**
  * Command that holds and validates the raw values of the identifiers mapping.

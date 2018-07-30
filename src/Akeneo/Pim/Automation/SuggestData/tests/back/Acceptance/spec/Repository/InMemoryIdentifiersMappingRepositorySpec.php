@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryIdentifiersMappingRepository;
 use PhpSpec\ObjectBehavior;

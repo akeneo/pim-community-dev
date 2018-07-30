@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Entity;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**

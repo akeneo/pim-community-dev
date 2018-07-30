@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Model;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
