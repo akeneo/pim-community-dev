@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
@@ -149,7 +150,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     {
         $productModelsChildren = $this->productModelRepository->findChildrenProductModels($productModel);
         if (!empty($productModelsChildren)) {
-            $this->bulkProductModelIndexer->indexAll($productModelsChildren);
+            $this->bulkProductModelIndexer->indexAll($productModelsChildren, ['index_refresh' => Refresh::disable()]);
         }
 
         /**
@@ -212,10 +213,10 @@ class ProductModelDescendantsSaver implements SaverInterface
             $productsToIndex[] = $product;
 
             if (0 === count($productsToIndex) % self::INDEX_BULK_SIZE) {
-                $this->bulkProductIndexer->indexAll($productsToIndex);
+                $this->bulkProductIndexer->indexAll($productsToIndex, ['index_refresh' => Refresh::disable()]);
                 $productsToIndex = [];
             }
         }
-        $this->bulkProductIndexer->indexAll($productsToIndex);
+        $this->bulkProductIndexer->indexAll($productsToIndex, ['index_refresh' => Refresh::disable()]);
     }
 }
