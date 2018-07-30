@@ -4,6 +4,7 @@
 
 - PIM-7529: Fix error when a tree is removed
 - PIM-7536: Fix tool-tip error
+- GITHUB-8578 : Fixed wrong labels displayed in the "active/inactive" filter of user grid" 
 
 # 2.3.2 (2018-07-24)
 
