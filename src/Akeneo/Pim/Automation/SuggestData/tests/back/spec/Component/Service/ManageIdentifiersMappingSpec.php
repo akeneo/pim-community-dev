@@ -15,7 +15,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Service;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\ManageIdentifiersMapping;
 use PhpSpec\ObjectBehavior;
 

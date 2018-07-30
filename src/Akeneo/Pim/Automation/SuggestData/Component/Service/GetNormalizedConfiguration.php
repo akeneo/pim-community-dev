@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**
  * Retrieves a suggest data configuration and returns it normalized.

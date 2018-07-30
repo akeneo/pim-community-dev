@@ -16,7 +16,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Service;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

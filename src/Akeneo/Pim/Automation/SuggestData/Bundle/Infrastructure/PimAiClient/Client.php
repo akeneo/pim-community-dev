@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use GuzzleHttp\ClientInterface;
 
 /**

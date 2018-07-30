@@ -15,7 +15,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\tests\back\spec\Bundle\Doctrine
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 

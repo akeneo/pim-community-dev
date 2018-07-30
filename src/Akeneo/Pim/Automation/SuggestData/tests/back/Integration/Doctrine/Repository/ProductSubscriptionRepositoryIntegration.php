@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Doctrine\Repo
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\ORM\EntityManager;

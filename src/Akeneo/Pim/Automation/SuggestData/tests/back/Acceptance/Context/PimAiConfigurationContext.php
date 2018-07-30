@@ -15,7 +15,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\GetSuggestDataConnectionStatus;

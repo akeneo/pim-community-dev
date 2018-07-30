@@ -16,7 +16,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ConfigurationRepository;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
