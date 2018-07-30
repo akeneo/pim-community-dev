@@ -6,7 +6,7 @@ services:
     pim_catalog.elasticsearch.published_product_indexer:
         class: '%pim_catalog.elasticsearch.indexer.product.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'pimee_workflow_published_product'
@@ -14,13 +14,13 @@ services:
     pim_catalog.elasticsearch.product_proposal_indexer:
         class: '%pimee_workflow.elasticsearch.indexer.product_proposal.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_proposal'
             - 'pimee_workflow_product_proposal'
 
     pim_catalog.elasticsearch.product_model_proposal_indexer:
         class: '%pimee_workflow.elasticsearch.indexer.product_model_proposal.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_indexing_serializer'
             - '@akeneo_elasticsearch.client.product_proposal'
             - 'pimee_workflow_product_proposal'

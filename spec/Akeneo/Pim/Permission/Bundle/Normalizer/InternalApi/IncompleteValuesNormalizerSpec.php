@@ -27,13 +27,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class IncompleteValuesNormalizerSpec extends ObjectBehavior
 {
     function let(
-        NormalizerInterface $normalizer,
         RequiredValueCollectionFactory $requiredValueCollectionFactory,
         IncompleteValueCollectionFactory $incompleteValueCollectionFactory,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
-            $normalizer,
             $requiredValueCollectionFactory,
             $incompleteValueCollectionFactory,
             $authorizationChecker

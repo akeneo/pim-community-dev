@@ -364,7 +364,7 @@ JSON;
     {
         $this->getFromTestContainer('doctrine')->getManager()->clear();
         $productModel = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByCode($code);
-        $standardizedProductModel = $this->getFromTestContainer('pim_serializer')->normalize($productModel, 'standard');
+        $standardizedProductModel = $this->getFromTestContainer('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProductModel);
         NormalizedProductCleaner::clean($expectedProductModel);

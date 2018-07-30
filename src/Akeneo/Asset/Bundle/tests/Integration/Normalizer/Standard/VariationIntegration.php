@@ -29,7 +29,7 @@ class VariationIntegration extends AbstractStandardNormalizerTestCase
             'reference_file' => $fileInfo->getKey()
         ];
 
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
         $result = $serializer->normalize($variation, 'standard');
 
         $this->assertSame($expected, $result);

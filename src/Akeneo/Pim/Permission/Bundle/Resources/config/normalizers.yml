@@ -42,7 +42,7 @@ services:
             - '@pim_catalog.normalizer.standard.job_instance'
             - '@pimee_security.manager.job_profile_access'
         tags:
-            - { name: pim_serializer.normalizer, priority: 110 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 110 }
 
     pimee_security.normalizer.attribute_group:
         class: '%pimee_security.normalizer.attribute_group.class%'
@@ -50,12 +50,11 @@ services:
             - '@pim_catalog.normalizer.standard.attribute_group'
             - '@pimee_security.manager.attribute_group_access'
         tags:
-            - { name: pim_serializer.normalizer, priority: 110 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 110 }
 
     pim_enrich.normalizer.incomplete_values:
         class: '%pimee_security.normalizer.incomplete_values.class%'
         arguments:
-            - '@pim_serializer'
             - '@pim_catalog.entity_with_family.required_value_collection_factory'
             - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
             - '@security.authorization_checker'
@@ -69,7 +68,7 @@ services:
     # Encoders
     pimee_authorization_serializer.encoder.json:
         public: false
-        class: '%pim_serializer.encoder.json.class%'
+        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
         tags:
             - { name: pimee_authorization_serializer.encoder, priority: 90 }
 
@@ -90,4 +89,4 @@ services:
             - '@pim_catalog.normalizer.standard.datetime'
             - ['auto_option_sorting', 'is_read_only']
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }

@@ -25,7 +25,7 @@ services:
             - '@pim_api.repository.product'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.applier.draft'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@security.token_storage'
             - '@security.authorization_checker'
 
@@ -35,7 +35,7 @@ services:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions'
             - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions'
             - '@pim_api.checker.query_parameters'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.repository.channel'
             - '@pim_catalog.repository.cached_locale'
             - '@pim_api.repository.attribute'
@@ -52,7 +52,7 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pimee_workflow.repository.product_model_draft'
             - '@pimee_workflow.applier.draft'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@security.token_storage'
             - '@pimee_security.cached_authorization_checker'
 
@@ -91,7 +91,7 @@ services:
         arguments:
             - '@pim_api.normalizer.product.community'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_external_api_serializer.normalizer, priority: 100 }
 
     pimee_api.normalizer.product_model:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductModelNormalizer'
