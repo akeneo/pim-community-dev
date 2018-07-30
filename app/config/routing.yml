@@ -5,6 +5,9 @@ akeneo_channel:
 akeneo_pim_structure:
     resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
 
+akeneo_pim_enrichment:
+    resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
+
 # PIM
 pimee_teamwork_assistant:
     resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
@@ -38,9 +41,6 @@ pimee_workflow:
 
 pim_versioning:
     resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
-
-pim_comment:
-    resource: "@PimCommentBundle/Resources/config/routing.yml"
 
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
