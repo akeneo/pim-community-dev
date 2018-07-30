@@ -1,0 +1,62 @@
+extensions:
+    pim-user-create-modal:
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_common.create
+                subTitle: pim_menu.item.user
+            picture: illustrations/User.svg
+            successMessage: pim_user_management.entity.user.flash.create.success
+            editRoute: pim_user_edit
+            postUrl: pim_user_user_rest_create
+            routerKey: code
+
+    pim-user-create-modal-username:
+        module: pim/form/common/fields/text
+        parent: pim-user-create-modal
+        position: 10
+        targetZone: fields
+        config:
+            fieldName: username
+            label: pim_user_management.entity.user.properties.username
+            required: true
+
+    pim-user-create-modal-password:
+        module: pim/form/common/fields/password
+        parent: pim-user-create-modal
+        position: 10
+        targetZone: fields
+        config:
+            fieldName: password
+            label: pim_user_management.entity.user.properties.password
+            required: true
+
+    pim-user-create-modal-first-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-create-modal
+        position: 20
+        targetZone: fields
+        config:
+            fieldName: first_name
+            label: pim_user_management.entity.user.properties.first_name
+            required: true
+
+    pim-user-create-modal-last-name:
+        module: pim/form/common/fields/text
+        parent: pim-user-create-modal
+        position: 30
+        targetZone: fields
+        config:
+            fieldName: last_name
+            label: pim_user_management.entity.user.properties.last_name
+            required: true
+
+    pim-user-create-modal-email:
+        module: pim/form/common/fields/text
+        parent: pim-user-create-modal
+        position: 40
+        targetZone: fields
+        config:
+            fieldName: email
+            label: pim_user_management.entity.user.properties.email
+            required: true

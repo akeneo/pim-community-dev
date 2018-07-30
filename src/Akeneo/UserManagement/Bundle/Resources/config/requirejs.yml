@@ -25,8 +25,8 @@ config:
                         entity: user
                 pim_user_edit:
                     module: pim/controller/user
-                pim_user_create:
-                    module: pim/controller/form
+                #pim_user_create:
+                #    module: pim/controller/form
                 #pim_user_update:
                 #    module: pim/controller/user
                 pim_user_profile_update:

@@ -836,6 +836,20 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function setGroups(array $groups)
+    {
+        $this->groups->clear();
+
+        foreach ($groups as $group) {
+            $this->addGroup($group);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGroupsIds()
     {
         $ids = [];

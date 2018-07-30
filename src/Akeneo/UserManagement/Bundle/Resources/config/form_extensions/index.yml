@@ -59,12 +59,12 @@ extensions:
             alias: pim-user-grid
 
     pim-user-index-create-button:
-        module: pim/common/redirect
+        module: pim/form/common/index/create-button
         parent: pim-user-index
         targetZone: buttons
         position: 100
         aclResourceId: pim_user_user_create
         config:
-            label: pim_user_management.entity.user.module.create.button
-            route: pim_user_create
-            buttonClass: AknButton AknButton--apply
+           title: pim_user_management.entity.user.module.create.button
+           modalForm: pim-user-create-modal
+

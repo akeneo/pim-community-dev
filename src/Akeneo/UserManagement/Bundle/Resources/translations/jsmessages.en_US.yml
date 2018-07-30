@@ -27,6 +27,8 @@ pim_user_management:
                     success: User successfully updated.
                     fail: The user could not be updated.
                     fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
+                update:
+                    success: User successfully created.
             page_title:
                 index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
             properties:
@@ -47,6 +49,7 @@ pim_user_management:
                 current_password: Current password
                 new_password: New password
                 new_password_repeat: New password (repeat)
+                password: Password
                 ui_locale: UI locale
                 timezone: Timezone
                 default_product_grid_view: Default product grid view

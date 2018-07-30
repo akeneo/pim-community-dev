@@ -203,10 +203,12 @@ class UserUpdater implements ObjectUpdaterInterface
                 }
                 break;
             case 'groups':
-                // TODO Check this on the UI
+                $groups = [];
                 foreach ($data as $code) {
-                    $role = $this->findGroup($code);
-                    $user->addGroup($role);
+                    $groups[] = $this->findGroup($code);
+                }
+                if (count($groups) > 0) {
+                    $user->setGroups($groups);
                 }
                 break;
             case 'phone':

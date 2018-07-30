@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -51,6 +52,9 @@ class UserController
     /** @var NormalizerInterface */
     protected $constraintViolationNormalizer;
 
+    /** @var SimpleFactoryInterface */
+    protected $factory;
+
     /** @var UserPasswordEncoderInterface */
     protected $encoder;
 
@@ -72,6 +76,7 @@ class UserController
         ValidatorInterface $validator,
         SaverInterface $saver,
         NormalizerInterface $constraintViolationNormalizer,
+        SimpleFactoryInterface $factory,
         UserPasswordEncoderInterface $encoder
     ) {
         $this->tokenStorage = $tokenStorage;
@@ -81,6 +86,7 @@ class UserController
         $this->validator = $validator;
         $this->saver = $saver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->factory = $factory;
         $this->encoder = $encoder;
     }
 
@@ -153,6 +159,37 @@ class UserController
             }
 
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->saver->save($user);
+
+        return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+    }
+
+    public function createAction(Request $request): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $user = $this->factory->create();
+        $content = json_decode($request->getContent(), true);
+
+        $this->updater->update($user, $content);
+
+        $violations = $this->validator->validate($user);
+
+        if (count($violations) > 0) {
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $user]
+                );
+            }
+
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->saver->save($user);
