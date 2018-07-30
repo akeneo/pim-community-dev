@@ -1,6 +1,7 @@
 product:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/product.yml'
     prefix: /enrich/product
+
 comment:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/comment.yml'
 

@@ -1,4 +1,4 @@
-Pim\Bundle\CommentBundle\Entity\Comment:
+Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
     type: entity
     table: pim_comment_comment
     changeTrackingPolicy: DEFERRED_EXPLICIT
