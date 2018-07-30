@@ -2,6 +2,7 @@
   "testPathIgnorePatterns": [
     "node_modules"
   ],
+  "testURL": "http://localhost/",
   "projects": [
     "<rootDir>/web/bundles"
   ],
