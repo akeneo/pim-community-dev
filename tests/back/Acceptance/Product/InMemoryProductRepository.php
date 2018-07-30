@@ -59,7 +59,12 @@ class InMemoryProductRepository implements
 
     public function find($id)
     {
-        throw new NotImplementedException(__METHOD__);
+        $product = $this->products->filter(
+            function (ProductInterface $product) use ($id) {
+                return $product->getId() === $id;
+            })->first();
+
+        return (false === $product) ? null : $product;
     }
 
     public function findAll()
