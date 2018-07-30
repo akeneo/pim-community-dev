@@ -19,5 +19,6 @@
   "coverageReporters": [
     "html"
   ],
-  "cacheDirectory": "/tmp/jest"
+  "cacheDirectory": "/tmp/jest",
+  "testURL": "http://localhost/"
 }
