@@ -15,6 +15,7 @@
 - PIM-7517: fix the product models export filter on identifier
 - PIM-7476: fix family select2 to have the right limit
 - PIM-7516: fix metric default value on product edit form
+- GITHUB-8580 : Fixed translations for yes/no of boolean field.
 
 ## Migration
 
