@@ -72,7 +72,6 @@ class ImageAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'type' => self::ATTRIBUTE_TYPE,
                 'max_file_size' => $this->maxFileSize->floatValue(),
                 'allowed_extensions' => $this->extensions->normalize()
             ]

@@ -133,6 +133,7 @@ abstract class AbstractAttribute
             'required' => $this->required->isYes(),
             'value_per_channel' => $this->valuePerChannel->isYes(),
             'value_per_locale' => $this->valuePerLocale->isYes(),
+            'type' => $this->getType(),
         ];
     }
 }

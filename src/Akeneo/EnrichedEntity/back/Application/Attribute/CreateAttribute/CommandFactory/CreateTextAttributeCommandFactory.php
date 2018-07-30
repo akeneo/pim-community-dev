@@ -11,7 +11,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttrib
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CreateTextAttributeAttributeCommandFactory implements CreateAttributeCommandFactoryInterface
+class CreateTextAttributeCommandFactory implements CreateAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {

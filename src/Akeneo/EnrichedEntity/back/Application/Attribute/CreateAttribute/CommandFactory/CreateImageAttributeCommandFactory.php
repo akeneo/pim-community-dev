@@ -11,7 +11,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttri
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CreateImageAttributeAttributeCommandFactory implements CreateAttributeCommandFactoryInterface
+class CreateImageAttributeCommandFactory implements CreateAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {
