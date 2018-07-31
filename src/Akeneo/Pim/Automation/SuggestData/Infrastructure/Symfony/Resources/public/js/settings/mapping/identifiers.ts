@@ -91,6 +91,7 @@ class EditIdentifiersMappingView extends BaseView {
         }
       });
       attributeSelector.setParent(this);
+
       const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
       attributeSelector.configure().then(() => {
         $dom.html(attributeSelector.render().$el);

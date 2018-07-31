@@ -1,4 +1,5 @@
 import * as _ from 'underscore';
+const __ = require('oro/translator');
 const BaseSimpleSelect = require('pim/form/common/fields/simple-select-async');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
@@ -106,6 +107,19 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
         page: page
       }
     };
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Has been overrode because translations should be handle front side.
+   * Translates messages.
+   */
+  getFieldErrors(errors) {
+    Object.keys(errors).map(index => {
+      errors[index].message = __(errors[index].message, errors[index].messageParams);
+    });
+    return BaseSimpleSelect.prototype.getFieldErrors.apply(this, arguments);
   }
 }
 

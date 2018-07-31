@@ -28,6 +28,10 @@ akeneo_suggest_data:
                 status:
                     active: Active
                     inactive: Inactive
+            constraint:
+                duplicate_attribute_code: "An attribute cannot be used more than once. Attribute \"{{ attributeCode }}\" has been used {{ frequency }} times."
+                missing_or_invalid_identifiers: "Some identifiers mapping keys are missing or invalid. Expected: \"{{ expected }}\", got \"{{ given }}\"."
+                attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
         family_mapping:
             label: Family mapping
             fields:
