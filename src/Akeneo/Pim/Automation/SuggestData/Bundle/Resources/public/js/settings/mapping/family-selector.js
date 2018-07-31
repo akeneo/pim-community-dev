@@ -4,23 +4,25 @@
  * This module allow user to select a catalog family for suggest data updating.
  * When he selects a new family, it updates the main root model with it.
  *
- * TODO
- * - Add badge for enabled families
- *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 define(
     [
+        'underscore',
         'pim/form/common/fields/simple-select-async',
         'pim/fetcher-registry',
-        'pim/router'
+        'pim/router',
+        'pimee/template/settings/mapping/family-line'
     ],
     function (
+        _,
         BaseSelect,
         FetcherRegistry,
-        Router
+        Router,
+        LineTemplate
     ) {
         return BaseSelect.extend({
+            lineView: _.template(LineTemplate),
             events: {
                 'change input': function (event) {
                     FetcherRegistry.getFetcher('suggest_data_family_mapping')
@@ -36,6 +38,38 @@ define(
                             }
                         });
                 }
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getSelect2Options() {
+                const parent = BaseSelect.prototype.getSelect2Options.apply(this, arguments);
+                parent.formatResult = this.onGetResult.bind(this);
+                parent.dropdownCssClass = 'select2--withIcon ' + parent.dropdownCssClass;
+
+                return parent;
+            },
+
+            /**
+             * Formats and updates list of items
+             *
+             * @param {Object} item
+             *
+             * @return {Object}
+             */
+            onGetResult(item) {
+                return this.lineView({item});
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            convertBackendItem(item) {
+                const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
+                result.enabled = item.enabled;
+
+                return result;
             }
         })
     }

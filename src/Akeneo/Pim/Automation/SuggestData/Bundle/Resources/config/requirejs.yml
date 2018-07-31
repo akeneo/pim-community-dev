@@ -84,3 +84,4 @@ config:
         pimee/template/settings/mapping/subscribe: akeneosuggestdata/templates/settings/mapping/subscribe.html
         pimee/template/settings/mapping/family-mapping: akeneosuggestdata/templates/settings/mapping/family-mapping.html
         pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html
+        pimee/template/settings/mapping/family-line: akeneosuggestdata/templates/settings/mapping/family-line.html
