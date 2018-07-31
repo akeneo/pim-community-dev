@@ -88,6 +88,22 @@ class CompletenessRemover implements CompletenessRemoverInterface
     /**
      * {@inheritdoc}
      */
+    public function removeForProductWithoutIndexing(ProductInterface $product): void
+    {
+        $statement = $this->entityManager->getConnection()->prepare(sprintf('
+            DELETE c
+            FROM %s c
+            WHERE c.product_id = :productId
+        ', $this->completenessTable));
+        $statement->bindValue('productId', $product->getId());
+        $statement->execute();
+
+        $product->getCompletenesses()->clear();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeForFamily(FamilyInterface $family)
     {
         $familyFilter = ['field' => 'family', 'operator' => Operators::IN_LIST, 'value' => [$family->getCode()]];
