@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.suggest_data.handler.save_configuration:
-        class: 'Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'

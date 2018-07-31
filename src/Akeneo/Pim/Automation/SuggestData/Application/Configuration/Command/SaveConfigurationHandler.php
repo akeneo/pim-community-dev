@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
