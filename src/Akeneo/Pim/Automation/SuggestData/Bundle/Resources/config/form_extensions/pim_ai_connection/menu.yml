@@ -1,0 +1,9 @@
+extensions:
+    pim-ee-suggest-data-connection:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: akeneo_suggest_data_connection
+        position: 130
+        config:
+            title: akeneo_suggest_data.pim_ai.page_title
+            to: akeneo_suggest_data_connection_index

@@ -196,6 +196,15 @@ acceptance:
                 - akeneo_enrichedentity.tests.back.acceptance.context.exception_context
             filters:
                 tags: '@acceptance-back'
+        suggest-data:
+            paths:
+                - 'src/Akeneo/Pim/Automation/SuggestData/tests/features'
+            contexts_services:
+                - 'akeneo_acceptance.context.suggest_data.pim_ai'
+                - 'akeneo_acceptance.context.suggest_data.identifiers_mapping'
+                - 'test.attribute.context'
+            filters:
+                tags: '@acceptance-back'
         volume-monitoring:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'
@@ -233,6 +242,7 @@ acceptance:
                - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
                - "src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml"
                - "src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

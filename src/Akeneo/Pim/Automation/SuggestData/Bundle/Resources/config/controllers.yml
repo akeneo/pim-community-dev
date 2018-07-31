@@ -1,0 +1,23 @@
+services:
+    akeneo.pim.automation.suggest_data.controller.suggest_data:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\SuggestDataController'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+
+    akeneo.pim.automation.suggest_data.controller.pim_ai:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\PimAiConnectionController'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.connection.activate'
+            - '@akeneo.pim.automation.suggest_data.connection.get_normalized_configuration'
+            - '@akeneo.pim.automation.suggest_data.connection.get_status'
+            - '@translator'
+
+    akeneo.pim.automation.suggest_data.controller.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\IdentifiersMappingController'
+        arguments:
+           - '@akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
+           - '@translator'
+
+    akeneo.pim.automation.suggest_data.controller.family_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\FamilyMappingController'

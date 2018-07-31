@@ -217,3 +217,8 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute family variant structure changes
         type:      compute_family_variant_structure_changes
+    suggest_data_push_products:
+        connector: suggest_data
+        alias:     suggest_data_push_products
+        label:     Suggest data push products
+        type:      mass_edit

@@ -1,0 +1,17 @@
+services:
+    akeneo.pim.automation.suggest_data.repository.configuration:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ConfigurationRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.automation.suggest_data.repository.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\IdentifiersMappingRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.attribute'
+
+    akeneo.pim.automation.suggest_data.repository.product_subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - 'Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription'

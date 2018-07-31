@@ -1,0 +1,60 @@
+extensions:
+    pimee-suggest-data-settings-identifiers-mapping-index:
+        module: pim/form/common/edit-form
+
+    pimee-suggest-data-settings-identifiers-mapping-index-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pimee-suggest-data-menu-settings-mapping
+
+    pimee-suggest-data-settings-identifiers-mapping-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pimee-suggest-data-settings-identifiers-mapping-index-title:
+        module: pim/common/title-with-subtitle
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: title
+        config:
+            main_title: akeneo_suggest_data.settings.page_title
+            sub_title: akeneo_suggest_data.settings.module.title.sub_title
+            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
+            description:
+                - akeneo_suggest_data.settings.module.title.description.first_step
+                - akeneo_suggest_data.settings.module.title.description.second_step
+
+    pimee-suggest-data-settings-identifiers-mapping-index-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: buttons
+        position: 120
+
+    pimee-suggest-data-settings-identifiers-mapping-index-save:
+        module: pimee/settings/mapping/save
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: buttons
+        position: 0
+
+    pimee-suggest-data-settings-identifiers-mapping-index-tabs:
+        module: pimee/settings/mapping/tabs
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: content
+        position: 90
+        config:
+            tabs:
+                - { label: akeneo_suggest_data.entity.identifier_mapping.plural_label, route: akeneo_suggest_data_settings_index }
+                - { label: pim_enrich.entity.family.plural_label, route: '' }
+                - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_suggest_data_settings_attributes_index }
+            selected: 0
+
+    pimee-suggest-data-settings-identifiers-mapping-index-edit-mapping-identifier:
+        module: pimee/settings/mapping/identifiers
+        parent: pimee-suggest-data-settings-identifiers-mapping-index-tabs
+        targetZone: content

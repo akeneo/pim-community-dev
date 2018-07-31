@@ -1,0 +1,30 @@
+Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription:
+    type: entity
+    table: pim_suggest_data_product_subscription
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        suggest_data_subscription_idx:
+            columns:
+                - subscription_id
+                - product_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        subscriptionId:
+            type: string
+            column: subscription_id
+            nullable: false
+        suggestedData:
+            type: native_json
+            column: suggested_data
+    oneToOne:
+        product:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    onDelete: 'CASCADE'
+

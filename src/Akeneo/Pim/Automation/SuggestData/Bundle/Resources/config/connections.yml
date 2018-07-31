@@ -1,0 +1,16 @@
+services:
+    akeneo.pim.automation.suggest_data.connection.activate:
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.save_configuration'
+
+    akeneo.pim.automation.suggest_data.connection.get_normalized_configuration:
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
+    akeneo.pim.automation.suggest_data.connection.get_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Service\GetSuggestDataConnectionStatus'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'

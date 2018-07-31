@@ -43,8 +43,8 @@ npm-debug.log
 !/docker/httpd.conf
 .env
 docker-compose.override.yml
+composer.lock
 yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*
-composer.lock

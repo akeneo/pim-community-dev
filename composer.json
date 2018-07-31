@@ -15,7 +15,8 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\EnrichedEntity\\": "src/Akeneo/EnrichedEntity/back"
+            "Akeneo\\EnrichedEntity\\": "src/Akeneo/EnrichedEntity/back",
+            "Akeneo\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php"],
         "exclude-from-classmap": [
@@ -34,14 +35,16 @@
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",
             "Akeneo\\Test\\Common\\": "vendor/akeneo/pim-community-dev/tests/back/Common/",
-            "PimEnterprise\\Behat\\": "tests/legacy/features/Pim/Behat/",
+            "Akeneo\\Test\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData/tests/back",
+            "PimEnterprise\\Behat\\": "tests/legacy/features/PimEnterprise/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/"
         }
     },
     "require": {
         "akeneo/pim-community-dev": "3.0.x-dev@dev",
-        "phpspec/php-diff": "1.0.2"
+        "phpspec/php-diff": "1.0.2",
+        "guzzlehttp/guzzle": "6.3.3"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
