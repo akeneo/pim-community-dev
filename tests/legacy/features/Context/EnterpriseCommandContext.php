@@ -132,7 +132,7 @@ class EnterpriseCommandContext extends CommandContext
             }
 
             $publishedProduct           = $this->getPublishedProduct($originalProduct);
-            $normalizedPublishedProduct = $this->getContainer()->get('pim_serializer')->normalize(
+            $normalizedPublishedProduct = $this->getContainer()->get('pim_standard_format_serializer')->normalize(
                 $publishedProduct,
                 'standard'
             );

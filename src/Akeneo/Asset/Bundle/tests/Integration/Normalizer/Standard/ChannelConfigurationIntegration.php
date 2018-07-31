@@ -22,7 +22,7 @@ class ChannelConfigurationIntegration extends AbstractStandardNormalizerTestCase
         ];
 
         $repository = $this->get('pimee_product_asset.repository.channel_configuration');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $tablet = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('tablet');
         $result = $serializer->normalize($repository->findOneByIdentifier($tablet->getId()), 'standard');

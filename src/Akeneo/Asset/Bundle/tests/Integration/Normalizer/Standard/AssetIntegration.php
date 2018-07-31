@@ -18,7 +18,7 @@ class AssetIntegration extends AbstractStandardNormalizerTestCase
         ];
 
         $repository = $this->get('pimee_product_asset.repository.asset');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('cat'), 'standard');
 
