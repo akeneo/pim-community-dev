@@ -467,7 +467,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::CREATE_RECORD_ROUTE,
             [
-                'enrichedEntityIdentifier' => 'michel',
+                'enrichedEntityIdentifier' => 'designer',
             ],
             'POST',
             [
@@ -475,15 +475,20 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => 'sardoux',
-                    'enriched_entity_identifier' => 'michel'
+                'identifier'                 => [
+                    'identifier'                 => 'name',
+                    'enriched_entity_identifier' => 'designer',
                 ],
-                'enriched_entity_identifier' => 'michel',
-                'labels'     => [
-                    'fr_FR' => 'Starck',
-                    'en_US' => 'Starck',
-                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => [],
+                'order'                      => 1,
+                'type'                       => 'image',
+                'required'                   => true,
+                'value_per_channel'          => false,
+                'value_per_locale'           => true,
+                'max_file_size'              => 1512.12,
+                'allowed_extensions'         => ['pdf'],
             ]
         );
 
@@ -503,7 +508,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     private function revokeCreationRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', false);
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_create', false);
     }
 
     public function invalidIdentifiers()
