@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductCommand;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>

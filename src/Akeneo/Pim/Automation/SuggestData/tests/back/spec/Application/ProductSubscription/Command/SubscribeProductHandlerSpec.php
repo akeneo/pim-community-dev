@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductCommand;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
