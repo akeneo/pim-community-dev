@@ -11,7 +11,6 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;

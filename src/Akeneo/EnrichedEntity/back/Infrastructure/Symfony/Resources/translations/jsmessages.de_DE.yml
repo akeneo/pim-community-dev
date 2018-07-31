@@ -8,6 +8,19 @@ pim_enriched_entity:
     properties:
       identifier: Kennung
       label: Bezeichnung
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+      confirm: Bestätigen
+  record:
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+      confirm: Bestätigen
 pim_enrich:
   entity:
     attribute:

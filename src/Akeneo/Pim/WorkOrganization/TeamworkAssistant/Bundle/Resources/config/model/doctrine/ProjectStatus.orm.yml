@@ -24,6 +24,7 @@ Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectStatus:
                     referencedColumnName: id
         project:
             targetEntity: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface
+            inversedBy: projectStatus
             joinColumns:
                 project_id:
                     nullable: false

@@ -18,8 +18,6 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Loads product rules.
@@ -34,27 +32,21 @@ class ProductRuleBuilder implements BuilderInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
     /** @var string */
     protected $ruleClass;
 
     /**
      * @param DenormalizerInterface    $chainedDenormalizer
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ValidatorInterface       $validator
      * @param string                   $ruleClass           should implement
      */
     public function __construct(
         DenormalizerInterface $chainedDenormalizer,
         EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator,
         $ruleClass
     ) {
         $this->chainedDenormalizer = $chainedDenormalizer;
         $this->eventDispatcher = $eventDispatcher;
-        $this->validator = $validator;
         $this->ruleClass = $ruleClass;
     }
 
@@ -82,36 +74,8 @@ class ProductRuleBuilder implements BuilderInterface
         $rule->setConditions($content['conditions']);
         $rule->setActions($content['actions']);
 
-        $violations = $this->validator->validate($rule);
-
-        if (count($violations) > 0) {
-            throw new BuilderException(
-                sprintf(
-                    'Impossible to build the rule "%s" as it does not appear to be valid (%s).',
-                    $definition->getCode(),
-                    $this->violationsToMessage($violations)
-                )
-            );
-        }
-
         $this->eventDispatcher->dispatch(RuleEvents::POST_BUILD, new RuleEvent($definition));
 
         return $rule;
-    }
-
-    /**
-     * @param ConstraintViolationListInterface $violations
-     *
-     * @return string
-     */
-    protected function violationsToMessage(ConstraintViolationListInterface $violations)
-    {
-        $errors = [];
-
-        foreach ($violations as $violation) {
-            $errors[] = sprintf("%s: %s", $violation->getPropertyPath(), $violation->getMessage());
-        }
-
-        return implode(', ', $errors);
     }
 }

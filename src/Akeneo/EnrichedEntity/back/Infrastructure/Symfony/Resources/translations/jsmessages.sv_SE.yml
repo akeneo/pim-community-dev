@@ -8,6 +8,19 @@ pim_enriched_entity:
     properties:
       identifier: Identifierare
       label: Etikett
+    create:
+      header:
+        title: Skapa
+      input:
+        label: Etikett
+      confirm: bekräfta
+  record:
+    create:
+      header:
+        title: Skapa
+      input:
+        label: Etikett
+      confirm: bekräfta
 pim_enrich:
   entity:
     attribute:

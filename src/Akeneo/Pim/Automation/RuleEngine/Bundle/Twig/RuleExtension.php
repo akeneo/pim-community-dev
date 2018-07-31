@@ -135,10 +135,15 @@ class RuleExtension extends \Twig_Extension
         $append = [];
 
         if ('' !== $locale) {
+            $localeInfo = preg_split('/_/', $locale);
+            $countryCode = $localeInfo[1];
+            if (count($localeInfo) === 3) {
+                $countryCode = $localeInfo[2];
+            }
             $append[] = sprintf(
                 '<i class="flag flag-%s"></i> %s',
-                strtolower(preg_split('/_/', $locale)[1]),
-                preg_split('/_/', $locale)[0]
+                strtolower($countryCode),
+                $localeInfo[0]
             );
         }
 

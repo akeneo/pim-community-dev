@@ -1,2 +1,0 @@
-parameters:
-    pim_catalog.normalizer.standard.product.product_value.class: 'PimEnterprise\Component\Catalog\Normalizer\Standard\ProductValueNormalizer'

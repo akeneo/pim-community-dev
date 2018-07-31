@@ -1,5 +1,5 @@
 job_profile;execute_job_profile;edit_job_profile
-csv_product_model_import;All;IT support,Manager
+csv_product_model_import;IT support,Manager;IT support,Manager
 csv_product_import;All;IT support,Manager
 csv_product_import_with_rules;All;IT support,Manager
 csv_product_model_import_with_rules;All;IT support,Manager

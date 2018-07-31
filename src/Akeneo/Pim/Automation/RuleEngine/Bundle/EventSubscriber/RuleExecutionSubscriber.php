@@ -18,18 +18,12 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\ChainUserProvider;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@gmail.com>
  */
 class RuleExecutionSubscriber implements EventSubscriberInterface
 {
-    /** @var ChainUserProvider */
-    protected $chainUserProvider;
-
     /** @var NotifierInterface */
     protected $notifier;
 
@@ -37,16 +31,13 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     protected $notificationClass;
 
     /**
-     * @param ChainUserProvider     $chainUserProvider
      * @param NotifierInterface     $notifier
      * @param string                $notificationClass
      */
     public function __construct(
-        ChainUserProvider $chainUserProvider,
         NotifierInterface $notifier,
         $notificationClass
     ) {
-        $this->chainUserProvider = $chainUserProvider;
         $this->notifier = $notifier;
         $this->notificationClass = $notificationClass;
     }
@@ -100,20 +91,16 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      *
-     * @return null|UserInterface
+     * @return null|string
      */
-    protected function getUserFromEvent(GenericEvent $event): ?UserInterface
+    protected function getUserFromEvent(GenericEvent $event): ?string
     {
         try {
-            $userToNotify = $event->getArgument('username');
+            $user = $event->getArgument('username');
         } catch (\InvalidArgumentException $e) {
             return null;
         }
 
-        try {
-            return $this->chainUserProvider->loadUserByUsername($userToNotify);
-        } catch (UsernameNotFoundException $e) {
-            return null;
-        }
+        return $user;
     }
 }

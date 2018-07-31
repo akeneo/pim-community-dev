@@ -16,3 +16,8 @@ services:
         arguments:
             - '@pimee_workflow.repository.delegating_product'
             - '@pim_catalog.builder.product'
+
+    pim_connector.processor.denormalization.product_model_loader:
+        class: '%pim_connector.processor.denormalization.product_model_loader.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model_without_permission'
