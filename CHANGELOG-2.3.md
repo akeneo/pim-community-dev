@@ -5,6 +5,7 @@
 - PIM-7529: Fix error when a tree is removed
 - PIM-7536: Fix tool-tip error
 - GITHUB-8550: Exclude more folders in typescript to improve build time
+- GITHUB-8578: Fixed wrong labels displayed in the "active/inactive" filter of user grid" (Thanks [oliverde8](https://github.com/oliverde8)!)
 
 # 2.3.2 (2018-07-24)
 
