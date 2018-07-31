@@ -103,11 +103,11 @@ class EditView extends BaseView {
     ConnectionSaver
       .save(this.config.code, data)
       .fail((xhr: any) => {
-        Messenger.notify(xhr.responseJSON.status, xhr.responseJSON.message);
+        Messenger.notify('error', __(xhr.responseJSON.message));
         this.renderUnactivatedConnection(data.token);
       })
       .done((response: any) => {
-        Messenger.notify(response.status, response.message);
+        Messenger.notify('success', __(response.message));
         this.storedToken = data.token;
         this.isConnectionActivated = true;
         this.renderActivatedConnection(data.token);

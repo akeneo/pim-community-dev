@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,16 +93,18 @@ class PimAiConnectionController
 
         try {
             $this->activateSuggestDataConnection->activate($code, $configurationFields);
+        } catch (InvalidConnectionConfigurationException $invalidConnection) {
+            return new JsonResponse([
+                'message' => 'akeneo_suggest_data.pim_ai.module.activation.invalid',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
-                'status' => 'error',
-                'message' => $this->translator->trans('akeneo_suggest_data.connection.pim_ai.error'),
+                'message' => 'akeneo_suggest_data.pim_ai.module.activation.error',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
-            'status' => 'success',
-            'message' => $this->translator->trans('akeneo_suggest_data.connection.pim_ai.success'),
+            'message' => 'akeneo_suggest_data.pim_ai.module.activation.success',
         ]);
     }
 }
