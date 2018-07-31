@@ -4,7 +4,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController'
         arguments:
             - '@pim_api.repository.attribute'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
             - '@validator'
@@ -19,7 +19,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController'
         arguments:
             - '@pim_api.repository.attribute_group'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_catalog.factory.attribute_group'
@@ -35,7 +35,7 @@ services:
         arguments:
             - '@pim_api.repository.attribute'
             - '@pim_api.repository.attribute_option'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@validator'
@@ -51,7 +51,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyController'
         arguments:
             - '@pim_api.repository.family'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.updater.family'
             - '@validator'
@@ -67,7 +67,7 @@ services:
         arguments:
             - '@pim_api.repository.family'
             - '@pim_api.repository.family_variant'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@validator'
@@ -82,7 +82,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AssociationTypeController'
         arguments:
             - '@pim_api.repository.association_type'
-            - '@pim_serializer'
+            - '@pim_external_api_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_catalog.factory.association_type'

@@ -265,7 +265,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_text']
             - ['pim_catalog_text']
         tags:
@@ -299,7 +299,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_textarea']
             - ['pim_catalog_textarea']
         tags:
@@ -309,7 +309,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_boolean']
             - ['pim_catalog_boolean']
         tags:
@@ -319,7 +319,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_number']
             - ['pim_catalog_number']
         tags:
@@ -329,7 +329,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_date']
             - ['pim_catalog_date']
         tags:
@@ -339,7 +339,7 @@ services:
         class: '%pim_catalog.updater.copier.metric_value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_metric']
             - ['pim_catalog_metric']
         tags:
@@ -349,7 +349,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_simpleselect']
             - ['pim_catalog_simpleselect']
         tags:
@@ -359,7 +359,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_multiselect']
             - ['pim_catalog_multiselect']
         tags:
@@ -369,7 +369,7 @@ services:
         class: '%pim_catalog.updater.copier.value.class%'
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_price_collection']
             - ['pim_catalog_price_collection']
         tags:
@@ -420,7 +420,7 @@ services:
         class: '%pim_catalog.updater.adder.price_collection_value.class%'
         arguments:
             - '@pim_catalog.builder.entity_with_values'
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }

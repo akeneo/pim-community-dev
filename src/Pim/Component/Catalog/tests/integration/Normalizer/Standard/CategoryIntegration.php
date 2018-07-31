@@ -39,7 +39,7 @@ class CategoryIntegration extends AbstractStandardNormalizerTestCase
     private function assert($identifier, array $expected)
     {
         $repository = $this->get('pim_catalog.repository.category');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'standard');
 

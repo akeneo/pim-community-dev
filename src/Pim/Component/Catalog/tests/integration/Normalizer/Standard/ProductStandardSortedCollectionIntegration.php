@@ -188,7 +188,7 @@ class ProductStandardSortedCollectionIntegration extends TestCase
 
     private function assertStandardFormat(ProductInterface $product, array $expected): void
     {
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
         $result = $serializer->normalize($product, 'standard');
 
         $this->assertSame($expected, $result);

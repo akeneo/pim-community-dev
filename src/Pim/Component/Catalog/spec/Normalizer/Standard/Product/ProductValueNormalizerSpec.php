@@ -2,21 +2,22 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(NormalizerInterface $normalizer)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->setSerializer($serializer);
+        $this->beConstructedWith($normalizer);
     }
 
     function it_is_initializable()
@@ -27,7 +28,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_is_a_normalizer()
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
     function it_supports_standard_format_and_product_value(ValueInterface $value)
@@ -39,14 +39,13 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_value_in_standard_format_with_no_locale_and_no_scope(
-        SerializerInterface $serializer,
+        $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
+        $normalizer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
-        $this->setSerializer($serializer);
 
         $value->getData()->willReturn('product_value_data');
         $value->getLocale()->willReturn(null);
@@ -65,14 +64,13 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_value_in_standard_format_with_locale_and_no_scope(
-        SerializerInterface $serializer,
+        $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
+        $normalizer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
-        $this->setSerializer($serializer);
 
         $value->getData()->willReturn('product_value_data');
         $value->getLocale()->willReturn('en_US');
@@ -91,14 +89,13 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_value_in_standard_format_with_locale_and_scope(
-        SerializerInterface $serializer,
+        $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
+        $normalizer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
-        $this->setSerializer($serializer);
 
         $value->getData()->willReturn('product_value_data');
         $value->getLocale()->willReturn('en_US');
@@ -117,13 +114,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_number_product_value_with_decimal(
-        SerializerInterface $serializer,
+        $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('15.50', null, ['is_decimals_allowed' => true])
+        $normalizer->normalize('15.50', null, ['is_decimals_allowed' => true])
             ->shouldNotBeCalled();
-        $this->setSerializer($serializer);
 
         $value->getData()->willReturn('15.50');
         $value->getLocale()->willReturn('en_US');
@@ -143,13 +139,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_number_product_value_without_decimal(
-        SerializerInterface $serializer,
+        $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $serializer->normalize('15.00', null, [])
+        $normalizer->normalize('15.00', null, [])
             ->shouldNotBeCalled();
-        $this->setSerializer($serializer);
 
         $value->getData()->willReturn('15.00');
         $value->getLocale()->willReturn('en_US');
@@ -169,14 +164,13 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_simple_select(
-        SerializerInterface $serializer,
+        $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute,
         AttributeOptionInterface $simpleSelect
     ) {
         $simpleSelect->getCode()->willReturn('optionA');
-        $serializer->normalize($simpleSelect, null, [])->shouldNotBeCalled();
-        $this->setSerializer($serializer);
+        $normalizer->normalize($simpleSelect, null, [])->shouldNotBeCalled();
 
         $value->getData()->willReturn($simpleSelect);
         $value->getLocale()->willReturn(null);
@@ -195,14 +189,13 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_multi_select(
-        SerializerInterface $serializer,
+        $normalizer,
         OptionsValueInterface $value,
         AttributeInterface $attribute,
         AttributeOptionInterface $multiSelect
     ) {
         $multiSelect->getCode()->willReturn('optionA');
-        $serializer->normalize($multiSelect, null, [])->shouldNotBeCalled();
-        $this->setSerializer($serializer);
+        $normalizer->normalize($multiSelect, null, [])->shouldNotBeCalled();
 
         $values = [$multiSelect];
 
@@ -218,6 +211,25 @@ class ProductValueNormalizerSpec extends ObjectBehavior
                 'locale' => null,
                 'scope'  => null,
                 'data'   => ['optionA'],
+            ]
+        );
+    }
+
+    function it_normalizes_a_scalar(
+        ScalarValue $value,
+        AttributeInterface $attribute
+    ) {
+        $value->getData()->willReturn('foo');
+        $value->getLocale()->willReturn('en_US');
+        $value->getScope()->willReturn('ecommerce');
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getType()->willReturn(AttributeTypes::TEXT);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => 'en_US',
+                'scope'  => 'ecommerce',
+                'data'   => 'foo',
             ]
         );
     }

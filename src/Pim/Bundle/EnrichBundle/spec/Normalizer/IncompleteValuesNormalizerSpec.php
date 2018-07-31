@@ -23,11 +23,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class IncompleteValuesNormalizerSpec extends ObjectBehavior
 {
     function let(
-        NormalizerInterface $normalizer,
         RequiredValueCollectionFactory $requiredValueCollectionFactory,
         IncompleteValueCollectionFactory $incompleteValueCollectionFactory
     ) {
-        $this->beConstructedWith($normalizer, $requiredValueCollectionFactory, $incompleteValueCollectionFactory);
+        $this->beConstructedWith($requiredValueCollectionFactory, $incompleteValueCollectionFactory);
     }
 
     function it_is_initializable()

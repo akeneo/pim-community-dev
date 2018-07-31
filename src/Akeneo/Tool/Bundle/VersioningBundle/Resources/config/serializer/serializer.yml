@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_versioning.serializer:
-        class: '%pim_serializer.class%'
+        class: 'Symfony\Component\Serializer\Serializer'
 
     # Encoder
     pim_versioning.serializer.encoder.csv:

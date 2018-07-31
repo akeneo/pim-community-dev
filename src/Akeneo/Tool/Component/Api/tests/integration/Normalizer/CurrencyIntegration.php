@@ -17,7 +17,7 @@ class CurrencyIntegration extends AbstractNormalizerTestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.currency');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('EUR'), 'external_api');
 

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductModelNormalizer implements NormalizerInterface
 {
     private const FIELD_CODE = 'code';
     private const FIELD_FAMILY_VARIANT = 'family_variant';
@@ -29,17 +29,25 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     /** @var NormalizerInterface */
     private $associationsNormalizer;
 
+    /** @var NormalizerInterface*/
+    private $standardNormalizer;
+
     /** @var CollectionFilterInterface */
     private $filter;
 
     /**
      * @param CollectionFilterInterface $filter The collection filter
      * @param NormalizerInterface       $associationsNormalizer
+     * @param NormalizerInterface       $standardNormalizer
      */
-    public function __construct(CollectionFilterInterface $filter, NormalizerInterface $associationsNormalizer)
-    {
+    public function __construct(
+        CollectionFilterInterface $filter,
+        NormalizerInterface $associationsNormalizer,
+        NormalizerInterface $standardNormalizer
+    ) {
         $this->filter = $filter;
         $this->associationsNormalizer = $associationsNormalizer;
+        $this->standardNormalizer = $standardNormalizer;
     }
 
     /**
@@ -49,10 +57,6 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
      */
     public function normalize($productModel, $format = null, array $context = array()): array
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
-            throw new \LogicException('Serializer must be a normalizer');
-        }
-
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
 
         $data[self::FIELD_CODE] = $productModel->getCode();
@@ -60,8 +64,8 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
         $data[self::FIELD_PARENT] = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
         $data[self::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
         $data[self::FIELD_VALUES] = $this->normalizeValues($productModel->getValues(), $format, $context);
-        $data[self::FIELD_CREATED] = $this->serializer->normalize($productModel->getCreated(), $format, $context);
-        $data[self::FIELD_UPDATED] = $this->serializer->normalize($productModel->getUpdated(), $format, $context);
+        $data[self::FIELD_CREATED] = $this->standardNormalizer->normalize($productModel->getCreated(), $format, $context);
+        $data[self::FIELD_UPDATED] = $this->standardNormalizer->normalize($productModel->getUpdated(), $format, $context);
         $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($productModel, $format, $context);
 
         return $data;
@@ -90,7 +94,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->serializer->normalize($values, $format, $context);
+        $data = $this->standardNormalizer->normalize($values, $format, $context);
 
         return $data;
     }

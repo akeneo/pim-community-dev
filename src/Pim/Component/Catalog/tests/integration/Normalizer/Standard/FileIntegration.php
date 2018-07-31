@@ -34,7 +34,7 @@ class FileIntegration extends AbstractStandardNormalizerTestCase
     private function assert($name, array $expected)
     {
         $repository = $this->get('akeneo_file_storage.repository.file_info');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneBy(['originalFilename' => $name]), 'standard');
 

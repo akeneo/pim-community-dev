@@ -23,7 +23,7 @@ class AttributeOptionIntegration extends TestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.attribute_option');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('a_multi_select.optionA'), 'external_api');
 

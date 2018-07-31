@@ -20,7 +20,7 @@ class AssociationTypeIntegration extends AbstractNormalizerTestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.association_type');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('X_SELL'), 'external_api');
 

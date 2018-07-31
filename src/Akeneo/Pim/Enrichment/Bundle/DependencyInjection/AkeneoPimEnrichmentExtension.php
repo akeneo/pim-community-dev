@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
@@ -71,6 +73,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('serializers_indexing.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_storage.yml');
+        $loader->load('serializers.yml');
         $loader->load('builders.yml');
         $loader->load('controllers.yml');
         $loader->load('renderers.yml');

@@ -229,7 +229,7 @@ class EntityWithValuesStorageIntegration extends TestCase
      */
     private function assertStorageFormatForEntityWithValues(EntityWithValuesInterface $entity, array $expected)
     {
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_storage_serializer');
         $result = $serializer->normalize($entity->getValues(), 'storage');
 
         NormalizedProductCleaner::cleanOnlyValues($expected);

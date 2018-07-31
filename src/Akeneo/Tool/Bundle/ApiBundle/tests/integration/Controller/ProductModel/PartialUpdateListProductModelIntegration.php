@@ -311,7 +311,7 @@ JSON;
     protected function assertSameProductModels(array $expectedProductModel, $code)
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($code);
-        $standardizedProductModel = $this->get('pim_serializer')->normalize($productModel, 'standard');
+        $standardizedProductModel = $this->get('pim_standard_format_serializer')->normalize($productModel, 'standard');
 
         NormalizedProductCleaner::clean($expectedProductModel);
         NormalizedProductCleaner::clean($standardizedProductModel);

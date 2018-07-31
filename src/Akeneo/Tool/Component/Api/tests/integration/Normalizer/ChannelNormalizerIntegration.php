@@ -36,7 +36,7 @@ class ChannelNormalizerIntegration extends AbstractNormalizerTestCase
     private function assert($channelCode, array $expected)
     {
         $repository = $this->get('pim_catalog.repository.channel');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_external_api_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier($channelCode), 'external_api');
 

@@ -26,7 +26,7 @@ class StandardNormalizationIntegration extends AbstractStandardNormalizerTestCas
         ];
 
         $repository = $this->get('pim_catalog.repository.channel');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('tablet'), 'standard');
 

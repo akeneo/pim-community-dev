@@ -12,6 +12,12 @@
 
 ## BC breaks
 
+- Register standard format normalizers into  `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer 
+- Register indexing normalizers into  `pim_indexing_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register datagrid normalizers into  `pim_datagrid_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register storage normalizers into  `pim_storage_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register external API normalizers into  `pim_external_api_serializer` serializer and untagged them from `pim_serializer` serializer
+
 - Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument 
 
 - Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass`

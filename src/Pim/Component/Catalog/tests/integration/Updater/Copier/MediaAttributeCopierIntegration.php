@@ -163,7 +163,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $standardProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $standardProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
 
         $result = $this->sanitizeMediaAttributeData($result);

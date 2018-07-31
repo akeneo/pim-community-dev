@@ -37,7 +37,7 @@ class FamilyVariantIntegration extends TestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.family_variant');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize(
             $repository->findOneByIdentifier('clothing_color_size'),

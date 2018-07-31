@@ -5,11 +5,10 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Normalize a product value into an array
@@ -18,19 +17,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductValueNormalizer implements NormalizerInterface
 {
     const DECIMAL_PRECISION = 4;
 
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var NormalizerInterface */
+    private $normalizer;
 
     /**
-     * {@inheritdoc}
+     * @param NormalizerInterface $normalizer
      */
-    public function setSerializer(SerializerInterface $serializer): void
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -78,7 +77,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $value->getAttribute()->isBackendTypeReferenceData()) {
                 $data[] = $item->getCode();
             } else {
-                $data[] = $this->serializer->normalize($item, $format, $context);
+                $data[] = $this->normalizer->normalize($item, $format, $context);
             }
         }
 
@@ -99,7 +98,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         $attributeType = $value->getAttribute()->getType();
-        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
@@ -109,17 +107,24 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 : (int) $value->getData();
         }
 
-        if (in_array($attributeType, [
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
-        ])) {
+        if ($value instanceof ScalarValue) {
+            return $value->getData();
+        }
+
+        if ($attributeType === AttributeTypes::OPTION_SIMPLE_SELECT ||
+            $attributeType === AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
+        ) {
             return $value->getData()->getCode();
         }
 
-        if (in_array($attributeType, [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
+        if ($attributeType === AttributeTypes::FILE ||
+            $attributeType === AttributeTypes::IMAGE
+        ) {
             return $value->getData()->getKey();
         }
 
-        return $this->serializer->normalize($value->getData(), $format, $context);
+        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
+
+        return $this->normalizer->normalize($value->getData(), $format, $context);
     }
 }

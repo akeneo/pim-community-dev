@@ -17,7 +17,7 @@ class DateTimeIntegration extends AbstractStandardNormalizerTestCase
         $timezone = new \DateTimeZone('Europe/Paris');
         $datetime->setTimezone($timezone);
 
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
         $result = $serializer->normalize($datetime, 'standard');
 
         $this->assertSame('2015-01-01T23:50:00+01:00', $result);
@@ -29,7 +29,7 @@ class DateTimeIntegration extends AbstractStandardNormalizerTestCase
         $timezone = new \DateTimeZone('America/New_York');
         $datetime->setTimezone($timezone);
 
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
         $result = $serializer->normalize($datetime, 'standard');
 
         $this->assertSame('2014-12-31T18:00:00-05:00', $result);

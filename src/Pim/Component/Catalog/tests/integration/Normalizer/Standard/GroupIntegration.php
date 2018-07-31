@@ -20,7 +20,7 @@ class GroupIntegration extends AbstractStandardNormalizerTestCase
         ];
 
         $repository = $this->get('pim_catalog.repository.group');
-        $serializer = $this->get('pim_serializer');
+        $serializer = $this->get('pim_standard_format_serializer');
 
         $result = $serializer->normalize($repository->findOneByIdentifier('groupA'), 'standard');
 

@@ -643,7 +643,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['created']);
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
@@ -984,7 +984,7 @@ JSON;
     protected function assertSameProducts(array $expectedProduct, $identifier)
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+        $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
