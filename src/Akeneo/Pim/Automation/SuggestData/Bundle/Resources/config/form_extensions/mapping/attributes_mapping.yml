@@ -80,16 +80,6 @@ extensions:
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: akeneo_sugggest_data_family_mapping_index
 
-    pim-sugget-data-settings-identifiers-mapping-index-subscribe:
-        module: pimee/settings/mapping/subscribe
-        parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
-        position: 20
-        targetZone: subscribe
-        config:
-            labels:
-                subscribe: akeneo_suggest_data.entity.family_mapping.module.subscribe.subscribe
-                subscribed: akeneo_suggest_data.entity.family_mapping.module.subscribe.subscribed
-
     pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
         parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
