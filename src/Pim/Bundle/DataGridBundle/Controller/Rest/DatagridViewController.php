@@ -283,16 +283,4 @@ class DatagridViewController
 
         return new JsonResponse(['view' => $view]);
     }
-
-    /**
-     * List available datagrid columns
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
-     */
-    public function listColumnsAction($alias)
-    {
-        return new JsonResponse($this->datagridViewManager->getColumnChoices($alias));
-    }
 }
