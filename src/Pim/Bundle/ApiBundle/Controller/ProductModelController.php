@@ -642,6 +642,10 @@ class ProductModelController
 
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
+                if (in_array($propertyCode, ['created', 'updated'])) {
+                    $value = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
+                }
+
                 $this->queryParametersChecker->checkPropertyParameters($propertyCode, $filter['operator']);
 
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
