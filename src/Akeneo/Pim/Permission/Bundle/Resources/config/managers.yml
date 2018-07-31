@@ -69,3 +69,13 @@ services:
             - '@oro_security.security_facade'
             - '@pimee_security.repository.job_profile_access'
             - '@security.token_storage'
+
+    pim_catalog.resolver.attribute_values_with_permissions:
+        class: 'PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver'
+        decorates: pim_catalog.resolver.attribute_values
+        decoration_inner_name: pim_catalog.resolver.attribute_values_without_permission
+        arguments:
+            - '@pim_catalog.resolver.attribute_values_without_permission'
+            - '@pimee_security.cached_authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'

@@ -185,3 +185,10 @@ pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver
 pim_assets_collection: Aktiver samling
+pim_api:
+  acl:
+    asset_category:
+      list: Oplist aktiver-kategorier
+  acl_group:
+    asset_category: Aktiver kategorier
+    asset: Aktiver

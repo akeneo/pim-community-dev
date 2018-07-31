@@ -1,20 +1,12 @@
-parameters:
-    pimee_product_asset.upload_context.class:        Akeneo\Asset\Component\Upload\UploadContext
-    pimee_product_asset.upload_checker.class:        Akeneo\Asset\Component\Upload\UploadChecker
-    pimee_product_asset.upload_importer.class:       Akeneo\Asset\Component\Upload\Importer
-    pimee_product_asset.mass_upload_processor.class: Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor
-    pimee_product_asset.mass_upload.tasklet.class:   Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet
-
 services:
     pimee_product_asset.upload_checker:
-        class: '%pimee_product_asset.upload_checker.class%'
+        class: 'Akeneo\Asset\Component\Upload\UploadChecker'
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.locale'
 
     pimee_product_asset.upload_importer:
-        class: '%pimee_product_asset.upload_importer.class%'
+        class: 'Akeneo\Asset\Component\Upload\Importer'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
@@ -51,7 +43,7 @@ services:
             - '@pim_catalog.saver.product_model'
 
     pimee_product_asset.mass_upload_processor:
-        class: '%pimee_product_asset.mass_upload_processor.class%'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
             - '@pimee_product_asset.mass_upload.builder.asset'
@@ -83,7 +75,7 @@ services:
             - '@pimee_product_asset.mass_upload.add_asset_to_product_model'
 
     pimee_product_asset.mass_upload.tasklet:
-        class: '%pimee_product_asset.mass_upload.tasklet.class%'
+        class: 'Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet'
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
             - '%tmp_storage_dir%'

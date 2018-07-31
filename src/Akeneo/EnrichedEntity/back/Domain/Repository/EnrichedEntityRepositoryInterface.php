@@ -23,7 +23,8 @@ interface EnrichedEntityRepositoryInterface
     public function update(EnrichedEntity $enrichedEntity): void;
 
     /**
-     * @throws EnrichedEntityNotFoundException
+     * @param EnrichedEntityIdentifier $identifier
+     * @return EnrichedEntity
      */
     public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
 }

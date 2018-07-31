@@ -32,6 +32,7 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('analytics.yml');
         $loader->load('api.yml');
         $loader->load('appliers.yml');
+        $loader->load('associations.yml');
         $loader->load('builder.yml');
         $loader->load('category_counters.yml');
         $loader->load('configurators.yml');

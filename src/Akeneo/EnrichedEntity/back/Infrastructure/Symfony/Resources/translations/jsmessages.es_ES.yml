@@ -1,6 +1,7 @@
 pim_enriched_entity:
   button:
     save: Guardar
+    create: Añadir nuevo
   enriched_entity:
     tab:
       attributes: Atributos
@@ -8,6 +9,19 @@ pim_enriched_entity:
     properties:
       identifier: Identificador
       label: Etiqueta
+    create:
+      header:
+        title: Crear
+      input:
+        label: Etiqueta
+      confirm: confirmar
+  record:
+    create:
+      header:
+        title: Crear
+      input:
+        label: Etiqueta
+      confirm: confirmar
 pim_enrich:
   entity:
     attribute:

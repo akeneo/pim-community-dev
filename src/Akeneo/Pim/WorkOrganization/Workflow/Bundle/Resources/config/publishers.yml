@@ -19,7 +19,7 @@ services:
             - '@pimee_workflow.publisher.product_related_association'
             - '@pim_versioning.manager.version'
             - '@pim_serializer'
-            - '@pim_catalog.updater.product_without_permission'
+            - '@pimee_workflow.updater.product_without_permission'
         tags:
             - { name: pimee_workflow.publisher }
 
@@ -62,3 +62,18 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\ReferenceDataPublisher'
         tags:
             - { name: pimee_workflow.publisher }
+
+    pimee_workflow.updater.product_without_permission:
+        class: 'Pim\Component\Catalog\Updater\ProductUpdater'
+        public: false
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pimee_workflow.updater.entity_with_values_without_permission'
+            - '@pim_catalog.association.filter.parent_associations'
+            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
+
+    pimee_workflow.updater.entity_with_values_without_permission:
+        class: 'Pim\Component\Catalog\Updater\EntityWithValuesUpdater'
+        public: false
+        arguments:
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'

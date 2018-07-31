@@ -144,12 +144,16 @@ class RuleExtensionSpec extends ObjectBehavior
     {
         $this->appendLocaleAndScopeContext('value', 'en_US', 'mobile')
             ->shouldReturn('value [ <i class="flag flag-us"></i> en | mobile ]');
+        $this->appendLocaleAndScopeContext('value', 'az_cyrl_AZ', 'mobile')
+            ->shouldReturn('value [ <i class="flag flag-az"></i> az | mobile ]');
     }
 
     function it_appends_locale_and_scope_without_scope()
     {
         $this->appendLocaleAndScopeContext('value', 'en_US')
             ->shouldReturn('value [ <i class="flag flag-us"></i> en ]');
+        $this->appendLocaleAndScopeContext('value', 'az_cyrl_AZ')
+            ->shouldReturn('value [ <i class="flag flag-az"></i> az ]');
     }
 
     function it_appends_locale_and_scope_without_locale()

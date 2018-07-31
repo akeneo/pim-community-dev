@@ -186,3 +186,14 @@ pim_analytics:
   info_type:
     nb_assets: Nombre de ressources produit
 pim_assets_collection: Collection de ressources
+pim_api:
+  acl:
+    asset_category:
+      edit: Créer et mettre à jour les catégories de ressources
+      list: Liste des catégories de ressources
+    asset:
+      edit: Editer les ressources, et télécharger leurs références et fichiers de variation
+      list: Lister les ressources, lister et télécharger leurs références et fichiers de variation
+  acl_group:
+    asset_category: Catégories de ressources
+    asset: Ressources

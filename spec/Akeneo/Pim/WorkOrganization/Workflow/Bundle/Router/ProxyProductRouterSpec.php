@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;

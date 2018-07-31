@@ -85,7 +85,7 @@ datagrid:
                 acl_resource: pimee_workflow_published_product_index
                 label: pim_datagrid.mass_action.mass_edit
                 handler: product_mass_edit
-                route: pim_enrich_mass_edit_action
+                route: pimee_workflow_published_product_mass_edit_action
                 route_parameters:
                     actionName: published-product-edit
                 className: 'AknButton AknButton--action AknButtonList-item'
