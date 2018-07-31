@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7538: Fix persistent grid filters
+
 # 1.7.28 (2018-07-26)
 
 ## Bug fixes
@@ -25,13 +31,13 @@
 
 ## BC breaks:
 
-### AppKernel 
+### AppKernel
 
 - Remove `Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle` and `APY\JsFormValidationBundle\APYJsFormValidationBundle`
 
 ### Routing
 
-- Remove routing from `APYJsFormValidationBundle` 
+- Remove routing from `APYJsFormValidationBundle`
 
 # 1.7.25 (2018-07-06)
 
