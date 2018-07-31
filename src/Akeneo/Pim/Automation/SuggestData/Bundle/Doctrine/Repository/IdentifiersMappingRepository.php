@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\IdentifierMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifierMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;

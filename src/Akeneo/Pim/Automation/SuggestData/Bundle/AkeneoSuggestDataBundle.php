@@ -12,6 +12,7 @@
 namespace Akeneo\Pim\Automation\SuggestData\Bundle;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\DependencyInjection\Compiler\RegisterDataProviderPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -29,5 +30,16 @@ class AkeneoSuggestDataBundle extends Bundle
     {
         $container
             ->addCompilerPass(new RegisterDataProviderPass());
+
+        $productMappings = [
+            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model'
+        ];
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                ['doctrine.orm.entity_manager'],
+                false
+            )
+        );
     }
 }

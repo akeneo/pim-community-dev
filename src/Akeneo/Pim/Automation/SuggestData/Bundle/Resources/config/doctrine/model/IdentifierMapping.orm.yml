@@ -1,4 +1,4 @@
-Akeneo\Pim\Automation\SuggestData\Bundle\Entity\IdentifierMapping:
+Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifierMapping:
     type: entity
     table: pim_suggest_data_pimai_identifier_mapping
     changeTrackingPolicy: DEFERRED_EXPLICIT

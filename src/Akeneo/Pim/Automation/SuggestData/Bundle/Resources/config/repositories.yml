@@ -14,4 +14,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - 'Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription'
+            - 'Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription'
