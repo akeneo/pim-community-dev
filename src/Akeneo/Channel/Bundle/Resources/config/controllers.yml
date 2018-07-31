@@ -42,3 +42,12 @@ services:
             - '@pim_catalog.remover.channel'
             - '@pim_catalog.factory.channel'
             - '@validator'
+
+    pim_api.controller.currency:
+        class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\CurrencyController'
+        arguments:
+            - '@pim_api.repository.currency'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '%pim_api.configuration%'

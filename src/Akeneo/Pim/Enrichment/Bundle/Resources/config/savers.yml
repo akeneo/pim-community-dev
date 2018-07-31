@@ -82,3 +82,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_comment.entity.comment.class%'
+
+    pim_comment.saver.comment:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_comment.entity.comment.class%'

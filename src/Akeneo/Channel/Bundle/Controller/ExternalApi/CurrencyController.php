@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
+namespace Akeneo\Channel\Bundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;

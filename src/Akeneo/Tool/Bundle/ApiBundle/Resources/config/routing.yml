@@ -1,21 +1,5 @@
-category:
-    resource: '@PimApiBundle/Resources/config/routing/category.yml'
-    prefix: /rest/v1
-
-product:
-    resource: '@PimApiBundle/Resources/config/routing/product.yml'
-    prefix: /rest/v1
-
-product_model:
-    resource: '@PimApiBundle/Resources/config/routing/product_model.yml'
-    prefix: /rest/v1
-
 media:
     resource: '@PimApiBundle/Resources/config/routing/media.yml'
-    prefix: /rest/v1
-
-currency:
-    resource: '@PimApiBundle/Resources/config/routing/currency.yml'
     prefix: /rest/v1
 
 fos_oauth_server_token:

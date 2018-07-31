@@ -1,7 +1,5 @@
 parameters:
     pim_api.repository.client.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ClientRepository
-    pim_api.repository.product.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductRepository
-    pim_api.repository.attribute.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_api.repository.api_resource.class: Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository
 
 services:
@@ -10,13 +8,6 @@ services:
         arguments:
             - '@fos_oauth_server.entity_manager'
             - '%fos_oauth_server.model.client.class%'
-
-    pim_api.repository.product:
-        class: '%pim_api.repository.product.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
-            - '@pim_catalog.repository.product'
 
     pim_api.repository.attribute_option:
         class: '%pim_api.repository.api_resource.class%'
