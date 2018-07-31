@@ -25,10 +25,9 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
 {
     public function let(
         AttributeRepositoryInterface $repository,
-        AttributeFactoryRegistryInterface $registry,
-        ExistsAttributeInterface $existsAttribute
+        AttributeFactoryRegistryInterface $registry
     ) {
-        $this->beConstructedWith($registry, $repository, $existsAttribute);
+        $this->beConstructedWith($registry, $repository);
     }
 
     function it_is_initializable()
@@ -55,38 +54,6 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         $repository->create($textAttribute)->shouldBeCalled();
 
         $this->__invoke($textCommand);
-    }
-
-    function it_throws_if_the_enriched_entity_already_has_this_attribute_code(
-        AttributeRepositoryInterface $repository,
-        ExistsAttributeInterface $existsAttribute
-    ) {
-        $textAttribute = $this->getAttribute();
-        $textCommand = new CreateTextAttributeCommand();
-        $textCommand->identifier['enriched_entity_identifier'] = 'designer';
-        $textCommand->identifier['identifier'] = 'name';
-
-        $existsAttribute->withIdentifier(Argument::cetera())->willReturn(true);
-        $repository->create($textAttribute)->shouldNotBeCalled();
-
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textCommand]);
-    }
-
-    function it_throws_if_attribute_order_is_already_taken_by_another_attribute(
-        AttributeRepositoryInterface $repository,
-        ExistsAttributeInterface $existsAttribute
-    ) {
-        $textAttribute = $this->getAttribute();
-        $textCommand = new CreateTextAttributeCommand();
-        $textCommand->identifier['enriched_entity_identifier'] = 'designer';
-        $textCommand->identifier['identifier'] = 'name';
-        $textCommand->order = 5;
-
-        $existsAttribute->withIdentifier(Argument::cetera())->willReturn(false);
-        $existsAttribute->withEnrichedEntityIdentifierAndOrder(Argument::cetera())->willReturn(true);
-        $repository->create($textAttribute)->shouldNotBeCalled();
-
-        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textCommand]);
     }
 
     private function getAttribute(): TextAttribute

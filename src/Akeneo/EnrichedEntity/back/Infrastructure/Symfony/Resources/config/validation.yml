@@ -69,6 +69,9 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
+    group_sequence:
+        - CreateImageAttributeCommand
+        - other_constraints
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
@@ -90,3 +93,6 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttribute
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
         allowedExtensions:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
+    constraints:
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldBeUnique: { groups: [other_constraints] }
+#        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EnrichedEntityIdentifierAndAttributeOrderShouldBeUnique: ~

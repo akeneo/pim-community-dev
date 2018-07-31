@@ -36,3 +36,7 @@ services:
             - '@oro_security.acl.object_identity_factory'
             - '@logger'
 
+    akeneo_ee_integration_tests.helper.database_helper:
+        class: 'Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Helper\DatabaseHelper'
+        arguments:
+            - '@database_connection'

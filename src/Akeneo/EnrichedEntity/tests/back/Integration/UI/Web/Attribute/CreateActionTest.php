@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_RECORD_ROUTE = 'akeneo_enriched_entities_attribute_create_rest';
+    private const CREATE_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_create_rest';
 
     /** @var Client */
     private $client;
@@ -39,7 +39,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -78,7 +78,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -119,7 +119,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -165,7 +165,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => $enrichedEntityIdentifierURL,
             ],
@@ -201,13 +201,45 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     /**
      * @test
+     */
+    public function it_returns_an_error_when_the_attribute_identifier_is_not_unique() {
+        $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
+        $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
+        $content = [
+            'identifier'                 => [
+                'identifier'                 => 'name',
+                'enriched_entity_identifier' => 'designer'
+            ],
+            'enriched_entity_identifier' => 'designer',
+            'code'                       => 'name',
+            'labels'                     => [],
+            'order'                      => 0,
+            'type'                       => 'image',
+            'required'                   => false,
+            'value_per_channel'          => false,
+            'value_per_locale'           => false,
+            'max_file_size'              => 200.1,
+            'allowed_extensions'         => ['pdf'],
+        ];
+        $method = 'POST';
+
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ATTRIBUTE_ROUTE, $urlParameters, $method, $headers,
+            $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ATTRIBUTE_ROUTE, $urlParameters, $method, $headers,
+            $content);
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '');
+    }
+
+    /**
+     * @test
      * @dataProvider invalidOrders
      */
     public function it_returns_an_if_the_order_is_not_valid($order, string $expectedResponse)
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -249,7 +281,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -293,7 +325,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -337,7 +369,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -381,7 +413,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -425,7 +457,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -465,7 +497,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->revokeCreationRights();
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -520,7 +552,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 null,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":200.1,"allowedExtensions":["pdf"],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"identifier","invalidValue":{"identifier":null,"enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":200.1,"allowedExtensions":["pdf"],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"identifier","invalidValue":{"identifier":null,"enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":200.1,"allowedExtensions":["pdf"],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":200.1,"allowedExtensions":["pdf"],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":200.1,"allowedExtensions":["pdf"],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"identifier","invalidValue":{"identifier":null,"enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":200.1,"allowedExtensions":["pdf"],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Attribute identifier is an integer'                                                            => [
                 1234123,
@@ -555,7 +587,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_RECORD_ROUTE,
+            self::CREATE_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'celine_dion',
             ],
@@ -570,7 +602,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'order is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":200,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":null,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"order","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":200,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":null,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"order","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should be of type float.","parameters":{"{{ value }}":"200","{{ type }}":"float"},"plural":null,"message":"This value should be of type float.","root":{"maxFileSize":200,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":null,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"maxFileSize","invalidValue":200,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":200,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":null,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"order","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should be of type float.","parameters":{"{{ value }}":"200","{{ type }}":"float"},"plural":null,"message":"This value should be of type float.","root":{"maxFileSize":200,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":null,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"maxFileSize","invalidValue":200,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'order is a string' => [
                 '1',
@@ -656,7 +688,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Allowed extensions is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"array"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":150.1,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":[],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This field is missing.","parameters":{"{{ field }}":"0"},"plural":null,"message":"This field is missing.","root":{"maxFileSize":150.1,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":[],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":150.1,"allowedExtensions":null,"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Allowed extensions is a list of integers' => [
                 ['pdf', 1, 'png', 2],

@@ -136,4 +136,3 @@ services:
         arguments:
             - '@akeneo_enrichedentity.application.registry.attribute_factory'
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
-            - '@akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute'
