@@ -13,11 +13,9 @@ define(
         'oro/translator',
         'pim/job/common/edit/launch',
         'pim/router',
-        'oro/navigation',
-        'oro/messenger',
         'oro/loading-mask'
     ],
-    function ($, _, __, BaseLaunch, router, Navigation, messenger, LoadingMask) {
+    function ($, _, __, BaseLaunch, router, LoadingMask) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -49,7 +47,7 @@ define(
                         processData: false
                     })
                     .then(function (response) {
-                        Navigation.getInstance().setLocation(response.redirectUrl);
+                        router.setLocation(response.redirectUrl);
                     }.bind(this))
                     .fail(this.handleErrors)
                     .always(function () {
@@ -58,7 +56,7 @@ define(
                 } else {
                     $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
-                            Navigation.getInstance().setLocation(response.redirectUrl);
+                            router.setLocation(response.redirectUrl);
                         })
                         .fail(this.handleErrors)
                         .always(function () {
