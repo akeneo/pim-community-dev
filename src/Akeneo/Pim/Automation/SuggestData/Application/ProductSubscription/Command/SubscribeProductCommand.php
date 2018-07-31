@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
+namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 /**
  * This is a DTO holding the id of a product which is being subscribed
