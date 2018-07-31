@@ -9,7 +9,6 @@ use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -37,9 +36,6 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
-    /** @var BulkObjectDetacherInterface */
-    private $bulkObjectDetacher;
-
     /** @var BulkSaverInterface */
     private $bulkProductSaver;
 
@@ -47,25 +43,20 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     private $cacheClearer;
 
     /**
-     * @todo merge: Remove the object detacher on master, and remove nullable from the cache clearer.
-     *
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
      * @param BulkSaverInterface                    $bulkProductSaver
-     * @param BulkObjectDetacherInterface           $bulkObjectDetacher
      * @param EntityManagerClearerInterface|null    $cacheClearer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $bulkProductSaver,
-        BulkObjectDetacherInterface $bulkObjectDetacher,
         EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->familyRepository = $familyRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->bulkProductSaver = $bulkProductSaver;
-        $this->bulkObjectDetacher = $bulkObjectDetacher;
         $this->cacheClearer = $cacheClearer;
     }
 
@@ -123,22 +114,13 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
 
             if (self::BATCH_SIZE === count($productBatch)) {
                 $this->bulkProductSaver->saveAll($productBatch);
-                if (null !== $this->cacheClearer) {
-                    $this->cacheClearer->clear();
-                } else {
-                    $this->bulkObjectDetacher->detachAll($productBatch);
-                }
-
+                $this->cacheClearer->clear();
                 $productBatch = [];
             }
         }
 
         $this->bulkProductSaver->saveAll($productBatch);
-        if (null !== $this->cacheClearer) {
-            $this->cacheClearer->clear();
-        } else {
-            $this->bulkObjectDetacher->detachAll($productBatch);
-        }
+        $this->cacheClearer->clear();
     }
 
     /**

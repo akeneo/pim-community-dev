@@ -8,7 +8,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -26,14 +25,12 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $bulkProductSaver,
-        BulkObjectDetacherInterface $bulkObjectDetacher,
         EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
             $familyRepository,
             $productQueryBuilderFactory,
             $bulkProductSaver,
-            $bulkObjectDetacher,
             $cacheClearer
         );
     }
@@ -86,7 +83,6 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
     function it_does_not_recompute_if_the_given_family_code_is_invalid(
         $familyRepository,
         $bulkProductSaver,
-        $bulkObjectDetacher,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
@@ -95,7 +91,6 @@ class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('unknown_family')->willReturn(null);
 
         $bulkProductSaver->saveAll()->shouldNotBeCalled();
-        $bulkObjectDetacher->detachAll()->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->shouldThrow(new \InvalidArgumentException('Family not found, "unknown_family" given'))

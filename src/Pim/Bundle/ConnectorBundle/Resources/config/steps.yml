@@ -57,28 +57,6 @@ services:
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
 
-    pim_connector.step.csv_family.compute_data_related_to_family_variants:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - 'compute_data_related_to_family_variants'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.tasklet.csv_family.compute_data_related_to_family_variants'
-
-    pim_connector.tasklet.csv_family.compute_data_related_to_family_variants:
-        class: '%pim_connector.tasklet.family.compute_data_related_to_family_variants.class%'
-        arguments:
-            - '@pim_catalog.repository.family'
-            - '@pim_catalog.query.product_model_query_builder_factory'
-            - '@pim_connector.reader.file.csv_family'
-            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
-            - '@validator'
-            - '@pim_catalog.saver.product_model'
-            - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_connector.doctrine.cache_clearer'
-            - '@akeneo_batch.job_repository'
-
     pim_connector.step.csv_family.compute_data_related_to_family_root_product_models:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
@@ -136,7 +114,6 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_connector.reader.file.csv_family'
             - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
@@ -414,28 +391,6 @@ services:
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
 
-    pim_connector.step.xlsx_family.compute_data_related_to_family_variants:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - 'compute_data_related_to_family_variants'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants'
-
-    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants:
-        class: '%pim_connector.tasklet.family.compute_data_related_to_family_variants.class%'
-        arguments:
-            - '@pim_catalog.repository.family'
-            - '@pim_catalog.query.product_model_query_builder_factory'
-            - '@pim_connector.reader.file.xlsx_family'
-            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
-            - '@validator'
-            - '@pim_catalog.saver.product_model'
-            - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_connector.doctrine.cache_clearer'
-            - '@akeneo_batch.job_repository'
-
     pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
@@ -493,7 +448,6 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_connector.reader.file.xlsx_family'
             - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'

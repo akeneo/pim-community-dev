@@ -37,13 +37,11 @@ class ComputeProductModelsDescendantsTasklet implements TaskletInterface
      * @param ProductModelRepositoryInterface $productModelRepository
      * @param SaverInterface                  $productModelDescendantsSaver
      * @param EntityManagerClearerInterface   $cacheClearer
-     *
-     * @TODO: Remove null for cache clearer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         SaverInterface $productModelDescendantsSaver,
-        EntityManagerClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDescendantsSaver = $productModelDescendantsSaver;
@@ -63,8 +61,6 @@ class ComputeProductModelsDescendantsTasklet implements TaskletInterface
      *
      * As we used cache clearer on product model descendants saver,
      * We should hydrate models one per one and we don't need to detach entities anymore
-     *
-     * @TODO: Remove null test on cache clearer
      */
     public function execute(): void
     {
@@ -74,9 +70,7 @@ class ComputeProductModelsDescendantsTasklet implements TaskletInterface
         foreach ($productModelCodes as $productModelCode) {
             $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
             $this->productModelDescendantsSaver->save($productModel);
-            if (null !== $this->cacheClearer) {
-                $this->cacheClearer->clear();
-            }
+            $this->cacheClearer->clear();
         }
     }
 }
