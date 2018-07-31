@@ -120,6 +120,8 @@ define([
                 this.renderExtensions();
                 this.delegateEvents();
             }.bind(this));
+
+            return this;
         },
 
         /**
