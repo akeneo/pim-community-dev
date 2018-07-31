@@ -52,3 +52,11 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_datagrid.updater.datagrid_view'
             - '@pim_datagrid.factory.datagrid_view'
+
+    pim_datagrid.controller.productgrid:
+        class: Oro\Bundle\PimDataGridBundle\Controller\ProductGridController
+        arguments:
+            - '@pim_datagrid.product_grid.query.list_attributes'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.extension.filter'
+            - '@pim_user.context.user'
