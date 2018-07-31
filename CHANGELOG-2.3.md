@@ -7,7 +7,7 @@
 - GITHUB-8550: Exclude more folders in typescript to improve build time
 - GITHUB-8578: Fixed wrong labels displayed in the "active/inactive" filter of user grid" (Thanks [oliverde8](https://github.com/oliverde8)!)
 - PIM-7551: Fix issue on product model import when using custom column headers
-- PIM-7541: Force the date string value to be datetime object within the product and product model API controller.
+- PIM-7541: Fix issue on filtered search on created and updated product and product model properties. Date must be instanciated on server timezone.
 
 # 2.3.2 (2018-07-24)
 

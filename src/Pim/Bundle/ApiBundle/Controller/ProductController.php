@@ -561,6 +561,7 @@ class ProductController
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
                 if (in_array($propertyCode, ['created', 'updated'])) {
+                    //PIM-7541 Create the date with the server timezone configuration. Do not force it to UTC timezone.
                     $value = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
                 }
 
