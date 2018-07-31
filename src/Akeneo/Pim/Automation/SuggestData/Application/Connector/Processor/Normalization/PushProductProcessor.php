@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Connector\Processor\Normalization;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;

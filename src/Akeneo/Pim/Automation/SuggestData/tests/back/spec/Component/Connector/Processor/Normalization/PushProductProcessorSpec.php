@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Connector\Processor\Normalization;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Application\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Connector\Processor\Normalization\PushProductProcessor;
+use Akeneo\Pim\Automation\SuggestData\Application\Connector\Processor\Normalization\PushProductProcessor;
 
 class PushProductProcessorSpec extends ObjectBehavior
 {
