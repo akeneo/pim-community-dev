@@ -3,3 +3,12 @@ pim_datagrid_load:
     defaults: { _controller: pim_datagrid.controller.datagrid:loadAction }
     methods: ['GET']
 
+pim_datagrid_productgrid_attributes_filters:
+    path: /product-grid/attributes-filters
+    defaults: { _controller: pim_datagrid.controller.productgrid:getAttributesFiltersAction }
+    methods: ['GET']
+
+pim_datagrid_productgrid_attributes_columns:
+    path: /product-grid/attributes-columns
+    defaults: { _controller: pim_datagrid.controller.productgrid:getAttributesColumnsAction }
+    methods: ['GET']

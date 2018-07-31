@@ -1,0 +1,5 @@
+services:
+    pim_datagrid.product_grid.query.list_attributes:
+        class: Oro\Bundle\PimDataGridBundle\Query\Sql\ListAttributesUseableInProductGrid
+        arguments:
+            - '@database_connection'
