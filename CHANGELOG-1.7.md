@@ -2,17 +2,49 @@
 
 ## Bug fixes
 
+- PIM-7538: Fix persistent grid filters
+
+# 1.7.28 (2018-07-26)
+
+## Bug fixes
+
+- PIM-7453: Forbid to remove a role if user won't have role after deletion
+- PIM-7532: Improve the standard format for products associated to avoid performance impact
+- PIM-7540: Fix translations of boolean attributes
+
+# 1.7.27 (2018-07-24)
+
+## Bug fixes
+
+- GITHUB-8521: Update reference data configuration following the PIM-7456
+
+# 1.7.26 (2018-07-23)
+
+## Bug fixes
+
 - PIM-7429: Fix category tab in product edit form
 - PIM-7523: Fix accessibility for boolean switches
 - PIM-7473: Enables cache to avoid reloading validation mapping files
 - PIM-7459: Fix completeness performances issues with high number of locales on MongoDB
 - PIM-7525: Add loading mask to avoid multiple import launches
+- PIM-7456: Security vulnerabilities in dependencies.
+
+## BC breaks:
+
+### AppKernel
+
+- Remove `Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle` and `APY\JsFormValidationBundle\APYJsFormValidationBundle`
+
+### Routing
+
+- Remove routing from `APYJsFormValidationBundle`
 
 # 1.7.25 (2018-07-06)
 
 ## Bug fixes
 
 - PIM-7466: do not escape quotes for translation
+- PIM-7474: Show job name label in job profile header
 
 # 1.7.24 (2018-07-05)
 
@@ -31,7 +63,6 @@
 ## Bug fixes
 
 - PIM-7400: Fix 'ensure-indexes' timeout command
-- PIM-7456: Security vulnerabilities in dependencies
 
 # 1.7.22 (2018-06-05)
 
@@ -254,7 +285,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 
 ### Classes
 
-- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType` 
+- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
 
 ### Constructors
 

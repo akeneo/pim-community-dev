@@ -105,6 +105,13 @@ define([
              */
             getErrorDialog: function(message) {
                 if (!this.errorModal) {
+                    try {
+                        var response = JSON.parse(response);
+                        var message = response.message;
+                    } catch(e) {
+                        var message = __('error.removing.' + this.getEntityHint());
+                    }
+
                     this.errorModal = new Modal({
                         title: __('Delete Error'),
                         content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
