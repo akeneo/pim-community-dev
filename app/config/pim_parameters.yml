@@ -51,6 +51,9 @@ parameters:
     # Maximum number of resources when updating a list of resources
     api_input_max_resources_number: 100
 
+    # Maximum number of attributes returned per paginated response
+    pim_datagrid_productgrid_attributes_per_page: 25
+
     # Files used as configuration for the Elasticsearch index
     elasticsearch_index_configuration_files:
         - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/index_configuration.yml'

@@ -146,12 +146,16 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Return attribute ids to add to the conf
      *
-     * @param string[]|null $attributeCodes
+     * @param string[] $attributeCodes
      *
      * @return integer[]
      */
-    protected function getAttributeIds($attributeCodes = null)
+    protected function getAttributeIds($attributeCodes)
     {
+        if (empty($attributeCodes)) {
+            return [];
+        }
+
         // as now only attributes usable as grid filters are usable in the grid,
         // we need to add the variant group axes (even if they are not usable as grid filter)
         // as usable in the grid (to be displayed in the columns)
@@ -348,7 +352,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $attributeIds = $this->getAttributeIds();
+        $attributeIds = $this->getAttributeIdsUsed();
         if (empty($attributeIds)) {
             return [];
         }
@@ -360,9 +364,32 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
+     * Get Ids of the attributes used in the datagrid as filter or column
+     *
+     * @return integer[]
+     */
+    private function getAttributeIdsUsed()
+    {
+        $filterValues = $this->requestParams->get('_filter');
+        unset($filterValues['scope']);
+        unset($filterValues['category']);
+        $attributesUsedAsFilter = array_keys($filterValues);
+
+        $userColumns = $this->configuration->offsetGetByPath(
+            sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY), []
+        );
+        $baseColumns = array_keys($this->configuration->offsetGet('columns'));
+        $attributesUsedAsColumn = array_diff($userColumns, $baseColumns);
+
+        $attributeCodesUsed = array_unique(array_merge($attributesUsedAsFilter, $attributesUsedAsColumn));
+
+        return $this->getAttributeIds($attributeCodesUsed);
+    }
+
+    /**
      * Get user configured datagrid columns
      *
-     * @return null|string[]
+     * @return string[]
      */
     protected function getUserGridColumns()
     {
@@ -372,7 +399,7 @@ class ContextConfigurator implements ConfiguratorInterface
             return explode(',', $params['view']['columns']);
         }
 
-        return null;
+        return [];
     }
 
     /**
