@@ -16,9 +16,10 @@ define(
         'pim/router',
         'pim/common/property',
         'oro/messenger',
+        'oro/loading-mask',
         'pim/template/export/common/edit/launch'
     ],
-    function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, template) {
+    function ($, _, __, BaseForm, Routing, propertyAccessor, messenger, LoadingMask, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -58,12 +59,17 @@ define(
              * Launch the job
              */
             launch: function () {
+                var loadingMask = new LoadingMask();
+                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 $.post(this.getUrl())
                     .then(function (response) {
-                        router.redirect(response.redirectUrl);
+                        Routing.redirect(response.redirectUrl);
                     })
                     .fail(function () {
                         messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
+                    })
+                    .always(function () {
+                        loadingMask.hide().$el.remove();
                     });
             },
 
