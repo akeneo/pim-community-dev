@@ -136,6 +136,34 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_an_error_when_the_record_identifier_is_not_unique() {
+        $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
+        $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
+        $content = [
+            'identifier'                 => [
+                'identifier'                 => 'starck',
+                'enriched_entity_identifier' => 'designer',
+            ],
+            'enriched_entity_identifier' => 'designer',
+            'code'                       => 'starck',
+            'labels'                     => ['fr_FR' => 'Philippe Starck'],
+
+        ];
+        $method = 'POST';
+        $this->webClientHelper->callRoute($this->client, self::CREATE_RECORD_ROUTE, $urlParameters, $method, $headers,
+            $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_RECORD_ROUTE, $urlParameters, $method, $headers,
+            $content);
+        $this->webClientHelper->assertResponse(
+            $this->client->getResponse(),
+            Response::HTTP_BAD_REQUEST,
+            '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer","%code%":"starck"},"plural":null,"message":"The record identifier already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"identifier":{"identifier":"starck","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"","invalidValue":{"identifier":{"identifier":"starck","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+        );
+    }
+
     /** @test */
     public function it_returns_an_error_when_the_user_do_not_have_the_rights()
     {
