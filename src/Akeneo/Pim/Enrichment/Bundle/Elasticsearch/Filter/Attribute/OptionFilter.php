@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
@@ -20,7 +21,7 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var AttributeOptionRepository */
+    /** @var AttributeOptionRepositoryInterface */
     protected $attributeOptionRepository;
 
     /**
@@ -31,7 +32,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        AttributeOptionRepository $attributeOptionRepository,
+        AttributeOptionRepositoryInterface $attributeOptionRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
