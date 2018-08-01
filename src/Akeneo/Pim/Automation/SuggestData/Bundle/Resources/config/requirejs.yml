@@ -70,7 +70,6 @@ config:
         pimee/settings/mapping/tabs: akeneosuggestdata/js/settings/mapping/tabs
         pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector
         pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping
-        pimee/settings/mapping/subscribe: akeneosuggestdata/js/settings/mapping/subscribe
         pimee/settings/mapping/index: akeneosuggestdata/js/settings/mapping/index
         pimee/settings/mapping/state: akeneosuggestdata/js/settings/mapping/state
 
@@ -82,6 +81,5 @@ config:
         pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html
         pimee/template/settings/mapping/attributes-mapping: akeneosuggestdata/templates/settings/mapping/attributes-mapping.html
         pimee/template/settings/mapping/tabs: akeneosuggestdata/templates/settings/mapping/tabs.html
-        pimee/template/settings/mapping/subscribe: akeneosuggestdata/templates/settings/mapping/subscribe.html
         pimee/template/settings/mapping/family-mapping: akeneosuggestdata/templates/settings/mapping/family-mapping.html
         pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html
