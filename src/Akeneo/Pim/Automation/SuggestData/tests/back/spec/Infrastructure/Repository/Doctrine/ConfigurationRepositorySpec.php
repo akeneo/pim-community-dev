@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ConfigurationRepository;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ConfigurationRepository;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**

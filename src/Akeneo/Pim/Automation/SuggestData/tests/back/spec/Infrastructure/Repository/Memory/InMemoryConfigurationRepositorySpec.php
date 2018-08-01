@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
-use Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryConfigurationRepository;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryConfigurationRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;

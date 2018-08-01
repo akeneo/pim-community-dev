@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\tests\back\spec\Bundle\Doctrine\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
