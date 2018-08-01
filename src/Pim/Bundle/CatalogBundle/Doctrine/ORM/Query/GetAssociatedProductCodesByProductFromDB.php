@@ -26,20 +26,16 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
     public function getCodes($productId, $associationTypeId)
     {
         $associations = $this->entityManager->createQueryBuilder()
-            ->select('v.varchar')
+            ->select('p.identifier')
             ->from($this->associationClass, 'a')
             ->innerJoin('a.products', 'p')
-            ->innerJoin('p.values', 'v')
-            ->innerJoin('v.attribute', 'attr')
             ->where('a.owner = :ownerId')
-            ->andWhere('attr.type = :identifierProductValue')
             ->andWhere('a.associationType = :associationTypeId')
             ->setParameters([
                 'ownerId' => $productId,
-                'identifierProductValue' => AttributeTypes::IDENTIFIER,
                 'associationTypeId' => $associationTypeId,
             ])
-            ->orderBy('v.varchar')
+            ->orderBy('p.identifier')
             ->getQuery()
             ->getResult();
 
