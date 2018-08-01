@@ -38,7 +38,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
-            - '@pim_catalog.saver.product'
+            - '@pimee_workflow.saver.product_delegating'
 
     pimee_product_asset.mass_upload.add_asset_to_product_model:
         class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues'
@@ -46,7 +46,7 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.updater.product_model'
             - '@pim_catalog.validator.product_model'
-            - '@pim_catalog.saver.product_model'
+            - '@pimee_workflow.saver.product_model_delegating'
 
     pimee_product_asset.mass_upload_processor:
         class: '%pimee_product_asset.mass_upload_processor.class%'
