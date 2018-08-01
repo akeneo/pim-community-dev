@@ -43,9 +43,9 @@ datagrid:
                     code: username
             delete_link:
                 type: url
-                route: pim_user_user_delete
+                route: pim_user_user_rest_delete
                 params:
-                    - id
+                    identifier: username
         sorters:
             columns:
                 username:

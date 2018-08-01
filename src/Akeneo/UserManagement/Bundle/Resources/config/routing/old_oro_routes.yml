@@ -71,39 +71,3 @@ pim_user_security_check:
 pim_user_security_logout:
     path: /user/logout
     defaults: { _controller: PimUserBundle:Security:logout }
-
-pim_user_view:
-    path: /user/view/{id}
-    defaults: { _controller: PimUserBundle:User:view }
-    requirements:
-        id: \d+
-
-pim_user_profile_update:
-    path: /user/profile/edit
-    defaults: { _controller: PimUserBundle:User:updateProfile }
-
-pim_user_create:
-    path: /user/create
-    defaults: { _controller: PimUserBundle:User:create }
-
-# TODO Move
-pim_user_edit:
-    path: /user/{code}/edit
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-#pim_user_update:
-#    path: /user/update/{id}
-#    defaults: { _controller: PimUserBundle:User:update, id: 0 }
-#    requirements:
-#        id: \d+
-
-pim_user_index:
-    path: /user/
-
-pim_user_user_delete:
-    path: /user/delete/{id}
-    defaults: { _controller: PimUserBundle:User:delete }
-    requirements:
-        id: \d+
-    methods: [DELETE]

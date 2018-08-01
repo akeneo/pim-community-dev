@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserController
+class UserController extends Controller
 {
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -77,6 +77,7 @@ class UserController
         SaverInterface $saver,
         NormalizerInterface $constraintViolationNormalizer,
         SimpleFactoryInterface $factory,
+
         UserPasswordEncoderInterface $encoder
     ) {
         $this->tokenStorage = $tokenStorage;
@@ -166,6 +167,11 @@ class UserController
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function createAction(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
@@ -195,6 +201,29 @@ class UserController
         $this->saver->save($user);
 
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @return Response
+     */
+    public function deleteAction(Request $request, $identifier): Response
+    {
+        $user = $this->getUserOr404($identifier);
+
+        $token = $this->tokenStorage->getToken();
+        $currentUser = null !== $token ? $token->getUser() : null;
+        if ($currentUser !== null && $user->getId() === $currentUser->getId()) {
+            return new Response(null, Response::HTTP_FORBIDDEN);
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($user);
+        $em->flush();
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     private function getUserOr404($username): ?UserInterface
