@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Component\DataProvider;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderRegistry;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderRegistry;
 use PhpSpec\ObjectBehavior;
 
 class DataProviderFactorySpec extends ObjectBehavior
