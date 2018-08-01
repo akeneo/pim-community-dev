@@ -908,20 +908,20 @@ config:
         pim/form/common/fields/simple-select-async:     pimenrich/js/form/common/fields/simple-select-async
         pim/form/common/fields/multi-select-async:      pimenrich/js/form/common/fields/multi-select-async
         pim/form/common/fields/text:                    pimenrich/js/form/common/fields/text
-        pim/form/common/fields/password:                pimenrich/js/form/common/fields/password
+        pim/form/common/fields/password:                pimenrich/js/form/common/fields/password.ts
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
-        pim/form/common/fields/media:                   pimenrich/js/form/common/fields/media
+        pim/form/common/fields/media:                   pimenrich/js/form/common/fields/media.ts
 
         # TODO Move all this to 'user' namespace
-        pim/form/common/fields/available-locales:       pimenrich/js/form/common/fields/available-locales
-        pim/form/common/fields/scope:                   pimenrich/js/form/common/fields/scope
-        pim/form/common/fields/category-tree:           pimenrich/js/form/common/fields/category-tree
-        pim/form/common/fields/ui-locale:               pimenrich/js/form/common/fields/ui-locale
-        pim/form/common/fields/timezone:                pimenrich/js/form/common/fields/timezone
-        pim/form/common/fields/user-group:              pimenrich/js/form/common/fields/user-group
-        pim/form/common/fields/user-role:               pimenrich/js/form/common/fields/user-role
-        pim/form/common/fields/default-product-grid-view: pimenrich/js/form/common/fields/default-product-grid-view
+        pim/form/common/fields/available-locales:         pimenrich/js/form/common/fields/available-locales.ts
+        pim/form/common/fields/scope:                     pimenrich/js/form/common/fields/scope.ts
+        pim/form/common/fields/category-tree:             pimenrich/js/form/common/fields/category-tree.ts
+        pim/form/common/fields/ui-locale:                 pimenrich/js/form/common/fields/ui-locale.ts
+        pim/form/common/fields/timezone:                  pimenrich/js/form/common/fields/timezone.ts
+        pim/form/common/fields/user-group:                pimenrich/js/form/common/fields/user-group.ts
+        pim/form/common/fields/user-role:                 pimenrich/js/form/common/fields/user-role.ts
+        pim/form/common/fields/default-product-grid-view: pimenrich/js/form/common/fields/default-product-grid-view.ts
 
         # Values fields
         pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean
