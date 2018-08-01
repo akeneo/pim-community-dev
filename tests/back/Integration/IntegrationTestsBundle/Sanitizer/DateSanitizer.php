@@ -18,7 +18,7 @@ namespace Akeneo\Test\IntegrationTestsBundle\Sanitizer;
 class DateSanitizer
 {
     const DATE_FIELD_COMPARISON = 'this is a date formatted to ISO-8601';
-    const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2}$#';
+    const DATE_FIELD_PATTERN = '#[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\+|\-)[0-9]{2}:[0-9]{2}$#';
 
     /**
      * Replaces date by self::DATE_FIELD_COMPARISON.

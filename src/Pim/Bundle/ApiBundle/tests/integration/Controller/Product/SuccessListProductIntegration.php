@@ -1071,6 +1071,76 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    public function testListProductsWithSearchOnDateAttributesWithPositiveTimeZoneOffset()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        date_default_timezone_set('Pacific/Kiritimati');
+
+        $currentDate = (new \DateTime('now'))->modify("- 30 minutes")->format('Y-m-d H:i:s');
+
+        $search = sprintf('{"updated":[{"operator":">","value":"%s"}]}', $currentDate);
+        $client->request('GET', 'api/rest/v1/products?pagination_type=page&limit=10&search=' . $search);
+        $searchEncoded = rawurlencode($search);
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [            
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithSearchOnDateAttributesWithNegativeTimeZoneOffset()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
+        $client = $this->createAuthenticatedClient();
+
+        date_default_timezone_set('America/Los_Angeles');
+
+        $currentDate = (new \DateTime('now'))->modify("+ 30 minutes")->format('Y-m-d H:i:s');
+
+        $search = sprintf('{"updated":[{"operator":"<","value":"%s"}]}', $currentDate);
+        $client->request('GET', 'api/rest/v1/products?pagination_type=page&limit=10&search=' . $search);
+        $searchEncoded = rawurlencode($search);
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [            
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
     public function testOffsetPaginationListProductsWithMultiplePQBFilters()
     {
         $client = $this->createAuthenticatedClient();
