@@ -43,7 +43,7 @@
                                     <div class="AknButtonList AknButtonList--right">
                                         <button
                                             class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
-                                            data-product="{{ record.getValue('product').identifier }}"
+                                            data-product="{{ record.getValue('search_id') }}"
                                             data-document-type="{{ record.getValue('document_type') }}"
                                             data-scope="{{ change.scope }}"
                                             data-locale="{{ change.locale }}"
@@ -56,7 +56,7 @@
                                         </button>
                                         <button
                                             class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
-                                            data-product="{{ record.getValue('product').identifier }}"
+                                            data-product="{{ record.getValue('search_id') }}"
                                             data-document-type="{{ record.getValue('document_type') }}"
                                             data-scope="{{ change.scope }}"
                                             data-locale="{{ change.locale }}"
