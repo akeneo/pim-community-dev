@@ -6,3 +6,14 @@ imports:
     - { resource: ../../src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    csrf_protection: true
+    profiler:
+        collect: false
+
+swiftmailer:
+    disable_delivery: true
