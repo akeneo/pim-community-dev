@@ -111,13 +111,13 @@ class NavigationContext extends PimContext implements PageObjectAware
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
         }, 'Cannot open the login page');
 
-        $password = null !== $password ? $password : $username;
-        $this->getSession()->getPage()->fillField('_username', $username);
-        $this->getSession()->getPage()->fillField('_password', $password);
+        $this->spin(function () use ($password) {
+            $password = null !== $password ? $password : $username;
+            $this->getSession()->getPage()->fillField('_username', $username);
+            $this->getSession()->getPage()->fillField('_password', $password);
 
-        $this->getSession()->getPage()->find('css', '.form-signin button')->press();
+            $this->getSession()->getPage()->find('css', '.form-signin button')->press();
 
-        $this->spin(function () {
             return $this->getSession()->getPage()->find('css', '.AknWidget');
         }, sprintf('Can not reach Dashboard after login with %s', $username));
     }
