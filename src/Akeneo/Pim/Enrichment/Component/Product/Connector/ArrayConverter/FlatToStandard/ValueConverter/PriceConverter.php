@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
  * Converts flat price into structured one.

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
  * Converts date value into structured one.

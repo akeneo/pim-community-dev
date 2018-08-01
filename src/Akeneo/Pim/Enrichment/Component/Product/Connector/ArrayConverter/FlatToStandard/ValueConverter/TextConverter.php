@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
- * Converts flat media value into structured one.
+ * Converts text value into structured one.
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class MediaConverter extends AbstractValueConverter
+class TextConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -29,7 +29,11 @@ class MediaConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        $data = '' !== $value ? $value : null;
+        if ('' !== $value) {
+            $data = (string) $value;
+        } else {
+            $data = null;
+        }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

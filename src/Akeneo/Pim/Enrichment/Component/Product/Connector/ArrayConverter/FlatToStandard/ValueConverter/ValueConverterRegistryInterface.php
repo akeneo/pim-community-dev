@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
 /**
  * Registry of converters.

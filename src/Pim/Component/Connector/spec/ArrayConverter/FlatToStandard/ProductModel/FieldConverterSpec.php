@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductMode
 
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

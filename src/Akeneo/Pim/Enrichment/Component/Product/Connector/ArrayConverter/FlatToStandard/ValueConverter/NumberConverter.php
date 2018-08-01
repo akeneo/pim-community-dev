@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
- * Converts boolean value into structured one.
+ * Converts number value into structured one.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BooleanConverter extends AbstractValueConverter
+class NumberConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -29,12 +29,12 @@ class BooleanConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        if (in_array($value, ['1', '0'])) {
-            $data = (bool) $value;
-        } elseif ('' !== $value) {
-            $data = $value;
-        } else {
+        if ('' === $value) {
             $data = null;
+        } elseif (!$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $value)) {
+            $data = (int) $value;
+        } else {
+            $data = $value;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

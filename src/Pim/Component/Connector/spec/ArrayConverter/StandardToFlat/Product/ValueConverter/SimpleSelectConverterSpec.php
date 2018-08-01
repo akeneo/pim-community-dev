@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 
 class SimpleSelectConverterSpec extends ObjectBehavior
 {

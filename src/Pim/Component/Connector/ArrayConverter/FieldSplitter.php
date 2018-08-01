@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)

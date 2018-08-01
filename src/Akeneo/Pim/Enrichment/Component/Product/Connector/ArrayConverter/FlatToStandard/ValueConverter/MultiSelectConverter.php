@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
- * Converts text value into structured one.
+ * Converts flat multi select value into structured one.
  *
- * @author    Yohan Blain <yohan.blain@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextConverter extends AbstractValueConverter
+class MultiSelectConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -30,15 +30,15 @@ class TextConverter extends AbstractValueConverter
     public function convert(array $attributeFieldInfo, $value)
     {
         if ('' !== $value) {
-            $data = (string) $value;
+            $value = $this->fieldSplitter->splitCollection($value);
         } else {
-            $data = null;
+            $value = [];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],
             'scope'  => $attributeFieldInfo['scope_code'],
-            'data'   => $data,
+            'data'   => $value,
         ]]];
     }
 }

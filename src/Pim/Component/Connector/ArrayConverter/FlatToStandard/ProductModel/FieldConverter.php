@@ -4,8 +4,8 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
  * Converts a flat product model field to a structured format

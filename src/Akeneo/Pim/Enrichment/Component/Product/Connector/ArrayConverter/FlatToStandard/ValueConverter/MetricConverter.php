@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
 
 /**
- * Converts flat multi select value into structured one.
+ * Converts flat metric into structured one.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleSelectConverter extends AbstractValueConverter
+class MetricConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -31,12 +31,23 @@ class SimpleSelectConverter extends AbstractValueConverter
     {
         if ('' === $value) {
             $value = null;
+        } else {
+            $tokens = $this->fieldSplitter->splitUnitValue($value);
+            $data = isset($tokens[0]) ? $tokens[0] : null;
+            $unit = isset($tokens[1]) ? $tokens[1] : null;
+
+            if (null !== $data) {
+                $data = !$attributeFieldInfo['attribute']->isDecimalsAllowed() && preg_match('|^\d+$|', $data) ?
+                    (int) $data : (string) $data;
+            }
+
+            $value = ['amount' => $data, 'unit' => $unit];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],
             'scope'  => $attributeFieldInfo['scope_code'],
-            'data'   => $value,
+            'data'   => $value
         ]]];
     }
 }
