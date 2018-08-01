@@ -6,7 +6,7 @@ services:
     pimee_workflow.product.builder.draft:
         class: '%pimee_workflow.builder.draft.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.factory.product_draft'
@@ -17,7 +17,7 @@ services:
     pimee_workflow.product_model.builder.draft:
         class: '%pimee_workflow.builder.draft.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.factory.product_model_draft'

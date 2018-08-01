@@ -1,6 +1,6 @@
 akeneo_suggest_data_push_product:
     path: /suggest-data/{productId}/push-product
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.suggest_data:pushAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:subscribeAction }
     methods: [GET]
 
 akeneo_suggest_data_connection_index:

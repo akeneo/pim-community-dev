@@ -10,7 +10,6 @@ use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * This class extends the Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
@@ -22,18 +21,16 @@ class IncompleteValuesNormalizer extends BaseIncompleteValuesNormalizer
     private $authorizationChecker;
 
     /**
-     * @param NormalizerInterface              $normalizer
      * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
      * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
      * @param AuthorizationCheckerInterface    $authorizationChecker
      */
     public function __construct(
-        NormalizerInterface $normalizer,
         RequiredValueCollectionFactory $requiredValueCollectionFactory,
         IncompleteValueCollectionFactory $incompleteValueCollectionFactory,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($normalizer, $requiredValueCollectionFactory, $incompleteValueCollectionFactory);
+        parent::__construct($requiredValueCollectionFactory, $incompleteValueCollectionFactory);
 
         $this->authorizationChecker = $authorizationChecker;
     }

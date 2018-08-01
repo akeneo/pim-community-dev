@@ -198,11 +198,13 @@ acceptance:
                 tags: '@acceptance-back'
         suggest-data:
             paths:
-                - 'src/Akeneo/Pim/Automation/SuggestData/tests/features'
+                - '%paths.base%/src/Akeneo/Pim/Automation/SuggestData/tests/features'
             contexts_services:
-                - 'akeneo_acceptance.context.suggest_data.pim_ai'
-                - 'akeneo_acceptance.context.suggest_data.identifiers_mapping'
-                - 'test.attribute.context'
+                - akeneo_acceptance.context.suggest_data.pim_ai
+                - akeneo_acceptance.context.suggest_data.identifiers_mapping
+                - akeneo_acceptance.context.suggest_data.product_subscription
+                - akeneo_acceptance.context.suggest_data.data_fixtures
+                - test.attribute.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:

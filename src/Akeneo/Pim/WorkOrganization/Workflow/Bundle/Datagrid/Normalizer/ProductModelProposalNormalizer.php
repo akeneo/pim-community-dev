@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -23,23 +21,33 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
-class ProductModelProposalNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class ProductModelProposalNormalizer implements NormalizerInterface
 {
-    use NormalizerAwareTrait;
+    /** @var NormalizerInterface */
+    private $standardNormalizer;
+
+    /** @var NormalizerInterface */
+    private $datagridNormlizer;
+
+    /**
+     * @param NormalizerInterface $standardNormalizer
+     * @param NormalizerInterface $datagridNormlizer
+     */
+    public function __construct(NormalizerInterface $standardNormalizer, NormalizerInterface $datagridNormlizer)
+    {
+        $this->standardNormalizer = $standardNormalizer;
+        $this->datagridNormlizer = $datagridNormlizer;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function normalize($proposalModelProduct, $format = null, array $context = []): array
     {
-        if (!$this->normalizer instanceof NormalizerInterface) {
-            throw new \LogicException('Serializer must be a normalizer');
-        }
-
         $data = [];
 
-        $data['changes'] = $this->normalizer->normalize($proposalModelProduct->getValues(), 'standard', $context);
-        $data['createdAt'] = $this->normalizer->normalize($proposalModelProduct->getCreatedAt(), $format, $context);
+        $data['changes'] = $this->standardNormalizer->normalize($proposalModelProduct->getValues(), 'standard', $context);
+        $data['createdAt'] = $this->datagridNormlizer->normalize($proposalModelProduct->getCreatedAt(), $format, $context);
         $data['product'] = $proposalModelProduct->getEntityWithValue();
         $data['author'] = $proposalModelProduct->getAuthor();
         $data['status'] = $proposalModelProduct->getStatus();

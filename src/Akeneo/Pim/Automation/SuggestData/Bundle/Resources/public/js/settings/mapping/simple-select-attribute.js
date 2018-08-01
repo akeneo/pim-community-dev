@@ -66,11 +66,7 @@ define([
             },
 
             /**
-             * Converts the item returned from the backend to fit select2 needs.
-             *
-             * @param {Object} item
-             *
-             * @returns {Object}
+             * {@inheritdoc}
              */
             convertBackendItem(item) {
                 return {

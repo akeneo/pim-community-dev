@@ -34,6 +34,9 @@ define(
 
                         return FormBuilder.build(formToBuild)
                             .then((form) => {
+                                this.on('pim:controller:can-leave', function (event) {
+                                    form.trigger('pim_enrich:form:can-leave', event);
+                                });
                                 form.setElement(this.$el).render();
 
                                 return form;
