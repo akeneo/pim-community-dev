@@ -9,7 +9,7 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\Create
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;

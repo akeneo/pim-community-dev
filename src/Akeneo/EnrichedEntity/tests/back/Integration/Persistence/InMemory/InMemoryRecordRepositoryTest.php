@@ -11,7 +11,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryRecordRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
