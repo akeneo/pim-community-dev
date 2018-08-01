@@ -27,8 +27,8 @@ class RemoveRoleIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()]);
+        return $this->catalog->useMinimalCatalog();
     }
 }

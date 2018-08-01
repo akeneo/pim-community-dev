@@ -370,7 +370,7 @@ class ProductNormalizerIntegration extends TestCase
         if (is_array($result['values'])) {
             NormalizedProductCleaner::clean($result);
         }
-
+        
         $this->assertEquals($expected, $result);
     }
 

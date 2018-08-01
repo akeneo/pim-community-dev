@@ -56,19 +56,17 @@ class AssociationsNormalizer implements NormalizerInterface
         $data = [];
 
         foreach ($product->getAssociations() as $association) {
-            if ($association->getGroups()->count() > 0 || $association->getProducts()->count() > 0) {
-                $code = $association->getAssociationType()->getCode();
+            $code = $association->getAssociationType()->getCode();
 
-                $data[$code]['groups'] = [];
-                foreach ($association->getGroups() as $group) {
-                    $data[$code]['groups'][] = $group->getCode();
-                }
-
-                $data[$code]['products'] = $this->getAssociatedProductCodeByProduct->getCodes(
-                    $product->getId(),
-                    $association->getAssociationType()->getId()
-                );
+            $data[$code]['groups'] = [];
+            foreach ($association->getGroups() as $group) {
+                $data[$code]['groups'][] = $group->getCode();
             }
+
+            $data[$code]['products'] = $this->getAssociatedProductCodeByProduct->getCodes(
+                $product->getId(),
+                $association->getAssociationType()->getId()
+            );
         }
 
         ksort($data);
