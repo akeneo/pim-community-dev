@@ -77,6 +77,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.exists_record:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlExistsRecord'
+        arguments:
+            - '@database_connection'
+
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityItems'
         arguments:

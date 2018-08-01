@@ -66,6 +66,13 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return $recordCount;
     }
 
+    public function hasRecord(RecordIdentifier $identifier)
+    {
+        $key = $this->getKey($identifier);
+
+        return isset($this->records[$key]);
+    }
+
     private function getKey(RecordIdentifier $recordIdentifier): string
     {
         return sprintf('%s_%s', $recordIdentifier->getEnrichedEntityIdentifier(), $recordIdentifier->getIdentifier());

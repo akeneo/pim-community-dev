@@ -22,6 +22,12 @@ services:
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
         class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindRecordItemsForEnrichedEntity
 
+    akeneo_enrichedentity.infrastructure.persistence.query.exists_record:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryExistsRecord
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    # Third party services
     oro_security.security_facade:
         class: Akeneo\EnrichedEntity\tests\back\Common\SecurityFacadeStub
         arguments:
