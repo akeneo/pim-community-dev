@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7534: Fix proposal grid for product model changes have errors visible in debug mode.
+
 # 2.3.2 (2018-07-24)
 
 ## Bug fixes
