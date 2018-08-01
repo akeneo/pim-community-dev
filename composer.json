@@ -124,7 +124,6 @@
     },
     "scripts": {
         "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
@@ -147,18 +146,6 @@
         "symfony-var-dir": "var",
         "symfony-web-dir": "web",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "keep-outdated": true,
-            "file": "app/config/parameters.yml",
-            "env-map": {
-                "database_host": "PIM_DATABASE_HOST",
-                "database_port": "PIM_DATABASE_PORT",
-                "database_name": "PIM_DATABASE_NAME",
-                "database_user": "PIM_DATABASE_USER",
-                "database_password": "PIM_DATABASE_PASSWORD",
-                "index_hosts": "PIM_INDEX_HOSTS"
-            }
-        },
         "branch-alias": {
             "dev-master": "3.0.x-dev",
             "dev-2.3": "2.3.x-dev",
