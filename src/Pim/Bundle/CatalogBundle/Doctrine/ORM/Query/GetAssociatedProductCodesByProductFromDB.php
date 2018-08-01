@@ -35,7 +35,7 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
                 'ownerId' => $productId,
                 'associationTypeId' => $associationTypeId,
             ])
-            ->orderBy('v.varchar')
+            // ->orderBy('v.varchar')
             ->getQuery()
             ->getResult();
 
