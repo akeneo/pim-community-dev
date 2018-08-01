@@ -77,9 +77,8 @@ class DataFixturesContext implements Context
                         '<all_locales>' => $value
                     ]
                 ];
-
-
             }
+            
             $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
             $product->setValues($values);
 
