@@ -205,32 +205,43 @@ class PimRequirements extends SymfonyRequirements
      */
     protected function getMySQLVersion()
     {
-        $file = file_get_contents(__DIR__.'/config/parameters.yml');
 
-        if (false === $file) {
-            throw new RuntimeException(
-                'The file config/parameters.yml does not exist, please create it'
+        if ($host = getenv("PIM_DATABASE_HOST")) {
+            $pdo = new PDO(
+                sprintf('mysql:host=%s', $host),
+                sprintf('%s', getenv("PIM_DATABASE_USER")),
+                sprintf('%s', getenv("PIM_DATABASE_PASSWORD"))
             );
-        }
+            return $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
+        } else {
+            $file = file_get_contents(__DIR__.'/config/parameters.yml');
 
-        $parameters = Yaml::parse($file);
-
-        try {
-            if (null === $parameters) {
+            if (false === $file) {
                 throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                    'The file config/parameters.yml does not exist, please create it'
                 );
             }
 
-            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
-        } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters_test.yml'));
+            $parameters = Yaml::parse($file);
 
-            if (null === $parameters) {
-                throw $e;
+            try {
+                if (null === $parameters) {
+                    throw new RuntimeException(
+                        'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                    );
+                }
+
+                return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
+            } catch (RuntimeException $e) {
+                $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters_test.yml'));
+
+                if (null === $parameters) {
+                    throw $e;
+                }
+
+                
+                return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
             }
-
-            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
         }
     }
 
