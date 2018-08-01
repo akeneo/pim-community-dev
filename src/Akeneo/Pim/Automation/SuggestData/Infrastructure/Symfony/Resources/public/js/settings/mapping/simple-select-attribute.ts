@@ -115,7 +115,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
    * Has been overrode because translations should be handle front side.
    * Translates messages.
    */
-  getFieldErrors(errors) {
+  getFieldErrors(errors: { [index: string] : { message: string, messageParams: any } }) {
     Object.keys(errors).map(index => {
       errors[index].message = __(errors[index].message, errors[index].messageParams);
     });

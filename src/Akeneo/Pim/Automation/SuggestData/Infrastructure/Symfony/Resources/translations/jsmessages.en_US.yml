@@ -66,7 +66,7 @@ akeneo_suggest_data:
                 paste_activation_code: 'Paste Activation Code'
                 activated: 'Activated'
                 activate: 'Activate'
-                success: Thank you for connecting the AI assistant. He's gathering information for your catalog and will notify you when it's ready.
+                success: Thank you for connecting the AI assistant. It's gathering information for your catalog and will notify you when it's ready.
                 invalid: Sorry, invalid activation code. Please try again with a valid one.
                 error: Sorry, an error occured.
 

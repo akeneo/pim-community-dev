@@ -47,7 +47,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('duplicateAttributeCode', [2, 'attribute_code', 'className']);
 
         $this->getMessage()->shouldReturn(
-            'An attribute cannot be used more than once. Attribute "attribute_code" has been used 2 times.'
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.duplicate_attribute_code'
         );
     }
 
@@ -60,13 +60,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         ]);
 
         $this->getMessage()->shouldReturn(
-            'Some identifiers mapping keys are missing or invalid. Expected: "array (
-  0 => \'expected_attribute_code_1\',
-  1 => \'expected_code_attribute_2\',
-)", got "array (
-  0 => \'an_attribute_code\',
-  1 => \'another_attribute_code\',
-)"'
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.missing_or_invalid_identifiers'
         );
     }
 
@@ -75,7 +69,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('attributeNotFound', ['foobar', 'className']);
 
         $this->getMessage()->shouldReturn(
-            'Attribute with attribute code "foobar" for the identifiers mapping does not exist'
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.attribute_not_found'
         );
     }
 }

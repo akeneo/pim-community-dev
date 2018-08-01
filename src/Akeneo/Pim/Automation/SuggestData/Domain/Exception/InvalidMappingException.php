@@ -21,7 +21,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 final class InvalidMappingException extends \InvalidArgumentException
 {
     /** @var string */
-    const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
+    private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
 
     /** @var string */
     private $className;
