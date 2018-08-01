@@ -25,9 +25,9 @@ Feature: Assign assets to a product
     And I save the product
     Then the "Front view" asset gallery should contain paint, chicagoskyline
     And I start to manage assets for "Front view"
-    And I uncheck the row "paint"
-    And I check the row "autumn"
     And I check the row "akene"
+    And I check the row "autumn"
+    And I uncheck the row "paint"
     And the rows "autumn, akene" should be checked
     And I remove "chicagoskyline" from the basket
     Then the item picker basket should contain akene, autumn
