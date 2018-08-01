@@ -205,39 +205,49 @@ class CommunityRequirements
      */
     protected function getConnection() : PDO
     {
-        $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
-
-        if (false === $file) {
-            throw new RuntimeException(
-                'The file "app/config/parameters.yml" does not exist, please create it'
+        if ($host = getenv("PIM_DATABASE_HOST")) {
+            $pdo = new PDO(
+                sprintf('mysql:host=%s', $host),
+                sprintf('%s', getenv("PIM_DATABASE_USER")),
+                sprintf('%s', getenv("PIM_DATABASE_PASSWORD"))
             );
-        }
+            return $pdo;
+        } else {
 
-        $parameters = Yaml::parse($file);
+            $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
 
-        try {
-            if (null === $parameters) {
+            if (false === $file) {
                 throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                    'The file "app/config/parameters.yml" does not exist, please create it'
                 );
             }
-        } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
 
-            if (null === $parameters) {
-                throw $e;
+            $parameters = Yaml::parse($file);
+
+            try {
+                if (null === $parameters) {
+                    throw new RuntimeException(
+                        'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+                    );
+                }
+            } catch (RuntimeException $e) {
+                $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
+
+                if (null === $parameters) {
+                    throw $e;
+                }
             }
-        }
 
-        return new PDO(
-            sprintf(
-                'mysql:port=%s;host=%s',
-                $parameters['parameters']['database_port'],
-                $parameters['parameters']['database_host']
-            ),
-            $parameters['parameters']['database_user'],
-            $parameters['parameters']['database_password']
-        );
+            return new PDO(
+                sprintf(
+                    'mysql:port=%s;host=%s',
+                    $parameters['parameters']['database_port'],
+                    $parameters['parameters']['database_host']
+                ),
+                $parameters['parameters']['database_user'],
+                $parameters['parameters']['database_password']
+            );
+        }
     }
 
     protected function getBytes(string $val): float
