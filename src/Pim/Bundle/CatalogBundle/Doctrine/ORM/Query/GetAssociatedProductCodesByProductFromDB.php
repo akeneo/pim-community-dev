@@ -40,7 +40,7 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
             ->getResult();
 
         return array_map(function (array $association) {
-            return $association['varchar'];
+            return $association['identifier'];
         }, $associations);
     }
 }
