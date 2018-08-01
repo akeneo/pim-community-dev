@@ -57,7 +57,7 @@ config:
         pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
 
         # Controllers
-        pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index
+        pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index.ts
         pimee/controller/attributes_mapping/edit: akeneosuggestdata/js/controllers/attributes_mapping/edit.ts
 
         # Forms
