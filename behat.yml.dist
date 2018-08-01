@@ -8,7 +8,7 @@ default:
             contexts:
                 - Context\FeatureContext:
                     -
-                        base_url: 'http://httpd-behat/'
+                        base_url: 'http://127.0.0.1/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -24,7 +24,7 @@ default:
                     - 'Context\FeatureContext'
                 - Context\NavigationContext:
                     - 'Context\FeatureContext'
-                    - 'http://httpd-behat/'
+                    - 'http://127.0.0.1/'
                 - Context\TransformationContext:
                     - 'Context\FeatureContext'
                 - Context\AssertionContext:
@@ -101,8 +101,8 @@ default:
                     symfony2: ~
                 selenium2:
                     selenium2:
-                        wd_host: 'http://selenium:4444/wd/hub'
-            base_url: 'http://httpd-behat/'
+                        wd_host: 'http://127.0.0.1:4444/wd/hub'
+            base_url: 'http://127.0.0.1/'
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
@@ -113,7 +113,7 @@ default:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: 'http://httpd-behat/'
+                    base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
