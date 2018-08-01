@@ -58,7 +58,7 @@ config:
 
         # Controllers
         pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index
-        pimee/controller/attributes_mapping/edit: akeneosuggestdata/js/controllers/attributes_mapping/edit
+        pimee/controller/attributes_mapping/edit: akeneosuggestdata/js/controllers/attributes_mapping/edit.ts
 
         # Forms
         pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push
