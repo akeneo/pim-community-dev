@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.7.28';
+    const VERSION = '1.7.29';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Artichoke';
