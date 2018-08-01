@@ -1,10 +1,7 @@
 parameters:
-    pim_connector.array_converter.flat_to_standard.user.class:                                    Pim\Component\Connector\ArrayConverter\FlatToStandard\User
-    pim_connector.array_converter.standard_to_flat.user.class:                                    Pim\Component\Connector\ArrayConverter\StandardToFlat\User
-
-    pim_connector.array_convertor.checker.fields_requirement.class:                               Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker
-    pim_connector.array_converter.dummy.class:                                                    Pim\Component\Connector\ArrayConverter\DummyConverter
-    pim_connector.array_converter.field_splitter.class:                                           Pim\Component\Connector\ArrayConverter\FieldSplitter
+    pim_connector.array_convertor.checker.fields_requirement.class: Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker
+    pim_connector.array_converter.dummy.class: Pim\Component\Connector\ArrayConverter\DummyConverter
+    pim_connector.array_converter.field_splitter.class: Pim\Component\Connector\ArrayConverter\FieldSplitter
 
 services:
     # array converters
@@ -21,28 +18,6 @@ services:
             - '@pim_connector.array_convertor.checker.fields_requirement'
             - ['code', 'type', 'connector', 'label', 'alias']
             - ['code', 'type', 'connector', 'label']
-
-    pim_connector.array_converter.flat_to_standard.user:
-        class: '%pim_connector.array_converter.flat_to_standard.user.class%'
-        arguments:
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-
-    pim_connector.array_converter.flat_to_standard.user_group:
-        class: '%pim_connector.array_converter.dummy.class%'
-        arguments:
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-            - ['name']
-            - ['name']
-
-    pim_connector.array_converter.flat_to_standard.user_role:
-        class: '%pim_connector.array_converter.dummy.class%'
-        arguments:
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-            - ['role', 'label']
-            - ['role', 'label']
-
-    pim_connector.array_converter.standard_to_flat.user:
-        class: '%pim_connector.array_converter.standard_to_flat.user.class%'
 
     # splitters
     pim_connector.array_converter.field_splitter:
