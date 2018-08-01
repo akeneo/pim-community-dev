@@ -15,27 +15,27 @@ class AttributeMaxFileSize
 {
     private const LIMIT = 9999.99;
 
-    /*** @var int */
-    private $maxLength;
+    /*** @var string */
+    private $maxFileSize;
 
-    public function __construct(float $maxFileSize)
+    public function __construct(string $maxFileSize)
     {
-        Assert::greaterThanEq($maxFileSize, 0, sprintf('The maximum file size should be positive, %d given', $maxFileSize));
+        Assert::greaterThanEq((float) $maxFileSize, 0, sprintf('The maximum file size should be positive, %d given', $maxFileSize));
         Assert::lessThanEq(
-            $maxFileSize,
+            (float) $maxFileSize,
             self::LIMIT,
             sprintf('The maximum file size (in MB) authorized is %.2F, %.2F given', self::LIMIT, $maxFileSize)
         );
-        $this->maxLength = $maxFileSize;
+        $this->maxFileSize = $maxFileSize;
     }
 
-    public static function fromFloat(float $maxLength) : self
+    public static function fromString(string $maxFileSize) : self
     {
-        return new self($maxLength);
+        return new self($maxFileSize);
     }
 
-    public function floatValue(): float
+    public function normalize(): string
     {
-        return $this->maxLength;
+        return (string) $this->maxFileSize;
     }
 }

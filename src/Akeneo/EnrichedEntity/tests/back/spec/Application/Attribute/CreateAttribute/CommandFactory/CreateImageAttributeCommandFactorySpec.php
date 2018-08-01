@@ -33,7 +33,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             'required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
-            'max_file_size' => 1512.12,
+            'max_file_size' => '1512.12',
             'allowed_extensions' => ['pdf', 'png'],
         ]);
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
@@ -48,7 +48,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->required->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
-        $command->maxFileSize->shouldBeEqualTo(1512.12);
+        $command->maxFileSize->shouldBeEqualTo('1512.12');
         $command->allowedExtensions->shouldBeEqualTo(['pdf', 'png']);
     }
 

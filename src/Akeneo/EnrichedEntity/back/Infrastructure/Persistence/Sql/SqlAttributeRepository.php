@@ -74,9 +74,9 @@ SQL;
                 'labels' => json_encode($normalizedAttribute['labels']),
                 'attribute_type' => $normalizedAttribute['type'],
                 'attribute_order' => $normalizedAttribute['order'],
-                'required' => $normalizedAttribute['required'],
-                'value_per_channel' => $normalizedAttribute['value_per_channel'],
-                'value_per_locale' => $normalizedAttribute['value_per_locale'],
+                'required' => (int) $normalizedAttribute['required'],
+                'value_per_channel' => (int) $normalizedAttribute['value_per_channel'],
+                'value_per_locale' => (int) $normalizedAttribute['value_per_locale'],
                 'additional_properties' => json_encode($additionalProperties)
             ]
         );
@@ -134,11 +134,11 @@ SQL;
         unset($normalizedAttribute['enriched_entity_identifier']);
         unset($normalizedAttribute['code']);
         unset($normalizedAttribute['labels']);
-        unset($normalizedAttribute['attribute_type']);
-        unset($normalizedAttribute['attribute_order']);
+        unset($normalizedAttribute['order']);
+        unset($normalizedAttribute['required']);
         unset($normalizedAttribute['value_per_channel']);
         unset($normalizedAttribute['value_per_locale']);
-        unset($normalizedAttribute['order']);
+        unset($normalizedAttribute['type']);
 
         return $normalizedAttribute;
     }
@@ -179,8 +179,8 @@ SQL;
         }
 
         if ('image' === $result['attribute_type']) {
-            $maxFileSize = (float) $additionnalProperties['max_file_size'];
-            $extensions = json_decode($additionnalProperties['allowed_extensions']);
+            $maxFileSize = $additionnalProperties['max_file_size'];
+            $extensions = $additionnalProperties['allowed_extensions'];
 
             return ImageAttribute::create(
                 AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
@@ -191,7 +191,7 @@ SQL;
                 AttributeRequired::fromBoolean($required),
                 AttributeValuePerChannel::fromBoolean($valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                AttributeMaxFileSize::fromFloat($maxFileSize),
+                AttributeMaxFileSize::fromString($maxFileSize),
                 AttributeAllowedExtensions::fromList($extensions)
             );
         }

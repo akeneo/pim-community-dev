@@ -9,7 +9,7 @@ class AttributeMaxFileSizeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromFloat', [10.2]);
+        $this->beConstructedThrough('fromString', ['10.0']);
     }
 
     function it_is_initializable()
@@ -19,11 +19,16 @@ class AttributeMaxFileSizeSpec extends ObjectBehavior
 
     function it_cannot_be_greater_than_the_limit()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fromFloat', [10000.0]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', ['10000.0']);
     }
 
     function it_cannot_be_negative()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fromFloat', [-1.02]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', ['-1.02']);
+    }
+
+    function it_normalize_itself()
+    {
+        $this->normalize()->shouldReturn('10.0');
     }
 }

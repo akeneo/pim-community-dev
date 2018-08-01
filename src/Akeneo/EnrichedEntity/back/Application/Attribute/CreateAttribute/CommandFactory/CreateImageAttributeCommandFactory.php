@@ -22,7 +22,8 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
     {
         $command = new CreateImageAttributeCommand();
         $this->fillCommonProperties($command, $normalizedCommand);
-        $command->maxFileSize = $normalizedCommand['max_file_size'] ?? null;
+        $command->maxFileSize = isset($normalizedCommand['max_file_size']) ?
+            (string) $normalizedCommand['max_file_size'] : null;
         $command->allowedExtensions = $normalizedCommand['allowed_extensions'] ?? null;
 
         return $command;

@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -38,7 +41,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_attribute_and_returns_it()
+    public function it_creates_an_attribute_of_type_text_and_returns_it()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
@@ -52,6 +55,32 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(255)
+        );
+
+        $this->attributeRepository->create($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_attribute_of_type_image_and_returns_it()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedAttribute = ImageAttribute::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('250.12'),
+            AttributeAllowedExtensions::fromList(['pdf', 'png'])
         );
 
         $this->attributeRepository->create($expectedAttribute);

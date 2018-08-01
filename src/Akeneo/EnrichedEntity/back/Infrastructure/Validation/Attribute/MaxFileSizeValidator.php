@@ -34,11 +34,16 @@ class MaxFileSizeValidator extends ConstraintValidator
         $validator = Validation::createValidator();
         $violations = $validator->validate($maxFileSize, [
                 new Constraints\NotBlank(),
-                new Constraints\Type(['type' => 'float']),
-                new Constraints\LessThanOrEqual(9999.99),
-                new Constraints\GreaterThan(0)
             ]
         );
+
+        if (0 === $violations->count()) {
+            $violations->addAll($validator->validate((float) $maxFileSize, [
+                new Constraints\Type(['type' => 'float']),
+                new Constraints\LessThanOrEqual(9999.99),
+                new Constraints\GreaterThan(0),
+            ]));
+        }
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {

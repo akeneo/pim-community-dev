@@ -36,7 +36,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->required = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
-        $command->maxFileSize = 30.0;
+        $command->maxFileSize = "30.0";
         $command->allowedExtensions = ['pdf', 'png'];
 
         $this->create($command)->normalize()->shouldReturn([

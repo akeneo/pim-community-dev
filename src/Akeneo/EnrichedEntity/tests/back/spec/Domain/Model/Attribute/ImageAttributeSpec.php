@@ -28,7 +28,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromFloat(300),
+            AttributeMaxFileSize::fromString(300),
             AttributeAllowedExtensions::fromList(['pdf'])
         ]);
     }
@@ -49,7 +49,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromFloat(300.0),
+            AttributeMaxFileSize::fromString(300.0),
             AttributeAllowedExtensions::fromList(['pdf'])
         ]);
     }
@@ -65,7 +65,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromFloat(300),
+            AttributeMaxFileSize::fromString(300),
             AttributeAllowedExtensions::fromList(['pdf'])
         ]);
     }
