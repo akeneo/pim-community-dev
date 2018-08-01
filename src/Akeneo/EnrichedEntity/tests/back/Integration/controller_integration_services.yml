@@ -35,3 +35,4 @@ services:
             - '@oro_security.acl.annotation_provider'
             - '@oro_security.acl.object_identity_factory'
             - '@logger'
+
