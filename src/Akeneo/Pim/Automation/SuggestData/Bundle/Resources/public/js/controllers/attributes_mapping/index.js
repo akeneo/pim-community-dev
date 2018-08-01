@@ -25,11 +25,11 @@ define(
              * {@inheritdoc}
              */
             renderForm: function() {
-                $.getJSON(Routing.generate('akeneo_sugggest_data_family_mapping_index', {limit: 1}))
+                return  $.getJSON(Routing.generate('akeneo_sugggest_data_family_mapping_index', {limit: 1}))
                     .then((data) => {
                         const firstFamily = data[0];
 
-                        return Router.redirectToRoute('akeneo_suggest_data_family_mapping_edit', {
+                        Router.redirectToRoute('akeneo_suggest_data_family_mapping_edit', {
                             identifier: firstFamily.code
                         });
                     }

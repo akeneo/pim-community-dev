@@ -42,6 +42,14 @@ extensions:
         targetZone: buttons
         position: 0
 
+    pimee-suggest-data-settings-identifiers-mapping-index-state:
+        module: pimee/settings/mapping/state
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: state
+        position: 900
+        config:
+            entity: akeneo_suggest_data.entity.identifier_mapping.plural_label
+
     pimee-suggest-data-settings-identifiers-mapping-index-tabs:
         module: pimee/settings/mapping/tabs
         parent: pimee-suggest-data-settings-identifiers-mapping-index

@@ -41,7 +41,9 @@ class EditIdentifiersMappingView extends BaseView {
    */
   configure() {
     return $.when(
-      fetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then((identifiersMapping: any) => {
+      fetcherRegistry.getFetcher('identifiers-mapping')
+        .fetchAll()
+        .then((identifiersMapping: { [key:string] : (string|null) }) => {
         this.setData(identifiersMapping);
         this.updateIdentifierStatuses();
 
