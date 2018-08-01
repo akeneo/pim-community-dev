@@ -1,8 +1,0 @@
-<% if (product.meta.published) { %>
-    <% if (product.meta.published.version !== product.meta.updated.version) { %>
-        <span class="AknDropdown-menuLink publish-product "><%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %></span>
-    <% } %>
-    <span class="AknDropdown-menuLink unpublish-product"><%- _.__('pimee_enrich.entity.product.btn.unpublish') %></span>
-<% } else { %>
-    <span class="AknDropdown-menuLink publish-product"><%- _.__('pimee_enrich.entity.product.btn.publish') %></span>
-<% } %>

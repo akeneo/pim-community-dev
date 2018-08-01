@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Produc
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

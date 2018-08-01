@@ -5,7 +5,6 @@ parameters:
     pimee_product_asset.factory.tag.class:                   Akeneo\Asset\Component\Factory\TagFactory
     pimee_product_asset.factory.channel_configuration.class: Akeneo\Asset\Component\Factory\ChannelConfigurationFactory
     pimee_product_asset.factory.notification.class:          Akeneo\Asset\Bundle\Notification\NotificationFactory
-    pimee_product_asset.factory.product_value.asset_collection.class: Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory
 
 services:
     pimee_product_asset.factory.asset:
@@ -51,11 +50,10 @@ services:
             - { name: pim_notification.factory.notification }
 
     pimee_product_asset.factory.product_value.asset_collection:
-        class: '%pimee_product_asset.factory.product_value.asset_collection.class%'
+        class: 'PimEnterprise\Component\Catalog\AssetCollectionValueFactory'
         public: false
         arguments:
             - '@pim_reference_data.repository_resolver'
             - '%pim_reference_data.value.reference_data_collection.class%'
-            - 'pim_assets_collection'
         tags:
             - { name: pim_catalog.factory.value }

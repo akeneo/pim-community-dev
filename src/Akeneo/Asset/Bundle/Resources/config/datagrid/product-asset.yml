@@ -23,7 +23,7 @@ datagrid:
             references:
                 label:         pimee_product_asset.thumbnail.label
                 type:          asset_thumbnail
-                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
+                template:      AkeneoAssetBundle:Property:thumbnail.html.twig
                 frontend_type: html
                 selector:      asset_thumbnail
             code:

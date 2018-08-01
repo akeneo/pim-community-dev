@@ -1,22 +1,32 @@
-import Identifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import LabelCollection, {
+  RawLabelCollection,
+  createLabelCollection,
+} from 'akeneoenrichedentity/domain/model/label-collection';
+import Image from 'akeneoenrichedentity/domain/model/image';
 
-interface NormalizedEnrichedEntity {
+export interface NormalizedEnrichedEntity {
   identifier: string;
   labels: RawLabelCollection;
+  image: Image | null;
 }
 
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
+  getImage: () => Image | null;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
   normalize: () => NormalizedEnrichedEntity;
 }
 class InvalidArgumentError extends Error {}
 
 class EnrichedEntityImplementation implements EnrichedEntity {
-  private constructor(private identifier: Identifier, private labelCollection: LabelCollection) {
+  private constructor(
+    private identifier: Identifier,
+    private labelCollection: LabelCollection,
+    private image: Image | null
+  ) {
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('EnrichedEntity expect an EnrichedEntityIdentifier as first argument');
     }
@@ -27,8 +37,19 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection): EnrichedEntity {
-    return new EnrichedEntityImplementation(identifier, labelCollection);
+  public static create(
+    identifier: Identifier,
+    labelCollection: LabelCollection,
+    image: Image | null = null
+  ): EnrichedEntity {
+    return new EnrichedEntityImplementation(identifier, labelCollection, image);
+  }
+
+  public static createFromNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
+    const identifier = createIdentifier(normalizedEnrichedEntity.identifier);
+    const labelCollection = createLabelCollection(normalizedEnrichedEntity.labels);
+
+    return EnrichedEntityImplementation.create(identifier, labelCollection, normalizedEnrichedEntity.image);
   }
 
   public getIdentifier(): Identifier {
@@ -45,6 +66,10 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.labelCollection;
   }
 
+  public getImage(): Image | null {
+    return this.image;
+  }
+
   public equals(enrichedEntity: EnrichedEntity): boolean {
     return enrichedEntity.getIdentifier().equals(this.identifier);
   }
@@ -53,8 +78,10 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
       labels: this.getLabelCollection().getLabels(),
+      image: this.getImage(),
     };
   }
 }
 
 export const createEnrichedEntity = EnrichedEntityImplementation.create;
+export const denormalizeEnrichedEntity = EnrichedEntityImplementation.createFromNormalized;

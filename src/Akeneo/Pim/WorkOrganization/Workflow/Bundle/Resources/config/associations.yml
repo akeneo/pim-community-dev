@@ -1,0 +1,11 @@
+parameters:
+    pimee_catalog.entity.published_product_association.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation
+
+services:
+    pim_catalog.association.class_resolver:
+        class: 'Pim\Component\Catalog\Association\AssociationClassResolver'
+        arguments:
+            -
+                Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface: '%pimee_catalog.entity.published_product_association.class%'
+                Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface: '%pim_catalog.entity.association.class%'
+                Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface: '%pim_catalog.entity.product_model_association.class%'

@@ -1,0 +1,3 @@
+version:
+    resource: '@AkeneoPimProductRevertBundle/Resources/config/routing/version.yml'
+    prefix: /versioning

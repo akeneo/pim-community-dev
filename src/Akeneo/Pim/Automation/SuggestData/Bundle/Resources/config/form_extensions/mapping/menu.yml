@@ -1,0 +1,9 @@
+extensions:
+    pimee-suggest-data-menu-settings-mapping:
+        module: pim/menu/item
+        parent: pim-menu-settings-navigation-block
+        aclResourceId: akeneo_suggest_data_settings_mapping
+        position: 210
+        config:
+            title: pim_menu.item.pim_ai
+            to: akeneo_suggest_data_settings_index

@@ -1,5 +1,5 @@
 <div class="AknGridContainer">
-    <table class="AknGrid grid">
+    <table class="AknGrid AknGrid--unclickable grid">
         <thead class="AknGrid-header">
         <tr class="AknGrid-bodyRow">
             <th class="AknGrid-headerCell"><%= tokenLabelTitle %></th>
@@ -13,14 +13,16 @@
                 <%= tokenLabelContent %>
             </td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--credentials">
-                <input class="AknTextField token-field"
-                       name="token"
-                       placeholder="<%- tokenFieldPlaceholder %>"
-                       type="text"
-                       value="<%- token %>"
-                />
+                <div class="AknFieldContainer AknFieldContainer--withoutMargin">
+                    <input class="AknTextField token-field"
+                           name="token"
+                           placeholder="<%- tokenFieldPlaceholder %>"
+                           type="text"
+                           value="<%- token %>"
+                    />
+                </div>
             </td>
-            <td class="AknGrid-bodyCell">
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
                 <button type="button"
                         class="AknButton <%- buttonStyle %> <%- connectionStatus %> suggest-data-connection"
                 >

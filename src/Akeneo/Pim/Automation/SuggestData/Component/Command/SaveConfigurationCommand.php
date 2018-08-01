@@ -29,6 +29,8 @@ class SaveConfigurationCommand
     /**
      * @param string $code
      * @param array  $configurationValues
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(string $code, array $configurationValues)
     {

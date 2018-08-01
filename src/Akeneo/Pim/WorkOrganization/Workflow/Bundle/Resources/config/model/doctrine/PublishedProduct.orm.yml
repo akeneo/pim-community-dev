@@ -1,0 +1,105 @@
+Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
+    type: entity
+    table: pimee_workflow_published_product
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\PublishedProductRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        enabled:
+            type: boolean
+            column: is_enabled
+        identifier:
+            type: string
+            length: 255
+            unique: true
+            nullable: false
+        rawValues:
+            type: native_json
+            column: raw_values
+        created:
+            type: datetime
+        updated:
+            type: datetime
+    manyToOne:
+        family:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+        parent:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
+            inversedBy: products
+            joinColumns:
+                product_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        familyVariant:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id
+    manyToMany:
+        groups:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
+            joinTable:
+                name: pimee_workflow_group_published_product
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        categories:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            joinTable:
+                name: pimee_workflow_category_published_product
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        associations:
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociationInterface
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
+                - detach
+        completenesses:
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
+        uniqueData:
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductUniqueDataInterface
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
+    oneToOne:
+        version:
+            targetEntity: Akeneo\Tool\Component\Versioning\Model\Version
+            joinColumns:
+                version_id:
+                    referencedColumnName: id
+        originalProduct:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            joinColumns:
+                original_product_id:
+                    referencedColumnName: id

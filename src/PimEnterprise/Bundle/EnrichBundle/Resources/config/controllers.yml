@@ -119,7 +119,7 @@ services:
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job.job_registry'
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - '@akeneo_batch.updater.job_instance'
             - '@akeneo_batch.saver.job_instance'
             - '@akeneo_batch.remover.job_instance'

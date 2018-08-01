@@ -5,10 +5,21 @@ pimee_product_asset:
         manage: Gestisci asset
         manage_asset:
           title: Gestisci asset
+          cancel: Annulla
+          confirm: Conferma
         title: Gestisci asset
         description: Scegli gli asset che vuoi allegare al prodotto
+        preview_title: Anteprima raccolta asset
+        download: Scarica
+        remove: Rimuovere
+        upload: Carica file
+        yes: true
+        no: false
+        assetRemoveConfirmationLabel: Sei sicuro di voler rimuovere questo asset?
     asset:
       not_empty: Il codice è richiesto. Non può essere vuoto.
+      alpha_numeric_plus_underscore: Il codice dovrebbe contenere solo caratteri alfanumerici o trattino basso (underscore).
+      unique: Il codice deve essere univoco. Ne abbiamo generato uno nuovo per te.
   enrich_asset:
     grid:
       edit: Modifica le proprietà dell'asset
@@ -27,6 +38,7 @@ pimee_product_asset:
       imported: File importati per l'elaborazione di asset
       canceled: Caricamento correttamente annullato
       deleted: File caricato correttamente eliminato
+      need_refresh: <b>L'importazione degli asset è stata avviata</b><br> Per vedere gli asset importati nel modulo prodotto, aggiorna la pagina prodotto appena ricevi la notifica dell'importazione.
     error:
       list: Non è possibile leggere file già caricati
       upload: Si è verificato un errore durante il caricamento
@@ -48,6 +60,7 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
+        confirm_content: Sei sicuro di voler cancellare gli asset selezionati?
         success: Gli asset selezionati sono stati eliminati con successo.
         error: Si è verificato un errore cancellando gli asset selezionati, per favore riprova.
         empty_selection: Nessun asset selezionato
@@ -68,6 +81,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Caricamento di massa di asset
     perform.label: Caricamento di massa
+  apply_assets_mass_upload_into_asset_collection:
+    label: Caricamento in massa degli asset e aggiunta al prodotto
+    perform.label: Caricamento in massa degli asset e aggiunta al prodotto
   yml_asset_channel_configuration_import:
     label: Importazione in Yaml della configurazione del canale asset
     import_asset.label: Importazione in Yaml della configurazione del canale asset
@@ -112,6 +128,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Esportazione categorie asset in XLSX
     export.label: Esportazione categorie asset in XLSX
+  xlsx_asset_variation_export:
+    label: Esportazione variazione asset in XLSX
+    export.label: Esportazione variazione asset in XLSX
   classify_assets:
     perform.label: Spostare gli asset nelle categorie
   add_tags_to_assets:
@@ -121,7 +140,6 @@ jstree:
     all: Tutti gli asset
     unclassified: Asset non classificati
 asset_grid:
-  title: "] -Inf, 1] {{ count }} Asset prodotto|] 1, Inf [{{ count }} Asset prodotto"
   selected: seleziona gli asset
   label: Asset di prodotto
 create_asset:

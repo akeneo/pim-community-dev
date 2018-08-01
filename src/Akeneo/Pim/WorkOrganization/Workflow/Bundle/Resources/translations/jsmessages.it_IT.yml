@@ -1,0 +1,69 @@
+View the product: Mostra il prodotto
+Unpublish the product: Annulla pubblicazione del prodotto
+Approve: Approva
+Refuse: Respingi
+Approve selected: Approva il selezionato
+Refuse selected: Respingi il selezionato
+pim_datagrid:
+  no_entities:
+    proposal: Non ci sono proposte da revisionare.
+  no_results:
+    proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Modifica la copia di lavoro
+    proposal:
+      modal.title: Lascia un commento (facoltativo - 255 caratteri max.)
+  proposal:
+    selected: proposte selezionate
+    mass_action_group:
+      review:
+        label: Azione Massiva
+    partial_accept:
+      modal.title: Approva le informazioni parziali
+      modal.label: Lascia un commento (facoltativo)
+      modal.error: Si è verificato un errore, la proposta non è stata approvata parzialmente
+      modal.success: La proposta è stata parzialmente validata con successo
+    partial_approve:
+      modal:
+        title: Approva le modifiche parzialmente
+        label: Lascia un commento (facoltativo)
+        error: Si è verificato un errore, la proposta non è stata approvata parzialmente
+        success: Le modifiche sono state salvate con successo
+    partial_reject:
+      modal:
+        title: Respingi le modifiche parzialmente
+        label: Lascia un commento (facoltativo)
+        error: Si è verificato un errore, la proposta non è stata respinta parzialmente
+        success: Le modifiche sono state respinte con successo
+batch_jobs:
+  csv_published_product_export:
+    label: Esportazione dei prodotti pubblicati in CSV
+    export.label: Esportazione del prodotto pubblicato
+  csv_product_proposal_import:
+    label: Importazione di proposte di prodotto in CSV
+    import.label: Importazione di proposte di prodotto
+  approve_product_draft:
+    label: Approva la proposta
+    perform.label: Approva la proposta
+  refuse_product_draft:
+    label: Rifiuta le proposte
+    perform.label: Rifiuta le proposte
+  xlsx_published_product_export:
+    label: Esportazione dei prodotti pubblicati in XLSX
+    export.label: Esportazione del prodotto pubblicato
+  xlsx_product_proposal_import:
+    label: Importazione di proposte di prodotto in XLSX
+    import.label: Importazione di proposte di prodotto in XLSX
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
+    pimee_workflow_import_notification_new_proposals: Nuove proposte da importazione
+    pimee_workflow_product_draft_notification_partial_approve: Proposta approvata parzialmente
+    pimee_workflow_product_draft_notification_partial_reject: Proposta respinta parzialmente
+    pimee_workflow_product_draft_notification_partial_remove: Proposta eliminata parzialmente
+    pimee_workflow_product_draft_notification_approve: Proposta approvata
+    pimee_workflow_product_draft_notification_refuse: Proposta respinta
+    pimee_workflow_product_draft_notification_remove: Proposta eliminata

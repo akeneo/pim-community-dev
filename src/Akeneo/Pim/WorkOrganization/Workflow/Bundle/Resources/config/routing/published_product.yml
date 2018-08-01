@@ -1,0 +1,36 @@
+pimee_workflow_published_product_index:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.published_product:indexAction }
+    methods:  [GET]
+
+pimee_workflow_published_product_view:
+    path: /{id}
+    defaults: { _controller: pimee_workflow.controller.published_product:viewAction }
+    requirements:
+        id: '[0-9a-f]+'
+
+pimee_workflow_published_product_unpublish:
+    path: /{id}/unpublish
+    defaults: { _controller: pimee_workflow.controller.published_product:unpublishAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods:  [POST|GET]
+
+pimee_workflow_published_product_rest_get:
+    path: /rest/{id}
+    defaults: { _controller: pimee_workflow.controller.published_product_rest:getAction }
+    requirements:
+        id: '[0-9a-f]+'
+
+pimee_workflow_published_product_rest_publish:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.published_product_rest:publishAction }
+    methods:  [PUT]
+pimee_workflow_published_product_rest_unpublish:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.published_product_rest:unpublishAction }
+    methods:  [DELETE]
+
+pimee_workflow_published_product_mass_edit_action:
+    path: /mass_action
+    methods: [GET]

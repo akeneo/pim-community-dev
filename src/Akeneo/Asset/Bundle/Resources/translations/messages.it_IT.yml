@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Rimuovi asset
       categories_view: Vedi le categorie di un asset
       mass_upload: Caricamento di massa asset
+      remove_from_collection: Rimuovi un asset di prodotto da una raccolta di asset
     category_asset_picker:
       list: Elenca le categorie di asset nel selettore di asset
     category:
@@ -25,6 +26,7 @@ pimee_product_asset:
       download: Scarica
       generate_from_reference: Genera da riferimento
       reset_variations: Reimposta varianti
+    confirmation.remove: Sei sicuro di voler rimuovere l'asset "%asset%" ?
     confirmation.subTitle: Asset
     grid:
       edit: Modifica le proprietà dell'asset
@@ -184,3 +186,10 @@ pim_analytics:
   info_type:
     nb_assets: Numero di asset
 pim_assets_collection: Raccolta asset
+pim_api:
+  acl:
+    asset_category:
+      list: Elenca le categorie degli asset
+  acl_group:
+    asset_category: Categorie degli asset
+    asset: Asset

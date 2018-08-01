@@ -1,4 +1,5 @@
 #!groovy
+@Library("k8s-utils@v2.0.0")
 
 String[] legacyFeatures = ["tests/legacy/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
 String ceBranch = "master"
@@ -46,20 +47,21 @@ stage("Build") {
     }
     milestone 2
 
-    pod(label: "build", containers: [
-        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-    ]) {container('docker') {
-        checkout scm
+    pod {
+        container('docker') {
+            checkout scm
 
-        dir('packages/pim-community-dev') {
-            checkout([$class: 'GitSCM',
-                branches: [[name: ceBranch]],
-                userRemoteConfigs: [[credentialsId: "github-credentials", url: "https://github.com/${ceOwner}/pim-community-dev.git"]]
-            ])
+            dir('packages/pim-community-dev') {
+                checkout([$class: 'GitSCM',
+                    branches: [[name: ceBranch]],
+                    userRemoteConfigs: [[credentialsId: "github-credentials", url: "https://github.com/${ceOwner}/pim-community-dev.git"]]
+                ])
+            }
+
+            sh "cp .ci/Dockerfile Dockerfile"
+            sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composerCommand} ."
         }
-
-        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composerCommand} ."
-    }}
+    }
 }
 
 stage("Test") {
@@ -69,7 +71,7 @@ stage("Test") {
             "back-php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/EnrichedEntity/.php_cd.php src/Akeneo/EnrichedEntity/back && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Asset/.php_cd.php src/Akeneo/Asset"
             )},
             "back-phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),

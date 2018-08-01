@@ -1,0 +1,7 @@
+pimee_api_product_proposal_create:
+    path: /products/{code}/proposal
+    defaults: { _controller: pimee_workflow.controller.external_api.product_proposal:createAction, _format: json }
+    methods: [POST]
+    requirements:
+        code: .+
+

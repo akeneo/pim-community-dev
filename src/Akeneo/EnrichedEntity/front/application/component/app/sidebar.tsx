@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import __ from 'akeneoenrichedentity/tools/translator';
-import { State } from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import { toggleSidebar, updateCurrentTab } from 'akeneoenrichedentity/application/event/sidebar';
-import { Tab } from 'akeneoenrichedentity/application/reducer/sidebar';
+import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {toggleSidebar, updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
+import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 
 interface SidebarState {
   tabs: Tab[];
@@ -28,7 +28,10 @@ class Sidebar extends React.Component<SidebarProps> {
   };
 
   updateCurrentTab = (event: any) => {
+    event.preventDefault();
     this.props.events.updateCurrentTab(event.target.attributes.getNamedItem('data-tab').value);
+
+    return false;
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -44,14 +47,17 @@ class Sidebar extends React.Component<SidebarProps> {
                 const activeClass = (this.props.currentTab === tab.code) ? 'AknColumn-navigationLink--active' : '';
 
                 return (
-                  <div
+                  <span
                     key={tab.code}
+                    role="button"
+                    tabIndex={0}
                     className={`AknColumn-navigationLink column-navigation-link ${activeClass}`}
                     data-tab={tab.code}
                     onClick={this.updateCurrentTab}
+                    onKeyPress={this.updateCurrentTab}
                   >
                     {__(tab.label)}
-                  </div>
+                  </span>
                 );
               })}
             </div>
@@ -64,7 +70,7 @@ class Sidebar extends React.Component<SidebarProps> {
   }
 }
 
-export default connect((state: State): SidebarState => {
+export default connect((state: EditState): SidebarState => {
   const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
   const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
   const isCollapsed = undefined === state.sidebar.isCollapsed ? false : state.sidebar.isCollapsed;

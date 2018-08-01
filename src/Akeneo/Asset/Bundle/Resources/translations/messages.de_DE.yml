@@ -184,3 +184,10 @@ pim_analytics:
   info_type:
     nb_assets: Anzahl der Assets
 pim_assets_collection: Sammlung von Assets
+pim_api:
+  acl:
+    asset_category:
+      list: Assetkategorien auflisten
+  acl_group:
+    asset_category: Assetkategorien
+    asset: Assets

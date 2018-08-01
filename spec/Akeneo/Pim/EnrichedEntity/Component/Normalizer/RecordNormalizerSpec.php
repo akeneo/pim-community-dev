@@ -19,7 +19,7 @@ class RecordNormalizerSpec extends ObjectBehavior {
     function it_normalize_a_record(Record $starck, RecordIdentifier $starckIdentifier)
     {
         $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->__toString()->willReturn('starck');
+        $starckIdentifier->getIdentifier()->willReturn('starck');
 
         $this->normalize($starck, 'standard')->shouldReturn('starck');
     }

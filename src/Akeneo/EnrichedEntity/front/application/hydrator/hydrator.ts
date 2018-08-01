@@ -1,10 +1,9 @@
 export class InvalidRawObjectError extends Error {
   constructor(message: string, expectedKeys: string[], invalidKeys: string[], malformedObject: any) {
     super(`${message}
-Expected keys are ${expectedKeys.join(', ')}
-Received object:
-${JSON.stringify(malformedObject)}
-Invalid keys: ${invalidKeys.join(', ')}`);
+Expected keys are: ${expectedKeys.join(', ')}
+Invalid keys: ${invalidKeys.join(', ')}
+Received object: ${JSON.stringify(malformedObject)}`);
   }
 }
 

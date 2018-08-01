@@ -15,10 +15,10 @@ namespace PimEnterprise\Component\Catalog\Manager;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
-use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -59,6 +59,8 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
     }
 
     /**
+     * TODO: @merge delete this service and its definition as permissions are handled by repositories
+     *
      * Resolves an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'attribute', 'type', 'scope' and 'locale' keys.
      *

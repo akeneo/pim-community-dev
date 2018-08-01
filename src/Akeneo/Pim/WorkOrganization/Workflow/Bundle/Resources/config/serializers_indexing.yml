@@ -1,0 +1,36 @@
+parameters:
+    pimee_workflow.normalizer.indexing_product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer
+    pimee_workflow.normalizer.indexing_product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer
+    pimee_workflow.normalizer.indexing_product_proposal.properties.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposal\PropertiesNormalizer
+    pimee_workflow.normalizer.indexing_product_model_proposal.properties.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposal\PropertiesNormalizer
+    pimee_workflow.normalizer.indexing_product_proposal.label.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\LabelNormalizer
+
+services:
+    pimee_workflow.normalizer.indexing_product.product_proposal:
+        class: '%pimee_workflow.normalizer.indexing_product_proposal.class%'
+        arguments:
+            - '@pimee_workflow.normalizer.indexing_product_proposal.properties'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 100 }
+
+    pimee_workflow.normalizer.indexing_product.product_model_proposal:
+        class: '%pimee_workflow.normalizer.indexing_product_model_proposal.class%'
+        arguments:
+            - '@pimee_workflow.normalizer.indexing_product_model_proposal.properties'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 100 }
+
+    pimee_workflow.normalizer.indexing_product_proposal.properties:
+        class: '%pimee_workflow.normalizer.indexing_product_proposal.properties.class%'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 40 }
+
+    pimee_workflow.normalizer.indexing_product_model_proposal.properties:
+        class: '%pimee_workflow.normalizer.indexing_product_model_proposal.properties.class%'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 40 }
+
+    pimee_workflow.normalizer.indexing_product_proposal.label:
+        class: '%pimee_workflow.normalizer.indexing_product_proposal.label.class%'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }

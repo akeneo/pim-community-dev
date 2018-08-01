@@ -1,0 +1,104 @@
+parameters:
+    pimee_workflow.controller.external_api.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductDraftController
+    pimee_workflow.controller.external_api.product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductProposalController
+    pimee_workflow_controller.external_api.publish_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\PublishedProductController
+    pimee_api.controller.product_model_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelDraftController
+    pimee_api.controller.product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelProposalController
+    pimee_workflow.router.proxy_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter
+    pimee_workflow.normalizer.external_api.product.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductNormalizer
+    pimee_workflow.normalizer.external_api.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\PublishedProductNormalizer
+
+services:
+    # Controllers
+    pimee_workflow.controller.external_api.product_proposal:
+        class : '%pimee_workflow.controller.external_api.product_proposal.class%'
+        arguments:
+            - '@pim_api.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
+    pimee_workflow.controller.external_api.product_draft:
+        class: '%pimee_workflow.controller.external_api.product_draft.class%'
+        arguments:
+            - '@pim_api.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@pim_external_api_serializer'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
+    pimee_workflow_controller.external_api.publish_product:
+        class: '%pimee_workflow_controller.external_api.publish_product.class%'
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions'
+            - '@pim_api.checker.query_parameters'
+            - '@pim_external_api_serializer'
+            - '@pim_api.repository.channel'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_api.repository.attribute'
+            - '@pimee_workflow.repository.published_product'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.security.primary_key_encrypter'
+            - '%pim_api.configuration%'
+
+    pimee_api.controller.product_model_draft:
+        class: '%pimee_api.controller.product_model_draft.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@pim_external_api_serializer'
+            - '@security.token_storage'
+            - '@pimee_security.cached_authorization_checker'
+
+    pimee_api.controller.product_model_proposal:
+        class : '%pimee_api.controller.product_model_proposal.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.manager.product_model_draft'
+            - '@security.token_storage'
+            - '@pimee_security.cached_authorization_checker'
+
+    # URL generator
+    pimee_workflow.router.proxy_product:
+        class: '%pimee_workflow.router.proxy_product.class%'
+        arguments:
+            - '@router'
+            - '@security.token_storage'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pim_api.repository.product'
+            - 'pimee_api_product_draft_get'
+
+    # Normalizer
+    pimee_workflow.normalizer.external_api.product:
+        class: '%pimee_workflow.normalizer.external_api.product.class%'
+        decorates: pim_api.normalizer.product
+        decoration_inner_name: pim_api.normalizer.product.community
+        arguments:
+            - '@pim_api.normalizer.product.community'
+            - '@pimee_workflow.repository.product_draft'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+
+    pimee_workflow.normalizer.external_api.published_product:
+        class: '%pimee_workflow.normalizer.external_api.published_product.class%'
+        arguments:
+            - '@pim_api.normalizer.product.community'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 100 }
+
+    pimee_api.normalizer.product_model:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductModelNormalizer'
+        decorates: pim_api.normalizer.product_model
+        decoration_inner_name: pim_api.normalizer.product_model.community
+        arguments:
+            - '@pim_api.normalizer.product_model.community'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_security.cached_authorization_checker'
+            - '@security.token_storage'

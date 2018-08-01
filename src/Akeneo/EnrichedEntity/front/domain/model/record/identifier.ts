@@ -1,4 +1,38 @@
-import Identifier from 'akeneoenrichedentity/domain/model/identifier';
-export * from 'akeneoenrichedentity/domain/model/identifier';
+class InvalidTypeError extends Error {}
 
-export default Identifier;
+export interface NormalizedRecordIdentifier {
+  identifier: string;
+  enrichedEntityIdentifier: string;
+}
+
+export default class Identifier {
+  private constructor(readonly enrichedEntityIdentifier: string, readonly identifier: string) {
+    if ('string' !== typeof enrichedEntityIdentifier) {
+      throw new InvalidTypeError('RecordIdentifier expect a string as first parameter to be created');
+    }
+    if ('string' !== typeof identifier) {
+      throw new InvalidTypeError('RecordIdentifier expect a string as second parameter to be created');
+    }
+
+    Object.freeze(this);
+  }
+
+  public static create(enrichedEntityIdentifier: string, identifier: string): Identifier {
+    return new Identifier(enrichedEntityIdentifier, identifier);
+  }
+
+  public equals(identifier: Identifier): boolean {
+    return (
+      this.identifier === identifier.identifier && this.enrichedEntityIdentifier === identifier.enrichedEntityIdentifier
+    );
+  }
+
+  public normalize(): NormalizedRecordIdentifier {
+    return {
+      identifier: this.identifier,
+      enrichedEntityIdentifier: this.enrichedEntityIdentifier,
+    };
+  }
+}
+
+export const createIdentifier = Identifier.create;

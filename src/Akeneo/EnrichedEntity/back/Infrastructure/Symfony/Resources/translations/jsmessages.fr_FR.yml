@@ -1,0 +1,38 @@
+pim_enriched_entity:
+  button:
+    save: Enregistrer
+    create: Créer
+  enriched_entity:
+    title: Entités
+    tab:
+      attributes: Attributs
+      properties: Propriétés
+    properties:
+      title: Propriétés de l'entité
+      identifier: Identifiant
+      label: Libellé
+    index:
+      grid:
+        count: "{{ count }} résultats"
+    create:
+      header:
+        title: Créer
+      subtitle: Entités
+      input:
+        label: Libellé
+      confirm: Confirmer
+  record:
+    create:
+      header:
+        title: Créer
+      input:
+        label: Libellé
+      confirm: Confirmer
+pim_enrich:
+  confirmation:
+    discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Paramètres spécifiques

@@ -29,6 +29,16 @@ class EnrichedEntityIdentifierSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('an_identifier_55');
     }
 
+    public function it_cannot_be_constructed_with_an_empty_string()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', ['']);
+    }
+
+    public function it_cannot_be_constructed_with_a_string_too_long()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', [str_repeat('a', 256)]);
+    }
+
     public function it_is_possible_to_compare_it()
     {
         $this->equals(EnrichedEntityIdentifier::fromString('an_identifier_55'))->shouldReturn(true);

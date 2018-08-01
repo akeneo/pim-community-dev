@@ -1,0 +1,29 @@
+pim_enriched_entity:
+  button:
+    save: Spara
+  enriched_entity:
+    tab:
+      attributes: Attribut
+      properties: Egenskaper
+    properties:
+      identifier: Identifierare
+      label: Etikett
+    create:
+      header:
+        title: Skapa
+      input:
+        label: Etikett
+      confirm: bekräfta
+  record:
+    create:
+      header:
+        title: Skapa
+      input:
+        label: Etikett
+      confirm: bekräfta
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Specifika parametrar

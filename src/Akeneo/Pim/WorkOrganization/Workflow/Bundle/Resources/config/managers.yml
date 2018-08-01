@@ -1,0 +1,55 @@
+parameters:
+    pimee_workflow.manager.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager
+    pimee_workflow.manager.entity_with_values_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager
+
+services:
+    pimee_workflow.manager.published_product:
+        class: '%pimee_workflow.manager.published_product.class%'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.repository.attribute'
+            - '@event_dispatcher'
+            - '@pimee_workflow.publisher.chained'
+            - '@pimee_workflow.unpublisher.product'
+            - '@pim_catalog.object_manager.product'
+            - '@pimee_workflow.saver.published_product'
+            - '@pimee_workflow.remover.published_product'
+            - '@pimee_workflow.remover.published_product'
+            - '@pimee_workflow.repository.published_product_without_permission'
+
+    pimee_workflow.manager.product_draft:
+        class: '%pimee_workflow.manager.entity_with_values_draft.class%'
+        arguments:
+            - '@pimee_workflow.saver.working_copy_product'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.factory.product_draft'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@event_dispatcher'
+            - '@pimee_workflow.saver.product_draft'
+            - '@pimee_workflow.remover.product_draft'
+            - '@pim_enrich.filter.product_values_edit_data'
+
+    pimee_workflow.manager.product_model_draft:
+        class: '%pimee_workflow.manager.entity_with_values_draft.class%'
+        arguments:
+            - '@pimee_workflow.saver.working_copy_product_model'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.factory.product_model_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@event_dispatcher'
+            - '@pimee_workflow.saver.product_model_draft'
+            - '@pimee_workflow.remover.product_model_draft'
+            - '@pim_enrich.filter.product_values_edit_data'
+
+    pimee_workflow.manager.completeness:
+        class: '%pim_catalog.manager.completeness.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pimee_workflow.completeness.generator'
+            - '@pimee_workflow.remover.completeness'
+            - '@pim_catalog.completeness.checker'

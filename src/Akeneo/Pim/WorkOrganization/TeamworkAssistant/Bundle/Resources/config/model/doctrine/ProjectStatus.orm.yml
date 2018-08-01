@@ -1,0 +1,32 @@
+Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectStatus:
+    type: entity
+    table: pimee_teamwork_assistant_project_status
+    repositoryClass: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProjectStatusRepository
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        isComplete:
+            type: boolean
+            nullable: true
+        hasBeenNotified:
+            type: boolean
+            nullable: true
+    manyToOne:
+        user:
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
+            joinColumns:
+                user_id:
+                    nullable: false
+                    referencedColumnName: id
+        project:
+            targetEntity: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface
+            inversedBy: projectStatus
+            joinColumns:
+                project_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE

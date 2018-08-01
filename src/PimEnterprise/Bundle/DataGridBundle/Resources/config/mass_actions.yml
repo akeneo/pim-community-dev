@@ -1,6 +1,6 @@
 parameters:
-    pim_datagrid.extension.mass_action.util.product_fields_builder.class:         PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction\ProductFieldsBuilder
-    pim_datagrid.extension.mass_action.handler.mass_refuse.class:                 PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassRefuseActionHandler
+    pim_datagrid.extension.mass_action.util.product_fields_builder.class:         Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder
+    pim_datagrid.extension.mass_action.handler.mass_refuse.class:                 Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler\MassRefuseActionHandler
     pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler
 
 services:

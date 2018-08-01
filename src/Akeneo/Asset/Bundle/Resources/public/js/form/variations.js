@@ -26,7 +26,7 @@ define(
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
                 var confirmation = this.getConfirmDialog(
-                    'confirmation.remove.item',
+                    'pim_enrich.entity.fallback.module.delete.item',
                     targetUrl,
                     'pim_common.confirm_deletion'
                 );

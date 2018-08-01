@@ -22,7 +22,7 @@ extensions:
         parent: pimee-published-product-index
         targetZone: title
         config:
-            title: pimee_enrich.entity.product.index_title
+            title: pimee_enrich.entity.published_product.page_title.index
 
     pimee-published-product-index-left-column:
         module: pim/form/common/column
@@ -31,7 +31,7 @@ extensions:
         targetZone: column
         config:
           stateCode: published_product_index
-          navigationTitle: pimee_enrich.entity.product.navigation
+          navigationTitle: pim_menu.navigation.published_products
 
     pimee-published-product-index-column-inner:
         module: pim/common/simple-view

@@ -17,9 +17,20 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Holds the identifiers mapping. Collection of IdentifierMapping entities
+ *
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class IdentifiersMapping implements \IteratorAggregate
 {
+    /** @var string[] */
+    public const PIM_AI_IDENTIFIERS = [
+        'brand',
+        'mpn',
+        'upc',
+        'asin',
+    ];
+
+    /** @var array */
     private $identifiers;
 
     /**
@@ -41,7 +52,7 @@ class IdentifiersMapping implements \IteratorAggregate
     /**
      * @param string $name
      *
-     * @return null|string
+     * @return null|AttributeInterface
      */
     public function getIdentifier(string $name): ?AttributeInterface
     {
@@ -57,12 +68,12 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function normalize(): array
     {
-        $result = [];
-        foreach ($this->identifiers as $pimAiCode => $attribute) {
-            $result[$pimAiCode] = $attribute->getCode();
+        $normalizedData = [];
+        foreach ($this->identifiers as $identifier => $attribute) {
+            $normalizedData[$identifier] = $attribute instanceof AttributeInterface ? $attribute->getCode() : null;
         }
 
-        return $result;
+        return $normalizedData;
     }
 
     /**

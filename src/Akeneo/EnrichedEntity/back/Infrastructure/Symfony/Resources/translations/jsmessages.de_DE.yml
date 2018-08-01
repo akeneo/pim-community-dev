@@ -1,0 +1,29 @@
+pim_enriched_entity:
+  button:
+    save: Speichern
+  enriched_entity:
+    tab:
+      attributes: Attribute
+      properties: Eigenschaften
+    properties:
+      identifier: Kennung
+      label: Bezeichnung
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+      confirm: Bestätigen
+  record:
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+      confirm: Bestätigen
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Spezifische Parameter

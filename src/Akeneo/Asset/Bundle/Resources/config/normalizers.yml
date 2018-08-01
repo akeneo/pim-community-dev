@@ -16,17 +16,17 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.datetime'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 100 }
 
     pimee_product_asset.normalizer.standard.variation:
         class: '%pimee_product_asset.normalizer.standard.variation.class%'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 100 }
 
     pimee_product_asset.normalizer.standard.channel_configuration:
         class: '%pimee_product_asset.normalizer.standard.channel_configuration.class%'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 100 }
 
     # flat
     pimee_product_asset.normalizer.flat.asset:
@@ -42,7 +42,7 @@ services:
         arguments:
             - '@router'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_external_api_serializer.normalizer, priority: 100 }
 
     pimee_product_asset.normalizer.external_api.asset_variation:
         class: '%pimee_product_asset.normalizer.external_api.asset_variation.class%'
@@ -50,7 +50,7 @@ services:
             - '@pimee_product_asset.normalizer.standard.variation'
             - '@router'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_external_api_serializer.normalizer, priority: 100 }
 
     pimee_product_asset.normalizer.external_api.asset:
         class: '%pimee_product_asset.normalizer.external_api.asset.class%'
@@ -60,13 +60,13 @@ services:
             - '@pimee_product_asset.normalizer.external_api.asset_reference'
             - '@router'
         tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
+            - { name: pim_external_api_serializer.normalizer, priority: 100 }
 
     # Internal api
     pimee_product_asset.normalizer.internal_api.asset:
         class: '%pimee_product_asset.normalizer.internal_api.asset.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 

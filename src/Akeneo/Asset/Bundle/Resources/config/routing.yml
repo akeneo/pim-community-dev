@@ -1,42 +1,42 @@
 product_asset:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/product_asset.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/product_asset.yml'
     prefix: /enrich/asset
 
 asset_categorytree:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/asset_categorytree.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/asset_categorytree.yml'
     prefix: /enrich/asset-category-tree
 
 asset_picker_categorytree:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/asset_picker_categorytree.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/asset_picker_categorytree.yml'
     prefix: /enrich/asset-picker-category-tree
 
 pimee_asset_category:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/pimee_asset_category.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/pimee_asset_category.yml'
     prefix: /rest/asset-category/
 
 pimee_channel_transformation:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/pimee_channel_asset_transformation.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/pimee_channel_asset_transformation.yml'
     prefix: /channel_transformation
 
 # External API
 asset_category:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_category.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/external_api/asset_category.yml'
     prefix: /api/rest/v1
 
 asset_reference:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_reference.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/external_api/asset_reference.yml'
     prefix: /api/rest/v1
 
 asset_variation:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_variation.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/external_api/asset_variation.yml'
     prefix: /api/rest/v1
 
 asset:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/external_api/asset.yml'
     prefix: /api/rest/v1
 
 asset-tag:
-    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_tag.yml'
+    resource: '@AkeneoAssetBundle/Resources/config/routing/external_api/asset_tag.yml'
     prefix: /api/rest/v1
 
 # CE Override

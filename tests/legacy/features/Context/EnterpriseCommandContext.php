@@ -3,18 +3,18 @@
 namespace Context;
 
 use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
+use Akeneo\Pim\Enrichment\Bundle\Command\GetProductCommand;
+use Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\ApproveProposalCommand;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\CreateDraftCommand;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\PublishProductCommand;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\QueryPublishedProductCommand;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\SendDraftForApprovalCommand;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
-use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Command\QueryPublishedProductCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -132,7 +132,7 @@ class EnterpriseCommandContext extends CommandContext
             }
 
             $publishedProduct           = $this->getPublishedProduct($originalProduct);
-            $normalizedPublishedProduct = $this->getContainer()->get('pim_serializer')->normalize(
+            $normalizedPublishedProduct = $this->getContainer()->get('pim_standard_format_serializer')->normalize(
                 $publishedProduct,
                 'standard'
             );

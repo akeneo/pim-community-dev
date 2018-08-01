@@ -1,33 +1,85 @@
 pim_title:
     akeneo_suggest_data_connection_index: 'PIM.ai connection'
+    akeneo_suggest_data_settings_index: 'PIM.ai settings'
+    akeneo_suggest_data_settings_attributes_index: 'PIM.ai settings'
+
+pim_menu:
+    item:
+        pim_ai: PIM.ai
 
 akeneo_suggest_data:
+    entity:
+        identifier_mapping:
+            plural_label: Identifiers
+            flash:
+                update:
+                    success: 'Identifiers mapping has been successfully saved.'
+                    fail: 'Identifiers mapping not saved due to an error.'
+            fields:
+                identifier_label:
+                    label: Identifier Label
+                    values:
+                        brand: Brand
+                        asin: ASIN
+                        mpn: MPN
+                        upc: UPC
+                catalog_attribute: Catalog attribute
+                suggest_data: Suggest data
+                status:
+                    active: Active
+                    inactive: Inactive
+        family_mapping:
+            label: Family mapping
+            fields:
+                pim_ai_attribute: 'PIM.ai attribute'
+                suggest_data:
+                    pending: Pending
+                    active: Active
+                    inactive: Inactive
+            module:
+                subscribe:
+                    subscribe: 'Subscribe family to PIM.ai'
+                    subscribed: 'Subscribed to PIM.ai'
+
     product:
         edit:
             btn.push: Suggest data
             flash:
                 success: Successfully asked for suggest data
                 error: Error during suggest data
-        mass_edit:
-            operation.suggest_data:
-                label: Suggest data
-                label_count: "{1}Suggest data for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Suggest data for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-                description: We will suggest data for the products
-                warning: The {{ itemsCount }} selected products will be send.
+
     pim_ai:
-        title:
-            main_title: 'PIM.ai connection'
-            sub_title: 'Welcome to the <span class="AknSubTitleContainer-subTitle--main">Product Information AI assistant!</span>'
-            description:
-                first_step: 'The first step in the connection of the assistant is to configure the API token.'
-                second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
-        token:
-            label:
-                content: 'PIM.ai connector'
-                title: 'Label'
-            field:
-                title: 'Activation code'
-                placeholder: 'Paste Activation Code'
-            save:
+        page_title: 'PIM.ai connection'
+        module:
+            title:
+                sub_title: 'Welcome to the <span class="AknSubTitleContainer-subTitle--main">Product Information AI assistant!</span>'
+                description:
+                    first_step: 'The first step in the connection of the assistant is to configure the API token.'
+                    second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
+            activation:
+                label: 'PIM.ai connector'
+                activation_code: 'Activation code'
+                paste_activation_code: 'Paste Activation Code'
                 activated: 'Activated'
-                to_activate: 'Activate'
+                activate: 'Activate'
+
+    settings:
+        page_title: 'PIM.ai settings'
+        module:
+            title:
+                sub_title: 'Welcome to the Product Information AI settings'
+                description:
+                    first_step: 'Please select the attributes in your catalog that correspond to the product identifiers of the product information AI assistant.'
+                    second_step: 'Once the mappings are saved, the assistant will be able to collect and suggest product information in your catalog.'
+            inactive_connection:
+                title: Sorry, nothing to show here yet
+                sub_title: Please activate your account on System > PIM.ai connection an comme back.
+
+    mass_edit:
+        product:
+            operation:
+                suggest_data:
+                    label: Suggest data
+                    label_count: "{1}Suggest data for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Suggest data for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    description: 'We will suggest data for the products'
+                    warning: 'The {{ itemsCount }} selected products will be send.'

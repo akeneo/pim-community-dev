@@ -1,4 +1,0 @@
-pimee_api_product_draft_get:
-    path: /products/{code}/draft
-    defaults: { _controller: pimee_workflow.controller.external_api.product_draft:getAction, _format: json }
-    methods: [GET]

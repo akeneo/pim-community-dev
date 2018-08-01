@@ -1,9 +1,0 @@
-services:
-    pimee_revert.serializer:
-        class: '%pim_serializer.class%'
-
-    pimee_revert.encoder.csv:
-        public: false
-        class: '%pim_serializer.encoder.csv.class%'
-        tags:
-            - { name: pimee_revert.serializer.encoder, priority: 90 }

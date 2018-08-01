@@ -1,0 +1,30 @@
+pim_enriched_entity:
+  button:
+    save: Salva
+    create: Aggiungi nuovo
+  enriched_entity:
+    tab:
+      attributes: Attributi
+      properties: Proprietà
+    properties:
+      identifier: Identificatore
+      label: Etichetta
+    create:
+      header:
+        title: Crea
+      input:
+        label: Etichetta
+      confirm: conferma
+  record:
+    create:
+      header:
+        title: Crea
+      input:
+        label: Etichetta
+      confirm: conferma
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Digita parametri specifici

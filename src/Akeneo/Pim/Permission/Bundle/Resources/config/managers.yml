@@ -1,0 +1,81 @@
+parameters:
+    pimee_security.manager.attribute_group_access.class: Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager
+    pimee_security.manager.category_access.class:        Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager
+    pimee_security.manager.job_profile_access.class:     Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager
+    pimee_security.manager.locale_access.class:          Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager
+    pimee_security.manager.datagtrid_view_access.class:  Akeneo\Pim\Permission\Bundle\Manager\DatagridViewAccessManager
+    pim_catalog.manager.category.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager
+    pimee_security.manager.job_execution.class: Akeneo\Pim\Permission\Bundle\Manager\JobExecutionManager
+
+services:
+    pimee_security.manager.attribute_group_access:
+        class: '%pimee_security.manager.attribute_group_access.class%'
+        arguments:
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pimee_security.saver.attribute_group_access'
+            - '%pimee_security.entity.attribute_group_access.class%'
+
+    pimee_security.manager.category_access:
+        class: '%pimee_security.manager.category_access.class%'
+        arguments:
+            - '@pimee_security.repository.category_access'
+            - '@pim_catalog.repository.category'
+            - '@pim_user.repository.group'
+            - '@pimee_security.saver.product_category_access'
+            - '@pimee_security.remover.product_category_access'
+            - '%pimee_security.entity.product_category_access.class%'
+
+    pimee_security.manager.job_profile_access:
+        class: '%pimee_security.manager.job_profile_access.class%'
+        arguments:
+            - '@pimee_security.repository.job_profile_access'
+            - '@pimee_security.saver.job_profile_access'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '%pimee_security.entity.job_profile_access.class%'
+
+    pimee_security.manager.locale_access:
+        class: '%pimee_security.manager.locale_access.class%'
+        arguments:
+            - '@pimee_security.repository.locale_access'
+            - '@pimee_security.saver.locale_access'
+            - '%pimee_security.entity.locale_access.class%'
+
+    pimee_security.manager.datagtrid_view_access:
+        class: '%pimee_security.manager.datagtrid_view_access.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.category'
+            - '@pimee_security.manager.attribute_group_access'
+            - '@pimee_security.manager.category_access'
+
+    pimee_security.manager.product_asset_category:
+        class: '%pim_catalog.manager.category.class%'
+        arguments:
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'
+
+    pim_catalog.manager.category:
+        class: '%pim_catalog.manager.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'
+
+    pimee_security.manager.job_execution:
+        class: '%pimee_security.manager.job_execution.class%'
+        arguments:
+            - '@pim_enrich.repository.job_execution'
+            - '@oro_security.security_facade'
+            - '@pimee_security.repository.job_profile_access'
+            - '@security.token_storage'
+
+    pim_catalog.resolver.attribute_values_with_permissions:
+        class: 'PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver'
+        decorates: pim_catalog.resolver.attribute_values
+        decoration_inner_name: pim_catalog.resolver.attribute_values_without_permission
+        arguments:
+            - '@pim_catalog.resolver.attribute_values_without_permission'
+            - '@pimee_security.cached_authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'

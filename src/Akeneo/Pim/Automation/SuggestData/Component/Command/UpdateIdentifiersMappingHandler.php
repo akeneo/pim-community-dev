@@ -13,28 +13,34 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
- * Handles the UpdateIdentifiersMapping command
+ * Handles the UpdateIdentifiersMapping command.
+ * Validates that all attributes exist and creates an IdentifiersMapping entity to save it.
  *
- * Validates that all attributes exist and creates an IdentifiersMapping entity to save it
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class UpdateIdentifiersMappingHandler
 {
+    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
+
+    /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
-    {
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
@@ -57,17 +63,22 @@ class UpdateIdentifiersMappingHandler
      * @param array $identifiers
      *
      * @return array
+     *
+     * @throws InvalidMappingException If attribute does not exist
      */
     private function replaceAttributeCodesByAttributes(array $identifiers): array
     {
         foreach ($identifiers as $pimAiCode => $attributeCode) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $identifiers[$pimAiCode] = null;
+            if (null !== $attributeCode) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-            if (! $attribute instanceof AttributeInterface) {
-                throw new \InvalidArgumentException('Some attributes for the identifiers mapping don\'t exist');
+                if (!$attribute instanceof AttributeInterface) {
+                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class);
+                }
+
+                $identifiers[$pimAiCode] = $attribute;
             }
-
-            $identifiers[$pimAiCode] = $attribute;
         }
 
         return $identifiers;

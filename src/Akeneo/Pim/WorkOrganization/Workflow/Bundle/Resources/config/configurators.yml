@@ -1,0 +1,8 @@
+parameters:
+    pimee_workflow.datagrid.configurator.filters_configurator.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configurator\FiltersConfigurator
+
+services:
+    pimee_workflow.datagrid.configuration.product.filters_configurator:
+        class: '%pimee_workflow.datagrid.configurator.filters_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'

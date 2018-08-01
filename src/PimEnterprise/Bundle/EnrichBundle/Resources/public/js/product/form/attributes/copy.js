@@ -42,7 +42,7 @@ define(
                     return {
                         code: 'draft_of_' + author,
                         label: __(
-                            'pimee_enrich.entity.product.copy.source.draft_of',
+                            'pimee_enrich.entity.product.module.copy.draft_of',
                             {'author': author}
                         ),
                         type: 'draft',
@@ -65,13 +65,13 @@ define(
                 this.sources = [
                     {
                         code: 'working_copy',
-                        label: __('pimee_enrich.entity.product.copy.source.working_copy'),
+                        label: __('pimee_enrich.entity.product.module.copy.working_copy'),
                         type: 'working_copy',
                         author: null
                     },
                     {
                         code: 'my_draft',
-                        label: __('pimee_enrich.entity.product.copy.source.draft'),
+                        label: __('pimee_enrich.entity.product.module.copy.draft'),
                         type: 'my_draft',
                         author: null
                     }

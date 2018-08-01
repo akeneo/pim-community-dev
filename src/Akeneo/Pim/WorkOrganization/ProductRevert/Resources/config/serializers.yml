@@ -1,0 +1,9 @@
+services:
+    pimee_revert.serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pimee_revert.encoder.csv:
+        public: false
+        class: 'Symfony\Component\Serializer\Encoder\CsvEncoder'
+        tags:
+            - { name: pimee_revert.serializer.encoder, priority: 90 }

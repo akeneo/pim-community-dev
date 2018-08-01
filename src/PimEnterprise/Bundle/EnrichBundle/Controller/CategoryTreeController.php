@@ -11,6 +11,9 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -18,9 +21,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -1,0 +1,30 @@
+pim_enriched_entity:
+  button:
+    save: Tallenna
+    create: Luo uusi
+  enriched_entity:
+    tab:
+      attributes: Attribuutit
+      properties: Ominaisuudet
+    properties:
+      identifier: Tunniste
+      label: Nimike
+    create:
+      header:
+        title: Luo
+      input:
+        label: Nimike
+      confirm: vahvista
+  record:
+    create:
+      header:
+        title: Luo
+      input:
+        label: Nimike
+      confirm: vahvista
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Tyyppikohtaiset parametrit

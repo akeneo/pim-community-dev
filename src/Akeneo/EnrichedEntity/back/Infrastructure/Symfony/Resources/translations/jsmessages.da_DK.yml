@@ -1,0 +1,30 @@
+pim_enriched_entity:
+  button:
+    save: Gem
+    create: Tilføj ny
+  enriched_entity:
+    tab:
+      attributes: Egenskaber
+      properties: Egenskaber
+    properties:
+      identifier: Id
+      label: Etiket
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+      confirm: bekræft
+  record:
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+      confirm: bekræft
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Specifik type parametre

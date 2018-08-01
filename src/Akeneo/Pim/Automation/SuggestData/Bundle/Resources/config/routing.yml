@@ -28,12 +28,47 @@ akeneo_suggest_data_is_connection_activated:
         code: '[\w._-]+'
     methods: [GET]
 
+akeneo_suggest_data_settings_index:
+    path: /suggest-data/mapping/identifiers
+    methods: [GET]
+
 akeneo_suggest_data_identifiers_mapping_save:
     path: /suggest-data/identifiers-mapping
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction }
     methods: [POST]
 
 akeneo_suggest_data_identifiers_mapping_get:
     path: /suggest-data/identifiers-mapping
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:getIdentifiersMappingAction}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:getIdentifiersMappingAction }
     methods: [GET]
+
+akeneo_suggest_data_settings_attributes_index:
+    path: /suggest-data/mapping/family
+    methods: [GET]
+
+akeneo_sugggest_data_family_mapping_index:
+    path: /suggest-data/family-mapping
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:indexAction }
+    methods: [GET]
+
+akeneo_sugggest_data_family_mapping_get:
+    path: /suggest-data/family-mapping/{identifier}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:getAction }
+    requirements:
+        identifier: '[\w._-]+'
+    methods: [GET]
+
+akeneo_suggest_data_family_mapping_edit:
+    path: /suggest-data/family-mapping/{identifier}/edit
+    requirements:
+        identifier: '[\w._-]+'
+    methods: [GET]
+
+akeneo_sugggest_data_family_mapping_update:
+    path: /suggest-data/family-mapping/{identifier}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:updateAction }
+    requirements:
+        identifier: '[\w._-]+'
+    methods: [POST]
+
+# TODO Harmonize naming.

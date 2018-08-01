@@ -1,0 +1,79 @@
+parameters:
+    pimee_workflow.publisher.chained.class:                     Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\ChainedPublisher
+    pimee_workflow.publisher.product.class:                     Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductPublisher
+    pimee_workflow.publisher.product_association.class:         Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\AssociationPublisher
+    pimee_workflow.publisher.product_completeness.class:        Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher
+    pimee_workflow.publisher.datetime.class:                    Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\DateTimePublisher
+    pimee_workflow.publisher.product_related_association.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\RelatedAssociationPublisher
+    pimee_workflow.unpublisher.product.class:                   Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductUnpublisher
+
+services:
+    pimee_workflow.publisher.chained:
+        class: '%pimee_workflow.publisher.chained.class%'
+
+    pimee_workflow.publisher.product:
+        class: '%pimee_workflow.publisher.product.class%'
+        arguments:
+            - '@pimee_workflow.builder.published_product'
+            - '@pimee_workflow.publisher.chained'
+            - '@pimee_workflow.publisher.product_related_association'
+            - '@pim_versioning.manager.version'
+            - '@pim_standard_format_serializer'
+            - '@pimee_workflow.updater.product_without_permission'
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.publisher.datetime:
+        class: '%pimee_workflow.publisher.datetime.class%'
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.publisher.product_association:
+        class: '%pimee_workflow.publisher.product_association.class%'
+        arguments:
+            - '%pimee_workflow.entity.published_product_association.class%'
+            - '@pimee_workflow.repository.published_product_without_permission'
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.publisher.product_related_association:
+        class: '%pimee_workflow.publisher.product_related_association.class%'
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.repository.published_association'
+            - '@pim_catalog.repository.association'
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.publisher.product_completeness:
+        class: '%pimee_workflow.publisher.product_completeness.class%'
+        arguments:
+            - '%pimee_workflow.entity.published_product_completeness.class%'
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.unpublisher.product:
+        class: '%pimee_workflow.unpublisher.product.class%'
+        arguments:
+            - '@pimee_workflow.repository.published_association'
+            - '@pim_catalog.repository.association_type'
+
+    pimee_reference_data.publisher.reference_data:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\ReferenceDataPublisher'
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.updater.product_without_permission:
+        class: 'Pim\Component\Catalog\Updater\ProductUpdater'
+        public: false
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pimee_workflow.updater.entity_with_values_without_permission'
+            - '@pim_catalog.association.filter.parent_associations'
+            - ['identifier', 'created', 'updated', 'parent_associations', 'metadata']
+
+    pimee_workflow.updater.entity_with_values_without_permission:
+        class: 'Pim\Component\Catalog\Updater\EntityWithValuesUpdater'
+        public: false
+        arguments:
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'

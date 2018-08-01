@@ -1,0 +1,9 @@
+akeneo_enrichedentity_enriched_entity_create:
+    type: action
+    label: akeneo_enrichedentity.acl.enriched_entity.create
+    group_name: akeneo_enrichedentity.acl_group.enriched_entity
+
+akeneo_enrichedentity_record_create:
+    type: action
+    label: akeneo_enrichedentity.acl.record.create
+    group_name: akeneo_enrichedentity.acl_group.enriched_entity

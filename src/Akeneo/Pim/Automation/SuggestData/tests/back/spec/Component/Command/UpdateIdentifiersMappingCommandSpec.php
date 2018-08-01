@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttributeException;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
 {
     function it_is_an_update_identifiers_mapping_command()
@@ -66,7 +70,18 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         ];
         $this->beConstructedWith($mapping);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $expected = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $given = array_keys($mapping);
+        sort($expected);
+        sort($given);
+
+        $this->shouldThrow(
+            InvalidMappingException::missingOrInvalidIdentifiersInMapping(
+                $expected,
+                $given,
+                UpdateIdentifiersMappingCommand::class
+            )
+        )->duringInstantiation();
     }
 
     function it_throws_an_exception_if_an_attribute_is_used_more_than_once()
@@ -78,6 +93,8 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
             'asin' => 'id',
         ]);
 
-        $this->shouldThrow(new DuplicateMappingAttributeException('An attribute cannot be used more than once'))->duringInstantiation();
+        $this->shouldThrow(
+            InvalidMappingException::duplicateAttributeCode('2', 'ean', UpdateIdentifiersMappingCommand::class)
+        )->duringInstantiation();
     }
 }

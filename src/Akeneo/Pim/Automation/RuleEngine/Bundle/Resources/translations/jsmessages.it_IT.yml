@@ -1,0 +1,89 @@
+pimee_catalog_rule:
+  execution_button: Esegui le regole
+  selected: 'regole selezionate'
+  popin:
+    execute_rules:
+      confirm_title: Conferma esecuzione
+      confirm_content: Sei sicuro di voler eseguire tutte le regole? (questo potrebbe richiedere molto tempo)
+  notification:
+    fail: L'azione potrebbe non essere eseguita
+    launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
+  attribute:
+    list:
+      code.label: Codice
+      condition.label: Condizione
+      action.label: Azione
+      no_rule_yet.label: Nessuna regola per ora
+  rule:
+    condition:
+      if.label: se
+    action:
+      then.label: allora
+      set_value.label: è impostato in
+      copy_value.label: viene copiato in
+      set.label: è impostato in
+      copy.label: viene copiato in
+      add.label: viene aggiunto in
+      remove.label: viene rimosso da
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Conferma esecuzione
+          confirm_content: Sei sicuro di voler eseguire la regola?
+      mass_edit_action:
+        confirm_title: Conferma calcolo
+        confirm_content: Sei sicuro di voler calcolare i prodotti interessati dalle regole?
+      mass_action:
+        execute:
+          confirm_title: Conferma esecuzione
+          confirm_content: Sei sicuro di voler eseguire le regole selezionate?
+          success: L'azione di massa per eseguire le regole selezionate è stata lanciata. Sarai avvisato quando finisce
+          error: Si è verificato un errore durante la creazione delle regole.
+          empty_selection: Nessuna regola selezionata.
+        delete:
+          confirm_title: Conferma esecuzione
+          confirm_content: Sei sicuro di voler eliminare le regole selezionate?
+          success: Hai eliminato correttamente le regole.
+          error: Si è verificato un errore durante la cancellazione delle regole.
+          empty_selection: Nessuna regola selezionata.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Regole
+confirmation:
+  remove:
+    rule: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Regola rimossa con successo
+flash:
+  rule:
+    impacted_product_count: L'azione di massa per calcolare i prodotti interessati dalle regole è stata lanciata. Sarai avvisato quando finisce.
+    executed: L'esecuzione della regola è stata lanciata. Sarai avvisato quando finisce.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Impostazioni delle regole
+batch_jobs:
+  default_steps:
+    execute_rules: Esecuzione regole
+  yml_rule_import:
+    label: Importazione regole in YAML
+    import.label: Importazione regole
+  yml_rule_export:
+    label: Esportazione regole in YAML
+    export.label: Esportazione regole
+  rule_impacted_product_count:
+    label: Prodotti interessati dalle regole
+    perform.label: Conta i prodotti interessati
+  csv_product_import_with_rules:
+    label: Importazione prodotti in formato CSV con regole
+    import.label: Importazione prodotti
+  xlsx_product_import_with_rules:
+    label: Importazione prodotti in formato XLSX con regole
+    import.label: Importazione prodotti
+pim_notification:
+  types:
+    rule: Impostazioni delle Regole

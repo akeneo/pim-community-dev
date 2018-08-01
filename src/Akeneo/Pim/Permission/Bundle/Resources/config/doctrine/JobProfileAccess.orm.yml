@@ -1,0 +1,40 @@
+Akeneo\Pim\Permission\Bundle\Entity\JobProfileAccess:
+    type: entity
+    table: pimee_security_job_profile_access
+    repositoryClass: Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository
+    uniqueConstraints:
+        job_profile_user_group_idx:
+            columns:
+                - job_profile_id
+                - user_group_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        executeJobProfile:
+            type: boolean
+            column: execute_job_profile
+            options:
+                default: false
+        editJobProfile:
+            type: boolean
+            column: edit_job_profile
+            options:
+                default: false
+    manyToOne:
+        jobProfile:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobInstance
+            joinColumns:
+                job_profile_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        userGroup:
+            targetEntity: Akeneo\UserManagement\Component\Model\Group
+            joinColumns:
+                user_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

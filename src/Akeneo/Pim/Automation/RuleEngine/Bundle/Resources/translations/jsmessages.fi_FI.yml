@@ -1,0 +1,57 @@
+pimee_catalog_rule:
+  selected: 'sääntöä valittu'
+  popin:
+    execute_rules:
+      confirm_title: Vahvista suoritus
+  notification:
+    fail: Tätä toimintoa ei voida suorittaa
+  attribute:
+    list:
+      code.label: Koodi
+      condition.label: Ehto
+      action.label: Toimi
+      no_rule_yet.label: Ei mitään sääntöä toistaiseksi
+  rule:
+    condition:
+      if.label: jos
+    action:
+      then.label: silloin
+      set_value.label: on asetettu
+      copy_value.label: on kopioitu
+      set.label: on asetettu
+      copy.label: on kopioitu
+      add.label: on lisätty
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Vahvista suoritus
+      mass_edit_action:
+        confirm_title: Vahvista laskenta
+      mass_action:
+        execute:
+          confirm_title: Vahvista suoritus
+        delete:
+          confirm_title: Vahvista suoritus
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Säännöt
+batch_jobs:
+  yml_rule_import:
+    label: Sääntöjen tuonti YAML-muodossa
+    import.label: Sääntöjen tuonti
+  yml_rule_export:
+    label: Sääntöjen vienti YAML-muodossa
+    export.label: Sääntöjen vienti
+  csv_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
+    import.label: Tuotteiden tuonti
+  csv_product_model_import_with_rules:
+    label: Tuotemallien ja sääntöjen tuonti CSV-muodossa
+  xlsx_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
+    import.label: Tuotteiden tuonti
+  xlsx_product_model_import_with_rules:
+    label: Tuotemallien ja sääntöjen tuonti XLSX-muodossa

@@ -1,0 +1,11 @@
+pimee_api_published_product_list:
+    path: /published-products
+    defaults: { _controller: pimee_workflow_controller.external_api.publish_product:listAction, _format: json }
+    methods: [GET]
+
+pimee_api_published_product_get:
+    path: /published-products/{code}
+    defaults: { _controller: pimee_workflow_controller.external_api.publish_product:getAction, _format: json }
+    methods: [GET]
+    requirements:
+        code: .+

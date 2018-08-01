@@ -184,3 +184,10 @@ pim_analytics:
   info_type:
     nb_assets: Antal tillgångar
 pim_assets_collection: Tillgångar kollektion
+pim_api:
+  acl:
+    asset_category:
+      list: Lista tillgångs kategorier
+  acl_group:
+    asset_category: Tillgångskategorier
+    asset: Tillgångar
