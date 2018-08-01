@@ -36,4 +36,10 @@ interface ProductSubscriptionRepositoryInterface
      * @param ProductSubscriptionInterface $subscription
      */
     public function save(ProductSubscriptionInterface $subscription): void;
+
+    /**
+     * @param int $productId
+     * @return bool
+     */
+    public function existsForProductId(int $productId): bool;
 }

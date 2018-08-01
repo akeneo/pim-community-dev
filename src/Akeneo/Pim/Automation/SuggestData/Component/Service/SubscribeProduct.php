@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductHandler;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscribeSingleProduct
+class SubscribeProduct
 {
     /** @var SubscribeProductHandler */
     private $subscribeProductHandler;

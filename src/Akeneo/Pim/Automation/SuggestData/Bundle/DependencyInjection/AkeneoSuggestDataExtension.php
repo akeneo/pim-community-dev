@@ -33,6 +33,7 @@ class AkeneoSuggestDataExtension extends Extension
         $loader->load('data_providers.yml');
         $loader->load('handlers.yml');
         $loader->load('mappings.yml');
+        $loader->load('services.yml');
 
         $loader->load('controllers.yml');
         $loader->load('repositories.yml');

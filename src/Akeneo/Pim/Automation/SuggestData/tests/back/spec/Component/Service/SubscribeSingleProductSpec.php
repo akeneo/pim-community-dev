@@ -15,7 +15,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\tests\back\spec\Component\Servi
 
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\SubscribeSingleProduct;
+use Akeneo\Pim\Automation\SuggestData\Component\Service\SubscribeProduct;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -31,7 +31,7 @@ class SubscribeSingleProductSpec extends ObjectBehavior
 
     function it_is_a_subscribe_single_product_service()
     {
-        $this->shouldHaveType(SubscribeSingleProduct::class);
+        $this->shouldHaveType(SubscribeProduct::class);
     }
 
     function it_subscribes_a_product($handler)

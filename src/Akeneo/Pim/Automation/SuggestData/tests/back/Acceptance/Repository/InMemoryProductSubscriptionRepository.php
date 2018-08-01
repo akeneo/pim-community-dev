@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Repository;
+namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ProductSubscriptionRepositoryInterface;
@@ -51,7 +51,20 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     public function save(ProductSubscriptionInterface $subscription): void
     {
         $productId = $subscription->getProduct()->getId();
-        $subscriptionId = $subscription->getSubscriptionId();
-        $this->subscriptions[$productId][$subscriptionId] = $subscription;
+        $this->subscriptions[$productId] = $subscription;
+    }
+
+    /**
+     * @param $productId
+     *
+     * @return bool
+     */
+    public function existsForProductId(int $productId): bool
+    {
+        if (!isset($this->subscriptions[$productId])) {
+            return false;
+        }
+
+        return count($this->subscriptions[$productId]) > 0;
     }
 }
