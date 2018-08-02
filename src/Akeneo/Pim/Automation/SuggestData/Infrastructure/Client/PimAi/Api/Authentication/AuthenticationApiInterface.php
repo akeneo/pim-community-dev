@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Authentication;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi;
 
 class UriGenerator
 {

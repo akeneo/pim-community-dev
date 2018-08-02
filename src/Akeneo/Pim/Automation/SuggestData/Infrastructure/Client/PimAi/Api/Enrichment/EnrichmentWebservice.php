@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Enrichment;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Enrichment;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\SubscriptionId;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\UriGenerator;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\SubscriptionId;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use GuzzleHttp\ClientInterface;
 
 class EnrichmentWebservice implements EnrichmentApiInterface

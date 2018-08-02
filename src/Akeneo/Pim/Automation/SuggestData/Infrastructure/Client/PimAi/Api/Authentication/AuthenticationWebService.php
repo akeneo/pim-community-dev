@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Authentication;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Client;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\UriGenerator;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\HttpFoundation\Response;
 
