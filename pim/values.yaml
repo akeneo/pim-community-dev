@@ -32,7 +32,7 @@ common:
 
 image:
   pim:
-    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-standard
+    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
     tag: cloud2.3-AOB-v1.0.0-BETA2
     pullPolicy: Always
   httpd:
