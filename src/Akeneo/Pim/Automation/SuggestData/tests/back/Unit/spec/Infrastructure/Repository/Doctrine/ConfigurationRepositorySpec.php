@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ConfigurationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class ConfigurationRepositorySpec extends ObjectBehavior
 {
-    function let(EntityManagerInterface $entityManager)
+    public function let(EntityManagerInterface $entityManager)
     {
         $this->beConstructedWith($entityManager);
     }
 
-    function it_is_configuration_repository()
+    public function it_is_configuration_repository()
     {
         $this->shouldHaveType(ConfigurationRepository::class);
         $this->shouldImplement(ConfigurationRepositoryInterface::class);

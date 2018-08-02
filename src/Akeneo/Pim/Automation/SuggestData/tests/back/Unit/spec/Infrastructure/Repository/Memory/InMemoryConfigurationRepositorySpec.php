@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryConfigurationRepository;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryConfigurationRepository;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
