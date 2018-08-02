@@ -53,6 +53,8 @@ helm-install: terraform-apply
 	@echo -e == Install or update PIM ==
 	@[[ -f "$(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" ]] && helmvalue="-f $(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" || helmvalue="" ; \
 	[[ ! -z "$(PIM_IMAGE_VERSION)" ]] && echo "image.pim.tag=$(PIM_IMAGE_VERSION)" && helmvalue+=" --set image.pim.tag=$(PIM_IMAGE_VERSION)"; \
+	[[ ! -z "$(PIM_IMAGE_REPO)" ]] && echo "image.pim.repository=$(PIM_IMAGE_REPO)" && helmvalue+=" --set image.pim.repository=$(PIM_IMAGE_REPO	)"; \
+
  	helm upgrade --install --wait --timeout $(HELM_TIMEOUT) $(PFID) $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION) --namespace srnt-$(PFID) -f ./terraform/pim-master-values.yaml $${helmvalue}
 
 .PHONY: helm-test
