@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Fake\FakeHALProducts;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Fake\FakeHALProducts;
 use Symfony\Component\HttpFoundation\Response;
 
 final class Memory implements SubscriptionApiInterface
