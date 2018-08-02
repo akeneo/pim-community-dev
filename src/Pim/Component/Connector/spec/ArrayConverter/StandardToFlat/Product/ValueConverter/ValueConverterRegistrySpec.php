@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\Val
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;
 
 class ValueConverterRegistrySpec extends ObjectBehavior
 {

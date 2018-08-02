@@ -1,29 +1,34 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
 /**
+ * Simpleselect array converter.
+ * Convert a standard simpleselect array format to a flat one.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DateConverter extends AbstractValueConverter implements ValueConverterInterface
+class SimpleSelectConverter extends AbstractValueConverter implements ValueConverterInterface
 {
     /**
      * {@inheritdoc}
      *
-     * Given a 'release_date' $attributeCode with this $data:
+     * Convert a standard simpleselect product value to a flat one.
+     *
+     * Given a 'gift_type' $attributeCode with this $data:
      * [
      *     [
-     *         'locale' => null,
-     *         'scope'  => null,
-     *         'data'   => '2005-08-15',
+     *         'locale' => 'de_DE',
+     *         'scope'  => 'ecommerce',
+     *         'data'   => 'trip'
      *     ],
      * ]
      *
      * It will return:
      * [
-     *     'release_date' => '2005-08-15',
+     *     'gift_type-de_DE-ecommerce' => 'trip',
      * ]
      */
     public function convert($attributeCode, $data)
@@ -37,11 +42,7 @@ class DateConverter extends AbstractValueConverter implements ValueConverterInte
                 $value['scope']
             );
 
-            // TODO: Check if we have a timezoned date as input
-            // $date = \DateTime::createFromFormat(\DateTime::ATOM, $value['data']);
-            // $convertedItem[$flatName] = $date->format('Y-m-d');
-
-            $convertedItem[$flatName] = $value['data'];
+            $convertedItem[$flatName] = (string) $value['data'];
         }
 
         return $convertedItem;

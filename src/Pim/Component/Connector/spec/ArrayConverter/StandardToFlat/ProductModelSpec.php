@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 
 class ProductModelSpec extends ObjectBehavior
 {

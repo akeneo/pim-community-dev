@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 
 /**
- * Convert standard format to flat format for product model
+ * Convert standard format to flat format for product
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverterInterface
+class Product extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
     /** @var ProductValueConverter */
     protected $valueConverter;
@@ -37,26 +37,61 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
                 break;
-            case 'code':
-            case 'family_variant':
-            case 'parent':
+            case 'enabled':
+                $convertedItem[$property] = false === $data || null === $data ? '0' : '1';
+                break;
+            case 'family':
                 $convertedItem[$property] = (string) $data;
+                break;
+            case 'parent':
+                if (null !== $data && '' !== $data) {
+                    $convertedItem[$property] = (string) $data;
+                }
+                break;
+            case 'groups':
+                $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
             case 'values':
                 foreach ($data as $code => $attribute) {
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
                 }
                 break;
+            case 'identifier':
             case 'created':
             case 'updated':
                 break;
             default:
-                break;
+                $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($property, $data);
         }
 
         return $convertedItem;
     }
 
+    /**
+     * Convert flat groups to flat unified groups.
+     *
+     * @param mixed $data
+     * @param array $convertedItem
+     *
+     * @return array
+     */
+    protected function convertGroups($data, array $convertedItem)
+    {
+        if (!array_key_exists('groups', $convertedItem)) {
+            $convertedItem['groups'] = '';
+        }
+
+        $groups = is_array($data) ? implode(',', $data) : (string) $data;
+        if ('' !== $groups) {
+            if ('' !== $convertedItem['groups']) {
+                $convertedItem['groups'] .= sprintf(',%s', $groups);
+            } else {
+                $convertedItem['groups'] = $groups;
+            }
+        }
+
+        return $convertedItem;
+    }
 
     /**
      * Convert flat formatted associations to standard ones.

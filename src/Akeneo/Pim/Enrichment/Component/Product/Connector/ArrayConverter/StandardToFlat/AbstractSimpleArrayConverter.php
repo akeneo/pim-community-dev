@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 

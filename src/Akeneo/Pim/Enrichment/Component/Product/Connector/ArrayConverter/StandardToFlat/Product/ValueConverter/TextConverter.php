@@ -1,34 +1,34 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
 /**
- * Boolean array converter.
- * Convert a standard boolean array format to a flat one.
+ * Text array converter.
+ * Convert a standard text array format to a flat one.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class BooleanConverter extends AbstractValueConverter implements ValueConverterInterface
+class TextConverter extends AbstractValueConverter implements ValueConverterInterface
 {
     /**
      * {@inheritdoc}
      *
-     * Convert a standard formatted boolean product value to a flat one.
+     * Convert a standard formatted text product value to a flat one.
      *
-     * Given a 'auto_lock' $property with this $data:
+     * Given a 'name' $attributeCode with this $data:
      * [
      *     [
      *         'locale' => 'de_DE',
      *         'scope'  => 'ecommerce',
-     *         'data'   => false
+     *         'data'   => 'Wii U'
      *     ],
      * ]
      *
      * It will return:
      * [
-     *     'auto_lock-de_DE-ecommerce' => '0',
+     *     'name-de_DE-ecommerce' => 'Wii U',
      * ]
      */
     public function convert($attributeCode, $data)
@@ -42,7 +42,7 @@ class BooleanConverter extends AbstractValueConverter implements ValueConverterI
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = false === $value['data'] || null === $value['data'] ? '0' : '1';
+            $convertedItem[$flatName] = (string) $value['data'];
         }
 
         return $convertedItem;

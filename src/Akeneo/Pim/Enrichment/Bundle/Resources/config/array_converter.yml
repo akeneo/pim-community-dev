@@ -57,29 +57,29 @@ services:
 
 
     pim_connector.array_converter.standard_to_flat.product:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
 
     pim_connector.array_converter.standard_to_flat.product_localized:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product'
             - '@pim_catalog.localization.localizer.converter'
 
     pim_connector.array_converter.standard_to_flat.product_model:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductModel'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductModel'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
 
     pim_connector.array_converter.standard_to_flat.product_model_localized:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product_model'
             - '@pim_catalog.localization.localizer.converter'
 
     pim_connector.array_converter.standard_to_flat.product.product_value_converter:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product.value_converter.registry'
             - '@pim_catalog.repository.cached_attribute'
@@ -92,7 +92,7 @@ services:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.standard_to_flat.group:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Group'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Group'
 
     ### Category
     pim_connector.array_converter.standard_to_flat.category:
@@ -117,7 +117,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterRegistry'
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.registry:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry'
 
     pim_connector.array_converter.flat_to_standard.product.value_converter.abstract:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\AbstractValueConverter'
@@ -133,7 +133,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.price:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\PriceConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\PriceConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_price_collection']
@@ -149,7 +149,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.metric:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MetricConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MetricConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_metric']
@@ -165,7 +165,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.multiselect:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
@@ -181,7 +181,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.simpleselect:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\SimpleSelectConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\SimpleSelectConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']
@@ -197,7 +197,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.text:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\TextConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\TextConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number']
@@ -213,7 +213,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.boolean:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\BooleanConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\BooleanConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_boolean']
@@ -229,7 +229,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.media:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MediaConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MediaConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_image', 'pim_catalog_file']
@@ -253,7 +253,7 @@ services:
             - { name: 'pim_connector.array_converter.flat_to_standard.product.value_converter' }
 
     pim_connector.array_converter.standard_to_flat.product.value_converter.date:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\DateConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\DateConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['pim_catalog_date']
