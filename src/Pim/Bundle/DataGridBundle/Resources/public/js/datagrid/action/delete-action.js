@@ -114,7 +114,7 @@ define([
 
                     this.errorModal = new Modal({
                         title: __('Delete Error'),
-                        content: message,
+                        content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
                         cancelText: false
                     });
                 }
