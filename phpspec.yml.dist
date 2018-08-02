@@ -51,6 +51,13 @@ suites:
         spec_path: src/Akeneo/Pim/Enrichment/Bundle
         src_path: src/Akeneo/Pim/Enrichment/Bundle
 
+    ## Platform context
+    Platform:
+        namespace: Akeneo\Platform
+        psr4_prefix: Akeneo\Platform
+        spec_path: src/Akeneo/Platform
+        src_path: src/Akeneo/Platform
+
     ## Akeneo Components
     Analytics:
         namespace: Akeneo\Tool\Component\Analytics
@@ -139,6 +146,7 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\VersioningBundle
         spec_path: src/Akeneo/Tool/Bundle/VersioningBundle
         src_path: src/Akeneo/Tool/Bundle/VersioningBundle
+
     ## Pim Components
     Api:
         namespace: Akeneo\Tool\Component\Api
@@ -187,11 +195,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
         spec_path: src/Akeneo/Tool/Bundle/ApiBundle
         src_path: src/Akeneo/Tool/Bundle/ApiBundle
-    CatalogBundle:
-        namespace: Pim\Bundle\CatalogBundle
-        psr4_prefix: Pim\Bundle\CatalogBundle
-        spec_path: src/Pim/Bundle/CatalogBundle
-        src_path: src/Pim/Bundle/CatalogBundle
     ConnectorBundle:
         namespace: Pim\Bundle\ConnectorBundle
         psr4_prefix: Pim\Bundle\ConnectorBundle

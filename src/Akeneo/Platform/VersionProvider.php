@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle;
+declare(strict_types=1);
+
+namespace Akeneo\Platform;
 
 /**
  * Class VersionProvider
@@ -12,25 +14,29 @@ namespace Pim\Bundle\CatalogBundle;
 class VersionProvider implements VersionProviderInterface
 {
     /** @var string */
-    protected $edition;
+    private $edition;
 
     /** @var string */
-    protected $version;
+    private $version;
+
+    /** @var string */
+    private $codeName;
 
     /**
      * @param string $versionClass
      */
-    public function __construct($versionClass)
+    public function __construct(string $versionClass)
     {
         $versionClass = new \ReflectionClass($versionClass);
         $this->version = $versionClass->getConstant('VERSION');
         $this->edition = $versionClass->getConstant('EDITION');
+        $this->codeName = $versionClass->getConstant('VERSION_CODENAME');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEdition()
+    public function getEdition(): string
     {
         return $this->edition;
     }
@@ -38,7 +44,7 @@ class VersionProvider implements VersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMajor()
+    public function getMajor(): string
     {
         $matches = [];
         preg_match('/^(?P<major>\d+)/', $this->version, $matches);
@@ -49,7 +55,7 @@ class VersionProvider implements VersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMinor()
+    public function getMinor(): string
     {
         $matches = [];
         preg_match('/^(?P<minor>\d+.\d+)/', $this->version, $matches);
@@ -60,7 +66,7 @@ class VersionProvider implements VersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getPatch()
+    public function getPatch(): string
     {
         $matches = [];
         preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
@@ -71,11 +77,19 @@ class VersionProvider implements VersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getStability()
+    public function getStability(): string
     {
         $matches = [];
         preg_match('/-(?P<stability>\w+)\d+$/', $this->version, $matches);
 
         return (isset($matches['stability'])) ? $matches['stability'] : 'stable';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullVersion(): string
+    {
+        return $this->version . ' ' . $this->codeName;
     }
 }
