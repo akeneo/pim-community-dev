@@ -43,10 +43,10 @@ class AttributesUsableInProductGrid implements ListAttributesQuery
         $limit = $this->attributesPerPage;
 
         $sql = <<<SQL
-SELECT DISTINCT(att.code) AS code, 
-  att.attribute_type AS type, att.sort_order AS sortOrder, att.metric_family AS metricFamily, g.sort_order AS groupOrder,
+SELECT DISTINCT(att.code) AS code,
+  att.attribute_type AS type, att.sort_order AS `order`, att.metric_family AS metricFamily, g.sort_order AS groupOrder,
   COALESCE(att_trans.label, CONCAT('[', att.code, ']')) AS label,
-  COALESCE(group_trans.label, CONCAT('[', g.code, ']')) AS groupLabel
+  COALESCE(group_trans.label, CONCAT('[', g.code, ']')) AS `group`
 FROM pim_catalog_attribute AS att
 LEFT JOIN pim_catalog_attribute_group AS g ON att.group_id = g.id
 LEFT JOIN pim_catalog_attribute_translation AS att_trans ON att.id = att_trans.foreign_key AND att_trans.locale = :locale
@@ -65,8 +65,7 @@ SQL;
         $attributes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         $attributes = array_map(function ($attribute) {
-            $attribute['useableAsGridFilter'] = true;
-            $attribute['sortOrder'] = (int) $attribute['sortOrder'];
+            $attribute['order'] = (int) $attribute['order'];
             $attribute['groupOrder'] = (int) $attribute['groupOrder'];
 
             return $attribute;

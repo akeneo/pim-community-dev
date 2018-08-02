@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
@@ -32,6 +33,9 @@ class ProductGridController
     /** @var FilterExtension */
     private $filterExtension;
 
+    /** @var UserContext */
+    private $userContext;
+
     /**
      * @param ListAttributesQuery $listAttributesQuery
      * @param FiltersConfigurator $filtersConfigurator
@@ -40,11 +44,13 @@ class ProductGridController
     public function __construct(
         ListAttributesQuery $listAttributesQuery,
         FiltersConfigurator $filtersConfigurator,
-        FilterExtension $filterExtension
+        FilterExtension $filterExtension,
+        UserContext $userContext
     ) {
         $this->listAttributesQuery = $listAttributesQuery;
         $this->filtersConfigurator = $filtersConfigurator;
         $this->filterExtension = $filterExtension;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -57,13 +63,39 @@ class ProductGridController
     public function getAttributesFiltersAction(Request $request): JsonResponse
     {
         $page = (int) $request->get('page', 1);
-        $locale = $request->get('locale', 'en_US'); // TODO: get user default locale
         $search = (string) $request->get('search', '');
+        $locale = $request->get('locale', null);
+
+        if (null == $locale) {
+            $locale = $this->userContext->getUser()->getCatalogLocale()->getCode();
+        }
 
         $attributes = $this->listAttributesQuery->fetch($locale, $page, $search);
         $attributesAsFilters = empty($attributes) ? [] : $this->formatAttributesAsFilters($attributes);
 
         return new JsonResponse($attributesAsFilters);
+    }
+
+    /**
+     * Get a paginated list of the attributes usable as columns for the product grid.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getAttributesColumnsAction(Request $request): JsonResponse
+    {
+        $page = (int) $request->get('page', 1);
+        $search = (string) $request->get('search', '');
+        $locale = $request->get('locale', null);
+
+        if (null == $locale) {
+            $locale = $this->userContext->getUser()->getCatalogLocale()->getCode();
+        }
+
+        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search);
+
+        return new JsonResponse($attributes);
     }
 
     /**
@@ -77,8 +109,8 @@ class ProductGridController
     {
         $configurationAttributes = [];
         foreach ($attributes as $index => $attribute) {
-            $attribute['group'] = $attribute['groupLabel'];
-            $attribute['order'] = $attribute['sortOrder'];
+            $attribute['sortOrder'] = $attribute['order'];
+            $attribute['useableAsGridFilter'] = true;
 
             $configurationAttributes[$attribute['code']] = $attribute;
         }
