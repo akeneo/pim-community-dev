@@ -97,7 +97,7 @@ Feature: Import families
     And I should see the text "Compute sub product models data"
     And I should see the text "Compute products data"
     And the product model "model-braided-hat" should not have the following values "material"
-    And there should only be the following job instance executed:
+    And there should be the following job instance executed:
       | job_instance                        | times |
       | xlsx_catalog_modeling_family_import | 1     |
 
