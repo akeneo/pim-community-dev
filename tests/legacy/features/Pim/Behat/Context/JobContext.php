@@ -168,7 +168,7 @@ class JobContext extends PimContext
     }
 
     /**
-     * @Given /^there should only be the following job instance executed:$/
+     * @Given /^there should be the following job instance executed:$/
      *
      * @throws \LogicException
      */
@@ -178,7 +178,32 @@ class JobContext extends PimContext
         foreach ($jobInstances as $jobInstance) {
             $this->getFixturesContext()->refresh($jobInstance);
             $jobExecutionCount = $jobInstance->getJobExecutions()->count();
-            $expectedJobExecutionCount = $this->getExpectedJobExecutionCount($jobInstance, $jobExecutionsTable);
+            $expectedJobExecutionCount = $this->getExpectedJobExecutionCount($jobInstance, $jobExecutionsTable, true);
+            if ($expectedJobExecutionCount > -1 && $jobExecutionCount !== $expectedJobExecutionCount) {
+                throw new \LogicException(
+                    sprintf(
+                        'Expected job "%s" to run %d times, %d given',
+                        $jobInstance->getCode(),
+                        $jobExecutionCount,
+                        $expectedJobExecutionCount
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @Given /^there should only be the following job instance executed:$/
+     *
+     * @throws \LogicException
+     */
+    public function thereShouldBeOnlyTheFollowingJobInstanceExecuted(TableNode $jobExecutionsTable)
+    {
+        $jobInstances = $this->getService('pim_enrich.repository.job_instance')->findAll();
+        foreach ($jobInstances as $jobInstance) {
+            $this->getFixturesContext()->refresh($jobInstance);
+            $jobExecutionCount = $jobInstance->getJobExecutions()->count();
+            $expectedJobExecutionCount = $this->getExpectedJobExecutionCount($jobInstance, $jobExecutionsTable, false);
             if ($jobExecutionCount !== $expectedJobExecutionCount) {
                 throw new \LogicException(
                     sprintf(
@@ -317,14 +342,17 @@ class JobContext extends PimContext
      *
      * @return int
      */
-    private function getExpectedJobExecutionCount(JobInstance $jobInstance, TableNode $jobExecutionTable): int
-    {
+    private function getExpectedJobExecutionCount(
+        JobInstance $jobInstance,
+        TableNode $jobExecutionTable,
+        bool $ignoreOtherJobs
+    ): int {
         foreach ($jobExecutionTable->getHash() as $jobExecutionRow) {
             if ($jobExecutionRow['job_instance'] === $jobInstance->getCode()) {
                 return (int) $jobExecutionRow['times'];
             }
         }
 
-        return 0;
+        return $ignoreOtherJobs ? -1 : 0;
     }
 }

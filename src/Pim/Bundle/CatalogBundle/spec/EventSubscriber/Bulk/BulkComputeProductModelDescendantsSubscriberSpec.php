@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\Bulk;
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
@@ -43,7 +44,6 @@ class BulkComputeProductModelDescendantsSubscriberSpec extends ObjectBehavior
         JobInstance $jobInstance
     ) {
         $event->getSubject()->willReturn([$productModel, $productModel2]);
-        $event->hasArgument('unitary')->willReturn(false);
         $productModel->getCode()->willReturn('product_model_code');
         $productModel2->getCode()->willReturn('product_model_code_2');
 
@@ -54,6 +54,33 @@ class BulkComputeProductModelDescendantsSubscriberSpec extends ObjectBehavior
             ->willReturn($jobInstance);
 
         $jobLauncher->launch($jobInstance, $user, ['product_model_codes' => ['product_model_code', 'product_model_code_2']])
+            ->shouldBeCalled();
+
+        $this->bulkComputeProductModelDescendantsCompleteness($event);
+    }
+
+    function it_computes_product_model_descendants_only_on_product_models(
+        $tokenStorage,
+        $jobLauncher,
+        $jobInstanceRepository,
+        ProductModelInterface $productModel,
+        CategoryInterface $category,
+        GenericEvent $event,
+        TokenInterface $token,
+        UserInterface $user,
+        JobInstance $jobInstance
+    ) {
+        $event->getSubject()->willReturn([$productModel, $category]);
+        $productModel->getCode()->willReturn('product_model_code');
+        $category->getCode()->willReturn('category');
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $jobInstanceRepository->findOneByIdentifier('compute_product_models_descendants')
+            ->willReturn($jobInstance);
+
+        $jobLauncher->launch($jobInstance, $user, ['product_model_codes' => ['product_model_code']])
             ->shouldBeCalled();
 
         $this->bulkComputeProductModelDescendantsCompleteness($event);
