@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\GetSuggestDataConnectionStatus;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 

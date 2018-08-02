@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Application\Mapping\ManageIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\ManageIdentifiersMapping;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;

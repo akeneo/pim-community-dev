@@ -23,19 +23,19 @@ use PhpSpec\ObjectBehavior;
  */
 class InMemoryIdentifiersMappingRepositorySpec extends ObjectBehavior
 {
-    function it_is_an_identifiers_mapping_repository()
+    public function it_is_an_identifiers_mapping_repository()
     {
         $this->beConstructedWith(new IdentifiersMapping([]));
         $this->shouldBeAnInstanceOf(IdentifiersMappingRepositoryInterface::class);
     }
 
-    function it_is_an_in_memory_identifiers_mapping_repository()
+    public function it_is_an_in_memory_identifiers_mapping_repository()
     {
         $this->beConstructedWith(new IdentifiersMapping([]));
         $this->shouldBeAnInstanceOf(InMemoryIdentifiersMappingRepository::class);
     }
 
-    function it_finds_an_identifiers_mapping()
+    public function it_finds_an_identifiers_mapping()
     {
         $identifiersMapping = new IdentifiersMapping([]);
         $this->beConstructedWith($identifiersMapping);
@@ -43,7 +43,7 @@ class InMemoryIdentifiersMappingRepositorySpec extends ObjectBehavior
         $this->find()->shouldReturn($identifiersMapping);
     }
 
-    function it_saves_an_identifiers_mapping()
+    public function it_saves_an_identifiers_mapping()
     {
         $mappingUsedForContruction = new IdentifiersMapping([]);
         $this->beConstructedWith($mappingUsedForContruction);

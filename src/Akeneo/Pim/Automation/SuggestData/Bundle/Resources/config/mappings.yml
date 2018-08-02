@@ -1,6 +1,0 @@
-services:
-    akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Component\Service\ManageIdentifiersMapping'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
-            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'

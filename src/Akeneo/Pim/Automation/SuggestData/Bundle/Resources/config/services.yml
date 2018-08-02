@@ -1,5 +1,27 @@
 services:
     akeneo.pim.automation.suggest_data.service.subscribe_product:
-        class: 'Akeneo\Pim\Automation\SuggestData\Component\Service\SubscribeProduct'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct'
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.subscribe_product'
+
+    akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+
+    akeneo.pim.automation.suggest_data.connection.activate:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.save_configuration'
+
+    akeneo.pim.automation.suggest_data.connection.get_normalized_configuration:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
+    akeneo.pim.automation.suggest_data.connection.get_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'

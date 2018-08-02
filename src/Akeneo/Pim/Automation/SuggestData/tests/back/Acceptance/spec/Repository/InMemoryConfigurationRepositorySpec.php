@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
 
-use Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryConfigurationRepository;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryConfigurationRepository;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class InMemoryConfigurationRepositorySpec extends ObjectBehavior
 {
-    function it_is_an_in_memory_configuration_repository()
+    public function it_is_an_in_memory_configuration_repository()
     {
         $this->beConstructedWith([]);
 
@@ -31,7 +31,7 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
         $this->shouldImplement(ConfigurationRepositoryInterface::class);
     }
 
-    function it_findOneByCodes_a_configuration_by_its_code()
+    public function it_findOneByCodes_a_configuration_by_its_code()
     {
         $configuration = new Configuration('foobar', ['field' => 'value']);
         $this->beConstructedWith([$configuration]);
@@ -39,7 +39,7 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
         $this->findOneByCode('foobar')->shouldReturn($configuration);
     }
 
-    function it_findOneByCodes_no_configuration_if_there_is_no_configuration_for_the_provided_code()
+    public function it_findOneByCodes_no_configuration_if_there_is_no_configuration_for_the_provided_code()
     {
         $configuration = new Configuration('foobar', ['field' => 'value']);
         $this->beConstructedWith([$configuration]);
@@ -47,7 +47,7 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
         $this->findOneByCode('another_code')->shouldReturn(null);
     }
 
-    function it_saves_a_configuration()
+    public function it_saves_a_configuration()
     {
         $configuration = new Configuration('foobar', ['field' => 'value']);
         $this->beConstructedWith([]);
