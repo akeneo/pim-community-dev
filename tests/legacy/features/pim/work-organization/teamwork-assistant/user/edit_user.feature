@@ -16,7 +16,7 @@ Feature: Update the use information
     And I am logged in as "Julia"
 
   Scenario: Project views are displayable
-    Given I edit the "admin" user
+    Given I edit the "Julia" user
     When I visit the "Additional" tab
     Then I should not see the choices collection-summer-2030-ecommerce-en-us in Default product grid view
     And I should not see the choices collection-winter-2030-mobile-en-us in Default product grid view

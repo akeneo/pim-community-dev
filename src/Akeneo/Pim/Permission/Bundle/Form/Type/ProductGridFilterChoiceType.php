@@ -1,6 +1,8 @@
 <?php
 
 /*
+ * TODO DELETE
+ *
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)

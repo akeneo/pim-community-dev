@@ -28,6 +28,6 @@ Feature: Update user preferences
       | Product grid filters | Permissions |
     And I save the user
     When I am on the users page
-    And I click on the "View" action of the row which contains "Julia"
+    And I click on the "Update" action of the row which contains "Julia"
     And I visit the "Additional" tab
     Then I should see the text "Permissions"

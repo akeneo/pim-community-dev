@@ -68,10 +68,7 @@ Feature: Products datagrid views
       | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    When I am on the User profile show page
-    And I press the "Edit" button
-    Then I should see the text "Mary Smith"
-    And I should see the text "Save"
+    When I edit the "Mary" user
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     And I fill in the following information:
@@ -95,10 +92,7 @@ Feature: Products datagrid views
       | new-view-label | Sneakers only |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
-    When I am on the User profile show page
-    And I press the "Edit" button
-    Then I should see the text "Mary Smith"
-    And I should see the text "Save"
+    When I edit the "Mary" user
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     And I fill in the following information:
