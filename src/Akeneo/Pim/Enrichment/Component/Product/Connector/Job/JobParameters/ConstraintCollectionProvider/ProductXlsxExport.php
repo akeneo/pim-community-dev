@@ -1,41 +1,39 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Component\Catalog\Validator\Constraints\Channel;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;
-use Pim\Component\Connector\Validator\Constraints\ProductModelFilterData;
+use Pim\Component\Connector\Validator\Constraints\ProductFilterData;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for product model CSV export
+ * Constraints for product XLSX export
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelCsvExport implements ConstraintCollectionProviderInterface
+class ProductXlsxExport implements ConstraintCollectionProviderInterface
 {
     /** @var ConstraintCollectionProviderInterface */
-    private $simpleProvider;
+    protected $simpleProvider;
 
     /** @var array */
-    private $supportedJobNames;
+    protected $supportedJobNames;
 
     /**
-     * @param ConstraintCollectionProviderInterface $simpleCsv
+     * @param ConstraintCollectionProviderInterface $simpleXlsx
      * @param array                                 $supportedJobNames
      */
-    public function __construct(ConstraintCollectionProviderInterface $simpleCsv, array $supportedJobNames)
+    public function __construct(ConstraintCollectionProviderInterface $simpleXlsx, array $supportedJobNames)
     {
-        $this->simpleProvider = $simpleCsv;
+        $this->simpleProvider = $simpleXlsx;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -55,7 +53,7 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
             ]
         );
         $constraintFields['filters'] = [
-            new ProductModelFilterData(['groups' => ['Default', 'DataFilters']]),
+            new ProductFilterData(['groups' => ['Default', 'DataFilters']]),
             new Collection(
                 [
                     'fields'           => [
@@ -66,11 +64,12 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
                                     'fields'             => [
                                         'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
                                         'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
-                                        'attributes' => new FilterStructureAttribute(
-                                            [
-                                                'groups' => ['Default', 'DataFilters'],
-                                            ]
-                                        ),
+                                        'attributes' => new FilterStructureAttribute([
+                                            'groups' => [
+                                                'Default',
+                                                'DataFilters',
+                                            ],
+                                        ]),
                                     ],
                                     'allowMissingFields' => true,
                                 ]
@@ -79,7 +78,7 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
                     ],
                     'allowExtraFields' => true,
                 ]
-            ),
+            )
         ];
 
         return new Collection(['fields' => $constraintFields]);

@@ -1,29 +1,22 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Symfony\Component\Validator\Constraints\Collection;
-use Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Symfony\Component\Validator\Constraints\Collection;
 
-class ProductModelCsvImportSpec extends ObjectBehavior
+class ProductCsvExportSpec extends ObjectBehavior
 {
     function let(ConstraintCollectionProviderInterface $decoratedProvider)
     {
         $this->beConstructedWith($decoratedProvider, ['my_supported_job_name']);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType(ProductModelCsvImport::class);
-    }
-
     function it_is_a_provider()
     {
-        $this->shouldImplement(ConstraintCollectionProviderInterface::class);
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface');
     }
 
     function it_provides_constraints_collection(
@@ -32,17 +25,11 @@ class ProductModelCsvImportSpec extends ObjectBehavior
     ) {
         $decoratedProvider->getConstraintCollection()->willReturn($decoratedCollection);
         $collection = $this->getConstraintCollection();
-        $collection->shouldReturnAnInstanceOf(Collection::class);
+        $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(8);
         $fields->shouldHaveKey('decimalSeparator');
         $fields->shouldHaveKey('dateFormat');
-        $fields->shouldHaveKey('enabled');
-        $fields->shouldHaveKey('categoriesColumn');
-        $fields->shouldHaveKey('enabledComparison');
-        $fields->shouldHaveKey('realTimeVersioning');
-        $fields->shouldHaveKey('invalid_items_file_format');
-        $fields->shouldHaveKey('familyVariantColumn');
+        $fields->shouldHaveKey('filters');
     }
 
     function it_supports_a_job(JobInterface $job)

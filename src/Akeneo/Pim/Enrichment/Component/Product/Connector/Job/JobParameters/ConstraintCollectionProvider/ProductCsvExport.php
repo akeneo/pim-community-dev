@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
+declare(strict_types=1);
+
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -13,13 +15,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for product XLSX export
+ * Constraints for product CSV export
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductXlsxExport implements ConstraintCollectionProviderInterface
+class ProductCsvExport implements ConstraintCollectionProviderInterface
 {
     /** @var ConstraintCollectionProviderInterface */
     protected $simpleProvider;
@@ -28,12 +30,12 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
     protected $supportedJobNames;
 
     /**
-     * @param ConstraintCollectionProviderInterface $simpleXlsx
+     * @param ConstraintCollectionProviderInterface $simpleCsv
      * @param array                                 $supportedJobNames
      */
-    public function __construct(ConstraintCollectionProviderInterface $simpleXlsx, array $supportedJobNames)
+    public function __construct(ConstraintCollectionProviderInterface $simpleCsv, array $supportedJobNames)
     {
-        $this->simpleProvider = $simpleXlsx;
+        $this->simpleProvider = $simpleCsv;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -64,12 +66,11 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                                     'fields'             => [
                                         'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
                                         'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
-                                        'attributes' => new FilterStructureAttribute([
-                                            'groups' => [
-                                                'Default',
-                                                'DataFilters',
-                                            ],
-                                        ]),
+                                        'attributes' => new FilterStructureAttribute(
+                                            [
+                                                'groups' => ['Default', 'DataFilters'],
+                                            ]
+                                        ),
                                     ],
                                     'allowMissingFields' => true,
                                 ]
@@ -78,7 +79,7 @@ class ProductXlsxExport implements ConstraintCollectionProviderInterface
                     ],
                     'allowExtraFields' => true,
                 ]
-            )
+            ),
         ];
 
         return new Collection(['fields' => $constraintFields]);

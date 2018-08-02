@@ -1,25 +1,24 @@
 <?php
 
-namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 
 /**
- * DefaultParameters for product CSV import
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvImport implements DefaultValuesProviderInterface
+class ProductModelCsvImport implements DefaultValuesProviderInterface
 {
     /** @var DefaultValuesProviderInterface */
-    protected $simpleProvider;
+    private $simpleProvider;
 
     /** @var array */
-    protected $supportedJobNames;
+    private $supportedJobNames;
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
@@ -34,15 +33,14 @@ class ProductCsvImport implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['enabled'] = true;
         $parameters['categoriesColumn'] = 'categories';
-        $parameters['familyColumn'] = 'family';
-        $parameters['groupsColumn'] = 'groups';
+        $parameters['familyVariantColumn'] = 'family_variant';
         $parameters['enabledComparison'] = true;
         $parameters['realTimeVersioning'] = true;
 
@@ -52,7 +50,7 @@ class ProductCsvImport implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

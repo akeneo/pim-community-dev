@@ -1,14 +1,16 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
-class ProductModelCsvExportSpec extends ObjectBehavior
+class ProductXlsxExportSpec extends ObjectBehavior
 {
     function let(
         DefaultValuesProviderInterface $decoratedProvider,
@@ -20,12 +22,22 @@ class ProductModelCsvExportSpec extends ObjectBehavior
 
     function it_is_a_provider()
     {
-        $this->shouldImplement(DefaultValuesProviderInterface::class);
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface');
     }
 
     function it_provides_default_values(
-        $decoratedProvider
+        $decoratedProvider,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        LocaleInterface $locale,
+        ChannelInterface $channel
     ) {
+        $channel->getCode()->willReturn('channel_code');
+        $channelRepository->getFullChannels()->willReturn([$channel]);
+
+        $locale->getCode()->willReturn('locale_code');
+        $localeRepository->getActivatedLocaleCodes()->willReturn([$locale]);
+
         $decoratedProvider->getDefaultValues()->willReturn(['decoratedParam' => true]);
         $this->getDefaultValues()->shouldReturnWellFormedDefaultValues();
     }
@@ -41,7 +53,13 @@ class ProductModelCsvExportSpec extends ObjectBehavior
         return [
             'returnWellFormedDefaultValues' => function ($parameters) {
                 return true === $parameters['decoratedParam'] &&
-                    true === $parameters['with_media'];
+                    '.' === $parameters['decimalSeparator'] &&
+                    'yyyy-MM-dd' === $parameters['dateFormat'] &&
+                    true === $parameters['with_media'] &&
+                    10000 === $parameters['linesPerFile'] &&
+                    is_array($parameters['filters']) &&
+                    is_array($parameters['filters']['data']) &&
+                    is_array($parameters['filters']['structure']);
             }
         ];
     }

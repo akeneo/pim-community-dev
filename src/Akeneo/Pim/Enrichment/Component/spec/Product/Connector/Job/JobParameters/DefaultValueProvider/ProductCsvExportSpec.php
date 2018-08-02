@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -9,18 +9,19 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
+ * Constraints for product CSV import
  *
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelCsvImport implements ConstraintCollectionProviderInterface
+class ProductCsvImport implements ConstraintCollectionProviderInterface
 {
     /** @var ConstraintCollectionProviderInterface */
-    private $simpleProvider;
+    protected $simpleProvider;
 
     /** @var array */
-    private $supportedJobNames;
+    protected $supportedJobNames;
 
     /**
      * @param ConstraintCollectionProviderInterface $simpleProvider
@@ -35,7 +36,7 @@ class ProductModelCsvImport implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection(): Collection
+    public function getConstraintCollection()
     {
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
@@ -43,7 +44,8 @@ class ProductModelCsvImport implements ConstraintCollectionProviderInterface
         $constraintFields['dateFormat'] = new NotBlank();
         $constraintFields['enabled'] = new Type('bool');
         $constraintFields['categoriesColumn'] = new NotBlank();
-        $constraintFields['familyVariantColumn'] = new NotBlank();
+        $constraintFields['familyColumn'] = new NotBlank();
+        $constraintFields['groupsColumn'] = new NotBlank();
         $constraintFields['enabledComparison'] = new Type('bool');
         $constraintFields['realTimeVersioning'] = new Type('bool');
         $constraintFields['invalid_items_file_format'] = new NotBlank();
@@ -54,7 +56,7 @@ class ProductModelCsvImport implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job): bool
+    public function supports(JobInterface $job)
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;

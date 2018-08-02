@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
@@ -12,25 +10,25 @@ use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
- * DefaultParameters for product model CSV export
+ * DefaultParameters for product XLSX export
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelCsvExport implements DefaultValuesProviderInterface
+class ProductXlsxExport implements DefaultValuesProviderInterface
 {
     /** @var DefaultValuesProviderInterface */
-    private $simpleProvider;
-
-    /** @var array */
-    private $supportedJobNames;
+    protected $simpleProvider;
 
     /** @var ChannelRepositoryInterface */
-    private $channelRepository;
+    protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */
-    private $localeRepository;
+    protected $localeRepository;
+
+    /** @var array */
+    protected $supportedJobNames;
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
@@ -44,9 +42,9 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         LocaleRepositoryInterface $localeRepository,
         array $supportedJobNames
     ) {
-        $this->simpleProvider    = $simpleProvider;
+        $this->simpleProvider = $simpleProvider;
         $this->channelRepository = $channelRepository;
-        $this->localeRepository  = $localeRepository;
+        $this->localeRepository = $localeRepository;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -59,6 +57,7 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
+        $parameters['linesPerFile'] = 10000;
 
         $channels = $this->channelRepository->getFullChannels();
         $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
@@ -69,8 +68,13 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['filters'] = [
             'data'      => [
                 [
+                    'field'    => 'enabled',
+                    'operator' => Operators::EQUALS,
+                    'value'    => true,
+                ],
+                [
                     'field'    => 'completeness',
-                    'operator' => Operators::AT_LEAST_COMPLETE,
+                    'operator' => Operators::GREATER_OR_EQUAL_THAN,
                     'value'    => 100,
                 ],
                 [

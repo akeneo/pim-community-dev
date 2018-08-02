@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Component\Catalog\Validator\Constraints\Channel;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;
-use Pim\Component\Connector\Validator\Constraints\ProductFilterData;
+use Pim\Component\Connector\Validator\Constraints\ProductModelFilterData;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for product CSV export
+ * Constraints for product model CSV export
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvExport implements ConstraintCollectionProviderInterface
+class ProductModelCsvExport implements ConstraintCollectionProviderInterface
 {
     /** @var ConstraintCollectionProviderInterface */
-    protected $simpleProvider;
+    private $simpleProvider;
 
     /** @var array */
-    protected $supportedJobNames;
+    private $supportedJobNames;
 
     /**
      * @param ConstraintCollectionProviderInterface $simpleCsv
@@ -55,7 +55,7 @@ class ProductCsvExport implements ConstraintCollectionProviderInterface
             ]
         );
         $constraintFields['filters'] = [
-            new ProductFilterData(['groups' => ['Default', 'DataFilters']]),
+            new ProductModelFilterData(['groups' => ['Default', 'DataFilters']]),
             new Collection(
                 [
                     'fields'           => [
