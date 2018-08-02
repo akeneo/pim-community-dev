@@ -6,7 +6,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\ExistsRecordInterface;
+use Akeneo\EnrichedEntity\Domain\Query\ExistsRecordInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -69,6 +69,7 @@ class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
             $this->context->buildViolation(RecordIdentifierShouldBeUnique::ERROR_MESSAGE)
                 ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
                 ->setParameter('%code%', $identifier)
+                ->atPath('identifier')
                 ->addViolation();
         }
     }

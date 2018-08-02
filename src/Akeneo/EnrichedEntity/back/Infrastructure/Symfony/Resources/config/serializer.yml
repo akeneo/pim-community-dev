@@ -1,9 +1,14 @@
 services:
-    pim_enriched_entity_serializer:
-        class: 'Symfony\Component\Serializer\Serializer'
+    enriched_entity_serializer:
+        class: Symfony\Component\Serializer\Serializer
 
     akeneoenriched_serializer.encoder.json:
         public: false
-        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
+        class: Symfony\Component\Serializer\Encoder\JsonEncoder
         tags:
-            - { name: pim_enriched_entity_serializer.encoder, priority: 90 }
+            - { name: enriched_entity_serializer.encoder }
+
+    akeneoenriched.normalizer.exception.violation:
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        tags:
+            - { name: enriched_entity_serializer.normalizer }

@@ -36,6 +36,10 @@ pim_enriched_entity:
                 success: Enriched entity successfully created.
                 fail: An error occured during the creation of the enriched entity
     record:
+        validation:
+            identifier:
+                pattern: 'This field may only contain letters, numbers and underscores.'
+                should_be_unique: 'This code already exists for this entity.'
         create:
             header:
                 title: Create

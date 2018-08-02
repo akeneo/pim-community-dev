@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Repository;
+namespace Akeneo\EnrichedEntity\Domain\Query;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 

@@ -17,6 +17,7 @@ $rules = [
     ])->in('Akeneo\EnrichedEntity\Application'),
     $builder->only([
         'Doctrine\DBAL',
+        'PDO',
         'Symfony\Component',
         'Akeneo\EnrichedEntity\Application',
         'Akeneo\EnrichedEntity\Domain',
