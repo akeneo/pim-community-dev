@@ -3,7 +3,7 @@ parameters:
 
 services:
     akeneo.pim.automation.suggest_data.data_provider.suggested_data_factory:
-        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataFactory'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataFactory'
 
     akeneo.pim.automation.suggest_data.data_provider.registry:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderRegistry'

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider;
 
 /**
  * SuggestedDataInterface factory.

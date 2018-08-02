@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Fake;
 
 /**
  * Allows to fake products with HAL format

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DeserializeSuggestedDataCollection;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\DeserializeSuggestedDataCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
