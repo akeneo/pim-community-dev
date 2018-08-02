@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use PhpSpec\ObjectBehavior;

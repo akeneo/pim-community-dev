@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger;
 use Prophecy\Argument;
 
-class ValKueSpec extends ObjectBehavior
+class ValueSpec extends ObjectBehavior
 {
     function let(
         AttributeColumnInfoExtractor $fieldExtractor,
