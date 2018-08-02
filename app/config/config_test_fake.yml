@@ -7,6 +7,7 @@ imports:
     - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Common/Resources/fake_services.yml }
+    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Common/Resources/helpers.yml }
 
 framework:
     test: ~

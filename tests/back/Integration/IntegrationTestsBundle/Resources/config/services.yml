@@ -33,17 +33,6 @@ services:
         arguments:
             - '@akeneo_integration_tests.configuration.catalog.base'
 
-    akeneo_ee_integration_tests.helper.authenticated_client_factory:
-        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory'
-        arguments:
-          - '@pim_user.repository.user'
-          - '@kernel'
-
-    akeneo_ee_integration_tests.helper.web_client_helper:
-        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper'
-        arguments:
-            - '@router'
-
     akeneo_ee_integration_tests.builder.attribute:
         class: 'Akeneo\Test\Common\EntityBuilder'
         shared: false
