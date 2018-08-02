@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\tests\back\spec\Component\Service;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscribeSingleProductSpec extends ObjectBehavior
+class SubscribeProductSpec extends ObjectBehavior
 {
     public function let(SubscribeProductHandler $handler)
     {

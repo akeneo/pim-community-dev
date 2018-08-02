@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Service;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
 use PhpSpec\ObjectBehavior;
 
 /**

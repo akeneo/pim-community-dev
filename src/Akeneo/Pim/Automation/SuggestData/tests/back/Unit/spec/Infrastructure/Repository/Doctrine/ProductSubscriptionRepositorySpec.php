@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\tests\back\spec\Bundle\Doctrine\Repository;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,7 +24,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    public function it_is_a_product_subscription_repository(ObjectManager $em)
+    function it_is_a_product_subscription_repository(ObjectManager $em)
     {
         $this->beConstructedWith($em, ProductSubscription::class);
         $this->shouldHaveType(ProductSubscriptionRepository::class);

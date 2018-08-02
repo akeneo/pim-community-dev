@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryIdentifiersMappingRepository;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryIdentifiersMappingRepository;
 use PhpSpec\ObjectBehavior;
 
 /**
