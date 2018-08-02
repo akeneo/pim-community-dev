@@ -1,3 +1,13 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7559: Fix versionning query too slow on the PEF
+
+## BC Breaks
+
+- Method `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface::getNewestLogEntryForRessources` returns now an array
+
 # 2.0.31 (2018-08-01)
 
 ## Performances

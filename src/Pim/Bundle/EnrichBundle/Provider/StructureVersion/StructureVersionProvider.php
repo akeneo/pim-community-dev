@@ -38,7 +38,7 @@ class StructureVersionProvider implements StructureVersionProviderInterface
             return null;
         }
 
-        return $latest->getLoggedAt()->getTimestamp();
+        return $latest['loggedAt']->getTimestamp();
     }
 
     /**
