@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Component\Service\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

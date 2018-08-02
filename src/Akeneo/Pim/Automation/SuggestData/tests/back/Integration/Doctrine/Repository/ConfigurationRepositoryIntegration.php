@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Doctrine\Repository;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

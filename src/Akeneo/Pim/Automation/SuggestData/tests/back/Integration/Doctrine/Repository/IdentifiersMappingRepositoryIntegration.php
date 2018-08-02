@@ -13,17 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Doctrine\Repository;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class IdentifiersMappingRepositoryIntegration extends TestCase
 {
-
     public function test_it_creates_an_identifiers_mapping()
     {
         $mapping = $this->updateMapping(['brand' => $this->getAttribute('sku')]);
