@@ -1,12 +1,12 @@
 parameters:
-    env(PIM_ELASTICSEARCH_HOST): "elasticsearch"
+    env(PIM_ELASTICSEARCH_HOST): "localhost"
     env(PIM_ELASTICSEARCH_PORT): "9200"
 
-    env(PIM_DATABASE_HOST):     "pim-mysql"
+    env(PIM_DATABASE_HOST):     "localhost"
     env(PIM_DATABASE_PORT):     "3306"
     env(PIM_DATABASE_NAME):     "akeneo_pim"
     env(PIM_DATABASE_USER):     "akeneo_pim"
-    env(PIM_DATABASE_PASSWORD): "changeme"
+    env(PIM_DATABASE_PASSWORD): "akeneo_pim"
 
     database_driver:                      pdo_mysql
     database_host:                        "%env(PIM_DATABASE_HOST)%"
