@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Component\Converter\ArrayConverter\StandardToFlat;
+namespace Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
