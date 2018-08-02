@@ -1,13 +1,22 @@
 parameters:
+    env(PIM_ELASTICSEARCH_HOST): "elasticsearch"
+    env(PIM_ELASTICSEARCH_PORT): "9200"
+
+    env(PIM_DATABASE_HOST):     "pim-mysql"
+    env(PIM_DATABASE_PORT):     "3306"
+    env(PIM_DATABASE_NAME):     "akeneo_pim"
+    env(PIM_DATABASE_USER):     "akeneo_pim"
+    env(PIM_DATABASE_PASSWORD): "changeme"
+
     database_driver:                      pdo_mysql
-    database_host:                        localhost
-    database_port:                        ~
-    database_name:                        akeneo_pim
-    database_user:                        akeneo_pim
-    database_password:                    akeneo_pim
+    database_host:                        "%env(PIM_DATABASE_HOST)%"
+    database_port:                        "%env(PIM_DATABASE_PORT)%"
+    database_name:                        "%env(PIM_DATABASE_NAME)%"
+    database_user:                        "%env(PIM_DATABASE_USER)%"
+    database_password:                    "%env(PIM_DATABASE_PASSWORD)%"
     locale:                               en
     secret:                               ThisTokenIsNotSoSecretChangeIt
     product_index_name:                   akeneo_pim_product
     product_model_index_name:             akeneo_pim_product_model
     product_and_product_model_index_name: akeneo_pim_product_and_product_model
-    index_hosts:                          'localhost: 9200'
+    index_hosts:                          "%env(PIM_ELASTICSEARCH_HOST)%:%env(PIM_ELASTICSEARCH_PORT)%"
