@@ -69,15 +69,20 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => $normalizedAttribute['code'],
+                'identifier'                 => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
-                'labels' => json_encode($normalizedAttribute['labels']),
-                'attribute_type' => $normalizedAttribute['type'],
-                'attribute_order' => $normalizedAttribute['order'],
-                'required' => (int) $normalizedAttribute['required'],
-                'value_per_channel' => (int) $normalizedAttribute['value_per_channel'],
-                'value_per_locale' => (int) $normalizedAttribute['value_per_locale'],
-                'additional_properties' => json_encode($additionalProperties)
+                'labels'                     => json_encode($normalizedAttribute['labels']),
+                'attribute_type'             => $normalizedAttribute['type'],
+                'attribute_order'            => $normalizedAttribute['order'],
+                'required'                   => $normalizedAttribute['required'],
+                'value_per_channel'          => $normalizedAttribute['value_per_channel'],
+                'value_per_locale'           => $normalizedAttribute['value_per_locale'],
+                'additional_properties'      => json_encode($additionalProperties),
+            ],
+            [
+                'required'          => \Doctrine\DBAL\Types\Type::getType('boolean'),
+                'value_per_channel' => \Doctrine\DBAL\Types\Type::getType('boolean'),
+                'value_per_locale'  => \Doctrine\DBAL\Types\Type::getType('boolean'),
             ]
         );
         if ($affectedRows > 1) {
