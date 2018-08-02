@@ -69,23 +69,22 @@ class BulkComputeProductModelDescendantsSubscriber implements EventSubscriberInt
      */
     public function bulkComputeProductModelDescendantsCompleteness(GenericEvent $event): void
     {
-        $productModels = $event->getSubject();
+        $entities = $event->getSubject();
+        $productModelCodes = [];
 
-        $productModelsCodes = [];
-        foreach ($productModels as $productModel){
-            if (!$productModel instanceof ProductModelInterface) {
-                return;
+        foreach ($entities as $entity) {
+            if ($entity instanceof ProductModelInterface) {
+                $productModelCodes[] = $entity->getCode();
             }
-            $productModelsCodes[] = $productModel->getCode();
         }
 
-        if (count($productModelsCodes) === 0){
+        if (empty($productModelCodes)) {
             return;
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
-        $this->jobLauncher->launch($jobInstance, $user, ['product_model_codes' => $productModelsCodes]);
+        $this->jobLauncher->launch($jobInstance, $user, ['product_model_codes' => $productModelCodes]);
     }
 }
