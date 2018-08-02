@@ -1,0 +1,3 @@
+Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product:
+    constraints:
+        - Pim\Component\Product\Batch\Api\Product\Validation\Constraints\ExistingCategories: ~
