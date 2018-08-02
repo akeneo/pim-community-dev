@@ -141,13 +141,24 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function loadSqlFiles(array $files): void
     {
+        if ($host = getenv("PIM_DATABASE_HOST")) {
+            $host = sprintf('%s', $host);
+            $user = sprintf('%s', getenv("PIM_DATABASE_USER"));
+            $pwd = sprintf('%s', getenv("PIM_DATABASE_PASSWORD"));
+            $dbName = sprintf('%s', getenv("PIM_DATABASE_NAME"));
+        } else {
+            $host = $this->container->getParameter('database_host');
+            $user = $this->container->getParameter('database_user');
+            $pwd = $this->container->getParameter('database_password');  
+            $dbName = $this->container->getParameter('database_name');          
+        }
         foreach ($files as $file) {
             $this->execCommand([
                 'mysql',
-                '-h '.$this->container->getParameter('database_host'),
-                '-u '.$this->container->getParameter('database_user'),
-                '-p'.$this->container->getParameter('database_password'),
-                $this->container->getParameter('database_name'),
+                '-h '.$host,
+                '-u '.$user,
+                '-p'.$pwd,
+                $dbName,
                 sprintf('< %s', $file),
             ]);
         }
