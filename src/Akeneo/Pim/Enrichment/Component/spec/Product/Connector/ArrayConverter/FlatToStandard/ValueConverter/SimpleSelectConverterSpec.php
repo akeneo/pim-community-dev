@@ -15,7 +15,7 @@ class SimpleSelectConverterSpec extends ObjectBehavior
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterInterface');
+        $this->shouldImplement('Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterInterface');
     }
 
     function it_supports_converter_field()

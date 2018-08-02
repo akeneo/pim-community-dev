@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;

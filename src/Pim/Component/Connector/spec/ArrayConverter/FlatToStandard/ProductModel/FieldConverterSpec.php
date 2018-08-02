@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

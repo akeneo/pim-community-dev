@@ -10,7 +10,7 @@ class ValueConverterRegistrySpec extends ObjectBehavior
     function it_is_a_registry()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface'
+            'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface'
         );
     }
 

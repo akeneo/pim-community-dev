@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel;
 
 class ProductModelAssociationSpec extends ObjectBehavior
 {

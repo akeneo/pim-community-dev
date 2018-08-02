@@ -1,7 +1,7 @@
 services:
     ### Product model
     pim_connector.array_converter.flat_to_standard.product_model:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
             - '@pim_connector.array_converter.flat_to_standard.product_model.field_converter'
@@ -12,25 +12,25 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
 
     pim_connector.array_converter.flat_to_standard.product_model_delocalized:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product_model'
             - '@pim_catalog.localization.localizer.converter'
 
     ### Association
     pim_connector.array_converter.flat_to_standard.product_association:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductAssociation'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product'
 
     pim_connector.array_converter.flat_to_standard.product_model_association:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModelAssociation'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModelAssociation'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product_model'
 
     ### Product
     pim_connector.array_converter.flat_to_standard.product:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\Product'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Product'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
@@ -42,7 +42,7 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product_value'
 
     pim_connector.array_converter.flat_to_standard.product_value:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\Value'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Value'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
             - '@pim_connector.array_converter.flat_to_standard.product.value_converter.registry'
@@ -50,7 +50,7 @@ services:
 
 
     pim_connector.array_converter.flat_to_standard.product_delocalized:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product'
             - '@pim_catalog.localization.localizer.converter'
@@ -86,7 +86,7 @@ services:
 
     ### Group
     pim_connector.array_converter.flat_to_standard.group:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\Group'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Group'
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_connector.array_convertor.checker.fields_requirement'
@@ -99,7 +99,7 @@ services:
         class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Category'
 
     pim_connector.array_converter.flat_to_standard.category:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\Category'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Category'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
 
@@ -269,7 +269,7 @@ services:
             - '@pim_catalog.repository.group_type'
 
     pim_connector.array_converter.flat_to_standard.product_model.field_converter:
-        class: 'Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
             - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'

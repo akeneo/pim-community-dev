@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
