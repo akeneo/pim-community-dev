@@ -19,4 +19,4 @@ services:
             - ['role', 'label']
 
     pim_connector.array_converter.standard_to_flat.user:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\User'
+        class: 'Akeneo\UserManagement\Component\Converter\ArrayConverter\StandardToFlat\User'
