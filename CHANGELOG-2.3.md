@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7537: Fix console error in password reset form
+
 # 2.3.3 (2018-08-01)
 
 ## Bug fixes
