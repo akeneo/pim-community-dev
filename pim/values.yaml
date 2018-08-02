@@ -1,0 +1,156 @@
+nameOverride: ""
+global:
+  extraLabels:
+    type: srnt
+# REMOVE REMOVE
+    pfid: test-pim
+    
+  monitoring:
+    enabled: false
+    namespace: monitoring
+
+common:
+  extraLabels: []
+  pimMasterUrl: nil
+  retailerUrl: nil
+  mailgunPassword: generateme
+  phpConf:
+  - name: "PHP_CONF_MAX_EXECUTION_TIME"
+    value: "60"
+  - name: "PHP_CONF_UPLOAD_LIMIT"
+    value: "512M"
+  - name: "PHP_CONF_MAX_POST_SIZE"
+    value: "512M"
+  - name: "PHP_CONF_MEMORY_LIMIT"
+    value: "2G"
+  - name: "PHP_CONF_DISPLAY_ERRORS"
+    value: "off"
+  - name: "PHP_CONF_ERROR_REPORTING"
+    value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
+  - name: "PHP_CONF_DATE_TIMEZONE"
+    value: "Etc/UTC"
+
+image:
+  pim:
+    repository: eu.gcr.io/akeneo-cloud/pim-enterprise-standard
+    tag: cloud2.3-AOB-v1.0.0-BETA2
+    pullPolicy: Always
+  httpd:
+    repository: httpd
+    tag: 2.4.33
+    pullPolicy: IfNotPresent
+  httpdExporter:
+    repository: eu.gcr.io/akeneo-cloud/httpd-exporter
+    tag: 0.0.1
+    pullPolicy: IfNotPresent
+  fpmExporter:
+    repository: oxalide/phpfpm-prometheus-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+
+pim:
+  replicas: 1
+  numDaemon: 1
+  extravarsPim:
+  extraLabels:
+  resources:
+    requests:
+      cpu: 200m
+  persistence:
+    diskSize: 10Gi
+  defaultCatalog: minimal
+  defaultCatalogPath: /var/www/html/fixtures/onboarder
+  jobs:
+    batch-purge:
+      enabled: false
+      pimCommand: "akeneo:batch:purge-job-execution"
+      schedule: "0 0 1 * *"
+    completeness-calculate:
+      enabled: false
+      pimCommand: "pim:completeness:calculate"
+      schedule: "0/30 * * * *"
+    rule-run:
+      enabled: false
+      pimCommand: "akeneo:rule:run"
+      schedule: "0 */1 * * *"
+    versionning-refresh:
+      enabled: false
+      pimCommand: "pim:versioning:refresh"
+      schedule: "0 3 * * *"
+    volume-aggregate:
+      enabled: false
+      pimCommand: "pim:volume:aggregate"
+      schedule: "0 4 * * *"
+
+# Onboarder
+onboarder:
+  enabled: false
+  pubsub:
+    topicPub: middleware
+    topicCon: pimmaster
+    queueName: middleware
+  serviceAccount: Y2hhbmdlbWU=
+
+nfs:
+  nameOverride: ""
+  persistence:
+    enabled: true
+    storageClass: standard-retain
+    size: 13Gi
+  storageClass:
+    name: nfs
+
+pimUsers:
+  cloudadmin:
+    firstName: cloud
+    lastName: Admin
+    email: tech-cloud@akeneo.com
+    password: changemeretailer
+    catalogDefaultLocale: en_US
+    userDefaultLocale: en_US
+    catalogDefaultScope: ecommerce
+    defaultCategoryTree: master
+    roles: ROLE_ADMINISTRATOR
+    groups: IT support
+    enabled: 1
+    defaultAssetTree: asset_main_catalog
+
+
+mysql:
+  mysql:
+    serviceName: pim-mysql
+    defaultUser: akeneo_pim
+    userPassword: changeme
+    rootPassword: changeme
+    defaultDatabase: akeneo_pim
+  stateful:
+    enabled: true
+
+elasticsearch:
+  image:
+    es:
+      repository: quay.io/pires/docker-elasticsearch-kubernetes
+      tag: 5.6.4
+  common:
+    service:
+      name: elasticsearch
+    env:
+      CLUSTER_NAME: "pim-es"
+      ES_PLUGINS_INSTALL: "repository-gcs,https://distfiles.compuscene.net/elasticsearch/elasticsearch-prometheus-exporter-5.6.4.0.zip"
+    stateful:
+      enabled: true
+  data:
+    env:
+      HTTP_ENABLE: true
+  master:
+    env:
+      HTTP_ENABLE: true
+
+catalog:
+  EE:
+    minimal:
+      path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/minimal
+      class: PimEnterpriseInstallerBundle:minimal
+    icecat: 
+      path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+      class: PimEnterpriseInstallerBundle:icecat_demo_dev

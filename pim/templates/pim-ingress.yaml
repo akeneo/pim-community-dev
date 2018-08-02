@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: pim-external-{{ .Values.global.extraLabels.pfid }}
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: {{ template "pim.fullName" . }}
+    role: pim-web
+    {{ include "pim.extravarsPim" . | indent 4}}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: {{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: pim-http
+          servicePort: pim-http

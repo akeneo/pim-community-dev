@@ -1,0 +1,59 @@
+parameters:
+    env(PIM_ELASTICSEARCH_HOST): "elasticsearch"
+    env(PIM_ELASTICSEARCH_PORT): "9200"
+
+    env(PIM_DATABASE_HOST):     "pim-mysql"
+    env(PIM_DATABASE_PORT):     "3306"
+    env(PIM_DATABASE_NAME):     "akeneo_pim"
+    env(PIM_DATABASE_USER):     "akeneo_pim"
+    env(PIM_DATABASE_PASSWORD): "changeme"
+
+    env(PIM_LOCALE):          "en"
+    env(PIM_SECRET):          "ThisTokenIsNotSoSecretChangeIt"
+    env(PIM_INSTALLER_DATA): "PimEnterpriseInstallerBundle:icecat_demo_dev"
+
+{{- if .Values.onboarder.enabled }}
+    env(AOB_PIMMASTER_ONBOARDER_TOPIC_PUB):  "onboarder"
+    env(AOB_PIMMASTER_ONBOARDER_TOPIC_CON):  "pimmaster"
+    env(AOB_PIMMASTER_ONBOARDER_QUEUE_NAME): "pimmaster"
+
+{{- end }}
+    database_driver:      pdo_mysql
+    database_host:        "%env(PIM_DATABASE_HOST)%"
+    database_port:        "%env(PIM_DATABASE_PORT)%"
+    database_name:        "%env(PIM_DATABASE_NAME)%"
+    database_user:        "%env(PIM_DATABASE_USER)%"
+    database_password:    "%env(PIM_DATABASE_PASSWORD)%"
+    database_unix_socket: ~
+
+    installer_data:       "%env(PIM_INSTALLER_DATA)%"
+
+    locale: "%env(PIM_LOCALE)%"
+    secret: "%env(PIM_SECRET)%"
+
+    product_index_name:                   akeneo_pim_product
+    product_proposal_index_name:          akeneo_pim_product_proposal
+    product_model_index_name:             akeneo_pim_product_model
+    product_and_product_model_index_name: akeneo_pim_product_and_product_model
+    index_hosts:                          "%env(PIM_ELASTICSEARCH_HOST)%:%env(PIM_ELASTICSEARCH_PORT)%"
+
+    upload_dir:                           '%env(PIM_SHARED_STORAGE)%/uploads/product'
+    archive_dir:                          '%env(PIM_SHARED_STORAGE)%/archive'
+    logs_dir:                             '%env(PIM_SHARED_STORAGE)%/logs'
+    catalog_storage_dir:                  '%env(PIM_SHARED_STORAGE)%/file_storage/catalog'
+    asset_storage_dir:                    '%env(PIM_SHARED_STORAGE)%/file_storage/assets'
+    tmp_storage_dir:                      '%env(PIM_SHARED_STORAGE)%/file_storage/tmp'
+    upload_tmp_dir:                       '%env(PIM_SHARED_STORAGE)%/file_storage/upload_tmp_dir'
+{{- if .Values.onboarder.enabled }}
+
+    ## Need ot be removed
+    onboarder_synchronize_api_client_id: THE_PREVIOUSLY_GENERATED_CLIENT_ID_HASH
+    onboarder_synchronize_api_secret: THE_PREVIOUSLY_GENERATED_SECRET_HASH
+    onboarder_synchronize_api_target_url: 'http://localhost/'
+
+pim_onboarder:
+    topic_name_for_publication:   '%env(AOB_PIMMASTER_ONBOARDER_TOPIC_PUB)%'
+    topic_name_for_consumption:   '%env(AOB_PIMMASTER_ONBOARDER_TOPIC_CON)%'
+    queue_name:                   '%env(AOB_PIMMASTER_ONBOARDER_QUEUE_NAME)%'
+    middleware_url:               '%env(AOB_MIDDLEWARE_URL)%'
+{{- end }}

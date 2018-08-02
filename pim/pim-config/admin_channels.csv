@@ -1,0 +1,4 @@
+{{ range $user, $userOptions := .Values.pimUsers -}}
+{{ $user }};{{ with $userOptions }}ecommerce;Default;Standard;Défaut;{{ .catalogDefaultLocale }}
+{{- end }}{{ end }}
+

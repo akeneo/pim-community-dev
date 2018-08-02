@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pim-web
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: {{ template "pim.fullName" . }}
+    {{ include "pim.extravarsPim" . | indent 4}}
+    role: pim-web
+
+spec:
+  replicas: {{ .Values.pim.replicas }}
+  minReadySeconds: 30
+  selector:
+    matchLabels:
+      component: {{ template "pim.fullName" . }}
+      role: pim-web
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        component: {{ template "pim.fullName" . }}
+        role: pim-web
+        {{ include "pim.extravarsPim" . | indent 8}}
+    spec:
+      initContainers:
+        - name: init-fpm
+          image:  "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ['sh', '-c', 'cp -p -r -f /var/www/html/web/*  /var/www/html/web/.htaccess /web-src/.; ']
+          volumeMounts:
+            - name: web-src
+              mountPath: web-src
+      containers:
+        - name: fpm
+          image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          resources:
+{{ toYaml .Values.pim.resources | indent 12 }}
+          ports:
+            - name: fpm
+              containerPort: 9000
+          volumeMounts:
+            - name: web-src
+              mountPath: /var/www/html/web
+            - name: fpm-data
+              mountPath: /data
+              readOnly: false
+            - name: fpm-conf
+              mountPath: /usr/local/etc/php-fpm.d/
+              readOnly: true
+            - name: pim-parameter
+              mountPath: /var/www/html/app/config/parameters.yml
+              subPath: parameters.yml
+              readOnly: true
+            {{- if .Values.onboarder.enabled }}
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readOnly: true
+            {{- end }}
+          env:
+            - name: SYMFONY_ENV
+              value: prod
+            - name: TRUSTED_PROXY_IPS
+              value: 10.0.0.0/8
+            - name: PIM_ELASTICSEARCH_HOST
+              value: elasticsearch
+            - name: PIM_ELASTICSEARCH_PORT
+              value: "9200"
+            - name: PIM_SHARED_STORAGE
+              value: /data
+            - name: PIM_DATABASE_HOST
+              value: {{ .Values.mysql.mysql.serviceName | quote }}
+            - name: PIM_DATABASE_NAME
+              value: {{ .Values.mysql.mysql.defaultDatabase | quote }}
+            - name: PIM_DATABASE_USER
+              value: {{ .Values.mysql.mysql.defaultUser | quote }}
+            - name: PIM_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pim-secrets
+                  key: mysqlPIMuserpassword
+            {{- if .Values.onboarder.enabled }}
+            - name: GCP_PROJECT_ID
+              value: {{ .Values.common.gcpProjectID | quote }}
+            - name: PUBSUB_PROJECT_ID #FIXME : will be replace by GCP_PROJECT_ID
+              value: {{ .Values.common.gcpProjectID | quote }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: AOB_MIDDLEWARE_URL
+              value: {{ .Values.common.retailerUrl | quote }}
+            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_PUB
+              value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
+            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_CON
+              value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
+            - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
+              value:  {{ .Values.onboarder.pubsub.queueName | quote }}
+            {{- end }}
+{{- if .Values.common.phpConf }}
+{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- end }}
+        - name: httpd
+          image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
+          imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
+          ports:
+            - containerPort: 80
+              name: httpd
+          volumeMounts:
+            - name: web-src
+              mountPath: /var/www/html/web
+              readOnly: true
+            - mountPath: /usr/local/apache2/conf/
+              name: conf-httpd
+              readOnly: true
+        - name: fpm-exporter
+          image: "{{ .Values.image.fpmExporter.repository }}:{{ .Values.image.fpmExporter.tag }}"
+          imagePullPolicy: {{ .Values.image.fpmExporter.pullPolicy | quote }}
+          ports:
+            - containerPort: 9101
+              name: fpm-exporter
+        - name: httpd-exporter
+          image: "{{ .Values.image.httpdExporter.repository }}:{{ .Values.image.httpdExporter.tag }}"
+          imagePullPolicy: {{ .Values.image.httpdExporter.pullPolicy | quote }}
+          ports:
+            - containerPort: 9117
+              name: httpd-exporter
+      volumes:
+        - name: web-src
+          emptyDir: {}
+        - name: pim-parameter
+          configMap:
+            name: pim-config
+            items:
+              - key: parameters.yml
+                path: parameters.yml
+        - name: fpm-data
+          persistentVolumeClaim:
+            claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+        - name: fpm-conf
+          configMap:
+            name: pim-config
+            items:
+              - key: fpm.conf
+                path: fpm.conf
+        - name: conf-httpd
+          configMap:
+            name: pim-config
+            items:
+              - key: httpd.conf
+                path: httpd.conf
+              - key: mime.types
+                path: mime.types
+        {{- if .Values.onboarder.enabled }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+        {{- end }}

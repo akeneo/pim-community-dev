@@ -1,0 +1,2 @@
+Akeneo PIM Helm package
+=======================

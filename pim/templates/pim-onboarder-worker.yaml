@@ -1,0 +1,108 @@
+{{ if .Values.onboarder.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pim-onboarder-worker
+  labels:
+    app: {{ template "pim.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: {{ template "pim.fullName" . }}
+    {{ include "pim.extravarsPim" . | indent 4}}
+    role: pim-onboarder-worker
+
+spec:
+  replicas: {{ .Values.pim.numDaemon }}
+  minReadySeconds: 30
+  selector:
+    matchLabels:
+      component: {{ template "pim.fullName" . }}
+      role: pim-onboarder-worker
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        component: {{ template "pim.fullName" . }}
+        role: pim-onboarder-worker
+        {{ include "pim.extravarsPim" . | indent 8}}
+    spec:
+      containers:
+        - name: fpm
+          image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console akeneo:synchronization:message:consumer --ttl=-1"']
+          resources:
+{{ toYaml .Values.pim.resources | indent 12 }}
+          volumeMounts:
+            - name: fpm-data
+              mountPath: /data
+              readOnly: false
+            - name: pim-parameter
+              mountPath: /var/www/html/app/config/parameters.yml
+              subPath: parameters.yml
+              readOnly: true
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readonly: true
+          env:
+            - name: SYMFONY_ENV
+              value: prod
+            - name: TRUSTED_PROXY_IPS
+              value: 10.0.0.0/8
+            - name: PIM_ELASTICSEARCH_HOST
+              value: elasticsearch
+            - name: PIM_ELASTICSEARCH_PORT
+              value: "9200"
+            - name: PIM_SHARED_STORAGE
+              value: /data
+            - name: PIM_DATABASE_HOST
+              value: {{ .Values.mysql.mysql.serviceName | quote }}
+            - name: PIM_DATABASE_NAME
+              value: {{ .Values.mysql.mysql.defaultDatabase | quote }}
+            - name: PIM_DATABASE_USER
+              value: {{ .Values.mysql.mysql.defaultUser | quote }}
+            - name: PIM_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pim-secrets
+                  key: mysqlPIMuserpassword
+            - name: GCP_PROJECT_ID
+              value: {{ .Values.common.gcpProjectID | quote }}
+            - name: PUBSUB_PROJECT_ID #FIXME : will be replace by GCP_PROJECT_ID
+              value: {{ .Values.common.gcpProjectID | quote }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+            - name: AOB_MIDDLEWARE_URL
+              value: {{ .Values.common.retailerUrl | quote }} 
+            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_PUB
+              value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
+            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_CON
+              value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
+            - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
+              value:  {{ .Values.onboarder.pubsub.queueName | quote }}
+{{- if .Values.common.phpConf }}
+{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- end }}
+      volumes:
+        - name: pim-parameter
+          configMap:
+            name: pim-config
+            items:
+              - key: parameters.yml
+                path: parameters.yml
+        - name: fpm-data
+          persistentVolumeClaim:
+            claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+{{- end }}
