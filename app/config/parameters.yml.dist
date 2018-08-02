@@ -1,6 +1,8 @@
 parameters:
     env(PIM_ELASTICSEARCH_HOST): "localhost"
     env(PIM_ELASTICSEARCH_PORT): "9200"
+    env(PIM_ELASTICSEARCH_USER): "elastic"
+    env(PIM_ELASTICSEARCH_PASSWORD: "changeme"
 
     env(PIM_DATABASE_HOST):     "localhost"
     env(PIM_DATABASE_PORT):     "3306"
@@ -19,4 +21,4 @@ parameters:
     product_index_name:                   akeneo_pim_product
     product_model_index_name:             akeneo_pim_product_model
     product_and_product_model_index_name: akeneo_pim_product_and_product_model
-    index_hosts:                          "%env(PIM_ELASTICSEARCH_HOST)%:%env(PIM_ELASTICSEARCH_PORT)%"
+    index_hosts:                          "%env(PIM_ELASTICSEARCH_USER)%:%env(PIM_ELASTICSEARCH_PASSWORD)%@%env(PIM_ELASTICSEARCH_HOST)%:%env(PIM_ELASTICSEARCH_PORT)%"
