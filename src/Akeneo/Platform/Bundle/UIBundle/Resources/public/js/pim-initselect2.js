@@ -15,7 +15,7 @@ define(
                     return _.__('pim_common.select2.no_match');
                 },
                 formatLoadMore: function () {
-                    return _.__('pim_enrich.select2.load_more');
+                    return _.__('pim_common.select2.load_more');
                 }
             },
             init: function ($target, options) {

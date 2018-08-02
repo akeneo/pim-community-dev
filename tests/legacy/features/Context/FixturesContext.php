@@ -39,6 +39,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
@@ -1794,10 +1795,12 @@ class FixturesContext extends BaseFixturesContext
 
     /**
      * @param string $username
-     * @param int    $count
+     * @param int $count
      * @param string $associationType Can be 'group' or 'role'
      *
      * @return bool
+     *
+     * @throws Spin\TimeoutException
      *
      * @Then /^the user "([^"]+)" should be in (\d+) (group)s?$/
      * @Then /^the user "([^"]+)" should(?: still)? have (\d+) (role)s?$/
@@ -1805,6 +1808,25 @@ class FixturesContext extends BaseFixturesContext
     public function checkUserAssociationsCount($username, $count, $associationType)
     {
         $user = $this->getUser($username);
+        $this->spin(function () use ($user, $associationType, $count) {
+            return $this->getUserAssociationCount($user, $associationType) == $count;
+        }, sprintf(
+            "Expected %d %s(s) for User %s, found %d",
+            $count,
+            $associationType,
+            $username,
+            $this->getUserAssociationCount($user, $associationType)
+        ));
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param string $associationType
+     *
+     * @return int
+     */
+    private function getUserAssociationCount(UserInterface $user, string $associationType): int
+    {
         $this->refresh($user);
         $actualCount = null;
         if ($associationType == 'group') {
@@ -1818,11 +1840,7 @@ class FixturesContext extends BaseFixturesContext
             $actualCount = count($user->getRoles());
         }
 
-        if ($actualCount != $count) {
-            throw new \InvalidArgumentException(
-                sprintf("Expected %d %s(s) for User %s, found %d", $count, $associationType, $username, $actualCount)
-            );
-        }
+        return $actualCount;
     }
 
     /**

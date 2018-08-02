@@ -65,6 +65,9 @@ pim_user_management:
                 ui_locale: UI locale
                 timezone: Timezone
                 default_product_grid_view: Default product grid view
+                default_published_product_grid_view: Default published product grid view # EE Only
+                proposals_to_review_notification: When new proposal to review # EE Only
+                proposals_state_notifications: When proposal is accepted or rejected # EE Only
             module:
                 create:
                     button: Create user
@@ -75,6 +78,7 @@ pim_user_management:
                     groups_and_roles: Groups and roles
                     password: Password
                     interfaces: Interfaces
+                    notifications: Notifications # TODO EE Only
 
         role:
             plural_label: Roles

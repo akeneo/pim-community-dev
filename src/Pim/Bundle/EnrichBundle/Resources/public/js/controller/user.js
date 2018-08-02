@@ -26,12 +26,16 @@ define([
                         return;
                     }
 
-                    PageTitle.set({'user.username': _.escape(user.username)});
+                    PageTitle.set({ 'username': _.escape(user.username) });
 
                     return FormBuilder.build(user.meta.form)
                         .then((form) => {
                             this.on('pim:controller:can-leave', function (event) {
                                 form.trigger('pim_enrich:form:can-leave', event);
+                            });
+                            form.on('pim_enrich:form:entity:post_save', () => {
+                                // Reload the page to reload new language
+                                location.reload();
                             });
                             form.setData(user);
                             form.trigger('pim_enrich:form:entity:post_fetch', user);

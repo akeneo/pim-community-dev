@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
+ * TODO DELETE
+ * 
  * Choice Type which displays product grid filter grouped by attribute group
  * System filters : default filters configured in the grid
  * Attribute filters : attributes usable in the grid

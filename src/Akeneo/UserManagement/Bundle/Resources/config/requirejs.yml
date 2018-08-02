@@ -25,10 +25,6 @@ config:
                         entity: user
                 pim_user_edit:
                     module: pim/controller/user
-                #pim_user_create:
-                #    module: pim/controller/form
-                #pim_user_update:
-                #    module: pim/controller/user
                 pim_user_profile_update:
                     module: pim/controller/user
                 pim_user_role_index:
@@ -49,3 +45,18 @@ config:
                     module: pim/controller/form
                 pim_user_profile_update:
                     module: pim/controller/form
+        pim/remover/user:
+            url: pim_user_user_rest_delete
+
+    paths:
+        pim/user/fields/scope:                            pimuser/js/fields/scope.ts
+        pim/user/fields/category-tree:                    pimuser/js/fields/category-tree.ts
+        pim/user/fields/ui-locale:                        pimuser/js/fields/ui-locale.ts
+        pim/user/fields/timezone:                         pimuser/js/fields/timezone.ts
+        pim/user/fields/user-group:                       pimuser/js/fields/user-group.ts
+        pim/user/fields/user-role:                        pimuser/js/fields/user-role.ts
+        pim/user/fields/default-product-grid-view:        pimuser/js/fields/default-product-grid-view.ts
+        pim/user/fields/default-grid-views:               pimuser/js/fields/default-grid-views.ts
+        pim/user/fields/product-grid-filters:             pimuser/js/fields/product-grid-filters.ts
+        pim/user-edit-form/delete:                        pimuser/js/form/delete
+        pim/remover/user:                                 pimuser/js/remover/user

@@ -128,6 +128,23 @@ class DatagridViewController
     }
 
     /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function typesAction(Request $request): JsonResponse
+    {
+        $result = [];
+        $user = $this->tokenStorage->getToken()->getUser();
+        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
+        foreach ($types as $type) {
+            $result[] = $type['datagridAlias'];
+        }
+
+        return new JsonResponse($result);
+    }
+
+    /**
      * Return the Datagrid View that belongs to the current user, with the given view $identifier.
      * Response data is in Json format, 404 is sent if there is no result.
      *

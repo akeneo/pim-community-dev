@@ -143,6 +143,7 @@ Akeneo\UserManagement\Component\Model\User:
     manyToOne:
         catalogLocale:
             targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            nullable: false
         uiLocale:
             targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
             joinColumn:
@@ -150,8 +151,10 @@ Akeneo\UserManagement\Component\Model\User:
               nullable: false
         catalogScope:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            nullable: false
         defaultTree:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            nullable: false
     oneToOne:
         avatar:
             targetEntity: Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface

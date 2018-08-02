@@ -55,6 +55,27 @@ extensions:
             notReadyMessage: pim_user_management.entity.user.flash.update.fields_not_ready
             url: pim_user_user_rest_post
 
+    pim-user-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-user-edit-form
+        targetZone: buttons
+        position: 50
+
+    pim-user-edit-form-delete:
+        module: pim/user-edit-form/delete
+        parent: pim-user-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_user_user_remove
+        position: 90
+        config:
+            trans:
+                title: pim_user_management.entity.user.module.delete.confirm
+                subTitle: pim_menu.item.user
+                content: pim_common.confirm_deletion
+                success: pim_enrich.entity.user.flash.delete.success
+                fail: pim_enrich.entity.user.flash.delete.fail
+            redirect: pim_user_index
+
     pim-user-edit-form-form-tabs:
         module: pim/form/common/form-tabs
         parent: pim-user-edit-form
@@ -217,7 +238,7 @@ extensions:
             allowClear: false
 
     pim-user-edit-form-catalog-scope:
-        module: pim/form/common/fields/scope
+        module: pim/user/fields/scope
         parent: pim-user-edit-form-additional-tab-content
         position: 20
         targetZone: content
@@ -229,7 +250,7 @@ extensions:
             allowClear: false
 
     pim-user-edit-form-default-tree:
-        module: pim/form/common/fields/category-tree
+        module: pim/user/fields/category-tree
         parent: pim-user-edit-form-additional-tab-content
         targetZone: content
         position: 30
@@ -241,24 +262,21 @@ extensions:
             allowClear: false
 
     pim-user-edit-form-product-grid-filters:
-        module: pim/form/common/fields/text
+        module: pim/user/fields/product-grid-filters
         parent: pim-user-edit-form-additional-tab-content
         position: 40
         targetZone: content
         config:
-            fieldName: productGridFilters
+            fieldName: product_grid_filters
             label: pim_user_management.entity.user.properties.product_grid_filters
+            choiceRoute: pim_enrich_attribute_rest_index
 
-    pim-user-edit-form-default-product-grid-view:
-        module: pim/form/common/fields/default-product-grid-view
+    pim-user-edit-form-default-grid-views:
+        module: pim/user/fields/default-grid-views
         parent: pim-user-edit-form-additional-tab-content
         position: 40
         targetZone: content
         config:
-            fieldName: default_product_grid_view
-            label: pim_user_management.entity.user.properties.default_product_grid_view
-            allowClear: true
-            isMultiple: false
             readOnly: false
 
     # Groups and Roles tab
@@ -281,7 +299,7 @@ extensions:
                 dropZone: content
 
     pim-user-edit-form-groups:
-        module: pim/form/common/fields/user-group
+        module: pim/user/fields/user-group
         parent: pim-user-edit-form-groups-and-roles-tab-content
         targetZone: content
         position: 10
@@ -292,7 +310,7 @@ extensions:
             allowClear: true
 
     pim-user-edit-form-roles:
-        module: pim/form/common/fields/user-role
+        module: pim/user/fields/user-role
         parent: pim-user-edit-form-groups-and-roles-tab-content
         targetZone: content
         position: 20
@@ -368,7 +386,7 @@ extensions:
                 dropZone: content
 
     pim-user-edit-form-ui-locale:
-        module: pim/form/common/fields/ui-locale
+        module: pim/user/fields/ui-locale
         parent: pim-user-edit-form-interfaces-tab-content
         position: 10
         targetZone: content
@@ -380,7 +398,7 @@ extensions:
             allowClear: false
 
     pim-user-edit-form-timezone:
-        module: pim/form/common/fields/timezone
+        module: pim/user/fields/timezone
         parent: pim-user-edit-form-interfaces-tab-content
         position: 20
         targetZone: content

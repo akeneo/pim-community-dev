@@ -4,7 +4,7 @@ namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -30,6 +30,9 @@ class UserNormalizer implements NormalizerInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var DatagridViewRepositoryInterface */
+    private $datagridViewRepo;
+
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
 
@@ -37,12 +40,14 @@ class UserNormalizer implements NormalizerInterface
         DateTimeNormalizer $dateTimeNormalizer,
         NormalizerInterface $fileNormalizer,
         SecurityFacade $securityFacade,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        DatagridViewRepositoryInterface $datagridViewRepo
     ) {
         $this->dateTimeNormalizer = $dateTimeNormalizer;
         $this->fileNormalizer = $fileNormalizer;
         $this->securityFacade = $securityFacade;
         $this->tokenStorage = $tokenStorage;
+        $this->datagridViewRepo = $datagridViewRepo;
     }
 
     /**
@@ -50,8 +55,7 @@ class UserNormalizer implements NormalizerInterface
      */
     public function normalize($user, $format = null, array $context = [])
     {
-        /** @var UserInterface $user */
-        return [
+        $result = [
             'code'                      => $user->getUsername(), # Every Form Extension requires 'code' field.
             'enabled'                   => $user->isEnabled(),
             'username'                  => $user->getUsername(),
@@ -70,13 +74,11 @@ class UserNormalizer implements NormalizerInterface
             'user_default_locale'       => $user->getUiLocale()->getCode(),
             'catalog_default_scope'     => $user->getCatalogScope()->getCode(),
             'default_category_tree'     => $user->getDefaultTree()->getCode(),
+            'proposals_to_review_notification' => $user->hasProposalsToReviewNotification(),
             'timezone'                  => $user->getTimezone(),
             'groups'                    => $user->getGroupNames(),
-            'default_product_grid_view' =>
-                $user->getDefaultGridView(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME) ?
-                $user->getDefaultGridView(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME)->getId() :
-                null,
             'roles'                     => $this->getRoleNames($user),
+            'product_grid_filters'      => $user->getProductGridFilters(),
             'avatar'                    => null === $user->getAvatar() ? [
                 'filePath'         => null,
                 'originalFilename' => null,
@@ -91,6 +93,16 @@ class UserNormalizer implements NormalizerInterface
                 ]
             ]
         ];
+
+        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
+        foreach ($types as $type) {
+            $defaultView = $user->getDefaultGridView($type['datagridAlias']);
+            // Set default_product_grid_view, default_published_product_grid_view, etc.
+            $result[sprintf('default_%s_view', str_replace('-', '_', $type['datagridAlias']))]
+                = $defaultView === null ? null : $defaultView->getId();
+        }
+
+        return $result;
     }
 
     /**

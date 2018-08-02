@@ -12,29 +12,30 @@ class InterfaceNormalizedDatagridView {
   id: string;
   label: string;
   owner_id: number;
+  type: string; // 'public'|'project'
+  datagrid_alias: string;
 }
 
 class DefaultProductGridView extends BaseSelect {
+  private config: any;
+
+  constructor(options: {config: any}) {
+    super(options);
+
+    this.config = {...this.config, ...options.config};
+  }
+
   /**
    * {@inheritdoc}
    */
   configure() {
     return $.when(
       BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('datagrid-view').fetchAll({ alias: 'product-grid' })
+      FetcherRegistry.getFetcher('datagrid-view').fetchAll({ alias: this.config.datagridAlias })
         .then((datagridViews: InterfaceNormalizedDatagridView[]) => {
           this.config.choices = datagridViews;
         })
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  renderInput() {
-    this.filterDatagridViews();
-
-    return BaseSelect.prototype.renderInput.apply(this, arguments);
   }
 
   /**
@@ -60,27 +61,8 @@ class DefaultProductGridView extends BaseSelect {
   /**
    * {@inheritdoc}
    */
-  isVisible(): boolean {
-    this.filterDatagridViews();
-
-    return this.config.choices.length > 0;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   getDefaultLabel(): string {
     return __('pim_datagrid.view_selector.default_view');
-  }
-
-  /**
-   * Filters the datagrid views to get only the ones of the edited user
-   */
-  filterDatagridViews(): void {
-    const userId = this.getFormData().meta.id;
-    this.config.choices = this.config.choices.filter((datagridView: InterfaceNormalizedDatagridView) => {
-      return datagridView.owner_id === userId;
-    });
   }
 }
 

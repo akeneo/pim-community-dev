@@ -211,7 +211,7 @@ extensions:
             readOnly: true
 
     pim-user-show-catalog-scope:
-        module: pim/form/common/fields/scope
+        module: pim/user/fields/scope
         parent: pim-user-show-additional-tab-content
         position: 20
         targetZone: content
@@ -224,7 +224,7 @@ extensions:
             readOnly: true
 
     pim-user-show-default-tree:
-        module: pim/form/common/fields/category-tree
+        module: pim/user/fields/category-tree
         parent: pim-user-show-additional-tab-content
         targetZone: content
         position: 30
@@ -246,15 +246,13 @@ extensions:
             label: pim_user_management.entity.user.properties.product_grid_filters
             readOnly: true
 
-    pim-user-edit-form-default-product-grid-view:
-        module: pim/form/common/fields/default-product-grid-view
+
+    pim-user-edit-form-default-grid-views:
+        module: pim/user/fields/default-grid-views
         parent: pim-user-edit-form-additional-tab-content
         position: 40
         targetZone: content
         config:
-            fieldName: default_product_grid_view
-            label: pim_user_management.entity.user.properties.default_product_grid_view
-            isMultiple: false
             readOnly: true
 
     # Groups and Roles tab
@@ -277,7 +275,7 @@ extensions:
                 dropZone: content
 
     pim-user-show-groups:
-        module: pim/form/common/fields/user-group
+        module: pim/user/fields/user-group
         parent: pim-user-show-groups-and-roles-tab-content
         targetZone: content
         position: 10
@@ -289,7 +287,7 @@ extensions:
             readOnly: true
 
     pim-user-show-roles:
-        module: pim/form/common/fields/user-role
+        module: pim/user/fields/user-role
         parent: pim-user-show-groups-and-roles-tab-content
         targetZone: content
         position: 20
@@ -320,7 +318,7 @@ extensions:
                 dropZone: content
 
     pim-user-show-ui-locale:
-        module: pim/form/common/fields/ui-locale
+        module: pim/user/fields/ui-locale
         parent: pim-user-show-interfaces-tab-content
         position: 10
         targetZone: content
@@ -333,7 +331,7 @@ extensions:
             readOnly: true
 
     pim-user-show-timezone:
-        module: pim/form/common/fields/timezone
+        module: pim/user/fields/timezone
         parent: pim-user-show-interfaces-tab-content
         position: 20
         targetZone: content

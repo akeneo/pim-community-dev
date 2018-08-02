@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -133,6 +134,7 @@ class UserController extends Controller
 
         $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
+        // TODO There is a configuration on the Front form to remove this before send
         unset($data['code'], $data['last_login'], $data['login_count'], $data['password']);
 
         $passwordViolations = $this->validatePassword($user, $data);

@@ -2396,7 +2396,7 @@ class WebUser extends PimContext
      */
     public function iShouldSeeLocaleOption($not, $locale)
     {
-        $selectNames = ['system-locale', 'pim_user_user_form[uiLocale]'];
+        $selectNames = ['system-locale', 'user_default_locale'];
         $field = null;
         foreach ($selectNames as $selectName) {
             try {

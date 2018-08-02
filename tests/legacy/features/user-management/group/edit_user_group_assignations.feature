@@ -20,13 +20,13 @@ Feature: Edit a user groups and roles
     And I visit the "Groups and roles" tab
     Then the field User groups should contain "Redactor, IT support"
     When I fill in the following information:
-      | User groups | Administrator |
+      | User groups | Redactor |
     And I save the user
     Then I should not see the text "There are unsaved changes."
     When I refresh current page
     And I edit the "admin" user
     And I visit the "Groups and roles" tab
-    Then the field User groups should contain "Administrator"
+    Then the field User groups should contain "Redactor"
 
   Scenario: Assign a group to a user from the group page
     Given I edit the "Redactor" user group

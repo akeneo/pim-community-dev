@@ -16,14 +16,14 @@ Feature: Edit a user
       | Phone      | +33755337788 |
     And I save the user
     Then I should see the flash message "User saved"
-    And I should see the text "John"
+    Then the field First name should contain "John"
     And the field Phone should contain "+33755337788"
 
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
     And I fill in the following information:
-      | Catalog locale       | German            |
+      | Catalog locale       | German (Germany)  |
       | Catalog scope        | Print             |
       | Default tree         | 2015 collection   |
       | Product grid filters | SKU, Name, Family |
@@ -54,7 +54,7 @@ Feature: Edit a user
     And I logout
     When I am logged in as "Mary"
     And I edit the "admin" user
-    Then I should see the text "John Doe"
+    Then I should see the text "John"
     And I should see the text "Save"
 
   Scenario: Successfully setup user timezone

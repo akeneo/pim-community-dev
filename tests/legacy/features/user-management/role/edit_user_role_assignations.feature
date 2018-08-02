@@ -10,23 +10,19 @@ Feature: Edit a user groups and roles
 
   Scenario: Successfully change a user role
     Given I edit the "admin" user
-    And I visit the "Groups and Roles" tab
-    And I check "User"
+    And I visit the "Groups and roles" tab
+    And I fill in the following information:
+      | Roles | Administrator, User |
     And I save the user
-    Then the "User" checkbox should be checked
-    And I should see the text "Administrator"
-    And the "Administrator" checkbox should be checked
+    And the user "admin" should have 2 roles
     When I edit the "admin" user
     Then I should not see the text "There are unsaved changes."
-    And I visit the "Groups and Roles" tab
-    And I uncheck "Administrator"
-    And I uncheck "User"
+    And I visit the "Groups and roles" tab
+    And I fill in the following information:
+      | Roles | |
     And I save the user
     Then I should not see the text "There are unsaved changes."
-    And I visit the "Groups and Roles" tab
     And the user "admin" should still have 2 roles
-    And the "User" checkbox should be checked
-    And the "Administrator" checkbox should be checked
 
   Scenario: Assign a role to a user from the role page
     Given I edit the "Catalog manager" role

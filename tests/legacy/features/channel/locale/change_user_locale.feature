@@ -29,5 +29,5 @@ Feature: Change user locale
   Scenario: Should only see translated locales
     Given I edit the "Peter" user
     And I visit the "Interfaces" tab
-    Then I should see English locale option
-    And I should not see Breton locale option
+    Then I should see English (United States) locale option
+    And I should not see Breton (France) locale option

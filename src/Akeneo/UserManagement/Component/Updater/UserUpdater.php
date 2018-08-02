@@ -21,7 +21,6 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
 
 /**
@@ -232,10 +231,18 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'avatar':
                 $this->setAvatar($user, $data);
                 break;
-            case 'default_product_grid_view':
-                $user->setDefaultGridView('product-grid', $this->findDefaultGridView($data));
+            case 'product_grid_filters':
+                $user->setProductGridFilters($data);
                 break;
             default:
+                $matches = null;
+                // Example: default_product_grid_view
+                if (preg_match('/^default_(?P<alias>[a-z_]+)_view$/', $field, $matches)) {
+                    $alias = str_replace('_', '-', $matches['alias']);
+                    $user->setDefaultGridView($alias, $this->findDefaultGridView($alias, $data));
+                    return;
+                }
+
                 throw UnknownPropertyException::unknownProperty($field);
         }
     }
@@ -265,13 +272,14 @@ class UserUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * @param string $alias
      * @param string $code
      *
      * @throws InvalidPropertyException
      *
      * @return DatagridView|null
      */
-    protected function findDefaultGridView($code): ?DatagridView
+    protected function findDefaultGridView($alias, $code): ?DatagridView
     {
         if ($code === '') {
             return null;
@@ -279,7 +287,7 @@ class UserUpdater implements ObjectUpdaterInterface
 
         $defaultGridView = $this->gridViewRepository->findOneBy([
             'type' => DatagridView::TYPE_PUBLIC,
-            'datagridAlias' => 'product-grid',
+            'datagridAlias' => $alias,
             'id' => $code
         ]);
 
