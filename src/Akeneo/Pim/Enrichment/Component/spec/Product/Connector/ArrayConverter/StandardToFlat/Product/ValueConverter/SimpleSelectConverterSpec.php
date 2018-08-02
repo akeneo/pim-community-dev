@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 
-class TextConverterSpec extends ObjectBehavior
+class SimpleSelectConverterSpec extends ObjectBehavior
 {
     function let(AttributeColumnsResolver $columnsResolver)
     {
@@ -14,19 +14,19 @@ class TextConverterSpec extends ObjectBehavior
 
     function it_converts_simpleselect_product_value_from_standard_to_flat_format($columnsResolver)
     {
-        $columnsResolver->resolveFlatAttributeName('name', null, 'mobile')
-            ->willReturn('name-mobile');
+        $columnsResolver->resolveFlatAttributeName('provider', null, null)
+            ->willReturn('provider');
 
-        $expected = ['name-mobile' => 'Golden trumpet'];
+        $expected = ['provider' => 'Amazon'];
 
         $data = [
             [
                 'locale' => null,
-                'scope'  => 'mobile',
-                'data'   => 'Golden trumpet',
+                'scope'  => null,
+                'data'   => 'Amazon',
             ]
         ];
 
-        $this->convert('name', $data)->shouldReturn($expected);
+        $this->convert('provider', $data)->shouldReturn($expected);
     }
 }
