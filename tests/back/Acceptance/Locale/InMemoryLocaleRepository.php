@@ -73,7 +73,7 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
      */
     public function getActivatedLocales()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->locales->getValues();
     }
 
     /**
