@@ -12,7 +12,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\CreateAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler'
-            - '@serializer'
+            - '@pim_enriched_entity_serializer'
             - '@validator'
             - '@oro_security.security_facade'
 
@@ -30,7 +30,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\EditAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
-            - '@serializer'
+            - '@pim_enriched_entity_serializer'
             - '@validator'
 
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
@@ -58,7 +58,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\CreateAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.create_record_handler'
-            - '@serializer'
+            - '@pim_enriched_entity_serializer'
             - '@validator'
             - '@oro_security.security_facade'
 

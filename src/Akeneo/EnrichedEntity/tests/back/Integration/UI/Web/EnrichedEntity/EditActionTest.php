@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
@@ -130,5 +131,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $user = new User();
         $user->setUsername('julia');
         $this->get('pim_user.repository.user')->save($user);
+
+        $fr = new Locale();
+        $fr->setId(1);
+        $fr->setCode('fr_FR');
+        $this->get('pim_catalog.repository.locale')->save($fr);
     }
 }
