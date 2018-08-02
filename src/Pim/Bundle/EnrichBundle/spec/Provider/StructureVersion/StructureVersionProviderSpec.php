@@ -13,24 +13,22 @@ class StructureVersionProviderSpec extends ObjectBehavior
         $this->beConstructedWith($versionRepository);
     }
 
-    function it_provides_a_structure_version($versionRepository, Version $lastVersion, \DateTime $lastUpdate)
+    function it_provides_a_structure_version($versionRepository, \DateTime $lastUpdate)
     {
         $versionRepository->getNewestLogEntryForRessources([])
-            ->willReturn($lastVersion);
+            ->willReturn(['loggedAt' => $lastUpdate]);
 
-        $lastVersion->getLoggedAt()->willReturn($lastUpdate);
         $lastUpdate->getTimestamp()->willReturn(12);
 
         $this->getStructureVersion()->shouldReturn(12);
     }
 
-    function it_provides_a_structure_version_for_given_resources($versionRepository, Version $lastVersion, \DateTime $lastUpdate)
+    function it_provides_a_structure_version_for_given_resources($versionRepository, \DateTime $lastUpdate)
     {
         $this->addResource('Locale');
         $versionRepository->getNewestLogEntryForRessources(['Locale'])
-            ->willReturn($lastVersion);
+            ->willReturn(['loggedAt' => $lastUpdate]);
 
-        $lastVersion->getLoggedAt()->willReturn($lastUpdate);
         $lastUpdate->getTimestamp()->willReturn(12);
 
         $this->getStructureVersion()->shouldReturn(12);

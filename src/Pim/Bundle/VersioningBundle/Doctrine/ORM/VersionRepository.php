@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
@@ -50,7 +51,18 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      */
     public function getNewestLogEntryForRessources($resourceNames)
     {
-        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
+        if (empty($resourceNames)) {
+            return null;
+        }
+
+        $qb = $this->createQueryBuilder('v')
+            ->select('v.loggedAt')
+            ->where('v.resourceName IN (:resourceNames)')
+            ->orderBy('v.loggedAt', Criteria::DESC)
+            ->setMaxResults(1)
+            ->setParameter('resourceNames', $resourceNames);
+
+        return $qb->getQuery()->getSingleResult();
     }
 
     /**
