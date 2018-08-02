@@ -169,9 +169,12 @@
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
         <script type="text/javascript">
-            $(function() {
-                $('#{{ _self.getRootId(form) }}').trigger('change');
-            });
+            var el = document.getElementById($('{{ _self.getRootId(form) }}');
+
+            if (el) {
+                el.dispatchEvent(new Event('change'));
+            }
+
         </script>
         {% if form.parent %}
             {% set combinedError = '' %}
