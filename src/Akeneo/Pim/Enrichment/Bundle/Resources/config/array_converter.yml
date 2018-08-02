@@ -96,7 +96,7 @@ services:
 
     ### Category
     pim_connector.array_converter.standard_to_flat.category:
-        class: 'Pim\Component\Connector\ArrayConverter\StandardToFlat\Category'
+        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\StandardToFlat\Category'
 
     pim_connector.array_converter.flat_to_standard.category:
         class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category'
