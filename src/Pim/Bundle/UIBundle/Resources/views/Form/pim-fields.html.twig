@@ -169,7 +169,7 @@
 {% block form_errors %}{% spaceless %}
     {% if errors|length > 0 %}
         <script type="text/javascript">
-            var el = document.getElementById($('{{ _self.getRootId(form) }}');
+            var el = document.getElementById('{{ _self.getRootId(form) }}');
 
             if (el) {
                 el.dispatchEvent(new Event('change'));
