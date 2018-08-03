@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter;
-use Pim\Component\Connector\Processor\Denormalization\ProductModelProcessor;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

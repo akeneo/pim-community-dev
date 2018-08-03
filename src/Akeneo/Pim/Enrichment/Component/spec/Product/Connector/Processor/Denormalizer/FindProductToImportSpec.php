@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization\Product;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
 use Prophecy\Argument;
 
 class FindProductToImportSpec extends ObjectBehavior
@@ -23,7 +23,8 @@ class FindProductToImportSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FindProductToImport::class);
+        $this->shouldHaveType(
+            FindProductToImport::class);
     }
 
     function it_finds_product_from_flat_data_given_by_the_reader(

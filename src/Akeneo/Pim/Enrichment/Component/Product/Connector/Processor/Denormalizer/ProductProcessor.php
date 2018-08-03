@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Processor\Denormalization;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -12,7 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
-use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
+use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -32,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var FindProductToImport */
+    /** @var \Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport */
     private $findProductToImport;
 
     /** @var AddParent */
@@ -54,14 +55,14 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     private $productAttributeFilter;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param FindProductToImport                   $findProductToImport
-     * @param AddParent                             $addParent
-     * @param ObjectUpdaterInterface                $updater
-     * @param ValidatorInterface                    $validator
-     * @param ObjectDetacherInterface               $detacher
-     * @param FilterInterface                       $productFilter
-     * @param AttributeFilterInterface              $productAttributeFilter
+     * @param IdentifiableObjectRepositoryInterface                                                         $repository
+     * @param \Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport $findProductToImport
+     * @param AddParent                                                                                     $addParent
+     * @param ObjectUpdaterInterface                                                                        $updater
+     * @param ValidatorInterface                                                                            $validator
+     * @param ObjectDetacherInterface                                                                       $detacher
+     * @param FilterInterface                                                                                       $productFilter
+     * @param AttributeFilterInterface                                                                              $productAttributeFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,

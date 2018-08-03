@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Component\Connector\Processor\Denormalization;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 
 /**
  * Load a product model from its identifier.

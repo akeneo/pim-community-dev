@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Processor\Normalization;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

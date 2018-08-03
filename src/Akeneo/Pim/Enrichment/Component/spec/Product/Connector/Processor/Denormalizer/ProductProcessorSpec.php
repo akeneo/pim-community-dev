@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
-use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

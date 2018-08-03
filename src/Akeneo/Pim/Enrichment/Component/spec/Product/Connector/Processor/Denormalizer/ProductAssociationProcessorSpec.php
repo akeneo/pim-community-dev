@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
