@@ -62,26 +62,17 @@ class PimAI implements DataProviderInterface
 
     public function bulkPush(array $products): SuggestedDataCollectionInterface
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        throw new \LogicException('Not implemented');
     }
 
     public function pull(ProductInterface $product)
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        throw new \LogicException('Not implemented');
     }
 
     public function bulkPull(array $products)
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        throw new \LogicException('Not implemented');
     }
 
     public function authenticate(?string $token): bool
@@ -91,9 +82,6 @@ class PimAI implements DataProviderInterface
 
     public function configure(array $config)
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        throw new \LogicException('Not implemented');
     }
 }
