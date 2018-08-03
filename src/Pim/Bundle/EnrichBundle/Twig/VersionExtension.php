@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Akeneo\Platform\CommunityVersion;
+use Akeneo\Platform\VersionProviderInterface;
 
 /**
  * Extension to display version of the Akeneo
@@ -13,6 +14,14 @@ use Akeneo\Platform\CommunityVersion;
  */
 class VersionExtension extends \Twig_Extension
 {
+    /** @var VersionProviderInterface */
+    private $versionProvider;
+
+    public function __construct(VersionProviderInterface $versionProvider)
+    {
+        $this->versionProvider = $versionProvider;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,11 +39,6 @@ class VersionExtension extends \Twig_Extension
      */
     public function version()
     {
-        $version = CommunityVersion::VERSION;
-        if (CommunityVersion::VERSION_CODENAME) {
-            $version .= sprintf(' %s', CommunityVersion::VERSION_CODENAME);
-        }
-
-        return $version;
+        return $this->versionProvider->getFullVersion();
     }
 }
