@@ -128,6 +128,7 @@ class ProductExportController
 
         $configuration = array_merge($rawParameters, $dynamicConfiguration);
         $configuration['user_to_notify'] = $this->getUser()->getUsername();
+        $configuration = $this->addEmailToConfiguration($configuration);
 
         $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 
@@ -209,5 +210,17 @@ class ProductExportController
     protected function getRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
+    }
+
+    /**
+     * @param array $configuration
+     *
+     * @return array
+     */
+    protected function addEmailToConfiguration(array $configuration): array
+    {
+        $configuration['send_email'] = true;
+
+        return $configuration;
     }
 }
