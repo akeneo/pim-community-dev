@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -109,8 +110,14 @@ class IdentifiersMappingContext implements Context
      */
     public function aPredefinedMapping(TableNode $table)
     {
+        $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
+        $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+
+        $tmp = array_fill_keys($identifiers, null);
+        $tmp = array_merge($tmp, $mapped);
+
         $this->manageIdentifiersMapping->updateIdentifierMapping(
-            $this->getTableNodeAsArrayWithoutHeaders($table)
+            $tmp
         );
     }
 
@@ -133,9 +140,11 @@ class IdentifiersMappingContext implements Context
      */
     private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode)
     {
-        $identifiersMapping = $tableNode->getRowsHash();
-        array_shift($identifiersMapping);
+        $extractedData = $tableNode->getRowsHash();
+        array_shift($extractedData);
 
-        return $identifiersMapping;
+        $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
+
+        return array_merge($identifiersMapping, $extractedData);
     }
 }

@@ -6,23 +6,18 @@ Feature: Subscribe a product to PIM.ai
 
   Scenario: Successfully subscribe a product to PIM.ai
     Given the following attribute:
-      | code  | type                      |
-      | brand | pim_catalog_text          |
-      | ean   | pim_catalog_text          |
-      | sku   | pim_catalog_identifier    |
-      | asin  | pim_catalog_text          |
+      | code  | type                   |
+      | ean   | pim_catalog_text       |
+      | sku   | pim_catalog_identifier |
     And the following family:
-      | code | attributes           |
-      | tshirt | sku,ean,brand,asin |
+      | code | attributes |
+      | tshirt | sku,ean  |
     And the following product:
-      | identifier | family | ean | brand | asin |
-      | ts_0013    | tshirt | 156 | Foo   | 7854 |
+      | identifier | family | ean |
+      | ts_0013    | tshirt | 156 |
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
-      | asin        | asin           |
-      | brand       | brand          |
-      | mpn         | sku            |
     When I subscribe the product "ts_0013" to PIM.ai
     Then the product "ts_0013" should be subscribed
 

@@ -8,7 +8,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiRespons
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Fake\FakeHALProducts;
-use Symfony\Component\HttpFoundation\Response;
 
 final class SubscriptionFake implements SubscriptionApiInterface
 {
