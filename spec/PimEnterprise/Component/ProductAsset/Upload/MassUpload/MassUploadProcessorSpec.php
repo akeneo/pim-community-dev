@@ -69,6 +69,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
 
+        $importer->import($uploadContext)->shouldBeCalled();
+
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
@@ -103,6 +105,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
         AssetInterface $asset
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+
+        $importer->import($uploadContext)->shouldBeCalled();
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->buildFromFile($importedFile)->willReturn($asset);
@@ -139,6 +143,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
 
+        $importer->import($uploadContext)->shouldBeCalled();
+
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
@@ -172,6 +178,9 @@ class MassUploadProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+
+        $importer->import($uploadContext)->shouldBeCalled();
+
         $exception = new \Exception('A fatal error!');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
