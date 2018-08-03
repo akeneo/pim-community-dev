@@ -23,7 +23,6 @@ services:
             - '@akeneo.pim.automation.suggest_data.pimai_client.guzzle_client'
 
     akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice:
-        #class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\Memory'
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
@@ -34,4 +33,3 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
-
