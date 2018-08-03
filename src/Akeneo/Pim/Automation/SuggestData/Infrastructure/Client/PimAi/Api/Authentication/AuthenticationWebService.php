@@ -40,7 +40,7 @@ class AuthenticationWebService implements AuthenticationApiInterface
     {
         //Temporary hardcoded url to really ensure the token is OK, because we have no "check token"
         // route and PIM.ai does not check the token for "/" uri.
-        $route = $this->uriGenerator->generate('/api');
+        $route = $this->uriGenerator->generate('/subscriptions/updated-since/yesterday');
 
         try {
             $options = [];
