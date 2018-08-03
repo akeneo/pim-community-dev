@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Holds a ProductInterface, and provides its values given a defined mapping
@@ -52,6 +53,11 @@ final class ProductSubscriptionRequest
     {
         $mapped = [];
         foreach ($mapping as $pimAiCode => $mappedAttribute) {
+
+            if (! $mappedAttribute instanceof AttributeInterface) {
+                continue;
+            }
+
             $value = $this->product->getValue($mappedAttribute->getCode());
             if (null !== $value && $value->hasData()) {
                 $mapped[$pimAiCode] = $value->__toString();
