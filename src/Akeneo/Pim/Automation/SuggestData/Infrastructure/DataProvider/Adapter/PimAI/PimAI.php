@@ -6,7 +6,10 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -20,16 +23,41 @@ class PimAI implements DataProviderInterface
 {
     private $authenticationApi;
 
-    public function __construct(AuthenticationApiInterface $authenticationApi)
-    {
+    private $subscriptionApi;
+
+    private $identifiersMappingRepository;
+
+    public function __construct(
+        AuthenticationApiInterface $authenticationApi,
+        SubscriptionApiInterface $subscriptionApi,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ) {
         $this->authenticationApi = $authenticationApi;
+        $this->subscriptionApi = $subscriptionApi;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented', __METHOD__)
-        );
+        $identifiersMapping = $this->identifiersMappingRepository->find();
+
+        $identifiers = $request->getMappedValues($identifiersMapping);
+
+        foreach ($identifiers as $pimAiCode => $identifier) {
+            $clientResponse = $this->subscriptionApi->subscribeProduct(new ProductCode($pimAiCode, $identifier));
+
+            if (!$clientResponse->isSuccess()) {
+                throw new \Exception('API error');
+            }
+
+            $responseContent = $clientResponse->content();
+
+            return new ProductSubscriptionResponse(
+                $request->getProduct(),
+                $responseContent['_embedded']['subscription']['id'],
+                array_merge($responseContent['_embedded']['subscription']['identifiers'], $responseContent['_embedded']['subscription']['attributes'])
+            );
+        }
     }
 
     public function bulkPush(array $products): SuggestedDataCollectionInterface
