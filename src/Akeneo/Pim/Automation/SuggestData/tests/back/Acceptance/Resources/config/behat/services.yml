@@ -21,7 +21,7 @@ services:
     akeneo_acceptance.context.suggest_data.data_fixtures:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\DataFixturesContext'
         arguments:
-            - '@__symfony__.pim_catalog.repository.product'
+            - '@__symfony__.pim_catalog.repository.product_without_permission'
             - '@__symfony__.pim_catalog.builder.product'
             - '@__symfony__.pim_catalog.factory.value_collection'
             - '@__symfony__.pim_catalog.repository.family'
@@ -33,7 +33,7 @@ services:
     akeneo_acceptance.context.suggest_data.product_subscription:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductSubscriptionContext'
         arguments:
-            - '@__symfony__.pim_catalog.repository.product'
+            - '@__symfony__.pim_catalog.repository.product_without_permission'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@__symfony__.akeneo.pim.automation.suggest_data.service.subscribe_product'
         tags:
