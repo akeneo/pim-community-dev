@@ -11,7 +11,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentica
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -54,8 +53,11 @@ class PimAI implements DataProviderInterface
 
             return new ProductSubscriptionResponse(
                 $request->getProduct(),
-                $responseContent['_embedded']['subscription']['id'],
-                array_merge($responseContent['_embedded']['subscription']['identifiers'], $responseContent['_embedded']['subscription']['attributes'])
+                $responseContent['_embedded']['subscription'][0]['id'],
+                array_merge(
+                    $responseContent['_embedded']['subscription'][0]['identifiers'],
+                    $responseContent['_embedded']['subscription'][0]['attributes']
+                )
             );
         }
     }
