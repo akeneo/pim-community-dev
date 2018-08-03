@@ -61,7 +61,7 @@ suites:
     SuggestData:
         namespace: Akeneo\Pim\Automation\SuggestData
         psr4_prefix: Akeneo\Pim\Automation\SuggestData
-        spec_path: src/Akeneo/Pim/Automation/SuggestData/tests/back
+        spec_path: src/Akeneo/Pim/Automation/SuggestData/tests/back/Unit
         src_path: src/Akeneo/Pim/Automation/SuggestData
     SuggestDataAcceptance:
         namespace: Akeneo\Test\Pim\Automation\SuggestData\Acceptance

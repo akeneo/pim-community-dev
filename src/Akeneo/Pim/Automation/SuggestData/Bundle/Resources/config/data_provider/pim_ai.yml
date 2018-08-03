@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.suggest_data.data_provider.pim_ai:
-            class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\PimAI\PimAI'
+            class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI\PimAI'
             arguments:
                 - '@akeneo.pim.automation.suggest_data.pimai_client.authentication_webservice'
             tags:
