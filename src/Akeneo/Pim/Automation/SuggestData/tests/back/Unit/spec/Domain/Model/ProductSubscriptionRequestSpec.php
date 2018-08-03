@@ -60,4 +60,28 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
             ]
         );
     }
+
+    public function it_handles_incomplete_mapping($product, IdentifiersMapping $mapping, AttributeInterface $ean, ValueInterface $eanValue)
+    {
+        $ean->getCode()->willReturn('ean');
+        $eanValue->hasData()->willReturn(true);
+        $eanValue->__toString()->willReturn('123456789123');
+
+        $product->getValue('ean')->willReturn($eanValue);
+
+        $mapping->getIterator()->willReturn(
+            new \ArrayIterator([
+                'upc' => $ean->getWrappedObject(),
+                'asin' => null,
+                'brand' => null,
+                'mpn' => null,
+            ])
+        );
+
+        $this->getMappedValues($mapping)->shouldReturn(
+            [
+                'upc' => '123456789123',
+            ]
+        );
+    }
 }
