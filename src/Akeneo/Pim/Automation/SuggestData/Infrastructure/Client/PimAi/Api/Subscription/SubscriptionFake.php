@@ -10,13 +10,10 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Pr
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Fake\FakeHALProducts;
 use Symfony\Component\HttpFoundation\Response;
 
-final class Memory implements SubscriptionApiInterface
+final class SubscriptionFake implements SubscriptionApiInterface
 {
-    private $fakeHALProducts;
-
     public function __construct()
     {
-        $this->fakeHALProducts = new FakeHALProducts();
     }
 
     /**
@@ -24,12 +21,7 @@ final class Memory implements SubscriptionApiInterface
      */
     public function subscribeProduct(ProductCode $productCode): ApiResponse
     {
-        $hal = $this->fakeHALProducts->addProduct($productCode->value())->getFakeHAL();
-
-        return new ApiResponse(
-             Response::HTTP_OK,
-             json_decode($hal, true)
-         );
+        throw new \LogicException('Not yet implemented');
     }
 
     /**
@@ -37,15 +29,6 @@ final class Memory implements SubscriptionApiInterface
      */
     public function subscribeProducts(ProductCodeCollection $productCodeCollection): ApiResponse
     {
-        foreach ($productCodeCollection as $productCode) {
-            $this->fakeHALProducts->addProduct($productCode->value());
-        }
-
-        $hal = $this->fakeHALProducts->getFakeHAL();
-
-        return new ApiResponse(
-            Response::HTTP_OK,
-            json_decode($hal, true)
-        );
+        throw new \LogicException('Not yet implemented');
     }
 }
