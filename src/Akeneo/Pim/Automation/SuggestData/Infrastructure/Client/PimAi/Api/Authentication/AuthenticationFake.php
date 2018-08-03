@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication;
 
 /**
+ * Fake authentication
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class AuthenticationFake implements AuthenticationApiInterface
 {
+    /** @var string */
     const VALID_TOKEN = 'valid-token';
+
     /**
      * {@inheritdoc}
      */
