@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7558: Fix asset collection proposal behavior. The assets uploaded by an asset collection attribute were not sent for approval but directly persisted.
+
 # 2.3.3 (2018-08-01)
 
 ## Bug fixes

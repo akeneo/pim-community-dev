@@ -267,6 +267,7 @@ class MassUploadController
             'entity_type' => $entityType,
             'entity_identifier' => $entityIdentifier,
             'attribute_code' => $attributeCode,
+            'is_user_authenticated' => true
         ];
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
