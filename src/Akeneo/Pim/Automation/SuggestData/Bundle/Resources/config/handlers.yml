@@ -14,7 +14,7 @@ services:
     akeneo.pim.automation.suggest_data.handler.subscribe_product:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler'
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
