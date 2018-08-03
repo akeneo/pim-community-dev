@@ -28,8 +28,7 @@ class PimAI implements DataProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse
     {
         throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
+            sprintf('"%s is not yet implemented', __METHOD__)
         );
     }
 
