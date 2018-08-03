@@ -3,17 +3,11 @@ extensions:
     Akeneo\SkipExampleExtension: ~
 
 suites:
-    PimEnterprise:
-        namespace: PimEnterprise
-
     EnrichedEntity:
         namespace: Akeneo\EnrichedEntity
         psr4_prefix: Akeneo\EnrichedEntity
         spec_path: src/Akeneo/EnrichedEntity/tests/back
         src_path: src/Akeneo/EnrichedEntity/back
-
-    Akeneo:
-        namespace: Akeneo
 
     ## Asset
     AssetBundle:
@@ -71,3 +65,9 @@ suites:
         psr4_prefix: AkeneoEnterprise\Test\Acceptance
         spec_path: tests/back/Acceptance
         src_path: tests/back/Acceptance
+
+    Akeneo:
+        namespace: Akeneo
+
+    PimEnterprise:
+        namespace: PimEnterprise
