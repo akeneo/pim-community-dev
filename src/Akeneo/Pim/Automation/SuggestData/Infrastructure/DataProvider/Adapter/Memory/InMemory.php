@@ -24,7 +24,7 @@ class InMemory implements DataProviderInterface
     /**
      * @const string A hard-coded token for acceptance tests.
      */
-    private const PIM_AI_TOKEN = 'the-only-valid-token-for-acceptance';
+    private const PIM_AI_TOKEN = 'valid-token';
 
     /** @var array */
     private $config;

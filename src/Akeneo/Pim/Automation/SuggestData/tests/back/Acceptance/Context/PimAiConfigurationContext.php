@@ -27,7 +27,7 @@ use PHPUnit\Framework\Assert;
  */
 class PimAiConfigurationContext implements Context
 {
-    private const PIM_AI_VALID_TOKEN = 'the-only-valid-token-for-acceptance';
+    private const PIM_AI_VALID_TOKEN = 'valid-token';
 
     /** @var ActivateSuggestDataConnection */
     private $pimAiConnection;
