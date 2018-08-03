@@ -20,7 +20,15 @@ final class SubscriptionFake implements SubscriptionApiInterface
      */
     public function subscribeProduct(ProductCode $productCode): ApiResponse
     {
-        throw new \LogicException('Not yet implemented');
+        $filename = sprintf('subscribe-%s-%s.json', $productCode->identifierName(), $productCode->value());
+
+        return new ApiResponse(
+            200,
+            json_decode(
+                file_get_contents(
+                    sprintf(__DIR__ .'/../resources/%s', $filename)
+                ), true)
+        );
     }
 
     /**

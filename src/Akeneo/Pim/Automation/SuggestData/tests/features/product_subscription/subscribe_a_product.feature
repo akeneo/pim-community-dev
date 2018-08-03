@@ -13,8 +13,8 @@ Feature: Subscribe a product to PIM.ai
       | code | attributes |
       | tshirt | sku,ean  |
     And the following product:
-      | identifier | family | ean |
-      | ts_0013    | tshirt | 156 |
+      | identifier | family | ean          |
+      | ts_0013    | tshirt | 606449099812 |
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
