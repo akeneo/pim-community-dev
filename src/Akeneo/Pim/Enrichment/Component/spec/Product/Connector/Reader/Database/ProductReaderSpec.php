@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\Database;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;

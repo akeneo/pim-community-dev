@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Xlsx;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileReaderInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
+use Pim\Component\Connector\Reader\File\Xlsx\Reader;
 
 /**
  * Product model Xlsx reader

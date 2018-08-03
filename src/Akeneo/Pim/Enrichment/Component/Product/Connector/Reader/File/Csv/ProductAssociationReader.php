@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Csv;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
+use Pim\Component\Connector\Reader\File\Csv\Reader;
 use Pim\Component\Connector\Reader\File\FileReaderInterface;
 
 /**

@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Xlsx;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use Pim\Component\Connector\Reader\File\FileReaderInterface;
+use Pim\Component\Connector\Reader\File\Xlsx\Reader;
 
 /**
  * Product Association XLSX reader

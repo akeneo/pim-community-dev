@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileReaderInterface;
-use Pim\Component\Connector\Reader\File\Xlsx\ProductAssociationReader;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductAssociationReader;
 use Pim\Component\Connector\Reader\File\Xlsx\Reader;
 
 class ProductAssociationReaderSpec extends ObjectBehavior

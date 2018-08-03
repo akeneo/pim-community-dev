@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File\Csv;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\Csv\ProductModelReader;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelReader;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;

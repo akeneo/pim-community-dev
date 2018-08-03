@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File\Csv;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductAssociationReader;
 use Pim\Component\Connector\Reader\File\Csv\Reader;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileReaderInterface;

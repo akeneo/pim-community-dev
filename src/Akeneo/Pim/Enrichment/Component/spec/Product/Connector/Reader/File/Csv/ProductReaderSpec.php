@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File\Csv;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -10,7 +10,7 @@ use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 
-class  ProductReaderSpec extends ObjectBehavior
+class ProductReaderSpec extends ObjectBehavior
 {
     function let(
         FileIteratorFactory $fileIteratorFactory,
@@ -24,7 +24,7 @@ class  ProductReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\ProductReader');
+        $this->shouldHaveType('Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader');
     }
 
     function it_is_a_csv_reader()

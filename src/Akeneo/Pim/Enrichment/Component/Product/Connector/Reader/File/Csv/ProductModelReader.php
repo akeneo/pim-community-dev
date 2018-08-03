@@ -1,32 +1,32 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\File\Xlsx;
+declare(strict_types=1);
+
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\Reader\File\Csv\Reader;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileReaderInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 
 /**
- * Product XLSX reader
+ * Product model Csv reader
  *
- * This specialized XLSX reader exists to replace relative media path to absolute path, in order for later process to
- * know where to find the files.
- *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductReader extends Reader implements FileReaderInterface
+class ProductModelReader extends Reader implements FileReaderInterface
 {
     /** @var MediaPathTransformer */
-    protected $mediaPathTransformer;
+    private $mediaPathTransformer;
 
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
-     * @param array                   $options
      * @param MediaPathTransformer    $mediaPathTransformer
+     * @param array                   $options
      */
     public function __construct(
         FileIteratorFactory $fileIteratorFactory,
@@ -59,22 +59,21 @@ class ProductReader extends Reader implements FileReaderInterface
     /**
      * @return array
      */
-    protected function getArrayConverterOptions()
+    protected function getArrayConverterOptions(): array
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 
         return [
             // for the array converters
-            'mapping'           => [
-                $jobParameters->get('familyColumn')     => 'family',
+            'mapping' => [
+                $jobParameters->get('familyVariantColumn') => 'family_variant',
                 $jobParameters->get('categoriesColumn') => 'categories',
-                $jobParameters->get('groupsColumn')     => 'groups'
             ],
             'with_associations' => false,
 
             // for the delocalization
             'decimal_separator' => $jobParameters->get('decimalSeparator'),
-            'date_format'       => $jobParameters->get('dateFormat')
+            'date_format' => $jobParameters->get('dateFormat'),
         ];
     }
 }

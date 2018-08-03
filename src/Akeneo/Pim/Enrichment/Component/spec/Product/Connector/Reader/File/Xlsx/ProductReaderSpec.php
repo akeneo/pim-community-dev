@@ -1,18 +1,16 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
-use Pim\Component\Connector\Reader\File\Xlsx\ProductModelReader;
-use PhpSpec\ObjectBehavior;
 
-class ProductModelReaderSpec extends ObjectBehavior
+class ProductReaderSpec extends ObjectBehavior
 {
     function let(
         FileIteratorFactory $fileIteratorFactory,
@@ -26,12 +24,12 @@ class ProductModelReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductModelReader::class);
+        $this->shouldHaveType('Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductReader');
     }
 
-    function it_is_a_file_reader()
+    function it_is_a_xlsx_reader()
     {
-        $this->shouldImplement(FileReaderInterface::class);
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Xlsx\Reader');
     }
 
     function it_transforms_media_paths_to_absolute_paths(
@@ -46,17 +44,18 @@ class ProductModelReaderSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn($filePath);
-        $jobParameters->get('familyVariantColumn')->willReturn('familyVariant');
+        $jobParameters->get('familyColumn')->willReturn('family');
         $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
         $jobParameters->get('decimalSeparator')->willReturn('.');
         $jobParameters->get('dateFormat')->willReturn('YYYY-mm-dd');
 
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
         $item = [
-            'sku' => 'SKU-001',
-            'name' => 'door',
-            'view' => 'fixtures/sku-001.jpg',
+            'sku'          => 'SKU-001',
+            'name'         => 'door',
+            'view'         => 'fixtures/sku-001.jpg',
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
         $convertedItem = [
@@ -64,34 +63,35 @@ class ProductModelReaderSpec extends ObjectBehavior
             'values' => [
                 'sku' => [
                     'locale' => null,
-                    'scope' => null,
-                    'data' => 'SKU-001',
+                    'scope'  => null,
+                    'data'   => 'SKU-001',
                 ],
                 'name' => [
                     'locale' => null,
-                    'scope' => null,
-                    'data' => 'door',
+                    'scope'  => null,
+                    'data'   => 'door',
                 ],
                 'view' => [
                     'locale' => null,
-                    'scope' => null,
-                    'data' => 'fixtures/sku-001.jpg',
+                    'scope'  => null,
+                    'data'   => 'fixtures/sku-001.jpg',
                 ],
                 'manual' => [
                     'locale' => 'fr_FR',
-                    'scope' => null,
-                    'data' => 'fixtures/sku-001.txt',
+                    'scope'  => null,
+                    'data'   => 'fixtures/sku-001.txt',
                 ],
-            ],
+            ]
         ];
         $converterOptions = [
             'mapping' => [
-                'familyVariant' => 'family_variant',
+                'family'     => 'family',
                 'categories' => 'categories',
+                'groups'     => 'groups',
             ],
             'with_associations' => false,
             'decimal_separator' => '.',
-            'date_format' => 'YYYY-mm-dd',
+            'date_format'       => 'YYYY-mm-dd',
         ];
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);

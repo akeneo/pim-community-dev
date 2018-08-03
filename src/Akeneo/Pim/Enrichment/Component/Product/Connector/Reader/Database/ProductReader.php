@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\Database;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;

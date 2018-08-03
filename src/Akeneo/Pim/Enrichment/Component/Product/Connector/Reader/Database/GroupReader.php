@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\Database;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Connector\Reader\Database\AbstractReader;
 
 /**
  * The group repository reader
