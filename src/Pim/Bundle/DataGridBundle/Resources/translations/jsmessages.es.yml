@@ -7,9 +7,9 @@ Selected items were not removed.: Los elementos seleccionados no se eliminaron.
 Please, select items to remove.: Por favor, seleccionar los elementos a eliminar.
 Cannot delete item.: No se puede eliminar el elemento.
 Refresh Confirmation: Confirmación de la actualización
-Your local changes will be lost. Are you sure you want to refresh grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la grilla?
+Your local changes will be lost. Are you sure you want to refresh grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la cuadrícula?
 Reset Confirmation: Confirmación de reajuste
-Your local changes will be lost. Are you sure you want to reset grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la grilla?
+Your local changes will be lost. Are you sure you want to reset grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la cuadrícula?
 Confirmation: Confirmación
 edit: editar
 copy: copiar
@@ -30,7 +30,7 @@ View per page: Vista por página
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
 oro.datagrid.noresults: "No se encontraron resultados. Intente cambiar el criterio de búsqueda."
-oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
+oro.datagrid.nocolumns: Sin columnas configuradas para esta cuadrícula
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
@@ -86,4 +86,4 @@ grid.view_selector:
   confirmation:
     remove: '¿Está seguro que desea eliminar este punto de vista del datagrid?'
     delete: Confirmación de borrado
-grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
+grid.view_selector.flash.updated: Vista de cuadrícula de datos actualizada correctamente

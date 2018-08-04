@@ -103,9 +103,9 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (todos los atributos)
-        csv_grid_context: CSV (contexto de la grilla)
+        csv_grid_context: CSV (contexto de la cuadrícula)
         xlsx_all: Excel (todos los atributos)
-        xlsx_grid_context: Excel (contexto de la grilla)
+        xlsx_grid_context: Excel (contexto de la cuadrícula)
       delete: Eliminar productos
       mass_edit: Cambiar información del producto
       category_edit: Mover producto en categorías
@@ -123,7 +123,7 @@ pim_enrich:
       confirm.title: Eliminar este {{ itemName }}
   navigation:
     link:
-      back_to_grid: Regresar a la grilla
+      back_to_grid: Regresar a la cuadrícula
   entity:
     save:
       label: Guardar
@@ -141,7 +141,7 @@ pim_enrich:
         compare_translate: Comparar / Traducir
         delete: Eliminar
         save: Guardar
-        save_and_back: Guardar y regresar a la grilla
+        save_and_back: Guardar y regresar a la cuadrícula
       history:
         version: Versión
         author: Autor
@@ -312,7 +312,7 @@ pim_enrich:
     entity:
       updated: Hay cambios sin guardar.
   error:
-    upload: Un error ha ocurrido durante la subida del fichero
+    upload: Un error ha ocurrido durante la carga del fichero
   alert:
     not_allowed: Usted no tiene permisos para acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
@@ -475,7 +475,7 @@ pim_enrich:
         edit.title: Editar
         export.title: Exportar Ahora
         import.launch: Importar ahora
-        import.upload: Subir e importar ahora
+        import.upload: Cargar e importar ahora
       meta:
         job: Trabajo
         connector: Conector
@@ -689,7 +689,7 @@ pim_enrich:
         title: Configuración global
   mass_edit_action:
     edit_common_attributes:
-      description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
+      description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la cuadrícula de productos.
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
 batch_jobs:
