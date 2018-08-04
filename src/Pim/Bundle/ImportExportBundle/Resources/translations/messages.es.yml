@@ -16,7 +16,7 @@ pim_import_export:
     8: Desconocido
   download_archive:
     archive: descargar fichero generado|descargar ficheros generados
-    output: descargar ficher generado |descargar ficheros generados
+    output: descargar fichero generado |descargar ficheros generados
     input: descargar fichero de lectura |descargar ficheros de lectura
     invalid_xlsx: descargar datos no válidos
     invalid_csv: descargar datos no válidos
@@ -98,7 +98,7 @@ btn:
   create:
     export profile: crear perfil exportador
     import profile: crear perfil de importación
-Upload and import now: Subir e importar ahora
+Upload and import now: Cargar e importar ahora
 import now: Importar ahora
 export now: Exportar Ahora
 confirmation:

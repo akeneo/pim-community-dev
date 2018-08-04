@@ -20,8 +20,8 @@ datagrid_view:
     unique_message: La etiqueta debe ser única
     not_blank_message: La etiqueta no debe estar en blanco
 grid.view_selector.flash:
-  created: Vista de grilla de datos creada correctamente
-  removed: Vista de grilla de datos eliminada correctamente
+  created: Vista de cuadrícula de datos creada correctamente
+  removed: Vista de cuadrícula de datos eliminada correctamente
   not_removable: No tienes los derechos para eliminar este punto de vista
 quick_export: Exportación rápida
 import: Importar

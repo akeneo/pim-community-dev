@@ -356,7 +356,7 @@ btn:
     drag_or_upload: Arrastrar y soltar para cargar o haga clic aquí
   edit: editar
   save: guardar
-  save and back: guardar y volver a la grilla
+  save and back: guardar y volver a la cuadrícula
   save and create: guardar y crear nuevo
   save and next: guardar y siguiente
   save and finish: guardar y finalizar
@@ -366,7 +366,7 @@ btn:
   next: siguiente
   back: atrás
   confirm: confirmar
-  to grid: regresa a grilla
+  to grid: regresa a cuadrícula
   to parent: subir nivel
   download_pdf: PDF
   download: descargar
@@ -540,8 +540,8 @@ Attribute type: Tipo de atributo
 Defaultvalue: Valor predefinido
 Variant: Variante
 Smart: Inteligente
-Useable as grid column: Se puede usar como columna de grilla
-Useable as grid filter: Se puede usar en la grilla
+Useable as grid column: Se puede usar como columna de cuadrícula
+Useable as grid filter: Se puede usar en la cuadrícula
 Family: Familia
 Available locales: Locales disponibles
 Locale specific: Local específico
@@ -621,6 +621,7 @@ pim_title.product:
   edit: "Productos %product.sku% | Editar"
 pim_title.family:
   index: "Familias"
+  edit: "Familias %code% | Editar"
 pim_title.channel:
   index: "Canales"
   create: "Canales | Crear"
@@ -774,7 +775,7 @@ popin.create:
   option.title: Crear una nueva opción
 In group: En grupo
 Attribute as label: Atributo como etiqueta
-Is associated: Esta asociado
+Is associated: Está asociado
 Complete: Completo
 Created At: Creado el
 Updated At: Actualizado el
@@ -879,17 +880,17 @@ batch_jobs:
     perform:
       label: Exportación rápida de producto en CSV
   csv_product_grid_context_quick_export:
-    quick_export.label: Exportación rápida de la grilla de productos en CSV
+    quick_export.label: Exportación rápida de la cuadrícula de productos en CSV
     perform:
-      label: Exportación rápida de la grilla de productos en CSV
+      label: Exportación rápida de la cuadrícula de productos en CSV
   xlsx_product_quick_export:
     quick_export.label: Exportación rápida de producto en XLSX
     perform:
       label: Exportación rápida de producto en XLSX
   xlsx_product_grid_context_quick_export:
-    quick_export.label: Exportación rápida de la grilla de productos en XLSX
+    quick_export.label: Exportación rápida de la cuadrícula de productos en XLSX
     perform:
-      label: Exportación rápida de la grilla de productos en XLSX
+      label: Exportación rápida de la cuadrícula de productos en XLSX
   add_to_variant_group:
     label: Agregar a un grupo de variantes
     perform:
@@ -911,4 +912,4 @@ pim_enrich_attribute_form:
   availableLocales: Locales disponibles
   locale_specific: Local específico
   group: Grupo de atributos
-  useableAsGridFilter: Se puede usar en la grilla
+  useableAsGridFilter: Se puede usar en la cuadrícula
