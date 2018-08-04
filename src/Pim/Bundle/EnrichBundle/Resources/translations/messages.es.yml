@@ -91,6 +91,7 @@ pim_enrich:
       description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
       empty: Por favor, seleccione atributo(s) que desea editar
       success_flash: El trabajo de actualización del estado de producto(s) está ejecutándose
+      launched_flash: La acción en masa "editar atributos" ha sido emitida. Usted será notificado cuando este lista.
       message:
         warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
         invalid_attribute: El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.
@@ -157,6 +158,10 @@ pim_enrich:
       history: Ver historial de producto
     product_model:
       create: Cree un modelo de producto
+      edit_attributes: Editar atributos de un modelo del producto
+      categories_view: Consultar las categorías de un modelo del producto
+      history: Ver el historial del modelo del producto
+      remove: Eliminar un modelo del producto
     category:
       list: Lista de categorías
       create: Crear una categoría
@@ -214,6 +219,8 @@ pim_enrich:
       history: Ver historial de  asociación de tipo
     job_tracker:
       index: Visualizar los procesos ejecutados
+    api_connection:
+      manage: Gestionar las conexiones API
   acl_group:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -226,10 +233,16 @@ pim_enrich:
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
+    product_model: Modelos de producto
   reference_data:
     empty_value:
       reference_data_type:
         label: Seleccione el tipo de información de referencia
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: El local ha sido removido del canal. Actualmente estamos limpiando la completitud relacionado a ellos.
+        done: Remoción de un local en un canal terminada.
 attribute:
   title: atributo
   edit: editar atributo
@@ -473,10 +486,11 @@ Attribute type: Tipo de atributo
 Defaultvalue: Valor predefinido
 Variant: Variante
 Smart: Atributo inteligente
-Useable as grid column: Se puede usar como columna de grilla
-Useable as grid filter: Se puede usar en la grilla
+Useable as grid column: Se puede usar como columna de cuadrícula
+Useable as grid filter: Se puede usar en la cuadrícula
 Family: Familia
 Image: Imagen
+Variant products: Variante de productos
 Available locales: Locales disponibles
 Locale specific: Local específico
 default: Predefinido
@@ -505,6 +519,7 @@ No matches found: No se encuentran coincidencias
 Category tree: Árbol de categoría
 Completeness: Completitud
 Attribute used as label: Atributo utilizado como etiqueta
+Credentials: Credenciales
 Global: Global
 Channel: Canal
 Expand all channels: Expandir todos los canales
@@ -552,6 +567,7 @@ pim_title.attribute:
   edit: "Atributos  %attribute.label% | Editar"
 pim_title.product:
   index: "Productos"
+  edit: "Productos %product.label% | Editar"
 pim_title.family:
   index: "Familias"
   edit: "Familias %family.label% | Editar"
@@ -682,7 +698,7 @@ popin.create:
   option.title: Crear una nueva opción
 In group: En grupo
 Attribute as label: Atributo como etiqueta
-Is associated: Esta asociado
+Is associated: Está asociado
 Complete: Completo
 Created At: Creado el
 Updated At: Actualizado el
@@ -756,6 +772,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atri
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
 remove_product_value.steps.update_product_value_processor.title: Quitar el valor del producto
 edit_common_attributes: Editar atributos
+edit_common_attributes_clean: Vaciar archivos para los atributos
 perform.steps.duplicated.title: Eje duplicado
 perform.steps.excluded.title: Producto excluido
 batch_jobs:
@@ -771,6 +788,10 @@ batch_jobs:
     label: Editar atributos
     perform:
       label: Editar atributos
+    clean:
+      label: Vaciar archivos para los atributos
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Calcular completitud
   set_attribute_requirements:
     label: Establecer los requisitos de atributos
     perform:
@@ -780,17 +801,17 @@ batch_jobs:
     perform:
       label: Exportación rápida de producto en CSV
   csv_product_grid_context_quick_export:
-    quick_export.label: Exportación rápida de la grilla de productos en CSV
+    quick_export.label: Exportación rápida de la cuadrícula de productos en CSV
     perform:
-      label: Exportación rápida de la grilla de productos en CSV
+      label: Exportación rápida de la cuadrícula de productos en CSV
   xlsx_product_quick_export:
     quick_export.label: Exportación rápida de producto en XLSX
     perform:
       label: Exportación rápida de producto en XLSX
   xlsx_product_grid_context_quick_export:
-    quick_export.label: Exportación rápida de la grilla de productos en XLSX
+    quick_export.label: Exportación rápida de la cuadrícula de productos en XLSX
     perform:
-      label: Exportación rápida de la grilla de productos en XLSX
+      label: Exportación rápida de la cuadrícula de productos en XLSX
 mass_edit report:
   overview: Reportes de edición en masa
 job_tracker:
@@ -808,4 +829,4 @@ pim_enrich_attribute_form:
   availableLocales: Locales disponibles
   locale_specific: Local específico
   group: Grupo de atributos
-  useableAsGridFilter: Se puede usar en la grilla
+  useableAsGridFilter: Se puede usar en la cuadrícula

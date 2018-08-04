@@ -34,7 +34,7 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
-oro.datagrid.noresults: "No hay ningún resultado para su búsqueda."
+oro.datagrid.noresults: "Su búsqueda no obtuvo ningún resultado."
 oro.datagrid.noresults_subTitle: "Pruebe con nuevos criterios de búsqueda."
 oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
 oro.datagrid.pagination.label: "Página"
