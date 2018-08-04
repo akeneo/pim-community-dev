@@ -11,12 +11,21 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Value;
 class ProductValueCollection
 {
     private $valuesIndexedByAttribute = [];
+    private $values = [];
 
     private function __construct()
     {
     }
 
-    public function valuesIndexedByAttribute(): array
+    /**
+     * @return ProductValue[]
+     */
+    public function all(): array
+    {
+        return $this->values;
+    }
+
+    public function indexedByAttribute(): array
     {
         return $this->valuesIndexedByAttribute;
     }
@@ -37,6 +46,7 @@ class ProductValueCollection
     {
         $attributeCode = $value->attributeCode();
         $this->valuesIndexedByAttribute[$attributeCode][] = $value;
+        $this->values[] = $value;
     }
 
 }

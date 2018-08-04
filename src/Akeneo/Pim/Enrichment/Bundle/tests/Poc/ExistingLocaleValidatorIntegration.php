@@ -9,16 +9,12 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-class ExistingAttributeValidatorIntegration extends TestCase
+class ExistingLocaleValidatorIntegration extends TestCase
 {
-    public function test_existing_attribute_validator()
+    public function test_existing_locale_validator()
     {
         $product = Product::fromApiFormat([
             'identifier' => 'identifier_product',
-            'enabled' => true,
-            'groups' => ['groupA', 'groupB'],
-            'family' => 'familyA',
-            'categories' => ['master', 'categoryA'],
             'values' => [
                 'a_file' => [
                     [
@@ -41,16 +37,12 @@ class ExistingAttributeValidatorIntegration extends TestCase
         Assert::assertCount(0, $violations);
     }
 
-    public function test_not_existing_attribute_validator()
+    public function test_not_existing_locale_validator()
     {
         $product = Product::fromApiFormat([
             'identifier' => 'identifier_product',
-            'enabled' => true,
-            'groups' => ['groupA', 'groupB'],
-            'family' => 'familyA',
-            'categories' => ['master', 'categoryA'],
             'values' => [
-                'foo' => [
+                'a_file' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -59,7 +51,7 @@ class ExistingAttributeValidatorIntegration extends TestCase
                 ],
                 'a_date' => [
                     [
-                        'locale' => 'en_US',
+                        'locale' => 'foo',
                         'scope' => 'ecommerce',
                         'data' => '2016-06-13T00:00:00+02:00'
                     ]

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExistingAttributesInValuesValidator extends ConstraintValidator
+class ExistingLocalesInValuesValidator extends ConstraintValidator
 {
     /** @var Connection */
     private $connection;
@@ -37,8 +37,8 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Product::class);
         }
 
-        if (!$constraint instanceof ExistingAttributesInValues) {
-            throw new UnexpectedTypeException($constraint, ExistingAttributesInValues::class);
+        if (!$constraint instanceof ExistingLocalesInValues) {
+            throw new UnexpectedTypeException($constraint, ExistingLocalesInValues::class);
         }
 
         if (null === $product->values()) {
@@ -49,27 +49,35 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
             SELECT 
                 code
             FROM 
-                pim_catalog_attribute a
+                pim_catalog_locale l
             WHERE 
-                a.code IN (:attribute_codes)
+                l.code IN (:locale_codes)
+                AND l.is_activated = 1
 SQL;
 
-        $attributeCodes = $this->getAttributeCodes($product);
-        $existingAttributes = $this->connection->executeQuery(
+        $localeCodes = $this->getLocaleCodes($product);
+        $existingLocales = $this->connection->executeQuery(
             $sql,
-            ['attribute_codes' => $attributeCodes],
-            ['attribute_codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['locale_codes' => $localeCodes],
+            ['locale_codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAll(PDO::FETCH_COLUMN, 0);
 
-        $notExistingCode = array_diff($attributeCodes, $existingAttributes);
+        $notExistingCode = array_diff($localeCodes, $existingLocales);
 
         if (!empty($notExistingCode)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 
-    private function getAttributeCodes(Product $product): array
+    private function getLocaleCodes(Product $product): array
     {
-        return array_keys($product->values()->indexedByAttribute());
+        $locales = [];
+        foreach ($product->values()->all() as $value) {
+            if (null !== $value->localeCode()) {
+                $locales[$value->localeCode()] = $value->localeCode();
+            }
+        }
+
+        return $locales;
     }
 }

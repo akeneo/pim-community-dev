@@ -1,4 +1,3 @@
-Attrib
 <?php
 
 namespace Pim\Component\Catalog\Validator\ConstraintGuesser;

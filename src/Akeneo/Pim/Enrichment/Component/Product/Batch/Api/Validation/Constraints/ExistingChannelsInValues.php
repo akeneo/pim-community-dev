@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
+
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExistingCategories
+class ExistingChannelsInValues extends Constraint
 {
-    public $message = 'A category does not exist in the given list of categories.';
+    public $message = 'One of the channel does not exist.';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy(): string
     {
-        return 'batch_api_existing_categories';
+        return 'batch_api_existing_channels';
     }
 
     /**

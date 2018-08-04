@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,7 +19,7 @@ class ExistingAttributesInValues extends Constraint
      */
     public function validatedBy(): string
     {
-        return 'batch_api_existing_categories';
+        return 'batch_api_existing_attributes';
     }
 
     /**

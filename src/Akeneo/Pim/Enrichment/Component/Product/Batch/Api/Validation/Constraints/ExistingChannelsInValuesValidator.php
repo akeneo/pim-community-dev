@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExistingAttributesInValuesValidator extends ConstraintValidator
+class ExistingChannelsInValuesValidator extends ConstraintValidator
 {
     /** @var Connection */
     private $connection;
@@ -37,8 +37,8 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Product::class);
         }
 
-        if (!$constraint instanceof ExistingAttributesInValues) {
-            throw new UnexpectedTypeException($constraint, ExistingAttributesInValues::class);
+        if (!$constraint instanceof ExistingChannelsInValues) {
+            throw new UnexpectedTypeException($constraint, ExistingChannelsInValues::class);
         }
 
         if (null === $product->values()) {
@@ -49,27 +49,34 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
             SELECT 
                 code
             FROM 
-                pim_catalog_attribute a
+                pim_catalog_channel c
             WHERE 
-                a.code IN (:attribute_codes)
+                c.code IN (:channel_codes)
 SQL;
 
-        $attributeCodes = $this->getAttributeCodes($product);
-        $existingAttributes = $this->connection->executeQuery(
+        $channelCodes = $this->getChannelCodes($product);
+        $existingLocales = $this->connection->executeQuery(
             $sql,
-            ['attribute_codes' => $attributeCodes],
-            ['attribute_codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['channel_codes' => $channelCodes],
+            ['channel_codes' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
         )->fetchAll(PDO::FETCH_COLUMN, 0);
 
-        $notExistingCode = array_diff($attributeCodes, $existingAttributes);
+        $notExistingCode = array_diff($channelCodes, $existingLocales);
 
         if (!empty($notExistingCode)) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 
-    private function getAttributeCodes(Product $product): array
+    private function getChannelCodes(Product $product): array
     {
-        return array_keys($product->values()->indexedByAttribute());
+        $channels = [];
+        foreach ($product->values()->all() as $value) {
+            if (null !== $value->channelCode()) {
+                $channels[$value->channelCode()] = $value->channelCode();
+            }
+        }
+
+        return $channels;
     }
 }

@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInt
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -299,7 +300,7 @@ class ProductController
 
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
-        $this->saver->save($product);
+        $this->saver->save($product, ['index_refresh' => Refresh::disable()]);
 
         $response = $this->getResponse($product, Response::HTTP_CREATED);
 
