@@ -1,0 +1,16 @@
+akeneo_suggest_data:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Aktiv
+          inactive: Inaktiv
+    family_mapping:
+      fields:
+        suggest_data:
+          active: Aktiv
+          inactive: Inaktiv
+  pim_ai:
+    module:
+      activation:
+        activated: 'Aktiveret'

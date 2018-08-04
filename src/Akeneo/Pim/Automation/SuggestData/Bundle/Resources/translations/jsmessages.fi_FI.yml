@@ -1,0 +1,16 @@
+akeneo_suggest_data:
+  entity:
+    identifier_mapping:
+      fields:
+        status:
+          active: Aktiivinen
+          inactive: Ei aktiivinen
+    family_mapping:
+      fields:
+        suggest_data:
+          active: Aktiivinen
+          inactive: Ei aktiivinen
+  pim_ai:
+    module:
+      activation:
+        activated: 'Aktivoitu'
