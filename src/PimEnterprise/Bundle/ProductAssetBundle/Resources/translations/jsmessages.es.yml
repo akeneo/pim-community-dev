@@ -61,7 +61,7 @@ pimee_product_asset:
       uploading: Cargando
       error: Error
       success: Éxito
-    drag_and_drop: Arrastre y deje caer sus archivos aquí
+    drag_and_drop: Arrastrar y soltar su fichero o haga clic aquí
   datagrid:
     mass_action:
       delete:

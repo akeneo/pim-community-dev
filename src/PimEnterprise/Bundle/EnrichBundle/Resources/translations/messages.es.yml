@@ -168,15 +168,15 @@ batch_jobs:
   csv_published_product_grid_context_quick_export:
     export.label: Exportación rápida de la tabla de productos publicados en CSV
     perform:
-      label: Exportación rápida de la grilla de productos publicados en CSV
+      label: Exportación rápida de la cuadrícula de productos publicados en Csv
   xlsx_published_product_quick_export:
     export.label: Exportación rápida en XLSX de los productos publicados
     perform:
       label: Exportación rápida en XLSX de los productos publicados
   xlsx_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la grilla de productos publicados en XLSX
+    export.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
     perform:
-      label: Exportación rápida de la grilla de productos publicados en XLSX
+      label: Exportación rápida de la cuadrícula de productos publicados en XLSX
 add_to_variant_group_with_rules:
   steps.perform: Agregar productos al grupo de variantes
   steps.excluded.title: Producto excluido
