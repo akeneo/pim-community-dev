@@ -9,6 +9,7 @@ pim_user:
       middle_name: Segundo nombre
       last_name: Apellidos
       name_suffix: Sufijo del nombre
+      phone: Teléfono
       date_of_birth: Fecha de nacimiento
       avatar: Avatar
       timezone: Zona horaria
@@ -16,7 +17,7 @@ pim_user:
       groups: Grupos
       password: Contraseña
       password_again: Re-ingresar contraseña
-      product_grid_filters: Filtros de grilla de productos
+      product_grid_filters: Filtros de cuadrícula de productos
       catalog_locale: Local de catálogo
       catalog_scope: Ambito del Catálogo
       default_tree: Árbol por defecto
@@ -26,7 +27,7 @@ pim_user:
       default_grid_view:
         none: Ninguno
       default_product_grid_view:
-        label: Vista de grilla de producto automática
+        label: Vista de cuadrícula de producto automática
       ui_locale: Idioma de la interfaz
       last_logged_in: Última visita
       login_count: Contador de inicios de sesión
@@ -42,9 +43,12 @@ pim_user:
     tabs:
       general:
         title: General
+        basic_information: Información básica
         contact_information: Información de contacto
       additional:
         title: Adicional
+      additional_data:
+        title: Datos adicionales
       interfaces:
         title: Interfaces
       group_and_role.title: Grupos y Roles
@@ -59,7 +63,9 @@ pim_user:
       log_in: Iniciar sesion
       forgot_password: Contraseña olvidada
       request: Petición
+      password_reset: Reiniciar contraseña
       reset: Reiniciar
+      password_reset_email_sent: Un correo electrónico se ha enviado al usuario. Contiene un enlace para restablecer la contraseña.
       homepage: Ir a la página de inicio
   group:
     tab:

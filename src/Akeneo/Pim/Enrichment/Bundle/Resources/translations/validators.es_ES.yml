@@ -33,6 +33,29 @@ product_model.family_variant.not_blank.message: La variante de familia del model
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'El atributo "%attribute%" no debe estar vacío, debido a que se define como eje para esta entidad'
+    can_have_family_variant_unexpected_attribute: 'No se puede establecer la propiedad "%attribute%" a esta entidad debido a que no está en la configuración de atributos'
+    cannot_have_product_model_as_parent: 'El modelo de producto "%product_model%" no puede tener el modelo de producto %parent_product_model% como padre'
+    cannot_have_parent: 'El modelo de producto "%product_model%" no puede tener un padre'
+    attribute_does_not_belong_to_family: 'El atributo "%attribute%" no pertenece a la familia "%family%"'
+    variant_product_invalid_family: 'La variante de la familia del productos debe ser la misma que la de su padre'
+    not_null_family: La familia no puede ser "nula" porque su producto con la identificación "%sku%" es un producto variante.
+    variant_product_has_parent: 'El producto variante "%variant_product%" debe tener un padre'
+    invalid_variant_product_parent: 'El producto variante "%variant_product%" no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto sólo puede tener otro modelo de producto como niño)'
+    modified_variant_axis_value: 'Dado "%provided_value%", el eje variante "%variant_axis%" no puede ser modificado'
+    family_variant_attributes_unique: Los atributos deben ser únicos, "%attributes%" son usados gran cantidad de veces en la configuración de atributos variantes
+    family_variant_axes_unique: Los ejes variantes debe ser únicos, "%attributes%" son usados bastante seguido en la configuración de los atributos variantes
+    family_variant_axes_immutable: 'Los ejes variantes no pueden ser modificados para el nivel "%level%"'
+    family_variant_axes_attribute_type_unique: Los ejes variantes "%axis%" no pueden ser únicos o un identificador
+    family_variant_axes_attribute_type: Los ejes variantes "%axis%" deben ser booleanos, una selección simple, una simple data de referencia o una métrica
+    family_variant_axes_wrong_type: Los ejes variantes "%axis%" no pueden ser localizables, ni accesibles y no poseen un lugar específico
+    family_variant_axes_number_of_axes: 'Una configuración de un atributo variante no puede ser mayor a %max_axes_number% ejes'
+    family_variant_no_axis: Debe haber por lo menos un atributo definido como eje para la configuración del atributo para el nivel "%level%"
+    family_variant_axis_level: El atributo "%axis%" debe ser configurado como un atributo en la misma configuración del atributo variante que fue establecida como eje
+    family_variant_has_family_attribute: 'El atributo "%attribute%" no puede ser agregado a la variante de familia "%family_variant%", ya que no no es un atributo de la familia "%family%"'
+    family_variant_level_do_not_exist: No hay una configuración de variante del atributo para el nivel "%level%"
+    family_variant_no_level: Debe haber definido por lo menos un nivel en la variante de la familia
+    family_variant_maximum_number_of_level: La variante de la familia no puede contener mas de "%level%" niveles
+    family_variant_unique_attributes_in_last_level: El atributo único "%attribute%" debe ser configurado en el nivel del producto
     product_identifier: Estos identificadores "%s" no existen.
     0: Se ha producido un error inesperado.
     100: Valor no previsto

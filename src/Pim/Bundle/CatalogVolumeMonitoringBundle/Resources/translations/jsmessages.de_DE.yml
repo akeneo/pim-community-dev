@@ -1,4 +1,7 @@
 pim_catalog_volume:
+  section:
+    catalog_structure:
+      title: Achsen, verbunden mit der Katalogstruktur
   axis:
     count_products: Produkte
     average_max_attributes_per_family: Attribute pro Produktfamilie

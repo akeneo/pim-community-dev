@@ -260,6 +260,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.family:
   label: familie
   uppercase_label: Familie
+  plural_label: Familier
   flash:
     update:
       success: Familien opdateret

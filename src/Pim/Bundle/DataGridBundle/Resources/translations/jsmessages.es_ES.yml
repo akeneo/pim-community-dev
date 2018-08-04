@@ -32,6 +32,8 @@ pim_datagrid:
       remove: '¿Está seguro que desea eliminar esta vista?'
   display_selector:
     label: Mostrar
+    gallery: Galería
+    list: Lista
   mass_action:
     delete:
       empty_selection: Ningún producto seleccionado

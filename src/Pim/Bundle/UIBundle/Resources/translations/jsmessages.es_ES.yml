@@ -5,6 +5,8 @@
 "Delete Confirmation": "Confirmación de eliminación"
 "Edit": "Editar"
 "Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
+"Yes, revoke": "Si, revocar"
+"Revoke Confirmation": "Revocar confirmación"
 Prev: Ant
 Today: Hoy
 Wk: Smn
@@ -22,7 +24,7 @@ Microsecond: Microsegundo
 "Time Zone": "Zona Horaria"
 Localized value: Valor localizado
 Columns: Columnas
-Datagrid Configuration: Configuración de Grilla
+Datagrid Configuration: Configuración de cuadrícula de datos
 Action: Acción
 Unit: Unidad
 Currency: Moneda

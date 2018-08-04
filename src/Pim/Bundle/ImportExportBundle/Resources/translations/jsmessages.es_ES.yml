@@ -8,6 +8,7 @@ pim_connector:
       selector:
         modal:
           title: Selección de categorías
+        label: "{0}Todos los productos|{1}Una categoría seleccionada|]1,Inf[{{ count }} categorías seleccionadas"
         title: Seleccionar Categorías
     locales:
       validation:
@@ -27,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil de importación creado con éxito
+      page_title:
+        index: "]Inf, 1] {{ count }} perfil de importación|]1, Inf [{{ count }} perfiles de importación"
       module:
         create:
           button: Crear perfil de importación
@@ -35,6 +38,8 @@ pim_import_export:
       flash:
         create:
           success: Perfil de exportación creado con éxito
+      page_title:
+        index: "]Inf, 1] {{ count }} perfil de exportación|]1, Inf [{{ count }} perfiles de exportación"
       module:
         create:
           button: Crear perfil de exportación
@@ -62,7 +67,7 @@ pim_import_export:
       button:
         export.title: Exportar Ahora
         import.launch: Importar ahora
-        import.upload: Subir e importar ahora
+        import.upload: Cargar e importar ahora
         import.upload_file: Subir un fichero
       meta:
         job: Trabajo
@@ -131,8 +136,12 @@ confirmation:
     job_instance: '¿Está seguro que desea borrar esta instancia de trabajo?'
 pim_title:
   pim_importexport_export_profile_index: Gestión de perfiles de exportación
+  pim_importexport_export_profile_edit: Perfil de exportación {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Historial de ejecuciones de exportación
   pim_importexport_export_execution_show: Ejecuciones de importación | Detalles
   pim_importexport_import_profile_index: Gestión de perfiles de exportación
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Historia de las ejecuciones de importación
   pim_importexport_import_execution_show: Ejecuciones de importación | Detalles

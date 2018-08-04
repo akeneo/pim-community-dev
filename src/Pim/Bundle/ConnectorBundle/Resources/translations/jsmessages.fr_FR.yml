@@ -4,6 +4,9 @@ batch_jobs:
     import_associations: Import des associations de produits
     import_root_product_model: Import modèle de produit racine
     import_sub_product_model: Import sous-modèle de produit
+    compute_data_related_to_family_root_product_models: Mise à jour des données des modèles de produit racine
+    compute_data_related_to_family_sub_product_models: Mise à jour des données des modèles de sous-produit
+    compute_data_related_to_family_products: Calcul des données produits
   csv_product_export:
     label: Export des produits en CSV
     export.label: Export des produits
@@ -53,7 +56,6 @@ batch_jobs:
     label: Import des familles en CSV
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
-    compute_data_related_to_family_products.label: Calcul des données produits
   csv_family_variant_import:
     label: Import des variantes de famille en CSV
     import.label: Import des variantes de famille
@@ -87,8 +89,6 @@ batch_jobs:
   xlsx_family_import:
     label: Import des familles en XLSX
     import.label: Import des familles
-    compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
-    compute_data_related_to_family_products.label: Calcul des données produits
   xlsx_family_variant_import:
     label: Import des variantes de famille en XLSX
     import.label: Import des variantes de famille

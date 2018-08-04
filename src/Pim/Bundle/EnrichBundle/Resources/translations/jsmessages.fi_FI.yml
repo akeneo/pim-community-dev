@@ -270,6 +270,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.family:
   label: tuoteperhe
   uppercase_label: Perhe
+  plural_label: Perheet
   flash:
     update:
       success: Perheen päivittäminen onnistui.
@@ -630,6 +631,7 @@ pim_enrich.mass_edit.product:
       validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     change_parent_product_model:
       label: Vaihda ylätason tuotemalli
+      description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
 pim_enrich.mass_edit.family:
   title: Perheiden massamuokkaus
   step:

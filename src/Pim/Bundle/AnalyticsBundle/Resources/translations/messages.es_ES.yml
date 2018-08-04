@@ -19,6 +19,9 @@ pim_analytics:
     registered_bundles: Paquetes registrados
     nb_channels: Número de canales
     nb_products: Número de productos
+    nb_product_models: Número de modelos del producto
+    nb_variant_products: Número de productos variantes
+    nb_family_variants: Número de variantes de la familia
     nb_attributes: Número de atributos
     nb_scopable_attributes: Número de atributos scopable
     nb_localizable_attributes: Número de atributos localizables
@@ -26,6 +29,12 @@ pim_analytics:
     nb_locales: Número de locales
     nb_families: Número de familias
     nb_users: Número de usuarios
+    nb_categories: Número de categorías
+    nb_category_trees: Número de árboles de categorías
+    max_category_in_one_category: Número máximo de categorías dentro de una categoría
+    max_category_levels: Número máximo de niveles de categoría
+    nb_product_values: Número de valores del producto
+    avg_product_values_by_product: Promedio de los valores de producto por producto
     pim_storage_version: Versión de almacenamiento
     os_version: Versión del SO
     php_version: Versión de PHP

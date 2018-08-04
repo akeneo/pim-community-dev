@@ -4,6 +4,7 @@ batch_jobs:
     import_associations: Association import
     import_root_product_model: Rodprodukt import
     import_sub_product_model: Under produkt import
+    compute_data_related_to_family_products: Beregn produkt model data
   csv_product_export:
     label: Produkt eksport til CSV
     export.label: Produkt eksport
@@ -53,7 +54,6 @@ batch_jobs:
     label: Familie import i CSV
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
-    compute_data_related_to_family_products.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
     import.label: Familie variant import
@@ -87,8 +87,6 @@ batch_jobs:
   xlsx_family_import:
     label: Familie import i XLSX
     import.label: Familie import
-    compute_data_related_to_family_variants.label: Beregn produkt model data
-    compute_data_related_to_family_products.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     import.label: Familie variant import
