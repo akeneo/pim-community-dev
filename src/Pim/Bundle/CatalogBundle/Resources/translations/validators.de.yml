@@ -33,6 +33,7 @@ product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmo
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Attribut "%attribute%" darf nicht leer sein, da es als Achse für dieses Objekt definiert ist'
+    product_model_with_same_axis_value_already_exists: 'Kann den Wert "%values%" für die Attributachse "%attributes%" am Produkt-Model "%validated_entity%" nicht setzen, da das Produkt-Model "%sibling_with_same_value%" bereits diesen Wert besitzt'
     can_have_family_variant_unexpected_attribute: 'Die Eigenschaft "%attribute%" kann nicht dieser Entität zugewiesen werden, da sie nicht im Attributsatz enthalten ist'
     cannot_have_product_model_as_parent: 'Das Produktmodell "%product_model%" kann nicht dem Produktmodell "%parent_product_model%" untergeordnet werden'
     cannot_have_parent: 'Das Produktmodell "%product_model%" kann keine übergeordnete Ebene haben'

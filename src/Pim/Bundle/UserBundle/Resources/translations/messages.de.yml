@@ -155,4 +155,5 @@ Username or Email: Benutzername oder E-Mail
 Forgot Password: Passwort vergessen
 Request: Anfrage
 Check Email: Posteingang überprüfen
+password_reset_email_sent: Eine E-Mail wurde an den Benutzer gesendet. Sie enthält einen Link für das Zurücksetzen des Passworts.
 Go to homepage: Zurück zur Hauptseite

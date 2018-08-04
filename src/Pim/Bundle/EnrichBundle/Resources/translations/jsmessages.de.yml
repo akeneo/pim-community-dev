@@ -1042,30 +1042,45 @@ pim_enrich:
       operation:
         change_status:
           label: Status ändern
+          label_count: "{1}Ändere den Status für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere den Status für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
           field: Zu aktivieren
         edit_common:
           label: Attributwerte bearbeiten
+          label_count: "{1}Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
         add_attribute_value:
           label: Attributwerte hinzufügen
+          label_count: "{1}Hinzufügen von Attributwerten für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Hinzufügen von Attributwerten für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
+          description: Nur die Mehrfachauswahl-Attribute, die zu den Produktfamilien des Produkts gehören, werden mit den folgenden Daten des {{ locale }} Gebietsschemas und dem {{ scope }} Ausgabekanal bearbeitet. Die Attributwerte werden hinzugefügt, die vorherigen Werte bleiben erhalten.
         change_family:
           label: Produktfamilie ändern
+          label_count: "{1}Ändere die Produktfamilie von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere die Produktfamilie von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie
         add_to_group:
           label: Zu Gruppen hinzufügen
+          label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> to groups|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span> zu Gruppen"
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
         add_to_category:
           label: Zu Kategorien hinzufügen
+          label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> to categories|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span> zu Kategorien"
           description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
         move_to_category:
           label: Zwischen Kategorien verschieben
+          description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen gehen verloren.
         remove_from_category:
           label: Aus Kategorien entfernen
           description: Die Produkte werden aus den folgenden Kategorien entfernt.
         add_to_existing_product_model:
           label: Bestehendem Produktmodell hinzufügen
+          description: Das ausgewählte Produktmodell wird die Produkte zusammenfassen und ermöglicht so das Anreichern der gemeinsamen Eigenschaften.
+        associate_to_product_and_product_model:
+          label: Verbinden
+          description: Die im Raster ausgewählten Produkte werden den selektierten Produkten und Produktmodells für den ausgewählten Verbindungstyp zugeordnet
+          validate: Fügen Sie eine Verbindung hinzu, bevor Sie mit dem nächsten Schritt fortfahren
+        change_parent_product_model:
+          label: Eltern Produktmodell ändern
     family:
       title: Massenbearbeitung Produktfamilien
       step:
@@ -1092,11 +1107,15 @@ page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
+  pim_enrich_attributegroup_edit: Attributgruppe {{ group.label }} | Bearbeiten
+  pim_enrich_catalog_volume_index: Überwachung Katalogumfang
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_edit: Kategoriebaum {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Bearbeiten
   pim_enrich_product_index: Produkte
   pim_enrich_product_edit: Produkt {{ product.label }} | Bearbeiten
   pim_enrich_product_model_edit: Produktmodell {{ product.label }} | Bearbeiten
@@ -1118,6 +1137,7 @@ page_title:
   pim_enrich_job_tracker_index: Prozess-Tracker
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_api_connection_index: API-Verbindungen
+  pim_enrich_api_connection_create: API Verbindungen | Erstellen
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
 batch_jobs:
@@ -1151,6 +1171,10 @@ batch_jobs:
     label: Aus der Kategorie entfernen
     perform:
       label: Aus der Kategorie entfernen
+  add_association:
+    label: Verbinden
+    perform:
+      label: Verbinden
   add_to_existing_product_model:
     label: Zu bestehendem Produktmodell hinzufügen
     perform:
@@ -1232,6 +1256,7 @@ batch_jobs:
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
     compute_data_related_to_family_variants.label: Produktmodell-Daten berechnen
+    compute_data_related_to_family_products.label: Produktdaten berechnen
   csv_family_variant_import:
     label: Import der Varianten der Produktfamilien aus CSV-Datei
     validation.label: Dateivalidierung
@@ -1295,6 +1320,7 @@ batch_jobs:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
+    compute_data_related_to_family_products.label: Produktdaten berechnen
   xlsx_family_variant_import:
     label: Import der Varianten der Produktfamilien aus XLSX-Datei
     validation.label: Dateivalidierung
@@ -1410,6 +1436,7 @@ pim_menu:
     import_history: Import-Historie
     import_profile: Import-Profile
     configuration: Konfiguration
+    catalog_volume: Überwachung Katalogumfang
     user_management: Benutzerverwaltung
     user: Benutzer
     user_group: Gruppen
@@ -1430,6 +1457,9 @@ pim_notification:
   no_notifications: Keine Benachrichtigungen
   loading: Lädt...
 catalog_volume:
+  section:
+    catalog_structure:
+      title: Achsen, verbunden mit der Katalogstruktur
   axis:
     count_products: Produkte
     average_max_attributes_per_family: Attribute pro Produktfamilie
