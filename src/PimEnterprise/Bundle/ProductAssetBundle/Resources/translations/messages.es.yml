@@ -36,7 +36,7 @@ pimee_product_asset:
       reference: Referencia
       filename: Nombre de fichero
       width: Ancho
-      height: Altura
+      height: Alto
       resolution: Resolución
       colors: Espacio colorimétrico
       filesize: Tamaño del fichero
@@ -176,7 +176,7 @@ job_execution.summary:
 assets_mass_upload.steps:
   asset_mass_upload.title: Carga masiva de recursos
 import_asset.steps.channel_configuration_processor.title: Configuración de procesos de canal
-mass_upload: Cargar recursos masivamente
+mass_upload: Cargar masiva recursos
 batch_jobs:
   apply_assets_mass_upload:
     label: Carga masiva de recursos
