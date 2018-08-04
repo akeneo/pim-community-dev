@@ -1,7 +1,11 @@
 pim_api:
   acl:
     asset_category:
+      edit: Crear y actualizar las categorías de recursos
       list: Lista de categorías de recursos
+    asset:
+      edit: Editar recursos, y cargar sus archivos de referencia y variación
+      list: Listar recursos, y listar y descargar sus archivos de referencia y variación
   acl_group:
     asset_category: Categorías de recursos
     asset: Recursos

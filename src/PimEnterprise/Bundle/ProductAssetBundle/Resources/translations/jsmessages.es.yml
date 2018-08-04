@@ -8,8 +8,11 @@ pimee_product_asset:
           cancel: Cancelar
           confirm: Confirmar
         title: Gestionar recursos
+        description: Elija los recursos que desea adjuntar a su producto
     asset:
       not_empty: Código requerido. No puede estar vacío.
+      alpha_numeric_plus_underscore: El código debe ser únicamente alfanumérico o subrayado.
+      unique: El código debe ser único. Hemos generado uno nuevo para usted.
   enrich_asset:
     grid:
       edit: Editar prodpiedades del recurso
@@ -60,10 +63,11 @@ pimee_product_asset:
       uploading: Cargando
       error: Error
       success: Éxito
-    drag_and_drop: Arrastre y deje caer sus archivos aquí
+    drag_and_drop: Arrastrar y soltar su fichero o haga clic aquí
   datagrid:
     mass_action:
       delete:
+        confirm_content: '¿Esta seguro que desea eliminar los recursos seleccionados?'
         success: Recursos seleccionados eliminados exitosamente.
         error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor inténtelo de nuevo.
         empty_selection: Ningún recurso seleccionado
@@ -130,6 +134,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Exportar categoría de recursos en XLSX
     export.label: Exportar categoría de recursos en XLSX
+  xlsx_asset_variation_export:
+    label: Exportación de la variación de recursos en XLSX
+    export.label: Exportación de la variación de recursos en XLSX
   classify_assets:
     perform.label: Mover recursos a categorías
   add_tags_to_assets:
