@@ -252,6 +252,10 @@ batch_jobs:
   publish_product:
     perform.label: Julkaise tuotteet
 catalog_volume:
+  section:
+    assets:
+      title: Assettien ulottuvuudet
+      hint: Voit seurata tässä katalogin kokoa liittyen assetteihin
   axis:
     count_assets: Resurssit
     count_asset_categories: Assettikategoriat

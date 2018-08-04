@@ -10,10 +10,12 @@ pimee_product_asset:
           confirm: Vahvista
         title: Hallinnoi resursseja
         description: Valitse assetit, jotka haluat liittää tuotteelle
+        preview_title: Assettien esikatselu
         download: Lataa
         remove: Poista
         yes: true
         no: false
+        assetRemoveConfirmationLabel: Haluatko varmasti poistaa tämän assetin?
     asset:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
       alpha_numeric_plus_underscore: Koodi voi sisältää vain alfanumeerisia merkkejä tai alaviivoja.
@@ -39,6 +41,7 @@ pimee_product_asset:
     success:
       new: Uusi assetti luodaan
       imported: Tiedostot tuotu prosessointiin
+      need_refresh: <b>Assettien tuonti on käynnistänyt</b><br>Nähdäksesi assetit tuotelomakkeella, päivitä tuotesivu heti kun saat ilmoituksen assettien tuonnista.
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
@@ -87,6 +90,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Assettien massatuonti
     perform.label: Massatuonti
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assettien massatuonti ja lisääminen tuotteelle
+    perform.label: Massatuo assetit ja lisää tuotteelle
   yml_asset_channel_configuration_import:
     label: Assettikanavien konfiguraation tuonti Yaml muodossa
     validation.label: Tiedostojen tarkistaminen
