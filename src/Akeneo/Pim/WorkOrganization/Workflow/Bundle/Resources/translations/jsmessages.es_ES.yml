@@ -7,8 +7,10 @@ Refuse selected: Rechazar elementos seleccionados
 pim_datagrid:
   no_entities:
     proposal: Ninguna propuesta a revisar.
+    product_draft: No hay ningún proyecto de producto a revisar.
   no_results:
     proposal: Ninguna propuesta a revisar. Intente cambiar los criterios de búsqueda.
+    product_draft: No hay ningún proyecto de producto a revisar. Intentar cambiar tu criterio de búsqueda.
 pimee_workflow:
   entity:
     published_product:
@@ -17,6 +19,7 @@ pimee_workflow:
     proposal:
       modal.title: Hacer un comentario (opcional - 255 caracteres max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} propuesta|]1, Inf[{{ count }} propuestas"
     selected: propuestas seleccionadas
     mass_action_group:
       review:

@@ -2,7 +2,7 @@ pim_user:
   user:
     fields:
       default_published_product_grid_view:
-        label: Vista por defecto de grilla de productos publicados
+        label: Vista por defecto de cuadrícula de productos publicados
 user:
   email:
     notifications: Notificaciones por e-mail

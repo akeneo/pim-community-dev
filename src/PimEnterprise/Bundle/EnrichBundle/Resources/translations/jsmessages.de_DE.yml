@@ -219,6 +219,10 @@ batch_jobs:
   publish_product:
     perform.label: Produkte veröffentlichen
 pim_catalog_volumne:
+  section:
+    assets:
+      hint: Sie können den Umfang bezüglich der Assets genau hier verfolgen
   axis:
     count_assets: Assets
     count_asset_categories: Assetkategorien
+    count_asset_category_trees: Assetkategoriebaum
