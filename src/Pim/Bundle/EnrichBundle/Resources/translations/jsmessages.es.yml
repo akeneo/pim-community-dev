@@ -114,9 +114,9 @@ pim:
     mass_action:
       quick_export:
         csv_all: CSV (todos los atributos)
-        csv_grid_context: CSV (contexto de la grilla)
+        csv_grid_context: CSV (contexto de la cuadrícula)
         xlsx_all: Excel (todos los atributos)
-        xlsx_grid_context: Excel (contexto de la grilla)
+        xlsx_grid_context: Excel (contexto de la cuadrícula)
       delete: Eliminar
       mass_edit: Acciones en masa
       category_edit: Mover producto en categorías
@@ -135,7 +135,7 @@ pim_enrich:
       confirm.title: Eliminar este {{ itemName }}
   navigation:
     link:
-      back_to_grid: Regresar a la grilla
+      back_to_grid: Regresar a la cuadrícula
     other_actions: Otras acciones
   entity:
     save:
@@ -444,7 +444,7 @@ pim_enrich:
     entity:
       updated: Hay cambios sin guardar.
   error:
-    upload: Un error ha ocurrido durante la subida del fichero
+    upload: Un error ha ocurrido durante la carga del fichero
   alert:
     not_allowed: Prohibido. Usted no tiene permitido acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
@@ -661,7 +661,7 @@ pim_enrich:
         edit.title: Editar
         export.title: Exportar Ahora
         import.launch: Importar ahora
-        import.upload: Subir e importar ahora
+        import.upload: Cargar e importar ahora
         import.upload_file: Subir un fichero
       meta:
         job: Trabajo
@@ -766,7 +766,7 @@ pim_enrich:
             scopable: Valor por canal
             type: Tipo
             unique: Valor único
-            useable_as_grid_filter: Se puede usar en la grilla
+            useable_as_grid_filter: Se puede usar en la cuadrícula
             validation_regexp: Expresión regular
             validation_rule: Regla de validación
             wysiwyg_enabled: Editor de texto enriquecido habilitado
@@ -1027,34 +1027,42 @@ pim_enrich:
           label: Editar atributos
           label_count: "{1}Editar atributos de <span class=\"AknFullPage-title--highlight\"> 1 producto</span>|] 1, Inf [ Editar atributos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
+          no_update: No había ningún atributo seleccionado para llevar a cabo la edición de masa. Por favor, seleccione un atributo.
         change_family:
           label: Cambiar familia
           label_count: "{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambiar la famlia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
+          no_update: No hay ninguna familia seleccionada a la cual agregar los productos.
         add_to_group:
           label: Agregar a grupos
           label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\"> 1 producto</span> a grupos |] 1, Inf [agregar <span class=\"AknFullPage-title--highlight\"> productos{{ itemsCount }}</span> a grupos"
           description: Seleccione los grupos en los cuales agregará los productos seleccionados
           field: Grupos
+          no_update: No hay ningún grupo seleccionado al cual agregar los productos.
         add_to_category:
           label: Agregar a categorias
           label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\"> 1 producto</span> a categorías |] 1, Inf [Agregar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a categorías"
           description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
+          no_update: No hay una categoría seleccionada a la cual agregar los productos.
         move_to_category:
           label: Mover entre categorias
           label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\"> 1 producto</span> entre categorías |] 1, Inf [Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
           description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
+          no_update: No hay una categoría seleccionada a la cual mover los productos.
         remove_from_category:
           label: Eliminar de las categorías
           label_count: "{1}Remover <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|] 1, Inf [Remover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
           description: Se eliminarán los productos de las siguientes categorías.
+          no_update: No hay una categoría seleccionada de la cual remover los productos.
         add_to_existing_product_model:
           label: Agregar a un modelo de producto existente
           label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|] 1, Inf [Agregar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
           description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
+          no_update: No hay ningún modelo de producto seleccionado para realizar la edición en masa.
     family:
       title: Acción masiva sobre las familias
+      confirm: "{1}Usted esta a punto de actualizar una familia con la siguiente información, por favor confírmela.|] 1, Inf [Usted esta a punto de actualizar {{ itemsCount }} familias con la siguiente información, por favor confírmela."
       step:
         select:
           label: Elija familias
@@ -1070,6 +1078,8 @@ pim_enrich:
       operation:
         set_requirements:
           label: Establecer los requisitos de atributos
+          description: Los siguientes requerimientos de atributos serán aplicados a las familias seleccionadas
+          label_count: "{1}Configurar los requirimientos de atributos de <span class=\"AknFullPage-title--highlight\">1 familia</span>|] 1, Inf [Configurar los requerimientos de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}familias</span>"
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
   http:
@@ -1124,17 +1134,41 @@ batch_jobs:
     label: Editar atributos
     perform:
       label: Editar atributos
+    cleaner:
+      label: Vaciar archivos para los atributos
   add_to_existing_product_model:
     label: Agregar a un modelo de producto existente
     perform:
       label: Agregar a un modelo de producto existente
+  set_attribute_requirements:
+    label: Fije requerimientos de los atributos
+    perform:
+      label: Fije requerimientos de los atributos
   csv_product_quick_export:
+    quick_export.label: Exportación rápida del producto en CSV
+    quick_export_product_model.label: Exportación rápida del modelo de producto en CSV
     perform:
       label: Exportación rápida del producto en CSV
+  csv_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida del contexto de la cuadrícula del producto CSV
+    quick_export_product_model.label: Exportación rápida del contexto de la cuadrícula del modelo del producto CSV
+    perform:
+      label: Exportación rápida del contexto de la cuadrícula del producto CSV
+  xlsx_product_quick_export:
+    quick_export.label: Exportación rápida de producto en XSLX
+    quick_export_product_model.label: Exportación rápida de modelo de producto en XSLX
+    perform:
+      label: Exportación rápida de producto en XSLX
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportación rápida de contexto de la cuadrícula del producto XSLX
+    quick_export_product_model.label: Exportación rápida del modelo de contexto de la cuadrícula del producto XSLX
+    perform:
+      label: Exportación rápida de contexto de la cuadrícula del producto XSLX
   csv_product_export:
     label: Exportar productos a CSV
     export.label: Exportar productos
   csv_product_model_export:
+    label: Exportación de modelo de producto en CSV
     export.label: Exportar productos
   csv_category_export:
     label: Exportar categorías a CSV
@@ -1154,11 +1188,16 @@ batch_jobs:
   csv_family_export:
     label: Exportar familias en CSV
     export.label: Exportar familias
+  csv_family_variant_export:
+    label: Exportación de variante familiar en CSV
+    export.label: Exportación de variante familiar
   csv_product_import:
     label: Importar productos desde CSV
     validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
+  csv_product_model_import:
+    label: Importación de modelo de producto en CSV
   csv_category_import:
     label: Importar categorías desde CSV
     validation.label: Validación de archivo
@@ -1179,8 +1218,14 @@ batch_jobs:
     label: Importar familias en CSV
     validation.label: Validación de archivo
     import.label: Importe de familias
+    compute_data_related_to_family_variants.label: Calcular datos de los modelos de productos
+    compute_data_related_to_family_root_product_models.label: Calcular datos de modelos productos de base
+    compute_data_related_to_family_sub_product_models.label: Calcular datos de los modelos de subproductos
+    compute_data_related_to_family_products.label: Calcular datos de los productos
   csv_family_variant_import:
+    label: Importación de variante familiar en CSV
     validation.label: Validación de archivo
+    import.label: Importación de variante familiar
   csv_group_import:
     label: Importar grupos desde CSV
     validation.label: Validación de archivo
@@ -1240,16 +1285,27 @@ batch_jobs:
     label: Importar familias en XLSX
     validation.label: Validación de archivo
     import.label: Importe de familias
+    compute_data_related_to_family_variants.label: Calcular datos de los modelos de productos
+    compute_data_related_to_family_root_product_models.label: Calcular datos de modelos productos de base
+    compute_data_related_to_family_sub_product_models.label: Calcular datos de los modelos de subproductos
+    compute_data_related_to_family_products.label: Calcular datos de los productos
   xlsx_family_variant_import:
+    label: Importación de variante familiar en XLSX
     validation.label: Validación de archivo
+    import.label: Importación de variante familiar
   xlsx_product_export:
     label: Exportar producto en XLSX
     export.label: Exportar productos
+  xlsx_product_model_export:
+    label: Exportación de modelo de producto en XLSX
+    export.label: Exportación de modelo de producto
   xlsx_product_import:
     label: Importar productos en XLSX
     validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
+  xlsx_product_model_import:
+    label: Importación de modelo de producto en XLSX
   xlsx_group_export:
     label: Exportar grupos en XLSX
     export.label: Exportar grupos
@@ -1260,6 +1316,9 @@ batch_jobs:
   xlsx_family_export:
     label: Exportar familias en XLSX
     export.label: Exportar familias
+  xlsx_family_variant_export:
+    label: Exportación de variante familiar en XLSX
+    export.label: Exportación de variante familiar
   xlsx_category_export:
     label: Exportar categorías en XLSX
     export.label: Exportar categorías
@@ -1293,6 +1352,7 @@ batch_jobs:
     import.label: Importar canales
   xlsx_locale_import:
     label: Importar locales en XLSX
+    validation.label: Validación de archivo
     import.label: Importar locales
   xlsx_attribute_group_import:
     label: Importar grupo de atributos en XLSX
@@ -1308,6 +1368,8 @@ batch_jobs:
     import.label: Importar tipo de grupos
 job_tracker:
   download_archive:
+    archive: Descargar archivo generado
+    output: Descargar archivo generado
     input: Descargar archivos leídos
     invalid_xlsx: Descargar datos inválidos
     invalid_csv: Descargar datos inválidos
