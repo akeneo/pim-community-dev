@@ -11,6 +11,8 @@ Selected Rows: Filas seleccionadas
 "Delete Confirmation": "Confirmación de eliminación"
 "Edit": "Editar"
 "Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
+"Yes, revoke": "Si, revocar"
+"Revoke Confirmation": "Revocar confirmación"
 Now: Ahora
 Prev: Ant
 Next: Siguiente
@@ -31,7 +33,7 @@ Microsecond: Microsegundo
 "Time Zone": "Zona Horaria"
 Localized value: Valor localizado
 Columns: Columnas
-Datagrid Configuration: Configuración de Grilla
+Datagrid Configuration: Configuración de cuadrícula de datos
 Apply: Aplicar
 Action: Acción
 Unit: Unidad
