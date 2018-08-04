@@ -286,6 +286,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.family:
   label: famille
   uppercase_label: Famille
+  plural_label: Familles
   flash:
     update:
       success: Famille mise à jour avec succès.

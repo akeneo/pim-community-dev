@@ -86,7 +86,6 @@ batch_jobs:
   xlsx_family_import:
     label: Importazione famiglie in XLSX
     import.label: Importazione famiglie
-    compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
   xlsx_family_variant_import:
     label: Importazione famiglia variante in XLSX
     import.label: Importazione famiglia variante

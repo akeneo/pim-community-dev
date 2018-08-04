@@ -211,6 +211,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.family:
   label: familj
   uppercase_label: Familj
+  plural_label: Familjer
   flash:
     update:
       success: Familjen har uppdaterats.

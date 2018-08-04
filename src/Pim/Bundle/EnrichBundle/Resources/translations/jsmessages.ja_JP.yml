@@ -251,6 +251,7 @@ pim_enrich.entity.channel:
 pim_enrich.entity.family:
   label: ファミリー
   uppercase_label: ファミリー
+  plural_label: ファミリー
   flash:
     update:
       success: ファミリーを更新しました。

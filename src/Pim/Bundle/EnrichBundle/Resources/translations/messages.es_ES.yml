@@ -126,10 +126,11 @@ Attribute type: Tipo de atributo
 Defaultvalue: Valor predefinido
 Variant: Variante
 Smart: Inteligente
-Useable as grid column: Se puede usar como columna de grilla
-Useable as grid filter: Se puede usar en la grilla
+Useable as grid column: Se puede usar como columna de cuadrícula
+Useable as grid filter: Se puede usar en la cuadrícula
 Family: Familia
 Image: Imagen
+Variant products: Variante de productos
 Available locales: Locales disponibles
 Locale specific: Local específico
 default: Predefinido
@@ -157,6 +158,7 @@ No matches found: No se encuentran coincidencias
 Category tree: Árbol de categoría
 Completeness: Completitud
 Attribute used as label: Atributo utilizado como etiqueta
+Credentials: Credenciales
 Global: Global
 Channel: Canal
 Expand all channels: Expandir todos los canales
@@ -286,7 +288,7 @@ popin.create:
   option.title: Crear una nueva opción
 In group: En grupo
 Attribute as label: Atributo como etiqueta
-Is associated: Esta asociado
+Is associated: Está asociado
 Complete: Completo
 Created At: Creado el
 Updated At: Actualizado el
@@ -354,11 +356,14 @@ job_execution.summary:
   skipped_products: Productos omitidos
   skipped_attributes: Atributos omitidos
   skipped_families: Familias omitidas
+  deleted_products: Productos eliminados
+  deleted_product_models: Modelos de producto eliminados
 pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
 remove_product_value.steps.update_product_value_processor.title: Quitar el valor del producto
 edit_common_attributes: Editar atributos
+edit_common_attributes_clean: Vaciar archivos para los atributos
 perform.steps.duplicated.title: Eje duplicado
 perform.steps.excluded.title: Producto excluido
 mass_edit report:
@@ -378,4 +383,4 @@ pim_enrich_attribute_form:
   availableLocales: Locales disponibles
   locale_specific: Local específico
   group: Grupo de atributos
-  useableAsGridFilter: Se puede usar en la grilla
+  useableAsGridFilter: Se puede usar en la cuadrícula
