@@ -177,13 +177,17 @@ pimee_enrich:
           warning: Los {{ itemsCount }} seleccionados serán publicados.
         unpublish:
           label: Despublicar
+          label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Los productos serán despublicados
           warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
     asset:
+      title: Acción en masa de recursos
+      confirm: "{1}Usted esta a punto de actualizar un recurso con la siguiente información, por favor confírmela. |] 1, Inf [Usted está a punto de actualizar {{ itemsCount }} recursos con la siguiente información, por favor confírmela."
       step:
         select:
           label: Elegir recurso
         choose:
+          title: Acciones en masa de recursos
           label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
@@ -193,9 +197,13 @@ pimee_enrich:
         add_tag:
           label: Añadir etiquetas a los recursos
           description: Las etiquetas serán agregadas a los activos
+          label_count: "{1}Agregar etiquetas a<span class=\"AknFullPage-title--highlight\">1 recurso</span>|] 1, Inf [Agregar etiquetas a<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos</span>"
           field: Etiquetas
+          empty_selection: Por favor, seleccione las etiquetas
         add_to_category:
           label: Clasificar los activos en categorías
+          description: Los recursos serán posicionados en las siguientes categorías, las posiciones actuales serán perdidas.
+          label_count: "{1}Clasifica <span class=\"AknFullPage-title--highlight\">1 recurso</span> a categorías|] 1, Inf [Clasifica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos </span> a categorías"
           field: Categorías
 pim_menu:
   tab:
@@ -209,8 +217,11 @@ pim_menu:
 page_title:
   pimee_workflow_proposal_index: Propuestas
   pimee_workflow_published_product_index: Productos publicados
+  pimee_workflow_published_product_view: Producto publicado {{ product.label }} | Ver
   pimee_product_asset_index: Recursos
+  pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
   pimee_asset_categorytree_index: Categorías
+  pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
   pimee_catalog_rule_rule_index: Reglas
 batch_jobs:
   yml_asset_channel_configuration_import:
@@ -229,6 +240,7 @@ batch_jobs:
     perform.label: Quitar el valor del producto
     execute_rules.label: Ejecución de las reglas
   edit_common_attributes_with_permission_and_rules:
+    label: Editar atributos con verificación de permisos y aplicación de reglas
     perform.label: Editar atributos
     execute_rules.label: Ejecución de las reglas
     cleaner.label: Eliminar archivos temporales
@@ -245,14 +257,19 @@ batch_jobs:
     perform:
       label: Exportación rápida en XLSX de los productos publicados
   xlsx_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la grilla de productos publicados en XLSX
+    export.label: Exportación rápida de la cuadrícula de productos publicados en XLSX
     perform:
-      label: Exportación rápida de la grilla de productos publicados en XLSX
+      label: Exportación rápida de la cuadrícula de productos publicados en XLSX
   add_attribute_value:
     execute_rules.label: Ejecución de las reglas
   publish_product:
     perform.label: Productos publicados
 catalog_volume:
+  section:
+    assets:
+      title: Ejes en los recursos
+      hint: Puede seguir el volumen respecto a los recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categorías de recursos
+    count_asset_category_trees: Árboles de categorías de recursos

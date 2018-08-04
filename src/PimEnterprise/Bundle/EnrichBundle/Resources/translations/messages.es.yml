@@ -140,6 +140,8 @@ edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_pr
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Agregar valores de producto con permisiones
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualizar el valor de producto con permisiones
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Quitar el valor del producto con permisos
+edit_common_attributes_with_permission: Editar atributos con permiso
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar atributos con permiso
 job_execution.summary:
   mass_published: Producto publicado
   mass_unpublished: Producto no publicado
