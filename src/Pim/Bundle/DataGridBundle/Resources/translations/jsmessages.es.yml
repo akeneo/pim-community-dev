@@ -7,9 +7,9 @@ Selected items were not removed.: Los elementos seleccionados no se eliminaron.
 Please, select items to remove.: Por favor, seleccionar los elementos a eliminar.
 Cannot delete item.: No se puede eliminar el elemento.
 Refresh Confirmation: Confirmación de la actualización
-Your local changes will be lost. Are you sure you want to refresh grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la grilla?
+Your local changes will be lost. Are you sure you want to refresh grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la cuadrícula?
 Reset Confirmation: Confirmación de reajuste
-Your local changes will be lost. Are you sure you want to reset grid?: Se perderán los cambios locales. ¿Está seguro que desea actualizar la grilla?
+Your local changes will be lost. Are you sure you want to reset grid?: Se perderán los cambios locales. ¿Está seguro que desea restablecer la cuadrícula?
 Confirmation: Confirmación
 edit: editar
 copy: copiar
@@ -34,9 +34,9 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
-oro.datagrid.noresults: "No hay ningún resultado para su búsqueda."
+oro.datagrid.noresults: "Su búsqueda no obtuvo ningún resultado."
 oro.datagrid.noresults_subTitle: "Pruebe con nuevos criterios de búsqueda."
-oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
+oro.datagrid.nocolumns: No hay columnas configuradas para esta cuadrícula
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} registros"
@@ -106,8 +106,14 @@ grid.view_selector:
   confirmation:
     remove: '¿Está seguro que desea eliminar esta vista?'
     delete: Confirmar la eliminación
-grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
+grid.view_selector.flash.updated: Vista de cuadrícula de datos actualizada correctamente
 grid.display_selector:
   label: Mostrar
+  gallery: Galería
+  list: Lista
 Client ID: Client ID
 Secret: Secreto
+grid.empty_results:
+  associated_product:
+    hint: No hay productos asociados
+    subHint: 'Haga clic en el botón "Agregar las asociaciones" para asociar estos productos'

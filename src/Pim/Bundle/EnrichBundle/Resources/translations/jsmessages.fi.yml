@@ -1087,6 +1087,7 @@ pim_enrich:
         change_parent_product_model:
           label: Vaihda ylätason tuotemalli
           label_count: "{1}Vaihda <span class=\"AknFullPage-title--highlight\">1 tuotteen ylätason tuotemalli</span>|] 1, Inf [Vaihda <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
+          description: Ylätason tuotteeksi vaihdetaan valitsemasi tuotemalli niille varianteille ja alatason tuotemalleille, jotka ovat valittuna tuoteruudukossa.
     family:
       title: Perheiden massamuokkaus
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1467,6 +1468,18 @@ pim_notification:
   no_notifications: Ei ilmoituksia
   loading: Ladataan...
 catalog_volume:
+  product_values: "Sinulla on <span>{{values}}</span> tuotearvoa PIM:ssä!. Tuotteella on on keskimäärin <span>{{average}}</span> tuotearvoa!&nbsp;💪"
+  product_values_description: 'Mitä enemmän tuotearvoja on, sitä arvokkaampi PIM on ja sitä korkeampi ROI on! <a href="{{link}}" target="_blank">Lue lisää aiheesta </a>'
+  section:
+    product_values:
+      hint: 'Tiesitkö, että tuotearvojen kokonaismäärä liittyy suoraan seuraaviin ulottuvuuksiin?<br/>Löydät lisätietoja aiheesta <a href="{{link}}" target="_blank">tästä artikkelista</a>.'
+      title: Ulottuvuudet, jotka vaikuttavat tuotearvojen lukumäärään
+    catalog_structure:
+      hint: Varmaan tiedätkin, että hyvä katalogirakenne on erittäin tärkeä ja edellytys tehokkaalle rikastukselle. Alla on joitakin ulottuvuuksia katalogirakenteen seurantaan.
+      title: Tuotekatalogin rakenteeseen liittyvät ulottuvuudet
+    variant_modelling:
+      hint: Jos käytät tuotevariantteja, seuraavat ulottuvuudet auttavat seuraamaan katalogin kokoa.
+      title: Ulottuvuudet koskien tuotemalleja
   axis:
     count_products: Tuotteet
     average_max_attributes_per_family: Attribuutteja tuoteperheellä
