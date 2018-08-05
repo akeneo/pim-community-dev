@@ -265,7 +265,7 @@ class GlobalConstraintsIntegration extends AbstractAttributeTestCase
     public function reservedCodesProvider()
     {
         return [
-            ['id'], ['associations'], ['associationTypes'], ['category'], ['categoryId'], ['categories'],
+            ['id'], ['identifier'], ['associations'], ['associationTypes'], ['category'], ['categoryId'], ['categories'],
             ['completeness'], ['enabled'], ['family'], ['groups'], ['products'], ['scope'], ['treeId'], ['values'],
             ['my_groups'], ['my_products']
         ];
