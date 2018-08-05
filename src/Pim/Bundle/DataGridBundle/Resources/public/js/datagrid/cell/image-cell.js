@@ -28,10 +28,10 @@ define(
              * Render an image.
              */
             render: function () {
-                const image = this.formatter.fromRaw(this.model.get(this.column.get("name")));
+                // const image = this.formatter.fromRaw(this.model.get(this.column.get("name")));
 
-                const src = MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail_small');
-                this.$el.empty().html(this.getTemplate({label: image.originalFilename, src}));
+                // const src = MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail_small');
+                // this.$el.empty().html(this.getTemplate({label: image.originalFilename, src}));
 
                 return this;
             },

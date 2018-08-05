@@ -14,16 +14,19 @@ function (_, requireContext) {
          * @param {function (Object)} callback
          */
         loadModules: function (modules, callback) {
+            console.time('loadModules')
+            const type = Math.random()
             var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
 
-            require.ensure([], function() {
-                _.each(modules, _.bind(function (value, key) {
-                    var module = requireContext(value)
-                    modules[key] = module
-                }, arrayArguments));
-                callback(modules);
-            })
+            _.each(modules, _.bind(function (value, key) {
+                var module = requireContext(value)
+                modules[key] = module
+            }, arrayArguments));
+
+            console.timeEnd('loadModules')
+
+            callback(modules);
         }
     };
 });

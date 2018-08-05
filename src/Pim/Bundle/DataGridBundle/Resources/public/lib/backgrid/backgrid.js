@@ -1645,20 +1645,24 @@ var Row = Backgrid.Row = Backbone.View.extend({
      Renders a row of cells for this row's model.
   */
   render: function () {
+    console.time('--------- render row')
     this.$el.empty();
 
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < this.cells.length; i++) {
       var cell = this.cells[i];
+      console.time(`----------------------- render ${cell.column.attributes.name}`)
       fragment.appendChild(cell.render().el);
       if (!cell.column.get("renderable")) cell.$el.hide();
+      console.timeEnd(`----------------------- render ${cell.column.attributes.name}`)
     }
 
     this.el.appendChild(fragment);
 
     this.delegateEvents();
 
+    console.timeEnd('--------- render row')
     return this;
   },
 
@@ -2064,6 +2068,7 @@ var Body = Backgrid.Body = Backbone.View.extend({
      See Backgrid.Row.
   */
   initialize: function (options) {
+    console.time('------backgrid body initialize')
     Backgrid.requireOptions(options, ["columns", "collection"]);
 
     this.columns = options.columns;
@@ -2090,6 +2095,7 @@ var Body = Backgrid.Body = Backbone.View.extend({
     this.listenTo(collection, "sort", this.refresh);
     this.listenTo(collection, "reset", this.refresh);
     this.listenTo(collection, "backgrid:edited", this.moveToNextCell);
+    console.timeEnd('------backgrid body initialize')
   },
 
   _unshiftEmptyRowMayBe: function () {
@@ -2232,11 +2238,14 @@ var Body = Backgrid.Body = Backbone.View.extend({
      row is rendered, otherwise no row is rendered.
   */
   render: function () {
+    console.time('------- render body rows')
     this.$el.empty();
 
     var fragment = document.createDocumentFragment();
+    const timing = {}
     for (var i = 0; i < this.rows.length; i++) {
       var row = this.rows[i];
+      console.log(i, row)
       row.render();
       if ('TR' === row.el.tagName) {
         fragment.appendChild(row.el);
@@ -2245,12 +2254,14 @@ var Body = Backgrid.Body = Backbone.View.extend({
             fragment.appendChild(child);
         });
       }
+      // console.timeEnd(i)
     }
 
     this.el.appendChild(fragment);
 
     this.delegateEvents();
 
+    console.timeEnd('------- render body rows')
     return this;
   },
 
@@ -2433,6 +2444,7 @@ var Grid = Backgrid.Grid = Backbone.View.extend({
      @param {Backgrid.Footer} [options.footer=Backgrid.Footer] An optional Footer class.
    */
   initialize: function (options) {
+    console.time('backgrid grid initialize')
     Backgrid.requireOptions(options, ["columns", "collection"]);
 
     // Convert the list of column objects here first so the subviews don't have
@@ -2464,6 +2476,8 @@ var Grid = Backgrid.Grid = Backbone.View.extend({
       }
       this.render();
     });
+
+    console.timeEnd('backgrid grid initialize')
   },
 
   /**

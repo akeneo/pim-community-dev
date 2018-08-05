@@ -112,6 +112,7 @@ define(
              * @throws {TypeError} If mandatory options are undefined
              */
             initialize: function (options) {
+                console.time('grid initialize')
                 options = options || {};
 
                 // Check required options
@@ -149,6 +150,7 @@ define(
                 this._listenToCommands();
 
                 mediator.trigger('grid_load:start', this.collection, this);
+                console.timeEnd('grid initialize')
             },
 
             /**
@@ -315,6 +317,7 @@ define(
              * @return {*}
              */
             render: function () {
+                console.time('---really render the grid')
                 this.$el.empty();
 
                 this.$el = this.$el.append($(this.template({
@@ -322,14 +325,16 @@ define(
                 })));
 
                 this.renderGrid();
-                this.renderNoDataBlock();
-                this.renderLoadingMask();
+                // this.renderNoDataBlock();
+                // this.renderLoadingMask();
 
                 /**
                  * Backbone event. Fired when the grid has been successfully rendered.
                  * @event rendered
                  */
-                this.trigger("rendered");
+                // this.trigger("rendered");
+
+                console.timeEnd('---really render the grid')
 
                 return this;
             },
@@ -338,13 +343,15 @@ define(
              * Renders the grid's header, then footer, then finally the body.
              */
             renderGrid: function () {
+                console.time('---renderGrid')
                 var $el = this.$(this.selectors.grid);
 
-                $el.append(this.header.render().$el);
-                if (this.footer) {
-                    $el.append(this.footer.render().$el);
-                }
+                // $el.append(this.header.render().$el);
+                // if (this.footer) {
+                //     $el.append(this.footer.render().$el);
+                // }
                 $el.append(this.body.render().$el);
+                console.timeEnd('---renderGrid')
             },
 
             /**

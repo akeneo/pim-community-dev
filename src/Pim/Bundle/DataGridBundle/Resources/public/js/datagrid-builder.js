@@ -40,6 +40,7 @@ define([
              * @param {Function} initBuilders
              */
             initBuilder: function (initBuilders) {
+                console.time('initBuilder')
                 var self = this;
 
                 self.metadata = _.extend({
@@ -55,11 +56,14 @@ define([
 
                 methods.collectModules.call(self);
 
+                console.log(self.modules)
+
                 // load all dependencies and build grid
                 tools.loadModules(self.modules, function () {
                     methods.buildGrid.call(self);
                     initBuilders();
                     methods.afterBuild.call(self);
+                    console.timeEnd('initBuilder')
                 });
             },
 
@@ -97,6 +101,7 @@ define([
              * Build grid
              */
             buildGrid: function () {
+                console.time('buildGrid')
                 var options, collection, grid;
 
                 // create collection
@@ -107,11 +112,12 @@ define([
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.grid = grid;
-                this.$el.append(grid.render().$el);
+                const renderedGrid = grid.render()
+                this.$el.append(renderedGrid.$el);
 
-                // create grid view
                 options = methods.combineGridViewsOptions.call(this);
                 $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
+                console.timeEnd('buildGrid')
             },
 
             /**
