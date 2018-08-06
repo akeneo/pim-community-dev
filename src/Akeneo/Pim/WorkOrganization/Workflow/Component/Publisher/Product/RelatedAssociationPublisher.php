@@ -15,7 +15,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedAssociationRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
-use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 
 /**
  * Publisher for product related associations.

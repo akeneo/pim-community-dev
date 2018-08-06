@@ -34,7 +34,7 @@ use Context\FixturesContext as BaseFixturesContext;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Parser;
@@ -1215,7 +1215,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface
      */
     protected function getProductModelRepository()
     {
