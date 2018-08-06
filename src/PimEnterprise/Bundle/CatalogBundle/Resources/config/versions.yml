@@ -1,8 +1,3 @@
+#TODO: move this file in the Platform
 parameters:
-    pimee_catalog.version.class: PimEnterprise\Bundle\CatalogBundle\Version
-
-services:
-    pim_catalog.version_provider:
-        class: '%pim_catalog.version_provider.class%'
-        arguments:
-            - '%pimee_catalog.version.class%'
+    pim_catalog.version.class: Akeneo\Platform\EnterpriseVersion

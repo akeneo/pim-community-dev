@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle;
+namespace Akeneo\Platform;
 
 /**
  * PIM Enterprise Version
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class Version
+class EnterpriseVersion
 {
     /** @staticvar string */
     const VERSION = '3.0.0';
