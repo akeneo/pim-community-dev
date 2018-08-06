@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

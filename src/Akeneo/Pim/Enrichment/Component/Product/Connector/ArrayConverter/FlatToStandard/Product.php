@@ -2,14 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverter;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 
 /**
  * Standard to flat array converter for product value

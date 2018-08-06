@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -12,7 +13,6 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;

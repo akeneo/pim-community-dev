@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Converts a flat product field to a structured format

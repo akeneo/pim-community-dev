@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 

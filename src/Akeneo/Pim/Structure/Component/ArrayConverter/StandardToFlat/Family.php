@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
  * Convert standard format to flat format for family
