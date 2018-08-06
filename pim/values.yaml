@@ -59,7 +59,7 @@ pim:
   persistence:
     diskSize: 10Gi
   defaultCatalog: minimal
-  defaultCatalogPath: /var/www/html/fixtures/onboarder
+  defaultCatalogPath: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/minimal
   jobs:
     batch-purge:
       enabled: false
