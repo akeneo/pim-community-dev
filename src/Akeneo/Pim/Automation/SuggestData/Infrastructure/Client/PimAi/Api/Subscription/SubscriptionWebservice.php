@@ -26,13 +26,13 @@ class SubscriptionWebservice implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(ProductCode $productCode): ApiResponse
+    public function subscribeProduct(ProductCodeCollection $productCodeCollection): ApiResponse
     {
         $route = $this->uriGenerator->generate('/subscriptions');
 
         $response = $this->httpClient->request('POST', $route, [
             'form_params' => [
-                $productCode->identifierName() => [$productCode->value()],
+                $productCodeCollection->toArray(),
             ],
         ]);
 

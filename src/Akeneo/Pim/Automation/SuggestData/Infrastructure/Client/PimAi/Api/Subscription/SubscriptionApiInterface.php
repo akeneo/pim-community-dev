@@ -14,7 +14,7 @@ interface SubscriptionApiInterface
      * @param ProductCode $productCode
      * @return ApiResponse
      */
-    public function subscribeProduct(ProductCode $productCode): ApiResponse;
+    public function subscribeProduct(ProductCodeCollection $productCodeCollection): ApiResponse;
 
     /**
      * @param ProductCodeCollection $productCodeCollection
