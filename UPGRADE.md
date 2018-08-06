@@ -4,7 +4,7 @@
 
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
-/g'/g'/g'bash
+```bash
 
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterPresentersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterPresentersPass/g'
@@ -443,3 +443,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writ
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\File\\Xlsx\\ProductModelWriter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Writer\\File\\Xlsx\\ProductModelWriter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\File\\Xlsx\\ProductWriter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Connector\\Writer\\File\\Xlsx\\ProductWriter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Validator\\Constraints/Akeneo\\Pim\\Enrichment\\Component\\Product\\Validator\\Constraints/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard\\User/Akeneo\\UserManagement\\Component\\Connector\\ArrayConverter\\FlatToStandard\\User/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardToFlat\\User/Akeneo\\UserManagement\\Component\\Connector\\ArrayConverter\\StandardToFlat\\User/g'

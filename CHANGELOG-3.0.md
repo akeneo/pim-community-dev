@@ -461,7 +461,7 @@
 - Move `Pim\Component\Connector\Reader\Database\ProductReader` to `Pim\Component\Connector\Reader\Database\ProductReader`
 - Move `Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductAssociationReader`
 - Move `Pim\Component\Connector\Reader\File\Csv\ProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelReader`
-- Move `Pim\Component\Connector\Reader\File\Csv\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader`
+- Move `Pim\Component\ConnectoAkeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\Userr\Reader\File\Csv\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader`
 - Move `Pim\Component\Connector\Reader\File\Xlsx\ProductAssociationReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductAssociationReader`
 - Move `Pim\Component\Connector\Reader\File\Xlsx\ProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductModelReader`
 - Move `Pim\Component\Connector\Reader\File\Xlsx\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductReader`
@@ -475,4 +475,6 @@
 - Move `Pim\Component\Connector\Writer\File\Xlsx\ProductModelWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductModelWriter`
 - Move `Pim\Component\Connector\Writer\File\Xlsx\ProductWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter`
 - Move namespace `Pim\Component\Connector\Validator\Constraints` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\User`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat\User`
 
