@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
