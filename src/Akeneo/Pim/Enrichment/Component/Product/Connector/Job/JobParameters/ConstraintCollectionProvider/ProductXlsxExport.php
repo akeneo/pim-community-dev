@@ -5,9 +5,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\Co
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Component\Catalog\Validator\Constraints\Channel;
-use Akeneo\Pim\Enrichment\Component\Validator\Constraints\FilterStructureAttribute;
-use Akeneo\Pim\Enrichment\Component\Validator\Constraints\FilterStructureLocale;
-use Akeneo\Pim\Enrichment\Component\Validator\Constraints\ProductFilterData;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureAttribute;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductFilterData;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;

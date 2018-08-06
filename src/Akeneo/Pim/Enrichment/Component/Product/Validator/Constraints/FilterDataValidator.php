@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Validator\Constraints;
+namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;

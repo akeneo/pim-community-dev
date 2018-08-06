@@ -25,7 +25,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_installer.job_parameters.defaults.product_csv_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -
@@ -34,7 +34,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_installer.job_parameters.defaults.product_model_csv_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_csv_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
             -

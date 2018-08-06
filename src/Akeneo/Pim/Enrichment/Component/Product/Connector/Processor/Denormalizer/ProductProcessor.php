@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport */
+    /** @var FindProductToImport */
     private $findProductToImport;
 
     /** @var AddParent */
