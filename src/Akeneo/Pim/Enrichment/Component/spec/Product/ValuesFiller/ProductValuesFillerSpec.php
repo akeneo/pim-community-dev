@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ValuesFiller;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;

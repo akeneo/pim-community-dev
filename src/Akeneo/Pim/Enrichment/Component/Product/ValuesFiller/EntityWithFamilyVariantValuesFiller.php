@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\ValuesFiller;
+namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
