@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Completeness;
+namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

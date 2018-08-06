@@ -13,7 +13,7 @@ use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderIn
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
-use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;

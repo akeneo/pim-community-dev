@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;

@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Completeness;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Completeness;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Completeness\CompletenessCalculator;
-use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;

@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Completeness\Checker;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -16,7 +17,7 @@ class PriceCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
+        $this->shouldImplement(ValueCompleteCheckerInterface::class);
     }
 
     public function it_suports_price_collection_attribute(
