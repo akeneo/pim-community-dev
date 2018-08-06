@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Component\Completeness;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
-use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface as BaseCompletenessRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface as BaseCompletenessRemoverInterface;
 
 /**
 * Completeness remover interface.
