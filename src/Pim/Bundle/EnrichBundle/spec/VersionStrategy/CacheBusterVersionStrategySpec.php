@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\VersionStrategy;
 
 use Pim\Bundle\EnrichBundle\VersionStrategy\CacheBusterVersionStrategy;
-use Pim\Bundle\CatalogBundle\VersionProviderInterface;
+use Akeneo\Platform\VersionProviderInterface;
 use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

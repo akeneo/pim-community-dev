@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\VersionStrategy;
 
-use Pim\Bundle\CatalogBundle\VersionProviderInterface;
+use Akeneo\Platform\VersionProviderInterface;
 use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
 
 class CacheBusterVersionStrategy implements VersionStrategyInterface

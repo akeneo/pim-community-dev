@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector;
-use Pim\Bundle\CatalogBundle\VersionProviderInterface;
+use Akeneo\Platform\VersionProviderInterface;
 use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;

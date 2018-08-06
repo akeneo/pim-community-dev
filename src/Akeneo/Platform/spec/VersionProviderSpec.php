@@ -1,19 +1,20 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle;
+namespace spec\Akeneo\Platform;
 
+use Akeneo\Platform\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 class VersionProviderSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('spec\Pim\Bundle\CatalogBundle\StaticVersion');
+        $this->beConstructedWith(StaticVersion::class);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\VersionProviderInterface');
+        $this->shouldHaveType(VersionProviderInterface::class);
     }
 
     function it_provides_edition()
