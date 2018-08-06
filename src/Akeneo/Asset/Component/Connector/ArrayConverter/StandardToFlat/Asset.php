@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Component\Connector\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
 /**
  * Standard to flat array converter for asset
