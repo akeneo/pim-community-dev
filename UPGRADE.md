@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ValuesFiller/Akeneo\\Pim\\Enrichment\\Component\\Product\\ValuesFiller/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterPresentersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterPresentersPass/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterAttributeConstraintGuessersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterAttributeConstraintGuessersPass/g'

@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**

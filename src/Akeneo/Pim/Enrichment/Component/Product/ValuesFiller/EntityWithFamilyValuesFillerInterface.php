@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\ValuesFiller;
+namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 

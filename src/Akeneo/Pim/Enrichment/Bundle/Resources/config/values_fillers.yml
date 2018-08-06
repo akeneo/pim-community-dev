@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.values_filler.product.class: Pim\Component\Catalog\ValuesFiller\ProductValuesFiller
-    pim_catalog.values_filler.entity_with_family_variant.class: Pim\Component\Catalog\ValuesFiller\EntityWithFamilyVariantValuesFiller
+    pim_catalog.values_filler.product.class: Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\ProductValuesFiller
+    pim_catalog.values_filler.entity_with_family_variant.class: Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyVariantValuesFiller
 
 services:
     pim_catalog.values_filler.product:
