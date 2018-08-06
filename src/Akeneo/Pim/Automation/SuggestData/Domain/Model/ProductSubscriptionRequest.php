@@ -53,7 +53,6 @@ final class ProductSubscriptionRequest
     {
         $mapped = [];
         foreach ($mapping as $pimAiCode => $mappedAttribute) {
-
             if (! $mappedAttribute instanceof AttributeInterface) {
                 continue;
             }
