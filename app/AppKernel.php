@@ -91,6 +91,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
             new PimEnterprise\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
             new Akeneo\Asset\Bundle\AkeneoAssetBundle(),
+            new Akeneo\Pim\Asset\Bundle\AkeneoPimAssetBundle(),
             new Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle(),
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),

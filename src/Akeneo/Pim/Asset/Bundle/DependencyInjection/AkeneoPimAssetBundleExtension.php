@@ -9,19 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\DependencyInjection;
+namespace Akeneo\Pim\Asset\Bundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Enterprise Catalog extension
- *
- * @author Romain Monceau <romain@akeneo.com>
- */
-class PimEnterpriseCatalogExtension extends Extension
+class AkeneoPimAssetBundleExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -29,6 +24,7 @@ class PimEnterpriseCatalogExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('versions.yml');
+        $loader->load('comparators.yml');
+        $loader->load('updaters.yml');
     }
 }
