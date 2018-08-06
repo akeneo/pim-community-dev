@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Database;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;

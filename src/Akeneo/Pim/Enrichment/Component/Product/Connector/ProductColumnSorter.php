@@ -1,11 +1,13 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector;
 
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
+use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
+use Pim\Component\Connector\Writer\File\DefaultColumnSorter;
 
 /**
  * Reorder columns before export

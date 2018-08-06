@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\File\Csv;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;

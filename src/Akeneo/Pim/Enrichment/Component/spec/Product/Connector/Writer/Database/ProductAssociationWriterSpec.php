@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\Database;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;

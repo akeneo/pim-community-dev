@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File\Csv;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -54,7 +54,7 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\Csv\ProductWriter');
+        $this->shouldHaveType('Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter');
     }
 
     function it_prepares_the_export(
@@ -74,7 +74,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -160,7 +160,7 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        'data'   => 'wrong/path',
+                        'data'   => 'filePath'
                     ]
                 ]
             ]
@@ -176,10 +176,11 @@ class ProductWriterSpec extends ObjectBehavior
 
         $items = [$productStandard1, $productStandard2];
 
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(100);
-        $jobInstance->getCode()->willReturn('csv_product_export');
-        $jobInstance->getLabel()->willReturn('CSV Product export');
+        $jobInstance->getCode()->willReturn('xlsx_product_export');
+        $jobInstance->getLabel()->willReturn('XLSX Product export');
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
@@ -214,9 +215,11 @@ class ProductWriterSpec extends ObjectBehavior
         $this->initialize();
         $this->write($items);
 
-        $this->getWrittenFiles()->shouldBeEqualTo([
-            $productPathMedia1 . 'it\'s the filename.jpg' => 'files/jackets/media/it\'s the filename.jpg'
-        ]);
+        $this->getWrittenFiles()->shouldBeEqualTo(
+            [
+                $productPathMedia1 . 'it\'s the filename.jpg' => 'files/jackets/media/it\'s the filename.jpg'
+            ]
+        );
     }
 
     function it_does_not_export_media_if_option_is_false(
@@ -236,7 +239,7 @@ class ProductWriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->has('decimalSeparator')->willReturn(false);
         $jobParameters->has('dateFormat')->willReturn(false);
@@ -261,8 +264,7 @@ class ProductWriterSpec extends ObjectBehavior
                     [
                         'locale' => null,
                         'scope'  => null,
-                        // the file paths are resolved before the conversion to the standard format
-                        'data'   => 'files/jackets/media/it\'s the filename.jpg',
+                        'data'   => 'a/b/c/d/it_s_the_filename.jpg'
                     ]
                 ]
             ]
@@ -282,7 +284,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $jobExecution->getExecutionContext()->willReturn($executionContext);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getLabel()->willReturn('CSV Product export');
+        $jobInstance->getLabel()->willReturn('XLSX Product export');
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -300,7 +302,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->getWrittenFiles()->shouldBeEqualTo([]);
     }
 
-    function it_writes_the_csv_file(
+    function it_writes_the_xlsx_file(
         $bufferFactory,
         $flusher,
         FlatItemBuffer $flatRowBuffer,
@@ -316,16 +318,16 @@ class ProductWriterSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStartTime()->willReturn(new \DateTime());
+        $jobExecution->getExecutionContext()->willReturn($executionContext);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('CSV Product export');
-        $jobExecution->getExecutionContext()->willReturn($executionContext);
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn($this->directory);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
+        $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
@@ -335,8 +337,8 @@ class ProductWriterSpec extends ObjectBehavior
             Argument::type('string'),
             -1
         )->willReturn([
-            $this->directory . 'CSV_Product_export_product1.csv',
-            $this->directory . 'CSV_Product_export_product2.csv'
+            $this->directory . 'XLSX_Product_export_product1.xlsx',
+            $this->directory . 'XLSX_Product_export_product2.xlsx'
         ]);
 
         $this->initialize();

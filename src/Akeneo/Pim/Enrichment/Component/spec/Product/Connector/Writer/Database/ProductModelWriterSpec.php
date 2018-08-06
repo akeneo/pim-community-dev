@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\Database;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Connector\Writer\Database\ProductModelWriter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter;
 use PhpSpec\ObjectBehavior;
 
 class ProductModelWriterSpec extends ObjectBehavior

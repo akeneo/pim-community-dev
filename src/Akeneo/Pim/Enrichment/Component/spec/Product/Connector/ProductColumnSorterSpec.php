@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\File;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;

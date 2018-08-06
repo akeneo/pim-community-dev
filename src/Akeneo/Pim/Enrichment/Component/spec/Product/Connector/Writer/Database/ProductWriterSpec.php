@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Writer\Database;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -24,7 +24,7 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Writer\Database\ProductWriter');
+        $this->shouldHaveType('\Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter');
     }
 
     function it_is_an_item_writer()

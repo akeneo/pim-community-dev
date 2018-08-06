@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Writer\File\Xlsx;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;

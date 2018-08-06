@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Database;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
