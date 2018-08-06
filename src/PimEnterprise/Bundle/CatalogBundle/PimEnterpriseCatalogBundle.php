@@ -20,11 +20,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseCatalogBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'PimCatalogBundle';
-    }
 }
