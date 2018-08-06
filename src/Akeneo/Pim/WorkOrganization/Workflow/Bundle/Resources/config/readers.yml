@@ -1,6 +1,6 @@
 services:
     pimee_workflow.reader.published_product:
-        class: '%pim_connector.reader.database.product.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader'
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pim_catalog.repository.channel'
