@@ -14,6 +14,7 @@ define([
         'pim/template/form/grid',
         'oro/pageable-collection',
         'pim/datagrid/state',
+        'oro/error',
         'require-context'
     ],
     function (
@@ -26,6 +27,7 @@ define([
         template,
         PageableCollection,
         DatagridState,
+        Error,
         requireContext
     ) {
         return Backbone.View.extend({
@@ -97,7 +99,6 @@ define([
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
                 $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
-
                     this.$el.find('.grid-drop').data({
                         metadata: response.metadata,
                         data: JSON.parse(response.data)
@@ -110,7 +111,10 @@ define([
                         resolvedModules.push(requireContext(module))
                     })
                     datagridBuilder(resolvedModules)
-                }.bind(this));
+                }.bind(this))
+                .fail(function(response) {
+                    Error.dispatch(null, response);
+                });
             },
 
             /**
