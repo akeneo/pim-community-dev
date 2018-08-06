@@ -4,6 +4,7 @@
 
 - PIM-7537: Fix console error in password reset form
 - PIM-7552: Fix SKU filter display bug on group grid
+- PIM-7543: Forbid usage of 'label' code for attributes to prevent UI bugs
 
 # 2.3.3 (2018-08-01)
 
