@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductModel\Query;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query;
 
-use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -30,7 +30,7 @@ class CompleteVariantProductsSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts::class);
+        $this->shouldHaveType(CompleteVariantProducts::class);
     }
 
     function it_calculates_completenesses()

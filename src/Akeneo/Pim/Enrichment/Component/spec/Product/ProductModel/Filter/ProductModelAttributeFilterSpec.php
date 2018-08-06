@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductModel\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -11,8 +11,8 @@ use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter;
 use Prophecy\Argument;
 
 class ProductModelAttributeFilterSpec extends ObjectBehavior

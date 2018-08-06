@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter;
 use Pim\Component\Connector\Processor\Denormalization\ProductModelProcessor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

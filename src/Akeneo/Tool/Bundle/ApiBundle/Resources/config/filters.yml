@@ -1,6 +1,6 @@
 parameters:
-    pim_api.filter.product_attribute_filter.class: Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter
-    pim_api.filter.product_model_attribute_filter.class: Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter
+    pim_api.filter.product_attribute_filter.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter
+    pim_api.filter.product_model_attribute_filter.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter
 
 services:
     pim_api.filter.product_attribute_filter:

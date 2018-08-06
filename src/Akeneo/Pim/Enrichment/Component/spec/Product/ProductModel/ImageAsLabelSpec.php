@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductModel;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\ProductModel;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

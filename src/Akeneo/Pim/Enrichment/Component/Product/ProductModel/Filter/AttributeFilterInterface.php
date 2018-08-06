@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\ProductModel\Filter;
+namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
