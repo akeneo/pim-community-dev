@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
+use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
