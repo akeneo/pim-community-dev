@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.completeness.calculator.class: Pim\Component\Catalog\Completeness\CompletenessCalculator
-    pim_catalog.completeness.generator.class: Pim\Component\Catalog\Completeness\CompletenessGenerator
+    pim_catalog.completeness.calculator.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
+    pim_catalog.completeness.generator.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator
 
 services:
     pim_catalog.completeness.calculator:

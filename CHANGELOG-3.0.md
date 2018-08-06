@@ -20,6 +20,7 @@
 
 - Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument 
 
+- Move namespace `Pim\Component\Catalog\Completeness` to `Akeneo\Pim\Enrichment\Component\Product\Completeness`
 - Move namespace `Pim\Component\Catalog\ValuesFiller` to `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller`
 
 - Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass`

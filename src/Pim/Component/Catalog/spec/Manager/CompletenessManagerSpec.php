@@ -2,13 +2,12 @@
 
 namespace spec\Pim\Component\Catalog\Manager;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
-use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
 class CompletenessManagerSpec extends ObjectBehavior

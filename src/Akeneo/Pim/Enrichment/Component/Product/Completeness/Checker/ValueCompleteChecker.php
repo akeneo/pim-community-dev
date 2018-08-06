@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Completeness\Checker;
+namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

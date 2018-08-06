@@ -8,9 +8,9 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
-use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface;
 
 /**
  * Manages completeness

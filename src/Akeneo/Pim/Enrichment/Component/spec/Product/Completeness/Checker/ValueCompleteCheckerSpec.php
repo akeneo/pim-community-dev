@@ -1,19 +1,19 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Completeness\Checker;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 
 class ValueCompleteCheckerSpec extends ObjectBehavior
 {
     function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
+        $this->shouldImplement(ValueCompleteCheckerInterface::class);
     }
 
     function it_tells_the_value_is_not_complete_by_default(

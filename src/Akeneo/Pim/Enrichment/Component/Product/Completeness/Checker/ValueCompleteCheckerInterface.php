@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Completeness\Checker;
+namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @internal for internal use only, please use the \Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface
+ * @internal for internal use only, please use the \Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface
  *           to calculate the completeness on a product
  */
 interface ValueCompleteCheckerInterface
