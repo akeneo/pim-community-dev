@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 /**
  * Fields builder, allows to prepare the field list for a flat file export, should be part of normalizer at some point

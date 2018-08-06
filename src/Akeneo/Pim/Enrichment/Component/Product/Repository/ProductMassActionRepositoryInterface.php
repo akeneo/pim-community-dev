@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Repository;
+namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 

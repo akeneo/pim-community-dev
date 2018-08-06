@@ -2441,7 +2441,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
@@ -2449,7 +2449,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface
      */
     protected function getProductModelRepository()
     {

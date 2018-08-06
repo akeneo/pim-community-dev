@@ -5,7 +5,7 @@ namespace Pim\Bundle\DashboardBundle\Widget;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales

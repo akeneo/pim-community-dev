@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 
 class GroupFieldRemoverSpec extends ObjectBehavior
 {

@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 

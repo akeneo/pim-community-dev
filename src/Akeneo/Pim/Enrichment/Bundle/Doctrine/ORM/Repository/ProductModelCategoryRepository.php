@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Repository\ProductModelCategoryRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelCategoryRepositoryInterface;
 
 /**
  * Product model category repository

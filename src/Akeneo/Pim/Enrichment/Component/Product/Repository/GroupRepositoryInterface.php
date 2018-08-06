@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Repository;
+namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;

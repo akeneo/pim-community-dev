@@ -6,7 +6,7 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Behat\Context\Context;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 final class VariantProductStorage implements Context
 {

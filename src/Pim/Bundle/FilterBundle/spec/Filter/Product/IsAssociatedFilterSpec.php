@@ -10,7 +10,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 

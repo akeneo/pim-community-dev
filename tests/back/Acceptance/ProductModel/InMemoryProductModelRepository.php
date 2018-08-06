@@ -10,7 +10,7 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
 class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, ProductModelRepositoryInterface
 {
