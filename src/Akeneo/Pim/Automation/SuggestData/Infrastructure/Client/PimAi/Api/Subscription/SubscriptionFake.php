@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 final class SubscriptionFake implements SubscriptionApiInterface
 {
@@ -24,10 +25,10 @@ final class SubscriptionFake implements SubscriptionApiInterface
 
         return new ApiResponse(
             200,
-            json_decode(
+            new SubscriptionCollection(json_decode(
                 file_get_contents(
                     sprintf(__DIR__ .'/../resources/%s', $filename)
-                ), true)
+                ), true))
         );
     }
 

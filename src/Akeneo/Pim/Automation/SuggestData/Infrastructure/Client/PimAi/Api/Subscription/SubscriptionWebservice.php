@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use GuzzleHttp\ClientInterface;
 
 class SubscriptionWebservice implements SubscriptionApiInterface
@@ -38,7 +39,7 @@ class SubscriptionWebservice implements SubscriptionApiInterface
 
         return new ApiResponse(
             $response->getStatusCode(),
-            json_decode($response->getBody()->getContents(), true)
+            new SubscriptionCollection(json_decode($response->getBody()->getContents(), true))
         );
     }
 

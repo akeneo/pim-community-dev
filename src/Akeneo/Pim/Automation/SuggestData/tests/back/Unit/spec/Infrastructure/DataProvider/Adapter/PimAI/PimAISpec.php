@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentica
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exceptions\MappingNotDefinedException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -90,7 +91,7 @@ class PimAISpec extends ObjectBehavior
 
     private function buildFakeApiResponse()
     {
-        return [
+        return new SubscriptionCollection([
             '_embedded' => [
                 'subscription' => [
                     0 => [
@@ -100,6 +101,6 @@ class PimAISpec extends ObjectBehavior
                     ],
                 ]
             ],
-        ];
+        ]);
     }
 }

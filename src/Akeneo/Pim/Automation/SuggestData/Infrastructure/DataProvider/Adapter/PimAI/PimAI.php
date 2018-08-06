@@ -49,20 +49,23 @@ class PimAI implements DataProviderInterface
 
         $productCodeCollection = $this->buildProductCodeCollection($request->getMappedValues($identifiersMapping));
 
+        //Todo : the client will throw exceptions if something wrong happened. No need to call the isSuccess() but use a try/catch instead
         $clientResponse = $this->subscriptionApi->subscribeProduct($productCodeCollection);
         if (!$clientResponse->isSuccess()) {
             throw new \Exception('API error');
         }
 
-        $responseContent = $clientResponse->content();
+        //TODO : see what to do in this case (should not happen but we still have to handle it)
+        if (! $clientResponse->hasSubscriptions()) {
+            throw new \Exception('No subscription found in the client response');
+        }
+
+        $subscriptions = $clientResponse->content();
 
         return new ProductSubscriptionResponse(
             $request->getProduct(),
-            $responseContent['_embedded']['subscription'][0]['id'],
-            array_merge(
-                $responseContent['_embedded']['subscription'][0]['identifiers'],
-                $responseContent['_embedded']['subscription'][0]['attributes']
-            )
+            $subscriptions->getFirst()->getSubscriptionId(),
+            $subscriptions->getFirst()->getAttributes()
         );
     }
 
