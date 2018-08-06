@@ -387,3 +387,33 @@ services:
             - '@pim_catalog.repository.product_model'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_model_validator_entity }
+
+    pim_connector.validator.constraints.product_filter_data_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Validator\Constraints\FilterDataValidator'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@translator'
+        tags:
+            - { name: validator.constraint_validator, alias: product_filter_data_validator }
+
+    pim_connector.validator.constraints.product_model_filter_data_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Validator\Constraints\FilterDataValidator'
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@translator'
+        tags:
+            - { name: validator.constraint_validator, alias: product_model_filter_data_validator }
+
+    pim_connector.validator.constraints.filter_structure_locale_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Validator\Constraints\FilterStructureLocaleValidator'
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: filter_structure_locale_validator }
+
+    pim_connector.validator.constraints.filter_structure_attribute_validator:
+        class: 'Akeneo\Pim\Enrichment\Component\Validator\Constraints\FilterStructureAttributeValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: filter_structure_attribute_validator }

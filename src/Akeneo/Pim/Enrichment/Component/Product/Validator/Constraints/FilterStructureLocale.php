@@ -1,27 +1,27 @@
 <?php
 
-namespace Pim\Component\Connector\Validator\Constraints;
+namespace Akeneo\Pim\Enrichment\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for product export filter data.
- * Filter data are Product Query Builder filters.
+ * Constraint for product export filter locales structure.
+ * Filter structure are "filters" for exported columns: scope, locales & attributes.
  *
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductFilterData extends Constraint
+class FilterStructureLocale extends Constraint
 {
     /** @var string */
-    public $message = 'invalid_filter_data';
+    public $message = 'The locale %localeCode% is not valid.';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'product_filter_data_validator';
+        return 'filter_structure_locale_validator';
     }
 }

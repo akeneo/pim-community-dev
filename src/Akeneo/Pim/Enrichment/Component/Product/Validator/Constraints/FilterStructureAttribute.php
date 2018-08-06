@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Validator\Constraints;
+namespace Akeneo\Pim\Enrichment\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
