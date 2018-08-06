@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\ProductAndProductModel\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 

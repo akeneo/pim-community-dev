@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface;
 
 class CompleteFilterSpec extends ObjectBehavior
 {
