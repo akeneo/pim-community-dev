@@ -55,14 +55,14 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     private $productAttributeFilter;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface                                                         $repository
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport $findProductToImport
-     * @param AddParent                                                                                     $addParent
-     * @param ObjectUpdaterInterface                                                                        $updater
-     * @param ValidatorInterface                                                                            $validator
-     * @param ObjectDetacherInterface                                                                       $detacher
-     * @param FilterInterface                                                                                       $productFilter
-     * @param AttributeFilterInterface                                                                              $productAttributeFilter
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param FindProductToImport                   $findProductToImport
+     * @param AddParent                             $addParent
+     * @param ObjectUpdaterInterface                $updater
+     * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $detacher
+     * @param FilterInterface                       $productFilter
+     * @param AttributeFilterInterface              $productAttributeFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
