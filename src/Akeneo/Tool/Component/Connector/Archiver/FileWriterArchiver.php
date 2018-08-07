@@ -6,10 +6,10 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use League\Flysystem\Filesystem;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use League\Flysystem\Filesystem;
 
 /**
  * Archive files written by job execution to provide them through a download button
