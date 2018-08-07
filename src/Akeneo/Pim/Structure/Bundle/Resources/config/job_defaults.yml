@@ -1,0 +1,56 @@
+services:
+    pim_connector.job.job_parameters.default_values_provider.simple_csv_export:
+        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_attribute_export'
+                - 'csv_family_export'
+                - 'csv_family_variant_export'
+                - 'csv_association_type_export'
+                - 'csv_attribute_option_export'
+                - 'csv_attribute_group_export'
+                - 'csv_group_type_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'csv_attribute_export'
+                - 'csv_family_export'
+                - 'csv_family_variant_export'
+                - 'csv_association_type_export'
+                - 'csv_attribute_option_export'
+                - 'csv_attribute_group_export'
+                - 'csv_group_type_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_attribute_export'
+                - 'csv_family_export'
+                - 'csv_family_variant_export'
+                - 'csv_association_type_export'
+                - 'csv_attribute_option_export'
+                - 'csv_attribute_group_export'
+                - 'csv_group_type_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'csv_attribute_export'
+                - 'csv_family_export'
+                - 'csv_family_variant_export'
+                - 'csv_association_type_export'
+                - 'csv_attribute_option_export'
+                - 'csv_attribute_group_export'
+                - 'csv_group_type_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

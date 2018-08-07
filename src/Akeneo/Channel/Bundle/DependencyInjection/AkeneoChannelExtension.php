@@ -27,6 +27,8 @@ class AkeneoChannelExtension extends Extension
         $loader->load('processors.yml');
         $loader->load('readers.yml');
         $loader->load('jobs.yml');
+        $loader->load('job_defaults.yml');
+        $loader->load('job_constraints.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
         $loader->load('writers.yml');
