@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.product_models.image_as_label.class: Pim\Component\Catalog\ProductModel\ImageAsLabel
+    pim_catalog.product_models.image_as_label.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel
 
 services:
     pim_catalog.product_models.image_as_label:

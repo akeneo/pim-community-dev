@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 
 /**
  * Association repository

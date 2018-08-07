@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface as CatalogProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface as CatalogProductRepositoryInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

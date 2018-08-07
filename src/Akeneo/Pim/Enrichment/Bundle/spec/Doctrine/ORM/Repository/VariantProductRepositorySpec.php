@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\VariantProductRepositor
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface;
 use Prophecy\Argument;
 
 class VariantProductRepositorySpec extends ObjectBehavior

@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -24,7 +25,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_is_a_product_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\ProductRepositoryInterface');
+        $this->shouldImplement(ProductRepositoryInterface::class);
     }
 
     function it_is_an_object_repository()

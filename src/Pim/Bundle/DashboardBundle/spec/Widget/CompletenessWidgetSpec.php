@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface;
 use Prophecy\Argument;
 
 class CompletenessWidgetSpec extends ObjectBehavior

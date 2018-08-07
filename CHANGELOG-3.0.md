@@ -20,6 +20,20 @@
 
 - Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument 
 
+- Move `Pim\Component\Catalog\Repository\AssociationRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\CompletenessRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\GroupRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductCategoryRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductModelCategoryRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelCategoryRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
+
+- Move namespace `Pim\Component\Catalog\ProductAndProductModel` to `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel`
+- Move namespace `Pim\Component\Catalog\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\ProductModel`
 - Move namespace `Pim\Component\Catalog\Completeness` to `Akeneo\Pim\Enrichment\Component\Product\Completeness`
 - Move namespace `Pim\Component\Catalog\ValuesFiller` to `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller`
 

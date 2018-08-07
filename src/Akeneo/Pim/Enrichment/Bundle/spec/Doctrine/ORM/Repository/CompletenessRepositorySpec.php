@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
@@ -26,7 +27,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
 
     function it_is_a_completeness_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\CompletenessRepositoryInterface');
+        $this->shouldImplement(CompletenessRepositoryInterface::class);
     }
 
     function it_counts_products_per_channels(Statement $statement)

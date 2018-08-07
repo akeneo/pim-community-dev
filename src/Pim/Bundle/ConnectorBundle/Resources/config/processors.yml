@@ -12,8 +12,8 @@ parameters:
     pim_connector.processor.normalization.product.class:          Pim\Component\Connector\Processor\Normalization\ProductProcessor
 
     pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
-    pim_connector.processor.attribute_filter.product_model.class: Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter
-    pim_connector.processor.attribute_filter.product.class: Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter
+    pim_connector.processor.attribute_filter.product_model.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter
+    pim_connector.processor.attribute_filter.product.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter
 
 services:
     # Dummy processor

@@ -9,7 +9,7 @@ use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryProductModelRepositorySpec extends ObjectBehavior

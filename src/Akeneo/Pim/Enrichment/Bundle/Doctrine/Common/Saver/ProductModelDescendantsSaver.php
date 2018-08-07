@@ -13,7 +13,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
 /**
  * This class ensures two things:

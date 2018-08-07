@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueEntity;
 use Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator;
 use PhpSpec\ObjectBehavior;

@@ -6,6 +6,19 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductAndProductModel/Akeneo\\Pim\\Enrichment\\Component\\Product\\ProductAndProductModel/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductModel/Akeneo\\Pim\\Enrichment\\Component\\Product\\ProductModel/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AssociationRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\AssociationRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\CompletenessRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\CompletenessRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\EntityWithFamilyVariantRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\EntityWithFamilyVariantRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\GroupRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\GroupRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ProductCategoryRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ProductCategoryRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ProductMassActionRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ProductMassActionRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ProductModelCategoryRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ProductModelCategoryRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ProductModelRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ProductModelRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ProductRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ProductRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ProductUniqueDataRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ProductUniqueDataRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\VariantProductRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\VariantProductRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Completeness/Akeneo\\Pim\\Enrichment\\Component\\Product\\Completeness/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ValuesFiller/Akeneo\\Pim\\Enrichment\\Component\\Product\\ValuesFiller/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/g'

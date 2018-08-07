@@ -9,10 +9,7 @@ use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Common\Structure\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 /**
  * Use this context to create products
