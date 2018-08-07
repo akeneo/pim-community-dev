@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
@@ -161,7 +161,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      * @todo TIP-857: This method should be moved in "Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface"
      *       and implemented in the product, published product and product model.
      *       The "$axes" should not be provided as an argument anymore, as the entity can provide them too
-     *       This implies to remove "Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider"
+     *       This implies to remove "Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider"
      *       and merge its code in the product, published product and product model.
      *
      * @param EntityWithFamilyVariantInterface                           $entity

@@ -5,8 +5,8 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer;
-use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Prophecy\Argument;
 
 class AttributeNormalizerSpec extends ObjectBehavior

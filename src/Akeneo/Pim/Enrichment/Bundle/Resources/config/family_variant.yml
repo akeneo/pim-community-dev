@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class: Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider
+    pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class: Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider
 
 services:
     pim_catalog.family_variant.provider.entity_with_family_variant_attributes:
