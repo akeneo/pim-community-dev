@@ -1,3 +1,7 @@
+# 2.3.x
+
+- PIM-7573: Fix "nesting level too deep" error during family import
+
 # 2.3.4 (2018-08-08)
 
 ## Bug fixes
