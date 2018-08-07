@@ -59,7 +59,6 @@ helm-install: terraform-apply
 .PHONY: helm-test
 helm-test: terraform-apply
 	helm test --timeout $(HELM_TIMEOUT) $(PFID) || kubectl logs $(PFID)-auth-test --namespace srnt-$(PFID)
-	if [ "$?"
 
 .PHONY: helm-delete
 helm-delete: terraform/kubeconfig
