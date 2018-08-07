@@ -44,11 +44,11 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: EditConfig }) {
+  constructor(options: {config: EditConfig}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
-  };
+  }
 
   /**
    * {@inheritdoc}
@@ -92,7 +92,7 @@ class EditView extends BaseView {
     });
 
     return this;
-  };
+  }
 
   /**
    * Activates the connection to PIM.ai
@@ -100,8 +100,7 @@ class EditView extends BaseView {
   public activate(): void {
     const data = this.getFormData();
 
-    ConnectionSaver
-      .save(this.config.code, data)
+    ConnectionSaver.save(this.config.code, data)
       .fail((xhr: any) => {
         Messenger.notify(xhr.responseJSON.status, xhr.responseJSON.message);
         this.renderUnactivatedConnection(data.token);
@@ -126,7 +125,9 @@ class EditView extends BaseView {
     this.setData({token: token});
 
     if (true === this.isConnectionActivated) {
-      this.storedToken !== token ? this.buttonAllowedToActivateConnection() : this.buttonDisallowedToActivateConnection();
+      this.storedToken !== token
+        ? this.buttonAllowedToActivateConnection()
+        : this.buttonDisallowedToActivateConnection();
     }
   }
 
