@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 final class SubscriptionFake implements SubscriptionApiInterface
@@ -17,11 +16,9 @@ final class SubscriptionFake implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(ProductCodeCollection $productCodeCollection): ApiResponse
+    public function subscribeProduct(array $identifiers): ApiResponse
     {
-        $productCode = $productCodeCollection->getIterator()->current();
-
-        $filename = sprintf('subscribe-%s-%s.json', $productCode->identifierName(), $productCode->value());
+        $filename = sprintf('subscribe-%s-%s.json', key($identifiers), current($identifiers));
 
         return new ApiResponse(
             200,
@@ -30,13 +27,5 @@ final class SubscriptionFake implements SubscriptionApiInterface
                     sprintf(__DIR__ .'/../resources/%s', $filename)
                 ), true))
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function subscribeProducts(ProductCodeCollection $productCodeCollection): ApiResponse
-    {
-        throw new \LogicException('Not yet implemented');
     }
 }

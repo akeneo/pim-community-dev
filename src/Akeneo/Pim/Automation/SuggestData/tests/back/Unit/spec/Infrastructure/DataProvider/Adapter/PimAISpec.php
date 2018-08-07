@@ -20,8 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingReposi
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exceptions\MappingNotDefinedException;
@@ -81,10 +79,10 @@ class PimAISpec extends ObjectBehavior
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
-        $productCodeCollection = (new ProductCodeCollection())
-            ->add(new ProductCode('upc', '123456789'))
-            ->add(new ProductCode('asin', '987654321'));
-        $subscriptionApi->subscribeProduct($productCodeCollection)->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
+        $subscriptionApi->subscribeProduct([
+            'upc' => '123456789',
+            'asin' => '987654321',
+        ])->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this->subscribe($productSubscriptionRequest)->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
     }

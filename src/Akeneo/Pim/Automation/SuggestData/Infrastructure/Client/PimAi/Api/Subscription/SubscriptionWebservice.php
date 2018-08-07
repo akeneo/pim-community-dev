@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 class SubscriptionWebservice implements SubscriptionApiInterface
@@ -25,34 +24,17 @@ class SubscriptionWebservice implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribeProduct(ProductCodeCollection $productCodeCollection): ApiResponse
+    public function subscribeProduct(array $identifiers): ApiResponse
     {
         $route = $this->uriGenerator->generate('/subscriptions');
 
         $response = $this->httpClient->request('POST', $route, [
-            'form_params' => [
-                $productCodeCollection->toArray(),
-            ],
+            'form_params' => [$identifiers],
         ]);
 
         return new ApiResponse(
             $response->getStatusCode(),
             new SubscriptionCollection(json_decode($response->getBody()->getContents(), true))
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function subscribeProducts(ProductCodeCollection $productCodeCollection): ApiResponse
-    {
-        $route = $this->uriGenerator->generate('/enrichments');
-
-        $response = $this->httpClient->request('POST', $route, $productCodeCollection->toArray());
-
-        return new ApiResponse(
-            $response->getStatusCode(),
-            json_decode($response->getBody()->getContents(), true)
         );
     }
 }

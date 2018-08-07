@@ -10,8 +10,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCode;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exceptions\MappingNotDefinedException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -46,10 +44,8 @@ class PimAI implements DataProviderInterface
             throw new MappingNotDefinedException();
         }
 
-        $productCodeCollection = $this->buildProductCodeCollection($request->getMappedValues($identifiersMapping));
-
         //Todo : the client will throw exceptions if something wrong happened. No need to call the isSuccess() but use a try/catch instead
-        $clientResponse = $this->subscriptionApi->subscribeProduct($productCodeCollection);
+        $clientResponse = $this->subscriptionApi->subscribeProduct($request->getMappedValues($identifiersMapping));
         if (!$clientResponse->isSuccess()) {
             throw new \Exception('API error');
         }
@@ -66,16 +62,6 @@ class PimAI implements DataProviderInterface
             $subscriptions->getFirst()->getSubscriptionId(),
             $subscriptions->getFirst()->getAttributes()
         );
-    }
-
-    private function buildProductCodeCollection(array $identifiers)
-    {
-        $productCodeCollection = new ProductCodeCollection();
-        foreach ($identifiers as $pimAiCode => $identifier) {
-            $productCodeCollection->add(new ProductCode($pimAiCode, $identifier));
-        }
-
-        return $productCodeCollection;
     }
 
     public function bulkPush(array $products): SuggestedDataCollectionInterface
