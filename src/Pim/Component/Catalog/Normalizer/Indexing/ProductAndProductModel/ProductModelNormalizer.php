@@ -7,7 +7,7 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

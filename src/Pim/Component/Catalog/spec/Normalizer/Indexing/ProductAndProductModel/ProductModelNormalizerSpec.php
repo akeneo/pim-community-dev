@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;

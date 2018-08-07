@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\FamilyVariant;
+namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;

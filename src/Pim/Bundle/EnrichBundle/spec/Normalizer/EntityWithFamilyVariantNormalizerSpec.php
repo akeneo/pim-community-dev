@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;

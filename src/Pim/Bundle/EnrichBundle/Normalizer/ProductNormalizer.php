@@ -14,7 +14,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;

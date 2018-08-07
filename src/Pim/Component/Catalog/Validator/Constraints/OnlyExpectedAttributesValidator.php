@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\FamilyVariant;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -40,7 +41,7 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider');
+        $this->shouldHaveType(EntityWithFamilyVariantAttributesProvider::class);
     }
 
     function it_gets_attributes_from_an_non_root_entity_with_a_family_variant(

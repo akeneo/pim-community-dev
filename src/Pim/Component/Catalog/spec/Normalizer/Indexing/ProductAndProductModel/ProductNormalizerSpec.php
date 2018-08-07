@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer;

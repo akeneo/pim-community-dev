@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;

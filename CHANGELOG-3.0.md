@@ -20,6 +20,7 @@
 
 - Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument 
 
+- Move `Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider`
 - Move `Pim\Component\Catalog\Repository\AssociationRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\CompletenessRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface`
