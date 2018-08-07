@@ -5,8 +5,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
-use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CompleteVariantProducts;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 
 /**
  * Query variant product completenesses to build the complete variant product ratio on the PMEF

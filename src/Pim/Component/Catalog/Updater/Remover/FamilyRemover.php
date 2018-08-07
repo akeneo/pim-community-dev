@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductsWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

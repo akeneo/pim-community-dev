@@ -1,7 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductModel\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
@@ -27,12 +29,12 @@ class ProductAttributeFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter::class);
+        $this->shouldHaveType(ProductAttributeFilter::class);
     }
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement(\Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface::class);
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_filters_the_attributes_that_does_not_belong_the_family(

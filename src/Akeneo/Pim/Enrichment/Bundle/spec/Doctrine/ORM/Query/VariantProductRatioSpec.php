@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 
 class VariantProductRatioSpec extends ObjectBehavior
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductAndProductModel\Query;
+namespace spec\Akeneo\Pim\Enrichment\Component\ProductAndProductModel\Query;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterData;
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData;
 
 class CompleteFilterDataSpec extends ObjectBehavior
 {

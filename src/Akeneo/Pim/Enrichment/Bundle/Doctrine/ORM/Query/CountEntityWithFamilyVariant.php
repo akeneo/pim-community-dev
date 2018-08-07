@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface;
 
 /**
  * Find the number of product and product models count belonging to the given family variant

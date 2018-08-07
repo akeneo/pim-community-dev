@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\ProductAndProductModel\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query;
 
 /**
  * Object that represents the data used by the completeness filter to filter the grid.
