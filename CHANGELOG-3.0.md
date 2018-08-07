@@ -477,4 +477,7 @@
 - Move namespace `Pim\Component\Connector\Validator\Constraints` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints`
 - Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\User`
 - Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat\User`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet`
 
