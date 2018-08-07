@@ -1,3 +1,0 @@
-#TODO: move this file in the Platform
-parameters:
-    pim_catalog.version.class: Akeneo\Platform\EnterpriseVersion

@@ -9,22 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle;
+namespace Akeneo\Pim\Asset\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * PIM Enterprise Catalog Bundle
- *
- * @author Nicolas Dupont <nicolas@akeneo.com>
- */
-class PimEnterpriseCatalogBundle extends Bundle
+class AkeneoPimAssetBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'PimCatalogBundle';
-    }
 }
