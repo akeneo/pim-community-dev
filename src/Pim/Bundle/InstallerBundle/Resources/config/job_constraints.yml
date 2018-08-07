@@ -25,7 +25,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pim_installer.job_parameters.constraints.product_csv_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_csv_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
             -
@@ -34,7 +34,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pim_installer.job_parameters.constraints.product_model_csv_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
             -

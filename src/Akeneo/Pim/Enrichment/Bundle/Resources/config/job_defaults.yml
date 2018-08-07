@@ -22,3 +22,83 @@ services:
                 - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_csv_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvExport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'csv_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_xlsx_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductXlsxExport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'xlsx_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_csv_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvExport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'csv_product_model_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_export:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvExport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'xlsx_product_model_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_xlsx_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_model_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_model_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

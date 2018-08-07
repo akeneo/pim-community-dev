@@ -42,6 +42,7 @@ class PimUserExtension extends Extension
         $loader->load('view_elements/user.yml');
         $loader->load('view_elements/group.yml');
         $loader->load('services.yml');
+        $loader->load('array_converters.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

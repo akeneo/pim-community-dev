@@ -2,18 +2,11 @@ parameters:
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export.class:         Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport
     pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport
     pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlExport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvExport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductXlsxExport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_export.class:  Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_export.class: Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport
 
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport
     pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport
     pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlImport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_csv_import.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_import.class:  Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import.class:       Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_import.class: Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport
+
 
 services:
     # Validation constraints for Exports ------------------------------------------------------------------------------
@@ -55,42 +48,6 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
-            -
-                - 'csv_product_export'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
-            -
-                - 'xlsx_product_export'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_export:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_export.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
-            -
-                - 'csv_product_model_export'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_export:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_export.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
-            -
-                - 'xlsx_product_model_export'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
     # Validation constraints for Imports ------------------------------------------------------------------------------
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import:
         class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class%'
@@ -127,41 +84,5 @@ services:
                 - 'xlsx_attribute_group_import'
                 - 'xlsx_currency_import'
                 - 'xlsx_group_type_import'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_csv_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_csv_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
-            -
-                - 'csv_product_import'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
-            -
-                - 'csv_product_model_import'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
-            -
-                - 'xlsx_product_import'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
-            -
-                - 'xlsx_product_model_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
