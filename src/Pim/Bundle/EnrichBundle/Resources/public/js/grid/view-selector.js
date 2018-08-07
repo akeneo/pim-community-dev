@@ -111,8 +111,8 @@ define(
                         displaySwitcher: (this.config.viewTypes.length > 1),
                         viewTypes: this.config.viewTypes
                     }));
-
                     this.initializeSelectWidget();
+
                     this.renderExtensions();
                 }.bind(this));
             },
@@ -133,78 +133,14 @@ define(
                 var options = {
                     dropdownCssClass: 'grid-view-selector',
                     closeOnSelect: false,
-
-                    /**
-                     * Format result (datagrid view list) method of select2.
-                     * This way we can display views and their infos beside them.
-                     */
-                    formatResult: function (item, $container) {
-                        FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
-                            form.setParent(this);
-                            form.setView(item, this.currentViewType, this.currentView.id);
-                            $container.append(form.render().$el);
-                        }.bind(this));
-                    }.bind(this),
-
-                    /**
-                     * Format current selection method of select2.
-                     */
-                    formatSelection: function (item, $container) {
-                        FormBuilder.getFormMeta('pim-grid-view-selector-current')
-                            .then(FormBuilder.buildForm)
-                            .then(function (form) {
-                                form.setParent(this);
-                                form.setView(item);
-
-                                return form.configure().then(function () {
-                                    $container.append(form.render().$el);
-                                    this.onGridStateChange();
-                                }.bind(this));
-                            }.bind(this));
-                    }.bind(this),
-
-                    query: function (options) {
-                        clearTimeout(this.queryTimer);
-                        this.queryTimer = setTimeout(function () {
-
-                            var page = 1;
-                            if (options.context && options.context.page) {
-                                page = options.context.page;
-                            }
-
-                            var searchParameters = this.getSelectSearchParameters(options.term, page);
-                            var fetcher = this.config.fetchers[this.currentViewType];
-
-                            if (this.currentLoadingPage === page && this.currentLoadingTerm === options.term) {
-                                return;
-                            }
-
-                            this.currentLoadingPage = page;
-                            this.currentLoadingTerm = options.term;
-
-                            FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
-                                var choices = this.toSelect2Format(views);
-
-                                if (page === 1 && !options.term) {
-                                    choices = this.ensureDefaultView(choices);
-                                }
-
-                                options.callback({
-                                    results: choices,
-                                    more: choices.length === this.getResultsPerPage(),
-                                    context: {
-                                        page: page + 1
-                                    }
-                                });
-                            }.bind(this));
-                        }.bind(this), 400);
-                    }.bind(this),
-
-                    /**
-                     * Initialize the select2 with current selected view. If no current view is selected,
-                     * we select the user's one. If he doesn't have one, we create a default one for him!
-                     */
+                    formatResult: this.formatResult.bind(this),
+                    formatSelection: this.formatSelection.bind(this),
+                    query: this.query.bind(this),
                     initSelection: function (element, callback) {
+                        /**
+                         * Initialize the select2 with current selected view. If no current view is selected,
+                         * we select the user's one. If he doesn't have one, we create a default one for him!
+                         */
                         callback(this.currentView);
                     }.bind(this)
                 };
@@ -219,6 +155,77 @@ define(
                     this.currentLoadingPage = null;
                     this.currentLoadingTerm = null;
                 }.bind(this));
+            },
+
+            /**
+             * Do the Select2 query for the selector view
+             *
+             * @param options
+             */
+            query: function (options) {
+                clearTimeout(this.queryTimer);
+                this.queryTimer = setTimeout(function () {
+                    var page = 1;
+                    if (options.context && options.context.page) {
+                        page = options.context.page;
+                    }
+
+                    var searchParameters = this.getSelectSearchParameters(options.term, page);
+                    var fetcher = this.config.fetchers[this.currentViewType];
+
+                    if (this.currentLoadingPage === page && this.currentLoadingTerm === options.term) {
+                        return;
+                    }
+
+                    this.currentLoadingPage = page;
+                    this.currentLoadingTerm = options.term;
+
+                    FetcherRegistry.getFetcher(fetcher).search(searchParameters).then(function (views) {
+                        let choices = this.toSelect2Format(views);
+                        const more = choices.length === this.getResultsPerPage();
+
+                        if (page === 1 && !options.term) {
+                            choices = this.ensureDefaultView(choices);
+                        }
+
+                        options.callback({
+                            results: choices,
+                            more: more,
+                            context: {
+                                page: page + 1
+                            }
+                        });
+                    }.bind(this));
+                }.bind(this), 400);
+            },
+
+            /**
+             * Format result (datagrid view list) method of select2.
+             * This way we can display views and their infos beside them.
+             */
+            formatResult: function (item, $container) {
+                FormBuilder.build('pim-grid-view-selector-line').then(function (form) {
+                    form.setParent(this);
+                    form.setView(item, this.currentViewType, this.currentView.id);
+                    $container.append(form.render().$el);
+                }.bind(this));
+            },
+
+            /**
+             * Format current selection method of select2.
+             */
+            formatSelection: function (item, $container) {
+                FormBuilder.getFormMeta('pim-grid-view-selector-current')
+                    .then(FormBuilder.buildForm)
+                    .then(function (form) {
+                        form.setParent(this);
+                        form.setView(item);
+
+                        return form.configure().then(function () {
+                            $container.append(form.render().$el);
+                            this.onGridStateChange();
+                        }.bind(this));
+                    }.bind(this));
             },
 
             /**
@@ -340,7 +347,7 @@ define(
                     return choices;
                 }
 
-                choices.push(this.getDefaultView());
+                choices.unshift(this.getDefaultView());
 
                 return choices;
             },
