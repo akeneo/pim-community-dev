@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Doctrine;
+namespace Akeneo\Tool\Bundle\ConnectorBundle\Doctrine;
 
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;

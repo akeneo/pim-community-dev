@@ -1,5 +1,5 @@
 parameters:
-    pim_connector.launcher.authenticated_job_launcher.class: Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher
+    pim_connector.launcher.authenticated_job_launcher.class: Akeneo\Tool\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher
 
 services:
     pim_connector.launcher.authenticated_job_launcher:

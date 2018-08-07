@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle;
+namespace Akeneo\Tool\Bundle\ConnectorBundle;
 
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass;
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterFlatToStandardConverterPass;
-use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass;
+use Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass;
+use Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterFlatToStandardConverterPass;
+use Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

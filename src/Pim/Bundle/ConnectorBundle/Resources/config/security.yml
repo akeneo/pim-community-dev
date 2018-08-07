@@ -1,5 +1,5 @@
 parameters:
-    pim_connector.event_listener.job_execution_authenticator.class: Pim\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator
+    pim_connector.event_listener.job_execution_authenticator.class: Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator
 
 services:
     pim_connector.event_listener.job_execution_authenticator:
