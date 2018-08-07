@@ -16,7 +16,7 @@ class AttributeOptionSpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\ArrayConverter\ArrayConverterInterface'
+            'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface'
         );
     }
 
@@ -59,10 +59,10 @@ class AttributeOptionSpec extends ObjectBehavior
 
         $fieldChecker
             ->checkFieldsPresence($item, ['attribute', 'code'])
-            ->willThrow('Pim\Component\Connector\Exception\StructureArrayConversionException');
+            ->willThrow('Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException');
 
         $this
-            ->shouldThrow('Pim\Component\Connector\Exception\StructureArrayConversionException')
+            ->shouldThrow('Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException')
             ->during('convert', [$item]);
     }
 
@@ -71,7 +71,7 @@ class AttributeOptionSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
 
         $this
-            ->shouldThrow('Pim\Component\Connector\Exception\StructureArrayConversionException')
+            ->shouldThrow('Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException')
             ->during(
                 'convert',
                 [

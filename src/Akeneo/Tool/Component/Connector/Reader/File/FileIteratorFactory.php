@@ -27,7 +27,7 @@ class FileIteratorFactory
      */
     public function __construct($className, $type)
     {
-        $interface = '\Pim\Component\Connector\Reader\File\FileIteratorInterface';
+        $interface = '\Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface';
         if (!is_subclass_of($className, $interface)) {
             throw new \InvalidArgumentException(sprintf('%s must implement %s', $className, $interface));
         }

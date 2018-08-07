@@ -10,7 +10,7 @@ use Box\Spout\Writer\WriterInterface;
 
 /**
  * Flushes the flat item buffer into one or multiple output files.
- * @see Pim\Component\Connector\Writer\File\FlatItemBuffer
+ * @see Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer
  *
  * Several output files are created if the buffer contains more items that maximum lines authorized per output file.
  *

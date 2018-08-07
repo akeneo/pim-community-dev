@@ -39,7 +39,7 @@ class EntityWithValuesDelocalizedSpec extends ObjectBehavior
         $delocalizer->getViolations()->willReturn($violations);
         $violations->count()->willReturn(3);
 
-        $this->shouldThrow('Pim\Component\Connector\Exception\DataArrayConversionException')
+        $this->shouldThrow('Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException')
             ->during('convert', [['the item'], ['the options']]);
     }
 }
