@@ -1,9 +1,6 @@
 services:
     enriched_entity_serializer:
         class: Symfony\Component\Serializer\Serializer
-        arguments:
-            - [!tagged enriched_entity_serializer.normalizer]
-            - [!tagged enriched_entity_serializer.encoder]
 
     akeneoenriched_serializer.encoder.json:
         public: false
@@ -12,6 +9,7 @@ services:
             - { name: enriched_entity_serializer.encoder }
 
     akeneoenriched.normalizer.exception.violation:
+        public: false
         class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
         tags:
             - { name: enriched_entity_serializer.normalizer }
