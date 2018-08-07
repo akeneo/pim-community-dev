@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributesForFamily;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
