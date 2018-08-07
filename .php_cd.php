@@ -85,7 +85,7 @@ $cPimRules = [
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Pim\Component\Connector',
+        'Akeneo\Tool\Component\Connector',
         array_merge($cDeps, [
             'Box\Spout',                     // to import/export CSV and XLSX files
             'Akeneo\Tool\Component\Batch',        // used as base import/export system

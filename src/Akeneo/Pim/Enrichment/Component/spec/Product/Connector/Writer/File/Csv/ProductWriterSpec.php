@@ -11,10 +11,10 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
-use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
+use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
 

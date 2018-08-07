@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 
 /**
  * Load a product model from its identifier.

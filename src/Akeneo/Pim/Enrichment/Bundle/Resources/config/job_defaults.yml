@@ -104,7 +104,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_connector.job.job_parameters.default_values_provider.simple_csv_export:
-        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
         arguments:
             -
                 - 'csv_group_export'
@@ -113,7 +113,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export:
-        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
         arguments:
             -
                 - 'xlsx_group_export'
@@ -122,7 +122,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_connector.job.job_parameters.default_values_provider.simple_csv_import:
-        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
         arguments:
             -
                 - 'csv_group_import'
@@ -131,7 +131,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import:
-        class: 'Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
         arguments:
             -
                 - 'xlsx_group_import'

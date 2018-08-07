@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Connector\Writer\File\AbstractItemMediaWriter;
-use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 /**
  * Write product data into a csv file on the local filesystem

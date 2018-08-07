@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\FamilyVariant;
 
 class FamilyVariantSpec extends ObjectBehavior

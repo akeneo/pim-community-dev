@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Archiver\ArchiverInterface;
+use Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface;
 
 class JobExecutionArchivistSpec extends ObjectBehavior
 {

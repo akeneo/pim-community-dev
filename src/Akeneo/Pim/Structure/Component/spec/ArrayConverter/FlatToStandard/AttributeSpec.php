@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AttributeSpec extends ObjectBehavior
 {

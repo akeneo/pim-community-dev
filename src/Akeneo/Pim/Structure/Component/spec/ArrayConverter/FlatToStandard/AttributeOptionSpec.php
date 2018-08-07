@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AttributeOptionSpec extends ObjectBehavior
 {

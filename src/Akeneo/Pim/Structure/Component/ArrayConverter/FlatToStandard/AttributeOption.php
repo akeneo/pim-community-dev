@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\Exception\StructureArrayConversionException;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Convert flat format to standard format for attribute option

@@ -19,7 +19,7 @@ use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet;
+use Akeneo\Tool\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class UserSpec extends ObjectBehavior
 {
