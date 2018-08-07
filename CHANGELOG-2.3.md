@@ -5,6 +5,7 @@
 - PIM-7537: Fix console error in password reset form
 - PIM-7552: Fix SKU filter display bug on group grid
 - PIM-7543: Forbid usage of 'label' code for attributes to prevent UI bugs
+- PIM-7545: Redirect to login page when user is not authenticated anymore
 - PIM-7569: Fix limit of 20 results for view selector
 
 # 2.3.3 (2018-08-01)

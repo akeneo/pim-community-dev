@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/messenger'],
-    function ($, _, Backbone, messenger) {
+    ['jquery', 'underscore', 'backbone', 'oro/messenger', 'oro/error'],
+    function ($, _, Backbone, messenger, Error) {
         'use strict';
 
         return Backbone.View.extend({
@@ -20,10 +20,14 @@ define(
                         );
                     })
                     .error(function (jqXHR) {
-                        messenger.notify(
-                            'error',
-                            _.__(jqXHR.responseText)
-                        );
+                        if (jqXHR.status === 401) {
+                            Error.dispatch(null, jqXHR);
+                        } else {
+                            messenger.notify(
+                                'error',
+                                _.__(jqXHR.responseText)
+                            );
+                        }
                     });
             }
         });
