@@ -196,8 +196,8 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/ApiBundle
         src_path: src/Akeneo/Tool/Bundle/ApiBundle
     ConnectorBundle:
-        namespace: Pim\Bundle\ConnectorBundle
-        psr4_prefix: Pim\Bundle\ConnectorBundle
+        namespace: Akeneo\Tool\Bundle\ConnectorBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Pim/Bundle/ConnectorBundle
         src_path: src/Pim/Bundle/ConnectorBundle
     DashboardBundle:

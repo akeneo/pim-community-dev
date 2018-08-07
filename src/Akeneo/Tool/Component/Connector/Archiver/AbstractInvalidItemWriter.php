@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
-use Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
+use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
 
 /**
  * Mutualizes code for writers

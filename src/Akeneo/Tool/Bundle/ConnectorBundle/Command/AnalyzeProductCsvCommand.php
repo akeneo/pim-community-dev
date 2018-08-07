@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Command;
+namespace Akeneo\Tool\Bundle\ConnectorBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
