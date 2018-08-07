@@ -202,7 +202,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_attribute_identifier_is_not_unique() {
+    public function it_returns_an_error_when_the_attribute_identifier_is_not_unique()
+    {
         $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
         $content = [
@@ -228,7 +229,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute($this->client, self::CREATE_ATTRIBUTE_ROUTE, $urlParameters, $method, $headers,
             $content);
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '');
+        $expectedContent = '[{"messageTemplate":"pim_enriched_entity.attribute.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"Attribute identifier already exists for enriched entity \u0022designer\u0022 and attribute code \u0022name\u0022","root":{"maxFileSize":"200.1","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"","invalidValue":{"maxFileSize":"200.1","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, $expectedContent);
     }
 
     /**

@@ -14,15 +14,16 @@ $rules = [
     ])->in('Akeneo\EnrichedEntity\Domain'),
     $builder->only([
         'Akeneo\EnrichedEntity\Domain',
+        'Doctrine\Common',
     ])->in('Akeneo\EnrichedEntity\Application'),
     $builder->only([
-        'Doctrine\DBAL',
-        'PDO',
-        'Symfony\Component',
         'Akeneo\EnrichedEntity\Application',
         'Akeneo\EnrichedEntity\Domain',
-        'Pim\Bundle\InstallerBundle',
+        'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
+        'PDO',
+        'Pim\Bundle\InstallerBundle',
+        'Symfony\Component',
     ])->in('Akeneo\EnrichedEntity\Infrastructure'),
 ];
 

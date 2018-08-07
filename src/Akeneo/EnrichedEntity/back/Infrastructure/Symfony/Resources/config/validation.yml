@@ -67,6 +67,8 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxLength:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+    constraints:
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldBeUnique: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:

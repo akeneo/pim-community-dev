@@ -20,8 +20,8 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

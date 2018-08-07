@@ -203,7 +203,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Identifier is null'              => [
                 null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"identifier":null,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"identifier":null,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"identifier":null,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Identifier is an integer'        => [
                 1234123,
