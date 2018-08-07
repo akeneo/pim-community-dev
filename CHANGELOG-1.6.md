@@ -320,7 +320,7 @@
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\CategoryAccessProcessor`
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\JobProfileAccessProcessor`
 - Remove class `PimEnterprise\Bundle\BaseConnectorBundle\Processor\LocaleAccessProcessor`
-- Remove class `Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
+- Remove class `Akeneo\Tool\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
 - Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of
     `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
