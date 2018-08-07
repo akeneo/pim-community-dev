@@ -4,8 +4,8 @@ namespace spec\Akeneo\Pim\Permission\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\ProductFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;

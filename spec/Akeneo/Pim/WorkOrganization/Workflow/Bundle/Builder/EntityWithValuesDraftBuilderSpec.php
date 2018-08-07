@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Comparator\ComparatorInterface;
-use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
