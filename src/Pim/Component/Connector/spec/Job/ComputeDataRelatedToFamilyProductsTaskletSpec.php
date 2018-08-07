@@ -15,11 +15,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet;
+use Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -51,7 +51,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->beAnInstanceOf(ComputeDataRelatedToFamilyVariantsTasklet::class);
+        $this->beAnInstanceOf(ComputeDataRelatedToFamilyProductsTasklet::class);
     }
 
     function it_saves_the_products_belonging_to_the_family(

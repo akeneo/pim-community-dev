@@ -32,6 +32,7 @@
 - Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
 
+- Move namespace `Pim\Component\Catalog\EntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant`
 - Move namespace `Pim\Component\Catalog\EntityWithFamily` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily`
 - Move namespace `Pim\Component\Catalog\ProductAndProductModel` to `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel`
 - Move namespace `Pim\Component\Catalog\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\ProductModel`
@@ -226,7 +227,7 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributesForFamily` argument
 - Change constructor of `Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet`, replace `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
 - Change constructor of `Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet`, add `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` argument
-- Change constructor of `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`, add `Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation`, `Symfony\Component\Validator\Validator\ValidatorInterface` and a batch size arguments.
+- Change constructor of `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`, add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation`, `Symfony\Component\Validator\Validator\ValidatorInterface` and a batch size arguments.
 
 - Move namespace `Pim\Component\Catalog\Value` to `Akeneo\Pim\Enrichment\Component\Product\Value`
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`

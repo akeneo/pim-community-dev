@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
-use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
