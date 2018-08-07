@@ -29,7 +29,7 @@ class ProductReaderSpec extends ObjectBehavior
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\Reader');
+        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader');
     }
 
     function it_transforms_media_paths_to_absolute_paths(
