@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Permission\Component\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class JobProfileAccessesSpec extends ObjectBehavior
 {

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation\PrepareProjectCalculationTasklet;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;

@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Connector\Reader\MassEdit;
 
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Pim\Component\Connector\Reader\Database\AbstractReader;
+use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

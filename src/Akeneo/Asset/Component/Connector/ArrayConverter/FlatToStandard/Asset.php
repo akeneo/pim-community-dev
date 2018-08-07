@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Component\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 
 /**
  * Product Asset Flat Converter

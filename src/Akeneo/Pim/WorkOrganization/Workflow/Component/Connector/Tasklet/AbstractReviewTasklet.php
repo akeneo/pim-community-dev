@@ -18,7 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftMan
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

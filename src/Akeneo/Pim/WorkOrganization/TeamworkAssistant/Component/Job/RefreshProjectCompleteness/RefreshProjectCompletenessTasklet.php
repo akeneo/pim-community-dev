@@ -17,7 +17,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProces
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
  * Compute the attribute group completeness for a product/channel/locale

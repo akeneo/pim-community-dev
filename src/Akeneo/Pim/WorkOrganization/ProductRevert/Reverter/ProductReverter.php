@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

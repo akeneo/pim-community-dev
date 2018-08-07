@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Component\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Connector\Reader\Database\AbstractReader;
+use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 
 /**
  * Get asset categories

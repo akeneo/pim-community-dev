@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Component\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Exception\ArrayConversionException;
+use Akeneo\Tool\Component\Connector\Exception\ArrayConversionException;
 
 class TagsSpec extends ObjectBehavior
 {

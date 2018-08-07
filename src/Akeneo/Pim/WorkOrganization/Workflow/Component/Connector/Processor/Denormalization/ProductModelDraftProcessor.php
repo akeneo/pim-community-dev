@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
-use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

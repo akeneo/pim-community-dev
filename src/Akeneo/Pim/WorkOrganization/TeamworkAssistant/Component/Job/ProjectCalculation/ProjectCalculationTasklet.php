@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
  * Compute all CalculationStep linked to the project to complete it and save it.
