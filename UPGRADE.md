@@ -507,3 +507,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writ
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\File\\MediaExporterPathGenerator/Akeneo\\Tool\\Component\\Connector\\Writer\\File\\MediaExporterPathGenerator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\File\\Csv\\Writer/Akeneo\\Tool\\Component\\Connector\\Writer\\File\\Csv\\Writer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writer\\File\\Yaml\\Writer/Akeneo\\Tool\\Component\\Connector\\Writer\\File\\Yaml\\Writer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\Connector/Akeneo\\Tool\\Bundle\\ConnectorBundle/g'

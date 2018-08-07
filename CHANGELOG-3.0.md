@@ -479,6 +479,8 @@
 - Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat\User`
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet`
+- Move `Pim\Component\Connector` to `Akeneo\Tool\Component\Connector`
 - Move `Pim\Component\Connector\Analyzer\AnalyzerInterface` to `Akeneo\Tool\Component\Connector\Analyzer\AnalyzerInterface`
 - Move `Pim\Component\Connector\Archiver\AbstractFilesystemArchiver` to `Akeneo\Tool\Component\Connector\Archiver\AbstractFilesystemArchiver`
 - Move `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver` to `Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver`
