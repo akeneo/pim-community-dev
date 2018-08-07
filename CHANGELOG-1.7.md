@@ -2,14 +2,7 @@
 
 ## Bug fixes
 
-- PIM-7538: Fix persistent grid filters
-
-# 1.7.28 (2018-07-26)
-
-## Bug fixes
-
 - PIM-7453: Forbid to remove a role if user won't have role after deletion
-- PIM-7532: Improve the standard format for products associated to avoid performance impact
 - PIM-7540: Fix translations of boolean attributes
 
 # 1.7.27 (2018-07-24)
