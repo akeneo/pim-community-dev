@@ -18,7 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraft
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;

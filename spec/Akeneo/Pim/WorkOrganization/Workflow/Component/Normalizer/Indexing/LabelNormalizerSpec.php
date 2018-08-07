@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexin
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\LabelNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\TextNormalizer;

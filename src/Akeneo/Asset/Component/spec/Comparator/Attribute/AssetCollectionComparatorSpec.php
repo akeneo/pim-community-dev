@@ -15,7 +15,7 @@ namespace spec\Akeneo\Asset\Component\Comparator\Attribute;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Comparator\ComparatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
 use Akeneo\Asset\Component\Comparator\Attribute\AssetCollectionComparator;
 

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Component\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Asset\Component\Model\AssetInterface;
 
 class AssetNormalizerSpec extends ObjectBehavior
