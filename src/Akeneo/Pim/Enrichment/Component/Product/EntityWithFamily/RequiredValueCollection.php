@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\EntityWithFamily;
+namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * A collection of required values depending on the attribute requirements of a family.
- * {@see Pim\Component\Catalog\EntityWithFamily\RequiredValue}
+ * {@see Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue}
  *
  * This collection is not dependant of a channel and/or locale context. Which means, it's the responsibility of
  * the user to know what the collection holds.
@@ -35,7 +35,7 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
         foreach ($values as $value) {
             if (!$value instanceof RequiredValue) {
                 throw new \InvalidArgumentException(
-                    'Expected an instance of "Pim\Component\Catalog\EntityWithFamily\RequiredValue".'
+                    'Expected an instance of "Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue".'
                 );
             }
 

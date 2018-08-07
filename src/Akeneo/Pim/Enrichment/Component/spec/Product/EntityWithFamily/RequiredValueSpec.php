@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\EntityWithFamily;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

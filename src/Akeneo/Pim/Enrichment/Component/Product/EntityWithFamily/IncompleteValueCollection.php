@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\EntityWithFamily;
+namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -41,7 +41,7 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
         foreach ($values as $value) {
             if (!$value instanceof RequiredValue) {
                 throw new \InvalidArgumentException(
-                    'Expected an instance of "Pim\Component\Catalog\EntityWithFamily\RequiredValue".'
+                    'Expected an instance of "Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue".'
                 );
             }
 

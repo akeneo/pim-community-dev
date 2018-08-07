@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\EntityWithFamily;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

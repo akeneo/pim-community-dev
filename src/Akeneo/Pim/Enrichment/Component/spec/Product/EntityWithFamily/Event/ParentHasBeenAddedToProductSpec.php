@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\EntityWithFamily\Event;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
 
-use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\Event;

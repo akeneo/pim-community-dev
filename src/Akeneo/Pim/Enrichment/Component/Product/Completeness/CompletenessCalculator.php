@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
 
 /**
  * Calculates the completenesses for a provided product.

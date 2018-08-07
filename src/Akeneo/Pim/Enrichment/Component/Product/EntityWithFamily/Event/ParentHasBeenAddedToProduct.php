@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\EntityWithFamily\Event;
+namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\Event;

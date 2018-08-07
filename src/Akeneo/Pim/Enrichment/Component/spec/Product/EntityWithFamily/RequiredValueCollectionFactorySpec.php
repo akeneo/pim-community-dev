@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\EntityWithFamily;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -36,7 +36,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory::class);
+        $this->shouldHaveType(\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory::class);
     }
 
     function it_creates_a_collection_from_family_requirements_for_a_channel(

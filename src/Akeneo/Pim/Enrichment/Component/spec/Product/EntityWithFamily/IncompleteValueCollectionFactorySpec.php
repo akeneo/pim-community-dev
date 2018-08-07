@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\EntityWithFamily;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
