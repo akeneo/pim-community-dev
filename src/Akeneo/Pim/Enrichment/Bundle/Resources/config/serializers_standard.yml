@@ -1,17 +1,17 @@
 parameters:
-    pim_catalog.normalizer.standard.product.class: Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer
-    pim_catalog.normalizer.standard.product_model.class: Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer
-    pim_catalog.normalizer.standard.product.properties.class: Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer
-    pim_catalog.normalizer.standard.product.associations.class: Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer
-    pim_catalog.normalizer.standard.product.product_values.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer
-    pim_catalog.normalizer.standard.product.product_value.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValueNormalizer
-    pim_catalog.normalizer.standard.product.price.class: Pim\Component\Catalog\Normalizer\Standard\Product\PriceNormalizer
-    pim_catalog.normalizer.standard.product.metric.class: Pim\Component\Catalog\Normalizer\Standard\Product\MetricNormalizer
-    pim_catalog.normalizer.standard.datetime.class: Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer
-    pim_catalog.normalizer.standard.file.class: Pim\Component\Catalog\Normalizer\Standard\FileNormalizer
-    pim_catalog.normalizer.standard.category.class: Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer
-    pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
-    pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
+    pim_catalog.normalizer.standard.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer
+    pim_catalog.normalizer.standard.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductModelNormalizer
+    pim_catalog.normalizer.standard.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer
+    pim_catalog.normalizer.standard.product.associations.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\AssociationsNormalizer
+    pim_catalog.normalizer.standard.product.product_values.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValuesNormalizer
+    pim_catalog.normalizer.standard.product.product_value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer
+    pim_catalog.normalizer.standard.product.price.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PriceNormalizer
+    pim_catalog.normalizer.standard.product.metric.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer
+    pim_catalog.normalizer.standard.datetime.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer
+    pim_catalog.normalizer.standard.file.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\FileNormalizer
+    pim_catalog.normalizer.standard.category.class: Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer
+    pim_catalog.normalizer.standard.group.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\GroupNormalizer
+    pim_catalog.normalizer.standard.translation.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer
     pim_catalog.normalizer.standard.job_instance.class: Akeneo\Tool\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
 
 services:
@@ -48,7 +48,7 @@ services:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 
     pim_catalog.normalizer.standard.product.parent_associations:
-        class: Pim\Component\Catalog\Normalizer\Standard\Product\ParentsAssociationsNormalizer
+        class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ParentsAssociationsNormalizer
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 

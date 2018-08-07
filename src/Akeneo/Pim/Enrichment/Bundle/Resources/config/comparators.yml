@@ -1,16 +1,16 @@
 parameters:
-    pim_catalog.comparator.registry.class:          Pim\Component\Catalog\Comparator\ComparatorRegistry
-    pim_catalog.comparator.attribute.file.class:    Pim\Component\Catalog\Comparator\Attribute\FileComparator
-    pim_catalog.comparator.attribute.prices.class:  Pim\Component\Catalog\Comparator\Attribute\PricesComparator
-    pim_catalog.comparator.attribute.metric.class:  Pim\Component\Catalog\Comparator\Attribute\MetricComparator
-    pim_catalog.comparator.attribute.option.class:  Pim\Component\Catalog\Comparator\Attribute\OptionComparator
-    pim_catalog.comparator.attribute.options.class: Pim\Component\Catalog\Comparator\Attribute\OptionsComparator
-    pim_catalog.comparator.attribute.scalar.class:  Pim\Component\Catalog\Comparator\Attribute\ScalarComparator
-    pim_catalog.comparator.attribute.boolean.class: Pim\Component\Catalog\Comparator\Attribute\BooleanComparator
-    pim_catalog.comparator.attribute.number.class:  Pim\Component\Catalog\Comparator\Attribute\NumberComparator
-    pim_catalog.comparator.field.boolean.class:     Pim\Component\Catalog\Comparator\Field\BooleanComparator
-    pim_catalog.comparator.field.scalar.class:      Pim\Component\Catalog\Comparator\Field\ScalarComparator
-    pim_catalog.comparator.field.array.class:       Pim\Component\Catalog\Comparator\Field\ArrayComparator
+    pim_catalog.comparator.registry.class:          Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry
+    pim_catalog.comparator.attribute.file.class:    Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\FileComparator
+    pim_catalog.comparator.attribute.prices.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\PricesComparator
+    pim_catalog.comparator.attribute.metric.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\MetricComparator
+    pim_catalog.comparator.attribute.option.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\OptionComparator
+    pim_catalog.comparator.attribute.options.class: Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\OptionsComparator
+    pim_catalog.comparator.attribute.scalar.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\ScalarComparator
+    pim_catalog.comparator.attribute.boolean.class: Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\BooleanComparator
+    pim_catalog.comparator.attribute.number.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\NumberComparator
+    pim_catalog.comparator.field.boolean.class:     Akeneo\Pim\Enrichment\Component\Product\Comparator\Field\BooleanComparator
+    pim_catalog.comparator.field.scalar.class:      Akeneo\Pim\Enrichment\Component\Product\Comparator\Field\ScalarComparator
+    pim_catalog.comparator.field.array.class:       Akeneo\Pim\Enrichment\Component\Product\Comparator\Field\ArrayComparator
 
 services:
     pim_catalog.comparator.registry:

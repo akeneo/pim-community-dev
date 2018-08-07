@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
