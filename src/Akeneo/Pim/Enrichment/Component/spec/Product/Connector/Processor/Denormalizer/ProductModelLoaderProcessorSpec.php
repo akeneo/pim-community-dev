@@ -19,8 +19,7 @@ class ProductModelLoaderProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(
-           ProductModelLoaderProcessor::class);
+        $this->shouldHaveType(ProductModelLoaderProcessor::class);
     }
 
     function it_load_a_product_model($repository, ProductModelInterface $productModel)

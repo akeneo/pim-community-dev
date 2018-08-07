@@ -23,8 +23,7 @@ class FindProductToImportSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(
-            FindProductToImport::class);
+        $this->shouldHaveType(FindProductToImport::class);
     }
 
     function it_finds_product_from_flat_data_given_by_the_reader(

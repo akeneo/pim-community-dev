@@ -457,8 +457,8 @@
 - Move `Pim\Component\Connector\Processor\Normalization\ProductProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor`
 - Move namespace`Pim\Component\Connector\Analyzer` to `Akeneo\Pim\Enrichment\Component\Product\Connector`
 - Move `Pim\Component\Connector\Writer\File\ProductColumnSorter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ProductColumnSorter`
-- Move `Pim\Component\Connector\Reader\Database\GroupReader` to `Pim\Component\Connector\Reader\Database\GroupReader`
-- Move `Pim\Component\Connector\Reader\Database\ProductReader` to `Pim\Component\Connector\Reader\Database\ProductReader`
+- Move `Pim\Component\Connector\Reader\Database\GroupReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\GroupReader`
+- Move `Pim\Component\Connector\Reader\Database\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader`
 - Move `Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductAssociationReader`
 - Move `Pim\Component\Connector\Reader\File\Csv\ProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelReader`
 - Move `Pim\Component\ConnectoAkeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\Userr\Reader\File\Csv\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader`
