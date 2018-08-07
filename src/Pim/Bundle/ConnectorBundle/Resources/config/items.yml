@@ -1,5 +1,5 @@
 parameters:
-    pim_connector.validator.item.charset_validator.class: Pim\Component\Connector\Item\CharsetValidator
+    pim_connector.validator.item.charset_validator.class: Akeneo\Tool\Component\Connector\Item\CharsetValidator
 
 services:
     pim_connector.validator.item.charset_validator:

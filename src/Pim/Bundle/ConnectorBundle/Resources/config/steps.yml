@@ -1,6 +1,6 @@
 parameters:
-    pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
-    pim_connector.step.tasklet.class:   Pim\Component\Connector\Step\TaskletStep
+    pim_connector.step.validator.class: Akeneo\Tool\Component\Connector\Step\ValidatorStep
+    pim_connector.step.tasklet.class:   Akeneo\Tool\Component\Connector\Step\TaskletStep
 
 services:
     # Validator steps -------------------------------------------------------------------------------------------------

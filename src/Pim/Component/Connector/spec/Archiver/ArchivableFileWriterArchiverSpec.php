@@ -12,8 +12,8 @@ use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Archiver\ZipFilesystemFactory;
-use Pim\Component\Connector\Writer\File\Csv\Writer;
+use Akeneo\Tool\Component\Connector\Archiver\ZipFilesystemFactory;
+use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
 use Prophecy\Argument;
 
 class ArchivableFileWriterArchiverSpec extends ObjectBehavior

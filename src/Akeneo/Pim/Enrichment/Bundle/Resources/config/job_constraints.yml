@@ -24,7 +24,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export:
-        class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
         arguments:
             -
                 - 'csv_group_export'
@@ -33,7 +33,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
-        class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
         arguments:
             -
                 - 'xlsx_group_export'
@@ -42,7 +42,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import:
-        class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
         arguments:
             -
                 - 'csv_group_import'
@@ -51,7 +51,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
-        class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
         arguments:
             -
                 - 'xlsx_group_import'

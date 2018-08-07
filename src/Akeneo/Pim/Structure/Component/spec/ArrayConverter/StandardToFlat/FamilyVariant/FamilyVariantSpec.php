@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant\FamilyVariant;
 
 class FamilyVariantSpec extends ObjectBehavior

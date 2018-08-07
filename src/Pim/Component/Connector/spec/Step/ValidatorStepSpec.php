@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Step;
 
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Item\CharsetValidator;
+use Akeneo\Tool\Component\Connector\Item\CharsetValidator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ValidatorStepSpec extends ObjectBehavior

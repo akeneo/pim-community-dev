@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
-use Pim\Component\Connector\Reader\File\Csv\Reader;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 
 /**
  * Product Association CSV reader

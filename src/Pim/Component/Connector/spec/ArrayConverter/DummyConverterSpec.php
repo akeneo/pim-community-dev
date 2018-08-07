@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class DummyConverterSpec extends ObjectBehavior
 {

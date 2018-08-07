@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Connector\Reader\Database\AbstractReader;
+use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 
 /**
  * Category reader that reads categories ordered by tree and order inside the tree

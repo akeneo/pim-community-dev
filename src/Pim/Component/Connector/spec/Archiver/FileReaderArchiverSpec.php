@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Reader\File\Csv\Reader as CsvReader;
+use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader as CsvReader;
 use Prophecy\Argument;
 
 class FileReaderArchiverSpec extends ObjectBehavior

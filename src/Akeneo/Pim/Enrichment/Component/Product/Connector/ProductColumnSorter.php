@@ -6,8 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Connector\Writer\File\ColumnSorterInterface;
-use Pim\Component\Connector\Writer\File\DefaultColumnSorter;
+use Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
 
 /**
  * Reorder columns before export

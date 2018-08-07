@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\FieldSplitter;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter;
 
 class FieldSplitterSpec extends ObjectBehavior
 {

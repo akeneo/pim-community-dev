@@ -5,9 +5,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\Writer;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\ArrayConverter\DummyConverter;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Pim\Component\Connector\Writer\File\Yaml\Writer;
+use Akeneo\Tool\Component\Connector\ArrayConverter\DummyConverter;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\Writer\File\Yaml\Writer;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Yaml\Yaml;
 

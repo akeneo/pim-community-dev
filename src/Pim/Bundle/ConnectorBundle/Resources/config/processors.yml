@@ -1,9 +1,9 @@
 parameters:
-    pim_connector.processor.dummy_item.class: Pim\Component\Connector\Processor\DummyItemProcessor
-    pim_connector.processor.denormalization.class: Pim\Component\Connector\Processor\Denormalization\Processor
-    pim_connector.processor.denormalization.job_instance.class: Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor
-    pim_connector.processor.normalization.class: Pim\Component\Connector\Processor\Normalization\Processor
-    pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
+    pim_connector.processor.dummy_item.class: Akeneo\Tool\Component\Connector\Processor\DummyItemProcessor
+    pim_connector.processor.denormalization.class: Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor
+    pim_connector.processor.denormalization.job_instance.class: Akeneo\Tool\Component\Connector\Processor\Denormalization\JobInstanceProcessor
+    pim_connector.processor.normalization.class: Akeneo\Tool\Component\Connector\Processor\Normalization\Processor
+    pim_connector.processor.bulk_media_fetcher.class: Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher
 
 services:
     # Dummy processor

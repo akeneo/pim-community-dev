@@ -1,6 +1,6 @@
 parameters:
     # Encoder
-    pim_serializer.encoder.csv.class: Pim\Component\Connector\Encoder\CsvEncoder
+    pim_serializer.encoder.csv.class: Akeneo\Tool\Component\Connector\Encoder\CsvEncoder
 
 services:
     pim_versioning.serializer:

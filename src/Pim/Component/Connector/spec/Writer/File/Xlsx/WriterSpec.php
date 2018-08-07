@@ -8,9 +8,9 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Writer\File\FlatItemBuffer;
-use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
+use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Prophecy\Argument;
 
 class WriterSpec extends ObjectBehavior

@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Writer\File\FlatItemBuffer;
+use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 
 class FlatItemBufferSpec extends ObjectBehavior
 {

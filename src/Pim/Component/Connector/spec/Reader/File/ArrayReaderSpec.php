@@ -3,9 +3,9 @@
 namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\ArrayReader;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\ArrayReader;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 
 class ArrayReaderSpec extends ObjectBehavior
 {
@@ -15,7 +15,7 @@ class ArrayReaderSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($reader, $converter);
     }
-    
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ArrayReader::class);

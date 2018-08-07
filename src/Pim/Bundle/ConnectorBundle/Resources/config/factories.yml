@@ -1,5 +1,5 @@
 parameters:
-    pim_connector.factory.flat_item_buffer.class: Pim\Component\Connector\Writer\File\FlatItemBuffer
+    pim_connector.factory.flat_item_buffer.class: Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer
 
 services:
     pim_connector.factory.job_instance:

@@ -33,22 +33,22 @@ services:
 
 
     pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher:
-        class: 'Pim\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
             - '@pim_connector.writer.file.product_quick_export.column_sorter'
 
     pim_connector.writer.file.product_model_quick_export.flat_item_buffer_flusher:
-        class: 'Pim\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
             - '@pim_connector.writer.file.product_model_quick_export.column_sorter'
 
     pim_connector.writer.file.product.flat_item_buffer_flusher:
-        class: 'Pim\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
             - '@pim_connector.writer.file.product.column_sorter'
 
     pim_connector.writer.file.product_model.flat_item_buffer_flusher:
-        class: 'Pim\Component\Connector\Writer\File\FlatItemBufferFlusher'
+        class: 'Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher'
         arguments:
             - '@pim_connector.writer.file.product_model.column_sorter'
 

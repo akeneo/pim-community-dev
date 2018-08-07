@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Writer\File\Csv\Writer;
+use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
 use Prophecy\Argument;
 
 class FileWriterArchiverSpec extends ObjectBehavior

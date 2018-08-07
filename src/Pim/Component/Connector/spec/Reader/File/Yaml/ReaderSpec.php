@@ -5,8 +5,8 @@ namespace spec\Pim\Component\Connector\Reader\File\Yaml;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -213,7 +213,7 @@ class ReaderSpec extends ObjectBehavior
         ]);
 
         $this->initialize();
-        
+
         $this->read()->shouldReturn([
             'sku' => 'mug_akeneo'
         ]);
