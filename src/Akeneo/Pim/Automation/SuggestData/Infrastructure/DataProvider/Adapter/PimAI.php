@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
