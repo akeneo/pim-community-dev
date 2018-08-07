@@ -37,5 +37,8 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('managers.yml');
         $loader->load('validators.yml');
+        $loader->load('job_constraints.yml');
+        $loader->load('job_defaults.yml');
+        $loader->load('jobs.yml');
     }
 }
