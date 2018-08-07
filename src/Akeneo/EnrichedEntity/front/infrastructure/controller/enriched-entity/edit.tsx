@@ -14,6 +14,7 @@ import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'aken
 import {setUpSidebar} from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
 import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
 import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
+import {updateActivatedLocales} from 'akeneoenrichedentity/application/action/locale';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -37,6 +38,7 @@ class EnrichedEntityEditController extends BaseController {
       this.store.dispatch(setUpSidebar() as any);
       this.store.dispatch(updateRecordResults());
       this.store.dispatch(updateAttributeList() as any);
+      this.store.dispatch(updateActivatedLocales() as any);
       document.addEventListener('keydown', shortcutDispatcher(this.store));
 
       mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-enriched-entity'});

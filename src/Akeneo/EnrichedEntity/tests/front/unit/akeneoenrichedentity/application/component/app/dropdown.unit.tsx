@@ -37,6 +37,30 @@ describe('>>>COMPONENT --- dropdown', () => {
     ).toEqual('my dropdown');
   });
 
+  test('Changes according to props updates', () => {
+    const dropdown = mount(
+      <Dropdown
+        elements={elements}
+        label={'my dropdown'}
+        onSelectionChange={() => {}}
+        selectedElement={'another_item'}
+      />
+    );
+    expect(
+      dropdown
+        .find('.AknActionButton-highlight')
+        .text()
+        .trim()
+    ).toEqual('and this is the second item');
+    dropdown.setProps({selectedElement: 'nice_item'})
+    expect(
+      dropdown
+        .find('.AknActionButton-highlight')
+        .text()
+        .trim()
+    ).toEqual('actually this is the first item');
+  });
+
   test('Opens on click, list options and change value on selection', () => {
     const dropdown = mount(
       <Dropdown
@@ -68,6 +92,91 @@ describe('>>>COMPONENT --- dropdown', () => {
         .text()
         .trim()
     ).toEqual('my dropdown');
+  });
+
+  test('Closes when backdrop is clicked', () => {
+    const dropdown = mount(
+      <Dropdown
+        elements={elements}
+        label={'my dropdown'}
+        onSelectionChange={() => {}}
+        selectedElement={'another_item'}
+      />
+    );
+
+    expect(
+      dropdown
+        .find('.AknDropdown-menuTitle')
+        .text()
+        .trim()
+    ).toEqual('my dropdown');
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
+    dropdown.find('.AknButton').simulate('click');
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(1);
+    dropdown.find('.AknDropdown-mask').simulate('click');
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
+  });
+
+  test('Opens on keypress on space, list options and change value on selection', () => {
+    const dropdown = mount(
+      <Dropdown
+        elements={elements}
+        label={'my dropdown'}
+        onSelectionChange={() => {}}
+        selectedElement={'another_item'}
+      />
+    );
+
+    expect(
+      dropdown
+        .find('.AknDropdown-menuTitle')
+        .text()
+        .trim()
+    ).toEqual('my dropdown');
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
+    dropdown.find('.AknButton').simulate('keypress', {key: ' '});
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(1);
+
+    dropdown
+      .find('.AknDropdown-menuLink')
+      .first()
+      .simulate('keypress', {key: ' '});
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
+    expect(
+      dropdown
+        .find('.AknDropdown-menuTitle')
+        .text()
+        .trim()
+    ).toEqual('my dropdown');
+  });
+
+  test('doesn\'t open on keypress on other key, list options and change value on selection', () => {
+    const dropdown = mount(
+      <Dropdown
+        elements={elements}
+        label={'my dropdown'}
+        onSelectionChange={() => {}}
+        selectedElement={'another_item'}
+      />
+    );
+
+    expect(
+      dropdown
+        .find('.AknDropdown-menuTitle')
+        .text()
+        .trim()
+    ).toEqual('my dropdown');
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
+    dropdown.find('.AknButton').simulate('keypress', {key: ''});
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
+    dropdown.find('.AknButton').simulate('keypress', {key: ' '});
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(1);
+
+    dropdown
+      .find('.AknDropdown-menuLink')
+      .first()
+      .simulate('keypress', {key: ''});
+    expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(1);
   });
 
   test('Change value on selection change', () => {

@@ -108,10 +108,6 @@ class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement:
   }
 
   render() {
-    if (null === this.state) {
-      return !null;
-    }
-
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
     const dropdownButton = (selectedElement: string, label: string) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;

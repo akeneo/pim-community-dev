@@ -6,6 +6,7 @@ import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
 import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
 import Image from 'akeneoenrichedentity/application/component/app/image';
+// import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity, {
@@ -17,7 +18,9 @@ import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/crea
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 const securityContext = require('pim/security-context');
 import ImageModel from 'akeneoenrichedentity/domain/model/image';
+import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 
 interface StateProps {
   sidebar: {
@@ -37,12 +40,16 @@ interface StateProps {
     create: boolean;
   };
   enrichedEntity: EnrichedEntity;
+  structure: {
+    locales: Locale[];
+  };
 }
 
 interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onRecordCreationStart: () => void;
+    onLocaleChanged: (locale: Locale) => void;
     onImageUpdated: (image: ImageModel | null) => void;
   };
 }
@@ -144,10 +151,13 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                   </div>
                   <div>
                     <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-context AknButtonList" />
-                    </div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-meta AknButtonList" />
+                      <div className="AknTitleContainer-context AknButtonList">
+                        {/* <LocaleSwitcher
+                          localeCode={this.props.context.locale}
+                          locales={this.props.structure.locales}
+                          onLocaleChange={this.props.events.onLocaleChanged}
+                        /> */}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -182,6 +192,9 @@ export default connect(
         locale,
       },
       enrichedEntity,
+      structure: {
+        locales: state.structure.locales,
+      },
       createRecord: {
         active: state.createRecord.active,
       },
@@ -198,6 +211,9 @@ export default connect(
         },
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
+        },
+        onLocaleChanged: (locale: Locale) => {
+          dispatch(catalogLocaleChanged(locale.code));
         },
         onImageUpdated: (image: ImageModel | null) => {
           dispatch(enrichedEntityImageUpdated(image));
