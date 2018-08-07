@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
@@ -17,7 +18,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\Filter\FilterInterface');
+        $this->shouldBeAnInstanceOf(FilterInterface::class);
     }
 
     function it_returns_all_associations_on_a_new_product(

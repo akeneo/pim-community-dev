@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
@@ -23,7 +23,7 @@ class EntityWithValuesFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\Filter\FilterInterface');
+        $this->shouldBeAnInstanceOf(FilterInterface::class);
     }
 
     function it_returns_all_values_on_a_new_product(

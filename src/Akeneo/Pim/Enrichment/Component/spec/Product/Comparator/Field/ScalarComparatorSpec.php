@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface\Field;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use PhpSpec\ObjectBehavior;

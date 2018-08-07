@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface\Attribute;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\FileComparator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,7 +16,7 @@ class FileComparatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Comparator\Attribute\FileComparator');
+        $this->shouldHaveType(FileComparator::class);
     }
 
     function it_finds_a_diff_when_there_was_no_original_file()
