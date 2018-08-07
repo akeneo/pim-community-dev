@@ -39,4 +39,11 @@ class SubscriptionSpec extends ObjectBehavior
             'Memory' => 'RAM (Installed): 256 MB',
         ]);
     }
+
+    public function it_throws_an_exception_if_the_validation_fails()
+    {
+        $this->beConstructedWith([]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }
