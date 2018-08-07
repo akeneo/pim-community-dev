@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\Connector\Job;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -19,7 +19,7 @@ use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet;
 use Pim\Component\Connector\Step\TaskletInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -63,7 +63,8 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
 
     function it_computes_data_related_to_family_root_product_model()
     {
-        $this->shouldBeAnInstanceOf(ComputeDataRelatedToFamilyRootProductModelsTasklet::class);
+        $this->shouldBeAnInstanceOf(
+            \Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet::class);
     }
 
     function it_is_a_tasklet()

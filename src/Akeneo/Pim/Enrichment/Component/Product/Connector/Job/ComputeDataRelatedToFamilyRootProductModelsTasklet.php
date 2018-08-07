@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Job;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -24,17 +24,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * For each line of the file of families to import we will:
  * - fetch the corresponding family object,
- * - fetch all the sub product models of this family,
+ * - fetch all the root product models of this family,
  * - batch save these product models
  *
- * This way, on family import, the family's sub product models data will be
+ * This way, on family import, the family's root product models data will be
  * computed and all family variant's corresponding attributes will be indexed.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInterface, InitializableInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -88,9 +88,9 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
         JobRepositoryInterface $jobRepository,
         int $batchSize
     ) {
-        $this->familyReader = $familyReader;
         $this->familyRepository = $familyRepository;
         $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->familyReader = $familyReader;
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
         $this->productModelSaver = $productModelSaver;
@@ -131,7 +131,7 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
             }
 
             $productModelsToSave = [];
-            $productModels = $this->getSubProductModelsForFamily($family);
+            $productModels = $this->getRootProductModelsForFamily($family);
 
             foreach ($productModels as $productModel) {
                 $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
@@ -191,11 +191,11 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
      *
      * @return CursorInterface
      */
-    private function getSubProductModelsForFamily(FamilyInterface $family): CursorInterface
+    private function getRootProductModelsForFamily(FamilyInterface $family): CursorInterface
     {
         $pqb = $this->queryBuilderFactory->create();
         $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
-        $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
+        $pqb->addFilter('parent', Operators::IS_EMPTY, null);
 
         return $pqb->execute();
     }
