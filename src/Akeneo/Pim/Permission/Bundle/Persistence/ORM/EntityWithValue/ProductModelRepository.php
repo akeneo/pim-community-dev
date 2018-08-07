@@ -20,7 +20,7 @@ use Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
 /**
  * Decorates CE product model repository to apply permissions.

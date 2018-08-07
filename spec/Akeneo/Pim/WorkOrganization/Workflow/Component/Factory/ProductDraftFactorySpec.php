@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Component\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 

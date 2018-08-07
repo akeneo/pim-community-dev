@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\RefreshProjectCompleteness\RefreshProjectCompletenessTasklet;
