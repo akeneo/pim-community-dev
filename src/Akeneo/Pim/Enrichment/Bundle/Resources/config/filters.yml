@@ -2,9 +2,9 @@ parameters:
     pim_catalog.filter.chained.class:                        Akeneo\Pim\Enrichment\Bundle\Filter\ChainedFilter
     pim_enrich.filter.product_value.locale.class:            Akeneo\Pim\Enrichment\Bundle\Filter\ProductValueLocaleFilter
     pim_enrich.filter.product_value.channel.class:           Akeneo\Pim\Enrichment\Bundle\Filter\ProductValueChannelFilter
-    pim_catalog.comparator.filter.entity_with_value.class:   Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter
-    pim_catalog.comparator.filter.product_association.class: Pim\Component\Catalog\Comparator\Filter\ProductAssociationFilter
-    pim_catalog.comparator.filter.entity_with_values_field.class: Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFieldFilter
+    pim_catalog.comparator.filter.entity_with_value.class:   Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter
+    pim_catalog.comparator.filter.product_association.class: Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\ProductAssociationFilter
+    pim_catalog.comparator.filter.entity_with_values_field.class: Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFieldFilter
 
 services:
     pim_catalog.filter.chained:
