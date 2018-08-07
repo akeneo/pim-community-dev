@@ -4,6 +4,7 @@
 
 - PIM-7558: Fix asset collection proposal behavior. The assets uploaded by an asset collection attribute were not sent for approval but directly persisted.
 - PIM-7561: Fix the timeout on mass upload assets. We now delegate the import task to asynchronous job.
+- PIM-7545: Prevent the DelegatingProductModelSaver to run the 'compute_product_model_descendant' on bulk save
 
 # 2.3.3 (2018-08-01)
 
