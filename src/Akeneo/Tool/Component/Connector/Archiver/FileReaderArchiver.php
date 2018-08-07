@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use League\Flysystem\Filesystem;
 use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
+use League\Flysystem\Filesystem;
 
 /**
  * Archive files read by job execution to provide them through a download button

@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
-use League\Flysystem\Filesystem;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use League\Flysystem\Filesystem;
 
 /**
  * Archive job execution files into conventional directories
