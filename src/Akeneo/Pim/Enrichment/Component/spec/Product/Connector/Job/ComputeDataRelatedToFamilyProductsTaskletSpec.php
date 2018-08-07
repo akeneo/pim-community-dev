@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\Connector\Job;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;

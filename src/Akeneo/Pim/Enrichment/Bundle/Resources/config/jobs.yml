@@ -119,3 +119,81 @@ services:
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_family_variant_structure_changes.connector_name%'
                 type: '%pim_catalog.compute_family_variant_structure_changes.job_type%'
+
+    pim_connector.tasklet.csv_family.compute_data_related_to_family_root_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.csv_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.csv_family.compute_data_related_to_family_sub_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.csv_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.csv_family.compute_data_related_to_family_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_connector.reader.file.csv_family'
+            - '@pim_catalog.saver.product'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_root_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.xlsx_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_sub_product_models:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_connector.reader.file.xlsx_family'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.tasklet.xlsx_family.compute_data_related_to_family_products:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_connector.reader.file.xlsx_family'
+            - '@pim_catalog.saver.product'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+            - '%pim_job_product_batch_size%'
