@@ -15,5 +15,4 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exceptio
 
 class MappingNotDefinedException extends \Exception
 {
-
 }
