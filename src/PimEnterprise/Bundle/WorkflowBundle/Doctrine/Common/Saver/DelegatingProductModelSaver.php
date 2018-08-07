@@ -66,24 +66,25 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     /** @var EntityWithValuesDraftRepositoryInterface */
     private $productModelDraftRepository;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
     /** @var ObjectManager */
     private $objectManager;
+
+    /** @var BulkSaverInterface */
+    private $bulkProductModelSaver;
 
     public function __construct(
         ObjectManager $objectManager,
         SaverInterface $productModelSaver,
         SaverInterface $productModelDraftSaver,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher, // TODO: Pull-up: To remove
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         RemoverInterface $productDraftRemover,
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
         ProductModelRepositoryInterface $productModelRepository,
-        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
+        BulkSaverInterface $bulkProductModelSaver = null // TODO: pull-up to remove '= null'
     ) {
         $this->productModelSaver = $productModelSaver;
         $this->productModelDraftSaver = $productModelDraftSaver;
@@ -94,8 +95,8 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
         $this->mergeDataOnProductModel = $mergeDataOnProductModel;
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
-        $this->eventDispatcher = $eventDispatcher;
         $this->objectManager = $objectManager;
+        $this->bulkProductModelSaver = $bulkProductModelSaver;
     }
 
     /**
@@ -135,19 +136,15 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
 
             if ($this->isOwner($fullProductModel) || null === $fullProductModel->getId()) {
                 $productModelsToCompute[] = $fullProductModel;
-                $this->save($fullProductModel, $options);
             } elseif ($this->canEdit($fullProductModel)) {
                 $this->saveProductModelDraft($fullProductModel, $options);
             }
         }
 
-        $this->objectManager->flush();
-
-        foreach ($productModelsToCompute as $product) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        if (null !== $this->bulkProductModelSaver) {
+            $this->bulkProductModelSaver->saveAll($productModelsToCompute, $options);
         }
-
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($fullProductModels, $options));
+        $this->objectManager->flush();
     }
 
     /**
@@ -205,9 +202,9 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
             return $filteredProductModel;
         }
 
-        $fullProductMode = $this->productModelRepository->findOneByIdentifier($filteredProductModel->getCode());
+        $fullProductModel = $this->productModelRepository->findOneByIdentifier($filteredProductModel->getCode());
 
-        return $this->mergeDataOnProductModel->merge($filteredProductModel, $fullProductMode);
+        return $this->mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel);
     }
 
     /**
