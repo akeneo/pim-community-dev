@@ -445,3 +445,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Writ
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Validator\\Constraints/Akeneo\\Pim\\Enrichment\\Component\\Product\\Validator\\Constraints/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard\\User/Akeneo\\UserManagement\\Component\\Connector\\ArrayConverter\\FlatToStandard\\User/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardToFlat\\User/Akeneo\\UserManagement\\Component\\Connector\\ArrayConverter\\StandardToFlat\\User/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector/Akeneo\\Tool\\Component\\Connector/g'
