@@ -110,7 +110,10 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
+        $command = $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
+//        $command->order = ($this->nextOrderQuery)();
+
+        return $command;
     }
 
     private function isAttributeTypeProvided($request)
