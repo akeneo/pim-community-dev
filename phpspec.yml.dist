@@ -198,8 +198,8 @@ suites:
     ConnectorBundle:
         namespace: Akeneo\Tool\Bundle\ConnectorBundle
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
-        spec_path: src/Pim/Bundle/ConnectorBundle
-        src_path: src/Pim/Bundle/ConnectorBundle
+        spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
+        src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
     DashboardBundle:
         namespace: Pim\Bundle\DashboardBundle
         psr4_prefix: Pim\Bundle\DashboardBundle

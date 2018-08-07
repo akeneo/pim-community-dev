@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ConnectorBundle\Doctrine;
+namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\Doctrine;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
