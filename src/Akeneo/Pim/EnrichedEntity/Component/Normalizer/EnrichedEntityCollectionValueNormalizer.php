@@ -15,7 +15,7 @@ namespace Akeneo\Pim\EnrichedEntity\Component\Normalizer;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
