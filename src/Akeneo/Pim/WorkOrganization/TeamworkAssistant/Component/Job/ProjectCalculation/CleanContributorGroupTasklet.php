@@ -15,9 +15,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 /**
  * Step executed after a project calculation.

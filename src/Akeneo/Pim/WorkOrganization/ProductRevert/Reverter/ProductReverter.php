@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
 use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\RevertException;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

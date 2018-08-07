@@ -13,8 +13,8 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCal
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Step executed before a project calculation.
