@@ -12,8 +12,6 @@ declare(strict_types=1);
  */
 namespace Akeneo\EnrichedEntity\Infrastructure\Symfony;
 
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -23,8 +21,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoEnrichedEntityBundle extends Bundle
 {
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new RegisterSerializerPass('enriched_entity_serializer'));
-    }
 }
