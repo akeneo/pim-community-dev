@@ -6,8 +6,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer as BaseIncompleteValuesNormalizer;
-use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
