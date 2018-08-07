@@ -51,7 +51,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
      * Raw values that correspond to an non existing attribute (that was deleted
      * for instance) are NOT loaded.
      *
-     * @see \Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer.php
+     * @see \Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer.php
      *
      * @param array $rawValues
      *

@@ -3,7 +3,7 @@
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**

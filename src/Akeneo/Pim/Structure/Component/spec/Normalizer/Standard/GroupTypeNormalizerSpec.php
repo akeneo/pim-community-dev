@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 
 class GroupTypeNormalizerSpec extends ObjectBehavior
 {

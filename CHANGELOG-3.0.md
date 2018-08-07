@@ -12,6 +12,53 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\CompletenessCollectionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\PropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\AbstractProductValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\BooleanNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\BooleanNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\DateNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DateNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\DummyNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DummyNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\MediaNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MediaNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MetricNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\NumberNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\NumberNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\OptionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\OptionsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\PriceCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\PriceCollectionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\TextAreaNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextAreaNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\TextNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\ValueCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\FileNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\GroupNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\AssociationsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\ParentsAssociationsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ParentsAssociationsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PriceNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValuesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductModelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\DateTimeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\FileNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\AssociationsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\AssociationsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\MetricNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PriceNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValueNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\ProductNormalizer`
+
 - Register standard format normalizers into  `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer 
 - Register indexing normalizers into  `pim_indexing_serializer` serializer and untagged them from `pim_serializer` serializer
 - Register datagrid normalizers into  `pim_datagrid_serializer` serializer and untagged them from `pim_serializer` serializer

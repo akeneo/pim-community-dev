@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

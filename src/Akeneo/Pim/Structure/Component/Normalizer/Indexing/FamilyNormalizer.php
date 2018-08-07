@@ -5,9 +5,9 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 /**
