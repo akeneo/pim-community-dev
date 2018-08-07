@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ConnectorBundle\Launcher;
+namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
