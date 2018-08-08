@@ -5,7 +5,7 @@ namespace Akeneo\EnrichedEntity\Domain\Query;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
-interface SqlFindAttributeNextOrderInterface
+interface FindAttributeNextOrderInterface
 {
     public function forEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): int;
 }

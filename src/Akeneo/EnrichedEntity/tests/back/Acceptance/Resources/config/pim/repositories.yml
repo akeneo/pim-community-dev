@@ -26,3 +26,8 @@ services:
         class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryExistsAttribute
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindAttributeNextOrder
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'

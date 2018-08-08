@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\tests\back\Common;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 
@@ -57,6 +58,21 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         }
 
         return $enrichedEntity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    {
+        $attributes = [];
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+                $attributes[] = $attribute;
+            }
+        }
+
+        return $attributes;
     }
 
     public function getKey(AttributeIdentifier $identifier): string

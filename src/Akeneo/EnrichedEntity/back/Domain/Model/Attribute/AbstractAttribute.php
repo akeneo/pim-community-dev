@@ -117,6 +117,11 @@ abstract class AbstractAttribute
         return $this->order->intValue() === $order->intValue();
     }
 
+    public function getOrder(): AttributeOrder
+    {
+        return $this->order;
+    }
+
     abstract protected function getType(): string;
 
     public function normalize(): array

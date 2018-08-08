@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Domain\Repository;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 interface AttributeRepositoryInterface
 {
@@ -26,4 +27,11 @@ interface AttributeRepositoryInterface
      * @throws AttributeNotFoundException
      */
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute;
+
+    /**
+     * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
+     *
+     * @return AbstractAttribute[]
+     */
+    public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
 }

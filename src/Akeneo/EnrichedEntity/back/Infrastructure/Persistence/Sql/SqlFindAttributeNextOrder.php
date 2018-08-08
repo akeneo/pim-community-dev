@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
-use Akeneo\EnrichedEntity\Domain\Query\SqlFindAttributeNextOrderInterface;
+use Akeneo\EnrichedEntity\Domain\Query\FindAttributeNextOrderInterface;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Doctrine\DBAL\Connection;
 
-class SqlFindAttributeNextOrder implements SqlFindAttributeNextOrderInterface
+class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -30,9 +30,9 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'enriched_entity_identifier' => $enrichedEntityIdentifier,
         ]);
-        $result = $statement->fetch();
+        $result = $statement->fetchColumn();
         $statement->closeCursor();
 
-        return !$result ? 0 : $result;
+        return null === $result ? 0 : (intval($result) + 1);
     }
 }

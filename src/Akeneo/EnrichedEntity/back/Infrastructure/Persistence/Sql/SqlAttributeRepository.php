@@ -21,6 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use PDO;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
@@ -131,6 +132,45 @@ SQL;
         }
 
         return $this->hydrateAttribute($result);
+    }
+
+    /**
+     * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
+     *
+     * @return AbstractAttribute[]
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    {
+        $fetch = <<<SQL
+        SELECT
+            identifier,
+            enriched_entity_identifier,
+            labels,
+            attribute_type,
+            attribute_order,
+            required,
+            value_per_channel,
+            value_per_locale,
+            additional_properties
+        FROM akeneo_enriched_entity_attribute
+        WHERE enriched_entity_identifier = :enriched_entity_identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            [
+                'enriched_entity_identifier' => $enrichedEntityIdentifier,
+            ]
+        );
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+
+        $attributes = [];
+        foreach ($results as $result) {
+            $attributes[] = $this->hydrateAttribute($result);
+        }
+
+        return $attributes;
     }
 
     private function getAdditionalOptions(array $normalizedAttribute): array
