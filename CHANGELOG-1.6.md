@@ -329,9 +329,9 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer`. Add `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`
 - Change constructor of `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`. Remove second argument `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` and replace fourth and fifth argument by `Pim\Component\Connector\Processor\BulkMediaFetcher` and `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
-- Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
-- Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
-- Move `Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist`
+- Move `Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
+- Move `Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector` to `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
+- Move `Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist` to `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist`
 - Move `Pim\Bundle\BaseConnectorBundle\Archiver\AbstractFilesystemArchiver` to `Pim\Component\Connector\Archiver\AbstractFilesystemArchiver`
 - Move `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver` to `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver`
 - Move `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to `Pim\Component\Connector\Archiver\ArchiverInterface`
@@ -498,7 +498,7 @@
 - Remove `TransformBundle`
 - Change constructor of `Pim\Component\Catalog\Updater\GroupUpdater` and `Pim\Component\Catalog\Updater\VariantGroupUpdater`, add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\Pim\Bundle\TransformBundle\Normalizer\Structured\FamilyNormalizer` to inject two more dependendies `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface`
-- Remove class `Akeneo\Tool\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
+- Remove class `Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher`  which overrides `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` we now always use `@akeneo_batch.launcher.simple_job_launcher` and not anymore `@pim_connector.launcher.simple_job_launcher`
 - Remove parameter `Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface` from constructors of
     `Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor`
     `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements`
