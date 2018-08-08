@@ -28,16 +28,16 @@ use Akeneo\EnrichedEntity\Domain\Query\AttributeExistsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
-class SqlExistsAttributeTest extends SqlIntegrationTestCase
+class SqlAttributeExistsTest extends SqlIntegrationTestCase
 {
     /** @var AttributeExistsInterface */
-    private $existsAttribute;
+    private $attributeExists;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->existsAttribute = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute');
+        $this->attributeExists = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists');
         $this->resetDB();
         $this->loadEnrichedEntity();
     }
@@ -48,7 +48,7 @@ class SqlExistsAttributeTest extends SqlIntegrationTestCase
     public function it_returns_true_if_the_attribute_exists_for_the_given_identifier()
     {
         $this->loadAttribute('designer', 'name');
-        $isExisting = $this->existsAttribute->withIdentifier(AttributeIdentifier::create('designer', 'name'));
+        $isExisting = $this->attributeExists->withIdentifier(AttributeIdentifier::create('designer', 'name'));
         Assert::assertTrue($isExisting);
     }
 
@@ -57,7 +57,7 @@ class SqlExistsAttributeTest extends SqlIntegrationTestCase
      */
     public function it_returns_false_if_the_attribute_does_not_exist_for_the_given_identifier()
     {
-        $isExisting = $this->existsAttribute->withIdentifier(AttributeIdentifier::create('designer', 'name'));
+        $isExisting = $this->attributeExists->withIdentifier(AttributeIdentifier::create('designer', 'name'));
         Assert::assertFalse($isExisting);
     }
 
@@ -68,8 +68,8 @@ class SqlExistsAttributeTest extends SqlIntegrationTestCase
     {
         $this->loadAttribute('designer', 'name', 1);
 
-        $isExistingAtOrder1 = $this->existsAttribute->withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(1));
-        $isExistingAtOrder2 = $this->existsAttribute->withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
+        $isExistingAtOrder1 = $this->attributeExists->withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(1));
+        $isExistingAtOrder2 = $this->attributeExists->withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
 
         Assert::assertTrue($isExistingAtOrder1);
         Assert::assertFalse($isExistingAtOrder2);

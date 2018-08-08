@@ -30,8 +30,8 @@ services:
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.record'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.exists_attribute:
-        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryExistsAttribute
+    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeExists
         arguments:
         - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
 
