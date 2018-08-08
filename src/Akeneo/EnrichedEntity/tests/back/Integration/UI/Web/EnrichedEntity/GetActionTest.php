@@ -10,8 +10,6 @@ use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
-use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\WebClientHelper;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 

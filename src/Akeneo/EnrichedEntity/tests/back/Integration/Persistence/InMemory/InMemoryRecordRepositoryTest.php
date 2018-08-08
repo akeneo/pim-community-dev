@@ -35,7 +35,7 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->recordRepository->create($record);
 
-        $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $recordFound = $this->recordRepository->getByIdentifier($identifier);
         $this->assertTrue($record->equals($recordFound));
     }
 
@@ -65,7 +65,7 @@ class InMemoryRecordRepositoryTest extends TestCase
         $record->updateLabels(LabelCollection::fromArray(['fr_FR' => 'stylist']));
 
         $this->recordRepository->update($record);
-        $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $recordFound = $this->recordRepository->getByIdentifier($identifier);
 
         $this->assertTrue($record->equals($recordFound));
     }
@@ -123,9 +123,8 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $this->expectException(RecordNotFoundException::class);
         $identifier = RecordIdentifier::create('enriched_entity_identifier', 'unknown_identifier');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
 
-        $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $this->recordRepository->getByIdentifier($identifier);
     }
 
     /**
@@ -135,8 +134,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $this->expectException(RecordNotFoundException::class);
         $identifier = RecordIdentifier::create('unknown_enriched_entity_identifier', 'record_identifier');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('unknown_enriched_entity_identifier');
 
-        $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $this->recordRepository->getByIdentifier($identifier);
     }
 }

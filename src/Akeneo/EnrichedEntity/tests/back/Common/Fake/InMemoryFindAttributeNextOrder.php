@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Common;
-
+namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;

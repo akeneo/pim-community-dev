@@ -96,6 +96,5 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
             ]
         );
         $enrichedEntityRepository->create($enrichedEntityEmpty);
-
     }
 }

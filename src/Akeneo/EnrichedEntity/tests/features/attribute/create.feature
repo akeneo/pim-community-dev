@@ -34,7 +34,7 @@ Feature: Create an attribute linked to an enriched entity
     When the user creates a text attribute "name" linked to the enriched entity "designer" with:
       | code | labels                                    | required | order | value_per_channel | value_per_locale | max_length |
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true     | 0     | true              | false            | 44         |
-    Then an exception is thrown with message "Cannot create attribute with code "name", for the enriched entity "designer" because it already exists"
+    Then an exception is thrown
 
   @acceptance-back
   Scenario: Cannot create an attribute with the same order for an enriched entity
@@ -44,5 +44,5 @@ Feature: Create an attribute linked to an enriched entity
     And the user creates a text attribute "bio" linked to the enriched entity "designer" with:
       | code | labels                                  | required | order | value_per_channel | value_per_locale | max_length |
       | bio  | {"en_US": "Bio", "fr_FR": "Biographie"} | true     | 0     | true              | false            | 44         |
-    Then an exception is thrown with message "There is already an attribute in the enriched entity "designer" for order 0"
+    Then an exception is thrown
 

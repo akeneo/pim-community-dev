@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
-use Akeneo\EnrichedEntity\Domain\Query\FindAttributeNextOrderInterface;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\FindAttributeNextOrderInterface;
 use Doctrine\DBAL\Connection;
 
 class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface

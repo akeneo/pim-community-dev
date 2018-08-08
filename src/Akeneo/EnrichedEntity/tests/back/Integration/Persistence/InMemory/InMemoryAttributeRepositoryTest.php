@@ -25,7 +25,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryAttributeRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 

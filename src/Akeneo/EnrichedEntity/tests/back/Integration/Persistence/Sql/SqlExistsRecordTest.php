@@ -42,12 +42,7 @@ class SqlExistsRecordTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $resetQuery = <<<SQL
-            DELETE FROM akeneo_enriched_entity_record;
-            DELETE FROM akeneo_enriched_entity_enriched_entity;
-SQL;
-
-        $this->get('database_connection')->executeQuery($resetQuery);
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadEnrichedEntityDesigner(): void

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
-use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\WebClientHelper;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -30,7 +30,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -208,7 +208,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code' => 'name',
                 'labels'                     => [],
-                'order'                      => 0,
                 'type'                       => $invalidAttributeType,
                 'required'                   => false,
                 'value_per_channel'          => false,
@@ -254,7 +253,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => $enrichedEntityIdentifier,
                 'code' => $recordCode,
                 'labels'                     => [],
-                'order'                      => 0,
                 'type'                       => 'image',
                 'required'                   => false,
                 'value_per_channel'          => false,
@@ -286,7 +284,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => [],
-            'order'                      => 0,
             'type'                       => 'image',
             'required'                   => false,
             'value_per_channel'          => false,
@@ -301,51 +298,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute($this->client, self::CREATE_ATTRIBUTE_ROUTE, $urlParameters, $method, $headers,
             $content);
 
-        $expectedContent = '[{"messageTemplate":"pim_enriched_entity.attribute.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"Attribute identifier already exists for enriched entity \u0022designer\u0022 and attribute code \u0022name\u0022","root":{"maxFileSize":"200.1","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"","invalidValue":{"maxFileSize":"200.1","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+        $expectedContent = '[{"messageTemplate":"pim_enriched_entity.attribute.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"Attribute identifier already exists for enriched entity \u0022designer\u0022 and attribute code \u0022name\u0022","root":{"maxFileSize":"200.1","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"","invalidValue":{"maxFileSize":"200.1","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, $expectedContent);
-    }
-
-    /**
-     * @test
-     * @dataProvider invalidOrders
-     */
-    public function it_returns_an_error_if_the_order_is_not_valid($order, string $expectedResponse)
-    {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::CREATE_ATTRIBUTE_ROUTE,
-            [
-                'enrichedEntityIdentifier' => 'designer',
-            ],
-            'POST',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ],
-            [
-                'identifier'                 => [
-                    'identifier'                 => 'name',
-                    'enriched_entity_identifier' => 'designer',
-                ],
-                'enriched_entity_identifier' => 'designer',
-                'code'                       => 'name',
-                'labels'                     => [],
-                'order'                      => $order,
-                'type'                       => 'image',
-                'required'                   => false,
-                'value_per_channel'          => false,
-                'value_per_locale'           => false,
-                'max_file_size'              => 200,
-                'allowed_extensions'         => ['pdf'],
-            ]
-        );
-
-        $this->webClientHelper->assertResponse(
-            $this->client->getResponse(),
-            Response::HTTP_BAD_REQUEST,
-            $expectedResponse
-        );
     }
 
     /**
@@ -373,7 +328,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
-                'order'                      => 1,
                 'type'                       => 'image',
                 'required'                   => $requiredValue,
                 'value_per_channel'          => false,
@@ -417,7 +371,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
-                'order'                      => 1,
                 'type'                       => 'image',
                 'required'                   => true,
                 'value_per_channel'          => $invalidValuePerChannel,
@@ -461,7 +414,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
-                'order'                      => 1,
                 'type'                       => 'image',
                 'required'                   => true,
                 'value_per_channel'          => false,
@@ -505,7 +457,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
-                'order'                      => 1,
                 'type'                       => 'image',
                 'required'                   => true,
                 'value_per_channel'          => false,
@@ -549,7 +500,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
-                'order'                      => 1,
                 'type'                       => 'image',
                 'required'                   => true,
                 'value_per_channel'          => false,
@@ -589,7 +539,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
-                'order'                      => 1,
                 'type'                       => 'image',
                 'required'                   => true,
                 'value_per_channel'          => false,
@@ -672,34 +621,16 @@ class CreateActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    public function invalidOrders(): array
-    {
-        return [
-            'order is null' => [
-                null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":null,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"order","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
-            ],
-            'order is a string' => [
-                '1',
-                '[{"messageTemplate":"This value should be of type integer.","parameters":{"{{ value }}":"\u00221\u0022","{{ type }}":"integer"},"plural":null,"message":"This value should be of type integer.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":"1","required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"order","invalidValue":"1","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
-            ],
-            'order is negative' => [
-                -1,
-                '[{"messageTemplate":"This value should be greater than or equal to 0.","parameters":{"{{ value }}":"-1","{{ compared_value }}":"0","{{ compared_value_type }}":"integer"},"plural":null,"message":"This value should be greater than or equal to 0.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":-1,"required":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"order","invalidValue":-1,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
-            ],
-        ];
-    }
-
     public function invalidRequiredValues()
     {
         return [
             'Required is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":null,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"required","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":null,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"required","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Required is not a boolean' => [
                 'wrong_boolean_value',
-                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":"wrong_boolean_value","valuePerChannel":false,"valuePerLocale":false},"propertyPath":"required","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":"wrong_boolean_value","valuePerChannel":false,"valuePerLocale":false},"propertyPath":"required","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
     }
@@ -709,11 +640,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Value per channel is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":null,"valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":null,"valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Value per channel is not a boolean' => [
                 'wrong_boolean_value',
-                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":"wrong_boolean_value","valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":"wrong_boolean_value","valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
     }
@@ -723,11 +654,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Value per locale is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":null},"propertyPath":"valuePerLocale","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":null},"propertyPath":"valuePerLocale","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Value per locale is not a boolean' => [
                 'wrong_boolean_value',
-                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":"wrong_boolean_value"},"propertyPath":"valuePerLocale","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":"200","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":"wrong_boolean_value"},"propertyPath":"valuePerLocale","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
     }
@@ -737,19 +668,19 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Max file size is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":null,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":null,"allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Max file size is a string that is not a float' => [
                 'wrong_file_size',
-                '[{"messageTemplate":"This value should be greater than 0.","parameters":{"{{ value }}":"0","{{ compared_value }}":"0","{{ compared_value_type }}":"integer"},"plural":null,"message":"This value should be greater than 0.","root":{"maxFileSize":"wrong_file_size","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":"wrong_file_size","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should be greater than 0.","parameters":{"{{ value }}":"0","{{ compared_value }}":"0","{{ compared_value_type }}":"integer"},"plural":null,"message":"This value should be greater than 0.","root":{"maxFileSize":"wrong_file_size","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":"wrong_file_size","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Max file size is negative' => [
                 '-1.2512',
-                '[{"messageTemplate":"This value should be greater than 0.","parameters":{"{{ value }}":"-1.2512","{{ compared_value }}":"0","{{ compared_value_type }}":"integer"},"plural":null,"message":"This value should be greater than 0.","root":{"maxFileSize":"-1.2512","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":"-1.2512","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should be greater than 0.","parameters":{"{{ value }}":"-1.2512","{{ compared_value }}":"0","{{ compared_value_type }}":"integer"},"plural":null,"message":"This value should be greater than 0.","root":{"maxFileSize":"-1.2512","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":"-1.2512","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Max file size is superior than the limit' => [
                 '10000',
-                '[{"messageTemplate":"This value should be less than or equal to 9999.99.","parameters":{"{{ value }}":"10000","{{ compared_value }}":"9999.99","{{ compared_value_type }}":"double"},"plural":null,"message":"This value should be less than or equal to 9999.99.","root":{"maxFileSize":"10000","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":"10000","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should be less than or equal to 9999.99.","parameters":{"{{ value }}":"10000","{{ compared_value }}":"9999.99","{{ compared_value_type }}":"double"},"plural":null,"message":"This value should be less than or equal to 9999.99.","root":{"maxFileSize":"10000","allowedExtensions":["pdf"],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"maxFileSize","invalidValue":"10000","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
     }
@@ -759,11 +690,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Allowed extensions is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":"150.1","allowedExtensions":null,"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":"150.1","allowedExtensions":null,"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Allowed extensions is a list of integers' => [
                 ['pdf', 1, 'png', 2],
-                '[{"messageTemplate":"This field was not expected.","parameters":{"{{ field }}":"1"},"plural":null,"message":"This field was not expected.","root":{"maxFileSize":"150.1","allowedExtensions":["pdf",1,"png",2],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":["pdf",1,"png",2],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This field was not expected.","parameters":{"{{ field }}":"2"},"plural":null,"message":"This field was not expected.","root":{"maxFileSize":"150.1","allowedExtensions":["pdf",1,"png",2],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":["pdf",1,"png",2],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This field was not expected.","parameters":{"{{ field }}":"3"},"plural":null,"message":"This field was not expected.","root":{"maxFileSize":"150.1","allowedExtensions":["pdf",1,"png",2],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":["pdf",1,"png",2],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This field was not expected.","parameters":{"{{ field }}":"1"},"plural":null,"message":"This field was not expected.","root":{"maxFileSize":"150.1","allowedExtensions":["pdf",1,"png",2],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":["pdf",1,"png",2],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This field was not expected.","parameters":{"{{ field }}":"2"},"plural":null,"message":"This field was not expected.","root":{"maxFileSize":"150.1","allowedExtensions":["pdf",1,"png",2],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":["pdf",1,"png",2],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This field was not expected.","parameters":{"{{ field }}":"3"},"plural":null,"message":"This field was not expected.","root":{"maxFileSize":"150.1","allowedExtensions":["pdf",1,"png",2],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"required":true,"valuePerChannel":false,"valuePerLocale":true},"propertyPath":"allowedExtensions","invalidValue":["pdf",1,"png",2],"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
     }

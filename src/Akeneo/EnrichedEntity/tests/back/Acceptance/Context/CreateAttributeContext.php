@@ -8,6 +8,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeH
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -117,7 +118,7 @@ class CreateAttributeContext implements Context
         $command->required = (bool) $attributeData['required'];
         $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
         $command->valuePerLocale = (bool) $attributeData['value_per_locale'];
-        $command->maxFileSize = (float) $attributeData['max_file_size'];
+        $command->maxFileSize = $attributeData['max_file_size'];
         $command->allowedExtensions = json_decode($attributeData['allowed_extensions']);
 
         ($this->handler)($command);
@@ -142,7 +143,7 @@ class CreateAttributeContext implements Context
         $expected['required'] = (bool) $expected['required'];
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
         $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
-        $expected['max_file_size'] = (float) $expected['max_file_size'];
+        $expected['max_file_size'] = $expected['max_file_size'];
         $expected['allowed_extensions'] = json_decode($expected['allowed_extensions']);
         ksort($expected);
 

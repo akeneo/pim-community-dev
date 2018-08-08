@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Common;
+namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -34,6 +34,14 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         if (isset($this->attributes[$key])) {
             throw new \RuntimeException('Attribute already exists');
         }
+
+        $attributesForEntity = $this->findByEnrichedEntity($attribute->getEnrichedEntityIdentifier());
+        foreach ($attributesForEntity as $attributeForEntity) {
+            if ($attribute->getOrder()->equals($attributeForEntity->getOrder())) {
+                throw new \Exception('An attribute already has this order for this enriched entity');
+            }
+        }
+
         $this->attributes[$key] = $attribute;
     }
 

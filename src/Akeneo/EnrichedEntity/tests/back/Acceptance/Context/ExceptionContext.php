@@ -23,7 +23,15 @@ final class ExceptionContext implements Context
      */
     public function anExceptionIsThrownWithMessage(string $errorMessage)
     {
-        Assert::eq($errorMessage, $this->exceptionThrown->getMessage());
+        Assert::eq($this->exceptionThrown->getMessage(), $errorMessage);
+    }
+
+    /**
+     * @Then /^an exception is thrown$/
+     */
+    public function anExceptionIsThrown()
+    {
+        Assert::notNull($this->exceptionThrown);
     }
 
     public function setException(\Exception $exception): void
