@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Converter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;

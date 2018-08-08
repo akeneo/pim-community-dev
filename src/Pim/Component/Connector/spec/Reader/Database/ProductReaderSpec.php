@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Converter\MetricConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
