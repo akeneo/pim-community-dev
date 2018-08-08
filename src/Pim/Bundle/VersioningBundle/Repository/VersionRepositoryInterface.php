@@ -51,7 +51,7 @@ interface VersionRepositoryInterface
      *
      * @param array $resourceNames
      *
-     * @return Version|null
+     * @return array|null
      */
     public function getNewestLogEntryForRessources($resourceNames);
 
