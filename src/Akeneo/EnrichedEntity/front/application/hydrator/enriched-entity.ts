@@ -9,7 +9,6 @@ export const hydrator = (
 ) => (backendEnrichedEntity: any): EnrichedEntity => {
   const expectedKeys = ['identifier', 'labels', 'image'];
 
-  backendEnrichedEntity.attributeCollection = [];
   backendEnrichedEntity.image = null;
   validateKeys(backendEnrichedEntity, expectedKeys, 'The provided raw enriched entity seems to be malformed.');
   return denormalizeEnrichedEntity(backendEnrichedEntity);

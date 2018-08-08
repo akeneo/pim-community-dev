@@ -1,6 +1,7 @@
-import reducer from 'akeneoenrichedentity/application/reducer/record/create';
+import reducer from 'akeneoenrichedentity/application/reducer/attribute/create';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
-describe('akeneo > enriched entity > application > reducer > record --- create', () => {
+describe('akeneo > enriched entity > application > reducer > attribute --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -15,57 +16,169 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
       type: 'ANOTHER_ACTION',
     });
 
-    expect(newState).toEqual({active: false, data: {code: '', labels: {}}, errors: []});
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
+        labels: {},
+      },
+      errors: [],
+    });
   });
 
-  test('I can start the creation of a new record', () => {
+  test('I can start the creation of a new attribute', () => {
     const state = {
       active: false,
       data: {
         code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
         labels: {},
       },
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_START',
+      type: 'ATTRIBUTE_CREATION_START',
     });
 
     expect(newState).toEqual({
       active: true,
       data: {
         code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
         labels: {},
       },
       errors: [],
     });
   });
 
-  test('I can update the code of the record', () => {
+  test('I can update the code of the attribute', () => {
     const state = {
-      active: true,
+      active: false,
       data: {
         code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
         labels: {},
       },
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_RECORD_CODE_UPDATED',
+      type: 'ATTRIBUTE_CREATION_CODE_UPDATED',
       value: 'code_test',
     });
 
     expect(newState).toEqual({
-      active: true,
+      active: false,
       data: {
         code: 'code_test',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
         labels: {},
       },
       errors: [],
     });
   });
 
-  test('I can update the label of the record', () => {
+  test('I can update the value per locale of the attribute', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED',
+      valuePerLocale: true,
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Text,
+        valuePerLocale: true,
+        valuePerChannel: false,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I can update the value per channel of the attribute', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_VALUE_PER_CHANNEL_UPDATED',
+      valuePerChannel: true,
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: true,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I can update the type of the attribute', () => {
+    const state = {
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Text,
+        valuePerLocale: false,
+        valuePerChannel: false,
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
+      attributeType: AttributeType.Image,
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        type: AttributeType.Image,
+        valuePerLocale: false,
+        valuePerChannel: false,
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
+  test('I can update the label of the attribute', () => {
     const state = {
       active: true,
       data: {
@@ -75,7 +188,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_LABEL_UPDATED',
+      type: 'ATTRIBUTE_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
       locale: 'en_US',
     });
@@ -102,7 +215,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_LABEL_UPDATED',
+      type: 'ATTRIBUTE_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
       locale: 'en_US',
     });
@@ -131,7 +244,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_LABEL_UPDATED',
+      type: 'ATTRIBUTE_CREATION_LABEL_UPDATED',
       value: 'new label',
       locale: 'en_US',
     });
@@ -148,7 +261,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     });
   });
 
-  test('I can cancel the record creation', () => {
+  test('I can cancel the attribute creation', () => {
     const state = {
       active: true,
       data: {
@@ -158,7 +271,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_CANCEL',
+      type: 'ATTRIBUTE_CREATION_CANCEL',
     });
 
     expect(newState).toEqual({
@@ -171,30 +284,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     });
   });
 
-  test('I can dismiss the record creation', () => {
-    const state = {
-      active: true,
-      data: {
-        code: '',
-        labels: {},
-      },
-      errors: [],
-    };
-    const newState = reducer(state, {
-      type: 'DISMISS',
-    });
-
-    expect(newState).toEqual({
-      active: false,
-      data: {
-        code: '',
-        labels: {},
-      },
-      errors: [],
-    });
-  });
-
-  test('I can submit the record creation', () => {
+  test('I can submit the attribute creation', () => {
     const state = {
       active: false,
       data: {
@@ -213,7 +303,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     };
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_SUBMISSION',
+      type: 'ATTRIBUTE_CREATION_SUBMISSION',
     });
 
     expect(newState).toEqual({
@@ -226,7 +316,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     });
   });
 
-  test('I can succeed the record creation', () => {
+  test('I can succeed the attribute creation', () => {
     const state = {
       active: true,
       data: {
@@ -237,7 +327,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     };
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_SUCCEEDED',
+      type: 'ATTRIBUTE_CREATION_SUCCEEDED',
     });
 
     expect(newState).toEqual({
@@ -250,7 +340,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     });
   });
 
-  test('I get errors on the record creation', () => {
+  test('I get errors on the attribute creation', () => {
     const state = {
       active: false,
       data: {
@@ -271,7 +361,7 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     ];
 
     const newState = reducer(state, {
-      type: 'RECORD_CREATION_ERROR_OCCURED',
+      type: 'ATTRIBUTE_CREATION_ERROR_OCCURED',
       errors,
     });
 

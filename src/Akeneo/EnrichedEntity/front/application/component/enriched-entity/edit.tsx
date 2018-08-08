@@ -6,7 +6,6 @@ import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
 import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
 import Image from 'akeneoenrichedentity/application/component/app/image';
-// import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity, {

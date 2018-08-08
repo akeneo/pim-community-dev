@@ -5,7 +5,6 @@ import {
   attributeCreationErrorOccured,
 } from 'akeneoenrichedentity/domain/event/attribute/create';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-// import {updateAttributeResults} from 'akeneoenrichedentity/application/action/attribute/search';
 import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import {
   notifyAttributeWellCreated,

@@ -136,7 +136,7 @@ class CommonConcreteAttribute implements CommonAttribute {
   }
 }
 
-class ConcreteTextAttribute extends CommonConcreteAttribute implements TextAttribute {
+export class ConcreteTextAttribute extends CommonConcreteAttribute implements TextAttribute {
   private constructor(
     identifier: Identifier,
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
@@ -190,7 +190,7 @@ class ConcreteTextAttribute extends CommonConcreteAttribute implements TextAttri
   }
 }
 
-class ConcreteImageAttribute extends CommonConcreteAttribute implements ImageAttribute {
+export class ConcreteImageAttribute extends CommonConcreteAttribute implements ImageAttribute {
   private constructor(
     identifier: Identifier,
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
@@ -240,10 +240,8 @@ export const denormalizeAttribute = (normalizedAttribute: NormalizedTextAttribut
   switch (normalizedAttribute.type) {
     case AttributeType.Text:
       return ConcreteTextAttribute.createFromNormalized(normalizedAttribute as NormalizedTextAttribute);
-      break;
     case AttributeType.Image:
       return ConcreteImageAttribute.createFromNormalized(normalizedAttribute as NormalizedImageAttribute);
-      break;
     default:
       throw new InvalidAttributeTypeError(`Attribute type "${normalizedAttribute.type}" is not supported`);
   }
