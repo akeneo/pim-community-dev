@@ -159,14 +159,16 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function hasFilterOnCategoryWhichImplyAggregation(): bool
     {
-        return !empty(array_filter(
+        $hasFilter = !empty(array_filter(
             $this->getRawFilters(),
             function (array $filter) {
                 return 'field' === $filter['type'] &&
                     'categories' === $filter['field'] &&
-                    $filter['operator'] === Operators::IN_LIST;
+                    (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator']);
             }
         ));
+
+        return $hasFilter;
     }
 
     /**
@@ -240,7 +242,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             function ($filter) {
                 return 'field' === $filter['type'] &&
                     'categories' === $filter['field'] &&
-                    $filter['operator'] === Operators::IN_LIST;
+                    (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator']);
             }
         );
 

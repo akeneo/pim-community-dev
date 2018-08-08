@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7580: Fixes the search on categories with product models
+
 # 2.3.4 (2018-08-08)
 
 ## Bug fixes
