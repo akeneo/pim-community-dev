@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
+class GetAssociatedProductCodesByPublishedProductFromDB implements GetAssociatedProductCodesByProduct
 {
     /**
      * @var Connection
@@ -42,16 +42,16 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
     /**
      * {@inheritdoc}
      */
-    public function getCodes($productId, $associationTypeId)
+    public function getCodes($publishedProductId, $associationTypeId)
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $userGroupsIds = $user->getGroupsIds();
 
         $sql = <<<SQL
 SELECT DISTINCT(p.identifier) as code
-FROM pim_catalog_association a
-    INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
-    INNER JOIN pim_catalog_product p ON p.id = ap.product_id
+FROM pimee_workflow_published_product_association a
+    INNER JOIN pimee_workflow_published_product_association_published_product ap ON a.id = ap.association_id
+    INNER JOIN pimee_workflow_published_product p ON p.id = ap.product_id
     LEFT JOIN pim_catalog_category_product cp on p.id = cp.product_id
     LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
 WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
@@ -62,7 +62,7 @@ SQL;
         $stmt = $this->connection->executeQuery($sql,
             [
                 'userGroupsIds'     => $userGroupsIds,
-                'ownerId'           => $productId,
+                'ownerId'           => $publishedProductId,
                 'associationTypeId' => $associationTypeId
             ],
             [

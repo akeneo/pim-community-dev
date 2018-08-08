@@ -69,8 +69,8 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.applier.product_draft'
 
-    pim_catalog.query.get_associated_product_codes_by_published_product:
-        class: '%pim_catalog.query.get_associated_product_codes_by_product.class%'
+    pimee_workflow.query.get_associated_product_codes_by_published_product:
+        class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByPublishedProductFromDB
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pimee_workflow.entity.published_product_association.class%'
+            - '@security.token_storage'

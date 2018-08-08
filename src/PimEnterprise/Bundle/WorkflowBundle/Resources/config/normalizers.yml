@@ -26,6 +26,6 @@ services:
     pimee_workflow.normalizer.standard.published_product.associations:
         class: '%pim_catalog.normalizer.standard.product.associations.class%'
         arguments:
-            - '@pim_catalog.query.get_associated_product_codes_by_published_product'
+            - '@pimee_workflow.query.get_associated_product_codes_by_published_product'
         tags:
             - { name: pim_serializer.normalizer, priority: 40 }
