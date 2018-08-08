@@ -33,7 +33,7 @@ class AttributeValuePerChannel
         return new self($hasOneValuePerLocale);
     }
 
-    public function isYes(): bool
+    public function normalize(): bool
     {
         return $this->value;
     }

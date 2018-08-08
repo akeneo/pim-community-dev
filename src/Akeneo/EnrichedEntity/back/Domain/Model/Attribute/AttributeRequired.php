@@ -33,7 +33,7 @@ class AttributeRequired
         return new self($isRequired);
     }
 
-    public function isYes(): bool
+    public function normalize(): bool
     {
         return $this->value;
     }

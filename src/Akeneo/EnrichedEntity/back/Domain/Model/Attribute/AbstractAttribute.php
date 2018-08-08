@@ -135,9 +135,9 @@ abstract class AbstractAttribute
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),
-            'required' => $this->required->isYes(),
-            'value_per_channel' => $this->valuePerChannel->isYes(),
-            'value_per_locale' => $this->valuePerLocale->isYes(),
+            'required' => $this->required->normalize(),
+            'value_per_channel' => $this->valuePerChannel->normalize(),
+            'value_per_locale' => $this->valuePerLocale->normalize(),
             'type' => $this->getType(),
         ];
     }

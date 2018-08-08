@@ -19,6 +19,6 @@ class AttributeValuePerChannelSpec extends ObjectBehavior
 
     function it_tells_if_it_is_yes()
     {
-        $this->isYes()->shouldReturn(true);
+        $this->normalize()->shouldReturn(true);
     }
 }
