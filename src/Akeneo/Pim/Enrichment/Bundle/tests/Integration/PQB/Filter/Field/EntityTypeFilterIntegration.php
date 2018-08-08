@@ -7,7 +7,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

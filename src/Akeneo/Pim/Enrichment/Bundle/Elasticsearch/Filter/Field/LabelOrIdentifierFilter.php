@@ -3,8 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * Label or identifier filter for an Elasticsearch query

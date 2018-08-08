@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Product reader that only returns product model entities and skips simple products.

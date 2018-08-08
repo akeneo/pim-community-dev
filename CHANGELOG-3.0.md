@@ -98,6 +98,7 @@
 - Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
 
+- Move namespace `Pim\Component\Catalog\Query` to `Akeneo\Pim\Enrichment\Component\Product\Query`
 - Move namespace `Pim\Component\Catalog\Job` to `Akeneo\Pim\Enrichment\Component\Product\Job`
 - Move namespace `Pim\Component\Catalog\Converter` to `Akeneo\Pim\Enrichment\Component\Product\Converter`
 - Move namespace `Pim\Component\Catalog\Builder` to `Akeneo\Pim\Enrichment\Component\Product\Builder`

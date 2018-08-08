@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
 /**
  * Tests that queries results executed by combining filters with different operators are consistent.

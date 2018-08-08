@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\TextArea;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

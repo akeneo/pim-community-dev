@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Query\Filter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query\Filter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;

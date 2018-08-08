@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Query\Filter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query\Filter;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 

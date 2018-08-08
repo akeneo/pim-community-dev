@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Sorter\Boolean;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
  * Boolean sorter integration tests for localizable attribute

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 class ValueSorterSpec extends ObjectBehavior

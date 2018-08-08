@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\DumperInterface;
-use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 

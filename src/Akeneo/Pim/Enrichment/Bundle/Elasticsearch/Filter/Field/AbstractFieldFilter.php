@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 
 /**
  * Abstract field filter for Elasticsearch

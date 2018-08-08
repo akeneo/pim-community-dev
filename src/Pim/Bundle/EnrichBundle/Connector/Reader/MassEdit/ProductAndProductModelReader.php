@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Special reader that will select all the ancestry of the selected items

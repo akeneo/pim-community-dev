@@ -1,11 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Query\Sorter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Query\Sorter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
-use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 
 class SorterRegistrySpec extends ObjectBehavior
 {
@@ -17,7 +18,7 @@ class SorterRegistrySpec extends ObjectBehavior
 
     function it_is_a_sorter_registry()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface');
+        $this->shouldImplement(SorterRegistryInterface::class);
     }
 
     function it_returns_a_supported_field_sorter($fieldSorter)

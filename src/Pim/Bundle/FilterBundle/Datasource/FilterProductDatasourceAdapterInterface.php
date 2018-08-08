@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Datasource;
 
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
 /**
  * Adapter to apply filters on product datasource

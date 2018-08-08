@@ -14,8 +14,8 @@ use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDatasourceSpec extends ObjectBehavior

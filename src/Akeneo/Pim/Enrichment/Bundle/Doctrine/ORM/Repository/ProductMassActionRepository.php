@@ -3,8 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
 
 /**
