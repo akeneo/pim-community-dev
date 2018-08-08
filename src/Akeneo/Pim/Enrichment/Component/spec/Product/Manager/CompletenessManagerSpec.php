@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Manager;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Manager;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;

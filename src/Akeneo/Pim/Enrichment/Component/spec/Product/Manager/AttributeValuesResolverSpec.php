@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Manager;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Manager\AttributeValuesResolver;
-use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

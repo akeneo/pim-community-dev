@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Manager;
+namespace Akeneo\Pim\Enrichment\Component\Product\Manager;
 
 /**
  * Resolves expected values for attributes
