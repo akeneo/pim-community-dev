@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Record;
 
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -139,7 +139,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_record_identifier_is_not_unique() {
+    public function it_returns_an_error_when_the_record_identifier_is_not_unique()
+    {
         $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
         $content = [

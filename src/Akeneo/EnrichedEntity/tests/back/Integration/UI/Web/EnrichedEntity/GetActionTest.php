@@ -7,10 +7,10 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase

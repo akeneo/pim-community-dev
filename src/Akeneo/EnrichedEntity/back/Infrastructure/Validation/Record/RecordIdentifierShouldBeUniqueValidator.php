@@ -74,4 +74,3 @@ class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
         }
     }
 }
-

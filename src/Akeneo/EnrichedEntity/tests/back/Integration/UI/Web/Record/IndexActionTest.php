@@ -9,10 +9,10 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
