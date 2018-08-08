@@ -14,7 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 
 /**
  * Author filter or an Elasticsearch query.

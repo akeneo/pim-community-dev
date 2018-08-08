@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

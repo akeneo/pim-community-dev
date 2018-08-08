@@ -21,7 +21,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

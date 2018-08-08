@@ -18,7 +18,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

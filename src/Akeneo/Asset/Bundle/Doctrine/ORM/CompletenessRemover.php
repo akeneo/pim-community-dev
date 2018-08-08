@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Simple ORM version of the completeness remover.

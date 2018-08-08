@@ -15,8 +15,8 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

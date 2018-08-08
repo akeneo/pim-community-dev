@@ -6,7 +6,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\AuthorFilter;
 use Symfony\Component\Form\FormFactoryInterface;
 
