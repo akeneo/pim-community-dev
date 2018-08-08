@@ -13,9 +13,9 @@ services:
         class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
         arguments:
             -
-                - 'csv_channel_export'
-                - 'csv_locale_export'
-                - 'csv_currency_export'
+                - 'xlsx_channel_export'
+                - 'xlsx_locale_export'
+                - 'xlsx_currency_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -23,9 +23,9 @@ services:
         class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
         arguments:
             -
-                - 'csv_channel_export'
-                - 'csv_locale_export'
-                - 'csv_currency_export'
+                - 'csv_channel_import'
+                - 'csv_locale_import'
+                - 'csv_currency_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -33,8 +33,8 @@ services:
         class: 'Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
         arguments:
             -
-                - 'csv_channel_export'
-                - 'csv_locale_export'
-                - 'csv_currency_export'
+                - 'xlsx_channel_import'
+                - 'xlsx_locale_import'
+                - 'xlsx_currency_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

@@ -63,8 +63,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
 
     function it_computes_data_related_to_family_root_product_model()
     {
-        $this->shouldBeAnInstanceOf(
-            \Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet::class);
+        $this->shouldBeAnInstanceOf(ComputeDataRelatedToFamilyRootProductModelsTasklet::class);
     }
 
     function it_is_a_tasklet()
