@@ -1,0 +1,56 @@
+parameters:
+    akeneo.pim.automation.suggest_data.connector_name.suggest_data: 'suggest_data'
+    akeneo.pim.automation.suggest_data.job.suggest_data_type: 'suggest_data_push_products'
+    akeneo.pim.automation.suggest_data.job_name.suggest_data: 'suggest_data_push_products'
+
+services:
+    akeneo.pim.automation.suggest_data.job.suggest_data:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo.pim.automation.suggest_data.job_name.suggest_data%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.suggest_data.step.suggest_data'
+        tags:
+            -
+                name: 'akeneo_batch.job'
+                connector: '%akeneo.pim.automation.suggest_data.connector_name.suggest_data%'
+                type: '%pim_enrich.job.mass_edit_type%'
+
+    # Could be moved into a Tasklet later if processor is not used.
+    akeneo.pim.automation.suggest_data.step.suggest_data:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.products_and_variant_products_of_product_models'
+            - '@akeneo.pim.automation.suggest_data.processor.normalization.push_products'
+            - '@akeneo.pim.automation.suggest_data.writer.push_products'
+
+    # This processor does nothing else but returns what it receives from reader.
+    akeneo.pim.automation.suggest_data.processor.normalization.push_products:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Connector\Processor\Normalization\PushProductProcessor'
+
+    akeneo.pim.automation.suggest_data.writer.push_products:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Connector\Writer\PushProductsWriter'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - 10
+
+    akeneo.pim.automation.suggest_data.job.job_parameters.default_values_provider.push_products:
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit.class%'
+        arguments:
+            -
+                - '%akeneo.pim.automation.suggest_data.job_name.suggest_data%'
+        tags:
+            - { name: 'akeneo_batch.job.job_parameters.default_values_provider' }
+
+    akeneo.pim.automation.suggest_data.job_parameters.constraints.push_products:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class%'
+        arguments:
+            -
+                - '%akeneo.pim.automation.suggest_data.job_name.suggest_data%'
+        tags:
+            - { name: 'akeneo_batch.job.job_parameters.constraint_collection_provider' }

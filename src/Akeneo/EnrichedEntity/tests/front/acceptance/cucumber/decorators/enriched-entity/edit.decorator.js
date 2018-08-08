@@ -43,13 +43,13 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const save = async () => {
     await page.evaluate(edit => {
-      const button = edit.querySelector('.AknButton.save');
+      const button = edit.querySelector('.AknButton.AknButton--apply');
 
       button.style.width = '100px';
       button.style.height = '100px';
     }, nodeElement);
 
-    const saveButton = await nodeElement.$('.AknButton.save');
+    const saveButton = await nodeElement.$('.AknButton.AknButton--apply');
     await saveButton.click()
   };
 

@@ -2,6 +2,10 @@
 
 namespace spec\Akeneo\Asset\Component\Upload;
 
+use Akeneo\Asset\Component\Upload\Exception\DuplicateFileException;
+use Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException;
+use Akeneo\Asset\Component\Upload\UploadChecker;
+use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
@@ -27,7 +31,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $localeEn->isActivated()->willReturn(true);
         $localeFr->isActivated()->willReturn(true);
 
-        $this->beConstructedWith($assetRepo, $localeRepository, $localeRepository);
+        $this->beConstructedWith($assetRepo, $localeRepository);
     }
 
     function letGo()
@@ -37,14 +41,14 @@ class UploadCheckerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Asset\Component\Upload\UploadChecker');
-        $this->shouldImplement('Akeneo\Asset\Component\Upload\UploadCheckerInterface');
+        $this->shouldHaveType(UploadChecker::class);
+        $this->shouldImplement(UploadCheckerInterface::class);
     }
 
     function it_parses_filename()
     {
         $parsedFilename = $this->getParsedFilename('foobar.jpg');
-        $parsedFilename->shouldHaveType('Akeneo\Asset\Component\Upload\ParsedFilenameInterface');
+        $parsedFilename->shouldHaveType(ParsedFilenameInterface::class);
     }
 
     function it_checks_a_valid_filename_for_non_existing_asset(
@@ -73,7 +77,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn([]);
 
-        $this->shouldThrow('Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException')
+        $this->shouldThrow(InvalidLocaleException::class)
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
@@ -92,7 +96,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['en_US' => $localeEn]);
 
-        $this->shouldThrow('Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException')
+        $this->shouldThrow(InvalidLocaleException::class)
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
@@ -103,7 +107,7 @@ class UploadCheckerSpec extends ObjectBehavior
 
         $localeFr->isActivated()->willReturn(false);
 
-        $this->shouldThrow('Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException')
+        $this->shouldThrow(InvalidLocaleException::class)
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyImportDir']);
     }
 
@@ -149,7 +153,7 @@ class UploadCheckerSpec extends ObjectBehavior
 
         $assetRepo->findOneByCode('foobar')->willReturn(null);
 
-        $this->shouldThrow('Akeneo\Asset\Component\Upload\Exception\DuplicateFileException')
+        $this->shouldThrow(DuplicateFileException::class)
             ->during('validateUpload', [$parsedFilename, $sourceDirectory, 'dummyImportDir']);
     }
 
@@ -170,7 +174,7 @@ class UploadCheckerSpec extends ObjectBehavior
 
         $assetRepo->findOneByCode('foobar')->willReturn(null);
 
-        $this->shouldThrow('Akeneo\Asset\Component\Upload\Exception\DuplicateFileException')
+        $this->shouldThrow(DuplicateFileException::class)
             ->during('validateUpload', [$parsedFilename, $sourceDirectory, $importDirectory]);
     }
 

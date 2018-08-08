@@ -1,0 +1,52 @@
+Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess:
+    type: entity
+    table: pimee_security_product_category_access
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository
+    uniqueConstraints:
+        category_user_group_idx:
+            columns:
+                - category_id
+                - user_group_id
+    indexes:
+        view_category_user_group_idx:
+            columns:
+                - view_items
+                - user_group_id
+                - category_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewItems:
+            type: boolean
+            column: view_items
+            options:
+                default: false
+        editItems:
+            type: boolean
+            column: edit_items
+            options:
+                default: false
+        ownItems:
+            type: boolean
+            column: own_items
+            options:
+                default: false
+    manyToOne:
+        category:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        userGroup:
+            targetEntity: Akeneo\UserManagement\Component\Model\Group
+            joinColumns:
+                user_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

@@ -1,12 +1,18 @@
-parameters:
+services:
     akeneo_rule_engine.repository.rule_definition:
-        class: AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository
+        class: 'AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository'
 
     pimee_product_asset.repository.asset:
-        class: AkeneoEnterprise\Test\Acceptance\ProductAsset\Asset\InMemoryAssetRepository
+        class: 'AkeneoEnterprise\Test\Acceptance\ProductAsset\Asset\InMemoryAssetRepository'
 
     pimee_product_asset.repository.asset_category:
-        class: AkeneoEnterprise\Test\Acceptance\ProductAsset\AssetCategory\InMemoryAssetCategoryRepository
+        class: 'AkeneoEnterprise\Test\Acceptance\ProductAsset\AssetCategory\InMemoryAssetCategoryRepository'
 
     pimee_product_asset.repository.channel_configuration:
-        class: AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration\InMemoryChannelConfigurationRepository
+        class: 'AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration\InMemoryChannelConfigurationRepository'
+
+    pimee_security.repository.product:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
+
+    pim_catalog.repository.product_without_permission:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'

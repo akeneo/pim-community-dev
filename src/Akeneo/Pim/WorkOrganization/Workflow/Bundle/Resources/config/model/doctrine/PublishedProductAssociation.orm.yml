@@ -2,7 +2,7 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation
     type: entity
     table: pimee_workflow_published_product_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\AssociationRepository
     fields:
         id:
             type: integer

@@ -1,0 +1,23 @@
+services:
+    pim_connector.processor.denormalization.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor'
+        arguments:
+            - '@pimee_workflow.repository.delegating_product'
+            - '@pim_connector.processor.denormalization.product_to_import'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.comparator.filter.product'
+            - '@pim_connector.processor.attribute_filter.product'
+
+    pim_connector.processor.denormalization.product_to_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport'
+        arguments:
+            - '@pimee_workflow.repository.delegating_product'
+            - '@pim_catalog.builder.product'
+
+    pim_connector.processor.denormalization.product_model_loader:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelLoaderProcessor'
+        arguments:
+            - '@pim_catalog.repository.product_model_without_permission'

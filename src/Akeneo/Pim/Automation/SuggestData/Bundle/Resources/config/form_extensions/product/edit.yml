@@ -1,0 +1,7 @@
+extensions:
+    pimee-product-edit-suggest-data-push:
+        module: pimee/product-edit-form/suggest-data-push
+        parent: pim-product-edit-form-attributes
+        targetZone: other-actions
+        aclResourceId: akeneo_suggest_data_product_index
+        position: 120

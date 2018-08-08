@@ -1,0 +1,21 @@
+imports:
+    - { resource: config_behat.yml }
+    - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/pim/queries.yml }
+    - { resource: ../../src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/pim/queries.yml }
+    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Common/Resources/fake_services.yml }
+    - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Common/Resources/helpers.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    csrf_protection: true
+    profiler:
+        collect: false
+
+swiftmailer:
+    disable_delivery: true

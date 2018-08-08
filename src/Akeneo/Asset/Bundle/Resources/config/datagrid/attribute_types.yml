@@ -3,7 +3,7 @@ parameters:
         column:
             type:          pim_assets_collection
             frontend_type: html
-            template:      PimEnterpriseProductAssetBundle:Property:assetsCollection.html.twig
+            template:      AkeneoAssetBundle:Property:assetsCollection.html.twig
         filter:
             type:     pim_assets_collection
             ftype:    ajax_choice

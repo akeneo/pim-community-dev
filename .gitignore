@@ -29,6 +29,7 @@ vendor
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
 !/bin/console
+!/bin/pim-front.sh
 behat.yml
 .php_cs.cache
 .phpspec/*.tpl
@@ -42,8 +43,8 @@ npm-debug.log
 !/docker/httpd.conf
 .env
 docker-compose.override.yml
+composer.lock
 yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*
-composer.lock

@@ -26,14 +26,18 @@ class CreateRecordHandlerSpec extends ObjectBehavior
         RecordRepositoryInterface $recordRepository,
         CreateRecordCommand $createRecordCommand
     ) {
-        $createRecordCommand->identifier = 'intel';
+        $createRecordCommand->identifier = [
+            'identifier' => 'intel',
+            'enriched_entity_identifier' => 'brand'
+        ];
+        $createRecordCommand->code = 'intel';
         $createRecordCommand->enrichedEntityIdentifier = 'brand';
         $createRecordCommand->labels = [
             'en_US' => 'Intel',
             'fr_FR' => 'Intel',
         ];
 
-        $recordRepository->save(Argument::type(Record::class))->shouldBeCalled();
+        $recordRepository->create(Argument::type(Record::class))->shouldBeCalled();
 
         $this->__invoke($createRecordCommand);
     }

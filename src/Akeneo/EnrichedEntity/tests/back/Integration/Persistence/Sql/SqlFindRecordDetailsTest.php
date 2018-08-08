@@ -8,6 +8,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
@@ -33,7 +34,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     public function it_returns_null_when_there_is_no_records()
     {
         $this->assertNull(($this->findRecordDetailsQuery)(
-                RecordIdentifier::fromString('unknown_record_identifier'),
+                RecordIdentifier::create('unknown_enriched_entity', 'unknown_record_identifier'),
                 EnrichedEntityIdentifier::fromString('unknown_enriched_entity')
             )
         );
@@ -45,12 +46,12 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     public function it_returns_the_record_details()
     {
         $actualStarck = ($this->findRecordDetailsQuery)(
-            RecordIdentifier::fromString('starck'),
+            RecordIdentifier::create('designer', 'starck'),
             EnrichedEntityIdentifier::fromString('designer')
         );
 
         $expectedStarck = new RecordDetails();
-        $expectedStarck->identifier = RecordIdentifier::fromString('starck');
+        $expectedStarck->identifier = RecordIdentifier::create('designer', 'starck');
         $expectedStarck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedStarck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
@@ -60,8 +61,8 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $resetQuery = <<<SQL
-            DELETE FROM akeneo_enriched_entity_enriched_entity;
             DELETE FROM akeneo_enriched_entity_record;
+            DELETE FROM akeneo_enriched_entity_enriched_entity;
 SQL;
 
         $this->get('database_connection')->executeQuery($resetQuery);
@@ -77,20 +78,22 @@ SQL;
                 'en_US' => 'Designer',
             ]
         );
-        $enrichedEntityRepository->save($enrichedEntity);
+        $enrichedEntityRepository->create($enrichedEntity);
 
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
-        $recordRepository->save(
+        $recordRepository->create(
             Record::create(
-                RecordIdentifier::fromString('starck'),
+                RecordIdentifier::create('designer', 'starck'),
                 EnrichedEntityIdentifier::fromString('designer'),
+                RecordCode::fromString('starck'),
                 ['fr_Fr' => 'Philippe Starck']
             )
         );
-        $recordRepository->save(
+        $recordRepository->create(
             Record::create(
-                RecordIdentifier::fromString('coco'),
+                RecordIdentifier::create('designer', 'coco'),
                 EnrichedEntityIdentifier::fromString('designer'),
+                RecordCode::fromString('coco'),
                 ['fr_Fr' => 'Coco Chanel']
             )
         );

@@ -5,8 +5,8 @@ namespace spec\Akeneo\Tool\Bundle\RuleEngineBundle\Denormalizer;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ConditionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -75,7 +75,7 @@ class RuleDenormalizerSpec extends ObjectBehavior
 
     function it_does_not_support_denormalization_for_invalid_data()
     {
-        $type = 'PimEnterprise\Component\CatalogRule\Model\ProductCondition';
+        $type = 'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition';
 
         $this->supportsDenormalization(Argument::any(), $type)->shouldReturn(false);
     }

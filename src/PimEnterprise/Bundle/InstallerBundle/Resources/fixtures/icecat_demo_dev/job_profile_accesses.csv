@@ -1,5 +1,5 @@
 job_profile;execute_job_profile;edit_job_profile
-csv_product_model_import;All;IT support,Manager
+csv_product_model_import;IT support,Manager;IT support,Manager
 csv_product_import;All;IT support,Manager
 csv_product_import_with_rules;All;IT support,Manager
 csv_product_model_import_with_rules;All;IT support,Manager
@@ -110,3 +110,4 @@ compute_product_models_descendants;All;IT support,Manager
 compute_completeness_of_products_family;All;IT support,Manager
 compute_family_variant_structure_changes;All;IT support,Manager
 change_parent_product;All;
+suggest_data_push_products;All;IT support,Manager

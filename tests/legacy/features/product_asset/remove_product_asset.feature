@@ -15,8 +15,8 @@ Feature: Remove product assets
     Given I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I check the row "chicagoskyline"
     And I check the row "akene"
+    And I check the row "chicagoskyline"
     And I confirm the asset modification
     And I save the product
     When I am on the "chicagoskyline" asset page
@@ -32,8 +32,8 @@ Feature: Remove product assets
     Given I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I check the row "chicagoskyline"
     And I check the row "akene"
+    And I check the row "chicagoskyline"
     And I confirm the asset modification
     And I save the product
     And I press the secondary action "Publish"

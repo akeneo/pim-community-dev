@@ -1,7 +1,6 @@
 parameters:
     pimee_workflow.twig.extension.product_draft_changes.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension
     pimee_workflow.rendering.diff_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\DiffFactory
-    pimee_workflow.twig.extension.product_value_presenter.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductValuePresenterExtension
     pimee_workflow.renderer.html.simple_list.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Diff\Renderer\Html\SimpleList
     pimee_workflow.product_draft_renderer.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\PhpDiffRenderer
     pimee_workflow.presenter.text.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextPresenter
@@ -154,3 +153,17 @@ services:
         class: '%pimee_workflow.presenter.product_value.file.class%'
         tags:
             - { name: pimee_workflow.product_value_presenter }
+
+    pimee_reference_data.workflow.presenter.reference_data:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataPresenter'
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_reference_data.workflow.presenter.reference_data_collection:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataCollectionPresenter'
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+        tags:
+            - { name: pimee_workflow.presenter }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
+import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
@@ -10,6 +10,7 @@ import {
   enrichedEntityCreationCancel
 } from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import {createEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/create';
+import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 
 interface StateProps {
   context: {
@@ -29,7 +30,7 @@ interface DispatchProps {
     onCodeUpdated: (value: string) => void
     onLabelUpdated: (value: string, locale: string) => void
     onCancel: () => void
-    onSubmit: (identifier: string, labels: { [localeCode: string]: string }) => void
+    onSubmit: () => void
   }
 }
 
@@ -39,15 +40,13 @@ class Create extends React.Component<CreateProps> {
   private labelInput: HTMLInputElement;
   public props: CreateProps;
 
-  constructor(props: CreateProps) {
-    super(props);
+  componentDidMount() {
+    if (this.labelInput) {
+      this.labelInput.focus();
+    }
   }
 
-  componentDidMount(){
-    this.labelInput.focus();
-  }
-
-  private onCodeUpdate = (event: any) => {
+  private onCodeUpdate = (event: any) =>{
     this.props.events.onCodeUpdated(event.target.value);
   };
 
@@ -55,117 +54,94 @@ class Create extends React.Component<CreateProps> {
     this.props.events.onLabelUpdated(event.target.value, this.props.context.locale);
   };
 
-  private onCancel = () => {
-    this.props.events.onCancel();
-  };
-
-  private onSubmit = () => {
-    this.props.events.onSubmit(this.props.data.code, this.props.data.labels);
-  };
-
-  private getCodeValidationErrorsMessages = () => {
-    const errors = this.props.errors.filter((error: ValidationError) => {
-      return 'identifier' === error.propertyPath;
-    });
-
-    let errorMessages = errors.map((error: ValidationError, key:number) => {
-      return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
-    });
-
-    if (errorMessages.length > 0) {
-      return (
-          <div className="AknFieldContainer-footer AknFieldContainer-validationErrors validation-errors">
-            <span className="AknFieldContainer-validationError">
-              <i className="icon-warning-sign"></i>
-              {errorMessages}
-            </span>
-          </div>
-      );
+  private onKeyPress = (event: any) => {
+    if ('Enter' === event.key) {
+      this.props.events.onSubmit();
     }
-
-    return null;
   };
 
   render(): JSX.Element | JSX.Element[] | null {
-    const errorContainer: JSX.Element | null = this.getCodeValidationErrorsMessages();
-
     return (
-        <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
-          <div>
-            <div className="AknFullPage AknFullPage--modal">
-              <div className="AknFullPage-content">
-                <div className="AknFullPage-left">
-                  <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image"/>
-                </div>
-                <div className="AknFullPage-right">
-                  <div
-                      className="AknFullPage-subTitle">{__('pim_enriched_entity.enriched_entity.create.subtitle')}</div>
-                  <div className="AknFullPage-title">{__('pim_enriched_entity.enriched_entity.create.title')}</div>
-                  <div data-drop-zone="fields">
-                    <div className="AknFieldContainer" data-code="label">
-                      <div className="AknFieldContainer-header">
-                        <label title="{__('pim_enriched_entity.enriched_entity.create.input.label')}"
-                               className="AknFieldContainer-label control-label required truncate"
-                               htmlFor="pim_enriched_entity.enriched_entity.create.input.label"
-                        >
-                          {__('pim_enriched_entity.enriched_entity.create.input.label')}
-                        </label>
-                      </div>
-                      <div className="AknFieldContainer-inputContainer field-input">
-                        <input type="text"
-                               ref={(input: HTMLInputElement) => { this.labelInput = input; }}
-                               className="AknTextField"
-                               id="pim_enriched_entity.enriched_entity.create.input.label"
-                               name="label"
-                               value={this.props.data.labels[this.props.context.locale]}
-                               onChange={this.onLabelUpdate} />
-                        <Flag locale={this.props.context.locale} displayLanguage={false}/>
-                      </div>
+      <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
+        <div>
+          <div className="AknFullPage AknFullPage--modal">
+            <div className="AknFullPage-content">
+              <div className="AknFullPage-left">
+                <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image"/>
+              </div>
+              <div className="AknFullPage-right">
+                <div
+                    className="AknFullPage-subTitle">{__('pim_enriched_entity.enriched_entity.create.subtitle')}</div>
+                <div className="AknFullPage-title">{__('pim_enriched_entity.enriched_entity.create.title')}</div>
+                <div>
+                  <div className="AknFieldContainer" data-code="label">
+                    <div className="AknFieldContainer-header">
+                      <label
+                             className="AknFieldContainer-label"
+                             htmlFor="pim_enriched_entity.enriched_entity.create.input.label"
+                      >
+                        {__('pim_enriched_entity.enriched_entity.create.input.label')}
+                      </label>
                     </div>
-                    <div className="AknFieldContainer" data-code="code">
-                      <div className="AknFieldContainer-header">
-                        <label title="{__('pim_enriched_entity.enriched_entity.create.input.code')}"
-                               className="AknFieldContainer-label control-label required truncate"
-                               htmlFor="pim_enriched_entity.enriched_entity.create.input.code"
-                        >
-                          {__('pim_enriched_entity.enriched_entity.create.input.code')}
-                        </label>
-                      </div>
-                      <div className="AknFieldContainer-inputContainer field-input">
-                        <input type="text" className="AknTextField"
-                               id="pim_enriched_entity.enriched_entity.create.input.code"
-                               name="code"
-                               value={this.props.data.code}
-                               onChange={this.onCodeUpdate} />
-                      </div>
-                      {errorContainer}
+                    <div className="AknFieldContainer-inputContainer">
+                      <input type="text"
+                        ref={(input: HTMLInputElement) => { this.labelInput = input; }}
+                        className="AknTextField"
+                        id="pim_enriched_entity.enriched_entity.create.input.label"
+                        name="label"
+                        value={this.props.data.labels[this.props.context.locale]}
+                        onChange={this.onLabelUpdate}
+                        onKeyPress={this.onKeyPress}
+                      />
+                      <Flag locale={this.props.context.locale} displayLanguage={false}/>
+                    </div>
+                    {getErrorsView(this.props.errors, 'labels')}
+                  </div>
+                  <div className="AknFieldContainer" data-code="code">
+                    <div className="AknFieldContainer-header">
+                      <label className="AknFieldContainer-label"
+                        htmlFor="pim_enriched_entity.enriched_entity.create.input.code"
+                      >
+                        {__('pim_enriched_entity.enriched_entity.create.input.code')}
+                      </label>
+                    </div>
+                    <div className="AknFieldContainer-inputContainer field-input">
+                      <input type="text" className="AknTextField"
+                        id="pim_enriched_entity.enriched_entity.create.input.code"
+                        name="code"
+                        value={this.props.data.code}
+                        onChange={this.onCodeUpdate}
+                        onKeyPress={this.onKeyPress}
+                      />
+                      {getErrorsView(this.props.errors, 'identifier')}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="AknButtonList AknButtonList--right modal-footer">
-            <span title="{__('pim_enriched_entity.enriched_entity.create.cancel')}"
-                  className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
-                  onClick={this.onCancel}
-                  tabIndex={0}
-            >
-              {__('pim_enriched_entity.enriched_entity.create.cancel')}
-            </span>
-            <button title="{__('pim_enriched_entity.enriched_entity.create.confirm')}"
-                    className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
-                    onClick={this.onSubmit}
-            >
-              {__('pim_enriched_entity.enriched_entity.create.confirm')}
-            </button>
-          </div>
         </div>
+        <div className="AknButtonList AknButtonList--right modal-footer">
+          <span title="{__('pim_enriched_entity.enriched_entity.create.cancel')}"
+            className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
+            onClick={this.props.events.onCancel}
+            tabIndex={0}
+          >
+            {__('pim_enriched_entity.enriched_entity.create.cancel')}
+          </span>
+          <button
+            className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
+            onClick={this.props.events.onSubmit}
+          >
+            {__('pim_enriched_entity.enriched_entity.create.confirm')}
+          </button>
+        </div>
+      </div>
     );
   };
 }
 
-export default connect((state: State): StateProps => {
+export default connect((state: IndexState): StateProps => {
   const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
   return {
@@ -187,8 +163,8 @@ export default connect((state: State): StateProps => {
       onCancel: () => {
         dispatch(enrichedEntityCreationCancel());
       },
-      onSubmit: (identifier: string, labels: { [localeCode: string]: string }) => {
-        dispatch(createEnrichedEntity(identifier, labels));
+      onSubmit: () => {
+        dispatch(createEnrichedEntity());
       }
     }
   } as DispatchProps

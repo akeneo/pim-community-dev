@@ -13,12 +13,16 @@ export class RecordSaverImplementation implements RecordSaver {
   }
 
   async save(record: Record): Promise<ValidationError[] | null> {
+    const normalizedRecord = record.normalize() as any;
+    normalizedRecord.enriched_entity_identifier = normalizedRecord.enrichedEntityIdentifier;
+    normalizedRecord.identifier.enriched_entity_identifier = normalizedRecord.identifier.enrichedEntityIdentifier;
+
     return await postJSON(
       routing.generate('akeneo_enriched_entities_record_edit_rest', {
         enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
-        identifier: record.getIdentifier().stringValue(),
+        identifier: record.getIdentifier().identifier,
       }),
-      record.normalize()
+      normalizedRecord
     ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');
@@ -29,11 +33,15 @@ export class RecordSaverImplementation implements RecordSaver {
   }
 
   async create(record: Record): Promise<ValidationError[] | null> {
+    const normalizedRecord = record.normalize() as any;
+    normalizedRecord.enriched_entity_identifier = normalizedRecord.enrichedEntityIdentifier;
+    normalizedRecord.identifier.enriched_entity_identifier = normalizedRecord.identifier.enrichedEntityIdentifier;
+
     return await postJSON(
       routing.generate('akeneo_enriched_entities_record_create_rest', {
         enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
       }),
-      record.normalize()
+      normalizedRecord
     ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');

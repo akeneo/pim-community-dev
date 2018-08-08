@@ -1,0 +1,19 @@
+services:
+    pimee_catalog_rule.event_subscriber.rule_relation:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleRelationSubscriber'
+        arguments:
+            - '@pimee_catalog_rule.manager.rule_relation'
+            - '@pimee_catalog_rule.saver.rule_relation'
+            - '@pimee_catalog_rule.remover.rule_relation'
+            - '@akeneo_rule_engine.repository.rule_relation'
+            - '@pimee_catalog_rule.builder.product'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pimee_catalog_rule.event_subscriber.rule_execution:
+        class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscriber'
+        arguments:
+            - '@pim_notification.notifier'
+            - '%pim_notification.entity.notification.class%'
+        tags:
+            - { name: kernel.event_subscriber}

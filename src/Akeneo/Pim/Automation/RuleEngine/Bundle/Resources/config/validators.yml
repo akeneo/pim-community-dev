@@ -1,0 +1,75 @@
+parameters:
+    pimee_catalog_rule.validator.existing_filter_field.class:   Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator
+    pimee_catalog_rule.validator.existing_set_field.class:      Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingSetFieldValidator
+    pimee_catalog_rule.validator.existing_copy_fields.class:    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingCopyFieldsValidator
+    pimee_catalog_rule.validator.existing_add_field.class:      Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingAddFieldValidator
+    pimee_catalog_rule.validator.non_empty_value.class:         Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator
+    pimee_catalog_rule.validator.value_condition.class:         Akeneo\Pim\Automation\RuleEngine\Component\Validator\ValueConditionValidator
+    pimee_catalog_rule.validator.property_action.class:         Akeneo\Pim\Automation\RuleEngine\Component\Validator\PropertyActionValidator
+    pimee_catalog_rule.validator.existing_remove_field.class:   Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingRemoveFieldValidator
+    pimee_catalog_rule.validator.include_children_option.class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\IncludeChildrenOptionValidator
+
+services:
+    pimee_catalog_rule.validator.existing_filter_field:
+        class: '%pimee_catalog_rule.validator.existing_filter_field.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_filter_field_validator }
+
+    pimee_catalog_rule.validator.existing_set_field:
+        class: '%pimee_catalog_rule.validator.existing_set_field.class%'
+        arguments:
+            - '@pim_catalog.updater.setter.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_set_field_validator }
+
+    pimee_catalog_rule.validator.existing_copy_fields:
+        class: '%pimee_catalog_rule.validator.existing_copy_fields.class%'
+        arguments:
+            - '@pim_catalog.updater.copier.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_copy_fields_validator }
+
+    pimee_catalog_rule.validator.existing_add_field:
+        class: '%pimee_catalog_rule.validator.existing_add_field.class%'
+        arguments:
+            - '@pim_catalog.updater.adder.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_add_field_validator }
+
+    pimee_catalog_rule.validator.non_empty_value:
+        class: '%pimee_catalog_rule.validator.non_empty_value.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_non_empty_value_validator }
+
+    pimee_catalog_rule.validator.value_condition:
+        class: '%pimee_catalog_rule.validator.value_condition.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_value_condition_validator }
+
+    pimee_catalog_rule.validator.property_action:
+        class: '%pimee_catalog_rule.validator.property_action.class%'
+        arguments:
+            - '@akeneo_rule_engine.action_applier.registry'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_property_action_validator }
+
+    pimee_catalog_rule.validator.existing_remove_field:
+            class: '%pimee_catalog_rule.validator.existing_remove_field.class%'
+            arguments:
+                - '@pim_catalog.updater.remover.registry'
+            tags:
+                - { name: validator.constraint_validator, alias: pimee_remove_field_validator }
+
+    pimee_catalog_rule.validator.include_children_option:
+        class: '%pimee_catalog_rule.validator.include_children_option.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_include_children_option_validator }

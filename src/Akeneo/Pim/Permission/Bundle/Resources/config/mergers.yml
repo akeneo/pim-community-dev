@@ -1,0 +1,43 @@
+services:
+    pimee_catalog.security.merger.not_granted_category:
+        class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedCategoryMerger'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.updater.category_field_without_permission'
+
+    pimee_catalog.security.merger.not_granted_associated_product:
+        class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedAssociatedProductMerger'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.updater.association_field_without_permission'
+            - '@pimee_security.query.product_category_access'
+            - '@pimee_security.query.product_model_category_access'
+            - '@security.token_storage'
+
+    pimee_catalog.security.merger.not_granted_values:
+        class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.factory.value_collection'
+
+    pimee_catalog.security.merger.merge_data_on_product:
+        class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'
+        arguments:
+            -
+                - '@pimee_catalog.security.merger.not_granted_values'
+                - '@pimee_catalog.security.merger.not_granted_associated_product'
+                - '@pimee_catalog.security.merger.not_granted_category'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_catalog.repository.product_model_without_permission'
+
+    pimee_catalog.security.merger.merge_data_on_product_model:
+        class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProductModel'
+        arguments:
+            -
+                - '@pimee_catalog.security.merger.not_granted_values'
+                - '@pimee_catalog.security.merger.not_granted_associated_product'
+                - '@pimee_catalog.security.merger.not_granted_category'
+            - '@pim_catalog.repository.product_model_without_permission'

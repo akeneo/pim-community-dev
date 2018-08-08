@@ -216,7 +216,7 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
         return $qb
             ->join('entity_with_values_draft.entityWithValues', 'entity_with_values')
             ->leftJoin('entity_with_values.categories', 'category')
-            ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
+            ->innerJoin('AkeneoPimPermissionBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
             ->where($qb->expr()->eq('a.ownItems', true))
             ->andWhere($qb->expr()->in('a.userGroup', ':userGroups'))
             ->andWhere($qb->expr()->eq('entity_with_values_draft.status', EntityWithValuesDraftInterface::READY))

@@ -8,8 +8,8 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\Create
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -30,7 +30,7 @@ final class CreateEnrichedEntityContext implements Context
     private $exceptionContext;
 
     public function __construct(
-        EnrichedEntityRepository $enrichedEntityRepository,
+        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
         CreateEnrichedEntityHandler $createEnrichedEntityHandler,
         ExceptionContext $exceptionContext
     ) {
@@ -44,7 +44,7 @@ final class CreateEnrichedEntityContext implements Context
      */
     public function theUserCreatesAnEnrichedEntityWith($identifier, TableNode $updateTable)
     {
-        $updates = $updateTable->getHash();
+        $updates = current($updateTable->getHash());
         $command = new CreateEnrichedEntityCommand();
         $command->identifier = $identifier;
         $command->labels = json_decode($updates['labels'], true);

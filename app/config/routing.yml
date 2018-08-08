@@ -5,9 +5,12 @@ akeneo_channel:
 akeneo_pim_structure:
     resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
 
+akeneo_pim_enrichment:
+    resource: "@AkeneoPimEnrichmentBundle/Resources/config/routing.yml"
+
 # PIM
 pimee_teamwork_assistant:
-    resource: "@PimEnterpriseTeamworkAssistantBundle/Resources/config/routing/routing.yml"
+    resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
 
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
@@ -34,13 +37,10 @@ pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
 pimee_workflow:
-    resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
 
 pim_versioning:
-    resource: "@PimEnterpriseRevertBundle/Resources/config/routing.yml"
-
-pim_comment:
-    resource: "@PimCommentBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
 
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
@@ -49,16 +49,16 @@ pim_reference_data:
     resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 
 pim_catalog_rule:
-    resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
 
 pimee_product_asset:
-    resource: "@PimEnterpriseProductAssetBundle/Resources/config/routing.yml"
+    resource: "@AkeneoAssetBundle/Resources/config/routing.yml"
 
 pimee_enriched_entity:
     resource: "@AkeneoEnrichedEntityBundle/Resources/config/routing.yml"
 
 pim_security:
-    resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"
 
 pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
@@ -66,6 +66,9 @@ pim_api:
 
 pim_volume_monitoring:
     resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
+
+pim_suggest_data:
+    resource: "@AkeneoSuggestDataBundle/Resources/config/routing.yml"
 
 # Oro platform
 

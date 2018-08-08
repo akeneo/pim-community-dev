@@ -1,0 +1,90 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Eliminar
+        execute: Ejecutar
+      title: Reglas
+      column:
+        code: Código
+        conditions: Condición
+        actions: Acción
+        impacted_product_count:
+          label: Productos afectados
+          count: '{0,1}%count% producto afectado|]1,Inf[%count% productos afectados'
+          no_yet_calculated: Aún no calculados
+      mass_edit_action:
+        impacted_product_count: Calcular los productos afectados
+        execute: Ejecutar
+        delete: Eliminar
+  actions:
+    type:
+      "copy": Entonces %from_field% es copiado en %to_field%
+      "copy_value": Entonces %from_field% es copiado en %to_field%
+      "set": Entonces %value% es establecido en %field%
+      "set_value": Entonces %value% es establecido en %field%
+      "add": Entonces %value% es agregado en %field%
+      "remove": Entonces %value% es eliminado de %field%
+    options:
+      include_children: y niños
+  condition:
+    label: Si %field% %operator% %value%
+    operators:
+      "STARTS WITH": comienza con
+      "ENDS WITH": termina con
+      "CONTAINS": contiene
+      "DOES NOT CONTAIN": no contiene
+      "EMPTY": está vacía
+      "NOT EMPTY": no está vacío
+      "IN": en
+      "NOT IN": no en
+      "IN CHILDREN": en descendiente
+      "NOT IN CHILDREN": no en descendiente
+      "UNCLASSIFIED": sin clasificar
+      "IN OR UNCLASSIFIED": sin clasificar o dentro
+      "BETWEEN": entre
+      "NOT BETWEEN": No entre
+      "=": igual
+      "!=": no es igual a
+      ">": mayor que
+      ">=": igual o mayor que
+      "<": menor que
+      "<=": igual o menor que
+  acl_group:
+    rule: Reglas
+  acl:
+    rule:
+      view_permissions: Ver reglas
+      delete_permissions: Eliminar reglas
+      impacted_product_count_permissions: Calcular los productos afectados por las reglas
+      execute_permissions: Ejecutar reglas
+  attribute:
+    tab:
+      rule.title: Reglas
+    grid:
+      is_smart.label: Inteligente
+    acl:
+      rule.view_permissions: Ver reglas
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: El valor de este atributo puede provenir de las reglas <strong>%rule%</strong>. Esto significa que si las condiciones de la regla son válidas, su modificación será invalidada.
+      loading.title: Cargando...
+    history: Regla aplicada "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Afectada por la(s) regla(s):'
+  steps:
+    product_rule_definition_reader.title: Lector de reglas de importación de productos
+    rule_definition_processor.title: Procesador de reglas de importación de productos
+    product_rule_definition_writer.title: Editor de reglas de importación de productos
+    rules_execution.title: Ejecución de las reglas
+  notification:
+    rule:
+      executed: Ejecución de la(s) regla(s) finalizada
+    mass_edit_rule:
+      success: Cálculo de productos afectados por las reglas finalizado
+      error: Un error ocurrió durante el cálculo de los productos afectados por la(s) regla(s)
+btn:
+  Execute rules: Ejecutar reglas
+mass_edit_rule: Configuración de reglas
+job_execution.summary.rule_calculated: Número de reglas

@@ -36,7 +36,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     akeneo_enrichedentity.array_converter.standard_to_flat.product.value_converter.enriched_entity:
-        class: '%pim_connector.array_converter.standard_to_flat.product.value_converter.multiselect.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
             - ['akeneo_enriched_entity_collection']
@@ -44,7 +44,7 @@ services:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
     akeneo_enrichedentity.array_converter.flat_to_standard.product.value_converter.enriched_entity:
-        class: '%pim_connector.array_converter.flat_to_standard.product.value_converter.multiselect.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\MultiSelectConverter'
         parent: pim_connector.array_converter.flat_to_standard.product.value_converter.abstract
         arguments:
             - ['akeneo_enriched_entity_collection']
@@ -62,10 +62,12 @@ services:
     akeneo_enrichedentity.infrastructure.catalog.normalizer.enriched_entity_collection_value:
         class: 'Akeneo\Pim\EnrichedEntity\Component\Normalizer\EnrichedEntityCollectionValueNormalizer'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     akeneo_enrichedentity.infrastructure.catalog.normalizer.record:
         class: 'Akeneo\Pim\EnrichedEntity\Component\Normalizer\RecordNormalizer'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
             - { name: pim_versioning.serializer.normalizer, priority: 100 }

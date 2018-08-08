@@ -2,16 +2,17 @@
 
 namespace AkeneoEnterprise\Test\Acceptance\ProductAsset\AssetCategory;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
-class InMemoryAssetCategoryRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, AssetCategoryRepositoryInterface
+class InMemoryAssetCategoryRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, AssetCategoryRepositoryInterface, ItemCategoryRepositoryInterface
 {
     /** @var ArrayCollection */
     private $categories;
@@ -48,5 +49,29 @@ class InMemoryAssetCategoryRepository implements IdentifiableObjectRepositoryInt
     public function findRoot()
     {
         throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemCountByTree($item)
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsCountInCategory(array $categoryIds = [])
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findCategoriesItem($item): array
+    {
+        throw new NotImplementedException();
     }
 }

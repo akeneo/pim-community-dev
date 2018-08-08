@@ -1,0 +1,40 @@
+Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess:
+    type: entity
+    table: pimee_security_locale_access
+    repositoryClass: Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository
+    uniqueConstraints:
+        locale_user_group_idx:
+            columns:
+                - locale_id
+                - user_group_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewProducts:
+            type: boolean
+            column: view_products
+            options:
+                default: false
+        editProducts:
+            type: boolean
+            column: edit_products
+            options:
+                default: false
+    manyToOne:
+        locale:
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            joinColumns:
+                locale_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        userGroup:
+            targetEntity: Akeneo\UserManagement\Component\Model\Group
+            joinColumns:
+                user_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

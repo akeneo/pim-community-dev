@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Tasklet;
 
+use Akeneo\Pim\Permission\Component\Attributes as SecurityAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
-use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 
 /**
  * Tasklet for product drafts mass approval.

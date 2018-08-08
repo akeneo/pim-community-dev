@@ -1,0 +1,94 @@
+pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} regla|]1, Inf[{{ count }} reglas"
+  execution_button: Ejecutar reglas
+  selected: 'reglas seleccionadas'
+  popin:
+    execute_rules:
+      confirm_title: Confirmar la ejecución
+      confirm_content: '¿Está seguro que desea ejecutar todas las reglas? (esto puede tomar algún tiempo)'
+  notification:
+    fail: La acción no puede ser realizada
+    launched: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
+  attribute:
+    list:
+      code.label: Código
+      condition.label: Condición
+      action.label: Acción
+      no_rule_yet.label: Ninguna regla por el momento
+  rule:
+    condition:
+      if.label: si
+    action:
+      then.label: entonces
+      set_value.label: es modificado dentro
+      copy_value.label: es copiado en
+      set.label: es modificado dentro
+      copy.label: es copiado en
+      add.label: es agregado en
+      remove.label: es eliminada de
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Confirmar la ejecución
+          confirm_content: '¿Está seguro que desea ejecutar esta regla?'
+      mass_edit_action:
+        confirm_title: Confirmar el cálculo
+        confirm_content: '¿Está seguro que desea calcular los productos afectados por la regla?'
+      mass_action:
+        execute:
+          confirm_title: Confirmar la ejecución
+          confirm_content: '¿Está seguro que desea ejecutar las reglas seleccionadas?'
+          success: La acción en masa para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada
+          error: Ha ocurrido un error durante la ejecución de las reglas.
+          empty_selection: Ninguna regla seleccionada.
+        delete:
+          confirm_title: Confirmar la ejecución
+          confirm_content: '¿Está seguro que desea eliminar las reglas seleccionadas?'
+          success: Ha eliminado las reglas.
+          error: Ha ocurrido un error durante la eliminación de las reglas.
+          empty_selection: Ninguna regla seleccionada.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Reglas
+confirmation:
+  remove:
+    rule: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción'
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Regla eliminada con éxito
+flash:
+  rule:
+    impacted_product_count: La acción en bloque para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada.
+    executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas
+batch_jobs:
+  default_steps:
+    execute_rules: Ejecución de las reglas
+  yml_rule_import:
+    label: Importación de regla en YAML
+    import.label: Importación de regla
+  yml_rule_export:
+    label: Exportación de regla en YAML
+    export.label: Exportación de regla
+  rule_impacted_product_count:
+    label: Productos afectados por las reglas
+    perform.label: Cuenta de productos afectados
+  csv_product_import_with_rules:
+    label: Importar productos en CSV con reglas
+    import.label: Importar productos
+  csv_product_model_import_with_rules:
+    label: Importación del modelo del producto en CSV con las reglas
+  xlsx_product_import_with_rules:
+    label: Importar productos en XLSX con reglas
+    import.label: Importar productos
+  xlsx_product_model_import_with_rules:
+    label: Importación del modelo del producto en XLSX con reglas
+pim_notification:
+  types:
+    rule: Configuración de reglas

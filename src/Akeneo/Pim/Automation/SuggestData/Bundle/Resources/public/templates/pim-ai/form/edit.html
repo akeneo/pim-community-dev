@@ -1,0 +1,35 @@
+<div class="AknGridContainer">
+    <table class="AknGrid AknGrid--unclickable grid">
+        <thead class="AknGrid-header">
+        <tr class="AknGrid-bodyRow">
+            <th class="AknGrid-headerCell"><%= tokenLabelTitle %></th>
+            <th class="AknGrid-headerCell"><%= tokenFieldTitle %></th>
+            <th class="AknGrid-headerCell"></th>
+        </tr>
+        </thead>
+        <tbody class="AknGrid-body">
+        <tr class="AknGrid-bodyRow">
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--noWrap AknGrid-bodyCell--highlight">
+                <%= tokenLabelContent %>
+            </td>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--credentials">
+                <div class="AknFieldContainer AknFieldContainer--withoutMargin">
+                    <input class="AknTextField token-field"
+                           name="token"
+                           placeholder="<%- tokenFieldPlaceholder %>"
+                           type="text"
+                           value="<%- token %>"
+                    />
+                </div>
+            </td>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
+                <button type="button"
+                        class="AknButton <%- buttonStyle %> <%- connectionStatus %> suggest-data-connection"
+                >
+                    <%- activationLabel %>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

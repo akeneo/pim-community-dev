@@ -52,6 +52,7 @@ class SqlFindEnrichedEntityDetailsTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $resetQuery = <<<SQL
+            DELETE FROM akeneo_enriched_entity_record;
             DELETE FROM akeneo_enriched_entity_enriched_entity;
 SQL;
 
@@ -68,7 +69,7 @@ SQL;
                 'en_US' => 'Designer',
             ]
         );
-        $enrichedEntityRepository->save($enrichedEntity);
+        $enrichedEntityRepository->create($enrichedEntity);
     }
 
     private function assertEnrichedEntityItem(EnrichedEntityDetails $expected, EnrichedEntityDetails $actual): void

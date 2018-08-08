@@ -1,0 +1,16 @@
+services:
+    akeneo.pim.automation.suggest_data.repository.configuration:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryConfigurationRepository'
+        arguments:
+            - []
+
+    akeneo.pim.automation.suggest_data.repository.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryIdentifiersMappingRepository'
+        arguments:
+            - !service
+              class: Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping
+              arguments:
+                  - []
+
+    akeneo.pim.automation.suggest_data.repository.product_subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository'

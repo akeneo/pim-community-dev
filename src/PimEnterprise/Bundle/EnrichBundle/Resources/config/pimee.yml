@@ -1,14 +1,14 @@
 imports:
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
-    - { resource: '@PimEnterpriseProductAssetBundle/Resources/config/external_api/config.yml' }
+    - { resource: '@AkeneoAssetBundle/Resources/config/external_api/config.yml' }
 
 assetic:
     bundles:
         - PimEnterpriseEnrichBundle
 
 twig:
-    form_theme: ['PimEnterpriseUIBundle:Form:pimee-fields.html.twig', 'PimEnterpriseProductAssetBundle:Form:pimee-fields.html.twig']
+    form_theme: ['PimEnterpriseUIBundle:Form:pimee-fields.html.twig', 'AkeneoAssetBundle:Form:pimee-fields.html.twig']
 
 fos_rest:
     exception:

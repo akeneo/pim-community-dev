@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -12,16 +12,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelProposalNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer)
+    function let(NormalizerInterface $standardNormalizer, NormalizerInterface $datagridNormalizer)
     {
-        $normalizer->implement(NormalizerInterface::class);
-        $this->setNormalizer($normalizer);
+        $this->beConstructedWith($standardNormalizer, $datagridNormalizer);
     }
 
     function it_should_implement()
     {
         $this->shouldImplement(NormalizerInterface::class);
-        $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
     function it_supports_product_proposal_normalization(ProductModelDraft $productModelProposal)
@@ -30,7 +28,8 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes(
-        $normalizer,
+        $standardNormalizer,
+        $datagridNormalizer,
         CollectionFilterInterface $filter,
         ProductModelDraft $productModelProposal,
         ValueCollectionInterface $valueCollection,
@@ -46,7 +45,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
         $filter->filterCollection($valueCollection, 'pim.transform.product_value.structured', $context)
             ->willReturn($valueCollection);
-        $normalizer->normalize($valueCollection, 'standard', $context)->willReturn(
+        $standardNormalizer->normalize($valueCollection, 'standard', $context)->willReturn(
             [
                 'text' => [
                     [
@@ -57,7 +56,7 @@ class ProductModelProposalNormalizerSpec extends ObjectBehavior
                 ],
             ]
         );
-        $normalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
+        $datagridNormalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
 
         $productModelProposal->getId()->willReturn(1);
         $productModelProposal->getAuthor()->willReturn('Mary');

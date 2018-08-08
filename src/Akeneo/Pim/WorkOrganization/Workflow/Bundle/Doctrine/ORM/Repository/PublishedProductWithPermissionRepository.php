@@ -13,6 +13,8 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity;
+use Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -20,8 +22,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
-use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
-use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 
 /**
  * Published products repository with permission applied

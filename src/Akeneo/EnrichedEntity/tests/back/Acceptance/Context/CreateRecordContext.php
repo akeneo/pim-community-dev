@@ -47,9 +47,13 @@ final class CreateRecordContext implements Context
         string $enrichedEntityIdentifier,
         TableNode $updateTable
     ) {
-        $updates = $updateTable->getRowsHash();
+        $updates = current($updateTable->getHash());
         $command = new CreateRecordCommand();
-        $command->identifier = $recordIdentifier;
+        $command->identifier = [
+            'identifier'                  => $recordIdentifier,
+            'enriched_entity_identifier' => $enrichedEntityIdentifier,
+        ];
+        $command->code = $recordIdentifier;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $command->labels = json_decode($updates['labels'], true);
         try {
@@ -65,10 +69,13 @@ final class CreateRecordContext implements Context
     public function thereIsARecordWith(TableNode $enrichedEntityTable)
     {
         $expectedInformation = current($enrichedEntityTable->getHash());
-        $expectedIdentifier = RecordIdentifier::fromString($expectedInformation['identifier']);
+        $expectedIdentifier = RecordIdentifier::create(
+            $expectedInformation['entity_identifier'],
+            $expectedInformation['identifier']
+
+        );
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($expectedInformation['entity_identifier']);
-        $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier,
-            $enrichedEntityIdentifier);
+        $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
             $actualEnrichedEntity

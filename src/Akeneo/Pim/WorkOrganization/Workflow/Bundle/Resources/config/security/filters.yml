@@ -1,6 +1,6 @@
 services:
   pimee_workflow.security.filter.not_granted_associated_published_product:
-        class: 'PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter'
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedAssociatedProductFilter'
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.query.published_product_category_access'

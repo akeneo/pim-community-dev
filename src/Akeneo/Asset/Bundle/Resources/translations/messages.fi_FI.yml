@@ -172,3 +172,14 @@ pim_datagrid:
     type:
       mass_upload: Massatuo assetteja
 pim_assets_collection: Resurssien keruu
+pim_api:
+  acl:
+    asset_category:
+      edit: Luo ja päivitä assettien kategorioita
+      list: Listaa assettikategoriat
+    asset:
+      edit: Muokkaa assetteja ja lähetä niiden alkuperäiset ja varioidut tiedostot
+      list: Listaa assetit ja lataa niiden alkuperäiset ja varioidut tiedostot
+  acl_group:
+    asset_category: Assettikategoriat
+    asset: Resurssit

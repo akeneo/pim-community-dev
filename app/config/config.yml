@@ -1,8 +1,8 @@
 imports:
+    - { resource: '@PimEnterpriseEnrichBundle/Resources/config/pimee.yml' }
     - { resource: pim_parameters.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: '@PimEnterpriseEnrichBundle/Resources/config/pimee.yml' }
 
 framework:
     translator:      { fallback: en_US }
@@ -69,3 +69,4 @@ pim_reference_data:
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
     pim_ee_dev_src_folder_location: '%kernel.project_dir%'
+    pim_catalog.version.class: Akeneo\Platform\EnterpriseVersion

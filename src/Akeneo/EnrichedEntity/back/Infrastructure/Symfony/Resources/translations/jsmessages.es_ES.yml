@@ -1,16 +1,64 @@
+pim_title:
+  akeneo_enriched_entities_enriched_entity_index: Crear una nueva entidad
 pim_enriched_entity:
   button:
     save: Guardar
+    create: Añadir nuevo
   enriched_entity:
+    title: Entidades
     tab:
+      records: Registros
       attributes: Atributos
       properties: Propiedades
     properties:
+      title: Propiedades de la entidad
       identifier: Identificador
       label: Etiqueta
+    index:
+      grid:
+        count: "{{ count }} resultados"
+    create:
+      header:
+        title: Crear
+      subtitle: Entidades
+      title: Crear una nueva entidad
+      input:
+        label: Etiqueta
+        code: Código (requerido)
+      confirm: confirmar
+    notification:
+      save:
+        fail: Un error ha ocurrido durante el guardado de la entidad enriquecida
+      create:
+        success: Entidad enriquecida creada correctamente.
+        fail: Un error ha ocurrido durante la creación de la entidad enriquecida
+  record:
+    create:
+      header:
+        title: Crear
+      subtitle: Registros
+      title: Crear un nuevo {{ entityLabel }}
+      input:
+        label: Etiqueta
+        code: Código (requerido)
+      confirm: confirmar
+    notification:
+      save:
+        success: Registro actualizado correctamente.
+        fail: Un error ha ocurrido durante el guardado del registro
+      create:
+        success: Registro creado correctamente.
+        fail: Un error ha ocurrido durante la creación del registro
 pim_enrich:
+  confirmation:
+    discard_changes: 'Perderá los cambios realizados sobre "{{ entity }}" la entidad si abandona esta página.'
   entity:
     attribute:
       property:
+        type:
+          akeneo_enriched_entity_collection: Entidad enriquecida
         section:
           type_specific: Escriba los parámetros específicos
+        enriched_entity:
+          identifier: Entidad enriquecida
+          default_label: Por favor, selecciona una entidad enriquecida

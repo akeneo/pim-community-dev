@@ -15,8 +15,8 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -24,7 +24,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlEnrichedEntityRepository implements EnrichedEntityRepository
+class SqlEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -38,18 +38,14 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepository
     }
 
     /**
-     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
-     * case) or two rows (the update use case)
-     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
-     *
      * @throws \RuntimeException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function save(EnrichedEntity $enrichedEntity): void
+    public function create(EnrichedEntity $enrichedEntity): void
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
         $insert = <<<SQL
-        REPLACE INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
+        INSERT INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -58,9 +54,37 @@ SQL;
                 'labels' => $serializedLabels
             ]
         );
+        if ($affectedRows !== 1) {
+            throw new \RuntimeException(
+                sprintf('Expected to create one enriched entity, but %d were affected', $affectedRows)
+            );
+        }
+    }
 
-        if ($affectedRows === 0) {
-            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
+    /**
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
+        $update = <<<SQL
+        UPDATE akeneo_enriched_entity_enriched_entity
+        SET labels = :labels
+        WHERE identifier = :identifier;
+SQL;
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $update,
+            [
+                'identifier' => (string) $enrichedEntity->getIdentifier(),
+                'labels' => $serializedLabels
+            ]
+        );
+
+        if ($affectedRows > 1) {
+            throw new \RuntimeException(
+                sprintf('Expected to update one enriched entity, but %d rows were affected.', $affectedRows)
+            );
         }
     }
 
@@ -79,7 +103,7 @@ SQL;
         $statement->closeCursor();
 
         if (!$result) {
-            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
+            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
         }
 
         return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);

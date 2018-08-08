@@ -16,6 +16,10 @@
 - add pqb filter, grid filter and peb filter for the enriched entity value
 - Add remaining ACLs
 - add keyboard shortcuts
+- rework the record identifier to have one identifier
+- locale switcher to be able to edit all locales
+- enforce html event type
+- Change read models to enforce properties are coherent
 
 DONE:
 
@@ -26,3 +30,6 @@ DONE:
 - rework form.tsx to not remove labels [DONE]
 - remove `back` from the php namespace [DONE]
 - use decorator for acceptance tests front [DONE]
+- clean classes on form [DONE]
+- fix validation error display [DONE]
+- enforce getState type [DONE]

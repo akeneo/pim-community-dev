@@ -1,0 +1,84 @@
+parameters:
+    pimee_security.form.type.groups.class: Akeneo\Pim\Permission\Bundle\Form\Type\GroupsType
+    pimee_security.form.type.attribute_group_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\AttributeGroupPermissionsType
+    pimee_security.form.type.category_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType
+    pimee_security.form.type.locale_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\LocalePermissionsType
+    pimee_security.form.type.product_grid_filter_choice.class: Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType
+    pimee_security.form.subscriber.category_permissions.class: Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber
+    pimee_security.form.subscriber.locale_permissions.class:   Akeneo\Pim\Permission\Bundle\Form\EventListener\LocalePermissionsSubscriber
+    pimee_security.form.provider.form.product.class: Akeneo\Pim\Permission\Bundle\Form\Provider\ProductFormProvider
+    pimee_security.form.provider.form.product_model.class: Akeneo\Pim\Permission\Bundle\Form\Provider\ProductModelFormProvider
+    pimee_security.form.subscriber.job_profile_permissions.class: Akeneo\Pim\Permission\Bundle\Form\EventListener\JobProfilePermissionsSubscriber
+    pimee_security.form.type.job_profile_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\JobProfilePermissionsType
+
+services:
+    # Form type
+    pimee_security.form.type.groups:
+        class: '%pimee_security.form.type.groups.class%'
+        tags:
+            - { name: form.type, alias: pimee_security_groups }
+
+    pimee_security.form.type.attribute_group_permissions:
+        class: '%pimee_security.form.type.attribute_group_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_enrich_attribute_group_permissions }
+
+    pimee_security.form.type.category_permissions:
+        class: '%pimee_security.form.type.category_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_enrich_category_permissions }
+
+    pimee_security.form.type.locale_permissions:
+        class: '%pimee_security.form.type.locale_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_enrich_locale_permissions }
+
+    pimee_security.form.type.product_grid_filter_choice:
+        class: '%pimee_security.form.type.product_grid_filter_choice.class%'
+        arguments:
+            - '@pimee_enrich.repository.attribute'
+            - '@oro_datagrid.datagrid.manager'
+            - 'product-grid'
+            - ['scope', 'locale']
+        tags:
+            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
+
+    pimee_security.form.type.job_profile_permissions:
+        class: '%pimee_security.form.type.job_profile_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_import_export_job_profile_permissions }
+
+    # Event listener
+    pimee_security.form.subscriber.category_permissions:
+        class: '%pimee_security.form.subscriber.category_permissions.class%'
+        arguments:
+            - '@pimee_security.manager.category_access'
+            - '@oro_security.security_facade'
+
+    pimee_security.form.subscriber.locale_permissions:
+        class: '%pimee_security.form.subscriber.locale_permissions.class%'
+        arguments:
+            - '@pimee_security.manager.locale_access'
+            - '@oro_security.security_facade'
+
+    pimee_security.form.subscriber.job_profile_permissions:
+        class: '%pimee_security.form.subscriber.job_profile_permissions.class%'
+        arguments:
+            - '@pimee_security.manager.job_profile_access'
+            - '@oro_security.security_facade'
+            - '@pim_user.repository.group'
+
+    # Provider
+    pimee_security.form.provider.form.product:
+        class: '%pimee_security.form.provider.form.product.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 90 }
+
+    pimee_security.form.provider.form.product_model:
+        class: '%pimee_security.form.provider.form.product_model.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 90 }

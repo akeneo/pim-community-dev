@@ -1,0 +1,79 @@
+pim_title:
+  akeneo_suggest_data_connection_index: 'Connexion PIM.ai'
+  akeneo_suggest_data_settings_index: 'Paramètres PIM.ai'
+  akeneo_suggest_data_settings_attributes_index: 'Paramètres PIM.ai'
+pim_menu:
+  item:
+    pim_ai: PIM.ai
+akeneo_suggest_data:
+  entity:
+    identifier_mapping:
+      plural_label: Identifiants
+      flash:
+        update:
+          success: 'Le mapping des identifiants a été correctement sauvegardé.'
+          fail: 'Le mapping des identifiants n''a pas pu être sauvegardé.'
+      fields:
+        identifier_label:
+          label: Label de l'identifiant
+          values:
+            brand: Marque
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
+        catalog_attribute: Attribut du catalogue
+        suggest_data: Suggestion de données
+        status:
+          active: Actif
+          inactive: Inactif
+    family_mapping:
+      label: Mapping des familles
+      fields:
+        pim_ai_attribute: 'Attribut PIM.ai'
+        suggest_data:
+          pending: En attente
+          active: Actif
+          inactive: Inactif
+      module:
+        subscribe:
+          subscribe: 'Abonner la famille à PIM.ai'
+          subscribed: 'Abonnée à PIM.ai'
+  product:
+    edit:
+      btn.push: Suggestion de données
+      flash:
+        success: Demande de suggestion de données validée avec succès
+        error: Une erreur est survenue lors de la suggestion de données
+  pim_ai:
+    page_title: 'Connexion PIM.ai'
+    module:
+      title:
+        sub_title: 'Bienvenue dans <span class="AknSubTitleContainer-subTitle--main">l''assistant IA des informations produit</span> !'
+        description:
+          first_step: 'La première étape de la connexion consiste à configurer le token de l''API.'
+          second_step: 'L''étape suivante dans le processus de connexion est de paramètrer le maping des <a href="#">identifiants de votre catalogue</a> avec les identifiants de l''assitant.'
+      activation:
+        label: 'Connecteur PIM.ai'
+        activation_code: 'Code d''activation'
+        paste_activation_code: 'Coller le code d''activation'
+        activated: 'Activé'
+        activate: 'Activater'
+  settings:
+    page_title: 'Paramètres PIM.ai'
+    module:
+      title:
+        sub_title: 'Bienvenue dans la configuration de l''assistant IA des informations produits'
+        description:
+          first_step: 'Veuillez sélecitonner les attributs dans votre catalogue qui correspondent aux identifiants produits de l''assistant.'
+          second_step: 'Une fois que les mappings sont sauvegardés, l''assistant pourra collecter et suggérer des informations produit dans votre catalogue.'
+      inactive_connection:
+        title: Désolé, rien à afficher pour le moment
+        sub_title: Veuillez activer votre compte dans Système > Connexion PIM.ai puis revenez sur cette page.
+  mass_edit:
+    product:
+      operation:
+        suggest_data:
+          label: Suggestion de données
+          label_count: "{1}Suggérer des données pour <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Suggérer des données pour <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          description: 'Nous vous suggèrerons des données pour les produits'
+          warning: 'Les {{ itemsCount }} produits sélectionnés vont être envoyés.'

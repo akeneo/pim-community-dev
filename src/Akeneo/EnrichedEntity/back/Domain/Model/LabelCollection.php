@@ -24,11 +24,6 @@ class LabelCollection
 
     private function __construct(array $translatedLabels)
     {
-        $this->translatedLabels = $translatedLabels;
-    }
-
-    public static function fromArray(array $translatedLabels): self
-    {
         foreach ($translatedLabels as $code => $label) {
             if (!is_string($code)) {
                 throw new \InvalidArgumentException(sprintf('Expecting locale code to be a string, %s given.', $code));
@@ -43,6 +38,11 @@ class LabelCollection
             }
         }
 
+        $this->translatedLabels = $translatedLabels;
+    }
+
+    public static function fromArray(array $translatedLabels): self
+    {
         return new self($translatedLabels);
     }
 

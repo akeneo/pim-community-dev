@@ -9,11 +9,13 @@ pimee_product_asset:
           confirm: Bestätigen
         title: Assets verwalten
         description: Wählen Sie die Assets die dem Produkt zugeordnet werden sollen
+        preview_title: Asset-Sammlung Vorschau
         download: Herunterladen
         remove: Entfernen
         upload: Hochladen
         yes: true
         no: false
+        assetRemoveConfirmationLabel: Sind Sie sicher, dass Sie dieses Asset löschen wollen?
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
   enrich_asset:

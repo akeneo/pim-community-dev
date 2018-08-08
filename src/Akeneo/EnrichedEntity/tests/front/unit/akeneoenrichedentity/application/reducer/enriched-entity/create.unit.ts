@@ -92,6 +92,62 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     });
   });
 
+  test('If I updated manually the code, the label is not sanitized', () => {
+    const state = {
+      active: true,
+      data: {
+        code: 'my_code',
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ENRICHED_ENTITY_CREATION_LABEL_UPDATED',
+      value: 'label testé-/$',
+      locale: 'en_US',
+    });
+
+    expect(newState).toEqual({
+      active: true,
+      data: {
+        code: 'my_code',
+        labels: {
+          en_US: 'label testé-/$',
+        },
+      },
+      errors: [],
+    });
+  });
+
+  test('I can add a new label and it will update the code', () => {
+    const state = {
+      active: true,
+      data: {
+        code: 'previouslabel',
+        labels: {
+          en_US: 'previous label',
+        },
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ENRICHED_ENTITY_CREATION_LABEL_UPDATED',
+      value: 'new label',
+      locale: 'en_US',
+    });
+
+    expect(newState).toEqual({
+      active: true,
+      data: {
+        code: 'newlabel',
+        labels: {
+          en_US: 'new label',
+        },
+      },
+      errors: [],
+    });
+  });
+
   test('I can cancel the enriched entity creation', () => {
     const state = {
       active: true,

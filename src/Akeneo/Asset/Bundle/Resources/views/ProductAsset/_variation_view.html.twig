@@ -1,11 +1,11 @@
 <li>
-    <div class="row-fluid variation">
+    <div class="AknWidget row-fluid variation">
 
-        <h4>{{ variationModel.channel.label }}</h4>
+        <div class="AknWidget-header">{{ variationModel.channel.label }}</div>
 
-        <div class="row-fluid">
+        <div class="AknWidget-content row-fluid">
             {% if variationModel.fileInfo %}
-                {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
+                {% include 'AkeneoAssetBundle:ProductAsset:_variation_core.html.twig' %}
             {% else %}
                 {{ 'pimee_product_asset.enrich_asset.view.no_variation'|trans }}
             {% endif %}

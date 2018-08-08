@@ -1,0 +1,38 @@
+services:
+    # Repositories
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.record:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository
+
+    pim_user.repository.user:
+        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+
+    # Query functions
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindEnrichedEntityItems
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindEnrichedEntityDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindRecordDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindRecordItemsForEnrichedEntity
+
+    akeneo_enrichedentity.infrastructure.persistence.query.exists_record:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryExistsRecord
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    # Third party services
+    oro_security.security_facade:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\SecurityFacadeStub
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'
+

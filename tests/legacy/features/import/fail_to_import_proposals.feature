@@ -57,10 +57,7 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "csv_clothing_product_proposal_import" job to finish
     Then there should be 0 proposal
-    And I should see:
-    """
-    Field "sku" is expected, provided fields are "description-en_US-mobile, description-en_US-tablet, comment"
-    """
+    And I should see the text "Field \"sku\" is expected, provided fields are \"description-en_US-mobile, description-en_US-tablet, comment\""
     And I should see the text "Status: FAILED"
 
   Scenario: Skip proposal if there is no diff between product and proposal

@@ -26,7 +26,7 @@ Feature: Create an enriched entity
     When the user creates an enriched entity "invalid/identifier" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Enriched Entity identifier may contain only letters, numbers and underscores"
+    Then an exception is thrown with message "Enriched entity identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
     And there should be no enriched entity
 
   @acceptance-front
@@ -38,9 +38,6 @@ Feature: Create an enriched entity
       | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the enriched entity will be saved
     And the user saves the enriched entity
-    And there is an enriched entity "designer" with:
-      | identifier | labels                                    |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
   @acceptance-front
   Scenario: User do not have the right to create enriched entities

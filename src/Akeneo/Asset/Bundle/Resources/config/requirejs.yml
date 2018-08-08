@@ -1,21 +1,21 @@
 config:
     paths:
         # Fields
-        pimee/asset-collection-field: pimenterpriseproductasset/js/product/field/asset-collection-field
+        pimee/asset-collection-field: akeneoasset/js/product/field/asset-collection-field
 
         # Templates
-        pimee/template/picker/asset-collection: pimenterpriseproductasset/templates/picker/asset-collection.html
-        pimee/template/picker/asset-collection-preview: pimenterpriseproductasset/templates/picker/asset-collection-preview.html
-        pimee/template/asset/mass-upload: pimenterpriseproductasset/templates/productAsset/mass-upload.html
-        pimee/template/asset/mass-upload-row: pimenterpriseproductasset/templates/productAsset/mass-upload-row.html
+        pimee/template/picker/asset-collection: akeneoasset/templates/picker/asset-collection.html
+        pimee/template/picker/asset-collection-preview: akeneoasset/templates/picker/asset-collection-preview.html
+        pimee/template/asset/mass-upload: akeneoasset/templates/productAsset/mass-upload.html
+        pimee/template/asset/mass-upload-row: akeneoasset/templates/productAsset/mass-upload-row.html
 
         # Views
-        pimee/picker/asset-collection: pimenterpriseproductasset/js/picker/asset-collection
+        pimee/picker/asset-collection: akeneoasset/js/picker/asset-collection
 
-        pimee/productasset/variations:  pimenterpriseproductasset/js/form/variations
-        pimee/productasset/uploader:    pimenterpriseproductasset/js/form/uploader
-        pimee/productasset/media-field: pimenterpriseproductasset/js/form/media-field
-        pimee/productasset/mass-upload: pimenterpriseproductasset/js/mass-upload
+        pimee/productasset/variations:  akeneoasset/js/form/variations
+        pimee/productasset/uploader:    akeneoasset/js/form/uploader
+        pimee/productasset/media-field: akeneoasset/js/form/media-field
+        pimee/productasset/mass-upload: akeneoasset/js/mass-upload
 
     config:
         pim/fetcher-registry:
@@ -32,3 +32,9 @@ config:
                 pim_assets_collection:
                     create: pim-attribute-form-assets-collection
                     edit:   pim-attribute-form-assets-collection
+
+        pim/controller-registry:
+            controllers:
+                pimee_product_asset_mass_edit_action:
+                    module: pim/controller/mass-edit
+                    aclResourceId: pimee_product_asset_index

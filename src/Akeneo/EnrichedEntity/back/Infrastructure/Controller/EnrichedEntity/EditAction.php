@@ -53,6 +53,12 @@ class EditAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+        if ($this->hasDesynchronizedIdentifier($request)) {
+            return new JsonResponse(
+                'Enriched entity identifier provided in the route and the one given in the body of your request are different',
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         $command = $this->serializer->deserialize($request->getContent(), EditEnrichedEntityCommand::class, 'json');
         $violations = $this->validator->validate($command);
@@ -64,5 +70,15 @@ class EditAction
         ($this->editEnrichedEntityHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Checks whether the identifier given in the url parameter and in the body are the same or not.
+     */
+    private function hasDesynchronizedIdentifier(Request $request): bool
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+
+        return $normalizedCommand['identifier'] !== $request->get('identifier');
     }
 }

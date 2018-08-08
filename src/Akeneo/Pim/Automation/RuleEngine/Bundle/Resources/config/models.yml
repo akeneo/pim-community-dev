@@ -1,0 +1,6 @@
+parameters:
+    pimee_catalog_rule.model.product_condition.class: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition
+    pimee_catalog_rule.model.copy_action.class:       Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyAction
+    pimee_catalog_rule.model.set_action.class:        Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction
+    pimee_catalog_rule.model.add_action.class:        Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction
+    pimee_catalog_rule.model.remove_action.class:     Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveAction

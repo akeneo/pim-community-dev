@@ -72,9 +72,9 @@ class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
         $designer->getCode()->willReturn('designer');
 
         $dyson->getIdentifier()->willReturn($dysonIdentifier);
-        $dysonIdentifier->__toString()->willReturn('dyson');
+        $dysonIdentifier->getIdentifier()->willReturn('dyson');
         $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->__toString()->willReturn('starck');
+        $starckIdentifier->getIdentifier()->willReturn('starck');
 
         $designerValue->getData()->willReturn([$starck, $dyson]);
 

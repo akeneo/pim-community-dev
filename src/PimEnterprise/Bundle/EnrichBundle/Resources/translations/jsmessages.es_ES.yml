@@ -154,9 +154,12 @@ pimee_enrich.mass_edit.product:
       description: Los productos serán despublicados
       warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
 pimee_enrich.mass_edit.asset:
+  title: Acción en masa de recursos
   step:
     select:
       label: Elegir recurso
+    choose:
+      title: Acciones en masa de recursos
     configure:
       label: Configurar
     confirm:
@@ -166,8 +169,10 @@ pimee_enrich.mass_edit.asset:
       label: Añadir etiquetas a los recursos
       description: Las etiquetas serán agregadas a los activos
       field: Etiquetas
+      empty_selection: Por favor, seleccione las etiquetas
     add_to_category:
       label: Clasificar los activos en categorías
+      description: Los recursos serán posicionados en las siguientes categorías, las posiciones actuales serán perdidas.
 pim_menu:
   navigation:
     published_products: Productos publicados
@@ -182,8 +187,11 @@ pim_menu:
 pim_title:
   pimee_workflow_proposal_index: Propuestas
   pimee_workflow_published_product_index: Productos publicados
+  pimee_workflow_published_product_view: Producto publicado {{ product.label }} | Ver
   pimee_product_asset_index: Recursos
+  pimee_product_asset_edit: Recurso {{ asset.label }} | Editar
   pimee_asset_categorytree_index: Categorías
+  pimee_asset_categorytree_edit: Categoría {{ category.label }} | Editar
   pimee_catalog_rule_rule_index: Reglas
 batch_jobs:
   yml_asset_channel_configuration_import:
@@ -198,6 +206,7 @@ batch_jobs:
     label: Quitar el valor del producto con verificación de permisos y aplicación de reglas
     perform.label: Quitar el valor del producto
   edit_common_attributes_with_permission_and_rules:
+    label: Editar atributos con verificación de permisos y aplicación de reglas
     perform.label: Editar atributos
     cleaner.label: Eliminar archivos temporales
   csv_published_product_quick_export:
@@ -210,13 +219,18 @@ batch_jobs:
     export.label: Exportación rápida en XLSX de los productos publicados
     perform.label: Exportación rápida en XLSX de los productos publicados
   xlsx_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la grilla de productos publicados en XLSX
-    perform.label: Exportación rápida de la grilla de productos publicados en XLSX
+    export.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
+    perform.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
   add_attribute_value:
     execute_rules.label: Ejecución de las reglas
   publish_product:
     perform.label: Productos publicados
 pim_catalog_volumne:
+  section:
+    assets:
+      title: Ejes en los recursos
+      hint: Puede seguir el volumen respecto a los recursos aquí
   axis:
     count_assets: Recursos
     count_asset_categories: Categorías de recursos
+    count_asset_category_trees: Árboles de categorías de recursos

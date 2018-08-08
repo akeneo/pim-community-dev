@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command;
 
-use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
+use Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 

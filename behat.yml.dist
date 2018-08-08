@@ -7,9 +7,7 @@ legacy:
             filters:
                 tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce"
             contexts:
-                - Behat\MinkExtension\Context\MinkContext
                 - Context\EnterpriseFeatureContext:
-                    - 'Context\EnterpriseFeatureContext'
                     -
                         base_url: 'http://127.0.0.1/'
                         timeout: 50000
@@ -190,10 +188,23 @@ acceptance:
                 tags: '@acceptance-back'
         enriched-entity:
             paths:
-                - '%paths.base%/src/Akeneo/EnrichedEntity/tests/back/Acceptance/features'
+                - '%paths.base%/src/Akeneo/EnrichedEntity/tests/features'
             contexts_services:
                 - akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_enriched_entity_context
+                - akeneo_enrichedentity.tests.back.acceptance.context.create_record_context
+                - akeneo_enrichedentity.tests.back.acceptance.context.exception_context
+            filters:
+                tags: '@acceptance-back'
+        suggest-data:
+            paths:
+                - '%paths.base%/src/Akeneo/Pim/Automation/SuggestData/tests/features'
+            contexts_services:
+                - akeneo_acceptance.context.suggest_data.pim_ai
+                - akeneo_acceptance.context.suggest_data.identifiers_mapping
+                - akeneo_acceptance.context.suggest_data.product_subscription
+                - akeneo_acceptance.context.suggest_data.data_fixtures
+                - test.attribute.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:
@@ -233,10 +244,11 @@ acceptance:
                - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
                - "src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml"
                - "src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
-                env: acceptance
+                env: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 

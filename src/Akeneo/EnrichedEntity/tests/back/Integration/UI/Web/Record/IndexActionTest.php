@@ -6,12 +6,13 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
@@ -31,7 +32,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -48,15 +49,23 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $expectedContent = json_encode([
             'items' => [
                 [
-                    'identifier'                 => 'starck',
+                    'identifier'                 => [
+                        'enriched_entity_identifier' => 'designer',
+                        'identifier' => 'starck',
+                    ],
                     'enriched_entity_identifier' => 'designer',
+                    'code' => 'starck',
                     'labels'                     => [
                         'en_US' => 'Philippe Starck',
                     ],
                 ],
                 [
-                    'identifier'                 => 'coco',
+                    'identifier'                 => [
+                        'enriched_entity_identifier' => 'designer',
+                        'identifier' => 'coco',
+                    ],
                     'enriched_entity_identifier' => 'designer',
+                    'code' => 'coco',
                     'labels'                     => [
                         'en_US' => 'Coco',
                     ],
@@ -88,8 +97,9 @@ class IndexActionTest extends ControllerIntegrationTestCase
         array $labels
     ): RecordItem {
         $recordItem = new RecordItem();
-        $recordItem->identifier = RecordIdentifier::fromString($recordIdentifier);
+        $recordItem->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $recordIdentifier);
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordItem->code = RecordCode::fromString($recordIdentifier);
         $recordItem->labels = LabelCollection::fromArray($labels);
 
         return $recordItem;

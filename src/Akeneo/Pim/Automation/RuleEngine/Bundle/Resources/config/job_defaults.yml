@@ -1,0 +1,65 @@
+parameters:
+    pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters\DefaultValuesProvider\ImpactedProductCount
+
+services:
+    # Default Parameters for Exports ----------------------------------------------------------------------------------
+    pimee_catalog_rule.job.job_parameters.default_values_provider.simple_yaml_export:
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class%'
+        arguments:
+            -
+                - 'yml_rule_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Default Parameters for Imports ----------------------------------------------------------------------------------
+    pimee_catalog_rule.job.job_parameters.default_values_provider.simple_yaml_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%'
+        arguments:
+            -
+                - 'yml_rule_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_import_with_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_model_csv_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_model_import_with_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_xlsx_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_import_with_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_model_xlsx_import:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_model_import_with_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.impacted_product_count:
+        class: '%pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class%'
+        arguments:
+            -
+                - 'rule_impacted_product_count'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
