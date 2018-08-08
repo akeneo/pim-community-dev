@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

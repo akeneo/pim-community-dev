@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.builder.product.class:          Pim\Component\Catalog\Builder\ProductBuilder
-    pim_catalog.builder.entity_with_values.class: Pim\Component\Catalog\Builder\EntityWithValuesBuilder
+    pim_catalog.builder.product.class:          Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder
+    pim_catalog.builder.entity_with_values.class: Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilder
 
 services:
     pim_catalog.builder.product:

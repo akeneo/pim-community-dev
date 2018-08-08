@@ -12,6 +12,9 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver` 
+- Move `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface` 
+- Move `Pim\Component\Catalog\Manager\CompletenessManager` to `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Move `Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\CompletenessCollectionNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer`
@@ -80,6 +83,10 @@
 - Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
 
+- Move namespace `Pim\Component\Catalog\Job` to `Akeneo\Pim\Enrichment\Component\Product\Job`
+- Move namespace `Pim\Component\Catalog\Converter` to `Akeneo\Pim\Enrichment\Component\Product\Converter`
+- Move namespace `Pim\Component\Catalog\Builder` to `Akeneo\Pim\Enrichment\Component\Product\Builder`
+- Move namespace `Pim\Component\Catalog\Association` to `Akeneo\Pim\Enrichment\Component\Product\Association`
 - Move namespace `Pim\Component\Catalog\Comparator` to `Akeneo\Pim\Enrichment\Component\Product\Comparator`
 - Move namespace `Pim\Component\Catalog\EntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant`
 - Move namespace `Pim\Component\Catalog\EntityWithFamily` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily`

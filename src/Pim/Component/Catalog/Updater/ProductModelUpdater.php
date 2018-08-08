@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Association\ParentAssociationsFilter;
+use Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

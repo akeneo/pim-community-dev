@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
