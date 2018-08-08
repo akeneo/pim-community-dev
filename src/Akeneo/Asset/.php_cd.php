@@ -21,8 +21,8 @@ $rules = [
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
-        'Pim\Bundle\NotificationBundle', // TODO: this should be moved in Akeneo\Tool
-        'Akeneo\Tool\Component\Connector', // TODO: Generic classes/interfaces should be moved to Akeneo/Tool
+        'Pim\Bundle\NotificationBundle', // TODO: this should be moved in Akeneo\Plateform
+        'Akeneo\Tool\Component\Connector',
         'Pim\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
         'Gedmo\Exception\UnexpectedValueException', // TODO Remove it
@@ -84,7 +84,7 @@ $rules = [
         // Todo: Remove pim dependencies
         'Pim\Component\Catalog\Comparator\ComparatorInterface',
         'Pim\Component\Catalog\Completeness\CompletenessRemoverInterface',
-        'Akeneo\Tool\Component\Connector', // TODO: Generic classes/interfaces like be moved to Akeneo/Tool
+        'Akeneo\Tool\Component\Connector',
         'Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface', // TODO: AssetCollectionCompleteChecker should extract from this context
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security
