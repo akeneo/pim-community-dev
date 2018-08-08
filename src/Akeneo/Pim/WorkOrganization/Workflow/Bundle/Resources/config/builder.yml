@@ -1,6 +1,6 @@
 parameters:
     pimee_workflow.builder.draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder\EntityWithValuesDraftBuilder
-    pimee_workflow.builder.published_product.class: Pim\Component\Catalog\Builder\ProductBuilder
+    pimee_workflow.builder.published_product.class: Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder
 
 services:
     pimee_workflow.product.builder.draft:

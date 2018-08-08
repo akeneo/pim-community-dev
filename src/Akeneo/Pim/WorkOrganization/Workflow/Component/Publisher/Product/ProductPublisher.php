@@ -17,7 +17,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

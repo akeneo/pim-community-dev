@@ -18,7 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
