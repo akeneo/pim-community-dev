@@ -480,7 +480,6 @@
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet`
 - Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet`
-- Move `Pim\Component\Connector` to `Akeneo\Tool\Component\Connector`
 - Move `Pim\Component\Connector\Analyzer\AnalyzerInterface` to `Akeneo\Tool\Component\Connector\Analyzer\AnalyzerInterface`
 - Move `Pim\Component\Connector\Archiver\AbstractFilesystemArchiver` to `Akeneo\Tool\Component\Connector\Archiver\AbstractFilesystemArchiver`
 - Move `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver` to `Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver`
@@ -543,3 +542,15 @@
 - Move `Pim\Component\Connector\Writer\File\MediaExporterPathGenerator` to `Akeneo\Tool\Component\Connector\Writer\File\MediaExporterPathGenerator`
 - Move `Pim\Component\Connector\Writer\File\Csv\Writer` to `Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer`
 - Move `Pim\Component\Connector\Writer\File\Yaml\Writer` to `Akeneo\Tool\Component\Connector\Writer\File\Yaml\Writer`
+- Move `Pim\Bundle\ConnectorBundle\Command\AnalyzeProductCsvCommand` to `Akeneo\Tool\Bundle\ConnectorBundle\Command\AnalyzeProductCsvCommand`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\PimConnectorExtension` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\PimConnectorExtension`
+- Move `Pim\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer` to `Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\ClearBatchCacheSubscriber` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ClearBatchCacheSubscriber`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber`
+- Move `Pim\Bundle\ConnectorBundle\PimConnectorBundle` to `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
+
