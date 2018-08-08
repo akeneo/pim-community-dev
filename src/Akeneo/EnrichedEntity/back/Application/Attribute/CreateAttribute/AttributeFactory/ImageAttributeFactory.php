@@ -42,16 +42,6 @@ class ImageAttributeFactory implements AttributeFactoryInterface
 
     public function create(AbstractCreateAttributeCommand $command): AbstractAttribute
     {
-        if (!$this->supports($command)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Expected command of type "%s", "%s" given',
-                    CreateImageAttributeCommand::class,
-                    ClassUtils::getClass($command)
-                )
-            );
-        }
-
         return ImageAttribute::create(
             AttributeIdentifier::create(
                 $command->identifier['enriched_entity_identifier'],
