@@ -80,6 +80,7 @@
 - Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
 
+- Move namespace `Pim\Component\Catalog\Association` to `Akeneo\Pim\Enrichment\Component\Product\Association`
 - Move namespace `Pim\Component\Catalog\Comparator` to `Akeneo\Pim\Enrichment\Component\Product\Comparator`
 - Move namespace `Pim\Component\Catalog\EntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant`
 - Move namespace `Pim\Component\Catalog\EntityWithFamily` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily`

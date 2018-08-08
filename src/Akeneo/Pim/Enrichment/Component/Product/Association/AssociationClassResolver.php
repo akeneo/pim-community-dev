@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Association;
+namespace Akeneo\Pim\Enrichment\Component\Product\Association;
 
 use InvalidArgumentException;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;

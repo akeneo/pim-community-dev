@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;

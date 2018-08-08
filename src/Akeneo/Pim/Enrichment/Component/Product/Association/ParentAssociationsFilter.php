@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Association;
+namespace Akeneo\Pim\Enrichment\Component\Product\Association;
 
 /**
  * Filter associations to remove existing parent associations

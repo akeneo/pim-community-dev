@@ -33,7 +33,7 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
      *
      * @return EntityWithValuesBuilderInterface
      *
-     * @deprecated since 2.3 in favor of \Pim\Component\Catalog\Association\MissingAssociationAdder
+     * @deprecated since 2.3 in favor of \Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder
      */
     public function addMissingAssociations(EntityWithAssociationsInterface $entity);
 }

@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Builder;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\ProductEvents;

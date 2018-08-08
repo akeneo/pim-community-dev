@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Association;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Association;
 
 use PhpSpec\ObjectBehavior;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Association;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Association;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Association\AssociationClassResolver;
+use Akeneo\Pim\Enrichment\Component\Product\Association\AssociationClassResolver;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
