@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Job\JobParameters\ConstraintCollectionProvider;
+namespace Akeneo\Pim\Enrichment\Component\Product\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -14,10 +14,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ComputeFamilyVariantStructureChanges implements ConstraintCollectionProviderInterface
+class ComputeProductModelsDescendants implements ConstraintCollectionProviderInterface
 {
     /** @var array */
-    private $supportedJobNames;
+    protected $supportedJobNames;
 
     /**
      * @param array $supportedJobNames
@@ -35,8 +35,8 @@ class ComputeFamilyVariantStructureChanges implements ConstraintCollectionProvid
         return new Collection(
             [
                 'fields' => [
-                    'family_variant_codes' => new Collection(['fields' => [new NotBlank()]]),
-                ],
+                    'product_model_codes' => new NotBlank()
+                ]
             ]
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Job;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;

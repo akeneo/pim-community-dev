@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Job;
+namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
