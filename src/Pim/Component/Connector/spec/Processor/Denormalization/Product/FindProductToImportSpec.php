@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization\Product;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
 use Prophecy\Argument;

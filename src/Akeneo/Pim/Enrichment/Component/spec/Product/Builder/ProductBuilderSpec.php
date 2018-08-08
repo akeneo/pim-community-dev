@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Builder;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;

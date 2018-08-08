@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

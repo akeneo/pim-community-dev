@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Builder;
+namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;

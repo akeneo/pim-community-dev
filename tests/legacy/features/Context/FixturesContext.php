@@ -41,7 +41,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;

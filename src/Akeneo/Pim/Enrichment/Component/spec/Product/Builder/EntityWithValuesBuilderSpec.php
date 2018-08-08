@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Builder;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
