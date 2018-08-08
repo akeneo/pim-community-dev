@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7509: Compute the completeness of variant products after a rule execution on models
+
 # 2.3.4 (2018-08-08)
 
 ## Bug fixes

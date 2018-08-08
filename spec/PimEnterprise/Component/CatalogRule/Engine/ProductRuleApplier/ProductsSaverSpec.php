@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace spec\PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -21,14 +23,18 @@ class ProductsSaverSpec extends ObjectBehavior
         BulkSaverInterface $productModelSaver,
         VersionManager $versionManager,
         VersionContext $versionContext,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SaverInterface $productModelDescendantsSaver,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
             $productSaver,
             $productModelSaver,
             $versionManager,
             $versionContext,
-            $translator
+            $translator,
+            $productModelDescendantsSaver,
+            $cacheClearer
         );
     }
 
@@ -38,6 +44,8 @@ class ProductsSaverSpec extends ObjectBehavior
         $versionManager,
         $versionContext,
         $translator,
+        $productModelDescendantsSaver,
+        $cacheClearer,
         ProductInterface $productA,
         ProductInterface $productB,
         ProductModelInterface $productModelA,
@@ -51,6 +59,9 @@ class ProductsSaverSpec extends ObjectBehavior
 
         $productSaver->saveAll([0 => $productA, 1 => $productB])->shouldBeCalled();
         $productModelSaver->saveAll([2 => $productModelA, 3 => $productModelB])->shouldBeCalled();
+        $productModelDescendantsSaver->save($productModelA)->shouldBeCalled();
+        $productModelDescendantsSaver->save($productModelB)->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalledTimes(2);
 
         $versionManager->setRealTimeVersioning(false)->shouldBeCalled();
         $versionContext->unsetContextInfo('default')->shouldBeCalled();
