@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\WebClientHelper;
@@ -56,10 +57,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [
-                    'fr_FR' => 'Intel',
-                    'en_US' => 'Intel',
+                    'fr_FR' => 'Nom',
+                    'en_US' => 'Name',
                 ],
-                'order'                      => 0,
                 'type'                       => 'text',
                 'required'                   => true,
                 'value_per_channel'          => true,
@@ -89,16 +89,15 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             [
                 'identifier'                 => [
-                    'identifier'                 => 'name',
+                    'identifier'                 => 'picture',
                     'enriched_entity_identifier' => 'designer',
                 ],
                 'enriched_entity_identifier' => 'designer',
-                'code'                       => 'name',
+                'code'                       => 'picture',
                 'labels'                     => [
-                    'fr_FR' => 'Nom',
-                    'en_US' => 'Name',
+                    'fr_FR' => 'Image',
+                    'en_US' => 'Picture',
                 ],
-                'order'                      => 0,
                 'type'                       => 'image',
                 'required'                   => true,
                 'value_per_channel'          => true,
@@ -109,6 +108,79 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @test
+     */
+    public function it_automatically_increment_the_attribute_order_on_creation(): void
+    {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ATTRIBUTE_ROUTE,
+            [
+                'enrichedEntityIdentifier' => 'designer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier'                 => [
+                    'identifier'                 => 'name',
+                    'enriched_entity_identifier' => 'designer',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'type'                       => 'text',
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'max_length'                 => 255,
+            ]
+        );
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ATTRIBUTE_ROUTE,
+            [
+                'enrichedEntityIdentifier' => 'designer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier'                 => [
+                    'identifier'                 => 'description',
+                    'enriched_entity_identifier' => 'designer',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'description',
+                'labels'                     => [
+                    'fr_FR' => 'Intel',
+                    'en_US' => 'Intel',
+                ],
+                'type'                       => 'text',
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'max_length'                 => 255,
+            ]
+        );
+
+        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $descriptionAttribute = $attributeRepository->getByIdentifier(
+            AttributeIdentifier::create('designer', 'description')
+        );
+
+        $this->assertEquals(1, $descriptionAttribute->getOrder()->intValue());
     }
 
     /**
@@ -238,7 +310,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      * @test
      * @dataProvider invalidOrders
      */
-    public function it_returns_an_if_the_order_is_not_valid($order, string $expectedResponse)
+    public function it_returns_an_error_if_the_order_is_not_valid($order, string $expectedResponse)
     {
         $this->webClientHelper->callRoute(
             $this->client,

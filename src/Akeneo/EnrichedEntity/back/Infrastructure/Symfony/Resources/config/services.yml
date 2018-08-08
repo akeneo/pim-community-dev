@@ -66,6 +66,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order'
             - '@akeneo_enrichedentity.application.registry.create_attribute_command_factory'
             - '@serializer'
             - '@validator'

@@ -16,6 +16,8 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\FindAttributeNextOrderInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,6 +36,9 @@ class CreateAction
     /** @var CreateAttributeHandler */
     private $createAttributeHandler;
 
+    /** @var FindAttributeNextOrderInterface */
+    private $attributeNextOrder;
+
     /** @var SecurityFacade */
     private $securityFacade;
 
@@ -48,12 +53,14 @@ class CreateAction
 
     public function __construct(
         CreateAttributeHandler $createAttributeHandler,
+        FindAttributeNextOrderInterface $attributeNextOrder,
         CreateAttributeCommandFactoryRegistryInterface $attributeCommandFactoryRegistry,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
         $this->createAttributeHandler = $createAttributeHandler;
+        $this->attributeNextOrder = $attributeNextOrder;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
@@ -111,7 +118,9 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
-//        $command->order = ($this->nextOrderQuery)();
+        $command->order = $this->attributeNextOrder->forEnrichedEntity(
+            EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier)
+        );
 
         return $command;
     }
