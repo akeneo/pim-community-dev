@@ -30,3 +30,9 @@ services:
         class: '%pim_catalog.doctrine.query.find_attributes_for_family.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.query.get_associated_product_codes_by_product:
+        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.association.class%'
