@@ -31,7 +31,7 @@ Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\LabelCollection: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordIdentifierShouldBeUnique: { groups: [other_constraints] }
 
@@ -45,7 +45,7 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
         enrichedEntityIdentifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\LabelCollection: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     properties:
@@ -56,7 +56,7 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\LabelCollection: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
         order:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
         required:
@@ -82,7 +82,7 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttribute
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\LabelCollection: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
         order:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
         required:

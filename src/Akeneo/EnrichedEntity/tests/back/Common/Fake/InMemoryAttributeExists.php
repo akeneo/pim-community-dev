@@ -16,13 +16,13 @@ namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsAttributeInterface;
+use Akeneo\EnrichedEntity\Domain\Query\AttributeExistsInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryExistsAttribute implements ExistsAttributeInterface
+class InMemoryAttributeExists implements AttributeExistsInterface
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;

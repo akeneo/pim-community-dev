@@ -118,7 +118,7 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
-        $command->order = $this->attributeNextOrder->forEnrichedEntity(
+        $command->order = $this->attributeNextOrder->withEnrichedEntityIdentifier(
             EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier)
         );
 

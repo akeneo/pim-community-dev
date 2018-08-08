@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
@@ -15,13 +24,13 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsAttributeInterface;
+use Akeneo\EnrichedEntity\Domain\Query\AttributeExistsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 class SqlExistsAttributeTest extends SqlIntegrationTestCase
 {
-    /** @var ExistsAttributeInterface */
+    /** @var AttributeExistsInterface */
     private $existsAttribute;
 
     public function setUp()

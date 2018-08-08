@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
 use Webmozart\Assert\Assert;
@@ -18,9 +27,10 @@ class AttributeAllowedExtensions
 
     public function __construct(array $allowedExtensions)
     {
-        array_map(function ($allowedExtension) {
+        array_walk($allowedExtensions, function ($allowedExtension) {
             Assert::string($allowedExtension, 'Expected allowed extension to be a string');
-        }, $allowedExtensions);
+        });
+
         $this->allowedExtensions = $allowedExtensions;
     }
 

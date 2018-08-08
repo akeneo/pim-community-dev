@@ -2,11 +2,20 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsAttributeInterface;
+use Akeneo\EnrichedEntity\Domain\Query\AttributeExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -19,12 +28,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AttributeIdentifierShouldBeUniqueValidator extends ConstraintValidator
 {
-    /** @var ExistsAttributeInterface */
-    private $existsAttribute;
+    /** @var AttributeExistsInterface */
+    private $attributeExists;
 
-    public function __construct(ExistsAttributeInterface $existsAttribute)
+    public function __construct(AttributeExistsInterface $attributeExists)
     {
-        $this->existsAttribute = $existsAttribute;
+        $this->attributeExists = $attributeExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -34,7 +43,7 @@ class AttributeIdentifierShouldBeUniqueValidator extends ConstraintValidator
 
         $enrichedEntityIdentifier = $command->identifier['enriched_entity_identifier'];
         $identifier = $command->identifier['identifier'];
-        $alreadyExists = $this->existsAttribute->withIdentifier(
+        $alreadyExists = $this->attributeExists->withIdentifier(
             AttributeIdentifier::create(
                 $enrichedEntityIdentifier,
                 $identifier

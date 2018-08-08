@@ -16,7 +16,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsAttributeInterface;
+use Akeneo\EnrichedEntity\Domain\Query\AttributeExistsInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -39,7 +39,7 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         AttributeFactoryRegistryInterface $registry,
         AttributeRepositoryInterface $repository,
         AttributeFactoryInterface $factory,
-        ExistsAttributeInterface $existsAttribute
+        AttributeExistsInterface $existsAttribute
     ) {
         $textAttribute = $this->getAttribute();
         $textCommand = new CreateTextAttributeCommand();
