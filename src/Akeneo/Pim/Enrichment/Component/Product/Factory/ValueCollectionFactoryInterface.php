@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 

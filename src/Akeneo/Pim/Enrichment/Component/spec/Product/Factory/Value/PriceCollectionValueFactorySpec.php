@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\Value;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\PriceFactory;
-use Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductPriceInterface;

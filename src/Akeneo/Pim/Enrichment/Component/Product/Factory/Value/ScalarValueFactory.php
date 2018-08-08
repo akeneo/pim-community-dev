@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -9,7 +9,7 @@ use Pim\Component\Catalog\AttributeTypes;
 /**
  * Factory that creates simple product values (text, textarea and number).
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

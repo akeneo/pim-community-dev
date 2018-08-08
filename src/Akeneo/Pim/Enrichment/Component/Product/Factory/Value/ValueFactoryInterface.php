@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Component\Catalog\Factory\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -7,7 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 /**
  * Factory that creates product values.
  *
- * @internal  Interface for the factories used internally by \Pim\Component\Catalog\Factory\ValueFactory.
+ * @internal  Interface for the factories used internally by \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

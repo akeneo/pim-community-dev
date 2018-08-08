@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
-use Pim\Component\Catalog\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;

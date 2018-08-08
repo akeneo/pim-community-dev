@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Currency;
-use Pim\Component\Catalog\Factory\PriceFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\ProductPrice;
 
 class PriceFactorySpec extends ObjectBehavior

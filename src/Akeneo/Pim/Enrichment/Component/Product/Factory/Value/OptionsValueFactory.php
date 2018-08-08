@@ -1,23 +1,24 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Exception\InvalidOptionsException;
 
 /**
- * Factory that creates option (simple-select) product values.
+ * Factory that creates options (multi-select) product values.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class OptionValueFactory implements ValueFactoryInterface
+class OptionsValueFactory implements ValueFactoryInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
@@ -30,8 +31,8 @@ class OptionValueFactory implements ValueFactoryInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string                             $productValueClass
-     * @param string                             $supportedAttributeType
+     * @param string $productValueClass
+     * @param $supportedAttributeType
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attrOptionRepository,
@@ -50,11 +51,16 @@ class OptionValueFactory implements ValueFactoryInterface
     {
         $this->checkData($attribute, $data);
 
-        if (null !== $data) {
-            $data = $this->getOption($attribute, $data);
+        if (null === $data) {
+            $data = [];
         }
 
-        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
+        $value = new $this->productValueClass(
+            $attribute,
+            $channelCode,
+            $localeCode,
+            $this->getOptions($attribute, $data)
+        );
 
         return $value;
     }
@@ -77,47 +83,67 @@ class OptionValueFactory implements ValueFactoryInterface
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (null === $data) {
+        if (null === $data || [] === $data) {
             return;
         }
 
-        if (!is_string($data) && !is_numeric($data)) {
-            throw InvalidPropertyTypeException::stringExpected(
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
                 $data
             );
         }
+
+        foreach ($data as $value) {
+            if (!is_string($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $attribute->getCode(),
+                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
+                    static::class,
+                    $data
+                );
+            }
+        }
     }
 
     /**
-     * Gets an attribute option from its code.
+     * Returns an array of attribute options.
      *
      * @param AttributeInterface $attribute
-     * @param string|null        $optionCode
+     * @param string[]           $data
      *
-     * @throws InvalidOptionException
-     * @return AttributeOptionInterface|null
+     * @throws InvalidOptionsException
+     * @return array
      */
-    protected function getOption(AttributeInterface $attribute, $optionCode)
+    protected function getOptions(AttributeInterface $attribute, array $data)
     {
-        if (null === $optionCode) {
-            return null;
+        sort($data);
+
+        $options = [];
+        $notFoundOptions = [];
+
+        foreach ($data as $optionCode) {
+            $identifier = $attribute->getCode() . '.' . $optionCode;
+            $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
+
+            if (null === $option) {
+                $notFoundOptions[] = $optionCode;
+            } else {
+                $options[] = $option;
+            }
         }
 
-        $identifier = $attribute->getCode() . '.' . $optionCode;
-        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-        if (null === $option) {
-            throw InvalidOptionException::validEntityCodeExpected(
+        if (!empty($notFoundOptions)) {
+            throw InvalidOptionsException::validEntityListCodesExpected(
                 $attribute->getCode(),
-                'code',
-                'The option does not exist',
+                'codes',
+                'The options do not exist',
                 static::class,
-                $optionCode
+                $notFoundOptions
             );
         }
 
-        return $option;
+        return $options;
     }
 }

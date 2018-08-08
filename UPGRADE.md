@@ -6,6 +6,21 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\DateValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\DateValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\MediaValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\MediaValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\MetricValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\MetricValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\OptionsValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\OptionsValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\OptionValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\OptionValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\PriceCollectionValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\PriceCollectionValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\ScalarValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\ScalarValueFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\Value\\ValueFactoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\Value\\ValueFactoryInterface/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\GroupFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\GroupFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\MetricFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\MetricFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\PriceFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\PriceFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ProductUniqueDataFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ProductUniqueDataFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueCollectionFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactory/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueCollectionFactoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueCollectionFactoryInterface/g
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\ValueFactory/Akeneo\\Pim\\Enrichment\\Component\\Product\\Factory\\ValueFactory/g
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Manager\\AttributeValuesResolver/Akeneo\\Pim\\Enrichment\\Component\\Product\\Manager\\AttributeValuesResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Manager\\AttributeValuesResolverInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Manager\\AttributeValuesResolverInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Manager\\CompletenessManager/Akeneo\\Pim\\Enrichment\\Component\\Product\\Manager\\CompletenessManager/g'
