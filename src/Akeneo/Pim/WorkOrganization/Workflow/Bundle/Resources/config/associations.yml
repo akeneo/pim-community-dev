@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_catalog.association.class_resolver:
-        class: 'Pim\Component\Catalog\Association\AssociationClassResolver'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Association\AssociationClassResolver'
         arguments:
             -
                 Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface: '%pimee_catalog.entity.published_product_association.class%'
