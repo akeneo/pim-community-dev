@@ -1,0 +1,7 @@
+services:
+    pim_user.remover.role:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_user.entity.role.class%'
