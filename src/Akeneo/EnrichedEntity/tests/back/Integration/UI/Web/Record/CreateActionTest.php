@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Record;
 
+use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
-use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +28,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -133,6 +133,35 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
             $expectedResponse
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_when_the_record_identifier_is_not_unique()
+    {
+        $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
+        $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
+        $content = [
+            'identifier'                 => [
+                'identifier'                 => 'starck',
+                'enriched_entity_identifier' => 'designer',
+            ],
+            'enriched_entity_identifier' => 'designer',
+            'code'                       => 'starck',
+            'labels'                     => ['fr_FR' => 'Philippe Starck'],
+
+        ];
+        $method = 'POST';
+        $this->webClientHelper->callRoute($this->client, self::CREATE_RECORD_ROUTE, $urlParameters, $method, $headers,
+            $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_RECORD_ROUTE, $urlParameters, $method, $headers,
+            $content);
+        $this->webClientHelper->assertResponse(
+            $this->client->getResponse(),
+            Response::HTTP_BAD_REQUEST,
+            '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer","%code%":"starck"},"plural":null,"message":"The record identifier already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"identifier":{"identifier":"starck","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"identifier","invalidValue":{"identifier":{"identifier":"starck","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
         );
     }
 

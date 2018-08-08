@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Common;
+namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;

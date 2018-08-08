@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Helper;
+namespace Akeneo\EnrichedEntity\tests\back\Common\Helper;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;

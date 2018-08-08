@@ -1,0 +1,5 @@
+services:
+    akeneoenriched_entity.tests.helper.web_client_helper:
+        class: 'Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper'
+        arguments:
+            - '@router'

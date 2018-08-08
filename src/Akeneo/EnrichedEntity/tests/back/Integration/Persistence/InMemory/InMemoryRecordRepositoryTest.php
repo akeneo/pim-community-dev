@@ -11,7 +11,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryRecordRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
@@ -104,6 +104,16 @@ class InMemoryRecordRepositoryTest extends TestCase
         $this->recordRepository->create($record);
 
         $this->assertEquals(2, $this->recordRepository->count());
+    }
+
+    public function it_tells_if_it_has_a_record_identifier()
+    {
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
+
+        $this->recordRepository->create($record);
+        $this->assertTrue($this->recordRepository->hasRecord($identifier));
     }
 
     /**
