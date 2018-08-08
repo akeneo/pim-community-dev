@@ -143,17 +143,25 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        pim:
             paths:
                 - 'tests/features/pim'
+            contexts_services:
+                - test.catalog.product_creation.context
+                - test.catalog.product_validation.context
+            filters:
+                tags: '@acceptance-back'
+        channel:
+            paths:
+                - 'tests/features/channel'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
             filters:
                 tags: '@acceptance-back'
-        volume-monitoring:
+        platform:
             paths:
-                - 'tests/features/volume-monitoring'
+                - 'tests/features/platform'
             contexts_services:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.system_info_context
@@ -181,9 +189,9 @@ acceptance:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
-           imports:
-               - 'tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+            imports:
+                - 'tests/back/Acceptance/Resources/config/behat/services.yml'
+                - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
