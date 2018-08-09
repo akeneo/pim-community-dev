@@ -60,6 +60,26 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $this->removeForProduct($product);
     }
 
+    function it_removes_completeness_of_a_product_without_indexing_it(
+        $indexer,
+        $connection,
+        ProductInterface $product,
+        Collection $completenesses,
+        Statement $statement
+    ) {
+        $product->getId()->willReturn(42);
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->clear()->shouldBeCalled();
+
+        $connection->prepare(Argument::any())->willReturn($statement);
+        $statement->bindValue('productId', 42)->shouldBeCalled();
+        $statement->execute()->shouldBeCalled();
+
+        $indexer->index($product)->shouldNotBeCalled();
+
+        $this->removeForProductWithoutIndexing($product);
+    }
+
     function it_removes_completeness_of_a_family(
         $indexer,
         $connection,

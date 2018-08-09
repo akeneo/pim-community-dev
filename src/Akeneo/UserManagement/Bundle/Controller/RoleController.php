@@ -49,14 +49,16 @@ class RoleController extends Controller
             throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
         }
 
-        $em->remove($role);
+        try {
+            $this->container->get('pim_user.remover.role')->remove($role);
 
-        $aclSidManager = $this->get('oro_security.acl.sid_manager');
-        if ($aclSidManager->isAclEnabled()) {
-            $aclSidManager->deleteSid($aclSidManager->getSid($role));
+            $aclSidManager = $this->get('oro_security.acl.sid_manager');
+            if ($aclSidManager->isAclEnabled()) {
+                $aclSidManager->deleteSid($aclSidManager->getSid($role));
+            }
+        } catch (\InvalidArgumentException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
-        $em->flush();
 
         return new JsonResponse('', 204);
     }

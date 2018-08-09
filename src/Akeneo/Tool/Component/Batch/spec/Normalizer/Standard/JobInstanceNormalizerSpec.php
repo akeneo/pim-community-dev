@@ -33,6 +33,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         $jobinstance->getLabel()->willReturn('Product export');
         $jobinstance->getConnector()->willReturn('myconnector');
         $jobinstance->getType()->willReturn('EXPORT');
+        $jobinstance->getJobName()->willReturn('csv_product_export');
         $jobinstance->getRawParameters()->willReturn(
             [
                 'delimiter' => ';'
@@ -42,6 +43,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         $this->normalize($jobinstance)->shouldReturn(
             [
                 'code'          => 'product_export',
+                'job_name'      => 'csv_product_export',
                 'label'         => 'Product export',
                 'connector'     => 'myconnector',
                 'type'          => 'EXPORT',

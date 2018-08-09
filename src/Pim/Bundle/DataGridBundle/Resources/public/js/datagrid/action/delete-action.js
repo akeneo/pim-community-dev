@@ -103,8 +103,15 @@ define([
              *
              * @return {oro.Modal}
              */
-            getErrorDialog: function(message) {
+            getErrorDialog: function(response) {
                 if (!this.errorModal) {
+                    try {
+                        var response = JSON.parse(response);
+                        var message = response.message;
+                    } catch(e) {
+                        var message = __('error.removing.' + this.getEntityHint());
+                    }
+
                     this.errorModal = new Modal({
                         title: __('pim_datagrid.delete_error.title'),
                         content:

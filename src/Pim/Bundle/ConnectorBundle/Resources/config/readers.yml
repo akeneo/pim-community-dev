@@ -39,8 +39,6 @@ services:
         class: '%pim_connector.reader.dummy_item.class%'
 
     # CSV File Readers
-
-
     pim_connector.reader.file.csv_group:
         class: '%pim_connector.reader.file.csv.class%'
         arguments:
