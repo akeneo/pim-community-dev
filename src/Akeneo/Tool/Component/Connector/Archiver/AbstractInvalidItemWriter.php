@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
+use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -11,7 +12,6 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
-use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;
 
 /**
  * Mutualizes code for writers
