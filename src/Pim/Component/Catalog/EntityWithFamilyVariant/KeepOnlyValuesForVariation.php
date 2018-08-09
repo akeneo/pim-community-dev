@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
+use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModel;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**
  * This service updates a collection of EntityWithFamilyVariantInterface to ensure their values
@@ -28,25 +30,48 @@ class KeepOnlyValuesForVariation
             $variationLevel = $entity->getVariationLevel();
 
             if (ProductModel::ROOT_VARIATION_LEVEL === $variationLevel) {
-                $allowedAttributes = $entity->getFamilyVariant()->getCommonAttributes()->toArray();
+                $commonAttributes = $entity->getFamilyVariant()->getCommonAttributes();
+                $attributeCodesToKeep = $this->getAttributeCodesToKeepForRoot($commonAttributes);
             } else {
-                $attributeSet = $entity->getFamilyVariant()->getVariantAttributeSet($variationLevel);
-                $allowedAttributes = array_merge(
-                    $attributeSet->getAttributes()->toArray(),
-                    $attributeSet->getAxes()->toArray()
-                );
+                $variantAttributeSet = $entity->getFamilyVariant()->getVariantAttributeSet($variationLevel);
+                $attributeCodesToKeep = $this->getAttributeCodesToKeepForDescendants($variantAttributeSet);
             }
 
             $entityValues = $entity->getValues();
             foreach ($entityValues as $value) {
                 $attribute = $value->getAttribute();
 
-                if (!in_array($attribute, $allowedAttributes)) {
+                if (!in_array($attribute->getCode(), $attributeCodesToKeep)) {
                     $entityValues->removeByAttribute($attribute);
                 }
             }
 
             $entity->setValues($entityValues);
         }
+    }
+
+    private function getAttributeCodesToKeepForRoot(CommonAttributeCollection $commonAttributes): array
+    {
+        $attributeCodesToKeep = [];
+        foreach ($commonAttributes as $attribute) {
+            $attributeCodesToKeep[] = $attribute->getCode();
+        }
+
+        return $attributeCodesToKeep;
+    }
+
+    private function getAttributeCodesToKeepForDescendants(VariantAttributeSetInterface $descendantAttributeSet): array
+    {
+        $attributesToKeep = array_merge(
+            $descendantAttributeSet->getAttributes()->toArray(),
+            $descendantAttributeSet->getAxes()->toArray()
+        );
+
+        $attributeCodesToKeep = [];
+        foreach ($attributesToKeep as $attribute) {
+            $attributeCodesToKeep[] = $attribute->getCode();
+        }
+
+        return $attributeCodesToKeep;
     }
 }
