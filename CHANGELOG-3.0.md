@@ -12,6 +12,8 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Updater\Remover\FamilyVariantRemover` to `Akeneo\Pim\Structure\Component\Remover\FamilyVariantRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\FamilyRemover` to `Akeneo\Pim\Structure\Component\Remover\FamilyRemover`
 - Move `Pim\Component\Catalog\Factory\Value\DateValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory`
 - Move `Pim\Component\Catalog\Factory\Value\MediaValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MediaValueFactory`
 - Move `Pim\Component\Catalog\Factory\Value\MetricValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory`
