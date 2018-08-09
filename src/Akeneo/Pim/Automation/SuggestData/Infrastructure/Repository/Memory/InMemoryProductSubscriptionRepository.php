@@ -42,7 +42,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
         ProductInterface $product,
         string $subscriptionId
     ): ?ProductSubscriptionInterface {
-        return $this->subscriptions[$product->getId()][$subscriptionId] ?? null;
+        return $this->subscriptions[$product->getId()] ?? null;
     }
 
     /**
