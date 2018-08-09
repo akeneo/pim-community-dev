@@ -17,7 +17,7 @@ services:
     pimee_enrich.connector.job.job_parameters.default_values_provider.product_csv_quick_export:
         class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class%'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
             -
                 - 'csv_published_product_quick_export'
                 - 'csv_published_product_grid_context_quick_export'
@@ -27,7 +27,7 @@ services:
     pimee_enrich.connector.job.job_parameters.default_values_provider.product_xlsx_quick_export:
         class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class%'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export'
             -
                 - 'xlsx_published_product_quick_export'
                 - 'xlsx_published_product_grid_context_quick_export'
