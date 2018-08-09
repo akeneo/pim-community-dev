@@ -44,13 +44,9 @@ class PimAI implements DataProviderInterface
             throw new MappingNotDefinedException();
         }
 
-        //Todo : the client will throw exceptions if something wrong happened. No need to call the isSuccess() but use a try/catch instead
         $clientResponse = $this->subscriptionApi->subscribeProduct($request->getMappedValues($identifiersMapping));
-        if (!$clientResponse->isSuccess()) {
-            throw new \Exception('API error');
-        }
 
-        //TODO : see what to do in this case (should not happen but we still have to handle it)
+        //TODO : see what to do in this case
         if (! $clientResponse->hasSubscriptions()) {
             throw new \Exception('No subscription found in the client response');
         }
