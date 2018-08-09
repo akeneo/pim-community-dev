@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -25,7 +26,7 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
 
     function it_is_a_copier()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Updater\Copier\CopierInterface');
+        $this->shouldImplement(CopierInterface::class);
     }
 
     function it_supports_same_reference_data_attributes(

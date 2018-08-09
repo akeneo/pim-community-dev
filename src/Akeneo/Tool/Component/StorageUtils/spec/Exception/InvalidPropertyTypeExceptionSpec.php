@@ -11,14 +11,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::scalarExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects a scalar as data, "array" given.',
             InvalidPropertyTypeException::SCALAR_EXPECTED_CODE
         );
@@ -35,14 +35,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::booleanExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects a boolean as data, "array" given.',
             InvalidPropertyTypeException::BOOLEAN_EXPECTED_CODE
         );
@@ -59,14 +59,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::floatExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects a float as data, "array" given.',
             InvalidPropertyTypeException::FLOAT_EXPECTED_CODE
         );
@@ -83,14 +83,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::integerExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects an integer as data, "array" given.',
             InvalidPropertyTypeException::INTEGER_EXPECTED_CODE
         );
@@ -107,14 +107,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::numericExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects a numeric as data, "array" given.',
             InvalidPropertyTypeException::NUMERIC_EXPECTED_CODE
         );
@@ -131,14 +131,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::stringExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects a string as data, "array" given.',
             InvalidPropertyTypeException::STRING_EXPECTED_CODE
         );
@@ -155,14 +155,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::arrayExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             true
         );
 
         $this->beConstructedWith(
             'attribute',
             true,
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects an array as data, "boolean" given.',
             InvalidPropertyTypeException::ARRAY_EXPECTED_CODE
         );
@@ -180,14 +180,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'attribute',
             'one of the attribute code is no a scalar, "array" given',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             [[]]
         );
 
         $this->beConstructedWith(
             'attribute',
             [[]],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects an array with valid data, one of the attribute code is no a scalar, "array" given.',
             InvalidPropertyTypeException::VALID_ARRAY_STRUCTURE_EXPECTED_CODE
         );
@@ -204,14 +204,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::arrayOfArraysExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             ['string']
         );
 
         $this->beConstructedWith(
             'attribute',
             ['string'],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects an array of arrays as data.',
             InvalidPropertyTypeException::ARRAY_OF_ARRAYS_EXPECTED_CODE
         );
@@ -228,14 +228,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyTypeException::arrayOfObjectsExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             ['string']
         );
 
         $this->beConstructedWith(
             'attribute',
             ['string'],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects an array of objects as data.',
             InvalidPropertyTypeException::ARRAY_OF_OBJECTS_EXPECTED_CODE
         );
@@ -253,14 +253,14 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
         $exception = InvalidPropertyTypeException::arrayKeyExpected(
             'attribute',
             'currency',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             []
         );
 
         $this->beConstructedWith(
             'attribute',
             [],
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects an array with the key "currency".',
             InvalidPropertyTypeException::ARRAY_KEY_EXPECTED_CODE
         );
