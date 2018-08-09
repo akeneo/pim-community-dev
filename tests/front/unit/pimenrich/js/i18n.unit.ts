@@ -17,6 +17,14 @@ describe('>>>TOOLS --- i18n', () => {
 </span>`);
   });
 
+  test('Generate an html flag with a long locale code', () => {
+    expect(i18n.getFlag('en_US_FR')).toBe(`
+<span class=\"flag-language\">
+  <i class=\"flag flag-fr\"></i>
+  <span class=\"language\">en</span>
+</span>`);
+  });
+
   test('Generate an html flag without the language', () => {
     expect(i18n.getFlag('en_US', false)).toBe(`
 <span class=\"flag-language\">
