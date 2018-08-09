@@ -32,6 +32,7 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
         $command = new CreateTextAttributeCommand();
         $this->fillCommonProperties($command, $normalizedCommand);
         $command->maxLength = $normalizedCommand['max_length'] ?? null;
+        $command->required = $normalizedCommand['required'] ?? false;
 
         return $command;
     }

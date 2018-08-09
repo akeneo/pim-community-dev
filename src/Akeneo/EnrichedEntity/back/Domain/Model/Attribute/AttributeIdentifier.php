@@ -59,6 +59,7 @@ class AttributeIdentifier
                 strlen($identifier)
             )
         );
+
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_]+$/',

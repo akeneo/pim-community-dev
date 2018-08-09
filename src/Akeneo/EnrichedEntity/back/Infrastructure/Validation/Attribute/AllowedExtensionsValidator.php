@@ -33,9 +33,9 @@ class AllowedExtensionsValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($allowedExtensions, [
-                new Constraints\NotBlank(),
                 new Constraints\Collection([
-                    new Constraints\Type(['type' => 'string'])
+                    'fields' => [new Constraints\Type(['type' => 'string'])],
+                    'allowMissingFields' => true
                 ]),
             ]
         );

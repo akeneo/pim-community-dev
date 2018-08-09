@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -33,13 +34,16 @@ class MaxFileSizeValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($maxFileSize, [
-                new Constraints\NotBlank(),
-            ]
-        );
+            new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
+                if (!(null === $value || is_float($value))) {
+                    $context->buildViolation('This value should be a number')
+                        ->addViolation();
+                }
+            })
+        ]);
 
-        if (0 === $violations->count()) {
+        if (null !== $maxFileSize && 0 === $violations->count()) {
             $violations->addAll($validator->validate((float) $maxFileSize, [
-                new Constraints\Type(['type' => 'float']),
                 new Constraints\LessThanOrEqual(9999.99),
                 new Constraints\GreaterThan(0),
             ]));

@@ -175,8 +175,8 @@ class Create extends React.Component<CreateProps> {
                         onChange={this.onCodeUpdate}
                         onKeyPress={this.onKeyPress}
                       />
-                      {getErrorsView(this.props.errors, 'identifier')}
                     </div>
+                    {getErrorsView(this.props.errors, 'identifier')}
                   </div>
                   <div className="AknFieldContainer" data-code="type">
                     <div className="AknFieldContainer-header">
@@ -195,8 +195,8 @@ class Create extends React.Component<CreateProps> {
                         selectedElement={this.props.data.type}
                         onSelectionChange={this.onTypeUpdate}
                       />
-                      {getErrorsView(this.props.errors, 'type')}
                     </div>
+                    {getErrorsView(this.props.errors, 'type')}
                   </div>
                   <div className="AknFieldContainer" data-code="valuePerLocale">
                     <div className="AknFieldContainer-header">
@@ -213,8 +213,8 @@ class Create extends React.Component<CreateProps> {
                         value={this.props.data.valuePerLocale}
                         onChange={this.props.events.onValuePerLocaleUpdated}
                       />
-                      {getErrorsView(this.props.errors, 'valuePerLocale')}
                     </div>
+                    {getErrorsView(this.props.errors, 'valuePerLocale')}
                   </div>
                   <div className="AknFieldContainer" data-code="valuePerChannel">
                     <div className="AknFieldContainer-header">
@@ -231,8 +231,8 @@ class Create extends React.Component<CreateProps> {
                         value={this.props.data.valuePerChannel}
                         onChange={this.props.events.onValuePerChannelUpdated}
                       />
-                      {getErrorsView(this.props.errors, 'valuePerChannel')}
                     </div>
+                    {getErrorsView(this.props.errors, 'valuePerChannel')}
                   </div>
                 </div>
               </div>

@@ -63,7 +63,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);
         $command->order->shouldBeEqualTo(null);
-        $command->required->shouldBeEqualTo(null);
+        $command->required->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(null);
         $command->valuePerLocale->shouldBeEqualTo(null);
         $command->maxLength->shouldBeEqualTo(null);

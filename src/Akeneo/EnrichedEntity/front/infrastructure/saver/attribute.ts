@@ -16,6 +16,13 @@ export class AttributeSaverImplementation implements AttributeSaver {
     const normalizedAttribute = attribute.normalize() as any;
     normalizedAttribute.enriched_entity_identifier = normalizedAttribute.enrichedEntityIdentifier;
     normalizedAttribute.identifier.enriched_entity_identifier = normalizedAttribute.identifier.enrichedEntityIdentifier;
+    normalizedAttribute.value_per_locale = normalizedAttribute.valuePerLocale;
+    normalizedAttribute.value_per_channel = normalizedAttribute.valuePerChannel;
+
+    delete normalizedAttribute.enrichedEntityIdentifier;
+    delete normalizedAttribute.identifier.enrichedEntityIdentifier;
+    delete normalizedAttribute.valuePerLocale;
+    delete normalizedAttribute.valuePerChannel;
 
     return await postJSON(
       routing.generate('akeneo_enriched_entities_attribute_edit_rest', {
@@ -36,6 +43,13 @@ export class AttributeSaverImplementation implements AttributeSaver {
     const normalizedAttribute = attribute.normalize() as any;
     normalizedAttribute.enriched_entity_identifier = normalizedAttribute.enrichedEntityIdentifier;
     normalizedAttribute.identifier.enriched_entity_identifier = normalizedAttribute.identifier.enrichedEntityIdentifier;
+    normalizedAttribute.value_per_locale = normalizedAttribute.valuePerLocale;
+    normalizedAttribute.value_per_channel = normalizedAttribute.valuePerChannel;
+
+    delete normalizedAttribute.enrichedEntityIdentifier;
+    delete normalizedAttribute.identifier.enrichedEntityIdentifier;
+    delete normalizedAttribute.valuePerLocale;
+    delete normalizedAttribute.valuePerChannel;
 
     return await postJSON(
       routing.generate('akeneo_enriched_entities_attribute_create_rest', {

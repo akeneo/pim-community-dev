@@ -27,7 +27,7 @@ class AttributeMaxFileSize
     /*** @var string */
     private $maxFileSize;
 
-    public function __construct(string $maxFileSize)
+    public function __construct(?string $maxFileSize)
     {
         Assert::greaterThanEq((float) $maxFileSize, 0, sprintf('The maximum file size should be positive, %d given', $maxFileSize));
         Assert::lessThanEq(
@@ -38,12 +38,12 @@ class AttributeMaxFileSize
         $this->maxFileSize = $maxFileSize;
     }
 
-    public static function fromString(string $maxFileSize) : self
+    public static function fromString(?string $maxFileSize) : self
     {
         return new self($maxFileSize);
     }
 
-    public function normalize(): string
+    public function normalize(): ?string
     {
         return (string) $this->maxFileSize;
     }
