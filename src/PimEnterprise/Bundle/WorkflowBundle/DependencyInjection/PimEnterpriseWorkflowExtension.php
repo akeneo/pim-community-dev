@@ -55,6 +55,7 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('product_draft.yml');
         $loader->load('providers.yml');
         $loader->load('publishers.yml');
+        $loader->load('queries.yml');
         $loader->load('query_builders.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');

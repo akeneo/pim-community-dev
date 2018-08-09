@@ -1,0 +1,6 @@
+services:
+    pimee_workflow.query.get_associated_product_codes_by_published_product:
+        class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByPublishedProductFromDB
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.token_storage'

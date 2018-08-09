@@ -48,7 +48,7 @@ sku;categories;enabled;family;groups;a_localizable_image-de_DE;a_localizable_ima
 product_viewable_by_everybody_1;categoryA2;1;;;files/product_viewable_by_everybody_1/a_localizable_image/de_DE/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/en_US/akeneo.jpg;files/product_viewable_by_everybody_1/a_localizable_image/fr_FR/akeneo.jpg;"DE tablet";"EN tablet";"FR tablet";-10;CELSIUS;12.0500;;;;;;;;
 product_viewable_by_everybody_2;categoryA2,categoryB;1;;;;;;;;;;;;;;;;;;;
 product_not_viewable_by_redactor;categoryB;1;;;;;;;;;;;;;;;;;;;
-product_without_category;;1;;;;;;;;;;;;;;;;;;;product_viewable_by_everybody_2,product_not_viewable_by_redactor
+product_without_category;;1;;;;;;;;;;;;;;;;;;;product_not_viewable_by_redactor,product_viewable_by_everybody_2
 
 CSV;
 
