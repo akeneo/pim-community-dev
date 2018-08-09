@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
 use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
