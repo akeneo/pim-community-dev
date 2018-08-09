@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -166,12 +175,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $resetQuery = <<<SQL
-            DELETE FROM akeneo_enriched_entity_record;
-            DELETE FROM akeneo_enriched_entity_enriched_entity;
-SQL;
-
-        $this->get('database_connection')->executeQuery($resetQuery);
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
     }
 
     private function insertEnrichedEntity(): void

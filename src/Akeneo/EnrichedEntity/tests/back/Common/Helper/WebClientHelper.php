@@ -48,7 +48,11 @@ class WebClientHelper
 
     public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
     {
-        Assert::assertSame($statusCode, $response->getStatusCode(), 'Expected request status code is not the same as the actual.');
+        $errorMessage = sprintf(
+            'Expected request status code is not the same as the actual. Failed with content %s',
+            $response->getContent()
+        );
+        Assert::assertSame($statusCode, $response->getStatusCode(), $errorMessage);
         Assert::assertSame($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
     }
 

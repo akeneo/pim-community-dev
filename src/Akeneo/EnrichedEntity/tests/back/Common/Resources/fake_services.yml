@@ -6,6 +6,9 @@ services:
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository
 
+    akeneo_enrichedentity.infrastructure.persistence.attribute:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository
+
     pim_user.repository.user:
         class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
 
@@ -27,6 +30,16 @@ services:
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.record'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeExists
+        arguments:
+        - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributeNextOrder
+        arguments:
+        - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
     # Third party services
     oro_security.security_facade:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\SecurityFacadeStub
@@ -36,3 +49,7 @@ services:
             - '@oro_security.acl.object_identity_factory'
             - '@logger'
 
+    akeneo_ee_integration_tests.helper.database_helper:
+        class: 'Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Helper\DatabaseHelper'
+        arguments:
+            - '@database_connection'
