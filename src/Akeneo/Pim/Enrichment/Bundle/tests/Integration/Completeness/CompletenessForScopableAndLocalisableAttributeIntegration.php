@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
-use Akeneo\Test\Integration\Configuration;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
