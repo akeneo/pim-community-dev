@@ -29,6 +29,10 @@ class PimAiConfigurationContext implements Context
 {
     private const PIM_AI_VALID_TOKEN = 'valid-token';
 
+    private const PIM_AI_INVALID_TOKEN = 'invalid-token';
+
+    private const PIM_AI_CONFIGURATION_CODE = 'pim-ai';
+
     /** @var ActivateSuggestDataConnection */
     private $pimAiConnection;
 
@@ -40,6 +44,12 @@ class PimAiConfigurationContext implements Context
 
     /** @var GetSuggestDataConnectionStatus */
     private $getConnectionStatus;
+
+    /**
+     * Make this context statefull. Useful for testing configuration retrieval.
+     * @var null|Configuration
+     */
+    private $retrievedConfiguration;
 
     /**
      * @param ActivateSuggestDataConnection    $pimAiConnection
@@ -57,70 +67,108 @@ class PimAiConfigurationContext implements Context
         $this->configurationRepository = $configurationRepository;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->getConnectionStatus = $getConnectionStatus;
+        $this->retrievedConfiguration = null;
     }
 
     /**
-     * @Given Akeneo PIM is not connected to PIM.ai anymore
+     * @Given PIM.ai has not been configured
      */
-    public function pimAiIsNotActiveAnymore(): void
+    public function pimAiHasNotBeenConfigured()
     {
-        $configuration = new Configuration('pim-ai', ['token' => 'invalid-token']);
-        $this->configurationRepository->save($configuration);
-
-        $isActive = $this->getConnectionStatus->forCode('pim-ai');
-        Assert::assertFalse($isActive);
+        $configuration = $this->configurationRepository->findOneByCode(static::PIM_AI_CONFIGURATION_CODE);
+        Assert::isNull($configuration);
     }
 
     /**
-     * @Given Akeneo PIM is connected to PIM.ai
-     * @When /^a system administrator tries to (re)?connect Akeneo PIM to PIM.ai$/
+     * @Given PIM.ai is configured with a valid token
      */
-    public function activatePimAi(): void
+    public function pimAiIsConfiguredWithAValidToken()
+    {
+        $configuration = new Configuration(static::PIM_AI_CONFIGURATION_CODE, ['token' => static::PIM_AI_VALID_TOKEN]);
+        $this->configurationRepository->save($configuration);
+    }
+
+    /**
+     * @Given PIM.ai is configured with an expired token
+     */
+    public function pimAiIsConfiguredWithAnExpiredToken(): void
+    {
+        $configuration = new Configuration(static::PIM_AI_CONFIGURATION_CODE, ['token' => static::PIM_AI_INVALID_TOKEN]);
+        $this->configurationRepository->save($configuration);
+    }
+
+    /**
+     * @When a system administrator configures PIM.ai using a valid token
+     */
+    public function configuresPimAiUsingAValidToken(): void
     {
         $success = $this->activatePimAiConnection(static::PIM_AI_VALID_TOKEN);
-
         Assert::assertTrue($success);
     }
 
     /**
-     * @When a system administrator tries to connect Akeneo PIM to PIM.ai with an invalid activation code
+     * @When a system administrator configures PIM.ai using an invalid token
      */
-    public function tryToActivatePimAiWithInvalidToken(): void
+    public function configuresPimAiUsingAnInvalidToken(): void
     {
-        $success = $this->activatePimAiConnection('foobar');
-
+        $success = $this->activatePimAiConnection(static::PIM_AI_INVALID_TOKEN);
         Assert::assertFalse($success);
     }
 
     /**
-     * @param string|null $not
-     *
-     * @Then /^Akeneo PIM connection to PIM.ai is( not)? activate$/
+     * @When a system administrator retrieves the PIM.ai configuration
      */
-    public function isPimAiActivated(string $not = null)
+    public function retrievesTheConfiguration()
     {
-        $isActive = $this->getConnectionStatus->forCode('pim-ai');
-
-        if (null === $not) {
-            Assert::assertTrue($isActive);
-        } else {
-            Assert::assertFalse($isActive);
-        }
+        $this->retrievedConfiguration = $this->getNormalizedConfiguration->fromCode(static::PIM_AI_CONFIGURATION_CODE);
     }
 
     /**
-     * @Then PIM.ai configuration can be retrieved
+     * @Then PIM.ai is activated
      */
-    public function configurationCanBeRetrieved()
+    public function pimAiIsActivated()
     {
-        $configuration = $this->getNormalizedConfiguration->fromCode('pim-ai');
+        $isActive = $this->getConnectionStatus->forCode(static::PIM_AI_CONFIGURATION_CODE);
+        Assert::assertTrue($isActive);
+    }
 
+    /**
+     * @Then PIM.ai is not activated
+     */
+    public function pimAiIsNotActivated()
+    {
+        $isActive = $this->getConnectionStatus->forCode(static::PIM_AI_CONFIGURATION_CODE);
+        Assert::assertFalse($isActive);
+    }
+
+    /**
+     * @Then PIM.ai valid token is retrieved
+     */
+    public function aValidTokenIsRetrieved()
+    {
+        $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_VALID_TOKEN, $this->retrievedConfiguration);
+    }
+
+    /**
+     * @Then PIM.ai expired token is retrieved
+     */
+    public function anExpiredTokenIsRetrieved()
+    {
+        $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_INVALID_TOKEN, $this->retrievedConfiguration);
+    }
+
+    /**
+     * @param string $expectedToken
+     * @param array $expectedConfiguration
+     */
+    private function assertPimAiConfigurationEqualsTo(string $expectedToken, array $expectedConfiguration)
+    {
         Assert::assertSame([
-            'code' => 'pim-ai',
+            'code' => static::PIM_AI_CONFIGURATION_CODE,
             'values' => [
-                'token' => static::PIM_AI_VALID_TOKEN,
+                'token' => $expectedToken,
             ],
-        ], $configuration);
+        ], $expectedConfiguration);
     }
 
     /**
@@ -131,7 +179,7 @@ class PimAiConfigurationContext implements Context
     private function activatePimAiConnection(string $activationCode): bool
     {
         try {
-            $this->pimAiConnection->activate('pim-ai', ['token' => $activationCode]);
+            $this->pimAiConnection->activate(static::PIM_AI_CONFIGURATION_CODE, ['token' => $activationCode]);
         } catch (InvalidConnectionConfigurationException $exception) {
             return false;
         }
