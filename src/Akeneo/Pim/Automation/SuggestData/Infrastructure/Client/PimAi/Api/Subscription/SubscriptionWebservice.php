@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\BadRequestException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\DataProviderServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\InvalidTokenException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use GuzzleHttp\Exception\ClientException;
