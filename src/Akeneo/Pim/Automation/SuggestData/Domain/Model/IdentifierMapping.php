@@ -30,8 +30,8 @@ class IdentifierMapping
     private $attribute;
 
     /**
-     * @param string $pimAiCode
-     * @param ?AttributeInterface $attribute
+     * @param string                  $pimAiCode
+     * @param AttributeInterface|null $attribute
      */
     public function __construct(string $pimAiCode, ?AttributeInterface $attribute)
     {
@@ -56,11 +56,11 @@ class IdentifierMapping
     }
 
     /**
-     * @param mixed $attribute
+     * @param AttributeInterface $attribute
      *
      * @return IdentifierMapping
      */
-    public function setAttribute($attribute): self
+    public function setAttribute(?AttributeInterface $attribute): self
     {
         $this->attribute = $attribute;
 
