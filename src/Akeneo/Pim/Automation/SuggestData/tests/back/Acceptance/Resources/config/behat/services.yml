@@ -36,5 +36,6 @@ services:
             - '@__symfony__.pim_catalog.repository.product_without_permission'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@__symfony__.akeneo.pim.automation.suggest_data.service.subscribe_product'
+            - '@akeneo_acceptance.context.suggest_data.data_fixtures'
         tags:
             - { name: 'fob.context_service' }
