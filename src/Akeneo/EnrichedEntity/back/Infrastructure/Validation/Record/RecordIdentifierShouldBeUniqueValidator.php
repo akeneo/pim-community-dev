@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsRecordInterface;
+use Akeneo\EnrichedEntity\Domain\Query\RecordExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -28,12 +28,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
 {
-    /** @var ExistsRecordInterface */
-    private $existsRecord;
+    /** @var RecordExistsInterface */
+    private $recordExists;
 
-    public function __construct(ExistsRecordInterface $existsRecord)
+    public function __construct(RecordExistsInterface $recordExists)
     {
-        $this->existsRecord = $existsRecord;
+        $this->recordExists = $recordExists;
     }
 
     public function validate($command, Constraint $constraint)
@@ -68,7 +68,7 @@ class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
     {
         $enrichedEntityIdentifier = $command->identifier['enriched_entity_identifier'];
         $identifier = $command->identifier['identifier'];
-        $alreadyExists = $this->existsRecord->withIdentifier(
+        $alreadyExists = $this->recordExists->withIdentifier(
             RecordIdentifier::create(
                 $enrichedEntityIdentifier,
                 $identifier

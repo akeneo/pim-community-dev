@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsRecordInterface;
+use Akeneo\EnrichedEntity\Domain\Query\RecordExistsInterface;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryExistsRecord implements ExistsRecordInterface
+class InMemoryRecordExists implements RecordExistsInterface
 {
     /** @var InMemoryRecordRepository */
     private $recordRepository;

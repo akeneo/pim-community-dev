@@ -2,7 +2,7 @@ services:
     akeneo_enrichedentity.infrastructure.validation.record.record:
         class: Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordIdentifierShouldBeUniqueValidator
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.query.exists_record'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.record_is_unique' }
 

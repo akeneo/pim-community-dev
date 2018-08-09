@@ -18,23 +18,23 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsRecordInterface;
+use Akeneo\EnrichedEntity\Domain\Query\RecordExistsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlExistsRecordTest extends SqlIntegrationTestCase
+class SqlRecordExistsTest extends SqlIntegrationTestCase
 {
-    /** @var ExistsRecordInterface */
-    private $existsRecord;
+    /** @var RecordExistsInterface */
+    private $recordExists;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->existsRecord = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.exists_record');
+        $this->recordExists = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.record_exists');
         $this->resetDB();
         $this->loadEnrichedEntityDesigner();
         $this->loadRecordStarck();
@@ -45,8 +45,8 @@ class SqlExistsRecordTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_is_a_corresponding_record_identifier()
     {
-        $this->assertTrue($this->existsRecord->withIdentifier(RecordIdentifier::create('designer', 'starck')));
-        $this->assertFalse($this->existsRecord->withIdentifier(RecordIdentifier::create('designer', 'Coco')));
+        $this->assertTrue($this->recordExists->withIdentifier(RecordIdentifier::create('designer', 'starck')));
+        $this->assertFalse($this->recordExists->withIdentifier(RecordIdentifier::create('designer', 'Coco')));
     }
 
     private function resetDB(): void
