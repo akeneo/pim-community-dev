@@ -18,7 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\ExistsRecordInterface;
+use Akeneo\EnrichedEntity\Domain\Query\RecordExistsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
 /**
@@ -27,7 +27,7 @@ use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
  */
 class SqlExistsRecordTest extends SqlIntegrationTestCase
 {
-    /** @var ExistsRecordInterface */
+    /** @var RecordExistsInterface */
     private $existsRecord;
 
     public function setUp()
