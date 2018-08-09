@@ -17,7 +17,7 @@ use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -26,7 +26,7 @@ use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterf
  * Copy of the {@see Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory} but without
  * sorting data.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ProductValueFactory.
  *
  * @author    Julien Janvier (j.janvier@gmail.com)
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

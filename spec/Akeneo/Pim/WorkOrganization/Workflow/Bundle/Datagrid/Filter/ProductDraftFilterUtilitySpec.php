@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 
 class ProductDraftFilterUtilitySpec extends ObjectBehavior

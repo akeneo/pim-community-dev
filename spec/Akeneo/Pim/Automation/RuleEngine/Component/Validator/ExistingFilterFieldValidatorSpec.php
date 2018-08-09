@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Prophecy\Argument;

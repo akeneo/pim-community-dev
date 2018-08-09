@@ -20,7 +20,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TwigAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension_InitRuntimeInterface;
 
