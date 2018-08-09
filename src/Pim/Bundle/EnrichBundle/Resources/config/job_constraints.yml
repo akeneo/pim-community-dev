@@ -28,7 +28,7 @@ services:
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_csv_quick_export:
         class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
         arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export'
             - []
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
@@ -46,7 +46,7 @@ services:
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_xlsx_quick_export:
         class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
         arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
             - []
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
