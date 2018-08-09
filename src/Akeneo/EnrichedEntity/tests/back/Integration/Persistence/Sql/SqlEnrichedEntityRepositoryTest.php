@@ -101,6 +101,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     private function resetDB()
     {
         $resetQuery = <<<SQL
+            DELETE FROM akeneo_enriched_entity_record;
             DELETE FROM akeneo_enriched_entity_enriched_entity;
 SQL;
 

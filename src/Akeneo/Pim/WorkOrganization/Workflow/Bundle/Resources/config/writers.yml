@@ -3,7 +3,7 @@ parameters:
 
 services:
     pim_connector.writer.database.product:
-        class: '%pim_connector.writer.database.product.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter'
         arguments:
             - '@pim_versioning.manager.version'
             - '@pimee_workflow.saver.product_delegating'

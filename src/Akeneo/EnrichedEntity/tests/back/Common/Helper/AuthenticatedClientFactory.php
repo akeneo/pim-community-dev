@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Helper;
+namespace Akeneo\EnrichedEntity\tests\back\Common\Helper;
 
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Client;

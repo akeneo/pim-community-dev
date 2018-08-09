@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Common;
+namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -64,6 +64,13 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         }
 
         return $recordCount;
+    }
+
+    public function hasRecord(RecordIdentifier $identifier)
+    {
+        $key = $this->getKey($identifier);
+
+        return isset($this->records[$key]);
     }
 
     private function getKey(RecordIdentifier $recordIdentifier): string

@@ -167,8 +167,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     private function resetDB(): void
     {
         $resetQuery = <<<SQL
-            DELETE FROM akeneo_enriched_entity_enriched_entity;
             DELETE FROM akeneo_enriched_entity_record;
+            DELETE FROM akeneo_enriched_entity_enriched_entity;
 SQL;
 
         $this->get('database_connection')->executeQuery($resetQuery);
