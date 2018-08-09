@@ -29,3 +29,12 @@ services:
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
             - { name: fob.context_service }
+
+    akeneo_enrichedentity.tests.back.acceptance.context.create_attribute_context:
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateAttributeContext
+        arguments:
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
+        tags:
+            - { name: fob.context_service }

@@ -49,17 +49,7 @@ class RecordDetails
             self::IDENTIFIER                 => $this->identifier->normalize(),
             self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->enrichedEntityIdentifier,
             self::CODE                       => (string) $this->code,
-            self::LABELS                     => $this->normalizeLabels($this->labels)
+            self::LABELS                     => $this->labels->normalize()
         ];
-    }
-
-    private function normalizeLabels(LabelCollection $labelCollection): array
-    {
-        $labels = [];
-        foreach ($this->labels->getLocaleCodes() as $localeCode) {
-            $labels[$localeCode] = $labelCollection->getLabel($localeCode);
-        }
-
-        return $labels;
     }
 }

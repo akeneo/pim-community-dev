@@ -94,6 +94,25 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
       ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
+CREATE TABLE `akeneo_enriched_entity_attribute` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `identifier` VARCHAR(255) NOT NULL,
+    `enriched_entity_identifier` VARCHAR(255) NOT NULL,
+    `labels` JSON NOT NULL,
+    `attribute_type` VARCHAR(255) NOT NULL,
+    `attribute_order` INT NOT NULL,
+    `required` BOOLEAN NOT NULL,
+    `value_per_channel` BOOLEAN NOT NULL,
+    `value_per_locale` BOOLEAN NOT NULL,
+    `additional_properties` JSON NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE `attribute_identifier_index` (`identifier`, `enriched_entity_identifier`),
+    UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
+    CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
+      ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
 
         $this->dbal->exec($sql);
@@ -103,6 +122,31 @@ SQL;
     {
         $this->loadEnrichedEntities();
         $this->loadRecords();
+
+        $sql = <<<SQL
+INSERT INTO `akeneo_enriched_entity_attribute` (
+  `identifier`,
+  `enriched_entity_identifier`,
+  `labels`,
+  `attribute_type`,
+  `attribute_order`,
+  `required`,
+  `value_per_channel`,
+  `value_per_locale`,
+  `additional_properties`
+  )
+VALUES
+  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": 255}'),
+  ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}'),
+  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": 255}'),
+  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255}'),
+  ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}')
+SQL;
+
+        $affectedRows = $this->dbal->exec($sql);
+        if (0 === $affectedRows) {
+            throw new \LogicException('An issue occured while installing the enriched entities.');
+        }
     }
 
     /**

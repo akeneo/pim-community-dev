@@ -60,4 +60,9 @@ class LabelCollection
     {
         return array_keys($this->translatedLabels);
     }
+
+    public function normalize(): array
+    {
+        return $this->translatedLabels;
+    }
 }

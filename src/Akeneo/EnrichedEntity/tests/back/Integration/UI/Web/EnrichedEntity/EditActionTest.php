@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\EnrichedEntity;
 
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;

@@ -1,9 +1,13 @@
 services:
+    # Repositories
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.attribute:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository
 
     # Query functions
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
@@ -17,3 +21,18 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindRecordItemsForEnrichedEntity
+
+    akeneo_enrichedentity.infrastructure.persistence.query.exists_record:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryExistsRecord
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeExists
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributeNextOrder
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'

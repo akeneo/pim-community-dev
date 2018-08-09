@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -27,6 +28,10 @@ class CodeValidator extends ConstraintValidator
 
     public function validate($identifier, Constraint $constraint)
     {
+        if (!$constraint instanceof Code) {
+            throw new UnexpectedTypeException($constraint, self::class);
+        }
+
         $validator = Validation::createValidator();
         $violations = $validator->validate($identifier, [
                 new Constraints\NotBlank(),
