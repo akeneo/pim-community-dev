@@ -30,6 +30,8 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Types\Type;
 use PDO;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
@@ -90,9 +92,9 @@ SQL;
                 'additional_properties' => json_encode($additionalProperties),
             ],
             [
-                'required' => \Doctrine\DBAL\Types\Type::getType('boolean'),
-                'value_per_channel' => \Doctrine\DBAL\Types\Type::getType('boolean'),
-                'value_per_locale' => \Doctrine\DBAL\Types\Type::getType('boolean'),
+                'required' => Type::getType('boolean'),
+                'value_per_channel' => Type::getType('boolean'),
+                'value_per_locale' => Type::getType('boolean'),
             ]
         );
         if ($affectedRows > 1) {
@@ -109,7 +111,7 @@ SQL;
 
     /**
      * @throws AttributeNotFoundException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
@@ -148,7 +150,7 @@ SQL;
      * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
      *
      * @return AbstractAttribute[]
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
     {
@@ -259,7 +261,7 @@ SQL;
 
     /**
      * @throws AttributeNotFoundException
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function deleteByIdentifier(AttributeIdentifier $identifier): void
     {

@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttri
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -104,6 +105,25 @@ class CreateAttributeContext implements Context
         ksort($actual);
 
         Assert::assertSame($expected, $actual);
+    }
+
+    /**
+     * @Then /^there is no attribute "([^"]*)" in the enriched entity "([^"]*)"$/
+     */
+    public function thereIsNoAttributeInTheEnrichedEntity(
+        string $attributeCode,
+        string $enrichedEntityIdentifier
+    ) {
+        $attribute = null;
+
+        try {
+            $attribute = $this->attributeRepository->getByIdentifier(
+                AttributeIdentifier::create($enrichedEntityIdentifier, $attributeCode)
+            );
+            Assert::assertTrue(false);
+        } catch (AttributeNotFoundException $e) {
+            Assert::assertNull($attribute);
+        }
     }
 
     /**
