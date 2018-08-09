@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7580: Fixes the search on categories with product models
+- PIM-7573: Fix "nesting level too deep" error during family import
 
 # 2.3.4 (2018-08-08)
 
