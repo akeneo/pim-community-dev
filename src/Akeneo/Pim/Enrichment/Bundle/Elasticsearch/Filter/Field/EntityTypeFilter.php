@@ -7,8 +7,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 
 /**
  * Some PQBs are able to return objects of different types (eg, Product and Product models). In some cases it is useful

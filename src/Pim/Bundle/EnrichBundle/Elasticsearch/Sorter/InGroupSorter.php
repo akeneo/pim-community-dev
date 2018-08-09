@@ -5,8 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Elasticsearch\Sorter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
-use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 
 /**

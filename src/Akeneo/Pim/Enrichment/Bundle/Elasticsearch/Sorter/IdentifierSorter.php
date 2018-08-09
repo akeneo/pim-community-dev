@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 
 /**
  * Identifier sorter for an Elasticsearch query.

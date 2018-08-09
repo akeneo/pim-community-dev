@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
 class FamilySorterSpec extends ObjectBehavior
 {

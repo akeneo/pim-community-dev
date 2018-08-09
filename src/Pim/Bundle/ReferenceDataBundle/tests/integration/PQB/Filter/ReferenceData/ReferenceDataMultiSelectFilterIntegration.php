@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\tests\integration\PQB\Filter\ReferenceData;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>

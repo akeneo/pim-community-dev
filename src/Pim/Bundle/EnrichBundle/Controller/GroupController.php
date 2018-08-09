@@ -7,7 +7,7 @@ use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
-use Pim\Component\Catalog\Factory\GroupFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

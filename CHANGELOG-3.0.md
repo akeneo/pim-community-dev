@@ -12,6 +12,21 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Factory\Value\DateValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\MediaValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MediaValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\MetricValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\OptionsValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\OptionValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\ScalarValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ScalarValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\ValueFactoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface`
+- Move `Pim\Component\Catalog\Factory\GroupFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory`
+- Move `Pim\Component\Catalog\Factory\MetricFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory`
+- Move `Pim\Component\Catalog\Factory\PriceFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory`
+- Move `Pim\Component\Catalog\Factory\ProductUniqueDataFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ProductUniqueDataFactory`
+- Move `Pim\Component\Catalog\Factory\ValueCollectionFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`
+- Move `Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
+- Move `Pim\Component\Catalog\Factory\ValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
 - Move `Pim\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver` 
 - Move `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface` 
 - Move `Pim\Component\Catalog\Manager\CompletenessManager` to `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
@@ -83,6 +98,7 @@
 - Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
 
+- Move namespace `Pim\Component\Catalog\Query` to `Akeneo\Pim\Enrichment\Component\Product\Query`
 - Move namespace `Pim\Component\Catalog\Job` to `Akeneo\Pim\Enrichment\Component\Product\Job`
 - Move namespace `Pim\Component\Catalog\Converter` to `Akeneo\Pim\Enrichment\Component\Product\Converter`
 - Move namespace `Pim\Component\Catalog\Builder` to `Akeneo\Pim\Enrichment\Component\Product\Builder`

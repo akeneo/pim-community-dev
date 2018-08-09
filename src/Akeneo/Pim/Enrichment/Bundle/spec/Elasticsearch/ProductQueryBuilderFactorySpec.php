@@ -5,12 +5,12 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
-use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilder;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
-use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
