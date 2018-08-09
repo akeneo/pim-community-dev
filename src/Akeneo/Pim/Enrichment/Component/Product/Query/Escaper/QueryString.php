@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Query\Escaper;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query\Escaper;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>

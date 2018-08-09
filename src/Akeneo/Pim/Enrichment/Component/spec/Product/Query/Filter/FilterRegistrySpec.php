@@ -1,11 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Query\Filter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Query\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
@@ -23,7 +24,7 @@ class FilterRegistrySpec extends ObjectBehavior
 
     function it_is_a_filter_registry()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FilterRegistryInterface');
+        $this->shouldImplement(FilterRegistryInterface::class);
     }
 
     function it_returns_a_supported_field_filter_and_operator($fieldFilter)

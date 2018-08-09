@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 /**
  * Aims to create a product query builder

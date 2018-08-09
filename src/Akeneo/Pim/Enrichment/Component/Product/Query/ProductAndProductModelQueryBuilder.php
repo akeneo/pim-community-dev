@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Query;
+namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
 /**
  * Provides a way to search simply and efficiently product and product models.

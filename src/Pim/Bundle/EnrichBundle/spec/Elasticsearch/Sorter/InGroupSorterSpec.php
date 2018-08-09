@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
-use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 
 class InGroupSorterSpec extends ObjectBehavior

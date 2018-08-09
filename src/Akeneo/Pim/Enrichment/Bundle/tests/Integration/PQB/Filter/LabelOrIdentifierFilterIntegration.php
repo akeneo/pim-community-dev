@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Julien Sanchez <julien@gmail.com>

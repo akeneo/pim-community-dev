@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -18,8 +20,8 @@ class DummyFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\FieldFilterInterface');
-        $this->shouldImplement('Pim\Component\Catalog\Query\Filter\AttributeFilterInterface');
+        $this->shouldImplement(FieldFilterInterface::class);
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_supports_operators()

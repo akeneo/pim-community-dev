@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
 use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
  * Test the ProductAndProductModelQueryBuilder can return both product and product models in a smart way.
