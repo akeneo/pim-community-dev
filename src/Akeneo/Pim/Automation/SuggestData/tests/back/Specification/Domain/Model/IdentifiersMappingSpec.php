@@ -96,4 +96,16 @@ class IdentifiersMappingSpec extends ObjectBehavior
 
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);
     }
+
+    public function it_can_checks_if_mapping_is_defined()
+    {
+        $this->beConstructedWith([
+            'brand' => null,
+            'mpn' => null,
+            'upc' => null,
+            'asin' => null,
+        ]);
+
+        $this->isEmpty()->shouldReturn(true);
+    }
 }

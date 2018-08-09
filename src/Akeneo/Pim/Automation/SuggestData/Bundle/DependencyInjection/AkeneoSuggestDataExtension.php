@@ -35,9 +35,8 @@ class AkeneoSuggestDataExtension extends Extension
 
         $loader->load('controllers.yml');
         $loader->load('repositories.yml');
-        $loader->load('data_provider/in_memory.yml');
-        $loader->load('data_provider/pim_ai.yml');
 
+        $loader->load('data_provider/pim_ai.yml');
         $loader->load('client/pim_ai.yml');
 
         $loader->load('jobs.yml');
