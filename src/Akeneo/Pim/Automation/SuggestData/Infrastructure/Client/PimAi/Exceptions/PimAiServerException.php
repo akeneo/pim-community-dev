@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
 
 /**
+ * Exception thrown when something went wrong on PIM.ai server side.
+ *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class DataProviderServerException extends \Exception
+class PimAiServerException extends \Exception
 {
 }

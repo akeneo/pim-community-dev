@@ -7,9 +7,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\BadRequestException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\DataProviderServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\InvalidTokenException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use GuzzleHttp\Exception\ClientException;
@@ -45,7 +45,7 @@ class SubscriptionWebservice implements SubscriptionApiInterface
                 new SubscriptionCollection(json_decode($response->getBody()->getContents(), true))
             );
         } catch (ServerException $e) {
-            throw new DataProviderServerException(sprintf('Something went wrong on pim.ai side during product subscription : ', $e->getMessage()));
+            throw new PimAiServerException(sprintf('Something went wrong on pim.ai side during product subscription : ', $e->getMessage()));
         } catch (ClientException $e) {
             if ($e->getCode() === Response::HTTP_PAYMENT_REQUIRED) {
                 throw new InsufficientCreditsException('Not enough credits on pim.ai to subscribe');

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
 
 /**
+ * Exception thrown when an invalid token is used during any request to PIM.ai
+ *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class InvalidTokenException extends \Exception
