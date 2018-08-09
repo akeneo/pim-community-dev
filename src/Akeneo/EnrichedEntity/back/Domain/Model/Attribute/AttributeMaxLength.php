@@ -27,23 +27,25 @@ class AttributeMaxLength
     /*** @var int */
     private $maxLength;
 
-    public function __construct(int $maxLength)
+    public function __construct(?int $maxLength)
     {
-        Assert::natural($maxLength, sprintf('The maximum length should be positive, %d given', $maxLength));
-        Assert::lessThanEq(
-            $maxLength,
-            self::LIMIT,
-            sprintf('The maximum length authorized is %d, %d given', self::LIMIT, $maxLength)
-        );
+        if (null !== $maxLength) {
+            Assert::natural($maxLength, sprintf('The maximum length should be positive, %d given', $maxLength));
+            Assert::lessThanEq(
+                $maxLength,
+                self::LIMIT,
+                sprintf('The maximum length authorized is %d, %d given', self::LIMIT, $maxLength)
+            );
+        }
         $this->maxLength = $maxLength;
     }
 
-    public static function fromInteger(int $maxLength) : self
+    public static function fromInteger(?int $maxLength) : self
     {
         return new self($maxLength);
     }
 
-    public function intValue(): int
+    public function intValue(): ?int
     {
         return $this->maxLength;
     }

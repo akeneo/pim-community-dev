@@ -8,14 +8,18 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import EnrichedEntity, {denormalizeEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import EnrichedEntity, {
+  denormalizeEnrichedEntity,
+} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 const securityContext = require('pim/security-context');
 import ImageModel from 'akeneoenrichedentity/domain/model/image';
+import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 
 interface StateProps {
   sidebar: {
@@ -30,19 +34,23 @@ interface StateProps {
   };
   createRecord: {
     active: boolean;
-  },
+  };
   acls: {
     create: boolean;
-  },
+  };
   enrichedEntity: EnrichedEntity;
+  structure: {
+    locales: Locale[];
+  };
 }
 
 interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onRecordCreationStart: () => void;
-    onImageUpdated: (image: ImageModel|null) => void;
-  }
+    onLocaleChanged: (locale: Locale) => void;
+    onImageUpdated: (image: ImageModel | null) => void;
+  };
 }
 
 interface EditProps extends StateProps, DispatchProps {}
@@ -67,25 +75,22 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   private updateTabView = async (currentTab: string): Promise<void> => {
     const TabView = await editTabsProvider.getView(currentTab);
 
-    this.tabView = (<TabView code={currentTab} />);
+    this.tabView = <TabView code={currentTab} />;
     this.forceUpdate();
-  }
+  };
 
   private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
     if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
-          {__('pim_enriched_entity.button.create')}
+          {__('pim_enriched_entity.record.button.create')}
         </button>
       );
     }
 
     return (
-      <button
-        className="AknButton AknButton--apply"
-        onClick={this.props.events.onSaveEditForm}
-      >
-        {__('pim_enriched_entity.button.save')}
+      <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
+        {__('pim_enriched_entity.enriched_entity.button.save')}
       </button>
     );
   };
@@ -97,32 +102,41 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
-          <div className="AknDefault-thirdColumn"></div>
+          <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
           <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
             <header className="AknTitleContainer">
               <div className="AknTitleContainer-line">
-                <Image alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})} image={this.props.enrichedEntity.getImage()} onImageChange={this.props.events.onImageUpdated}/>
+                <Image
+                  alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})}
+                  image={this.props.enrichedEntity.getImage()}
+                  onImageChange={this.props.events.onImageUpdated}
+                />
                 <div className="AknTitleContainer-mainContainer">
                   <div>
                     <div className="AknTitleContainer-line">
                       <div className="AknTitleContainer-breadcrumbs">
-                        <Breadcrumb items={[
-                          {
-                            action: {
-                              type: 'redirect',
-                              route: 'akeneo_enriched_entities_enriched_entity_edit'
+                        <Breadcrumb
+                          items={[
+                            {
+                              action: {
+                                type: 'redirect',
+                                route: 'akeneo_enriched_entities_enriched_entity_edit',
+                              },
+                              label: __('pim_enriched_entity.enriched_entity.title'),
                             },
-                            label: __('pim_enriched_entity.enriched_entity.title')
-                          }
-                        ]}/>
+                          ]}
+                        />
                       </div>
                       <div className="AknTitleContainer-buttonsContainer">
                         <div className="user-menu">
-                          <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
+                          <PimView
+                            className="AknTitleContainer-userMenu"
+                            viewName="pim-enriched-entity-index-user-navigation"
+                          />
                         </div>
-                        <div className="AknButtonList" >
+                        <div className="AknButtonList">
                           <div className="AknTitleContainer-rightButton">
                             {this.getHeaderButton(this.props.acls.create, this.props.sidebar.currentTab)}
                           </div>
@@ -130,26 +144,25 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                       </div>
                     </div>
                     <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-title">
-                        {label}
-                      </div>
+                      <div className="AknTitleContainer-title">{label}</div>
                       {editState}
                     </div>
                   </div>
                   <div>
                     <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-context AknButtonList"></div>
-                    </div>
-                    <div className="AknTitleContainer-line">
-                      <div className="AknTitleContainer-meta AknButtonList"></div>
+                      <div className="AknTitleContainer-context AknButtonList">
+                        {/* <LocaleSwitcher
+                          localeCode={this.props.context.locale}
+                          locales={this.props.structure.locales}
+                          onLocaleChange={this.props.events.onLocaleChanged}
+                        /> */}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </header>
-            <div className="content">
-              {this.tabView}
-            </div>
+            <div className="content">{this.tabView}</div>
           </div>
         </div>
         <Sidebar />
@@ -159,43 +172,52 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   }
 }
 
-export default connect((state: State): StateProps => {
-  const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
-  const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
-  const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
-  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+export default connect(
+  (state: State): StateProps => {
+    const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
+    const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
+    const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
+    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
-  return {
-    sidebar: {
-      tabs,
-      currentTab,
-    },
-    form: {
-      isDirty: state.form.state.isDirty,
-    },
-    context: {
-      locale
-    },
-    enrichedEntity,
-    createRecord: {
-      active: state.createRecord.active
-    },
-    acls: {
-      create: securityContext.isGranted('akeneo_enrichedentity_record_create')
-    }
-  }
-}, (dispatch: any): DispatchProps => {
-  return {
-    events: {
-      onSaveEditForm: () => {
-        dispatch(saveEnrichedEntity());
+    return {
+      sidebar: {
+        tabs,
+        currentTab,
       },
-      onRecordCreationStart: () => {
-        dispatch(recordCreationStart());
+      form: {
+        isDirty: state.form.state.isDirty,
       },
-      onImageUpdated: (image: ImageModel|null) => {
-        dispatch(enrichedEntityImageUpdated(image));
-      }
-    }
+      context: {
+        locale,
+      },
+      enrichedEntity,
+      structure: {
+        locales: state.structure.locales,
+      },
+      createRecord: {
+        active: state.createRecord.active,
+      },
+      acls: {
+        create: securityContext.isGranted('akeneo_enrichedentity_record_create'),
+      },
+    };
+  },
+  (dispatch: any): DispatchProps => {
+    return {
+      events: {
+        onSaveEditForm: () => {
+          dispatch(saveEnrichedEntity());
+        },
+        onRecordCreationStart: () => {
+          dispatch(recordCreationStart());
+        },
+        onLocaleChanged: (locale: Locale) => {
+          dispatch(catalogLocaleChanged(locale.code));
+        },
+        onImageUpdated: (image: ImageModel | null) => {
+          dispatch(enrichedEntityImageUpdated(image));
+        },
+      },
+    };
   }
-})(EnrichedEntityEditView);
+)(EnrichedEntityEditView);

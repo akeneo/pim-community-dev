@@ -54,6 +54,7 @@ class AttributeIdentifierShouldBeUniqueValidator extends ConstraintValidator
             $this->context->buildViolation(AttributeIdentifierShouldBeUnique::ERROR_MESSAGE)
                 ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
                 ->setParameter('%code%', $identifier)
+                ->atPath('identifier')
                 ->addViolation();
         }
     }

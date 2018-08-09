@@ -171,6 +171,29 @@ describe('akeneo > enriched entity > application > reducer > record --- create',
     });
   });
 
+  test('I can dismiss the record creation', () => {
+    const state = {
+      active: true,
+      data: {
+        code: '',
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'DISMISS',
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
   test('I can submit the record creation', () => {
     const state = {
       active: false,

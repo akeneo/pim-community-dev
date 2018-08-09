@@ -8,10 +8,6 @@ export const recordCreationRecordCodeUpdated = (value: string) => {
   return {type: 'RECORD_CREATION_RECORD_CODE_UPDATED', value};
 };
 
-export const recordCreationEntityCodeUpdated = (value: string) => {
-  return {type: 'RECORD_CREATION_ENTITY_CODE_UPDATED', value};
-};
-
 export const recordCreationLabelUpdated = (value: string, locale: string) => {
   return {type: 'RECORD_CREATION_LABEL_UPDATED', value, locale};
 };

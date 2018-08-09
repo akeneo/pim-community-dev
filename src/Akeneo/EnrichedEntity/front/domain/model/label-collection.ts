@@ -1,4 +1,4 @@
-export interface RawLabelCollection {
+export interface NormalizedLabelCollection {
   [locale: string]: string;
 }
 
@@ -12,7 +12,7 @@ const ensureString = (value: string) => {
 };
 
 export default class LabelCollection {
-  private constructor(private labels: RawLabelCollection) {
+  private constructor(private labels: NormalizedLabelCollection) {
     if ('object' !== typeof labels) {
       throw new InvalidTypeError('LabelCollection expect only values as {"en_US": "My label"} to be created');
     }
@@ -24,7 +24,7 @@ export default class LabelCollection {
     Object.freeze(this);
   }
 
-  public static create(labels: RawLabelCollection): LabelCollection {
+  public static create(labels: NormalizedLabelCollection): LabelCollection {
     return new LabelCollection(labels);
   }
 
@@ -44,7 +44,7 @@ export default class LabelCollection {
     return LabelCollection.create({...this.labels, [locale]: label});
   }
 
-  public getLabels(): RawLabelCollection {
+  public normalize(): NormalizedLabelCollection {
     return this.labels;
   }
 }

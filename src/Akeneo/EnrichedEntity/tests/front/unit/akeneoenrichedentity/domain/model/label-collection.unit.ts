@@ -43,6 +43,6 @@ describe('akeneo > enriched entity > domain > model --- label collection', () =>
   test('I can get the normalized labels', () => {
     const rawLabels = {en_US: 'michel'};
 
-    expect(createLabelCollection({en_US: 'michel'}).getLabels()).toEqual(rawLabels);
+    expect(createLabelCollection({en_US: 'michel'}).normalize()).toEqual(rawLabels);
   });
 });
