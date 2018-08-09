@@ -32,6 +32,7 @@ use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;
+use PHPUnit\Framework\Assert;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 {
@@ -104,18 +105,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $attribute = TextAttribute::create(
-            $identifier,
-            $enrichedEntityIdentifier,
-            AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
-            AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(false),
-            AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(255)
-        );
+        $attribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($attribute);
 
         $this->expectException(DBALException::class);
@@ -139,6 +129,21 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $this->insertRowWithUnsupportedType();
         $this->expectException(\LogicException::class);
         $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'age'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_an_attribute_by_its_identifier()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name');
+        $textAttribute = $this->createAttributeWithIdentifier($identifier);
+        $this->attributeRepository->create($textAttribute);
+
+        $this->attributeRepository->deleteByIdentifier($identifier);
+
+        $this->expectException(AttributeNotFoundException::class);
+        $this->attributeRepository->getByIdentifier($identifier);
     }
 
     private function assertAttribute(
@@ -208,5 +213,20 @@ SQL;
             ]
         );
         $this->assertEquals(1, $assertRows);
+    }
+
+    private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute
+    {
+        return TextAttribute::create(
+            $identifier,
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155)
+        );
     }
 }

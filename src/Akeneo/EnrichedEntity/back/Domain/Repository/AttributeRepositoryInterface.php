@@ -26,6 +26,11 @@ interface AttributeRepositoryInterface
     /**
      * @throws AttributeNotFoundException
      */
+    public function deleteByIdentifier(AttributeIdentifier $identifier): void;
+
+    /**
+     * @throws AttributeNotFoundException
+     */
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute;
 
     /**

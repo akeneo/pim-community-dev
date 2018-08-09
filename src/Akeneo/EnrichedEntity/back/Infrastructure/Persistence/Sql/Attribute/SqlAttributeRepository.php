@@ -79,20 +79,20 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier'                 => $normalizedAttribute['code'],
+                'identifier' => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
-                'labels'                     => json_encode($normalizedAttribute['labels']),
-                'attribute_type'             => $normalizedAttribute['type'],
-                'attribute_order'            => $normalizedAttribute['order'],
-                'required'                   => $normalizedAttribute['required'],
-                'value_per_channel'          => $normalizedAttribute['value_per_channel'],
-                'value_per_locale'           => $normalizedAttribute['value_per_locale'],
-                'additional_properties'      => json_encode($additionalProperties),
+                'labels' => json_encode($normalizedAttribute['labels']),
+                'attribute_type' => $normalizedAttribute['type'],
+                'attribute_order' => $normalizedAttribute['order'],
+                'required' => $normalizedAttribute['required'],
+                'value_per_channel' => $normalizedAttribute['value_per_channel'],
+                'value_per_locale' => $normalizedAttribute['value_per_locale'],
+                'additional_properties' => json_encode($additionalProperties),
             ],
             [
-                'required'          => \Doctrine\DBAL\Types\Type::getType('boolean'),
+                'required' => \Doctrine\DBAL\Types\Type::getType('boolean'),
                 'value_per_channel' => \Doctrine\DBAL\Types\Type::getType('boolean'),
-                'value_per_locale'  => \Doctrine\DBAL\Types\Type::getType('boolean'),
+                'value_per_locale' => \Doctrine\DBAL\Types\Type::getType('boolean'),
             ]
         );
         if ($affectedRows > 1) {
@@ -104,11 +104,12 @@ SQL;
 
     public function update(AbstractAttribute $attribute): void
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException('not implemented');
     }
 
     /**
      * @throws AttributeNotFoundException
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
@@ -254,5 +255,27 @@ SQL;
             sprintf('Only attribute types "text" or "image" are supported, "%s" given', $result['attribute_type']
             )
         );
+    }
+
+    /**
+     * @throws AttributeNotFoundException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function deleteByIdentifier(AttributeIdentifier $identifier): void
+    {
+        $sql = <<<SQL
+        DELETE FROM akeneo_enriched_entity_attribute
+        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+SQL;
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'identifier' => $identifier->getIdentifier(),
+                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
+            ]
+        );
+        if (1 !== $affectedRows) {
+            throw AttributeNotFoundException::withIdentifier($identifier);
+        }
     }
 }

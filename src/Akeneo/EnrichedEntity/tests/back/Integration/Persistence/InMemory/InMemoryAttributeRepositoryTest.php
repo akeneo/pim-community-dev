@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
@@ -60,7 +61,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $this->attributeRepository->create($textAttribute);
 
         $attributeFound = $this->attributeRepository->getByIdentifier($identifier);
-        Assert::isTrue($attributeFound->equals($textAttribute));
+        Assert::assertTrue($attributeFound->equals($textAttribute));
     }
 
     /**
@@ -110,7 +111,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $this->attributeRepository->update($textAttribute);
 
         $textAttribute = $this->attributeRepository->getByIdentifier($identifier);
-        Assert::isTrue($textAttribute->equals($textAttribute));
+        Assert::assertTrue($textAttribute->equals($textAttribute));
         Assert::assertEquals($textAttribute->getLabel('fr_FR'), 'Nom');
     }
 
@@ -144,6 +145,36 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $this->expectException(AttributeNotFoundException::class);
         $this->attributeRepository->getByIdentifier(
             $identifier = AttributeIdentifier::create('designer', 'name')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_an_attribute_by_its_identifier()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name');
+        $textAttribute = $this->createAttributeWithIdentifier($identifier);
+        $this->attributeRepository->create($textAttribute);
+
+        $this->attributeRepository->deleteByIdentifier($identifier);
+
+        $this->expectException(AttributeNotFoundException::class);
+        $this->attributeRepository->getByIdentifier($identifier);
+    }
+
+    private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute
+    {
+        return TextAttribute::create(
+            $identifier,
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155)
         );
     }
 }
