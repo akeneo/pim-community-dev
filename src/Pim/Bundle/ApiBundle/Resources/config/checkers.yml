@@ -22,7 +22,7 @@ services:
             - '@pim_catalog.repository.cached_locale'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_category'
-            - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated']
+            - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated', 'enabled', 'groups']
 
     pim_api.checker.query_parameters_product_model:
         class: '%pim_api.checker.query_parameters.class%'
