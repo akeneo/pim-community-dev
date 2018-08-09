@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class BadRequestException extends \Exception
+class DataProviderServerException extends \Exception
 {
 }
