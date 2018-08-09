@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 

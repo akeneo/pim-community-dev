@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
