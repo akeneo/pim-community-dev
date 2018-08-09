@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

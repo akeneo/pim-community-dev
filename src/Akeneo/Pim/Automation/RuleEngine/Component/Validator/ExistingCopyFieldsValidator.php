@@ -11,9 +11,8 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Model\ProductCopyValueActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
-use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -40,7 +39,7 @@ class ExistingCopyFieldsValidator extends ConstraintValidator
      */
     public function validate($action, Constraint $constraint)
     {
-        if (!($action instanceof ProductCopyValueActionInterface || $action instanceof ProductCopyActionInterface)) {
+        if (!$action instanceof ProductCopyActionInterface) {
             throw new \LogicException(sprintf('Action of type "%s" can not be validated.', gettype($action)));
         }
 
