@@ -92,8 +92,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.exists_record:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlExistsRecord'
+    akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordExists'
         arguments:
             - '@database_connection'
 

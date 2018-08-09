@@ -22,8 +22,8 @@ services:
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindRecordItemsForEnrichedEntity
 
-    akeneo_enrichedentity.infrastructure.persistence.query.exists_record:
-        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryExistsRecord
+    akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordExists
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.record'
 

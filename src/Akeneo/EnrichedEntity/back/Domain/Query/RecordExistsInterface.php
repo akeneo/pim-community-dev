@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Domain\Query;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
-interface ExistsRecordInterface
+interface RecordExistsInterface
 {
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool;
 }
