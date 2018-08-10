@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 
 class TimestampableSubscriberSpec extends ObjectBehavior
 {

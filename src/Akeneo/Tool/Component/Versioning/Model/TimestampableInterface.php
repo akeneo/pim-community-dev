@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Model;
+namespace Akeneo\Tool\Component\Versioning\Model;
 
 /**
  * Timestampable interface

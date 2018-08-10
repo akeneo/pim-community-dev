@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**

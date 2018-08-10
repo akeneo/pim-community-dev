@@ -29,7 +29,7 @@
 - Move `Pim\Component\Catalog\Model\ProductUniqueValueCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueValueCollectionInterface`
 - Move `Pim\Component\Catalog\Model\ProductValueKeyGenerator` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductValueKeyGenerator`
 - Move `Pim\Component\Catalog\Model\ScopableInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ScopableInterface`
-- Move `Pim\Component\Catalog\Model\TimestampableInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\TimestampableInterface`
+- Move `Pim\Component\Catalog\Model\TimestampableInterface` to `Akeneo\Tool\Component\Versioning\Model\TimestampableInterface`
 - Move `Pim\Component\Catalog\Model\ValueCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection`
 - Move `Pim\Component\Catalog\Model\ValueCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
 - Move `Pim\Component\Catalog\Model\VariantProductInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface`

@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Akeneo\Pim\Enrichment\Component\Product\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 
 /**
  * Aims to add timestambable behavior
