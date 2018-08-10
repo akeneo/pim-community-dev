@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;

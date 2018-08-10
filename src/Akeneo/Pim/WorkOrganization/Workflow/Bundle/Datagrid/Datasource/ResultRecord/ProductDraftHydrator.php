@@ -14,7 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\Result
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Permission\Component\Normalizer\Authorization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface;
 use Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductNormalizer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
