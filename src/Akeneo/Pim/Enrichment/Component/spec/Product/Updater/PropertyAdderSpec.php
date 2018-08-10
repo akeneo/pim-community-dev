@@ -97,7 +97,7 @@ class PropertyAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\EntityWithValuesInterface'
+                'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface'
             )
         )->during(
             'addData',

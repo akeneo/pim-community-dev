@@ -5,8 +5,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Converter;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 
 /**
  * Convert value into channel conversion unit if selected

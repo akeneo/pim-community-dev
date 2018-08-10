@@ -91,7 +91,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
      *
      * @Given /^a "([^"]*)" product$/
      */

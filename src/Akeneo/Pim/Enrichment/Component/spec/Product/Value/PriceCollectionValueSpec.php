@@ -4,8 +4,8 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\PriceCollectionInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 
 class PriceCollectionValueSpec extends ObjectBehavior
 {

@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Validator\Constraints\Range;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

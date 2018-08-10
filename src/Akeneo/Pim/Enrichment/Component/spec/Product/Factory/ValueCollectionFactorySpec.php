@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;

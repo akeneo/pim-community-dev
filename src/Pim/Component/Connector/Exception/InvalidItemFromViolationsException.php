@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Exception;
 
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

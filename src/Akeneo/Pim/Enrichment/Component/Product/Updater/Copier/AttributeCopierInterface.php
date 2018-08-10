@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * Copies a data from a product's attribute to another product's attribute

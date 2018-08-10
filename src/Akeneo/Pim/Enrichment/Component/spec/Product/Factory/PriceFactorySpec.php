@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
-use Pim\Component\Catalog\Model\ProductPrice;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 
 class PriceFactorySpec extends ObjectBehavior
 {

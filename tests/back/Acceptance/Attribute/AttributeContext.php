@@ -8,7 +8,7 @@ use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Common\EntityBuilder;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AttributeGroupInterface;
 
 class AttributeContext implements Context
 {

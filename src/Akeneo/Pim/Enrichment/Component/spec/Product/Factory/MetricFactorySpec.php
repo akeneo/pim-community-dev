@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
@@ -11,7 +12,7 @@ use Prophecy\Argument;
 
 class MetricFactorySpec extends ObjectBehavior
 {
-    const METRIC_CLASS = 'Pim\Component\Catalog\Model\Metric';
+    const METRIC_CLASS = Metric::class;
 
     function let(MeasureConverter $measureConverter, MeasureManager $measureManager)
     {

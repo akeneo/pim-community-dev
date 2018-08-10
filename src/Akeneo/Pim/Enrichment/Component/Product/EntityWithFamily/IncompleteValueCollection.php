@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * A collection of incomplete values depending on an entity with a family
- * {@see Pim\Component\Catalog\Model\EntityWithFamilyInterface}.
+ * {@see Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface}.
  *
  * An incomplete value collection holds all required values ({@see Pim\Component\Catalog\RequiredValue}) that are
  * either missing or empty in an entity.

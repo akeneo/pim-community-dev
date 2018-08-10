@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ValuesFiller;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 
 /**
  * This service takes an EntityWithFamilyInterface, guesses the attributes it should have (depending on its family),

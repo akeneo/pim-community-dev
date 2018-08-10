@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity;
 use Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntityValidator;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;

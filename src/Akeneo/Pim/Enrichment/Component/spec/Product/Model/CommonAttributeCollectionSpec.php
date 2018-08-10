@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Model;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\CommonAttributeCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

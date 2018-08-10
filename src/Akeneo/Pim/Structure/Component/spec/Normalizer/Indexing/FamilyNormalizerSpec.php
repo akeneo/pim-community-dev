@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 use Akeneo\Pim\Structure\Component\Normalizer\Indexing\FamilyNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\ProductPrice;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;

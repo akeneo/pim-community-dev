@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\Validator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 
 /**
  * Contains the state of the unique axis values combination for an entity with family variant.

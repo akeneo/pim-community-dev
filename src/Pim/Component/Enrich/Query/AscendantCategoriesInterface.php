@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Enrich\Query;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 
 /**
  * Query data to get the ascendant categories of entities with family variant

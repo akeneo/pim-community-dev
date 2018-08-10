@@ -12,6 +12,27 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Model\AbstractMetric` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric`
+- Move `Pim\Component\Catalog\Model\AbstractProductPrice` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductPrice`
+- Move `Pim\Component\Catalog\Model\AbstractValue` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue`
+- Move `Pim\Component\Catalog\Model\CommonAttributeCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection`
+- Move `Pim\Component\Catalog\Model\EntityWithAssociationsInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface`
+- Move `Pim\Component\Catalog\Model\EntityWithFamilyInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface`
+- Move `Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface`
+- Move `Pim\Component\Catalog\Model\EntityWithValuesInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface`
+- Move `Pim\Component\Catalog\Model\Metric` to `Akeneo\Pim\Enrichment\Component\Product\Model\Metric`
+- Move `Pim\Component\Catalog\Model\MetricInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface`
+- Move `Pim\Component\Catalog\Model\PriceCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection`
+- Move `Pim\Component\Catalog\Model\PriceCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface`
+- Move `Pim\Component\Catalog\Model\ProductPrice` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice`
+- Move `Pim\Component\Catalog\Model\ProductPriceInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface`
+- Move `Pim\Component\Catalog\Model\ProductUniqueValueCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueValueCollectionInterface`
+- Move `Pim\Component\Catalog\Model\ProductValueKeyGenerator` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductValueKeyGenerator`
+- Move `Pim\Component\Catalog\Model\ScopableInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ScopableInterface`
+- Move `Pim\Component\Catalog\Model\TimestampableInterface` to `Akeneo\Tool\Component\Versioning\Model\TimestampableInterface`
+- Move `Pim\Component\Catalog\Model\ValueCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection`
+- Move `Pim\Component\Catalog\Model\ValueCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
+- Move `Pim\Component\Catalog\Model\VariantProductInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface`
 - Move `Pim\Component\Catalog\Updater\Adder\AbstractAttributeAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractAttributeAdder`
 - Move `Pim\Component\Catalog\Updater\Adder\AbstractFieldAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractFieldAdder`
 - Move `Pim\Component\Catalog\Updater\Adder\AdderInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface`
