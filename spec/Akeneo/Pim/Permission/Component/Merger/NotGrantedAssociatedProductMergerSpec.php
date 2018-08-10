@@ -11,7 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedAssociatedProductMerger;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;

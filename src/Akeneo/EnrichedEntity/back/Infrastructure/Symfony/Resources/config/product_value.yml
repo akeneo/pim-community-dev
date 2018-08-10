@@ -28,7 +28,7 @@ services:
             - { name: pim_catalog.attribute.comparator }
 
     akeneo_enrichedentity.updater.setter.product_enriched_entity_value:
-        class: 'Pim\Component\Catalog\Updater\Setter\AttributeSetter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter'
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - ['akeneo_enriched_entity_collection']

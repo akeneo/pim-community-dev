@@ -101,7 +101,7 @@ services:
 
     # CE overrides
     pim_catalog.updater.setter.association_field:
-        class: 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter'
         arguments:
             - '@pim_catalog.repository.product_without_permission'
             - '@pim_catalog.repository.product_model_without_permission'
@@ -112,7 +112,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pim_catalog.updater.group:
-        class: 'Pim\Component\Catalog\Updater\GroupUpdater'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater'
         arguments:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.repository.attribute'

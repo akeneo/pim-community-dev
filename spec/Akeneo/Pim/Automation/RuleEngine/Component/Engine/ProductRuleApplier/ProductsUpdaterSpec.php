@@ -6,11 +6,8 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductTemplateUpdaterInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 
