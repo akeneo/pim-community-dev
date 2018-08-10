@@ -11,3 +11,11 @@ export const notifyAttributeCreateFailed = () => {
 export const notifyAttributeListUpdateFailed = () => {
   return notify('error', 'pim_enriched_entity.attribute.notification.list.fail');
 };
+
+export const notifyAttributeWellDeleted = () => {
+  return notify('success', 'pim_enriched_entity.attribute.notification.delete.success');
+};
+
+export const notifyAttributeDeletionFailed = () => {
+  return notify('error', 'pim_enriched_entity.attribute.notification.delete.fail');
+};

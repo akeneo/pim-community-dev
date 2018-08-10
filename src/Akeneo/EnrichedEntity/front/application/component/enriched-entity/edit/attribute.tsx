@@ -7,6 +7,7 @@ import {CreateState} from 'akeneoenrichedentity/application/reducer/attribute/cr
 import CreateAttributeModal from 'akeneoenrichedentity/application/component/attribute/create';
 import AttributeModel, {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import EnrichedEntity, {denormalizeEnrichedEntity,} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import {deleteAttribute} from "akeneoenrichedentity/application/action/attribute/list";
 
 interface StateProps {
   context: {
@@ -19,11 +20,12 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
+    onAttributeDelete: (attribute: AttributeModel) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
 
-const renderAttributes = (attributes: AttributeModel[]) => {
+const renderAttributes = (attributes: AttributeModel[], onAttributeDelete: (attribute: AttributeModel) => void) => {
   return attributes.map((attribute: AttributeModel) => (
     <div key={attribute.getCode().stringValue()} className="AknFieldContainer" data-identifier={attribute.getCode().stringValue()} data-type={attribute.getType()}>
       <div className="AknFieldContainer-header">
@@ -49,6 +51,10 @@ const renderAttributes = (attributes: AttributeModel[]) => {
           value={attribute.getLabel('en_US')}
           readOnly
         />
+        <button
+          className="AknIconButton AknIconButton--trash"
+          onClick={() => onAttributeDelete(attribute)}
+        />
       </div>
     </div>
   ));
@@ -72,7 +78,7 @@ class Attribute extends React.Component<CreateProps> {
         {0 < this.props.attributes.length ?
             (
                 <div className="AknFormContainer AknFormContainer--withPadding">
-                  {renderAttributes(this.props.attributes)}
+                  {renderAttributes(this.props.attributes, this.props.events.onAttributeDelete)}
                   <button
                       className="AknButton AknButton--action"
                       onClick={this.props.events.onAttributeCreationStart}
@@ -128,6 +134,9 @@ export default connect(
       events: {
         onAttributeCreationStart: () => {
           dispatch(attributeCreationStart());
+        },
+        onAttributeDelete: (attribute: AttributeModel) => {
+          dispatch(deleteAttribute(attribute));
         },
       },
     };
