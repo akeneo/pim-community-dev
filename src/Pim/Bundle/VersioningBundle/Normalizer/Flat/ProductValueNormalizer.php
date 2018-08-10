@@ -152,7 +152,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected function filterLocaleSpecific(ProductValueInterface $value)
     {
         $attribute = $value->getAttribute();
-        if ($attribute->isLocaleSpecific()) {
+        if ($attribute->isLocaleSpecific() && $attribute->isLocalizable()) {
             $currentLocale = $value->getLocale();
             $availableLocales = $attribute->getLocaleSpecificCodes();
             if (!in_array($currentLocale, $availableLocales)) {

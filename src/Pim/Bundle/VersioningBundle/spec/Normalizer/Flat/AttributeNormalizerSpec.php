@@ -55,6 +55,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $size->addOptionValue($fr);
         $attribute->getOptions()->willReturn(new ArrayCollection([$size]));
         $attribute->isRequired()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
 
         $translationNormalizer->supportsNormalization(Argument::cetera())
             ->willReturn(true);
@@ -76,6 +77,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
                 'available_locales'      => ['en_US', 'fr_FR'],
+                'locale_specific'        => false,
                 'max_characters'         => null,
                 'validation_rule'        => null,
                 'validation_regexp'      => null,
@@ -106,6 +108,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'default_metric_unit'    => 'Centimenter',
                 'reference_data_name'    => 'color',
                 'available_locales'      => 'en_US,fr_FR',
+                'locale_specific'        => false,
                 'max_characters'         => null,
                 'validation_rule'        => null,
                 'validation_regexp'      => null,

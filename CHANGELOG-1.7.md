@@ -1,3 +1,7 @@
+# 1.7.x
+
+- PIM-7570: Adds 'Locale specific' fields in attribute versioning
+
 # 1.7.29 (2018-08-01)
 
 ## Bug fixes

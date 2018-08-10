@@ -41,7 +41,7 @@ stage("Build") {
                 withBuildNode({
                     checkout scm
                     container("php") {
-                        sh "php -d memory_limit=4G /usr/local/bin/composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
+                        sh "php -d memory_limit=-1 /usr/local/bin/composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
                     }
@@ -114,7 +114,7 @@ stage("Build") {
                 withBuildNode({
                     checkout scm
                     container("php") {
-                        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                        sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
                     }

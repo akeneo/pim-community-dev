@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ProductPrice;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -266,4 +267,61 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-fr_FR-mobile' => '12']);
     }
 
+    function it_normalizes_a_non_localizable_price_locale_specific_product_value(
+        $serializer,
+        ProductValueInterface $value,
+        AttributeInterface $priceAttribute
+    ) {
+        $value->getAttribute()->willReturn($priceAttribute);
+        $price = new ProductPrice();
+        $price->setCurrency('EUR');
+        $price->setData(12);
+
+        $priceAttribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $priceAttribute->isLocalizable()->willReturn(false);
+        $priceAttribute->isScopable()->willReturn(false);
+        $priceAttribute->getCode()->willReturn('price');
+        $priceAttribute->isLocaleSpecific()->willReturn(true);
+        $priceAttribute->getBackendType()->willReturn('prices');
+
+        $value->getLocale()->willReturn(null);
+        $priceAttribute->getLocaleSpecificCodes()->willReturn(['fr_FR']);
+        $data = new ArrayCollection([$price]);
+        $value->getData()->willReturn($data);
+        $serializer->normalize($data, 'flat', ['field_name' => 'price'])
+            ->shouldBeCalled()
+            ->willReturn(['price-EUR' => '12.00']);
+
+        $this->normalize($value, 'flat', [])->shouldReturn([
+            'price-EUR' => '12.00'
+        ]);
+    }
+
+
+    function it_normalizes_a_localizable_price_locale_specific_product_value(
+        $serializer,
+        ProductValueInterface $value,
+        AttributeInterface $priceAttribute
+    ) {
+        $value->getAttribute()->willReturn($priceAttribute);
+        $price = new ProductPrice();
+        $price->setCurrency('EUR');
+        $price->setData(12);
+
+        $priceAttribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $priceAttribute->isLocalizable()->willReturn(true);
+        $priceAttribute->isScopable()->willReturn(false);
+        $priceAttribute->getCode()->willReturn('price');
+        $priceAttribute->isLocaleSpecific()->willReturn(true);
+        $priceAttribute->getBackendType()->willReturn('prices');
+
+        $value->getLocale()->willReturn('fr_FR');
+        $priceAttribute->getLocaleSpecificCodes()->willReturn(['en_US']);
+        $data = new ArrayCollection([$price]);
+        $value->getData()->willReturn($data);
+        $serializer->normalize($data, 'flat', ['field_name' => 'price'])
+            ->shouldNotBeCalled();
+
+        $this->normalize($value, 'flat', [])->shouldReturn([]);
+    }
 }
