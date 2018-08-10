@@ -3,7 +3,6 @@
 ## Bug fixes
 
 - PIM-7578: Fix the pdf generation of a product page with an asset collection containing a PDF file
-- PIM-7502: Add variant navigation module when variant product is only viewable
 
 
 # 2.0.32 (2018-08-06)
