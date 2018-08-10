@@ -1018,7 +1018,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}]}';
+        $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}],"enabled":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
