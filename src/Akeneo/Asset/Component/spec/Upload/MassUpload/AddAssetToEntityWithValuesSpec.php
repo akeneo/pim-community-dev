@@ -38,7 +38,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         ValidatorInterface $validator,
         SaverInterface $entityWithValueSaver
     ) {
-        $this->beConstructedWith($entityWithValueRepository, $entityWithValueUpdater, $validator,$entityWithValueSaver);
+        $this->beConstructedWith($entityWithValueRepository, $entityWithValueUpdater, $validator, $entityWithValueSaver);
     }
 
     function it_is_initializable()

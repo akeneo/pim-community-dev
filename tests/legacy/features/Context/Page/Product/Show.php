@@ -2,8 +2,6 @@
 
 namespace Context\Page\Product;
 
-use Pim\Behat\Decorator\ContextSwitcherDecorator;
-
 /**
  * Show product page
  *
@@ -12,28 +10,4 @@ use Pim\Behat\Decorator\ContextSwitcherDecorator;
  */
 class Show extends Edit
 {
-    /**
-     * @var string
-     */
-    protected $path = '#/enrich/product/{id}';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($session, $pageFactory, $parameters = [])
-    {
-        parent::__construct($session, $pageFactory, $parameters);
-
-        $this->elements = array_merge(
-            $this->elements,
-            [
-                'Main context selector' => [
-                    'css'        => '.AknAttributeActions-contextSelectors',
-                    'decorators' => [
-                        ContextSwitcherDecorator::class
-                    ]
-                ]
-            ]
-        );
-    }
 }

@@ -5,13 +5,25 @@ parameters:
     pimee_catalog_rule.applier.product.saver.class:       Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver
     pimee_catalog_rule.builder.product.class:             Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class:            Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector
+    # @merge: remove the 2 following parameters in master
+    pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
+    pimee_catalog_rule.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
+    pimee_catalog_rule.paginator.page_size: 1000
 
 services:
+    # @merge: remove the pimee_catalog_rule.product.paginator service definition in master
+    pimee_catalog_rule.product.paginator:
+        class: '%pimee_catalog_rule.paginator.paginator_factory.class%'
+        arguments:
+            - '%pimee_catalog_rule.paginator.class%'
+            - '%pimee_catalog_rule.paginator.page_size%'
+
     pimee_catalog_rule.builder.product:
         class: '%pimee_catalog_rule.builder.product.class%'
         arguments:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@event_dispatcher'
+            - '@validator'
             - '%akeneo_rule_engine.model.rule.class%'
 
     pimee_catalog_rule.selector.product:
@@ -25,12 +37,14 @@ services:
     pimee_catalog_rule.applier.product:
         class: '%pimee_catalog_rule.applier.product.class%'
         arguments:
+            - '@pimee_catalog_rule.product.paginator'
             - '@pimee_catalog_rule.applier.product.updater'
             - '@pimee_catalog_rule.applier.product.validator'
             - '@pimee_catalog_rule.applier.product.saver'
             - '@event_dispatcher'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
-            - '1000'
+            - '%pimee_catalog_rule.paginator.page_size%'
 
     pimee_catalog_rule.applier.product.updater:
         class: '%pimee_catalog_rule.applier.product.updater.class%'
@@ -52,3 +66,5 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.context.version'
             - '@translator'
+            - '@pim_catalog.saver.product_model_descendants'
+            - '@pim_connector.doctrine.cache_clearer'

@@ -28,27 +28,27 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         ObjectManager $objectManager,
         SaverInterface $productModelSaver,
         SaverInterface $productModelDraftSaver,
-        EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         RemoverInterface $productModelDraftRemover,
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
         ProductModelRepositoryInterface $productModelRepository,
-        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
+        BulkSaverInterface $bulkProductModelSaver
     ) {
         $this->beConstructedWith(
             $objectManager,
             $productModelSaver,
             $productModelDraftSaver,
-            $eventDispatcher,
             $authorizationChecker,
             $tokenStorage,
             $draftBuilder,
             $productModelDraftRemover,
             $mergeDataOnProductModel,
             $productModelRepository,
-            $productModelDraftRepository
+            $productModelDraftRepository,
+            $bulkProductModelSaver
         );
     }
 
@@ -300,5 +300,41 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         $productModelSaver->save(Argument::any(), [])->shouldNotBeCalled();
 
         $this->save($filteredProductModel);
+    }
+
+    function it_bulk_saves_product_models(
+        $bulkProductModelSaver,
+        $authorizationChecker,
+        $tokenStorage,
+        $mergeDataOnProductModel,
+        $productModelRepository,
+        ProductModelInterface $filteredProductModel1,
+        ProductModelInterface $filteredProductModel2,
+        ProductModelInterface $fullProductModel1,
+        ProductModelInterface $fullProductModel2
+    ) {
+        $tokenStorage->getToken()->willReturn('token');
+
+        $productModelRepository->find(42)->willReturn($fullProductModel1);
+        $mergeDataOnProductModel->merge($filteredProductModel1, $fullProductModel1)->willReturn($filteredProductModel1);
+        $productModelRepository->findOneByIdentifier('code_1')->willReturn($fullProductModel1);
+        $filteredProductModel1->getCode()->willReturn('code_1');
+        $filteredProductModel1->getId()->willReturn(42);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $filteredProductModel1)->willReturn(true);
+
+        $productModelRepository->find(16)->willReturn($fullProductModel2);
+        $mergeDataOnProductModel->merge($filteredProductModel2, $fullProductModel2)->willReturn($filteredProductModel2);
+        $productModelRepository->findOneByIdentifier('code_2')->willReturn($fullProductModel2);
+        $filteredProductModel2->getCode()->willReturn('code_2');
+        $filteredProductModel2->getId()->willReturn(16);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW, $filteredProductModel2)->willReturn(true);
+
+        $bulkProductModelSaver->saveAll([$filteredProductModel1, $filteredProductModel2], [])->shouldBeCalled();
+
+        $this->saveAll([$filteredProductModel1, $filteredProductModel2], []);
     }
 }

@@ -78,3 +78,12 @@ services:
             - '@pim_catalog.repository.product'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.applier.draft'
+
+    pimee_workflow.repository.delegating_product_model:
+        class: '%pimee_workflow.repository.delegating_product.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
