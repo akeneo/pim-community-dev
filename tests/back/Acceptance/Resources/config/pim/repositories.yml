@@ -35,6 +35,9 @@ services:
     pim_catalog.repository.product_model:
         class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
 
+    pim_catalog.repository.association_type:
+        class: 'Akeneo\Test\Acceptance\AssociationType\InMemoryAssociationTypeRepository'
+
     ### Structure
     pim_catalog.repository.family:
         class: 'Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository'
