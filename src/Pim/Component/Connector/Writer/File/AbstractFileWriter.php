@@ -44,7 +44,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
         $filePath = $parameters->get('filePath');
 
         if (false !== strpos($filePath, '%')) {
-            $defaultPlaceholders = ['%datetime%' => date($this->datetimeFormat), '%job_label%' => ''];
+            $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
+            $defaultPlaceholders = ['%datetime%' => $datetime, '%job_label%' => ''];
             $jobExecution = $this->stepExecution->getJobExecution();
 
             if (isset($placeholders['%job_label%'])) {
