@@ -30,6 +30,17 @@ services:
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
 
+    pim_connector.step.xlsx_attribute.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.attribute'
+            - '@pim_connector.processor.normalization.attribute'
+            - '@pim_connector.writer.file.xlsx_attribute'
+            - 10
+
     ### Attribute option
     pim_connector.step.xlsx_attribute_option.import:
         class: '%pim_connector.step.item_step.class%'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 use Pim\Component\Catalog\AttributeTypes;
 
