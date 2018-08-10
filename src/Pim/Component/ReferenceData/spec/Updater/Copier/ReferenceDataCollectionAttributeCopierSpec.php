@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\ReferenceData\Updater\Copier;
 
 use Acme\Bundle\AppBundle\Entity\Color;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
@@ -26,7 +27,7 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
 
     function it_is_a_copier()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Updater\Copier\CopierInterface');
+        $this->shouldImplement(CopierInterface::class);
     }
 
     function it_supports_same_reference_data_attributes(

@@ -12,13 +12,13 @@ class ImmutablePropertyExceptionSpec extends ObjectBehavior
         $exception = ImmutablePropertyException::immutableProperty(
             'property',
             'property_value',
-            'Pim\Component\Catalog\Updater\Attribute'
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute'
         );
 
         $this->beConstructedWith(
             'property',
             'property_value',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "property" cannot be modified, "property_value" given.',
             0
         );
