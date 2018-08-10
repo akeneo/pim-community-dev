@@ -5,7 +5,7 @@ namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\LocaleInterface;
 
 class LabelCollectionSpec extends ObjectBehavior
 {

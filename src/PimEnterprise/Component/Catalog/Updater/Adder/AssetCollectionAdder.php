@@ -15,7 +15,7 @@ namespace PimEnterprise\Component\Catalog\Updater\Adder;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractAttributeAdder;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 

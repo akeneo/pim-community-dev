@@ -13,7 +13,7 @@ namespace Akeneo\Pim\EnrichedEntity\Component\Value;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 
 /**
  * Product value for enriched entity
