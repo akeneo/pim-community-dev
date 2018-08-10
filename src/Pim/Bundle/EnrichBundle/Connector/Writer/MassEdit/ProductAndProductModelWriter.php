@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 
 /**
  * Product and product model writer for mass edit

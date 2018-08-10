@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PriceNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

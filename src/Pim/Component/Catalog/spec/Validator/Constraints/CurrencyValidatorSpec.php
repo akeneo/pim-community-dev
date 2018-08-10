@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\Currency;
 use Prophecy\Argument;

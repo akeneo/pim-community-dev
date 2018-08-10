@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * Simple factory of "incomplete values" collection.

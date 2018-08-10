@@ -6,7 +6,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 
 /**

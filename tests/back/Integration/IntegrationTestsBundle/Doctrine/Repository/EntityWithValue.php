@@ -7,8 +7,8 @@ namespace Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

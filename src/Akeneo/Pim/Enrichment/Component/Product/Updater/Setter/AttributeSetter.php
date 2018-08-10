@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * Sets a data in a product.

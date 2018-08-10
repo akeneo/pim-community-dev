@@ -9,8 +9,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * Abstract values filler for entities with a family.

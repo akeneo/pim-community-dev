@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

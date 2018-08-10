@@ -3,14 +3,11 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\TimestampableInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\TimestampableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**

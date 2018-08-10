@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 
 /**
  * Creates and configures a metric instance.

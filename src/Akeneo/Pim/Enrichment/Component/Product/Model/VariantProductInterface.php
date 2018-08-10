@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
-
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 /**
  * Variant product. An entity that belongs to a family variant and that contains flexible values,

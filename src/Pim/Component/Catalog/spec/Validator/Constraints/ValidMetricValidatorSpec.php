@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\ValidMetric;
 use Prophecy\Argument;

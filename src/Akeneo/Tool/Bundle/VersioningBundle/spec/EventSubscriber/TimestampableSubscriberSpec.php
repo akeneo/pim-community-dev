@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\TimestampableInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\TimestampableInterface;
 
 class TimestampableSubscriberSpec extends ObjectBehavior
 {
@@ -46,7 +46,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         ORMClassMetadata $metadata
     ) {
         $em->getClassMetadata('bar')->willReturn($metadata);
-        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('spec\Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\NonTimestampableInterface'));
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass(NonTimestampableInterface::class));
 
         $version->getResourceId()->willReturn('foo');
         $version->getResourceName()->willReturn('bar');
@@ -67,7 +67,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         ORMClassMetadata $metadata
     ) {
         $em->getClassMetadata('bar')->willReturn($metadata);
-        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Component\Catalog\Model\TimestampableInterface'));
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass(TimestampableInterface::class));
 
         $version->getResourceId()->willReturn('foo');
         $version->getResourceName()->willReturn('bar');
@@ -94,7 +94,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         ClassMetadata $metadata
     ) {
         $em->getClassMetadata('bar')->willReturn($metadata);
-        $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Component\Catalog\Model\TimestampableInterface'));
+        $metadata->getReflectionClass()->willReturn(new \ReflectionClass(TimestampableInterface::class));
 
         $version->getResourceId()->willReturn('foo');
         $version->getResourceName()->willReturn('bar');

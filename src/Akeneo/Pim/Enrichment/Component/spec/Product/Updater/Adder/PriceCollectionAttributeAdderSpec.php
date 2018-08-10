@@ -2,14 +2,15 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\PriceCollectionAttributeAdder;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -47,7 +48,7 @@ class PriceCollectionAttributeAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\PriceCollectionAttributeAdder',
+                PriceCollectionAttributeAdder::class,
                 $data
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

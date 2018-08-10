@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Prophecy\Argument;
 

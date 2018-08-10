@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 

@@ -8,7 +8,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class MetricCompleteCheckerSpec extends ObjectBehavior

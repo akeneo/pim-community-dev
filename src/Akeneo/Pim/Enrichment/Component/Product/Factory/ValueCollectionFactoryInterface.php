@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 
 /**
  * Interface for factory to create product value collection

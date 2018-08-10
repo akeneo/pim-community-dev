@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 
 /**
  * Product value for attribute types:

@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopierInterface;
@@ -114,7 +114,7 @@ class PropertyCopierSpec extends ObjectBehavior
             new InvalidObjectException(
                 'stdClass',
                 EntityWithValuesInterface::class,
-                'Expects a "Pim\Component\Catalog\Model\EntityWithValuesInterface", "stdClass" and "stdClass" provided.'
+                'Expects a "Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface", "stdClass" and "stdClass" provided.'
             )
         )->during(
             'copyData',

@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * Copies a data from a product's field to another product's field

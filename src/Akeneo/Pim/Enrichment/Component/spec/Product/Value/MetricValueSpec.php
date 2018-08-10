@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 
 class MetricValueSpec extends ObjectBehavior
 {

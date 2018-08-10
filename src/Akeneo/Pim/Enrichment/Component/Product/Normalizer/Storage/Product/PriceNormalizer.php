@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product;
 
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

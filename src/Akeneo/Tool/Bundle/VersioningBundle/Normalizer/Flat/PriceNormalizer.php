@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 
 /**
  * Normalize a product price

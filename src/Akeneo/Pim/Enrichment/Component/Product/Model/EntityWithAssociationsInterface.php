@@ -1,9 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\Common\Collections\Collection;
 

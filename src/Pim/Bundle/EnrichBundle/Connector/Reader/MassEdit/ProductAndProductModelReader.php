@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 
 /**

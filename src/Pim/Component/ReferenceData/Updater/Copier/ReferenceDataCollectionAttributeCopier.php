@@ -3,10 +3,10 @@
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**

@@ -8,8 +8,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterfac
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Exception\InvalidOptionsException;
-use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Psr\Log\LoggerInterface;
 
 /**

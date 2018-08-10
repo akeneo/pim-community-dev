@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

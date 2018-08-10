@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * @author    Julien Janvier <julien.janvier@akeneo.com>

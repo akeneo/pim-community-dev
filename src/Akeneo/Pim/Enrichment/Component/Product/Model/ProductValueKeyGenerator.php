@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
-
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 /**
  * Product value key generator

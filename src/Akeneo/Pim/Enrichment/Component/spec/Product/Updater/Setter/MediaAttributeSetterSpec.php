@@ -68,7 +68,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::validPathExpected(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter',
+                MediaAttributeSetter::class,
                 'path/to/unknown/file'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

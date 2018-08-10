@@ -15,7 +15,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

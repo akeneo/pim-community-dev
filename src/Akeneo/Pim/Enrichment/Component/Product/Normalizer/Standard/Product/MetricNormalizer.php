@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

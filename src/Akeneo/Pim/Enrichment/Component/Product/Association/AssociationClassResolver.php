@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Association;
 
 use InvalidArgumentException;
-use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 
 /**
  * For a given association aware entity,

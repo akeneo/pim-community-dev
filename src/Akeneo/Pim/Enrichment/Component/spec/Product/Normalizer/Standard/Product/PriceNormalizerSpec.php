@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Produ
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PriceNormalizer;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceNormalizerSpec extends ObjectBehavior

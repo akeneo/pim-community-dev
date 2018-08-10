@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

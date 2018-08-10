@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\CommonAttributeCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
