@@ -85,6 +85,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         BulkSaverInterface $bulkProductModelSaver
     ) {
+        $this->objectManager = $objectManager;
         $this->productModelSaver = $productModelSaver;
         $this->productModelDraftSaver = $productModelDraftSaver;
         $this->authorizationChecker = $authorizationChecker;
@@ -94,7 +95,6 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
         $this->mergeDataOnProductModel = $mergeDataOnProductModel;
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
-        $this->objectManager = $objectManager;
         $this->bulkProductModelSaver = $bulkProductModelSaver;
     }
 

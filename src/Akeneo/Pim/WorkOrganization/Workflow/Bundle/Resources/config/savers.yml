@@ -62,7 +62,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.product_model'
             - '@pimee_workflow.saver.product_model_draft'
-            - '@event_dispatcher'
             - '@security.authorization_checker'
             - '@security.token_storage'
             - '@pimee_workflow.product_model.builder.draft'

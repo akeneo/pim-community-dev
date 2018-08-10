@@ -23,7 +23,6 @@ services:
         arguments:
             - '@pimee_catalog_rule.denormalizer.product_rule.chained'
             - '@event_dispatcher'
-            - '@validator'
             - '%akeneo_rule_engine.model.rule.class%'
 
     pimee_catalog_rule.selector.product:
