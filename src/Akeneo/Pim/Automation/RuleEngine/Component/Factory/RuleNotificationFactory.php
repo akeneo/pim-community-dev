@@ -13,8 +13,8 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Factory;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 
 /**
  * Factory that creates a notification for rules from a job instance

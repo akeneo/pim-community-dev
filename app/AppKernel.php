@@ -131,7 +131,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
-            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
+            new \Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle(),
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),

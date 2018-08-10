@@ -16,7 +16,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
-use Pim\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

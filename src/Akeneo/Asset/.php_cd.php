@@ -21,7 +21,7 @@ $rules = [
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
-        'Pim\Bundle\NotificationBundle', // TODO: this should be moved in Akeneo\Plateform
+        'Akeneo\Platform\Bundle\NotificationBundle', // TODO: this should be moved in Akeneo\Plateform
         'Akeneo\Tool\Component\Connector',
         'Pim\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
