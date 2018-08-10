@@ -5,6 +5,7 @@
 - PIM-7509: Compute the completeness of variant products after a rule execution on models
 - PIM-7575: Fix missing elements on product and product model edit pages in view mode
 - PIM-7567: Fix permissions autofill after saving forms
+- PIM-7563: Fix permissions on API filters
 
 # 2.3.4 (2018-08-08)
 
