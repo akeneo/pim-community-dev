@@ -1,15 +1,22 @@
-parameters:
-    pimee_api.checker.query_parameters.class: PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker
-
 services:
-    pimee_api.checker.query_parameters:
-        class: '%pimee_api.checker.query_parameters.class%'
-        decorates: pim_api.checker.query_parameters
-        decoration_inner_name: pim_api.checker.query_parameters.community
+    pimee_api.checker.query_parameters_product:
+        class: PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker
+        decorates: pim_api.checker.query_parameters_product
+        decoration_inner_name: pim_api.checker.query_parameters_product.community
         arguments:
-            - '@pim_api.checker.query_parameters.community'
+            - '@pim_api.checker.query_parameters_product.community'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_locale'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_category'
-        public: false
+
+    pimee_api.checker.query_parameters_product_model:
+        class: PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker
+        decorates: pim_api.checker.query_parameters_product_model
+        decoration_inner_name: pim_api.checker.query_parameters_product_model.community
+        arguments:
+            - '@pim_api.checker.query_parameters_product_model.community'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
