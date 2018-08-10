@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Exception;
+namespace Akeneo\UserManagement\Component\Exception;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

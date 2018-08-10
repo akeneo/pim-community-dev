@@ -1,22 +1,19 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\EventSubscriber;
+namespace spec\Akeneo\UserManagement\Bundle\EventListener;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Doctrine\Common\EventSubscriber;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\UserManagement\Bundle\EventListener\UserPreferencesSubscriber;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;use Akeneo\UserManagement\Component\Model\UserInterface;use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesSubscriber;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -79,7 +76,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         ClassMetadata $metadata
     ) {
         $this->setContainer($container);
-        $container->get('oro_user.manager')->willReturn($userManager);
+        $container->get('pim_user.manager')->willReturn($userManager);
 
         $args->getEntityManager()->willReturn($em);
         $em->getUnitOfWork()->willReturn($uow);
@@ -123,7 +120,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         ClassMetadata $metadata
     ) {
         $this->setContainer($container);
-        $container->get('oro_user.manager')->willReturn($userManager);
+        $container->get('pim_user.manager')->willReturn($userManager);
 
         $args->getEntityManager()->willReturn($em);
         $em->getUnitOfWork()->willReturn($uow);

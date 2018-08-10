@@ -1,14 +1,13 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\test\integration;
+namespace Akeneo\Test\Integration\integration\UserManagementBundle;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 class RemoveRoleIntegration extends TestCase
 {
     /**
-     * @expectedException \Pim\Component\User\Exception\ForbiddenToRemoveRoleException
+     * @expectedException \Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException
      * @expectedExceptionMessage You can not delete this role, otherwise some users will no longer have a role.
      */
     public function testUnableToRemoveARoleIfUsersWillNoLongerHaveRole()

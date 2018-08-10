@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
+namespace Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;

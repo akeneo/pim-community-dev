@@ -1,5 +1,5 @@
 parameters:
-    pim_user.query.is_there_user_without_role.class: Pim\Bundle\UserBundle\Doctrine\ORM\Query\IsThereUserWithoutRole
+    pim_user.query.is_there_user_without_role.class: Akeneo\UserManagement\Bundle\Doctrine\ORM\Query\IsThereUserWithoutRole
 
 services:
     pim_user.query.is_there_user_without_role:

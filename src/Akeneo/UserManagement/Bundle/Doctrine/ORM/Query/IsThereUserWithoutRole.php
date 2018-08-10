@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\Doctrine\ORM\Query;
+namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -1,18 +1,18 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
+namespace spec\Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 class AssociationUpdateGuesserSpec extends ObjectBehavior
 {
     function it_is_an_update_guesser()
     {
-        $this->shouldImplement('Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface');
+        $this->shouldImplement(UpdateGuesserInterface::class);
     }
 
     function it_supports_entity_updates_and_deletion()

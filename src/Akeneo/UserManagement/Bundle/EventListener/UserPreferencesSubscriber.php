@@ -102,7 +102,7 @@ class UserPreferencesSubscriber implements EventSubscriber
         }
 
         if ($entity instanceof CategoryInterface && $entity->isRoot()) {
-            $this->onTreeRemoved($uow, $entity, $entity);
+            $this->onTreeRemoved($uow, $manager, $entity);
         }
     }
 

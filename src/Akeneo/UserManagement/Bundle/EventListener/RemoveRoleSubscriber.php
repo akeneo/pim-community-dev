@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventSubscriber;
+namespace Akeneo\UserManagement\Bundle\EventListener;
 
-use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Query\IsThereUserWithoutRole;
-use Pim\Component\User\Exception\ForbiddenToRemoveRoleException;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Query\IsThereUserWithoutRole;
+use Akeneo\UserManagement\Component\Exception\ForbiddenToRemoveRoleException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
