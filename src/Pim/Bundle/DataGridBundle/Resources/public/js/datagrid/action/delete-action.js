@@ -105,18 +105,18 @@ define([
              */
             getErrorDialog: function(response) {
                 if (!this.errorModal) {
+                    let message = '';
                     try {
-                        var response = JSON.parse(response);
-                        var message = response.message;
+                        message = JSON.parse(response).message;
                     } catch(e) {
-                        var message = __('error.removing.' + this.getEntityHint());
+                        message = __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail');
                     }
 
                     this.errorModal = new Modal({
                         title: __('pim_datagrid.delete_error.title'),
                         content:
                             '' === message ?
-                            __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail') :
+                            __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail'):
                             message,
                         cancelText: false
                     });
