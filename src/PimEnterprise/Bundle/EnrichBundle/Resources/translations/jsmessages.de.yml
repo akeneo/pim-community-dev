@@ -54,6 +54,7 @@ pimee_enrich:
           added: Die Gruppe {{ group }} wird das Recht haben Attributgruppen zu {{ permission }}
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} Ergebnis|] 1, Inf[{{ count }} Ergebnisse"
       navigation: Veröffentlichte Produkte
       history:
         published: Veröffentlicht

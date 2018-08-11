@@ -3,6 +3,8 @@ jstree:
     all: Tots els recursos
     unclassified: Recursos sense classificar
 asset_grid:
+  title: "] -Inf, 1] {{ count }} recursos de producte|] 1, Inf [{{ count }} recursos de producte"
+  selected: recursos seleccionats
   label: Recursos de producte
 create_asset:
   title: Crear un recurs
