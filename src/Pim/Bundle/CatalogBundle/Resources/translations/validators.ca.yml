@@ -7,12 +7,14 @@ This attribute type must be required: Aquest tipus d'atribut ha de ser necessari
 This attribute type can't be required: Aquest tipus d'atribut no pot ser necessari
 This attribute type can't have unique value: Aquest tipus d'atribut no pot tenir valor únic
 No default value may be specified for this attribute type: No es pot especificar cap valor per defecte per a aquest tipus d'atribut
+This value should be Yes or No: Aquest valor ha de ser Sí o No
 This value should not be blank: Aquest valor no es pot deixar en blanc
 Option code may contain only letters, numbers and underscores: El codi d'opció només pot contenir lletres, nombres i guions baixos
 Option code may contain only letters (at least one), numbers and underscores: El codi d'opció només pot contenir lletres (una com a mínim), nombres i guions baixos
 This value should not be a decimal.: Aquest valor no ha de ser un decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": El valor %value% ja es troba a un altre producte per l'atribut únic %attribute%
+The same identifier is already set on another product: L'identificador ja està utilitzat per un altre producte
 regex.comma_or_semicolon.message: Aquest camp no hauria de contenir cap coma ni punt i coma.
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Aquest tipus de valor espera l'ús de {{ decimal_separator }} per separar els decimals.
@@ -20,8 +22,39 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "This type of value expects the use of comma (,) to separate decimals.": Aquest tipus de valor espera l'ús d'una coma (,) per separar els decimals.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Aquest tipus de valor espera l'ús d'un separador decimal àrab (٫) per separar els decimals.
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Aquest tipus de valor espera l''ús d''aquest format per dates: {{ date_format }}.'
+"The category \"%category%\" has to be a root category.": La categoria "%category%" ha de ser una categoria d'arrel.
+"The attribute \"%attributeCode%\" does not exist.": L'atribut "%attributeCode%" no existeix.
+"The attribute \"%attributeCode%\" is not a metric attribute.": L'atribut "%attributeCode%" no és un atribut mètric.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mètriques per defecte de l'atribut determinat "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
+product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
+product_model.family_variant.not_blank.message: La variant de família del model de producte no pot ser buit.
 pim_catalog:
   constraint:
+    can_have_family_variant_empty_axis_value: 'L''atribut "%attribute%" no pot ser buit, ja que es defineix com un eix per a aquesta entitat'
+    product_model_with_same_axis_value_already_exists: 'No es pot definir el valor "%values%" per els atributs d''eixos "%attributes%" al model de producte "%validated_entity%", com a model de producte "%sibling_with_same_value%" ja tenen aquest valor'
+    variant_product_with_same_axis_value_already_exists: 'No es pot definir el valor "%values%" per els atributs d''eixos "%attributes%" la variant de producte "%validated_entity%", com a variant de producte "%sibling_with_same_value%" ja tenen aquest valor'
+    can_have_family_variant_unexpected_attribute: 'No es pot definir la propietat "%attribute%" per aquesta entitat ja que no està en la configuració d''atributs'
+    cannot_have_product_model_as_parent: 'El model de producte "%product_model%" no pot tenir el model de producte "%parent_product_model%" com pare'
+    cannot_have_parent: 'El model de producte "%product_model%" no pot tenir un pare'
+    attribute_does_not_belong_to_family: 'L''atribut "%attribute%" no pertany a la família "%family%"'
+    variant_product_invalid_family: 'La variant de la família de producte ha de ser igual que el seu pare'
+    not_null_family: La família no pot ser "nul" perquè el seu producte amb l'identificador "%sku%" és una variant de producte.
+    variant_product_has_parent: 'La variant de producte "%variant_product%" ha de tenir un pare'
+    invalid_variant_product_parent: 'La variant de producte %variant_product% no pot tenir model de producte %product_model% com a pare (aquest model de producte només pot tenir un altre model de producte com a fill)'
+    modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
+    family_variant_attributes_unique: Els atributs han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
+    family_variant_axes_immutable: 'Els variants d''eixos no poden ser modificats per el nivell "%level%"'
+    family_variant_axes_attribute_type_unique: Els variants d'eixos "%axis%" no poden ser únics o un identificador
+    family_variant_axes_attribute_type: Els variant d'eixos "%axis%" tenen que ser booleans, selecció simple, data de referència simple o mètrica
+    family_variant_axes_wrong_type: Els variants d'eixos %axis% no poden ser localitzables, ni accesibles i no tenen un local específic
+    family_variant_axes_number_of_axes: 'La configuració d''un atribut no pot tenir més de %max_axes_number% eixos'
+    family_variant_no_axis: Ha d'haver almenys un atribut definit com a eix per a l'atribut de nivell "%level%"
+    family_variant_has_family_attribute: 'l''atribut "%attribute%" no es pot afegir a variant familiar de "%family_variant%", ja que no és un atribut de la família de "%family%"'
+    family_variant_level_do_not_exist: No hi ha configuració de variant de l'atribut per el nivell "%level%"
+    family_variant_no_level: Ha d'haver almenys un nivell definit en la variant familiar
+    family_variant_maximum_number_of_level: La variant de família no pot tenir més de "%level%" nivells
+    family_variant_unique_attributes_in_last_level: L'atribut únic "%attribute%" s'ha de configurar en el nivell de producte
     product_identifier: Aquests identificadors "%s" no existeixen.
     0: S'ha produït un error inesperat.
     100: Valor inesperat
@@ -42,4 +75,5 @@ pim_catalog:
     301: Aquest camp s'espera un àmbit i una configuració regional vàlids.
     302: Aquest camp espera un àmbit vàlid.
     303: Aquest camp espera un format vàlid d'associació.
+    pim_immutable_product_validator: L'identificador ja està utilitzat per un altre producte
 

@@ -158,7 +158,7 @@ pim_enrich:
     product:
       navigation: Navigation Produkte
       infos: Produktinformationen
-      index_title: "] -Inf, 1] {{{ count }} Ergebnis|] 1, Inf[{{ count }} Ergebnisse"
+      index_title: "] -Inf, 1] {{ count }} Ergebnis|] 1, Inf[{{ count }} Ergebnisse"
       title: Produkt
       locale: Gebietsschema
       category: Kategorie

@@ -56,6 +56,7 @@ pim:
       label_empty: està buit
       label_not_empty: no és buit
       label_in_list: a la llista
+      operator: Operador
     price_filter:
       label: Moneda
     category_filter:
@@ -66,6 +67,7 @@ datagrid_view.columns.min_message: Heu de seleccionar almenys una columna de la 
 pim_datagrid:
   column_configurator:
     label: Columnes
+    title: Configurar columnes
     all_groups: Tots els grups
     search: Cercar
     clear: Restablir
@@ -101,3 +103,12 @@ grid.view_selector:
   confirmation:
     delete: Confirmar l'eliminació
 grid.view_selector.flash.updated: Vista de Graella de dades actualitzada correctament
+grid.display_selector:
+  gallery: Galeria
+  list: Llista
+Client ID: ID de client
+Secret: Secret
+grid.empty_results:
+  associated_product:
+    hint: No hi ha productes associats
+    subHint: 'Feu clic al botó "Afegir associacions" per associar aquest producte'

@@ -1177,6 +1177,10 @@ batch_jobs:
     label: Sposta a categoria
     perform:
       label: Sposta a categoria
+  remove_from_category:
+    label: Rimuovi dalla categoria
+    perform:
+      label: Rimuovi dalla categoria
   add_association:
     label: Associa
     perform:
