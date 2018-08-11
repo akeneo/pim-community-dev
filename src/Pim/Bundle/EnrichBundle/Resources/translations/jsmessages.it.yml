@@ -1125,6 +1125,10 @@ batch_jobs:
       label: Modificare gli attributi
     cleaner:
       label: Pulisci i file per gli attributi
+  remove_from_category:
+    label: Rimuovi dalla categoria
+    perform:
+      label: Rimuovi dalla categoria
   add_to_existing_product_model:
     label: Aggiungere ad un modello di prodotto esistente
     perform:
@@ -1207,6 +1211,7 @@ batch_jobs:
     label: Importazione famiglie in CSV
     validation.label: Validazione del file
     import.label: Importazione famiglie
+    compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
   csv_family_variant_import:
     label: Importazione famiglia variante in CSV
     validation.label: Validazione del file
@@ -1270,6 +1275,7 @@ batch_jobs:
     label: Importazione famiglie in XLSX
     validation.label: Validazione del file
     import.label: Importazione famiglie
+    compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
   xlsx_family_variant_import:
     label: Importazione famiglia variante in XLSX
     validation.label: Validazione del file
@@ -1378,6 +1384,7 @@ pim_menu:
     group_type: Tipi di gruppo
     locale: Impostazioni locali
     product: Articoli
+    product_model: Modelli di Prodotto
     published_product: Prodotti Pubblicati
     export_history: Cronologia esportazioni
     export_profile: Profili di esportazione

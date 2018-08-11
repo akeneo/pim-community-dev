@@ -785,6 +785,10 @@ batch_jobs:
       label: Pulisci i file per gli attributi
     cleaner:
       label: Pulisci i file per gli attributi
+  remove_from_category:
+    label: Rimuovi dalla categoria
+    perform:
+      label: Rimuovi dalla categoria
   add_to_existing_product_model:
     label: Aggiungere ad un modello di prodotto esistente
     perform:
