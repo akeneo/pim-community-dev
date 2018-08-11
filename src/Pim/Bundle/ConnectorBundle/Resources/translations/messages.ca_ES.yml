@@ -1,29 +1,7 @@
 pim_connector:
   steps:
-    dummy_reader.title: Lector de proves
-    product_reader.title: Extracció de productes
-    entity_reader.title: Extracció d'entitats
-    csv_reader:
-      title: Lector de CSV
-    csv_product_reader.title: Lector CSV de productes
-    csv_category_reader.title: Lector CSV de categories
-    dummy_processor.title: Processador de proves
-    product_processor.title: Creació de producte
-    category_processor.title: Creació de categories
-    association_processor.title: Creació d'associacions
-    product_association_processor.title: Creació d'associacions
-    group_processor.title: Creació de grups
-    attribute_processor.title: Creació d'atributs
-    attribute_option_processor.title: Creación d'opcions d'atribut
-    heterogeneous_processor.title: Serialitzador CSV de productes
-    homogeneous_processor.title: Serialitzador CSV d'entitats
-    transformer_processor.title: Transformació
-    dummy_writer.title: Escriptor de proves
-    file_writer.title: Sortida
-    product_writer.title: Emmagatzematge de productes
-    category_writer.title: Emmagatzematge de categories
-    writer.title: Emmagatzematge d'entitats
-    csv_writer.title: Editor de CSV
+    file_reader:
+      invalid_item_columns_count: 'Esperem tenir %totalColumnsCount% columnes, ara tenim %itemColumnsCount% a %filePath%:%lineno%'
 job_execution.summary:
   read: llegir
   write: escrit
@@ -38,4 +16,7 @@ job_execution.summary:
     title: 'Codificació de l''arxiu:'
     skipped: omès, extensió a la llista blanca
   product_skipped_no_diff: producte omès (no hi ha diferències)
+  product_model_skipped_no_diff: models de producte omès (no hi ha diferències)
   item_position: llegir les línies
+  skipped_in_root_product_model: ometre el model de producte amb el pare
+  skipped_in_sub_product_model: ometre el model de producte sense el pare

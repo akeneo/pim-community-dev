@@ -5,6 +5,15 @@ pim_import_export:
   connector: Connector
   status:
     0: A punt
+  batch_status:
+    1: Completed
+    2: Starting
+    3: Started
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
   download_archive:
     archive: descarregar l'arxiu generat | descarregar els arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
@@ -27,9 +36,13 @@ pim_import_export:
       history.title: Històric
       job_content.title: Contingut
 pim_title.export_profile.index: Gestió de perfils d'exportació
+pim_title.export_profile.edit: Exportar perfil %job.label% | Editar
+pim_title.export_profile.show: Exportar perfil %job.label% | Mostrar
 pim_title.export_execution.index: Exportar històric d'execucions
 pim_title.export_execution.show: Exportar execucions | Detalls
 pim_title.import_profile.index: Gestió de perfils d'importació
+pim_title.import_profile.edit: Importar perfil %job.label% | Editar
+pim_title.import_profile.show: Importar perfil %job.label% | Mostrar
 pim_title.import_execution.index: Importar històric d'execucions
 pim_title.import_execution.show: Importar execucions | Detalls
 export profile:

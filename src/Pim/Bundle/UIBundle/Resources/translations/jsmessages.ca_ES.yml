@@ -5,8 +5,9 @@
 "Delete Confirmation": "Suprimir Confirmació"
 "Edit": "Editar"
 "Unexpected error occured. Please contact system administrator.": "Error inesperat. Contacti amb el seu administrador de sistemes."
+"Yes, revoke": "Sí, revocar"
+"Revoke Confirmation": "Revocar confirmació"
 Prev: Anterior
-Next: Següent
 Today: Avui
 Wk: Setm
 AM: AM
@@ -105,3 +106,6 @@ oro_config:
           label: Permetre els missatges que s'estan carregant
         loading_messages:
           label: Missatges de càrrega disponibles
+pim_ui:
+  flash:
+    unsaved_changes: 'Té canvis no desats. Segur que voleu sortir?'

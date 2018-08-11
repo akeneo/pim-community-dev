@@ -8,9 +8,11 @@ pim_datagrid:
     flash:
       created: Vista de Graella de dades creada correctament
       removed: Vista de Graella de dades eliminada correctament
+      not_removable: No tens permís per eliminar aquesta vista
   cells:
     type:
       quick_export: Exportació ràpida
       import: Importar
       export: Exportar
       mass_edit: Edició massiva
+      mass_delete: Esborrat massiu
