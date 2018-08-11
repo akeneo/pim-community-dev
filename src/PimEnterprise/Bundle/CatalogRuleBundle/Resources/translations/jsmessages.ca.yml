@@ -1,9 +1,13 @@
 pimee_catalog_rule:
+  overview: "[] -Inf, 1] {{ count }} regla |] 1, Inf [{{ count }} regles"
   execution_button: Executar regles
+  selected: 'regles seleccionades'
   popin:
     execute_rules:
+      confirm_title: Confirmar l'execució
       confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
   notification:
+    fail: L'acció no es pot realitzar
     launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
   attribute:
     list:
@@ -26,14 +30,17 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu executar la regla?
           confirm_ok: OK
       mass_edit_action:
+        confirm_title: Confirmar el càlcul
         confirm_content: Esteu segur que voleu calcular els productes afectats per la regla?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
+          confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu executar les regles seleccionades?
           success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
           error: S'ha produït un error durant l'execució de les regles.
@@ -63,6 +70,7 @@ batch_jobs:
   yml_rule_import:
     label: Importació de regla en YAML
     import.label: Importació de la regla
+    execute_rules.label: Execució de la regla
   yml_rule_export:
     label: Exportació de la regla en YAML
     export.label: Exportació de la regla
@@ -77,8 +85,11 @@ batch_jobs:
     import.label: Importar productes
     import_associations.label: Importar associacions
   csv_product_model_import_with_rules:
+    label: Importació de productes amb regles a CSV
     execute_rules.label: Execució de les regles
     validation.label: Validar arxius
+    import_root_product_model.label: Importar el model de producte base
+    import_sub_product_model.label: Importar el model de subproducte
   xlsx_product_import_with_rules:
     label: Importació de productes amb regles a XLSX
     execute_rules.label: Execució de les regles
@@ -86,5 +97,8 @@ batch_jobs:
     import.label: Importar productes
     import_associations.label: Importar associacions
   xlsx_product_model_import_with_rules:
+    label: Importació de productes amb regles a XLSX
     execute_rules.label: Execució de les regles
     validation.label: Validar arxius
+    import_root_product_model.label: Importar el model de producte base
+    import_sub_product_model.label: Importar el model de subproducte
