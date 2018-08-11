@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Obligatori
+    warning: No et preocupis, el càlcul del projecte pot tardar una estona. Podria no ser visible immediatament.
   grid:
     view_selector:
       loading: Carregant...
@@ -19,4 +20,7 @@ teamwork_assistant:
     confirm: Desar
     cancel: Cancelar
   widget:
+    no_project_create: crear un nou projecte
     description: Descripció
+    completeness:
+      to_start: PRODUCTES A COMENÇAR
