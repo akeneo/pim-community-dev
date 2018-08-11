@@ -9,12 +9,17 @@ pimee_product_asset:
           cancel: Cancelar
           confirm: Confirmar
         title: Gestió de recursos
+        description: Escull els recursos que voleu adjuntar al seu producte
+        preview_title: Vista prèvia de la col·lecció de recursos
         download: Descarregar
         remove: Eliminar
         yes: true
         no: false
+        assetRemoveConfirmationLabel: Estàs segur que vols eliminar aquest recurs?
     asset:
       not_empty: Codi obligatori. No es pot deixar buit.
+      alpha_numeric_plus_underscore: El codi només pot ser alfanumèric o subratllat.
+      unique: El codi ha de ser únic. Hem generat un nou per a vostè.
   enrich_asset:
     grid:
       edit: Edita les propietats del recurs
@@ -69,6 +74,7 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
+        confirm_content: Està segur que vol eliminar els recursos seleccionats?
         success: Recursos seleccionats correctament.
         error: S'ha produït un error en intentar suprimir els recursos seleccionats, torneu-ho a intentar.
         empty_selection: No hi ha cap recurs seleccionat
@@ -83,6 +89,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Carregar recursos en massa
     perform.label: Carregar en massa
+  apply_assets_mass_upload_into_asset_collection:
+    label: Pujar en massa recursos i afegir al producte
+    perform.label: Pujar en massa recursos i afegir al producte
   yml_asset_channel_configuration_import:
     label: Importació de configuració de recurs de canal en Yaml
     validation.label: Validar arxius
@@ -135,6 +144,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Exportació de categoria de recurs en XLSX
     export.label: Exportació de categoria de recurs en XLSX
+  xlsx_asset_variation_export:
+    label: Exportació de variant de recursos a XLSX
+    export.label: Exportació de variant de recursos a XLSX
   classify_assets:
     perform.label: Moure recursos a categories
   add_tags_to_assets:

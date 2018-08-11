@@ -109,6 +109,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Productes publicats
+    view: Producte publicat %product.label% | Veure
+  product:
+    dispatch: "Producte %product.label%"
+    show: "Producte %product.label% | Mostrar"
   proposal:
     index: Propostes
 btn.editworkingcopy: Editar la còpia de treball
