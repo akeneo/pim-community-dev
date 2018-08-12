@@ -7,7 +7,7 @@
 ## Bug fixes
 
 - PIM-7538: Fix persistent grid filters
-- GITHUB-8418: Cast entity id for comparaison with MongoObject
+- GITHUB-8418: Cast entity id for comparison with MongoObject
 
 # 1.7.28 (2018-07-26)
 
