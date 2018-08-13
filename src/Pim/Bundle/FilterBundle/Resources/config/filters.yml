@@ -77,6 +77,14 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_completeness }
 
+    pim_filter.product_and_product_model_completeness_filter:
+        class: Pim\Bundle\FilterBundle\Filter\ProductAndProductModelCompletenessFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_and_product_model_completeness }
+
     pim_filter.product_date_filter:
         class: '%pim_filter.product_date_filter.class%'
         arguments:

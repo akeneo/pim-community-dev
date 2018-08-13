@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class CompletenessFilterSpec extends ObjectBehavior
+class ProductAndProductModelCompletenessFilterSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
@@ -21,21 +21,21 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\ChoiceFilter');
     }
 
-    function it_applies_a_filter_on_complete_products(
+    function it_applies_a_filter_on_complete_products_and_product_models(
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilter($datasource, 'completeness', Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE, 100)
+        $utility->applyFilter($datasource, 'completeness', Operators::AT_LEAST_COMPLETE, null)
             ->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => BooleanFilterType::TYPE_YES]);
     }
 
-    function it_applies_a_filter_on_not_complete_products(
+    function it_applies_a_filter_on_not_complete_products_and_product_models(
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilter($datasource, 'completeness', Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE, 100)
+        $utility->applyFilter($datasource, 'completeness', Operators::AT_LEAST_INCOMPLETE, null)
             ->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => BooleanFilterType::TYPE_NO]);
