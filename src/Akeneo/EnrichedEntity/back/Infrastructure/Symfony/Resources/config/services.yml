@@ -130,6 +130,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesDetails'
+        arguments:
+            - '@database_connection'
+
     akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler:
         class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler'
         arguments:

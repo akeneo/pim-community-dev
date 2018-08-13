@@ -29,7 +29,7 @@ class ImageAttributeDetails extends AbstractAttributeDetails
     public $maxFileSize;
 
     /** @var AttributeAllowedExtensions */
-    public $extensions;
+    public $allowedExtensions;
 
     public function normalize(): array
     {
@@ -37,7 +37,7 @@ class ImageAttributeDetails extends AbstractAttributeDetails
             parent::normalize(),
             [
                 self::MAX_FILE_SIZE      => $this->maxFileSize->normalize(),
-                self::ALLOWED_EXTENSIONS => $this->extensions->normalize(),
+                self::ALLOWED_EXTENSIONS => $this->allowedExtensions->normalize(),
                 self::TYPE => 'image'
             ]
         );
