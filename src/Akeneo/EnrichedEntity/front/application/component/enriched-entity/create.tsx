@@ -113,8 +113,8 @@ class Create extends React.Component<CreateProps> {
                         onChange={this.onCodeUpdate}
                         onKeyPress={this.onKeyPress}
                       />
-                      {getErrorsView(this.props.errors, 'identifier')}
                     </div>
+                    {getErrorsView(this.props.errors, 'identifier')}
                   </div>
                 </div>
               </div>
