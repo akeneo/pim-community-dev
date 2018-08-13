@@ -20,7 +20,7 @@ interface CreateProps extends StateProps, DispatchProps {}
 
 const renderAttributes = (attributes: AttributeModel[]) => {
   return attributes.map((attribute: AttributeModel) => (
-    <div key={attribute.getCode().stringValue()} className="AknFieldContainer" data-code="identifier">
+    <div key={attribute.getCode().stringValue()} className="AknFieldContainer" data-identifier={attribute.getCode().stringValue()}>
       <div className="AknFieldContainer-header">
         <label
           className="AknFieldContainer-label AknFieldContainer-label--withImage"

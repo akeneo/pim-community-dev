@@ -22,6 +22,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
@@ -36,7 +37,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_index_rest';
+    private const INDEX_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_index_rest';
 
     /** @var Client */
     private $client;
@@ -61,7 +62,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ATTRIBUTE_ROUTE,
+            self::INDEX_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
             ],
@@ -73,40 +74,37 @@ class IndexActionTest extends ControllerIntegrationTestCase
         );
 
         $expectedContent = [
-            'items' => [
-                [
-                    'identifier'                 => [
-                        'enriched_entity_identifier' => 'designer',
-                        'identifier'                 => 'name',
-                    ],
+            [
+                'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
-                    'code'                       => 'name',
-                    'labels'                     => ['en_US' => 'Name'],
-                    'required'                   => true,
-                    'order'                      => 0,
-                    'value_per_locale'           => true,
-                    'value_per_channel'          => true,
-                    'max_length'                 => 155,
-                    'type'                       => 'text',
+                    'identifier'                 => 'name',
                 ],
-                [
-                    'identifier'                 => [
-                        'enriched_entity_identifier' => 'designer',
-                        'identifier'                 => 'image',
-                    ],
-                    'enriched_entity_identifier' => 'designer',
-                    'code'                       => 'name',
-                    'labels'                     => ['en_US' => 'Portrait'],
-                    'required'                   => true,
-                    'order'                      => 1,
-                    'value_per_locale'           => true,
-                    'value_per_channel'          => true,
-                    'max_file_size'              => '1000',
-                    'allowed_extensions'         => ['pdf'],
-                    'type'                       => 'image',
-                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['en_US' => 'Name'],
+                'required'                   => true,
+                'order'                      => 0,
+                'value_per_locale'           => true,
+                'value_per_channel'          => true,
+                'max_length'                 => 155,
+                'type'                       => 'text',
             ],
-            'total' => 2,
+            [
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'image',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['en_US' => 'Portrait'],
+                'required'                   => true,
+                'order'                      => 1,
+                'value_per_locale'           => true,
+                'value_per_channel'          => true,
+                'max_file_size'              => '1000',
+                'allowed_extensions'         => ['pdf'],
+                'type'                       => 'image',
+            ],
         ];
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_OK, json_encode($expectedContent));
@@ -119,7 +117,30 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ATTRIBUTE_ROUTE,
+            self::INDEX_ATTRIBUTE_ROUTE,
+            [
+                'enrichedEntityIdentifier' => 'brand',
+            ],
+            'GET',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ]
+        );
+
+        $expectedContent = [];
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_OK, json_encode($expectedContent));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_httpd_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
+    {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::INDEX_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'unknown_enriched_Entity',
             ],
@@ -130,12 +151,9 @@ class IndexActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedContent = [
-            'items' => [],
-            'total' => 0,
-        ];
+        $expectedContent = [];
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_OK, json_encode($expectedContent));
+        $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
 
     private function loadFixtures(): void
@@ -146,6 +164,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_create', true);
+
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), []));
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), []));
 
         $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());

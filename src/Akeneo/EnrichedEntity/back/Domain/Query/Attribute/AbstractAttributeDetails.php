@@ -71,8 +71,8 @@ abstract class AbstractAttributeDetails
             self::LABELS                     => $this->labels->normalize(),
             self::REQUIRED                   => $this->required->normalize(),
             self::ORDER                      => $this->order->intValue(),
-            self::VALUE_PER_LOCALE           => $this->valuePerChannel->normalize(),
-            self::VALUE_PER_CHANNEL          => $this->valuePerLocale->normalize(),
+            self::VALUE_PER_LOCALE           => $this->valuePerLocale->normalize(),
+            self::VALUE_PER_CHANNEL          => $this->valuePerChannel->normalize(),
         ];
     }
 }

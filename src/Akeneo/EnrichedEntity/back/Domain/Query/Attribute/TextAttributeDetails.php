@@ -21,17 +21,19 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
  */
 class TextAttributeDetails extends AbstractAttributeDetails
 {
+    public const ATTRIBUTE_TYPE = 'text';
     public const MAX_LENGTH = 'max_length';
 
     /** @var AttributeMaxLength */
     public $maxLength;
 
-    public function normalize(): array {
+    public function normalize(): array
+    {
         return array_merge(
             parent::normalize(),
             [
                 self::MAX_LENGTH => $this->maxLength->intValue(),
-                self::TYPE => 'text'
+                self::TYPE => self::ATTRIBUTE_TYPE
             ]
         );
     }

@@ -114,7 +114,7 @@ SQL;
 
                 $recordDetails[] = $textAttributeDetails;
             } elseif ('image' === $result['attribute_type']) {
-                $maxFileSize = $additionnalProperties['max_file_size'];
+                $maxFileSize = (string) $additionnalProperties['max_file_size'];
                 $extensions = $additionnalProperties['allowed_extensions'];
 
                 $imageAttributeDetails = new ImageAttributeDetails();

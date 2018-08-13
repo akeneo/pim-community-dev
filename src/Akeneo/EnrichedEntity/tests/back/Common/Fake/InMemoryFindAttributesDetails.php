@@ -25,7 +25,7 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
     private $results = [];
 
-    public function save(AbstractAttributeDetails $enrichedEntityDetails)
+    public function save(AbstractAttributeDetails $enrichedEntityDetails): void
     {
         $this->results[(string) $enrichedEntityDetails->enrichedEntityIdentifier][] = $enrichedEntityDetails;
     }

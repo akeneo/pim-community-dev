@@ -22,6 +22,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
  */
 class ImageAttributeDetails extends AbstractAttributeDetails
 {
+    public const ATTRIBUTE_TYPE = 'image';
     public const MAX_FILE_SIZE = 'max_file_size';
     public const ALLOWED_EXTENSIONS = 'allowed_extensions';
 
@@ -38,7 +39,7 @@ class ImageAttributeDetails extends AbstractAttributeDetails
             [
                 self::MAX_FILE_SIZE      => $this->maxFileSize->normalize(),
                 self::ALLOWED_EXTENSIONS => $this->allowedExtensions->normalize(),
-                self::TYPE => 'image'
+                self::TYPE => self::ATTRIBUTE_TYPE
             ]
         );
     }

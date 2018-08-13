@@ -74,6 +74,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\IndexAction'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
 
     akeneo_enrichedentity.infrastructure.action.attribute.create:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'

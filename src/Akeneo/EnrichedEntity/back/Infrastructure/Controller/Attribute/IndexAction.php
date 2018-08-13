@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -30,20 +31,24 @@ class IndexAction
     /** @var FindAttributesDetailsInterface */
     private $findAttributesDetails;
 
-    public function __construct(FindAttributesDetailsInterface $findAttributesDetails) {
+    /** @var EnrichedEntityExistsInterface */
+    private $enrichedEntityExists;
+
+    public function __construct(
+        FindAttributesDetailsInterface $findAttributesDetails,
+        EnrichedEntityExistsInterface $enrichedEntityExists
+    ) {
         $this->findAttributesDetails = $findAttributesDetails;
+        $this->enrichedEntityExists = $enrichedEntityExists;
     }
 
     public function __invoke(string $enrichedEntityIdentifier): JsonResponse
     {
         $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
-        $normalizeAttributesDetails = ($this->findAttributesDetails)($enrichedEntityIdentifier);
-        $normalizedAttributesDetails = $this->normalizeAttributesDetails($normalizeAttributesDetails);
+        $attributesDetails = ($this->findAttributesDetails)($enrichedEntityIdentifier);
+        $normalizedAttributesDetails = $this->normalizeAttributesDetails($attributesDetails);
 
-        return new JsonResponse([
-            'items' => $normalizedAttributesDetails,
-            'total' => count($normalizedAttributesDetails),
-        ]);
+        return new JsonResponse($normalizedAttributesDetails);
     }
 
     /**
@@ -52,10 +57,16 @@ class IndexAction
     private function getEnrichedEntityIdentifierOr404(string $identifier): EnrichedEntityIdentifier
     {
         try {
-            return EnrichedEntityIdentifier::fromString($identifier);
+            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
+
+        if (!$this->enrichedEntityExists->withIdentifier($enrichedEntityIdentifier)) {
+            throw new NotFoundHttpException();
+        }
+
+        return $enrichedEntityIdentifier;
     }
 
     /**
