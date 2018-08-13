@@ -17,4 +17,4 @@ pim_enriched_entity:
     enriched_entity:
         validation:
             identifier:
-                should_be_unique: 'An enriched entity already exists for identifier "%enriched_entity_identifier%"'
+                should_be_unique: 'An enriched entity already exists with identifier "%enriched_entity_identifier%"'

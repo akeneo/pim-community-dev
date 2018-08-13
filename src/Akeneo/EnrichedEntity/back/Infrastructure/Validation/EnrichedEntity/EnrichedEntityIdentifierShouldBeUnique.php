@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks whether a given record already exists in the data referential
+ * Checks whether a given enriched entity identifier already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

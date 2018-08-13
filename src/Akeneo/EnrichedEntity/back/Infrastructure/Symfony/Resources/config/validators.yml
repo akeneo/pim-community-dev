@@ -6,7 +6,7 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.record_is_unique' }
 
-    akeneo_enrichedentity.infrastructure.validation.attribute.attribute_identifier_should_be_unique_validator:
+    akeneo_enrichedentity.infrastructure.validation.attribute.attribute_identifier_should_be_unique:
         class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldBeUniqueValidator
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists'

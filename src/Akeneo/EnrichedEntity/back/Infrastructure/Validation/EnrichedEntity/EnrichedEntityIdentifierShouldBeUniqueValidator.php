@@ -36,7 +36,7 @@ class EnrichedEntityIdentifierShouldBeUniqueValidator extends ConstraintValidato
         $this->recordExists = $recordExists;
     }
 
-    public function validate($command, Constraint $constraint)
+    public function validate($command, Constraint $constraint): void
     {
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
