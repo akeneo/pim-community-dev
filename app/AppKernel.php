@@ -96,7 +96,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
             new Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle(),
             new Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle(),
-            new Akeneo\Pim\Automation\SuggestData\Bundle\AkeneoSuggestDataBundle(),
+            new Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\AkeneoSuggestDataBundle(),
         ];
     }
 
