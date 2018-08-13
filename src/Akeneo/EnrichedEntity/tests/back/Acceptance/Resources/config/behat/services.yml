@@ -47,7 +47,7 @@ services:
         tags:
             - { name: fob.context_service }
 
-    akeneo_enrichedentity.tests.back.acceptance.context.delete_attribute_context:
+    akeneo_enrichedentity.tests.back.acceptance.context.edit_attribute_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditAttributeContext
         arguments:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.attribute'
