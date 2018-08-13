@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\ProductModel;
+namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Import\ProductModel;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;

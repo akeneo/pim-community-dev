@@ -237,9 +237,31 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
-        $qb = $this->getGrantedCategoryQB($user, $accessLevel);
+        $categoryAccessTable = $this->_class->table['name'];
+        $userGroupsTable = $this->getTableName('pim_user.entity.user.class', 'groups');
 
-        return $this->hydrateAsIds($qb);
+        $pdo = $this->_em->getConnection()->getWrappedConnection();
+        $stmt = $pdo->prepare(
+            sprintf(
+                "SELECT ca.category_id
+                    FROM %s ca
+                    JOIN %s ug
+                        ON ug.group_id = ca.user_group_id
+                    WHERE ug.user_id = :user_id
+                      AND ca.%s = 1",
+                $categoryAccessTable,
+                $userGroupsTable,
+                $this->getAccessColumn($accessLevel)
+            )
+        );
+
+        $userId = $user->getId();
+        $stmt->bindParam('user_id', $userId);
+        $stmt->execute();
+
+        $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
+
+        return array_map('intval', $ids);
     }
 
     /**
@@ -440,6 +462,29 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
             Attributes::OWN_PRODUCTS  => 'ownItems',
             Attributes::EDIT_ITEMS    => 'editItems',
             Attributes::VIEW_ITEMS    => 'viewItems',
+        ];
+        if (!isset($mapping[$accessLevel])) {
+            throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));
+        }
+
+        return $mapping[$accessLevel];
+    }
+
+    /**
+     * Get the column field depending of access level sent
+     *
+     * @param string $accessLevel
+     *
+     * @throws \LogicException
+     *
+     * @return string
+     */
+    protected function getAccessColumn($accessLevel)
+    {
+        $mapping = [
+            Attributes::OWN_PRODUCTS  => 'own_items',
+            Attributes::EDIT_ITEMS    => 'edit_items',
+            Attributes::VIEW_ITEMS    => 'view_items',
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));

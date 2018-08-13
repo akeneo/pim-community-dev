@@ -29,7 +29,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
-
     /** @var ProductsUpdater */
     protected $productsUpdater;
 
@@ -41,7 +40,6 @@ class ProductRuleApplier implements ApplierInterface
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
-
 
     /** @var EntityManagerClearerInterface */
     protected $cacheClearer;

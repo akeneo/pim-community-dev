@@ -65,7 +65,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $project->getOwner()->willReturn($user);
         $categoryAccessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn(['foo', 'bar']);
-        $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', ['foo', 'bar'])->shouldBeCalled();
+        $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', ['foo', 'bar'], ['type_checking' => false])->shouldBeCalled();
         $productQueryBuilder->addFilter('family', 'NOT EMPTY', null)->shouldBeCalled();
 
         $productQueryBuilder->execute()->willReturn($products);

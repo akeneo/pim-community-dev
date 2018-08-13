@@ -12,6 +12,7 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+            itemPath: identifier
 
     pimee-product-view-form-user-navigation:
         module: pim/menu/user-navigation
@@ -20,6 +21,11 @@ extensions:
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
+
+    pimee-product-view-form-main-image:
+        module: pim/form/common/main-image
+        parent: pimee-product-view-form
+        targetZone: main-image
 
     pimee-product-view-cache-invalidator:
         module: pim/cache-invalidator
@@ -67,6 +73,18 @@ extensions:
         parent: pimee-product-view-form
         targetZone: title
         position: 100
+
+    pimee-product-view-product-completeness:
+        module: pim/product-edit-form/product-completeness
+        parent: pimee-product-view-form
+        targetZone: meta
+        position: 100
+
+    pimee-product-view-total-missing-required-attributes:
+        module: pim/product-edit-form/total-missing-required-attributes
+        parent: pimee-product-view-form
+        targetZone: meta
+        position: 120
 
     pimee-product-view-secondary-actions:
         module: pim/form/common/secondary-actions
@@ -127,8 +145,8 @@ extensions:
 
     pimee-product-view-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: pimee-product-view-attributes
-        targetZone: context-selectors
+        parent: pimee-product-view-form
+        targetZone: context
         position: 100
         config:
             context: base_product
@@ -136,11 +154,16 @@ extensions:
 
     pimee-product-view-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: pimee-product-view-attributes
-        targetZone: context-selectors
+        parent: pimee-product-view-form
+        targetZone: context
         position: 110
         config:
             context: base_product
+
+    pimee-product-view-form-variant-navigation:
+        module: pim/product-edit-form/variant-navigation
+        parent: pimee-product-view-form
+        targetZone: navigation
 
     pimee-product-view-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific
