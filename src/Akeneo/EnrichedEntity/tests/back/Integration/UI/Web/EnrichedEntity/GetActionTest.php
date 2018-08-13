@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
+    private const ENRICHED_ENTITY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
 
     /** @var Client */
     private $client;
@@ -49,7 +49,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_DETAIL_ROUTE,
+            self::ENRICHED_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'designer']
         );
         $expectedContent = json_encode([
@@ -69,7 +69,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_DETAIL_ROUTE,
+            self::ENRICHED_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );

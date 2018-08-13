@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_ENRICHED_ENTITIY_ROUTE = 'akeneo_enriched_entities_enriched_entity_create_rest';
+    private const CREATE_ENRICHED_ENTITY_ROUTE = 'akeneo_enriched_entities_enriched_entity_create_rest';
 
     /** @var Client */
     private $client;
@@ -48,7 +48,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            self::CREATE_ENRICHED_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -73,7 +73,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            self::CREATE_ENRICHED_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -99,7 +99,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ): void {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            self::CREATE_ENRICHED_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -137,8 +137,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'Designer',
             ],
         ];
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITIY_ROUTE, [], 'POST', $headers, $content);
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITIY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITY_ROUTE, [], 'POST', $headers, $content);
 
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
@@ -161,7 +161,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            self::CREATE_ENRICHED_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -185,7 +185,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            self::CREATE_ENRICHED_ENTITY_ROUTE,
             [
                 'identifier' => 'celine_dion',
             ],
@@ -201,7 +201,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->revokeCreationRights();
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            self::CREATE_ENRICHED_ENTITY_ROUTE,
             [],
             'POST',
             [
