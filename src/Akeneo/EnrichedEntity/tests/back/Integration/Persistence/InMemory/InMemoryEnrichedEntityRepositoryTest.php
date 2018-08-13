@@ -78,6 +78,18 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_tells_if_the_repository_has_the_enriched_entity()
+    {
+        $anotherIdentifier = EnrichedEntityIdentifier::fromString('another_identifier');
+        $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $this->enrichedEntityRepository->create(EnrichedEntity::create($identifier, []));
+        Assert::assertTrue($this->enrichedEntityRepository->hasRecord($identifier));
+        Assert::assertFalse($this->enrichedEntityRepository->hasRecord($anotherIdentifier));
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_udpating_a_non_existing_enriched_entity()
     {
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');

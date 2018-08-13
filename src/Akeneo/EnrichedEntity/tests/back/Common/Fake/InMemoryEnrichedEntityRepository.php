@@ -60,4 +60,9 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepositoryInterf
     {
         return count($this->enrichedEntities);
     }
+
+    public function hasRecord(EnrichedEntityIdentifier $identifier): bool
+    {
+        return isset($this->enrichedEntities[(string) $identifier]);
+    }
 }

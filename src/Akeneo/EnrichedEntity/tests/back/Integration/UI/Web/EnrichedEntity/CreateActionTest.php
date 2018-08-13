@@ -123,6 +123,31 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     /**
      * @test
+     */
+    public function it_returns_an_error_when_the_enriched_entity_identifier_is_not_unique()
+    {
+        $headers = [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'CONTENT_TYPE'          => 'application/json',
+        ];
+        $content = [
+            'identifier' => 'designer',
+            'labels'     => [
+                'fr_FR' => 'Concepteur',
+                'en_US' => 'Designer',
+            ],
+        ];
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITIY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITIY_ROUTE, [], 'POST', $headers, $content);
+
+        $this->webClientHelper->assertResponse(
+            $this->client->getResponse(),
+            Response::HTTP_BAD_REQUEST,
+'[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer"},"plural":null,"message":"pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique","root":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+    }
+
+    /**
+     * @test
      * @dataProvider invalidLabels
      *
      * @param mixed $invalidLabels
