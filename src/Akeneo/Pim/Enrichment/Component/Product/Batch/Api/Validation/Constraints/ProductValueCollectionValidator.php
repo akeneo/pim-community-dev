@@ -26,17 +26,17 @@ class ProductValueCollectionValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Product::class);
         }
 
-        if (!$constraint instanceof ProductValueCollectionValidator) {
-            throw new UnexpectedTypeException($constraint, ExistingLocalesInValues::class);
+        if (!$constraint instanceof ProductValueCollection) {
+            throw new UnexpectedTypeException($constraint, ProductValueCollection::class);
         }
 
         if (null === $product->values()) {
             return;
         }
 
-        foreach ($product->values()->all() as $value) {
-            $violations = $this->context->getValidator()->validate($value->data());
-            $this->context->getViolations()->addAll($violations);
-        }
+        //foreach ($product->values()->all() as $value) {
+        //    $violations = $this->context->getValidator()->validate($value);
+        //    $this->context->getViolations()->addAll($violations);
+        //}
     }
 }
