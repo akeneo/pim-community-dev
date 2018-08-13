@@ -12,6 +12,26 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidRegex` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegex`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidRegexValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegexValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidNumberRange` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidNumberRangeValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRangeValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidMetric` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidMetricValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidDateRange` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidDateRangeValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRangeValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NullProperties` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties`
+- Move `Pim\Component\Catalog\Validator\Constraints\NullPropertiesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NullPropertiesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotNullProperties` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullProperties`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotNullPropertiesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullPropertiesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfiguredValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfiguredValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilter`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilterValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilterValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyVariant` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyVariant`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyVariantValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOption` to `Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOption`
+- Move `Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOptionValidator`
 - Move `Pim\Component\Catalog\Validator\Constraints\Immutable` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable`
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\ImmutableValidator`
 - Move `Pim\Component\Catalog\Model\AbstractMetric` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric`

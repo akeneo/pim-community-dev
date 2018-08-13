@@ -1,11 +1,11 @@
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute:
             payload:
                 standardPropertyName: type
-        - Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured: ~
-        - Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
@@ -15,21 +15,21 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 - metricFamily
                 - unique
                 - reference_data_name
-        - Pim\Component\Catalog\Validator\Constraints\ValidMetric:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric:
             groups:
                 - pim_catalog_metric
-        - Pim\Component\Catalog\Validator\Constraints\ValidDateRange:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange:
             groups:
                 - pim_catalog_date
-        - Pim\Component\Catalog\Validator\Constraints\ValidNumberRange:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange:
             groups:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
-        - Pim\Component\Catalog\Validator\Constraints\NotNullProperties:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullProperties:
             properties:
                 - reference_data_name
-        - Pim\Component\Catalog\Validator\Constraints\NullProperties:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
             message: This attribute cannot be linked to reference data.
             properties:
                 - reference_data_name
@@ -46,7 +46,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 - pim_catalog_boolean
                 - pim_catalog_date
                 - pim_catalog_metric
-        - Pim\Component\Catalog\Validator\Constraints\NullProperties:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
             message: This attribute cannot have options.
             properties:
                 - auto_option_sorting
@@ -326,7 +326,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_catalog_metric
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
-            - Pim\Component\Catalog\Validator\Constraints\ValidRegex:
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegex:
                 groups:
                     - pim_catalog_text
                     - pim_catalog_identifier
@@ -345,10 +345,10 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_catalog_metric
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
-            - Pim\Component\Catalog\Validator\Constraints\FileAllowedExtensions:
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\FileAllowedExtensions:
                 groups:
                     - pim_catalog_file
-            - Pim\Component\Catalog\Validator\Constraints\ImageAllowedExtensions:
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\ImageAllowedExtensions:
                 groups:
                     - pim_catalog_image
         translations:
@@ -447,7 +447,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeOption:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             - code
             - attribute
-        - Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOption:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOption:
             payload:
               standardPropertyName: attribute
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:

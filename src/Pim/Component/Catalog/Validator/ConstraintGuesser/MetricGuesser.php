@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Validator\ConstraintGuesser;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
-use Pim\Component\Catalog\Validator\Constraints\ValidMetric;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric;
 
 /**
  * Guesser for metric values
