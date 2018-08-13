@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DashboardBundle\Widget;
+namespace spec\Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -18,7 +18,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
 
     function it_is_a_widget()
     {
-        $this->shouldImplement('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
+        $this->shouldImplement('Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
     function it_has_an_alias()

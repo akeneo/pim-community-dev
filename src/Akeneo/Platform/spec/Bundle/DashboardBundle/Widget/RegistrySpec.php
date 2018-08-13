@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DashboardBundle\Widget;
+namespace spec\Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;

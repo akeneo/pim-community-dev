@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
+namespace spec\Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

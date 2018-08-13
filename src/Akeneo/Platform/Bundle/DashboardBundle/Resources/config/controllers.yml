@@ -1,5 +1,5 @@
 parameters:
-    pim_dashboard.controller.widget.class:      Pim\Bundle\DashboardBundle\Controller\WidgetController
+    pim_dashboard.controller.widget.class:      Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController
 
 services:
     pim_dashboard.controller.widget:

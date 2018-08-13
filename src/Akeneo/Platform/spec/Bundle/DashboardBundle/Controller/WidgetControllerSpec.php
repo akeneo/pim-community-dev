@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DashboardBundle\Controller;
+namespace spec\Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry;
@@ -16,7 +16,7 @@ class WidgetControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DashboardBundle\Controller\WidgetController');
+        $this->shouldHaveType('Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController');
     }
 
     function it_renders_widgets_by_their_position(WidgetInterface $foo, WidgetInterface $bar, $registry, $templating)
