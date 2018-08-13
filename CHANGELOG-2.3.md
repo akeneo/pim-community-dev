@@ -5,6 +5,7 @@
 - PIM-7580: Fixes the search on categories with product models
 - PIM-7573: Fix "nesting level too deep" error during family import
 - PIM-7562: Fix API filter product on status and groups
+- PIM-7571: Fix job instance validation in case of attribute deletion
 
 # 2.3.4 (2018-08-08)
 
