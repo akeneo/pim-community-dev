@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -40,7 +41,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        EntityManagerClearerInterface $entityManagerClearer
     ) {
         $this->beConstructedWith(
             $importer,
@@ -48,7 +50,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $assetSaver,
             $eventDispatcher,
             $retrieveAssetGenerationErrors,
-            $objectDetacher
+            $objectDetacher,
+            $entityManagerClearer
         );
     }
 
@@ -63,7 +66,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
-        $objectDetacher,
+        $entityManagerClearer,
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
@@ -83,7 +86,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             ->willReturn($event);
         $retrieveAssetGenerationErrors->fromEvent($event)->willReturn([]);
 
-        $objectDetacher->detach($asset)->shouldBeCalled();
+        $entityManagerClearer->clear()->shouldNotBeCalled();
 
         $processedFiles = $this->applyMassUpload($uploadContext);
 
@@ -100,7 +103,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
-        $objectDetacher,
+        $entityManagerClearer,
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
@@ -120,7 +123,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             ->willReturn($event);
         $retrieveAssetGenerationErrors->fromEvent($event)->willReturn([]);
 
-        $objectDetacher->detach($asset)->shouldBeCalled();
+        $entityManagerClearer->clear()->shouldNotBeCalled();
 
         $processedFiles = $this->applyMassUpload($uploadContext);
 
@@ -137,7 +140,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
-        $objectDetacher,
+        $entityManagerClearer,
         \SplFileInfo $importedFile,
         AssetInterface $asset
     ) {
@@ -157,7 +160,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             ->willReturn($event);
         $retrieveAssetGenerationErrors->fromEvent($event)->willReturn(['An error']);
 
-        $objectDetacher->detach($asset)->shouldBeCalled();
+        $entityManagerClearer->clear()->shouldNotBeCalled();
 
         $processedFiles = $this->applyMassUpload($uploadContext);
 
@@ -174,7 +177,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
-        $objectDetacher,
+        $entityManagerClearer,
         \SplFileInfo $importedFile
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
@@ -189,7 +192,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetSaver->save(Argument::any())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
         $retrieveAssetGenerationErrors->fromEvent(Argument::any())->shouldNotBeCalled();
-        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $entityManagerClearer->clear()->shouldNotBeCalled();
 
         $processedFiles = $this->applyMassUpload($uploadContext);
 
@@ -199,5 +202,64 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $processedFiles->current()->getState()->shouldReturn(ProcessedItem::STATE_ERROR);
         $processedFiles->current()->getReason()->shouldReturn('A fatal error!');
         $processedFiles->current()->getException()->shouldReturn($exception);
+    }
+
+    function it_mass_uploads_11_asset_files_for_existing_assets(
+        $importer,
+        $buildAsset,
+        $assetSaver,
+        $eventDispatcher,
+        $retrieveAssetGenerationErrors,
+        $entityManagerClearer,
+        \SplFileInfo $importedFile,
+        \SplFileInfo $importedFile2,
+        \SplFileInfo $importedFile3,
+        \SplFileInfo $importedFile4,
+        \SplFileInfo $importedFile5,
+        \SplFileInfo $importedFile6,
+        \SplFileInfo $importedFile7,
+        \SplFileInfo $importedFile8,
+        \SplFileInfo $importedFile9,
+        \SplFileInfo $importedFile10,
+        \SplFileInfo $importedFile11,
+        AssetInterface $asset
+    ) {
+        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+
+        $importer->import($uploadContext)->shouldBeCalled();
+
+        $importer->getImportedFiles($uploadContext)->willReturn([
+            $importedFile,
+            $importedFile2,
+            $importedFile3,
+            $importedFile4,
+            $importedFile5,
+            $importedFile6,
+            $importedFile7,
+            $importedFile8,
+            $importedFile9,
+            $importedFile10,
+            $importedFile11
+        ]);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
+        $asset->getId()->willReturn(42);
+
+        $assetSaver->save($asset)->shouldBeCalled();
+
+        $event = new AssetEvent($asset);
+        $eventDispatcher
+            ->dispatch(AssetEvent::POST_UPLOAD_FILES, Argument::type(AssetEvent::class))
+            ->willReturn($event);
+        $retrieveAssetGenerationErrors->fromEvent($event)->willReturn([]);
+
+        $entityManagerClearer->clear()->shouldBeCalled();
+
+        $processedFiles = $this->applyMassUpload($uploadContext);
+
+        $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
+        $processedFiles->count()->shouldReturn(11);
+        $processedFiles->current()->getItem()->shouldReturn($importedFile);
+        $processedFiles->current()->getState()->shouldReturn(ProcessedItem::STATE_SUCCESS);
+        $processedFiles->current()->getReason()->shouldReturn(UploadMessages::STATUS_UPDATED);
     }
 }

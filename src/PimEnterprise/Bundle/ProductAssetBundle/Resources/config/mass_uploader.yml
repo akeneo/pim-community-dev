@@ -57,6 +57,7 @@ services:
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pimee_product_asset.mass_upload.processor.into_product:
         class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'

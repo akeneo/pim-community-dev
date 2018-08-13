@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
@@ -34,6 +35,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MassUploadProcessor
 {
+    private const BATCH_SIZE =  10;
+
     /** @var ImporterInterface */
     protected $importer;
 
@@ -52,6 +55,9 @@ class MassUploadProcessor
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var EntityManagerClearerInterface */
+    private $entityManagerClearer;
+
     /**
      * @param ImporterInterface             $importer
      * @param AssetBuilder                  $assetBuilder
@@ -66,7 +72,8 @@ class MassUploadProcessor
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher, // TODO: to remove in master
+        EntityManagerClearerInterface $entityManagerClearer = null // TODO: remove null in master
     ) {
         $this->importer = $importer;
         $this->assetBuilder = $assetBuilder;
@@ -74,6 +81,7 @@ class MassUploadProcessor
         $this->eventDispatcher = $eventDispatcher;
         $this->retrieveAssetGenerationErrors = $retrieveAssetGenerationErrors;
         $this->objectDetacher = $objectDetacher;
+        $this->entityManagerClearer = $entityManagerClearer;
     }
 
     /**
@@ -90,6 +98,7 @@ class MassUploadProcessor
         $this->importer->import($uploadContext);
 
         $importedFiles = $this->importer->getImportedFiles($uploadContext);
+        $i = 0;
 
         foreach ($importedFiles as $file) {
             try {
@@ -109,8 +118,15 @@ class MassUploadProcessor
             } catch (\Exception $e) {
                 $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
             } finally {
+                $i++;
                 if (isset($asset)) {
-                    $this->objectDetacher->detach($asset);
+                    if (null !== $this->entityManagerClearer) {
+                        if ($i % self::BATCH_SIZE === 0) {
+                            $this->entityManagerClearer->clear();
+                        }
+                    } else { // TODO: to remove in master
+                        $this->objectDetacher->detach($asset);
+                    }
                 }
             }
         }
