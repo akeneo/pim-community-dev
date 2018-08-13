@@ -12,6 +12,14 @@ services:
         tags:
             - { name: fob.context_service }
 
+    akeneo_enrichedentity.tests.back.acceptance.context.delete_enriched_entity_context:
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\DeleteEnrichedEntityContext
+        arguments:
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.delete_enriched_entity_handler'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
+        tags:
+            - { name: fob.context_service }
+
     akeneo_enrichedentity.tests.back.acceptance.context.create_enriched_entity_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateEnrichedEntityContext
         arguments:
