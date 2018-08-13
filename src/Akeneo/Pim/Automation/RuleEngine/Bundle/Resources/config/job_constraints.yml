@@ -23,7 +23,7 @@ services:
     pimee_catalog_rule.job.job_parameters.constraint_collection_provider.product_csv_import:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import'
             -
                 - 'csv_product_import_with_rules'
         tags:
@@ -32,7 +32,7 @@ services:
     pimee_catalog_rule.job.job_parameters.constraint_collection_provider.product_model_csv_import:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import'
             -
                 - 'csv_product_model_import_with_rules'
         tags:
@@ -41,7 +41,7 @@ services:
     pimee_catalog_rule.job.job_parameters.constraint_collection_provider.product_xlsx_import:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
             -
                 - 'xlsx_product_import_with_rules'
         tags:
@@ -50,7 +50,7 @@ services:
     pimee_catalog_rule.job.job_parameters.constraint_collection_provider.product_model_xlsx_import:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_import'
             -
                 - 'xlsx_product_model_import_with_rules'
         tags:

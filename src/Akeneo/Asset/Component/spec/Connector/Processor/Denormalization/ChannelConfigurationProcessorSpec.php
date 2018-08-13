@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Asset\Component\Factory\ChannelConfigurationFactory;
 use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Prophecy\Argument;
