@@ -3,6 +3,9 @@ pim_title:
 
 pim_enriched_entity:
     enriched_entity:
+        validation:
+            identifier:
+                should_be_unique: 'This code already exists for this entity.'
         button:
             save: Save
             create: Create
