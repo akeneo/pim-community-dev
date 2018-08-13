@@ -4,6 +4,7 @@ akeneo_enrichedentity:
     acl:
         enriched_entity:
             create: Create an entity
+            delete: Delete an entity
         record:
             create: Create a record
         attribute:
