@@ -12,6 +12,8 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Validator\Constraints\Immutable` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\ImmutableValidator`
 - Move `Pim\Component\Catalog\Model\AbstractMetric` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric`
 - Move `Pim\Component\Catalog\Model\AbstractProductPrice` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductPrice`
 - Move `Pim\Component\Catalog\Model\AbstractValue` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue`

@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\Immutable/Akeneo\\Tool\\Component\\StorageUtils\\Validator\\Constraints\\Immutable/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractMetric/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractMetric/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractProductPrice/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractProductPrice/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractValue/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractValue/g'

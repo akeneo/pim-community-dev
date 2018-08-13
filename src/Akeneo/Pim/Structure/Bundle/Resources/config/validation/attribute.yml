@@ -6,7 +6,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 standardPropertyName: type
         - Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured: ~
         - Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
-        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
                 - type
@@ -450,7 +450,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeOption:
         - Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOption:
             payload:
               standardPropertyName: attribute
-        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
                 - attribute

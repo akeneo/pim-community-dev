@@ -2,7 +2,7 @@ Akeneo\Pim\Structure\Component\Model\FamilyVariant:
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\FamilyVariant: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
                 - family

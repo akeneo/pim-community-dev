@@ -7,7 +7,6 @@ parameters:
     pim_catalog.validator.constraint.currency.class:                       Pim\Component\Catalog\Validator\Constraints\CurrencyValidator
     pim_catalog.validator.constraint.single_identifier.class:              Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttributeValidator
     pim_catalog.validator.constraint.unique_value.class:                   Pim\Component\Catalog\Validator\Constraints\UniqueValueValidator
-    pim_catalog.validator.constraint.immutable.class:                      Pim\Component\Catalog\Validator\Constraints\ImmutableValidator
     pim_catalog.validator.constraint.scopable_value.class:                 Pim\Component\Catalog\Validator\Constraints\ScopableValueValidator
     pim_catalog.validator.constraint.localizable_value.class:              Pim\Component\Catalog\Validator\Constraints\LocalizableValueValidator
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
@@ -149,13 +148,6 @@ services:
             - '@pim_catalog.repository.channel'
         tags:
             - { name: validator.constraint_validator, alias: pim_at_least_a_channel }
-
-    pim_catalog.validator.constraint.immutable:
-        class: '%pim_catalog.validator.constraint.immutable.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_immutable_validator }
 
     pim_catalog.validator.constraint.scopable_value:
         class: '%pim_catalog.validator.constraint.scopable_value.class%'

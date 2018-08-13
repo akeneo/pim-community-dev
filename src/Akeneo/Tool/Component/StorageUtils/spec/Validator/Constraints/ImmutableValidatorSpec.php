@@ -1,13 +1,14 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Tool\Component\StorageUtils\Validator\Constraints;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\ImmutableValidator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Validator\Constraints\Immutable;
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -22,7 +23,7 @@ class ImmutableValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\ImmutableValidator');
+        $this->shouldHaveType(ImmutableValidator::class);
     }
 
     function it_adds_violation_when_an_immutable_property_has_been_modified(

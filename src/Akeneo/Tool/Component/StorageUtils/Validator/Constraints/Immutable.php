@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Tool\Component\StorageUtils\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

@@ -1,14 +1,15 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Tool\Component\StorageUtils\Validator\Constraints;
 
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable;
 use PhpSpec\ObjectBehavior;
 
 class ImmutableSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\Immutable');
+        $this->shouldHaveType(Immutable::class);
     }
 
     function it_is_a_validator_constraint()
