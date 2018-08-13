@@ -21,13 +21,11 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 interface ConfigurationRepositoryInterface
 {
     /**
-     * Returns a configuration for a given code.
-     *
-     * @param string $code
+     * Returns PIM.ai configuration.
      *
      * @return Configuration
      */
-    public function findOneByCode(string $code): ?Configuration;
+    public function find(): ?Configuration;
 
     /**
      * Saves a configuration.

@@ -20,28 +20,17 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
  */
 final class Configuration
 {
-    /** @var string */
-    private $code;
+    public const PIM_AI_CODE = 'pim-ai';
 
     /** @var array */
     private $values;
 
     /**
-     * @param string $code
      * @param array  $values
      */
-    public function __construct(string $code, array $values)
+    public function __construct(array $values)
     {
-        $this->code = $code;
         $this->values = $values;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCode(): string
-    {
-        return $this->code;
     }
 
     /**
@@ -80,7 +69,7 @@ final class Configuration
     public function normalize(): array
     {
         return [
-            'code' => $this->code,
+            'code' => static::PIM_AI_CODE,
             'values' => $this->values,
         ];
     }

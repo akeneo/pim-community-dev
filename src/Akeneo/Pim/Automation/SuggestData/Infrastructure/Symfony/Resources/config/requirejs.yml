@@ -13,7 +13,6 @@ config:
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-identifiers-mapping
-                        connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
                 akeneo_suggest_data_attributes_mapping_index:
                     module: pimee/controller/attributes_mapping/index

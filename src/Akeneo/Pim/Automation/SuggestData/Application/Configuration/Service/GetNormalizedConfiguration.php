@@ -34,13 +34,11 @@ class GetNormalizedConfiguration
     }
 
     /**
-     * @param string $code
-     *
      * @return array
      */
-    public function fromCode(string $code): array
+    public function retrieve(): array
     {
-        $configuration = $this->repository->findOneByCode($code);
+        $configuration = $this->repository->find();
 
         if (null === $configuration) {
             return [];
