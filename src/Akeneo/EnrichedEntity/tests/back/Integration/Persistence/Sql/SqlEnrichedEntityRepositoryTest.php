@@ -87,6 +87,32 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_deletes_an_enriched_entity_given_an_identifier()
+    {
+        $identifier = EnrichedEntityIdentifier::fromString('identifier');
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $this->repository->create($enrichedEntity);
+
+        $this->repository->deleteByIdentifier($identifier);
+
+        $this->expectException(EnrichedEntityNotFoundException::class);
+        $this->repository->getByIdentifier($identifier);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_enriched_entity()
+    {
+        $identifier = EnrichedEntityIdentifier::fromString('unknown');
+
+        $this->expectException(EnrichedEntityNotFoundException::class);
+        $this->repository->deleteByIdentifier($identifier);
+    }
+
+    /**
      * @param $enrichedEntityExpected
      * @param $enrichedEntityFound
      *
