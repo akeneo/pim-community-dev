@@ -54,7 +54,13 @@ class AssetsCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP);
+        $event = new GenericEvent();
+        $event->setArguments([
+            'clean'   => $input->getOption('clean'),
+            'symlink' => $input->getOption('symlink')
+        ]);
+
+        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP, $event);
 
         $webDir = $this->getWebDir();
 
@@ -71,7 +77,10 @@ class AssetsCommand extends ContainerAwareCommand
 
         $this->commandExecutor
             ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
-            ->runCommand('assets:install')
+            ->runCommand('assets:install');
+
+        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_SYMFONY_ASSETS_DUMP, $event);
+        $this->commandExecutor
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump')
             ->runCommand('pim:installer:dump-require-paths')
@@ -82,12 +91,6 @@ class AssetsCommand extends ContainerAwareCommand
         if (true === $input->getOption('symlink')) {
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
         }
-
-        $event = new GenericEvent();
-        $event->setArguments([
-            'clean'   => $input->getOption('clean'),
-            'symlink' => $input->getOption('symlink')
-        ]);
 
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_ASSETS_DUMP, $event);
 
