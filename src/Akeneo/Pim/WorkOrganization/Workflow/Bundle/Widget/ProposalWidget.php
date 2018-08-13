@@ -16,7 +16,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
