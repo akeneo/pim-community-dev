@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Platform\Bundle\DashboardBundle\Widget;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Widget;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;

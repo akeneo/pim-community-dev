@@ -1,6 +1,5 @@
 parameters:
     pim_dashboard.widget.registry.class:        Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry
-    pim_dashboard.widget.completeness.class:    Akeneo\Platform\Bundle\DashboardBundle\Widget\CompletenessWidget
     pim_dashboard.widget.last_operations.class: Akeneo\Platform\Bundle\DashboardBundle\Widget\LastOperationsWidget
 
 services:
@@ -10,16 +9,6 @@ services:
     ##
     # Widgets
     ##
-    pim_dashboard.widget.completeness:
-        class: '%pim_dashboard.widget.completeness.class%'
-        arguments:
-            - '@pim_catalog.repository.completeness'
-            - '@pim_user.context.user'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.locale'
-        tags:
-            - { name: pim_dashboard.widget, position: 20 }
-
     pim_dashboard.widget.last_operations:
         class: '%pim_dashboard.widget.last_operations.class%'
         arguments:

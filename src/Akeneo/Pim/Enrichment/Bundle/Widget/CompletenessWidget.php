@@ -1,8 +1,9 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\DashboardBundle\Widget;
+namespace Akeneo\Pim\Enrichment\Bundle\Widget;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
@@ -59,7 +60,7 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimDashboardBundle:Widget:completeness.html.twig';
+        return 'AkeneoPimEnrichmentBundle:Widget:completeness.html.twig';
     }
 
     /**
