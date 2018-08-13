@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Reader\File\Xlsx;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
+
+use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;
 
 /**
  * Product model association XLSX reader

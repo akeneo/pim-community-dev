@@ -18,7 +18,7 @@ services:
             - false
 
     pim_connector.reader.file.csv_product_model_association:
-        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\ProductModelAssociationReader'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelAssociationReader'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.product_model_association'
@@ -56,7 +56,7 @@ services:
             - []
 
     pim_connector.reader.file.xlsx_product_model_association:
-        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\ProductModelAssociationReader'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductModelAssociationReader'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.product_model_association'

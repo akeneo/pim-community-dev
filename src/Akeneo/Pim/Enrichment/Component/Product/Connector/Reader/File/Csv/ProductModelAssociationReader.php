@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Reader\File\Csv;
+namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
+
+use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
 
 /**
  * Product model association CSV Reader

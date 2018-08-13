@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
+use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\Xlsx\ProductModelAssociationReader;
-use Pim\Component\Connector\Reader\File\Xlsx\Reader;
-use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductModelAssociationReader;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 
 class ProductModelAssociationReaderSpec extends ObjectBehavior
 {
