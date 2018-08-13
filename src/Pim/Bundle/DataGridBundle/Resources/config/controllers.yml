@@ -56,7 +56,7 @@ services:
     pim_datagrid.controller.productgrid:
         class: Pim\Bundle\DataGridBundle\Controller\ProductGridController
         arguments:
-            - '@pim_datagrid.product_grid.query.attributes_as_filters'
+            - '@pim_datagrid.product_grid.query.list_attributes'
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
             - '@pim_datagrid.extension.filter'
             - '@pim_user.context.user'

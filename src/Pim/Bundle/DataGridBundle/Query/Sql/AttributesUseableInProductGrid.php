@@ -9,13 +9,13 @@ use Doctrine\DBAL\Types\Type;
 use Pim\Bundle\DataGridBundle\Query\ListAttributesQuery;
 
 /**
- * List the attributes usable as filters or columns in the product grid.
+ * List the attributes useable as filters or columns in the product grid.
  *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributesUsableInProductGrid implements ListAttributesQuery
+class AttributesUseableInProductGrid implements ListAttributesQuery
 {
     /** @var Connection */
     private $connection;
