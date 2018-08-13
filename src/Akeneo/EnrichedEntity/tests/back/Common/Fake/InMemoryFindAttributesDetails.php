@@ -33,7 +33,7 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
     {
         return $this->results[(string) $enrichedEntityIdentifier] ?? [];
     }

@@ -26,5 +26,5 @@ interface FindAttributesDetailsInterface
     /**
      * @return AbstractAttributeDetails[]
      */
-    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
 }

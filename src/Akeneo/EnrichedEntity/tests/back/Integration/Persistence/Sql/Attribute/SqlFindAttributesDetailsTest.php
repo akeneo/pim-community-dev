@@ -52,9 +52,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_the_attributes_details_for_an_enriched_entity()
     {
-        $attributeDetails = $this->findAttributesDetails->withEnrichedEntityIdentifier(
-            EnrichedEntityIdentifier::fromString('designer')
-        );
+        $attributeDetails = ($this->findAttributesDetails)(EnrichedEntityIdentifier::fromString('designer'));
 
         $this->assertCount(2, $attributeDetails);
         $this->assertNameAttribute($attributeDetails);
@@ -64,13 +62,11 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_zero_if_the_enriched_entity_does_not_have_any_attribute_yet()
+    public function it_returns_an_empty_array_if_the_enriched_entity_does_not_have_any_attributes()
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');
-
-        $nextOrder = $this->findAttributesDetails->withEnrichedEntityIdentifier($enrichedEntityIdentifier);
-
-        $this->assertEquals(0, $nextOrder);
+        $attributeDetails = ($this->findAttributesDetails)($enrichedEntityIdentifier);
+        $this->assertCount(0, $attributeDetails);
     }
 
     private function resetDB(): void

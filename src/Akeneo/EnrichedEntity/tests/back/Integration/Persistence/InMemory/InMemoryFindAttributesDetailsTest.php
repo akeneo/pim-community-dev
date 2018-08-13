@@ -42,8 +42,8 @@ class InMemoryFindAttributesDetailsTest extends TestCase
 
         $manufacturerIdentifier = EnrichedEntityIdentifier::fromString('manufacturer');
         $designerIdentifier = EnrichedEntityIdentifier::fromString('manufacturer');
-        $this->assertCount(2, $this->query->withEnrichedEntityIdentifier($manufacturerIdentifier));
-        $this->assertCount(2, $this->query->withEnrichedEntityIdentifier($designerIdentifier));
+        $this->assertCount(2, ($this->query)($manufacturerIdentifier));
+        $this->assertCount(2, ($this->query)($designerIdentifier));
     }
 
     /**
@@ -52,7 +52,7 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_enriched_entity_identifier()
     {
         $manufacturerIdentifier = EnrichedEntityIdentifier::fromString('manufacturer');
-        $this->assertEmpty($this->query->withEnrichedEntityIdentifier($manufacturerIdentifier));
+        $this->assertEmpty(($this->query)($manufacturerIdentifier));
     }
 
     private function createEnrichedEntityDetails(string $enrichedEntityIdentifier, string $attributeCode): AbstractAttributeDetails

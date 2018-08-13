@@ -70,6 +70,11 @@ services:
             - '@validator'
             - '@oro_security.security_facade'
 
+    akeneo_enrichedentity.infrastructure.action.attribute.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\IndexAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details'
+
     akeneo_enrichedentity.infrastructure.action.attribute.create:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
         arguments:

@@ -82,7 +82,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
             ],
             'total' => 2,
         ]);
-        $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_OK, $expectedContent);
     }
 
     private function loadFixtures(): void
