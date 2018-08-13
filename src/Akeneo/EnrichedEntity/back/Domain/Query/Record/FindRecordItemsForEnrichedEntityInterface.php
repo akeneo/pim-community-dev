@@ -11,18 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 /**
- * Find a record by its composite identifier (made of its Enriched Entity identifier
- * and its own Record identifier)
+ * Find records by their Enriched Entity identifier
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindRecordDetailsInterface
+interface FindRecordItemsForEnrichedEntityInterface
 {
-    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails;
+    /**
+     * @return RecordItem[]
+     */
+    public function __invoke(EnrichedEntityIdentifier $identifier): array;
 }

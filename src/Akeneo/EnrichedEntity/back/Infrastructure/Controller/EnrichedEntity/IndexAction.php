@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityItemsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

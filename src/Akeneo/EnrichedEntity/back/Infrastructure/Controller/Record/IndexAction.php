@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

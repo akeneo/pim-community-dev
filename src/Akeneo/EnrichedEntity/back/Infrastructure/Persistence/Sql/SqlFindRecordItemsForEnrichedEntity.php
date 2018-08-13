@@ -17,8 +17,8 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 

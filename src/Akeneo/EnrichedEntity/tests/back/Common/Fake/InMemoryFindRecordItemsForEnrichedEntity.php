@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>

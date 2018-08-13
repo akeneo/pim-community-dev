@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\RecordExistsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

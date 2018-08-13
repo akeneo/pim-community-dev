@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\AttributeExistsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use PDO;

@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAt
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\FindAttributeNextOrderInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

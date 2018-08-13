@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 /**
- * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * Find one enriched entity by its identifier.
+ *
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface EnrichedEntityExistsInterface
+interface FindEnrichedEntityDetailsInterface
 {
-    public function withIdentifier(EnrichedEntityIdentifier $recordIdentifier): bool;
+    public function __invoke(EnrichedEntityIdentifier $identifier): ?EnrichedEntityDetails;
 }

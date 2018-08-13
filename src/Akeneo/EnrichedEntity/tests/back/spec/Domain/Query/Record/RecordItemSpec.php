@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Query;
+namespace spec\Akeneo\EnrichedEntity\Domain\Query\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use PhpSpec\ObjectBehavior;
 
 class RecordItemSpec extends ObjectBehavior

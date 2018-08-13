@@ -11,17 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 /**
- * Query to find the next Enriched Entity Attribute order
- *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindAttributeNextOrderInterface
+interface EnrichedEntityExistsInterface
 {
-    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): int;
+    public function withIdentifier(EnrichedEntityIdentifier $recordIdentifier): bool;
 }

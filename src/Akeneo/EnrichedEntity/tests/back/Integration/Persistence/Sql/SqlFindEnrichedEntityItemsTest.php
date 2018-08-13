@@ -19,8 +19,8 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityItemsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
 class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
