@@ -1,0 +1,8 @@
+parameters:
+    pim_connector.job.job_parameters.default_values_provider.simple_csv_export.class: Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport
+    pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export.class: Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport
+    pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class: Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlExport
+
+    pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class: Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport
+    pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class: Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport
+    pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class: Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlImport

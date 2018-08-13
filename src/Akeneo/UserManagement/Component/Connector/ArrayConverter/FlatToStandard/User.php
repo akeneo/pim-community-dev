@@ -2,8 +2,8 @@
 
 namespace Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 /**
  * User Flat to Standard format Converter

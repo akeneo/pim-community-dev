@@ -46,7 +46,7 @@ class FixturesContext extends PimContext
         'ProductCategory'  => Category::class,
         'AssociationType'  => AssociationType::class,
         'JobInstance'      => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
-        'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
+        'JobConfiguration' => 'Akeneo\Tool\Component\Connector\Model\JobConfiguration',
         'User'             => 'Akeneo\UserManagement\Component\Model\User',
         'Role'             => 'Akeneo\UserManagement\Component\Model\Role',
         'UserGroup'        => 'Akeneo\UserManagement\Component\Model\Group',

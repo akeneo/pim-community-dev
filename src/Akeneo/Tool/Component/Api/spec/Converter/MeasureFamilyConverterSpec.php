@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Api\Converter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Converter\MeasureFamilyConverter;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Prophecy\Argument;
 
 class MeasureFamilyConverterSpec extends ObjectBehavior

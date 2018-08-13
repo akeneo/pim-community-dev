@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\Csv\Reader;
-use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
-use Pim\Component\Connector\Reader\File\MediaPathTransformer;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\MediaPathTransformer;
 
 /**
  * Product csv reader

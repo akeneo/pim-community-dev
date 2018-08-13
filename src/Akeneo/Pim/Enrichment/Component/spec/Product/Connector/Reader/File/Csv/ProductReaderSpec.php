@@ -5,10 +5,10 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Reader\File\FileIteratorInterface;
-use Pim\Component\Connector\Reader\File\MediaPathTransformer;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\MediaPathTransformer;
 
 class ProductReaderSpec extends ObjectBehavior
 {
@@ -29,7 +29,7 @@ class ProductReaderSpec extends ObjectBehavior
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Reader\File\Csv\Reader');
+        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader');
     }
 
     function it_transforms_media_paths_to_absolute_paths(

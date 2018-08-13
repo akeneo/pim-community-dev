@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector;
 
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Pim\Component\Connector\Analyzer\AnalyzerInterface;
+use Akeneo\Tool\Component\Connector\Analyzer\AnalyzerInterface;
 
 /**
  * Provides some statistics on a products data provided by a reader

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Api\Converter;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
  * Converts measure config array into api standard array.

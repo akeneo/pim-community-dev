@@ -1,0 +1,195 @@
+parameters:
+    pim_connector.processor.dummy_item.class: Akeneo\Tool\Component\Connector\Processor\DummyItemProcessor
+    pim_connector.processor.denormalization.class: Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor
+    pim_connector.processor.denormalization.job_instance.class: Akeneo\Tool\Component\Connector\Processor\Denormalization\JobInstanceProcessor
+    pim_connector.processor.normalization.class: Akeneo\Tool\Component\Connector\Processor\Normalization\Processor
+    pim_connector.processor.bulk_media_fetcher.class: Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher
+
+services:
+    # Dummy processor
+    pim_connector.processor.dummy_item:
+        class: '%pim_connector.processor.dummy_item.class%'
+
+    # Denormalization processors
+    pim_connector.processor.denormalization.attribute_option:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.attribute:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.association_type:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.factory.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+
+    pim_connector.processor.denormalization.group:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.factory.group'
+            - '@pim_catalog.updater.group'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.category:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.family:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.family_variant:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.attribute_group:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.group_type:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.factory.group_type'
+            - '@pim_catalog.updater.group_type'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.user:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.user_group:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_user.repository.group'
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.user_role:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_user.repository.role'
+            - '@pim_user.factory.role'
+            - '@pim_user.updater.role'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.denormalization.job_instance:
+        class: '%pim_connector.processor.denormalization.job_instance.class%'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository' # TODO, alias should be changed and class should be moved
+            - '@pim_connector.factory.job_instance'
+            - '@akeneo_batch.updater.job_instance'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_registry'
+
+    pim_connector.processor.normalization.group:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.family:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.family_variant:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family_variant'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.category:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.category'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.attribute:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.attribute_option:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_option'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.association_type:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.attribute_group:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.processor.normalization.group_type:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.group_type'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    # Medias fetcher
+    pim_connector.processor.bulk_media_fetcher:
+        class: '%pim_connector.processor.bulk_media_fetcher.class%'
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@pim_connector.writer.file.media_exporter_path_generator'

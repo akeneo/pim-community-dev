@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Connector\ArrayConverter\FieldSplitter as BaseFieldSplitter;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter as BaseFieldSplitter;
 
 /**
  * Split fields

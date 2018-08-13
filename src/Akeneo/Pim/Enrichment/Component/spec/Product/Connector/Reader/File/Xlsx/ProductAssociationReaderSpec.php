@@ -3,11 +3,11 @@
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\FileIteratorFactory;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
+use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductAssociationReader;
-use Pim\Component\Connector\Reader\File\Xlsx\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;
 
 class ProductAssociationReaderSpec extends ObjectBehavior
 {

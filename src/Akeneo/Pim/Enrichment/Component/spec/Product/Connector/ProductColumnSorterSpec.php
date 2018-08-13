@@ -25,12 +25,12 @@ class ProductColumnSorterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\DefaultColumnSorter');
+        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter');
     }
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Pim\Component\Connector\Writer\File\ColumnSorterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface');
     }
 
     function it_sort_headers_columns($attributeRepository, $fieldSplitter)

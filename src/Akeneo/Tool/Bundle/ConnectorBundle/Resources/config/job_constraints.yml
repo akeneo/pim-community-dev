@@ -1,0 +1,8 @@
+parameters:
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export.class: Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export.class: Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_export.class: Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlExport
+
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class: Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class: Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport
+    pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class: Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlImport

@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class EntityWithValuesDelocalizedSpec extends ObjectBehavior
@@ -39,7 +39,7 @@ class EntityWithValuesDelocalizedSpec extends ObjectBehavior
         $delocalizer->getViolations()->willReturn($violations);
         $violations->count()->willReturn(3);
 
-        $this->shouldThrow('Pim\Component\Connector\Exception\DataArrayConversionException')
+        $this->shouldThrow('Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException')
             ->during('convert', [['the item'], ['the options']]);
     }
 }
