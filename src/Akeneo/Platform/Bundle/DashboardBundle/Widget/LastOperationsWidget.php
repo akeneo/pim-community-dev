@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\Widget;
+namespace Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;

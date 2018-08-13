@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\Widget;
+namespace Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
 /**
  * Registry of widgets

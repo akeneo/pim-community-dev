@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 class RegistrySpec extends ObjectBehavior
 {

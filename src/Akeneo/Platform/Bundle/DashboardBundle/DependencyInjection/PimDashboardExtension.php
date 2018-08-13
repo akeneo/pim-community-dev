@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\DependencyInjection;
+namespace Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

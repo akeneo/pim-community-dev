@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\Widget;
+namespace Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

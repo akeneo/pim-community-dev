@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\Controller;
+namespace Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
-use Pim\Bundle\DashboardBundle\Widget\Registry;
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle;
+namespace Akeneo\Platform\Bundle\DashboardBundle;
 
-use Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
+use Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

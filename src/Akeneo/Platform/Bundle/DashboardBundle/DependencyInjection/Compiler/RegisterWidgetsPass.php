@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\DependencyInjection\Compiler;
+namespace Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

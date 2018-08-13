@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\DashboardBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DashboardBundle\Widget\Registry;
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class WidgetControllerSpec extends ObjectBehavior

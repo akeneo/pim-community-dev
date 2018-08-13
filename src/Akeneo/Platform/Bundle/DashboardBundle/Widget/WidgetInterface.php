@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DashboardBundle\Widget;
+namespace Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
 /**
  * A widget view that will be used in the dashboard
