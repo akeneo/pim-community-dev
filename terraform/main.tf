@@ -9,8 +9,8 @@ data "terraform_remote_state" "saas-cluster" {
 }
 
 provider "google" {
-  project = "akeneo-dev"
-  region  = "europe-west1"
+  project = "${var.google_project_name}"
+  region  = "${data.terraform_remote_state.saas-cluster.google_project_region}"
   version = "~> 1.8"
 }
 
