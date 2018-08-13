@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\NotificationBundle\Entity;
+namespace spec\Akeneo\Platform\Bundle\NotificationBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
 
@@ -8,7 +8,7 @@ class NotificationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->shouldHaveType('Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_can_have_a_route()

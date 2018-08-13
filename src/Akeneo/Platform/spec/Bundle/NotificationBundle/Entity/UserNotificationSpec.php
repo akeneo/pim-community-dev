@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\NotificationBundle\Entity;
+namespace spec\Akeneo\Platform\Bundle\NotificationBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
@@ -10,7 +10,7 @@ class UserNotificationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
+        $this->shouldHaveType('Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotification');
     }
 
     function it_can_be_marked_as_viewed()

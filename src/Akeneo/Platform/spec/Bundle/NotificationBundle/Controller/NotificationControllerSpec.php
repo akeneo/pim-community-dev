@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\NotificationBundle\Controller;
+namespace spec\Akeneo\Platform\Bundle\NotificationBundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +25,7 @@ class NotificationControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Controller\NotificationController');
+        $this->shouldHaveType('Akeneo\Platform\Bundle\NotificationBundle\Controller\NotificationController');
     }
 
     function it_lists_user_notifications_linked_to_the_current_user(

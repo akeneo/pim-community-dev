@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\NotificationBundle\Twig;
+namespace spec\Akeneo\Platform\Bundle\NotificationBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
@@ -17,7 +17,7 @@ class NotificationExtensionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Twig\NotificationExtension');
+        $this->shouldHaveType('Akeneo\Platform\Bundle\NotificationBundle\Twig\NotificationExtension');
     }
 
     function it_provides_the_unread_notification_count($context, $userNotifRepository, UserInterface $user)

@@ -1,4 +1,4 @@
-Pim\Bundle\NotificationBundle\Entity\Notification:
+Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification:
     type: entity
     table: pim_notification_notification
     fields:

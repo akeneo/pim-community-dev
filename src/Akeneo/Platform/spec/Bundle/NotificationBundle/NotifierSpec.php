@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\NotificationBundle;
+namespace spec\Akeneo\Platform\Bundle\NotificationBundle;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

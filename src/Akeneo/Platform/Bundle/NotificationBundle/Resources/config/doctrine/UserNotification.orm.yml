@@ -1,4 +1,4 @@
-Pim\Bundle\NotificationBundle\Entity\UserNotification:
+Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotification:
     type: entity
     table: pim_notification_user_notification
     repositoryClass: Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
