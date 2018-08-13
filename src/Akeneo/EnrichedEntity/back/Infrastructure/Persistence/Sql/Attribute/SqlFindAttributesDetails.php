@@ -11,13 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
+namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -26,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindAttributesDetails implements FindAttributesDe
+class SqlFindAttributesDetails implements FindAttributesDetailsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -95,5 +96,12 @@ SQL;
         $recordDetails->labels = LabelCollection::fromArray($labels);
 
         return $recordDetails;
+    }
+
+    /**
+     * @return AbstractAttributeDetails[]
+     */
+    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    {
     }
 }
