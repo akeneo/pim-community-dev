@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Factory;
 
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Factory that creates a notification from a job instance

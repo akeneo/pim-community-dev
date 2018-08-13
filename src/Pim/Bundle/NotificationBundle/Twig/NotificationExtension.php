@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\NotificationBundle\Twig;
 
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**
  * Twig extension to provide the number of unread user notifications
