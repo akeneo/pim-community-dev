@@ -6,6 +6,7 @@ HELM_CHART_NAME := pim
 HELM_CHART_VERSION ?= 0.0.0-0
 HELM_TIMEOUT=900
 HELM_VALUES_DIR:=${CURDIR}/values
+CUSTOMERS_DIR?=../../cloud-customers/
 
 
 DEBUG ?=--debug 
@@ -54,15 +55,18 @@ helm-install: terraform-apply
 	[[ -f "$(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" ]] && helmvalue="-f $(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" || helmvalue="" ; \
 	[[ ! -z "$(PIM_IMAGE_VERSION)" ]] && echo "image.pim.tag=$(PIM_IMAGE_VERSION)" && helmvalue+=" --set image.pim.tag=$(PIM_IMAGE_VERSION)"; \
 	[[ ! -z "$(PIM_IMAGE_REPO)" ]] && echo "image.pim.repository=$(PIM_IMAGE_REPO)" && helmvalue+=" --set image.pim.repository=$(PIM_IMAGE_REPO)"; \
- 	helm upgrade --install --wait $(PFID) $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION) --namespace srnt-$(PFID) -f ./terraform/pim-master-values.yaml $${helmvalue}
+	cluster_name=$$($(TERRAFORM) output cluster_name); \
+	env_name=$$($(TERRAFORM) output env_name); \
+	release_file="$(CUSTOMERS_DIR)saas/env/$${env_name}-env/$(PROJECT_NAME)/$${cluster_name}/srnt-releases/$(PFID)/srnt.yaml"; \
+ 	helm upgrade --install --wait srnt-$(PFID) $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION) --namespace srnt-$(PFID) -f ./terraform/pim-master-values.yaml $${helmvalue} -f $${release_file}
 
 .PHONY: helm-test
 helm-test: terraform-apply
-	helm test --timeout $(HELM_TIMEOUT) $(PFID) || kubectl logs $(PFID)-auth-test --namespace srnt-$(PFID)
+	helm test --timeout $(HELM_TIMEOUT) srnt-$(PFID) || kubectl logs $(PFID)-auth-test --namespace srnt-$(PFID)
 
 .PHONY: helm-delete
 helm-delete: terraform/kubeconfig
-	helm delete --purge $(PFID)
+	helm delete --purge srnt-$(PFID)
 	# workaround to clean https://github.com/kubernetes/helm/issues/4019
 	kubectl delete all --all -n srnt-$(PFID) --force --grace-period=0
 	kubectl delete ns srnt-$(PFID)

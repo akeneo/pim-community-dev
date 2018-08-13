@@ -9,8 +9,8 @@ data "terraform_remote_state" "saas-cluster" {
 }
 
 provider "google" {
-  project = "${var.google_project_name}"
-  region  = "${data.terraform_remote_state.saas-cluster.google_project_region}"
+  project = "akeneo-dev"
+  region  = "europe-west1"
   version = "~> 1.8"
 }
 
@@ -26,8 +26,12 @@ data "template_file" "pimmaster_dns_name" {
   template = "${format("%s.%s",var.subdomain==""? var.pfid:var.subdomain,data.terraform_remote_state.saas-cluster.akeneo_cloud_managed_zone_dns)}"
 }
 
+data "template_file" "cluster_name" {
+  template = "${coalesce(var.cluster_dns_name,data.terraform_remote_state.saas-cluster.default_cluster)}"
+}
+
 data "template_file" "cluster_dns_rrdatas" {
-  template = "${format("%s-%s-%s.%s.",data.terraform_remote_state.saas-cluster.env_name, coalesce(var.cluster_dns_name,data.terraform_remote_state.saas-cluster.default_cluster), var.google_project_name , data.terraform_remote_state.saas-cluster.akeneo_cloud_managed_zone_dns)}"
+  template = "${format("%s-%s-%s.%s.",data.terraform_remote_state.saas-cluster.env_name, data.template_file.cluster_name.rendered, var.google_project_name , data.terraform_remote_state.saas-cluster.akeneo_cloud_managed_zone_dns)}"
 }
 
 resource "google_dns_record_set" "pimmaster_dns_name" {
