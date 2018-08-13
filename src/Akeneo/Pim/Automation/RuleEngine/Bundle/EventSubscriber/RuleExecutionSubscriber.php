@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

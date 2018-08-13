@@ -11,7 +11,7 @@ class RuleNotificationFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['mass_edit_rule'], 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith(['mass_edit_rule'], 'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_supports_type()
@@ -32,7 +32,7 @@ class RuleNotificationFactorySpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('mass_edit_rule');
         $jobInstance->getLabel()->willReturn('Mass edit rule');
 
-        $this->create($jobExecution)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->create($jobExecution)->shouldReturnAnInstanceOf('Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_throws_an_exception_if_param_is_not_an_exception()
