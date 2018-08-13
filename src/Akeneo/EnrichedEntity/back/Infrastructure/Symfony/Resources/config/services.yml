@@ -33,6 +33,14 @@ services:
             - '@enriched_entity_serializer'
             - '@validator'
 
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.delete:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\DeleteAction'
+        arguments:
+            - '@oro_security.security_facade'
+            - '@serializer'
+            - '@validator'
+            - '@akeneo_enrichedentity.application.enriched_entity.delete_enriched_entity_handler'
+
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlEnrichedEntityRepository'
         arguments:
