@@ -49,8 +49,7 @@ data "template_file" "helm_pim_config" {
   template = "${file("${path.module}/pim-master-values.tpl")}"
 
   vars {
-    pfid-srnt          = "pim-${var.pfid}"
-    pfid-akob          = "${var.pfid}"
+    pfid         = "${var.pfid}"
     projectId          = "${var.google_project_name}"
     dns_suffix         = "${data.terraform_remote_state.saas-cluster.akeneo_cloud_managed_zone_dns}"
     pimmaster_dns_name = "${data.template_file.pimmaster_dns_name.rendered}"
