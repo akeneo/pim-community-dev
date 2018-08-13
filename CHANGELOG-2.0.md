@@ -1,4 +1,28 @@
-# 2.0.x
+# 2.0.32 (2018-08-06)
+
+## Bug fixes
+
+- PIM-7559: Fix versionning query too slow on the PEF
+
+## BC Breaks
+
+- Method `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface::getNewestLogEntryForRessources` returns now an array
+
+# 2.0.31 (2018-08-01)
+
+## Performances
+
+- PIM-7531: (backport) Improve indexation during the "compute product models descendants" step on product models import
+
+## BC Breaks
+
+- Added the method `removeForProductWithoutIndexing` on the `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface`
+
+## Bug fixes
+
+- PIM-7522: Fix association changes not save on the product history.
+
+# 2.0.30 (2018-07-25)
 
 ## Technical improvements
 
@@ -7,6 +31,7 @@
 ## Bug fixes
 
 - PIM-7452: Fix a memory leak when computing the completeness of all the products of a family.
+- PIM-7519 : Fix infinite scroll to see all reference data options when creating a new variant product.
 
 ## BC Breaks
 

@@ -23,6 +23,23 @@
     "noUnusedParameters": true,
     "removeComments": true
   },
-  "exclude": ["node_modules", "vendor", "src", "tests", "packages"],
-  "types": ["typePatches", "node"]
+  "exclude": [
+    "node_modules",
+    "vendor",
+    "src",
+    "tests",
+    "packages",
+    "app",
+    "web/media",
+    "web/cache",
+    "var",
+    "features",
+    "spec",
+    "upgrades",
+    "web/css"
+  ],
+  "types": [
+    "typePatches",
+    "node"
+  ]
 }

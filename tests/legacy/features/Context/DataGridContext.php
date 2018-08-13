@@ -854,13 +854,18 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iCheckTheRows($rows)
     {
         $rows = $this->getMainContext()->listToArray($rows);
+        $this->getMainContext()->executeScript(
+            '$(".AknGrid-bodyCell img").css({height:\'10px\'})'
+        );
 
         foreach ($rows as $row) {
             $this->spin(function () use ($row) {
                 $gridRow  = $this->getDatagrid()->getRow($row);
                 $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
+
                 if (null !== $checkbox && $checkbox->isVisible()) {
+                    //$this->getSession()->moveto(array('element' => $checkbox->getID()));
                     $checkbox->check();
 
                     if ($checkbox->isChecked()) {

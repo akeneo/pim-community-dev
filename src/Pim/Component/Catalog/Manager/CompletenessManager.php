@@ -116,6 +116,18 @@ class CompletenessManager
     }
 
     /**
+     * @param ProductInterface[] $products
+     */
+    public function bulkSchedule(array $products): void
+    {
+        foreach ($products as $product) {
+            if ($product->getId()) {
+                $this->remover->removeForProductWithoutIndexing($product);
+            }
+        }
+    }
+
+    /**
      * Schedule recalculation of completenesses for all product
      * of a family
      *

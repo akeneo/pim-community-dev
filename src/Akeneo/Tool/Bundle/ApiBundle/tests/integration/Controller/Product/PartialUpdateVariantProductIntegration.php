@@ -83,7 +83,7 @@ class PartialUpdateVariantProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "product_variant_create_with_identifier",
         "family": "familyA",
@@ -208,7 +208,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "bar"
     }
@@ -231,7 +231,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": null,
         "parent": "amor",
@@ -271,7 +271,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "family": "familyA2",
@@ -312,7 +312,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": "amor",
@@ -394,7 +394,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": ["groupB", "groupA"],
@@ -478,7 +478,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": [],
@@ -732,7 +732,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": [],
@@ -847,7 +847,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": [],
@@ -1038,7 +1038,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "enabled": false,
@@ -1125,7 +1125,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "enabled": false,
@@ -1288,6 +1288,10 @@ JSON;
                     'property' => 'attribute',
                     'message'  => 'Attribute "a_yes_no" cannot be empty, as it is defined as an axis for this entity',
                 ],
+                [
+                    'property' => 'attribute',
+                    'message'  => 'Variant axis "a_yes_no" cannot be modified, "" given',
+                ],
             ],
         ];
 
@@ -1308,7 +1312,7 @@ JSON;
         ];
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": "amor",
@@ -1460,7 +1464,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": null
@@ -1492,7 +1496,7 @@ JSON;
         ];
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "groups": ["groupA", "groupB"],
@@ -1643,7 +1647,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-            <<<JSON
+<<<JSON
     {
         "identifier": "apollon_optionb_false",
         "parent": "amor",

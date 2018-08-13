@@ -35,7 +35,7 @@ define(
                 '<% if (showLabel) { %>' +
                     '<span class="AknFilterBox-filterLabel"><%= label %></span>' +
                 '<% } %>' +
-                '<span class="AknFilterBox-filterCriteria filter-criteria-hint"><%= criteriaHint %></span>' +
+                '<span class="AknFilterBox-filterCriteria AknFilterBox-filterCriteria--limited filter-criteria-hint"><%= criteriaHint %></span>' +
                 '<span class="AknFilterBox-filterCaret"></span>' +
             '</div>' +
             '<div class="filter-criteria dropdown-menu" />' +

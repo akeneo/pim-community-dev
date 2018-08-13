@@ -3,6 +3,7 @@ parameters:
     pim_versioning.update_guesser.attribute_option.class:  Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser
     pim_versioning.update_guesser.chained.class:           Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser
     pim_versioning.update_guesser.contains_products.class: Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
+    pim_versioning.update_guesser.association.class:       Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\AssociationUpdateGuesser
     pim_versioning.update_guesser.translations.class:      Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
     pim_versioning.update_guesser.versionable.class:       Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser
     pim_versioning.update_guesser.associations.class:      Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\AssociationsUpdateGuesser
@@ -20,6 +21,11 @@ services:
 
     pim_versioning.update_guesser.contains_products:
         class: '%pim_versioning.update_guesser.contains_products.class%'
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.association:
+        class: '%pim_versioning.update_guesser.association.class%'
         tags:
             - { name: pim_versioning.update_guesser }
 
@@ -45,7 +51,7 @@ services:
             - { name: pim_versioning.update_guesser }
 
     pim_versioning.update_guesser.family_attribute_requirement:
-        class: Pim\Bundle\VersioningBundle\UpdateGuesser\FamilyAttributeRequirementUpdateGuesser
+        class: 'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\FamilyAttributeRequirementUpdateGuesser'
         tags:
             - { name: pim_versioning.update_guesser }
 
