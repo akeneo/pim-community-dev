@@ -39,7 +39,8 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_deletes_an_enriched_entity_given_an_identifier() {
+    public function it_deletes_an_enriched_entity_given_an_identifier()
+    {
         $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITY_DELETE_ROUTE,
@@ -56,7 +57,8 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_redirects_if_the_request_is_not_an_xml_http_request() {
+    public function it_redirects_if_the_request_is_not_an_xml_http_request()
+    {
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
@@ -87,13 +89,13 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $expectedResponse = '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022des igner\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"des igner"},"propertyPath":"identifier","invalidValue":"des igner","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
-
     }
 
     /**
      * @test
      */
-    public function it_throws_an_error_if_the_user_does_not_have_the_acl_to_do_this_action() {
+    public function it_throws_an_error_if_the_user_does_not_have_the_acl_to_do_this_action()
+    {
         $this->revokeDeletionRights();
 
         $this->webClientHelper->callRoute(
@@ -112,7 +114,8 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_if_there_is_no_enriched_entity_with_the_given_identifier() {
+    public function it_throws_an_error_if_there_is_no_enriched_entity_with_the_given_identifier()
+    {
         $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITY_DELETE_ROUTE,
