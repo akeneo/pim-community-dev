@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Stream;
 
-use Akeneo\Pim\Enrichment\Component\Validator\UniqueValuesSet;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;

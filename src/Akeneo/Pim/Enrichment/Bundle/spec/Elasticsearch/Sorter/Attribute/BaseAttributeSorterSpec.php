@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class BaseAttributeSorterSpec extends ObjectBehavior
 {

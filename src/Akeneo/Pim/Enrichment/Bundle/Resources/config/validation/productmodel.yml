@@ -3,13 +3,13 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         - ProductModel
         - UniqueAxis
     constraints:
-        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\ProductModelPositionInTheVariantTree: ~
-        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\OnlyExpectedAttributes: ~
-        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueVariantAxis:
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTree: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis:
             groups: [UniqueAxis]
-        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\ImmutableVariantAxesValues: ~
-        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\NotEmptyVariantAxes: ~
-        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\Product\UniqueProductModelEntity:
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntity:
             message: pim_catalog.constraint.pim_immutable_product_model_validator
     properties:
         code:

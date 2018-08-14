@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class ValueFactorySpec extends ObjectBehavior
 {
