@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Form\Type;
 
 use Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType;
-use Pim\Bundle\UIBundle\Form\Type\SwitchType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

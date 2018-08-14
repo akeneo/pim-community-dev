@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
-use Pim\Bundle\UIBundle\Form\Type\DateType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
