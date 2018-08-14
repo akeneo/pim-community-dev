@@ -30,6 +30,8 @@ interface CommonNormalizedAttribute {
 
 export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
   maxLength?: MaxLength;
+  textArea?: TextArea;
+  richTextEditor?: RichTextEditor;
 }
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
@@ -40,7 +42,9 @@ export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
 export type MaxLength = number | null | undefined;
 export type MaxFileSize = number | null | undefined;
 export type AllowedExtensions = string[] | null | undefined;
-export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions;
+export type TextArea = boolean | undefined;
+export type RichTextEditor = boolean | undefined;
+export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions | TextArea | RichTextEditor;
 
 export type NormalizedAttribute = NormalizedTextAttribute | NormalizedImageAttribute;
 

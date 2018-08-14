@@ -96,7 +96,12 @@ pim_enriched_entity:
                 type: Attribute type
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
-                required: Required
+                required: Required for completeness
+                max_length: Max characters
+                text_area: Text Area
+                rich_text_editor: Rich Text Editor
+                max_file_size: Max file size (MB)
+                allowed_extensions: Allowed extensions
             confirm: confirm
         delete:
             confirm: The attribute will be deleted. Confirm?
