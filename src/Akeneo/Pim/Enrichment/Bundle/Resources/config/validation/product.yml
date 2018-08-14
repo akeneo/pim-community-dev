@@ -5,18 +5,18 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         - UniqueAxis
         - api
     constraints:
-        - Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity:
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\Product\UniqueProductEntity:
             message: pim_catalog.constraint.pim_immutable_product_validator
-        - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\NotEmptyFamily:
             groups:
               - api
-        - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
-        - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
-        - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\SameFamilyThanParent: ~
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\VariantProductParent: ~
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueVariantAxis:
             groups: [UniqueAxis]
-        - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
-        - Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes: ~
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\ImmutableVariantAxesValues: ~
+        - Akeneo\Pim\Enrichment\Component\Validator\Constraints\OnlyExpectedAttributes: ~
 
     properties:
         identifier:

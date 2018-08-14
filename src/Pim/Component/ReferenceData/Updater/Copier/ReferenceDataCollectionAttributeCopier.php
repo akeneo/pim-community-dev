@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopi
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a reference data collection value attribute in other reference data collection value attribute

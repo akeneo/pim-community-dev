@@ -11,7 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
 
 class MultiSelectAttributeRemoverSpec extends ObjectBehavior
 {

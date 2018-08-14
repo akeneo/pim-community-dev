@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class PriceCollectionAttributeRemoverSpec extends ObjectBehavior

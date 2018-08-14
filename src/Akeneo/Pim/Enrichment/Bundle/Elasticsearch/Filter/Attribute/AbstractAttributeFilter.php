@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract attribute filter for Elasticsearch

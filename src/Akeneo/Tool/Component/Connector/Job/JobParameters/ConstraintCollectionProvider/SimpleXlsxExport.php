@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollection
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Pim\Component\Catalog\Validator\Constraints\WritableDirectory;
+use Akeneo\Pim\Enrichment\Component\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
