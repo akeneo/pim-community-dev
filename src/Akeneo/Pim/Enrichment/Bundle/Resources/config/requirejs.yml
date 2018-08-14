@@ -1,0 +1,5 @@
+config:
+    paths:
+        pim/dashboard/completeness-widget:     akeneopimenrichmentbundle/js/completeness-widget
+
+        pim/dashboard/template/completeness-widget:    akeneopimenrichmentbundle/templates/completeness-widget.html
