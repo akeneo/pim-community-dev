@@ -81,8 +81,8 @@ datagrid:
                     options:
                         field_options:
                             choices:
-                               - Inactive
-                               - Active
+                               Inactive : 0
+                               Active : 1
 
         actions:
             view:

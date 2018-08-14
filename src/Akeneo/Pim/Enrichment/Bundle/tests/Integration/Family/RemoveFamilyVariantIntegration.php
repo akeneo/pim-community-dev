@@ -27,6 +27,7 @@ class RemoveFamilyVariantIntegration extends TestCase
 
         $this->removeFamilyVariant($familyVariant);
         $this->assertNull($this->getFamilyVariant('my_family_variant'));
+        $this->assertNull($this->getFamilyVariant('my_family_variant'));
 
         $attributeSetRepo = $this->get('doctrine.orm.entity_manager')->getRepository(VariantAttributeSetInterface::class);
         $this->assertCount(0, $attributeSetRepo->findBy(['id' => $variantAttributeSetIds]));

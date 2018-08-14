@@ -34,6 +34,8 @@ class PimUserExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
+        $loader->load('queries.yml');
+        $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
         $loader->load('twig.yml');
@@ -42,6 +44,7 @@ class PimUserExtension extends Extension
         $loader->load('view_elements/user.yml');
         $loader->load('view_elements/group.yml');
         $loader->load('services.yml');
+        $loader->load('array_converters.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

@@ -21,6 +21,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager', // TODO: This dependency should be removed
         'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id
         'Akeneo\Channel\Component\Model\ChannelInterface', // TODO: The channel is linked by reference instead of id
+        'Akeneo\Tool\Component\Connector\ArrayConverter', // TODO: Remove that ligne when connector bundle/component will be moved in Tool
     ])->in('Akeneo\UserManagement\Component'),
     $builder->only([
         'Doctrine',

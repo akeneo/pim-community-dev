@@ -1,0 +1,100 @@
+parameters:
+    pim_connector.reader.dummy_item.class: Akeneo\Tool\Component\Connector\Reader\DummyItemReader
+    pim_connector.reader.database.class: Akeneo\Tool\Component\Connector\Reader\Database\Reader
+    pim_connector.reader.file.csv.class: Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader
+
+    pim_connector.reader.file.xlsx.class: Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader
+    pim_connector.reader.file.yaml.class: Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader
+
+    pim_connector.reader.file.flat_file_iterator.class: Akeneo\Tool\Component\Connector\Reader\File\FlatFileIterator
+    pim_connector.reader.file.file_iterator_factory.class: Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory
+    pim_connector.reader.file.media_path_transformer.class: Akeneo\Tool\Component\Connector\Reader\File\MediaPathTransformer
+    pim_connector.reader.file.array_reader.class: Akeneo\Tool\Component\Connector\Reader\File\ArrayReader
+
+services:
+    pim_connector.reader.database.association_type:
+        class: '%pim_connector.reader.database.class%'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+
+    # Misc
+    pim_connector.reader.file.csv_iterator_factory:
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
+        arguments:
+            - '%pim_connector.reader.file.flat_file_iterator.class%'
+            - 'csv'
+
+    pim_connector.reader.file.xlsx_iterator_factory:
+        class: '%pim_connector.reader.file.file_iterator_factory.class%'
+        arguments:
+            - '%pim_connector.reader.file.flat_file_iterator.class%'
+            - 'xlsx'
+
+    pim_connector.reader.file.media_path_transformer:
+        class: '%pim_connector.reader.file.media_path_transformer.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_connector.reader.dummy_item:
+        class: '%pim_connector.reader.dummy_item.class%'
+
+    # CSV File Readers
+    pim_connector.reader.file.csv_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group'
+
+    pim_connector.reader.file.csv_group_type:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group_type'
+
+    pim_connector.reader.file.csv_user:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user'
+
+    pim_connector.reader.file.csv_user_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_group'
+
+    pim_connector.reader.file.csv_user_role:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_role'
+
+    # XLSX file Readers
+    pim_connector.reader.file.xlsx:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.dummy'
+
+    pim_connector.reader.file.xlsx_group:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group'
+
+    pim_connector.reader.file.xlsx_group_type:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.group_type'
+
+    # Yaml file readers
+    pim_connector.reader.file.yaml:
+        class: '%pim_connector.reader.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.dummy'
+
+    pim_connector.reader.file.yaml_job_instance:
+        class: '%pim_connector.reader.file.yaml.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard.job_instance'

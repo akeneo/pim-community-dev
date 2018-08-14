@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Pim\Component\Connector\Reader\File\Yaml\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader;
 use Symfony\Component\Config\FileLocator;
 
 /**

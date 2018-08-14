@@ -82,10 +82,6 @@
     ],
     "no-mixed-spaces-and-tabs": 2,
     "no-trailing-spaces": 2,
-    "comma-dangle": [
-      2,
-      "never"
-    ],
     "no-with": 2,
     "brace-style": [
       2,

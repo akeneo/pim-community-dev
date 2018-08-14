@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\InstallerBundle\FixtureLoader;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Processor\Denormalization\Processor;
-use Pim\Component\Connector\Reader\File\Yaml\Reader;
+use Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor;
+use Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader;
 use Prophecy\Argument;
 use Symfony\Component\Config\FileLocator;
 

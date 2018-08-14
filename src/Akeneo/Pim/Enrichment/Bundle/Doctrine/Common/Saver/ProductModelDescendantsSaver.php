@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
@@ -139,7 +140,7 @@ class ProductModelDescendantsSaver implements SaverInterface
     {
         $productModelsChildren = $this->productModelRepository->findChildrenProductModels($productModel);
         if (!empty($productModelsChildren)) {
-            $this->bulkProductModelIndexer->indexAll($productModelsChildren);
+            $this->bulkProductModelIndexer->indexAll($productModelsChildren, ['index_refresh' => Refresh::disable()]);
         }
 
         /**
@@ -177,8 +178,9 @@ class ProductModelDescendantsSaver implements SaverInterface
      */
     private function computeCompletenesses(array $products): void
     {
+        $this->completenessManager->bulkSchedule($products);
+
         foreach ($products as $product) {
-            $this->completenessManager->schedule($product);
             $this->completenessManager->generateMissingForProduct($product);
             $this->objectManager->persist($product);
         }
@@ -198,10 +200,10 @@ class ProductModelDescendantsSaver implements SaverInterface
             $productsToIndex[] = $product;
 
             if (0 === count($productsToIndex) % self::INDEX_BULK_SIZE) {
-                $this->bulkProductIndexer->indexAll($productsToIndex);
+                $this->bulkProductIndexer->indexAll($productsToIndex, ['index_refresh' => Refresh::disable()]);
                 $productsToIndex = [];
             }
         }
-        $this->bulkProductIndexer->indexAll($productsToIndex);
+        $this->bulkProductIndexer->indexAll($productsToIndex, ['index_refresh' => Refresh::disable()]);
     }
 }

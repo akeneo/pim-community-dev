@@ -19,6 +19,7 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         ProductModelInterface $rootProductModel,
         FamilyVariantInterface $familyVariant,
         CommonAttributeCollection $commonAttributeCollection,
+        \Iterator $commonAttributesIterator,
         AbstractAttribute $description,
         AbstractAttribute $price,
         AbstractAttribute $width,
@@ -35,19 +36,22 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         $rootProductModel->getVariationLevel()->willReturn(0);
         $rootProductModel->getFamilyVariant()->willReturn($familyVariant);
 
-        $familyVariant->getCommonAttributes()->willReturn($commonAttributeCollection);
-        $commonAttributeCollection->toArray()->willReturn([
-            $description, $price, $width
-        ]);
+        $description->getCode()->willReturn('description');
+        $price->getCode()->willReturn('price');
+        $width->getCode()->willReturn('width');
+        $sku->getCode()->willReturn('sku');
+        $image->getCode()->willReturn('image');
 
-        $description->__toString()->willReturn('description');
-        $price->__toString()->willReturn('price');
-        $width->__toString()->willReturn('width');
-        $sku->__toString()->willReturn('sku');
-        $image->__toString()->willReturn('image');
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributeCollection);
+        $commonAttributeCollection->getIterator()->willReturn($commonAttributesIterator);
+        $commonAttributesIterator->rewind()->shouldBeCalled();
+        $commonAttributesIterator->valid()->willReturn(true, true, true, false);
+        $commonAttributesIterator->current()->willReturn(
+            $description, $price, $width
+        );
+        $commonAttributesIterator->next()->shouldBeCalled();
 
         $rootProductModel->getValues()->willReturn($valueCollection);
-
         $valueCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();
         $valuesIterator->valid()->willReturn(true, true, true, true, true, false);
@@ -106,12 +110,12 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         $attributes->toArray()->willReturn([$description, $price, $width]);
         $axes->toArray()->willReturn([$color]);
 
-        $description->__toString()->willReturn('description');
-        $price->__toString()->willReturn('price');
-        $width->__toString()->willReturn('width');
-        $sku->__toString()->willReturn('sku');
-        $image->__toString()->willReturn('image');
-        $color->__toString()->willReturn('color');
+        $description->getCode()->willReturn('description');
+        $price->getCode()->willReturn('price');
+        $width->getCode()->willReturn('width');
+        $sku->getCode()->willReturn('sku');
+        $image->getCode()->willReturn('image');
+        $color->getCode()->willReturn('color');
 
         $subProductModel->getValues()->willReturn($valueCollection);
 
@@ -175,12 +179,12 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         $attributes->toArray()->willReturn([$sku, $image]);
         $axes->toArray()->willReturn([$size]);
 
-        $description->__toString()->willReturn('description');
-        $price->__toString()->willReturn('price');
-        $width->__toString()->willReturn('width');
-        $sku->__toString()->willReturn('sku');
-        $image->__toString()->willReturn('image');
-        $size->__toString()->willReturn('size');
+        $description->getCode()->willReturn('description');
+        $price->getCode()->willReturn('price');
+        $width->getCode()->willReturn('width');
+        $sku->getCode()->willReturn('sku');
+        $image->getCode()->willReturn('image');
+        $size->getCode()->willReturn('size');
 
         $variantProduct->getValues()->willReturn($valueCollection);
 

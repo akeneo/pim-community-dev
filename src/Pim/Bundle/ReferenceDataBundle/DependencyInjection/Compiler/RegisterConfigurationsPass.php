@@ -24,8 +24,10 @@ class RegisterConfigurationsPass implements CompilerPassInterface
         $registry = $container->getDefinition(self::REFERENCE_DATA_REGISTRY);
         $referenceData = $container->getParameter('pim_reference_data.configurations');
 
-        foreach ($referenceData as $name => $rawConfig) {
-            $registry->addMethodCall('registerRaw', [$rawConfig, $name]);
+        if (is_array($referenceData)) {
+            foreach ($referenceData as $name => $rawConfig) {
+                $registry->addMethodCall('registerRaw', [$rawConfig, $name]);
+            }
         }
     }
 }

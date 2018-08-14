@@ -1,0 +1,40 @@
+services:
+    akeneo_channel.job.job_parameters.default_values_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_channel_export'
+                - 'csv_locale_export'
+                - 'csv_currency_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_channel.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_channel_export'
+                - 'xlsx_locale_export'
+                - 'xlsx_currency_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_channel.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_channel_import'
+                - 'csv_locale_import'
+                - 'csv_currency_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_channel.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_channel_import'
+                - 'xlsx_locale_import'
+                - 'xlsx_currency_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

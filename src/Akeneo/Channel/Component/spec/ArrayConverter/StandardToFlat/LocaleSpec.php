@@ -8,7 +8,7 @@ class LocaleSpec extends ObjectBehavior
 {
     function it_is_an_array_converter()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\ArrayConverterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface');
     }
 
     function it_converts_from_standard_to_flat_format()

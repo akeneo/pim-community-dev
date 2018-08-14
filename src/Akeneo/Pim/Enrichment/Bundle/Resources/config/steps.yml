@@ -1,0 +1,264 @@
+services:
+    ### Group
+    pim_connector.step.csv_group.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_group'
+            - '@pim_connector.processor.denormalization.group'
+            - '@pim_connector.writer.database.group'
+
+    pim_connector.step.csv_group.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.group'
+            - '@pim_connector.processor.normalization.group'
+            - '@pim_connector.writer.file.csv_group'
+
+    pim_connector.step.xlsx_group.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_group'
+            - '@pim_connector.processor.denormalization.group'
+            - '@pim_connector.writer.database.group'
+
+    pim_connector.step.xlsx_group.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.group'
+            - '@pim_connector.processor.normalization.group'
+            - '@pim_connector.writer.file.xlsx_group'
+            - 10
+
+    ### Product model
+    pim_connector.step.csv_root_product_model.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_root_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product_model'
+            - '@pim_connector.processor.denormalization.root_product_model'
+            - '@pim_connector.writer.database.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.csv_sub_product_model.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_sub_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product_model'
+            - '@pim_connector.processor.denormalization.sub_product_model'
+            - '@pim_connector.writer.database.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.csv_compute_product_models_descendants.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_product_model_descendants'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product_model'
+            - '@pim_connector.processor.denormalization.product_model_loader'
+            - '@pim_connector.writer.database.product_model_descendants'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.csv_product_model.import_associations:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_model_associations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product_model_association'
+            - '@pim_connector.processor.denormalization.product_model_association'
+            - '@pim_connector.writer.database.product_model_association'
+            - 1
+
+    pim_connector.step.csv_product_model.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product_model'
+            - '@pim_connector.processor.normalization.product_model'
+            - '@pim_connector.writer.file.csv_product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_root_product_model.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_root_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product_model'
+            - '@pim_connector.processor.denormalization.root_product_model'
+            - '@pim_connector.writer.database.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_sub_product_model.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_sub_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product_model'
+            - '@pim_connector.processor.denormalization.sub_product_model'
+            - '@pim_connector.writer.database.product_model'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_compute_product_models_descendants.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_product_model_descendants'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product_model'
+            - '@pim_connector.processor.denormalization.product_model_loader'
+            - '@pim_connector.writer.database.product_model_descendants'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_product_model.import_associations:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_associations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product_model_association'
+            - '@pim_connector.processor.denormalization.product_model_association'
+            - '@pim_connector.writer.database.product_model_association'
+            - 1
+
+    pim_connector.step.xlsx_product_model.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product_model'
+            - '@pim_connector.processor.normalization.product_model'
+            - '@pim_connector.writer.file.xlsx_product_model'
+            - '%pim_job_product_batch_size%'
+
+    ### Product
+    pim_connector.step.csv_product.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product'
+            - '@pim_connector.processor.denormalization.product'
+            - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.csv_product.import_associations:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_associations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_association'
+            - '@pim_connector.processor.denormalization.product_association'
+            - '@pim_connector.writer.database.product_association'
+            - 1
+
+    pim_connector.step.csv_product.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product'
+            - '@pim_connector.processor.normalization.product'
+            - '@pim_connector.writer.file.csv_product'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_product.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product'
+            - '@pim_connector.processor.denormalization.product'
+            - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
+
+    pim_connector.step.xlsx_product.import_associations:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_associations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_association'
+            - '@pim_connector.processor.denormalization.product_association'
+            - '@pim_connector.writer.database.product_association'
+            - 1
+
+    pim_connector.step.xlsx_product.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product'
+            - '@pim_connector.processor.normalization.product'
+            - '@pim_connector.writer.file.xlsx_product'
+            - '%pim_job_product_batch_size%'
+
+    ### Category
+    pim_connector.step.csv_category.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_category'
+            - '@pim_connector.processor.denormalization.category'
+            - '@pim_connector.writer.database.category'
+            - 1
+
+    pim_connector.step.csv_category.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.category'
+            - '@pim_connector.processor.normalization.category'
+            - '@pim_connector.writer.file.csv_category'
+
+    pim_connector.step.xlsx_category.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_category'
+            - '@pim_connector.processor.denormalization.category'
+            - '@pim_connector.writer.database.category'
+            - 1
+
+    pim_connector.step.xlsx_category.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.category'
+            - '@pim_connector.processor.normalization.category'
+            - '@pim_connector.writer.file.xlsx_category'
+            - 10

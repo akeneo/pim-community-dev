@@ -374,7 +374,7 @@
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument  
 - Change constructor of `Akeneo\UserManagement\Bundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Akeneo\UserManagement\Bundle\Form\Subscriber\UserSubscriber` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` to add `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` and a `batchSize` parameter.
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindAttributesForFamily` argument
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to add `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily` argument
 - Change constructor of `Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet`, replace `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
 - Change constructor of `Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet`, add `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` argument
 - Change constructor of `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`, add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation`, `Symfony\Component\Validator\Validator\ValidatorInterface` and a batch size arguments.
@@ -581,4 +581,145 @@
 - Move `Akeneo\Tool\Component\Api\Normalizer\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductNormalizer`
 - Move `Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface`
 - Move `Akeneo\Tool\Component\Api\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater`
-
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Category` to `Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Category` to `Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\StandardToFlat\Category`
+- Move `Pim\Component\Connector\Reader\Database\StandardToFlat\CategoryReader` to `Akeneo\Pim\Enrichment\Component\Category\Connector\Reader\Database\CategoryReader`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Group` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Group`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Product`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductAssociation`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldConverter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverter`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModelAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ProductModelAssociation`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Value` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\Value`
+- Move namespace `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Group` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Group`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Product` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MediaConverter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MediaConverter`
+- Move namespace `Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductLocalized` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductLocalized`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\ProductModel`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvExport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductXlsxExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductXlsxExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport`
+- Move `Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport`
+- Move `Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductAssociationProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\ProductModelAssociationProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelAssociationProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\ProductModelLoaderProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelLoaderProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\ProductModelProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor`
+- Move `Pim\Component\Connector\Processor\Normalization\ProductProcessor` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor`
+- Move namespace`Pim\Component\Connector\Analyzer` to `Akeneo\Pim\Enrichment\Component\Product\Connector`
+- Move `Pim\Component\Connector\Writer\File\ProductColumnSorter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\ProductColumnSorter`
+- Move `Pim\Component\Connector\Reader\Database\GroupReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\GroupReader`
+- Move `Pim\Component\Connector\Reader\Database\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader`
+- Move `Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductAssociationReader`
+- Move `Pim\Component\Connector\Reader\File\Csv\ProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductModelReader`
+- Move `Pim\Component\ConnectoAkeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\Userr\Reader\File\Csv\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader`
+- Move `Pim\Component\Connector\Reader\File\Xlsx\ProductAssociationReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductAssociationReader`
+- Move `Pim\Component\Connector\Reader\File\Xlsx\ProductModelReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductModelReader`
+- Move `Pim\Component\Connector\Reader\File\Xlsx\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductReader`
+- Move `Pim\Component\Connector\Reader\File\Xlsx\ProductReader` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Xlsx\ProductReader`
+- Move `Pim\Component\Connector\Writer\Database\ProductAssociationWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductAssociationWriter`
+- Move `Pim\Component\Connector\Writer\Database\ProductModelDescendantsWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelDescendantsWriter`
+- Move `Pim\Component\Connector\Writer\Database\ProductModelWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter`
+- Move `Pim\Component\Connector\Writer\Database\ProductWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter`
+- Move `Pim\Component\Connector\Writer\File\Csv\ProductModelWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductModelWriter`
+- Move `Pim\Component\Connector\Writer\File\Csv\ProductWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter`
+- Move `Pim\Component\Connector\Writer\File\Xlsx\ProductModelWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductModelWriter`
+- Move `Pim\Component\Connector\Writer\File\Xlsx\ProductWriter` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter`
+- Move namespace `Pim\Component\Connector\Validator\Constraints` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\FlatToStandard\User`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\User` to `Akeneo\UserManagement\Component\Connector\ArrayConverter\StandardToFlat\User`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilyRootProductModelsTasklet`
+- Move `Pim\Component\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeDataRelatedToFamilySubProductModelsTasklet`
+- Move `Pim\Component\Connector\Analyzer\AnalyzerInterface` to `Akeneo\Tool\Component\Connector\Analyzer\AnalyzerInterface`
+- Move `Pim\Component\Connector\Archiver\AbstractFilesystemArchiver` to `Akeneo\Tool\Component\Connector\Archiver\AbstractFilesystemArchiver`
+- Move `Pim\Component\Connector\Archiver\ArchivableFileWriterArchiver` to `Akeneo\Tool\Component\Connector\Archiver\ArchivableFileWriterArchiver`
+- Move `Pim\Component\Connector\Archiver\ArchiverInterface` to `Akeneo\Tool\Component\Connector\Archiver\ArchiverInterface`
+- Move `Pim\Component\Connector\Archiver\CsvInvalidItemWriter` to `Akeneo\Tool\Component\Connector\Archiver\CsvInvalidItemWriter`
+- Move `Pim\Component\Connector\Archiver\FileReaderArchiver` to `Akeneo\Tool\Component\Connector\Archiver\FileReaderArchiver`
+- Move `Pim\Component\Connector\Archiver\FileWriterArchiver` to `Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver`
+- Move `Pim\Component\Connector\Archiver\XlsxInvalidItemWriter` to `Akeneo\Tool\Component\Connector\Archiver\XlsxInvalidItemWriter`
+- Move `Pim\Component\Connector\Archiver\ZipFilesystemFactory` to `Akeneo\Tool\Component\Connector\Archiver\XlsxInvalidItemWriter`
+- Move `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface` to `Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface`
+- Move `Pim\Component\Connector\ArrayConverter\DummyConverter` to `Akeneo\Tool\Component\Connector\ArrayConverter\DummyConverter`
+- Move `Pim\Component\Connector\ArrayConverter\FieldSplitter` to `Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter`
+- Move `Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker` to `Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter` to `Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter`
+- Move `Pim\Component\Connector\Encoder\CsvEncoder` to `Akeneo\Tool\Component\Connector\Encoder\CsvEncoder`
+- Move `Pim\Component\Connector\Exception\ArrayConversionException` to `Akeneo\Tool\Component\Connector\Exception\ArrayConversionException`
+- Move `Pim\Component\Connector\Exception\CharsetException` to `Akeneo\Tool\Component\Connector\Exception\CharsetException`
+- Move `Pim\Component\Connector\Exception\DataArrayConversionException` to `Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException`
+- Move `Pim\Component\Connector\Exception\InvalidItemFromViolationsException` to `Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException`
+- Move `Pim\Component\Connector\Exception\StructureArrayConversionException` to `Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException`
+- Move `Pim\Component\Connector\Item\CharsetValidator` to `Akeneo\Tool\Component\Connector\Item\CharsetValidator`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlExport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlExport`
+- Move `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlImport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlExport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlExport`
+- Move `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlImport` to `Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlImport`
+- Move `Pim\Component\Connector\Processor\BulkMediaFetcher` to `Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher`
+- Move `Pim\Component\Connector\Processor\Denormalization\AbstractProcessor` to `Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor` to `Akeneo\Tool\Component\Connector\Processor\Denormalization\JobInstanceProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\Processor` to `Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor`
+- Move `Pim\Component\Connector\Processor\DummyItemProcessor` to `Akeneo\Tool\Component\Connector\Processor\DummyItemProcessor`
+- Move `Pim\Component\Connector\Processor\Denormalization\Processor` to `Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor`
+- Move `Pim\Component\Connector\Reader\Database\AbstractReader` to `Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader`
+- Move `Pim\Component\Connector\Reader\DummyItemReader` to `Akeneo\Tool\Component\Connector\Reader\DummyItemReader`
+- Move `Pim\Component\Connector\Reader\File\ArrayReader` to `Akeneo\Tool\Component\Connector\Reader\File\ArrayReader`
+- Move `Pim\Component\Connector\Reader\File\Reader` to `Akeneo\Tool\Component\Connector\Reader\File\Reader`
+- Move `Pim\Component\Connector\Reader\File\FileIteratorFactory` to `Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory`
+- Move `Pim\Component\Connector\Reader\File\FileIteratorInterface` to `Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface`
+- Move `Pim\Component\Connector\Reader\File\MediaPathTransformer` to `Akeneo\Tool\Component\Connector\Reader\File\MediaPathTransformer`
+- Move `Pim\Component\Connector\Reader\File\Yaml\Reader` to `Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader`
+- Move `Pim\Component\Connector\Step\TaskletInterface` to `Akeneo\Tool\Component\Connector\Step\TaskletInterface`
+- Move `Pim\Component\Connector\Step\TaskletStep` to `Akeneo\Tool\Component\Connector\Step\TaskletStep`
+- Move `Pim\Component\Connector\Step\ValidatorStep` to `Akeneo\Tool\Component\Connector\Step\ValidatorStep`
+- Move `Pim\Component\Connector\Writer\Database\Writer` to `Akeneo\Tool\Component\Connector\Writer\Database\Writer`
+- Move `Pim\Component\Connector\Writer\DummyItemWriter` to `Akeneo\Tool\Component\Connector\Writer\DummyItemWriter`
+- Move `Pim\Component\Connector\Writer\File\AbstractFileWriter` to `Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter`
+- Move `Pim\Component\Connector\Writer\File\ArchivableWriterInterface` to `Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface`
+- Move `Pim\Component\Connector\Writer\File\ColumnSorterInterface` to `Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface`
+- Move `Pim\Component\Connector\Writer\File\DefaultColumnSorter` to `Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter`
+- Move `Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface` to `Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface`
+- Move `Pim\Component\Connector\Writer\File\FlatItemBuffer` to `Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer`
+- Move `Pim\Component\Connector\Writer\File\FlatItemBufferFlusher` to `Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher`
+- Move `Pim\Component\Connector\Writer\File\MediaExporterPathGenerator` to `Akeneo\Tool\Component\Connector\Writer\File\MediaExporterPathGenerator`
+- Move `Pim\Component\Connector\Writer\File\Csv\Writer` to `Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer`
+- Move `Pim\Component\Connector\Writer\File\Yaml\Writer` to `Akeneo\Tool\Component\Connector\Writer\File\Yaml\Writer`
+- Move `Pim\Bundle\ConnectorBundle\Command\AnalyzeProductCsvCommand` to `Akeneo\Tool\Bundle\ConnectorBundle\Command\AnalyzeProductCsvCommand`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterArchiversPass`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterStandardToFlatConverterPass`
+- Move `Pim\Bundle\ConnectorBundle\DependencyInjection\PimConnectorExtension` to `Akeneo\Tool\Bundle\ConnectorBundle\DependencyInjection\PimConnectorExtension`
+- Move `Pim\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer` to `Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\ClearBatchCacheSubscriber` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ClearBatchCacheSubscriber`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator`
+- Move `Pim\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber`
+- Move `Pim\Bundle\ConnectorBundle\PimConnectorBundle` to `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
+- Split `pim_connector.job.job_parameters.default_values_provider.simple_csv_import` into `akeneo_channel.job.job_parameters.default_values_provider.simple_csv_import`, `akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import` and `akeneo_pim_structure.job.job_parameters.default_values_provider.simple_csv_import` 

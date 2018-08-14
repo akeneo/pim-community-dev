@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
@@ -77,17 +78,17 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $cursor->current()->willReturn($variantProduct1, $variantProduct2, $variantProduct1, $variantProduct2);
         $cursor->next()->shouldBeCalled();
 
-        $completenessManager->schedule($variantProduct1)->shouldBeCalled();
+        $completenessManager->bulkSchedule([$variantProduct1, $variantProduct2])->shouldBeCalled();
+
         $completenessManager->generateMissingForProduct($variantProduct1)->shouldBeCalled();
         $objectManager->persist($variantProduct1)->shouldBeCalled();
 
-        $completenessManager->schedule($variantProduct2)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($variantProduct2)->shouldBeCalled();
         $objectManager->persist($variantProduct2)->shouldBeCalled();
 
         $objectManager->flush()->shouldBeCalled();
-
-        $bulkProductIndexer->indexAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
+        
+        $bulkProductIndexer->indexAll([$variantProduct1, $variantProduct2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([$productModelsChildren]);
         $bulkProductModelIndexer->indexAll([$productModelsChildren]);

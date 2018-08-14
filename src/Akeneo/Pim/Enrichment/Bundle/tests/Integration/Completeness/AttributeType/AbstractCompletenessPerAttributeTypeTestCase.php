@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AttributeType;
 
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 
 /**
  * Abstract class to check that the completeness has been well calculated for each attribute type of the PIM.

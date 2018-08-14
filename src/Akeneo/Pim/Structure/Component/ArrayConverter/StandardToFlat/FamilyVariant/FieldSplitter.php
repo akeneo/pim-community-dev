@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant;
 
-use Pim\Component\Connector\ArrayConverter\FieldSplitter as BaseFieldSplitter;
+use Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter as BaseFieldSplitter;
 
 /**
  * Field splitter dedicated to the family variant column sorter.
