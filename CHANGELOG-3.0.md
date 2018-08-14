@@ -555,3 +555,11 @@
 - Move `Pim\Bundle\ConnectorBundle\PimConnectorBundle` to `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
 - Split `pim_connector.job.job_parameters.default_values_provider.simple_csv_import` into `akeneo_channel.job.job_parameters.default_values_provider.simple_csv_import`, `akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import` and `akeneo_pim_structure.job.job_parameters.default_values_provider.simple_csv_import` 
 - Move `Pim\Bundle\NotificationBundle` to `Akeneo\Platform\Bundle\NotificationBundle`
+- Move `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` to `Akeneo\Pim\Enrichment\Bundle\Widget\CompletenessWidget`
+- Move `Pim\Bundle\DashboardBundle\Controller\WidgetController` to `Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController`
+- Move `Pim\Bundle\DashboardBundle\DependencyInjection\Compiler\RegisterWidgetsPass` to `Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\Compiler\RegisterWidgetsPass`
+- Move `Pim\Bundle\DashboardBundle\DependencyInjection\PimDashboardExtension` to `Akeneo\Platform\Bundle\DashboardBundle\DependencyInjection\PimDashboardExtension`
+- Move `Pim\Bundle\DashboardBundle\PimDashboardBundle` to `Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle`
+- Move `Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget` to `Akeneo\Platform\Bundle\DashboardBundle\Widget\LastOperationsWidget`
+- Move `Pim\Bundle\DashboardBundle\Widget\Registry` to `Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry`
+- Move `Pim\Bundle\DashboardBundle\Widget\WidgetInterface` to `Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface`
