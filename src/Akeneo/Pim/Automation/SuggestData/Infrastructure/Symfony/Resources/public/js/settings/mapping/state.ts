@@ -4,7 +4,7 @@ const BaseState = require('pim/form/common/state');
  * State module for the mapping screen.
  * The goal of this module is to not detect state as changed if the value is changed from null to ''.
  *
- * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class State extends BaseState {
   /**

@@ -1,7 +1,6 @@
 import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
-
-const simpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 const fetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/identifiers');
@@ -83,7 +82,7 @@ class EditIdentifiersMappingView extends BaseView {
    */
   private renderAttributeSelectors(identifiersMapping: { [key: string]: string }): void {
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
-      const attributeSelector = new simpleSelectAttribute({
+      const attributeSelector = new SimpleSelectAttribute({
         config: {
           fieldName: pimAiAttributeCode,
           label: '',

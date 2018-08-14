@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import * as $ from 'jquery';
+import BaseView = require('pimenrich/js/view/base');
 const __ = require('oro/translator');
-const BaseForm = require('pim/form');
 const Router = require('pim/router');
 const template = require('pimee/template/settings/mapping/tabs');
 
@@ -11,12 +11,23 @@ const template = require('pimee/template/settings/mapping/tabs');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class Tabs extends BaseForm {
-  readonly template = _.template(template);
+interface Config {
+  tabs: string[];
+  selected: number|null;
+}
 
-  constructor(config: any) {
-    super(config);
-    this.events = {
+class Tabs extends BaseView {
+  readonly template = _.template(template);
+  readonly config: Config = {
+    tabs: [],
+    selected: null
+  };
+
+  /**
+   * {@inheritdoc}
+   */
+  public events() {
+    return {
       'click .tab-link': (event: { currentTarget: any }) => {
         Router.redirectToRoute($(event.currentTarget).data('route'));
       }
@@ -26,9 +37,10 @@ class Tabs extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  initialize(meta: { config: { tabs: string[], selected: number } }) {
-    BaseForm.prototype.initialize.apply(this, arguments);
-    this.config = meta.config;
+  constructor(options: {config: Config}) {
+    super(options);
+
+    this.config = {...this.config, ...options.config};
   }
 
   /**
@@ -41,8 +53,8 @@ class Tabs extends BaseForm {
       __
     }));
     this.delegateEvents();
-    
-    return BaseForm.prototype.render.apply(this, arguments);
+
+    return BaseView.prototype.render.apply(this, arguments);
   }
 }
 
