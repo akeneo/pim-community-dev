@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITIY_EDIT_ROUTE = 'akeneo_enriched_entities_enriched_entity_edit_rest';
+    private const ENRICHED_ENTITY_EDIT_ROUTE = 'akeneo_enriched_entities_enriched_entity_edit_rest';
 
     /** @var Client */
     private $client;
@@ -60,7 +60,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_EDIT_ROUTE,
+            self::ENRICHED_ENTITY_EDIT_ROUTE,
             ['identifier' => 'designer'],
             'POST',
             [
@@ -87,7 +87,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_EDIT_ROUTE,
+            self::ENRICHED_ENTITY_EDIT_ROUTE,
             ['identifier' => 'brand'],
             'POST',
             [
@@ -114,7 +114,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_EDIT_ROUTE,
+            self::ENRICHED_ENTITY_EDIT_ROUTE,
             ['identifier' => 'any_id'],
             'POST'
         );

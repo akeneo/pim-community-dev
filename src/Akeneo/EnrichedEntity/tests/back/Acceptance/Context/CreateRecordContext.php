@@ -83,7 +83,6 @@ final class CreateRecordContext implements Context
             $expectedInformation['identifier']
 
         );
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($expectedInformation['entity_identifier']);
         $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),

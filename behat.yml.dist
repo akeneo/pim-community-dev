@@ -191,6 +191,7 @@ acceptance:
                 - '%paths.base%/src/Akeneo/EnrichedEntity/tests/features'
             contexts_services:
                 - akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context
+                - akeneo_enrichedentity.tests.back.acceptance.context.delete_enriched_entity_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_enriched_entity_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_record_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_attribute_context
