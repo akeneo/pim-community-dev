@@ -6,6 +6,14 @@
   width: 60px;
   height: 34px;
 
+  &--disabled {
+    .AknSwitch-input {
+      &:checked + .AknSwitch-slider {
+        background-color: lighten(@AknGreen, 40%);
+      }
+    }
+  }
+
   &-input {
     display: none;
 
