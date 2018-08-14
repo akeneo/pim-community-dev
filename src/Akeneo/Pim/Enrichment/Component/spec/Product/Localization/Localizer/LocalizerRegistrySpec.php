@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Localization\Localizer;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistryInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -9,7 +10,7 @@ class LocalizerRegistrySpec extends ObjectBehavior
 {
     function it_is_a_localizer_registry()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface');
+        $this->shouldImplement(LocalizerRegistryInterface::class);
     }
 
     function it_get_localizer(LocalizerInterface $localizer)

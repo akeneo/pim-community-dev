@@ -6,6 +6,16 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\AttributeConverter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\AttributeConverter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\AttributeConverterInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\AttributeConverterInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\LocalizerRegistry/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\LocalizerRegistry/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\LocalizerRegistryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\LocalizerRegistryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\MetricLocalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\MetricLocalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\PriceLocalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\PriceLocalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Presenter\\MetricPresenter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Presenter\\MetricPresenter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Presenter\\PresenterRegistry/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Presenter\\PresenterRegistry/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Presenter\\PresenterRegistryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Presenter\\PresenterRegistryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Presenter\\PricesPresenter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Presenter\\PricesPresenter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\CategoryUpdater/Akeneo\\Pim\\Enrichment\\Component\\Category\\CategoryUpdater/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\ConstraintGuesser\\BooleanGuesser/Akeneo\\Pim\\Enrichment\\Component\\Product\\Validator\\ConstraintGuesser\\BooleanGuesser/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\ConstraintGuesser\\CurrencyGuesser/Akeneo\\Pim\\Enrichment\\Component\\Product\\Validator\\ConstraintGuesser\\CurrencyGuesser/g'

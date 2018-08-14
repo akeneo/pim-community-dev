@@ -12,6 +12,16 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Localization\Localizer\AttributeConverter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverter`
+- Move `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface`
+- Move `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistry`
+- Move `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistryInterface`
+- Move `Pim\Component\Catalog\Localization\Localizer\MetricLocalizer` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\MetricLocalizer`
+- Move `Pim\Component\Catalog\Localization\Localizer\PriceLocalizer` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\PriceLocalizer`
+- Move `Pim\Component\Catalog\Localization\Presenter\MetricPresenter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\MetricPresenter`
+- Move `Pim\Component\Catalog\Localization\Presenter\PresenterRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistry`
+- Move `Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface`
+- Move `Pim\Component\Catalog\Localization\Presenter\PricesPresenter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PricesPresenter`
 - Move `Pim\Component\Catalog\Localization\CategoryUpdater` to `Akeneo\Pim\Enrichment\Component\Category\CategoryUpdater`
 - Move `Pim\Component\Catalog\Validator\ConstraintGuesser\BooleanGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\BooleanGuesser`
 - Move `Pim\Component\Catalog\Validator\ConstraintGuesser\CurrencyGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\CurrencyGuesser`

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Localization\Localizer;
+namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer;
 
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 

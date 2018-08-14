@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Localization\Localizer;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer;
 
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
