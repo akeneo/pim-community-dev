@@ -15,7 +15,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Job\JobParame
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Akeneo\Pim\Enrichment\Component\Validator\Constraints\IsString;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Type;
 
