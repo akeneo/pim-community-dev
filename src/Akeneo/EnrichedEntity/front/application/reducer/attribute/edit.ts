@@ -27,14 +27,14 @@ const initEditState = (): EditState => ({
     valuePerChannel: false,
     required: false,
     maxLength: 0,
-    textArea: false,
-    richTextEditor: false
+    isTextarea: false,
+    isRichTextEditor: false,
   },
   errors: [],
 });
 
 const allowedAdditionalData = {
-  [AttributeType.Text]: ['maxLength', 'textArea', 'richTextEditor'],
+  [AttributeType.Text]: ['maxLength', 'isTextarea', 'isRichTextEditor'],
   [AttributeType.Image]: ['maxFileSize', 'allowedExtensions'],
 };
 

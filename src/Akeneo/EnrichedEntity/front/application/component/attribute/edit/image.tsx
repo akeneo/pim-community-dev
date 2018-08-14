@@ -36,16 +36,16 @@ export default ({
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.create.input.max_file_size"
+            htmlFor="pim_enriched_entity.attribute.edit.input.max_file_size"
           >
-            {__('pim_enriched_entity.attribute.create.input.max_file_size')}
+            {__('pim_enriched_entity.attribute.edit.input.max_file_size')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
             className="AknTextField"
-            id="pim_enriched_entity.attribute.create.input.max_file_size"
+            id="pim_enriched_entity.attribute.edit.input.max_file_size"
             name="maxFileSize"
             onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
           />
@@ -56,14 +56,14 @@ export default ({
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.create.input.allowed_extensions"
+            htmlFor="pim_enriched_entity.attribute.edit.input.allowed_extensions"
           >
-            {__('pim_enriched_entity.attribute.create.input.allowed_extensions')}
+            {__('pim_enriched_entity.attribute.edit.input.allowed_extensions')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Select2
-            fieldId="pim_enriched_entity.attribute.create.input.allowed_extensions"
+            fieldId="pim_enriched_entity.attribute.edit.input.allowed_extensions"
             fieldName="allowed_extensions"
             data={allowedExtensionsList}
             value={allowedExtensions}

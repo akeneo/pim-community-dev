@@ -20,53 +20,53 @@ export default ({
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.create.input.max_length"
+            htmlFor="pim_enriched_entity.attribute.edit.input.max_length"
           >
-            {__('pim_enriched_entity.attribute.create.input.max_length')}
+            {__('pim_enriched_entity.attribute.edit.input.max_length')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
             className="AknTextField"
-            id="pim_enriched_entity.attribute.create.input.max_length"
+            id="pim_enriched_entity.attribute.edit.input.max_length"
             name="maxLength"
             onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
           />
         </div>
         {getErrorsView(errors, 'maxLength')}
       </div>
-      <div className="AknFieldContainer" data-code="textArea">
+      <div className="AknFieldContainer" data-code="isTextarea">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.create.input.text_area"
+            htmlFor="pim_enriched_entity.attribute.edit.input.text_area"
           >
-            {__('pim_enriched_entity.attribute.create.input.text_area')}
+            {__('pim_enriched_entity.attribute.edit.input.text_area')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Switch
-            id="pim_enriched_entity.attribute.create.input.text_area"
-            value={attribute.textArea}
-            onChange={(textArea: boolean) => onAdditionalPropertyUpdated('textArea', textArea)}
+            id="pim_enriched_entity.attribute.edit.input.text_area"
+            value={attribute.isTextarea}
+            onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('isTextarea', isTextarea)}
           />
         </div>
-        {getErrorsView(errors, 'textArea')}
+        {getErrorsView(errors, 'isTextarea')}
       </div>
-      {attribute.textArea &&
+      {attribute.isTextarea &&
       <div className="AknFieldContainer" data-code="richTextEditor">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.create.input.rich_text_editor"
+            htmlFor="pim_enriched_entity.attribute.edit.input.rich_text_editor"
           >
-            {__('pim_enriched_entity.attribute.create.input.rich_text_editor')}
+            {__('pim_enriched_entity.attribute.edit.input.rich_text_editor')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Switch
-            id="pim_enriched_entity.attribute.create.input.rich_text_editor"
+            id="pim_enriched_entity.attribute.edit.input.rich_text_editor"
             value={attribute.richTextEditor}
             onChange={(richTextEditor: boolean) => onAdditionalPropertyUpdated('richTextEditor', richTextEditor)}
           />

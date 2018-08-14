@@ -69,11 +69,12 @@ const renderAttributes = (attributes: AttributeModel[], onAttributeEdit: (attrib
         <button
           className="AknIconButton AknIconButton--edit"
           onClick={() => onAttributeEdit(attribute)}
+          onKeyPress={(event: any) => {
+            if (' ' === event.key) onAttributeEdit(attribute)
+          }}
         />
         {null !== editedAttribute && attribute.getIdentifier().equals(denormalizeIdentifier(editedAttribute.identifier)) ? (
-          <div className="AknQuickEdit">
-            <AttributeEditForm />
-          </div>
+          <AttributeEditForm />
         ) : null}
       </div>
     </div>
@@ -92,7 +93,7 @@ class Attribute extends React.Component<CreateProps> {
   render() {
     return (
       <div className="AknSubsection">
-        <header className="AknSubsection-title AknSubsection-title--blockDown">
+        <header className="AknSubsection-title">
           <span className="group-label">{__('pim_enriched_entity.enriched_entity.attribute.title')}</span>
         </header>
         {0 < this.props.attributes.length ?

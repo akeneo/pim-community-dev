@@ -28,7 +28,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
   render() {
     return(
       <div className="AknSubsection">
-        <header className="AknSubsection-title AknSubsection-title--blockDown">
+        <header className="AknSubsection-title">
             <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
         </header>
         <div className="AknFormContainer AknFormContainer--withPadding">

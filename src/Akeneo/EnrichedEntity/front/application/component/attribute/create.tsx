@@ -248,7 +248,7 @@ class Create extends React.Component<CreateProps> {
             {__('pim_enriched_entity.attribute.create.confirm')}
           </button>
           <span
-            title="{__('pim_enriched_entity.attribute.create.cancel')}"
+            title={__('pim_enriched_entity.attribute.create.cancel')}
             className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
             onClick={this.props.events.onCancel}
             tabIndex={0}

@@ -29,22 +29,22 @@ interface CommonNormalizedAttribute {
 }
 
 export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
-  maxLength?: MaxLength;
-  textArea?: TextArea;
-  richTextEditor?: RichTextEditor;
+  maxLength: MaxLength;
+  isTextarea: IsTextarea;
+  isRichTextEditor: IsRichTextEditor;
 }
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
-  allowedExtensions?: AllowedExtensions;
-  maxFileSize?: MaxFileSize;
+  allowedExtensions: AllowedExtensions;
+  maxFileSize: MaxFileSize;
 }
 
-export type MaxLength = number | null | undefined;
-export type MaxFileSize = number | null | undefined;
-export type AllowedExtensions = string[] | null | undefined;
-export type TextArea = boolean | undefined;
-export type RichTextEditor = boolean | undefined;
-export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions | TextArea | RichTextEditor;
+export type MaxLength = number | null;
+export type MaxFileSize = number | null;
+export type AllowedExtensions = string[] | null;
+export type IsTextarea = boolean;
+export type IsRichTextEditor = boolean;
+export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions | IsTextarea | IsRichTextEditor;
 
 export type NormalizedAttribute = NormalizedTextAttribute | NormalizedImageAttribute;
 
@@ -166,7 +166,9 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     required: boolean,
-    readonly maxLength: MaxLength
+    readonly maxLength: MaxLength,
+    readonly isTextarea: IsTextarea,
+    readonly isRichTextEditor: IsRichTextEditor
   ) {
     super(
       identifier,
@@ -197,7 +199,9 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
       normalizedTextAttribute.valuePerLocale,
       normalizedTextAttribute.valuePerChannel,
       normalizedTextAttribute.required,
-      normalizedTextAttribute.maxLength
+      normalizedTextAttribute.maxLength,
+      normalizedTextAttribute.isTextarea,
+      normalizedTextAttribute.isRichTextEditor
     );
   }
 
@@ -205,6 +209,8 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
     return {
       ...super.commonNormalize(),
       maxLength: this.maxLength,
+      isTextarea: this.isTextarea,
+      isRichTextEditor: this.isRichTextEditor,
     };
   }
 }
