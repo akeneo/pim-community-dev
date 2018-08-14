@@ -1,4 +1,9 @@
-'use strict';
+import * as _ from 'underscore';
+import * as $ from 'jquery';
+const __ = require('oro/translator');
+const BaseForm = require('pim/form');
+const Router = require('pim/router');
+const template = require('pimee/template/settings/mapping/tabs');
 
 /**
  * This module will display tabs. Contrary to the other 'tabs' module, this one does not load
@@ -6,54 +11,39 @@
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/router',
-        'pimee/template/settings/mapping/tabs'
-    ],
-    function (
-        $,
-        _,
-        __,
-        BaseForm,
-        Router,
-        template
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
-            events: {
-                'click .tab-link': function (event) {
-                    Router.redirectToRoute($(event.currentTarget).data('route'));
-                }
-            },
+class Tabs extends BaseForm {
+  readonly template = _.template(template);
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize(meta) {
-                BaseForm.prototype.initialize.apply(this, arguments);
-
-                this.config = meta.config;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            render() {
-                this.$el.html(this.template({
-                    tabs: this.config.tabs,
-                    selected: this.config.selected,
-                    __
-                }));
-
-                this.delegateEvents();
-
-                return BaseForm.prototype.render.apply(this, arguments);
-            }
-        });
+  constructor(config: any) {
+    super(config);
+    this.events = {
+      'click .tab-link': (event: { currentTarget: any }) => {
+        Router.redirectToRoute($(event.currentTarget).data('route'));
+      }
     }
-);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  initialize(meta: { config: { tabs: string[], selected: number } }) {
+    BaseForm.prototype.initialize.apply(this, arguments);
+    this.config = meta.config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  render() {
+    this.$el.html(this.template({
+      tabs: this.config.tabs,
+      selected: this.config.selected,
+      __
+    }));
+    this.delegateEvents();
+    
+    return BaseForm.prototype.render.apply(this, arguments);
+  }
+}
+
+export = Tabs

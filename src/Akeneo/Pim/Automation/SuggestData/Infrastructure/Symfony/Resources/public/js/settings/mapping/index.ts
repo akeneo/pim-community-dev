@@ -1,29 +1,22 @@
-'use strict';
+const BaseIndex = require('pim/controller/common/index');
+const FormBuilder = require('pim/form-builder');
 
-define(
-    [
-        'underscore',
-        'pim/controller/common/index',
-        'pim/form-builder'
-    ],
-    function (_, BaseIndex, FormBuilder) {
-        return BaseIndex.extend({
-            /**
-             * {@inheritdoc}
-             *
-             * This is the same method than the parent, but adding the 'can-leave' mechanism.
-             */
-            renderForm: function () {
-                return FormBuilder.build('pim-' + this.options.config.entity + '-index')
-                    .then((form) => {
-                        this.on('pim:controller:can-leave', function (event) {
-                            form.trigger('pim_enrich:form:can-leave', event);
-                        });
-                        form.setElement(this.$el).render();
-
-                        return form;
-                    });
-            }
+class MappingIndex extends BaseIndex {
+  /**
+   * {@inheritdoc}
+   *
+   * This is the same method than the parent, but adding the 'can-leave' mechanism.
+   */
+  renderForm() {
+    return FormBuilder.build('pim-' + this.options.config.entity + '-index')
+      .then((form: any) => {
+        this.on('pim:controller:can-leave', (event: any) => {
+          form.trigger('pim_enrich:form:can-leave', event);
         });
-    }
-);
+        form.setElement(this.$el).render();
+        return form;
+      });
+  }
+}
+
+export = MappingIndex

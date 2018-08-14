@@ -20,7 +20,7 @@ class EditIdentifiersMappingView extends BaseView {
     'suggestDataLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data'),
   };
 
-  private identifiersStatuses: {[key: string]: string} = {};
+  private identifiersStatuses: { [key: string]: string } = {};
 
   readonly config: Object = {};
 
@@ -28,10 +28,12 @@ class EditIdentifiersMappingView extends BaseView {
    * {@inheritdoc}
    */
   constructor(options: { config: Object }) {
-    super({...options, ...{
+    super({
+      ...options, ...{
         className: 'AknGrid AknGrid--unclickable',
         tagName: 'table'
-      }});
+      }
+    });
 
     this.config = {...this.config, ...options.config};
   };
@@ -43,16 +45,16 @@ class EditIdentifiersMappingView extends BaseView {
     return $.when(
       fetcherRegistry.getFetcher('identifiers-mapping')
         .fetchAll()
-        .then((identifiersMapping: { [key:string] : (string|null) }) => {
-        this.setData(identifiersMapping);
-        this.updateIdentifierStatuses();
+        .then((identifiersMapping: { [key: string]: (string | null) }) => {
+          this.setData(identifiersMapping);
+          this.updateIdentifierStatuses();
 
-        this.listenTo(
-          this.getRoot(),
-          'pim_enrich:form:entity:post_save',
-          this.triggerUpdateIdentifierStatuses.bind(this)
-        );
-      })
+          this.listenTo(
+            this.getRoot(),
+            'pim_enrich:form:entity:post_save',
+            this.triggerUpdateIdentifierStatuses.bind(this)
+          );
+        })
     );
   };
 
@@ -60,7 +62,7 @@ class EditIdentifiersMappingView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const identifiersMapping: {[key: string]: string} = this.getFormData();
+    const identifiersMapping: { [key: string]: string } = this.getFormData();
 
     this.$el.html(this.template({
       headers: this.headers,
@@ -79,7 +81,7 @@ class EditIdentifiersMappingView extends BaseView {
    *
    * @param identifiersMapping
    */
-  private renderAttributeSelectors(identifiersMapping: {[key: string]: string}): void {
+  private renderAttributeSelectors(identifiersMapping: { [key: string]: string }): void {
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
       const attributeSelector = new simpleSelectAttribute({
         config: {
@@ -108,7 +110,7 @@ class EditIdentifiersMappingView extends BaseView {
    * Updates the mapping status of each identifiers: active or inactive.
    */
   private updateIdentifierStatuses(): void {
-    const identifiersMapping: {[key: string]: string} = this.getFormData();
+    const identifiersMapping: { [key: string]: string } = this.getFormData();
 
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
       null === identifiersMapping[pimAiAttributeCode] || '' === identifiersMapping[pimAiAttributeCode]
