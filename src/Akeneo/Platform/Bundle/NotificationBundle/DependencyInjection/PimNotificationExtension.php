@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\DependencyInjection;
+namespace Akeneo\Platform\Bundle\NotificationBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

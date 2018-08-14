@@ -1,7 +1,7 @@
 Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotification:
     type: entity
     table: pim_notification_user_notification
-    repositoryClass: Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
+    repositoryClass: Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
     fields:
         id:
             type: integer
@@ -12,7 +12,7 @@ Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotification:
             type: boolean
     manyToOne:
         notification:
-            targetEntity: Pim\Bundle\NotificationBundle\Entity\Notification
+            targetEntity: Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification
             joinColumns:
                 notification:
                     referencedColumnName: id

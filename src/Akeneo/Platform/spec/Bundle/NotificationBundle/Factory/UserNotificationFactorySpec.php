@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Platform\Bundle\NotificationBundle\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserNotificationFactorySpec extends ObjectBehavior

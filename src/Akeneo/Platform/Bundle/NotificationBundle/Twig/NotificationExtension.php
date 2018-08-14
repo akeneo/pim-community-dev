@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\Twig;
+namespace Akeneo\Platform\Bundle\NotificationBundle\Twig;
 
-use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**

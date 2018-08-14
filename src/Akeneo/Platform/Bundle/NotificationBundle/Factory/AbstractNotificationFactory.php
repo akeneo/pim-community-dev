@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\Factory;
+namespace Akeneo\Platform\Bundle\NotificationBundle\Factory;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 

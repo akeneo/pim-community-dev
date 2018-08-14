@@ -1,6 +1,6 @@
 parameters:
-    pim_notification.registry.factory.notification.class: Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry
-    pim_notification.factory.user_notification.class: Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory
+    pim_notification.registry.factory.notification.class: Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry
+    pim_notification.factory.user_notification.class: Akeneo\Platform\Bundle\NotificationBundle\Factory\UserNotificationFactory
 
 services:
     pim_notification.factory.notification:

@@ -1,5 +1,5 @@
 parameters:
-    pim_notification.repository.user_notification.class: Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
+    pim_notification.repository.user_notification.class: Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository
 
 services:
     pim_notification.repository.user_notification:

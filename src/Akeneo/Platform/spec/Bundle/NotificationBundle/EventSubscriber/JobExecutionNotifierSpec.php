@@ -10,10 +10,10 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
-use Pim\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Prophecy\Argument;
 
 class JobExecutionNotifierSpec extends ObjectBehavior

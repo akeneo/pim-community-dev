@@ -1,5 +1,5 @@
 parameters:
-    pim_notification.event_subscriber.job_execution_notifier.class: Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier
+    pim_notification.event_subscriber.job_execution_notifier.class: Akeneo\Platform\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier
 
 services:
     pim_notification.event_subscriber.job_execution_notifier:

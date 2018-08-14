@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\DependencyInjection\Compiler;
+namespace Akeneo\Platform\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

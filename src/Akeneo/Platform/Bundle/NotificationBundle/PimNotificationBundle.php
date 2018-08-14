@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle;
+namespace Akeneo\Platform\Bundle\NotificationBundle;
 
-use Pim\Bundle\NotificationBundle\DependencyInjection\Compiler\RegisterNotificationFactoryPass;
+use Akeneo\Platform\Bundle\NotificationBundle\DependencyInjection\Compiler\RegisterNotificationFactoryPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

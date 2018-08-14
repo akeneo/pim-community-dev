@@ -1,5 +1,5 @@
 parameters:
-    pim_notification.notifier.class: Pim\Bundle\NotificationBundle\Notifier
+    pim_notification.notifier.class: Akeneo\Platform\Bundle\NotificationBundle\Notifier
 
 services:
     pim_notification.notifier:

@@ -1,5 +1,5 @@
 parameters:
-    pim_notification.email.email_notifier.class: Pim\Bundle\NotificationBundle\Email\MailNotifier
+    pim_notification.email.email_notifier.class: Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier
 
 services:
     pim_notification.email.email_notifier:

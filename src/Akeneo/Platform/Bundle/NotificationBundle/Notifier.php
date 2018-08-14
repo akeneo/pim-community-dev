@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle;
+namespace Akeneo\Platform\Bundle\NotificationBundle;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\UserNotificationFactory;

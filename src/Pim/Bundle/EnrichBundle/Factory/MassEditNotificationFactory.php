@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Factory;
 
-use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;
 

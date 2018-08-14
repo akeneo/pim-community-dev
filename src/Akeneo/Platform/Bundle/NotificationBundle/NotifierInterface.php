@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle;
+namespace Akeneo\Platform\Bundle\NotificationBundle;
 
-use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

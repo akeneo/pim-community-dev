@@ -1,5 +1,5 @@
 parameters:
-    pim_notification.twig.notification_extension.class: Pim\Bundle\NotificationBundle\Twig\NotificationExtension
+    pim_notification.twig.notification_extension.class: Akeneo\Platform\Bundle\NotificationBundle\Twig\NotificationExtension
 
 services:
     pim_notification.twig.notification_extension:

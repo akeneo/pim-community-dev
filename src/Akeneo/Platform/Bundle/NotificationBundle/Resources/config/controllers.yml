@@ -1,5 +1,5 @@
 parameters:
-    pim_notification.controller.notification.class: Pim\Bundle\NotificationBundle\Controller\NotificationController
+    pim_notification.controller.notification.class: Akeneo\Platform\Bundle\NotificationBundle\Controller\NotificationController
 
 services:
     pim_notification.controller.notification:

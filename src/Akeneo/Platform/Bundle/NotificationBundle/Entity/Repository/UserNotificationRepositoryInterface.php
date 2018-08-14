@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\Entity\Repository;
+namespace Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\User\UserInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\Factory;
+namespace Akeneo\Platform\Bundle\NotificationBundle\Factory;
 
 /**
  * Registry for notification factories

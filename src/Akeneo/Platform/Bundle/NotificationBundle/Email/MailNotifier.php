@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\Email;
+namespace Akeneo\Platform\Bundle\NotificationBundle\Email;
 
 /**
  * Notify by email
