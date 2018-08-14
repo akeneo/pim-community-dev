@@ -38,3 +38,4 @@ parameters:
     catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
     tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
     upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
+    pim_datagrid_productgrid_attributes_per_page: 5
