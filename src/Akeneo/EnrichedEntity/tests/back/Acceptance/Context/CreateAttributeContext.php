@@ -108,7 +108,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is no attribute "([^"]*)" in the enriched entity "([^"]*)"$/
+     * @Then /^there is no attribute "([^"]*)" for the enriched entity "([^"]*)"$/
      */
     public function thereIsNoAttributeInTheEnrichedEntity(
         string $attributeCode,

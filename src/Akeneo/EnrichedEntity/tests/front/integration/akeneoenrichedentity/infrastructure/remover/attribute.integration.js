@@ -7,12 +7,11 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
     await page.reload();
   }, timeout);
 
-  it('It deletes an attribute record', async () => {
+  it('It deletes an attribute', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/attribute/description' === interceptedRequest.url() &&
-        'DELETE' === interceptedRequest.method() &&
-        'starck' === JSON.parse(interceptedRequest.postData()).identifier.identifier
+        'http://pim.com/rest/enriched_entity/designer/attribute/name' === interceptedRequest.url() &&
+        'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
           status: 204
@@ -20,27 +19,13 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
       }
     });
 
-    const response = await page.evaluate(async () => {
-      const denormalizeAttribute = require('akeneoenrichedentity/domain/model/attribute/attribute').denormalizeAttribute;
-      // const createAttributeCode = require('akeneoenrichedentity/domain/model/attribute/code').createCode;
-      // const createIdentifier = require('akeneoenrichedentity/domain/model/attribute/identifier').createIdentifier;
-      // const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
-      //   .createIdentifier;
-      // const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection')
-      //   .createLabelCollection;
+    await page.evaluate(async () => {
+      const createIdentifier = require('akeneoenrichedentity/domain/model/attribute/identifier').createIdentifier;
       const remover = require('akeneoenrichedentity/infrastructure/remover/attribute').default;
 
-      const attributeCreated = denormalizeAttribute({
-          type: 'text',
-          identifier: {identifier: 'description', enrichedEntityIdentifier: 'designer'},
-          enrichedEntityIdentifier: 'designer',
-          code: 'description',
-          labels: []
-    });
+      const identifierToDelete = createIdentifier('designer', 'name');
 
-      return await remover.remove(attributeCreated);
+      return await remover.remove(identifierToDelete);
     });
-
-    expect(response).toEqual(undefined);
   });
 });
