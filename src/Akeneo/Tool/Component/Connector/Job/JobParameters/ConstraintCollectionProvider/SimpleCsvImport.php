@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollection
 
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Pim\Component\Catalog\Validator\Constraints\FileExtension;
+use Akeneo\Pim\Enrichment\Component\Validator\Constraints\FileExtension;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\IsTrue;

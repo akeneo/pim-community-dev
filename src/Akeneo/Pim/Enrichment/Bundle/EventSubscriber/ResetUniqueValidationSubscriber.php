@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
-use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
-use Pim\Component\Catalog\Validator\UniqueValuesSet;
+use Akeneo\Pim\Enrichment\Component\Validator\UniqueAxesCombinationSet;
+use Akeneo\Pim\Enrichment\Component\Validator\UniqueValuesSet;
 
 /**
  * The UniqueValueSet class is stateful, and used when you import several product, to check if in the product batch

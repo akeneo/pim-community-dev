@@ -1,7 +1,7 @@
 Akeneo\Pim\Structure\Component\Model\AttributeGroup:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
     properties:
@@ -10,7 +10,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeGroup:
         sortOrder:
             - NotNull: ~
             - Type: numeric
-            - Pim\Component\Catalog\Validator\Constraints\NotDecimal: {}
+            - Akeneo\Pim\Enrichment\Component\Validator\Constraints\NotDecimal: {}
             - GreaterThanOrEqual:
                 value: 0
         code:
