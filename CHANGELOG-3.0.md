@@ -66,8 +66,6 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\SameFamilyThanParentValidator`
 - Move `Pim\Component\Catalog\Validator\Constraints\ScopableValue` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\ScopableValue`
 - Move `Pim\Component\Catalog\Validator\Constraints\ScopableValueValidator` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\ScopableValueValidator`
-- Move `Pim\Component\Catalog\Validator\Constraints\UniqueEntity` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueEntity`
-- Move `Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueEntityValidator`
 - Move `Pim\Component\Catalog\Validator\Constraints\UniqueValue` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueValue`
 - Move `Pim\Component\Catalog\Validator\Constraints\UniqueValueValidator` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueValueValidator`
 - Move `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis` to `Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueVariantAxis`

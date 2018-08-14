@@ -60,8 +60,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Valida
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\SameFamilyThanParentValidator/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\SameFamilyThanParentValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ScopableValue/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\ScopableValue/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ScopableValueValidator/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\ScopableValueValidator/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\UniqueEntity/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\UniqueEntity/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\UniqueEntityValidator/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\UniqueEntityValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\UniqueValue/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\UniqueValue/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\UniqueValueValidator/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\UniqueValueValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\UniqueVariantAxis/Akeneo\\Pim\\Enrichment\\Component\\Validator\\Constraints\\UniqueVariantAxis/g'
