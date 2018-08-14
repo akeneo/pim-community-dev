@@ -1,14 +1,20 @@
 import * as React from 'react';
 
-const Switch = ({value, onChange, id = ''}: {value: boolean; id: string; onChange: (value: boolean) => void}) => {
+class InvalidArgumentError extends Error {}
+
+const Switch = ({value, onChange, id = '', readOnly = false}: {value: boolean; id: string; onChange?: (value: boolean) => void, readOnly?: boolean}) => {
+  if (undefined === onChange && !readOnly) {
+    throw new InvalidArgumentError(`A Switch element expect a onChange attribute if not readOnly`);
+  }
+
   return (
     <label
-      className="AknSwitch"
+      className={`AknSwitch ${readOnly ? 'AknSwitch--disabled' : ''}`}
       tabIndex={0}
       role="checkbox"
       aria-checked={value ? 'true' : 'false'}
       onKeyPress={event => {
-        if ([' '].includes(event.key)) onChange(!value);
+        if ([' '].includes(event.key) && !readOnly && onChange) onChange(!value);
       }}
     >
       <input
@@ -17,7 +23,7 @@ const Switch = ({value, onChange, id = ''}: {value: boolean; id: string; onChang
         className="AknSwitch-input"
         checked={value}
         onChange={(event: any) => {
-          onChange(event.target.checked);
+          if (!readOnly && onChange) onChange(event.target.checked);
         }}
       />
       <span className="AknSwitch-slider" />

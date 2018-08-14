@@ -29,10 +29,18 @@ interface CommonNormalizedAttribute {
 }
 
 export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
-  maxLength: number;
+  maxLength: MaxLength;
 }
 
-export interface NormalizedImageAttribute extends CommonNormalizedAttribute {}
+export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
+  allowedExtensions: AllowedExtensions;
+  maxFileSize: MaxFileSize;
+}
+
+export type MaxLength = number | null;
+export type MaxFileSize = number | null;
+export type AllowedExtensions = string[];
+export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions;
 
 export type NormalizedAttribute = NormalizedTextAttribute | NormalizedImageAttribute;
 
@@ -54,7 +62,7 @@ export interface CommonAttribute {
 }
 
 export interface TextAttribute extends CommonAttribute {
-  maxLength: number;
+  maxLength: MaxLength;
 }
 
 export interface ImageAttribute extends CommonAttribute {}
@@ -65,7 +73,7 @@ export default Attribute;
 
 class InvalidArgumentError extends Error {}
 
-class CommonConcreteAttribute implements CommonAttribute {
+abstract class CommonConcreteAttribute implements CommonAttribute {
   protected constructor(
     readonly identifier: Identifier,
     readonly enrichedEntityIdentifier: EnrichedEntityIdentifier,
@@ -126,7 +134,7 @@ class CommonConcreteAttribute implements CommonAttribute {
     return attribute.getIdentifier().equals(this.identifier);
   }
 
-  public normalize() {
+  protected commonNormalize() {
     return {
       identifier: this.identifier.normalize(),
       enrichedEntityIdentifier: this.enrichedEntityIdentifier.stringValue(),
@@ -139,6 +147,8 @@ class CommonConcreteAttribute implements CommonAttribute {
       required: this.required,
     };
   }
+
+  public abstract normalize(): NormalizedAttribute;
 }
 
 export class ConcreteTextAttribute extends CommonConcreteAttribute implements TextAttribute {
@@ -152,7 +162,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     required: boolean,
-    readonly maxLength: number
+    readonly maxLength: MaxLength
   ) {
     super(
       identifier,
@@ -189,7 +199,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
 
   public normalize(): NormalizedTextAttribute {
     return {
-      ...super.normalize(),
+      ...super.commonNormalize(),
       maxLength: this.maxLength,
     };
   }
@@ -205,7 +215,9 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
     order: number,
     valuePerLocale: boolean,
     valuePerChannel: boolean,
-    required: boolean
+    required: boolean,
+    readonly maxFileSize: MaxFileSize,
+    readonly allowedExtensions: AllowedExtensions
   ) {
     super(
       identifier,
@@ -234,8 +246,18 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
       normalizedImageAttribute.order,
       normalizedImageAttribute.valuePerLocale,
       normalizedImageAttribute.valuePerChannel,
-      normalizedImageAttribute.required
+      normalizedImageAttribute.required,
+      normalizedImageAttribute.maxFileSize,
+      normalizedImageAttribute.allowedExtensions
     );
+  }
+
+  public normalize(): NormalizedImageAttribute {
+    return {
+      ...super.commonNormalize(),
+      maxFileSize: this.maxFileSize,
+      allowedExtensions: this.allowedExtensions,
+    };
   }
 }
 

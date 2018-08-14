@@ -19,6 +19,9 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
     ...formData,
     order: 0,
     required: false,
+    maxLength: null,
+    maxFileSize: null,
+    allowedExtensions: [],
     identifier: {identifier: formData.code, enrichedEntityIdentifier: enrichedEntity.identifier},
     enrichedEntityIdentifier: enrichedEntity.identifier,
   };
@@ -46,3 +49,44 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
   return;
 };
+
+// export const saveAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+//   const enrichedEntity = getState().form.data;
+//   const formData = getState().createAttribute.data;
+//   const normalizedAttribute = {
+//     ...formData,
+//     order: 0,
+//     required: false,
+//     maxLength:
+//       undefined === formData.additionalProperties['maxLength'] ? null : formData.additionalProperties['maxLength'],
+//     maxFileSize:
+//       undefined === formData.additionalProperties['maxFileSize'] ? null : formData.additionalProperties['maxFileSize'],
+//     extensions:
+//       undefined === formData.additionalProperties['extensions'] ? [] : formData.additionalProperties['extensions'],
+//     identifier: {identifier: formData.code, enrichedEntityIdentifier: enrichedEntity.identifier},
+//     enrichedEntityIdentifier: enrichedEntity.identifier,
+//   };
+//   const attribute = denormalizeAttribute(normalizedAttribute);
+
+//   try {
+//     let errors = await attributeSaver.create(attribute);
+
+//     if (errors) {
+//       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+//       dispatch(attributeCreationErrorOccured(validationErrors));
+//       dispatch(notifyAttributeCreateFailed());
+
+//       return;
+//     }
+//   } catch (error) {
+//     dispatch(notifyAttributeCreateFailed());
+
+//     return;
+//   }
+
+//   dispatch(attributeCreationSucceeded());
+//   dispatch(notifyAttributeWellCreated());
+//   dispatch(updateAttributeList());
+
+//   return;
+// };

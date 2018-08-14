@@ -64,6 +64,7 @@ class Installer implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
             InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
             InstallerEvents::POST_DB_CREATE => ['createSchema'],
             InstallerEvents::POST_LOAD_FIXTURES => ['loadFixtures'],

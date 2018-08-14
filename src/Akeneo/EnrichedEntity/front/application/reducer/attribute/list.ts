@@ -4,11 +4,10 @@ import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/
 
 export interface ListState {
   attributes: NormalizedAttribute[];
-  openedAttribute: AttributeCode | null;
 }
 
 export default (
-  state: ListState = {attributes: [], openedAttribute: null},
+  state: ListState = {attributes: []},
   {type, attributes, deletedAttribute}: {type: string; attributes: NormalizedAttribute[]; deletedAttribute: Attribute}
 ) => {
   switch (type) {

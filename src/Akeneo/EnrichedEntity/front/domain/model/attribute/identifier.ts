@@ -21,6 +21,16 @@ export default class Identifier {
     return new Identifier(enrichedEntityIdentifier, identifier);
   }
 
+  public static createFromNormalized({
+    enrichedEntityIdentifier,
+    identifier,
+  }: {
+    enrichedEntityIdentifier: string;
+    identifier: string;
+  }): Identifier {
+    return new Identifier(enrichedEntityIdentifier, identifier);
+  }
+
   public equals(identifier: Identifier): boolean {
     return (
       this.identifier === identifier.identifier && this.enrichedEntityIdentifier === identifier.enrichedEntityIdentifier
@@ -36,3 +46,4 @@ export default class Identifier {
 }
 
 export const createIdentifier = Identifier.create;
+export const denormalizeIdentifier = Identifier.createFromNormalized;
