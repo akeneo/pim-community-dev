@@ -29,17 +29,17 @@ interface CommonNormalizedAttribute {
 }
 
 export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
-  maxLength: MaxLength;
+  maxLength?: MaxLength;
 }
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
-  allowedExtensions: AllowedExtensions;
-  maxFileSize: MaxFileSize;
+  allowedExtensions?: AllowedExtensions;
+  maxFileSize?: MaxFileSize;
 }
 
-export type MaxLength = number | null;
-export type MaxFileSize = number | null;
-export type AllowedExtensions = string[];
+export type MaxLength = number | null | undefined;
+export type MaxFileSize = number | null | undefined;
+export type AllowedExtensions = string[] | null | undefined;
 export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions;
 
 export type NormalizedAttribute = NormalizedTextAttribute | NormalizedImageAttribute;

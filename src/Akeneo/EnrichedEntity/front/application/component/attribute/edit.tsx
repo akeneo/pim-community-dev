@@ -10,7 +10,7 @@ import {
   attributeEditionLabelUpdated,
   attributeEditionCancel,
 } from 'akeneoenrichedentity/domain/event/attribute/edit';
-import {AttributeType, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
 // import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
 
@@ -207,8 +207,8 @@ export default connect(
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
     return {
-      data: state.createAttribute.data,
-      errors: state.createAttribute.errors,
+      data: state.attribute.data,
+      errors: state.attribute.errors,
       context: {
         locale: locale,
       },

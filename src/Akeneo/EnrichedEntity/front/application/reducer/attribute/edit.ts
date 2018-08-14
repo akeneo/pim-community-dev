@@ -75,9 +75,7 @@ export default (
       state = {
         ...state,
         active: true,
-        data: {
-          labels: attribute.labels,
-        },
+        data: attribute,
       };
       break;
     case 'ATTRIBUTE_EDITION_LABEL_UPDATED':
