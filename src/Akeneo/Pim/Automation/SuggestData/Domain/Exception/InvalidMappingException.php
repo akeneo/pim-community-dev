@@ -20,7 +20,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class InvalidMappingException extends \InvalidArgumentException
+final class InvalidMappingException extends \InvalidArgumentException
 {
     /** @var string */
     private $className;
@@ -43,16 +43,16 @@ class InvalidMappingException extends \InvalidArgumentException
     }
 
     /**
-     * @param int|string $frequency
-     * @param string     $attributeCode
-     * @param string     $className
+     * @param int    $frequency
+     * @param string $attributeCode
+     * @param string $className
      *
      * @return InvalidMappingException
      */
-    public static function duplicateAttributeCode($frequency, string $attributeCode, string $className)
+    public static function duplicateAttributeCode(int $frequency, string $attributeCode, string $className)
     {
         $message = sprintf(
-            'An attribute cannot be used more than once. Attribute "%s" has been used %s times.',
+            'An attribute cannot be used more than once. Attribute "%s" has been used %d times.',
             $attributeCode,
             $frequency
         );

@@ -1,0 +1,21 @@
+services:
+    akeneo.pim.automation.suggest_data.data_provider.pim_ai:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.authentication_fake'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.subscription_fake'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+        tags:
+            - { name: 'akeneo.pim.automation.suggest_data.data_provider', alias: 'pim_ai' }
+
+    akeneo.pim.automation.suggest_data.pimai_client.authentication_fake:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationFake'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
+
+    akeneo.pim.automation.suggest_data.pimai_client.subscription_fake:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'

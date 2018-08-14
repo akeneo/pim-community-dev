@@ -7,3 +7,14 @@ pim_enriched_entity:
         validation:
             identifier:
                 pattern: 'This field may only contain letters, numbers and underscores.'
+                should_be_unique: 'The record identifier already exists for enriched entity "%enriched_entity_identifier%" and record code "%code%"'
+
+    attribute:
+        validation:
+            identifier:
+                should_be_unique: 'Attribute identifier already exists for enriched entity "%enriched_entity_identifier%" and attribute code "%code%"'
+
+    enriched_entity:
+        validation:
+            identifier:
+                should_be_unique: 'An enriched entity already exists with identifier "%enriched_entity_identifier%"'

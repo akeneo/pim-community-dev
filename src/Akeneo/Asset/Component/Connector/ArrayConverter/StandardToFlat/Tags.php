@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Component\Connector\ArrayConverter\StandardToFlat;
 
-use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
  * Standard to flat array converter for asset tag collection

@@ -89,6 +89,6 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function isEmpty(): bool
     {
-        return empty($this->identifiers);
+        return empty($this->identifiers) || empty(array_filter($this->identifiers));
     }
 }

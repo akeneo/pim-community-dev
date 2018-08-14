@@ -108,7 +108,7 @@ services:
 
     # CSV Quick Exports -----------------------------------------------------------------------------------------------
     pimee_workflow.writer.file.csv_published_product_quick_export:
-        class: '%pim_connector.writer.file.csv_product.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Csv\ProductWriter'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
@@ -142,7 +142,7 @@ services:
 
     # XLSX Quick Exports ----------------------------------------------------------------------------------------------
     pimee_workflow.writer.file.xlsx_published_product_quick_export:
-        class: '%pim_connector.writer.file.xlsx_product.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx\ProductWriter'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'

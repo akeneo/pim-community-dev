@@ -12,7 +12,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\CreateAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler'
-            - '@serializer'
+            - '@enriched_entity_serializer'
             - '@validator'
             - '@oro_security.security_facade'
 
@@ -30,7 +30,7 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\EditAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
-            - '@serializer'
+            - '@enriched_entity_serializer'
             - '@validator'
 
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
@@ -58,12 +58,27 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\CreateAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.create_record_handler'
+            - '@enriched_entity_serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_enrichedentity.application.registry.create_attribute_command_factory'
             - '@serializer'
             - '@validator'
             - '@oro_security.security_facade'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordRepository'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.attribute:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlAttributeRepository'
         arguments:
             - '@database_connection'
 
@@ -77,6 +92,16 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlEnrichedEntityExists'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordExists'
+        arguments:
+            - '@database_connection'
+
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityItems'
         arguments:
@@ -84,6 +109,16 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityDetails'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlAttributeExists'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindAttributeNextOrder'
         arguments:
             - '@database_connection'
 
@@ -106,3 +141,9 @@ services:
         class: 'Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    akeneo_enrichedentity.application.enriched_entity.create_attribute_handler:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler'
+        arguments:
+            - '@akeneo_enrichedentity.application.registry.attribute_factory'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'

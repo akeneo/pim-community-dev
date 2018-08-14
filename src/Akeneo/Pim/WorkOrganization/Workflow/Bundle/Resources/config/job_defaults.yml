@@ -4,36 +4,36 @@ parameters:
 services:
     # Default Parameters for Imports ----------------------------------------------------------------------------------
     pimee_workflow.connector.job.job_parameters.default_values_provider.product_csv_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import'
             -
                 - 'csv_product_proposal_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_workflow.connector.job.job_parameters.default_values_provider.product_model_csv_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_csv_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import'
             -
                 - 'csv_product_model_proposal_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_workflow.connector.job.job_parameters.default_values_provider.product_xlsx_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_import'
             -
                 - 'xlsx_product_proposal_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_workflow.connector.job.job_parameters.default_values_provider.product_model_xlsx_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_import.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_import'
             -
                 - 'xlsx_product_model_proposal_import'
         tags:
@@ -41,9 +41,9 @@ services:
 
     # Default Parameters for Exports ----------------------------------------------------------------------------------
     pimee_workflow.connector.job.job_parameters.default_values_provider.product_csv_export:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_export.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvExport'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_export'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             -
@@ -52,9 +52,9 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_workflow.connector.job.job_parameters.default_values_provider.product_xlsx_export:
-        class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class%'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductXlsxExport'
         arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             -

@@ -76,7 +76,7 @@ config:
     }
   });
 
-  test('I can get a view', () => {
+  test('I can get a view', async () => {
     const tabProvider = EditTabsProvider.create(
       {
         tabs: {
@@ -94,7 +94,7 @@ config:
       }
     );
 
-    tabProvider.getView('first').then(module => {
+    await tabProvider.getView('first').then(module => {
       expect(module).toEqual('view');
     });
     expect.assertions(2);

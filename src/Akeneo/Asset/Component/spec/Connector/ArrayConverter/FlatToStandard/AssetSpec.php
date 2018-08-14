@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Component\Connector\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 
 class AssetSpec extends ObjectBehavior
 {

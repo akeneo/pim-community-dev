@@ -6,3 +6,5 @@ akeneo_enrichedentity:
             create: Create an entity
         record:
             create: Create a record
+        attribute:
+            create: Add an attribute to an enriched entity

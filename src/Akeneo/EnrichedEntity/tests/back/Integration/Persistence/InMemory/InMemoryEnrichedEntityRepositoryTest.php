@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
+namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
@@ -73,6 +73,18 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
 
         $enrichedEntityFound = $this->enrichedEntityRepository->getByIdentifier($identifier);
         Assert::isTrue($enrichedEntity->equals($enrichedEntityFound));
+    }
+
+    /**
+     * @test
+     */
+    public function it_tells_if_the_repository_has_the_enriched_entity()
+    {
+        $anotherIdentifier = EnrichedEntityIdentifier::fromString('another_identifier');
+        $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $this->enrichedEntityRepository->create(EnrichedEntity::create($identifier, []));
+        Assert::assertTrue($this->enrichedEntityRepository->hasRecord($identifier));
+        Assert::assertFalse($this->enrichedEntityRepository->hasRecord($anotherIdentifier));
     }
 
     /**

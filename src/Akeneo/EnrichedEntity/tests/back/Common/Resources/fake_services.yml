@@ -1,0 +1,60 @@
+services:
+    # Repositories
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.record:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.attribute:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository
+
+    pim_user.repository.user:
+        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+
+    # Query functions
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindEnrichedEntityItems
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindEnrichedEntityDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindRecordDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindRecordItemsForEnrichedEntity
+
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityExists
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordExists
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeExists
+        arguments:
+        - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributeNextOrder
+        arguments:
+        - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    # Third party services
+    oro_security.security_facade:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\SecurityFacadeStub
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'
+
+    akeneo_ee_integration_tests.helper.database_helper:
+        class: 'Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Helper\DatabaseHelper'
+        arguments:
+            - '@database_connection'

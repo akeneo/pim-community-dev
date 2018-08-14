@@ -37,18 +37,8 @@ class EnrichedEntityItem
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER => (string)$this->identifier,
-            self::LABELS     => $this->normalizeLabels($this->labels),
+            self::IDENTIFIER => (string) $this->identifier,
+            self::LABELS     => $this->labels->normalize()
         ];
-    }
-
-    private function normalizeLabels(LabelCollection $labelCollection): array
-    {
-        $labels = [];
-        foreach ($this->labels->getLocaleCodes() as $localeCode) {
-            $labels[$localeCode] = $labelCollection->getLabel($localeCode);
-        }
-
-        return $labels;
     }
 }

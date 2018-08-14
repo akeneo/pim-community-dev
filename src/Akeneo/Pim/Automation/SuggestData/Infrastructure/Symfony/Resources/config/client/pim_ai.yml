@@ -1,0 +1,35 @@
+services:
+    akeneo.pim.automation.suggest_data.pimai_client.guzzle_client:
+        class: GuzzleHttp\Client
+        arguments:
+            - {verify: false}
+
+    akeneo.pim.automation.suggest_data.pimai_client.http_client:
+        class: Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.guzzle_client'
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
+
+    akeneo.pim.automation.suggest_data.pimai_client.uri_generator:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator'
+        public: false
+        arguments:
+            - 'https://pim-ai.cloud2.akeneo.com/api'
+
+    akeneo.pim.automation.suggest_data.pimai_client.enrichment_webservice:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Enrichment\EnrichmentWebservice'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.guzzle_client'
+
+    akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
+
+    akeneo.pim.automation.suggest_data.pimai_client.authentication_webservice:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationWebService'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'

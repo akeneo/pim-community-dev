@@ -20,8 +20,8 @@ use Akeneo\Asset\Component\Upload\MassUpload\MassUploadIntoAssetCollectionProces
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Connector\Step\TaskletInterface;
 
 /**
  * Launches the asset upload processor to create assets from uploaded files

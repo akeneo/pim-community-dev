@@ -79,7 +79,7 @@ CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     `identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE `enriched_entity_identifier_index` (`identifier`)
+    UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
@@ -90,9 +90,27 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     `labels` JSON NOT NULL,
     `data` JSON NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE `record_identifier_index` (`identifier`),
-    CONSTRAINT enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
-      ON DELETE CASCADE
+    UNIQUE `akeneoenriched_entity_record_identifier_index` (`identifier`, `enriched_entity_identifier`),
+    CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
+      ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
+CREATE TABLE `akeneo_enriched_entity_attribute` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `identifier` VARCHAR(255) NOT NULL,
+    `enriched_entity_identifier` VARCHAR(255) NOT NULL,
+    `labels` JSON NOT NULL,
+    `attribute_type` VARCHAR(255) NOT NULL,
+    `attribute_order` INT NOT NULL,
+    `required` BOOLEAN NOT NULL,
+    `value_per_channel` BOOLEAN NOT NULL,
+    `value_per_locale` BOOLEAN NOT NULL,
+    `additional_properties` JSON NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE `attribute_identifier_index` (`identifier`, `enriched_entity_identifier`),
+    UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
+    CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
       ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
@@ -102,25 +120,33 @@ SQL;
 
     public function loadFixtures(): void
     {
-        $sql = <<<SQL
-REPLACE INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`)
-VALUES
-  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}'),
-  ('brand', '{"fr_FR": "Marque"}');
+        $this->loadEnrichedEntities();
+        $this->loadRecords();
 
-REPLACE INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `labels`, `data`)
+        $sql = <<<SQL
+INSERT INTO `akeneo_enriched_entity_attribute` (
+  `identifier`,
+  `enriched_entity_identifier`,
+  `labels`,
+  `attribute_type`,
+  `attribute_order`,
+  `required`,
+  `value_per_channel`,
+  `value_per_locale`,
+  `additional_properties`
+  )
 VALUES
-  ('starck',   'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
-  ('dyson',    'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
-  ('newson',   'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
-  ('vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
-  ('arad',     'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
-  ('cogip',    'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
-  ('sbep',     'brand',    '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
-  ('scep',     'brand',    '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
+  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null}'),
+  ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}'),
+  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null}'),
+  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255}'),
+  ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}')
 SQL;
 
-        $this->dbal->exec($sql);
+        $affectedRows = $this->dbal->exec($sql);
+        if (0 === $affectedRows) {
+            throw new \LogicException('An issue occured while installing the enriched entities.');
+        }
     }
 
     /**
@@ -190,5 +216,39 @@ SQL;
         $this->filesystem->mkdir($targetDir, 0777);
         // We use a custom iterator to ignore VCS files
         $this->filesystem->mirror($originDir, $targetDir, Finder::create()->ignoreDotFiles(false)->in($originDir));
+    }
+
+    private function loadEnrichedEntities(): void
+    {
+        $sql = <<<SQL
+INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`)
+VALUES
+  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}'),
+  ('brand', '{"fr_FR": "Marque"}');
+SQL;
+        $affectedRows = $this->dbal->exec($sql);
+        if (0 === $affectedRows) {
+            throw new \LogicException('An issue occured while installing the enriched entities.');
+        }
+    }
+
+    private function loadRecords(): void
+    {
+        $sql = <<<SQL
+INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `labels`, `data`)
+VALUES
+  ('starck',   'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
+  ('dyson',    'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
+  ('newson',   'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
+  ('vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
+  ('arad',     'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
+  ('cogip',    'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
+  ('sbep',     'brand',    '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
+  ('scep',     'brand',    '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
+SQL;
+        $affectedRows = $this->dbal->exec($sql);
+        if (0 === $affectedRows) {
+            throw new \LogicException('An issue occured while installing the records.');
+        }
     }
 }

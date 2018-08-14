@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
@@ -11,7 +20,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\InMemoryRecordRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordRepository;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
@@ -35,7 +44,7 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->recordRepository->create($record);
 
-        $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $recordFound = $this->recordRepository->getByIdentifier($identifier);
         $this->assertTrue($record->equals($recordFound));
     }
 
@@ -65,7 +74,7 @@ class InMemoryRecordRepositoryTest extends TestCase
         $record->updateLabels(LabelCollection::fromArray(['fr_FR' => 'stylist']));
 
         $this->recordRepository->update($record);
-        $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $recordFound = $this->recordRepository->getByIdentifier($identifier);
 
         $this->assertTrue($record->equals($recordFound));
     }
@@ -106,6 +115,16 @@ class InMemoryRecordRepositoryTest extends TestCase
         $this->assertEquals(2, $this->recordRepository->count());
     }
 
+    public function it_tells_if_it_has_a_record_identifier()
+    {
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
+
+        $this->recordRepository->create($record);
+        $this->assertTrue($this->recordRepository->hasRecord($identifier));
+    }
+
     /**
      * @test
      */
@@ -113,9 +132,8 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $this->expectException(RecordNotFoundException::class);
         $identifier = RecordIdentifier::create('enriched_entity_identifier', 'unknown_identifier');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
 
-        $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $this->recordRepository->getByIdentifier($identifier);
     }
 
     /**
@@ -125,8 +143,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $this->expectException(RecordNotFoundException::class);
         $identifier = RecordIdentifier::create('unknown_enriched_entity_identifier', 'record_identifier');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('unknown_enriched_entity_identifier');
 
-        $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $this->recordRepository->getByIdentifier($identifier);
     }
 }

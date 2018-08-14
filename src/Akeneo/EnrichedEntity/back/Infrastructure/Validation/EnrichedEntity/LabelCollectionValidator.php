@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,6 +32,10 @@ class LabelCollectionValidator extends ConstraintValidator
      */
     public function validate($localeCodes, Constraint $constraint)
     {
+        if (!$constraint instanceof LabelCollection) {
+            throw new UnexpectedTypeException($constraint, self::class);
+        }
+
         $validator = Validation::createValidator();
 
         foreach ($localeCodes as $localeCode => $label) {

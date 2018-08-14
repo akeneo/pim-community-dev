@@ -5,6 +5,7 @@ parameters:
     pimee_catalog_rule.applier.product.saver.class:       Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver
     pimee_catalog_rule.builder.product.class:             Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class:            Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector
+    pimee_catalog_rule.paginator.page_size: 1000
 
 services:
     pimee_catalog_rule.builder.product:
@@ -30,7 +31,7 @@ services:
             - '@pimee_catalog_rule.applier.product.saver'
             - '@event_dispatcher'
             - '@pim_connector.doctrine.cache_clearer'
-            - '1000'
+            - '%pimee_catalog_rule.paginator.page_size%'
 
     pimee_catalog_rule.applier.product.updater:
         class: '%pimee_catalog_rule.applier.product.updater.class%'
@@ -52,3 +53,5 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.context.version'
             - '@translator'
+            - '@pim_catalog.saver.product_model_descendants'
+            - '@pim_connector.doctrine.cache_clearer'

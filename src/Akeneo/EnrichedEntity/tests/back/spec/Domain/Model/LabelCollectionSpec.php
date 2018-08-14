@@ -1,5 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
@@ -56,5 +66,10 @@ class LabelCollectionSpec extends ObjectBehavior
     public function it_returns_the_locale_codes_it_has_translation_for()
     {
         $this->getLocaleCodes()->shouldReturn(['en_US', 'fr_FR']);
+    }
+
+    public function it_can_normalize_itself()
+    {
+        $this->normalize()->shouldReturn(['en_US' => 'A US label', 'fr_FR' => 'Un label français']);
     }
 }

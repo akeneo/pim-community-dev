@@ -1,0 +1,13 @@
+services:
+    akeneo_enrichedentity.application.registry.create_attribute_command_factory:
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistry
+
+    akeneo_enrichedentity.application.factory.create_text_attribute_command_factory:
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateTextAttributeCommandFactory
+        tags:
+            - { name: akeneo_enrichedentity.create_attribute_command_factory }
+
+    akeneo_enrichedentity.application.factory.create_image_attribute_command_factory:
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory
+        tags:
+            - { name: akeneo_enrichedentity.create_attribute_command_factory }

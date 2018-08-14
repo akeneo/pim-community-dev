@@ -2,20 +2,25 @@ pim_title:
     akeneo_enriched_entities_enriched_entity_index: Create a new entity
 
 pim_enriched_entity:
-    button:
-        save: Save
-        create: Add new
     enriched_entity:
+        validation:
+            identifier:
+                should_be_unique: 'This code already exists.'
+        button:
+            save: Save
+            create: Create
         title: Entities
         img: The main image of the enriched entity named "{{ label }}"
         tab:
             records: Records
-            attributes: Attributes
+            attribute: Attributes
             properties: Properties
         properties:
             title: Entity properties
             identifier: Identifier
             label: Label
+        attribute:
+            title: Attributes
         index:
             grid:
                 count: "{{ count }} results"
@@ -36,11 +41,21 @@ pim_enriched_entity:
                 success: Enriched entity successfully created.
                 fail: An error occured during the creation of the enriched entity
     record:
+        validation:
+            identifier:
+                pattern: 'This field may only contain letters, numbers and underscores.'
+                should_be_unique: 'This code already exists for this entity.'
+        no_data:
+            title: There are no record for {{ entityLabel }}
+            subtitle:   Click on the button "Add new" to create the first record
+        button:
+            save: Save
+            create: Add new
         create:
             header:
                 title: Create
-            subtitle: Records
-            title: Create a new {{ entityLabel }}
+            subtitle: Entities
+            title: Add new {{ entityLabel }}
             input:
                 label: Label
                 code: Code (required)
@@ -51,6 +66,32 @@ pim_enriched_entity:
                 fail: An error occured during the save of the record
             create:
                 success: Record successfully created.
+                fail: An error occured during the creation of the record
+    attribute:
+        type:
+            text: Text
+            image: Image
+        required: required for completeness
+        button:
+            add: Add an attribute
+        create:
+            header:
+                title: Create
+            subtitle: Entities
+            title: Add a new attribute
+            input:
+                code: Code (required)
+                label: Label
+                type: Attribute type
+                value_per_locale: Value per locale
+                value_per_channel: Value per channel
+            confirm: confirm
+        notification:
+            save:
+                success: Attribute successfully updated.
+                fail: An error occured during the save of the record
+            create:
+                success: Attribute successfully created.
                 fail: An error occured during the creation of the record
 
 pim_enrich:

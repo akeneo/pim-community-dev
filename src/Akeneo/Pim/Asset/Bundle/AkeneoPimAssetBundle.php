@@ -15,5 +15,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class AkeneoPimAssetBundle extends Bundle
 {
-
 }

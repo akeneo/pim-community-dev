@@ -171,6 +171,29 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     });
   });
 
+  test('I can dismiss the enriched entity creation', () => {
+    const state = {
+      active: true,
+      data: {
+        code: '',
+        labels: {},
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'DISMISS',
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {
+        code: '',
+        labels: {},
+      },
+      errors: [],
+    });
+  });
+
   test('I can submit the enriched entity creation', () => {
     const state = {
       active: false,

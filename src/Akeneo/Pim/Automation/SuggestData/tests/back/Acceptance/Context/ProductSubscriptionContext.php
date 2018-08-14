@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\Su
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
 /**
@@ -33,6 +34,9 @@ class ProductSubscriptionContext implements Context
     /** @var SubscribeProduct */
     private $subscribeProduct;
 
+    /** @var DataFixturesContext */
+    private $dataFixturesContext;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
@@ -41,11 +45,13 @@ class ProductSubscriptionContext implements Context
     public function __construct(
         InMemoryProductRepository $productRepository,
         InMemoryProductSubscriptionRepository $productSubscriptionRepository,
-        SubscribeProduct $subscribeProduct
+        SubscribeProduct $subscribeProduct,
+        DataFixturesContext $dataFixturesContext
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscribeProduct = $subscribeProduct;
+        $this->dataFixturesContext = $dataFixturesContext;
     }
 
     /**
@@ -53,14 +59,18 @@ class ProductSubscriptionContext implements Context
      */
     public function iSubscribeTheProductToPimAi(string $identifier)
     {
-        $product = $this->productRepository->findOneByIdentifier($identifier);
-        if (null === $product) {
-            throw new \InvalidArgumentException(
-                sprintf('Product "%s" does not exist', $identifier)
-            );
-        }
+        $this->subscribeProductToPimAi($identifier);
+    }
 
-        $this->subscribeProduct->subscribe($product->getId());
+    /**
+     * @Given the following product subscribed to pim.ai:
+     */
+    public function theFollowingProductSubscribedToPimAi(TableNode $table)
+    {
+        $this->dataFixturesContext->theFollowingProduct($table);
+
+        $productDefinition = $table->getColumnsHash()[0];
+        $this->subscribeProductToPimAi($productDefinition['identifier']);
     }
 
     /**
@@ -71,5 +81,17 @@ class ProductSubscriptionContext implements Context
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         Assert::true($this->productSubscriptionRepository->existsForProductId($product->getId()));
+    }
+
+    private function subscribeProductToPimAi(string $identifier)
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        if (null === $product) {
+            throw new \InvalidArgumentException(
+                sprintf('Product "%s" does not exist', $identifier)
+            );
+        }
+
+        $this->subscribeProduct->subscribe($product->getId());
     }
 }

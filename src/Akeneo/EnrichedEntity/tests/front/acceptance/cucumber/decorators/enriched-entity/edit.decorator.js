@@ -4,12 +4,12 @@ const Sidebar = require('./app/sidebar.decorator');
 const config = {
   Sidebar: {
     selector: '.AknColumn',
-    decorator: Sidebar
+    decorator: Sidebar,
   },
   Properties: {
     selector: '.AknDefault-mainContent',
-    decorator: Properties
-  }
+    decorator: Properties,
+  },
 };
 
 const Edit = async (nodeElement, createElementDecorator, page) => {
@@ -26,6 +26,9 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const getProperties = async () => {
+    const sidebar = await await getElement(page, 'Sidebar');
+    await sidebar.clickOnTab('pim-enriched-entity-edit-form-properties');
+
     return await await getElement(page, 'Properties');
   };
 
@@ -50,7 +53,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     }, nodeElement);
 
     const saveButton = await nodeElement.$('.AknButton.AknButton--apply');
-    await saveButton.click()
+    await saveButton.click();
   };
 
   const hasSuccessNotification = async () => {

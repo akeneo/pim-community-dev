@@ -1,0 +1,21 @@
+services:
+    akeneo_enrichedentity.infrastructure.validation.record.record_identifier_should_be_unique:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordIdentifierShouldBeUniqueValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.record_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.record_is_unique' }
+
+    akeneo_enrichedentity.infrastructure.validation.attribute.attribute_identifier_should_be_unique:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldBeUniqueValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.identifier_is_unique' }
+
+    akeneo_enrichedentity.infrastructure.validation.attribute.enriched_entity_identifier_should_be_unique:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityIdentifierShouldBeUniqueValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.enriched_entity.identifier_is_unique' }
