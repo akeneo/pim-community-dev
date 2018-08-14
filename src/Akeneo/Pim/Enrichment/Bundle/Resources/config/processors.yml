@@ -86,14 +86,14 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.processor.attribute_filter.product_model:
-        class: 'Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter'
         arguments:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.cached_attribute'
 
     pim_connector.processor.attribute_filter.product:
-        class: 'Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.cached_family'

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Validator\ConstraintGuesser;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -138,7 +139,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[0]
             ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
         $constraintsAll->constraints[0]->type
-            ->shouldBe('Pim\Component\Catalog\Model\ProductPriceInterface');
+            ->shouldBe(ProductPriceInterface::class);
         $constraintsAll->constraints[1]
             ->shouldBeAnInstanceOf('Pim\Component\Catalog\Validator\Constraints\IsNumeric');
         $constraintsAll->constraints[2]

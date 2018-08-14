@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\ConstraintGuesser;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
@@ -46,7 +47,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
                     'constraints' => array_merge(
                         [
                             new Type(
-                                ['type' => 'Pim\Component\Catalog\Model\ProductPriceInterface']
+                                ['type' => ProductPriceInterface::class]
                             ),
                         ],
                         $numericGuesser->guessConstraints($attribute),
