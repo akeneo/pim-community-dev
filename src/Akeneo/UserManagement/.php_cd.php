@@ -36,7 +36,7 @@ $rules = [
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // TODO: it should be moved somewhere we could centralize old symfony form
-        'Pim\Bundle\UIBundle\Form\Type\DateType', // TODO: it should be moved somewhere we could centralize old symfony form
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // TODO: it should be moved somewhere we could centralize old symfony form
         'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // TODO: it should be moved somewhere we could centralize old symfony form
         'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // TODO: it should be moved somewhere we could centralize old symfony form
         'Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: it should be moved somewhere we could centralize old symfony form or remove it
