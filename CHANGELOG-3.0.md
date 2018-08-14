@@ -12,6 +12,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Localization\CategoryUpdater` to `Akeneo\Pim\Enrichment\Component\Category\CategoryUpdater`
 - Move `Pim\Component\Catalog\Validator\ConstraintGuesser\BooleanGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\BooleanGuesser`
 - Move `Pim\Component\Catalog\Validator\ConstraintGuesser\CurrencyGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\CurrencyGuesser`
 - Move `Pim\Component\Catalog\Validator\ConstraintGuesser\DateGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\DateGuesser`

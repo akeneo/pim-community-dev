@@ -36,7 +36,7 @@ parameters:
     pim_catalog.updater.remover.price_collection_value.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover
     pim_catalog.updater.remover.group_field.class:            Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover
     pim_catalog.updater.remover.multiselect_value.class:      Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\MultiSelectAttributeRemover
-    pim_catalog.updater.category_translatable.class:          Pim\Component\Catalog\Localization\CategoryUpdater
+    pim_catalog.updater.category_translatable.class:          Akeneo\Pim\Enrichment\Component\Category\CategoryUpdater
 
     pim_catalog.command.cleaner.wrong_value_on_variant_product.class: Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongValuesOnVariantProductCleaner
 
