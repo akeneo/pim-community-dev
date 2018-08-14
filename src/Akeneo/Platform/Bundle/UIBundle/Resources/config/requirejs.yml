@@ -42,6 +42,11 @@ config:
         jquery.sidebarize:
             deps:
                 - jquery
+        jquery.form:
+            deps:
+                - jquery
+        url:
+            exports: Url
 
     paths:
         jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
@@ -85,3 +90,8 @@ config:
         # Templates
         pim/template/flash-message:              pimui/js/templates/flash-message.html
         pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
+
+        # Navigation
+        jquery.form:                      pimui/lib/jquery-form/jquery.form
+        oro/navigation/collection:        pimui/js/navigation/collection
+        oro/navigation/model:             pimui/js/navigation/model

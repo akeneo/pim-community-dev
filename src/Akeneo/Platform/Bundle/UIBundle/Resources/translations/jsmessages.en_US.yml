@@ -120,3 +120,8 @@ oro_config:
 pim_ui:
   flash:
     unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
+
+"Sorry, page was not loaded correctly": "Sorry, page was not loaded correctly"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
+"navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
+"Content of pinned page is outdated": "Content of pinned page is outdated"

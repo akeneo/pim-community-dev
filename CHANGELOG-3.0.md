@@ -858,3 +858,4 @@
 - Move `Pim\Bundle\DashboardBundle\Widget\Registry` to `Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry`
 - Move `Pim\Bundle\DashboardBundle\Widget\WidgetInterface` to `Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface`
 - Move `Pim\Bundle\UIBundle` to `Akeneo\Platform\Bundle\UIBundle\Twig`
+- Remove class `Pim\Bundle\NavigationBundle\PimNavigationBundle`
