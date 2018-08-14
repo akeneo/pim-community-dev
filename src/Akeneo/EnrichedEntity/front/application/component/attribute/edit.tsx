@@ -8,11 +8,11 @@ import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entit
 import Switch from 'akeneoenrichedentity/application/component/app/switch';
 import {
   attributeEditionLabelUpdated,
+  attributeEditionRequiredUpdated,
   attributeEditionCancel,
 } from 'akeneoenrichedentity/domain/event/attribute/edit';
 import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
-// import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
 
 interface StateProps {
   context: {
@@ -26,6 +26,7 @@ interface StateProps {
     type: AttributeType;
     valuePerLocale: boolean;
     valuePerChannel: boolean;
+    required: boolean;
   };
   errors: ValidationError[];
 }
@@ -33,44 +34,13 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
+    onRequiredUpdated: (required: boolean) => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
 }
 
 interface EditProps extends StateProps, DispatchProps {}
-
-// const AttributeTypeItemView = ({
-//   element,
-//   isActive,
-//   onClick,
-// }: {
-//   element: DropdownElement;
-//   isActive: boolean;
-//   onClick: (element: DropdownElement) => void;
-// }) => {
-//   const className = `AknDropdown-menuLink AknDropdown-menuLink--withImage ${
-//     isActive ? 'AknDropdown-menuLink--active' : ''
-//   }`;
-
-//   return (
-//     <div
-//       className={className}
-//       data-identifier={element.identifier}
-//       onClick={() => onClick(element)}
-//       onKeyPress={event => {
-//         if (' ' === event.key) onClick(element);
-//       }}
-//       tabIndex={0}
-//     >
-//       <img
-//         className="AknDropdown-menuLinkImage"
-//         src={`bundles/pimui/images/attribute/icon-${element.identifier}.svg`}
-//       />
-//       <span>{element.label}</span>
-//     </div>
-//   );
-// };
 
 class Edit extends React.Component<EditProps> {
   private labelInput: HTMLInputElement;
@@ -141,26 +111,6 @@ class Edit extends React.Component<EditProps> {
             />
           </div>
         </div>
-        {/* <div className="AknFieldContainer" data-code="type">
-          <div className="AknFieldContainer-header">
-            <label
-              className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.attribute.create.input.type"
-            >
-              {__('pim_enriched_entity.attribute.create.input.type')}
-            </label>
-          </div>
-          <div className="AknFieldContainer-inputContainer">
-            <Dropdown
-              ItemView={AttributeTypeItemView}
-              label={__('pim_enriched_entity.attribute.create.input.type')}
-              elements={this.getTypeOptions()}
-              selectedElement={this.props.data.type}
-              onSelectionChange={this.onTypeUpdate}
-            />
-          </div>
-          {getErrorsView(this.props.errors, 'type')}
-        </div> */}
         <div className="AknFieldContainer" data-code="valuePerLocale">
           <div className="AknFieldContainer-header">
             <label
@@ -197,6 +147,24 @@ class Edit extends React.Component<EditProps> {
           </div>
           {getErrorsView(this.props.errors, 'valuePerChannel')}
         </div>
+        <div className="AknFieldContainer" data-code="required">
+          <div className="AknFieldContainer-header">
+            <label
+              className="AknFieldContainer-label"
+              htmlFor="pim_enriched_entity.attribute.create.input.required"
+            >
+              {__('pim_enriched_entity.attribute.create.input.required')}
+            </label>
+          </div>
+          <div className="AknFieldContainer-inputContainer">
+            <Switch
+              id="pim_enriched_entity.attribute.create.input.required"
+              value={this.props.data.required}
+              onChange={this.props.events.onRequiredUpdated}
+            />
+            {getErrorsView(this.props.errors, 'required')}
+          </div>
+        </div>
       </div>
     );
   }
@@ -219,6 +187,9 @@ export default connect(
       events: {
         onLabelUpdated: (value: string, locale: string) => {
           dispatch(attributeEditionLabelUpdated(value, locale));
+        },
+        onRequiredUpdated: (required: boolean) => {
+          dispatch(attributeEditionRequiredUpdated(required));
         },
         onCancel: () => {
           dispatch(attributeEditionCancel());

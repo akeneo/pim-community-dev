@@ -96,6 +96,7 @@ pim_enriched_entity:
                 type: Attribute type
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
+                required: Required
             confirm: confirm
         delete:
             confirm: The attribute will be deleted. Confirm?
