@@ -6,14 +6,6 @@
   width: 60px;
   height: 34px;
 
-  &--disabled {
-    .AknSwitch-input {
-      &:checked + .AknSwitch-slider {
-        background-color: lighten(@AknGreen, 40%);
-      }
-    }
-  }
-
   &-input {
     display: none;
 
@@ -55,6 +47,21 @@
       -webkit-transition: 0.4s;
       transition: 0.4s;
       border-radius: 50%;
+    }
+  }
+
+  &--disabled {
+
+    .AknSwitch-input {
+      &:checked + .AknSwitch-slider {
+        background-color: lighten(@AknGreen, 20%);
+      }
+    }
+
+
+    .AknSwitch-slider {
+      background-color: lighten(@AknSlateGrey, 40%);
+      cursor: not-allowed;
     }
   }
 }
