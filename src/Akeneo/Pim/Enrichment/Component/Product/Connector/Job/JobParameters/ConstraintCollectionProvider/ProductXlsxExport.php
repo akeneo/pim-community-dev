@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructur
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductFilterData;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
-use Akeneo\Pim\Enrichment\Component\Validator\Constraints\Channel;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;

@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 /**
  * Remove a data from a multi select field

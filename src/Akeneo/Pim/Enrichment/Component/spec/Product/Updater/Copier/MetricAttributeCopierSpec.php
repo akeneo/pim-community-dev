@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInter
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -54,7 +54,7 @@ class ViolationNormalizer implements NormalizerInterface
      *
      * Also, product field "identifier" has a unique entity constraint with the message
      * "The same identifier is already set on another product". The same behavior is ensured thanks to the
-     * {@see Akeneo\Pim\Enrichment\Component\Validator\Constraints\UniqueValue} constraint, but with a different message.
+     * {@see Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue} constraint, but with a different message.
      * Here we keep only the first violation.
      *
      * TODO: TIP-722 - to revert once the identifier product value is dropped.

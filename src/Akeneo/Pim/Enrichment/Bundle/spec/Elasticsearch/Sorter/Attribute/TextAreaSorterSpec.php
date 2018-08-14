@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute;
 
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
@@ -10,7 +11,6 @@ use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
 
 class TextAreaSorterSpec extends ObjectBehavior
 {

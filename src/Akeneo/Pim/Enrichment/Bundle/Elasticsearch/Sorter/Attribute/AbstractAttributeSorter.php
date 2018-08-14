@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 /**
  * Abstract attribute sorter for an Elasticsearch query

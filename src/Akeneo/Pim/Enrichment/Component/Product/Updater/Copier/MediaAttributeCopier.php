@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 /**
  * Copy a media value attribute in other media value attribute

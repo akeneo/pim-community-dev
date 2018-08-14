@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
