@@ -1,9 +1,0 @@
-parameters:
-    pim_dashboard.controller.widget.class:      Pim\Bundle\DashboardBundle\Controller\WidgetController
-
-services:
-    pim_dashboard.controller.widget:
-        class: '%pim_dashboard.controller.widget.class%'
-        arguments:
-            - '@pim_dashboard.widget.registry'
-            - '@templating'

@@ -1,0 +1,17 @@
+parameters:
+    pim_notification.registry.factory.notification.class: Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry
+    pim_notification.factory.user_notification.class: Akeneo\Platform\Bundle\NotificationBundle\Factory\UserNotificationFactory
+
+services:
+    pim_notification.factory.notification:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_notification.entity.notification.class%'
+
+    pim_notification.registry.factory.notification:
+        class: '%pim_notification.registry.factory.notification.class%'
+
+    pim_notification.factory.user_notification:
+        class: '%pim_notification.factory.user_notification.class%'
+        arguments:
+            - '%pim_notification.entity.user_notification.class%'

@@ -1,0 +1,11 @@
+parameters:
+    pim_notification.notifier.class: Akeneo\Platform\Bundle\NotificationBundle\Notifier
+
+services:
+    pim_notification.notifier:
+        class: '%pim_notification.notifier.class%'
+        arguments:
+            - '@pim_notification.factory.user_notification'
+            - '@pim_user.manager'
+            - '@pim_notification.saver.notification'
+            - '@pim_notification.saver.user_notification'
