@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Widget;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Widget\ProjectCompletenessWidget;
 
 class ProjectCompletenessWidgetSpec extends ObjectBehavior

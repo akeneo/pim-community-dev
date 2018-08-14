@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
-use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
 /**
  * Factory that creates a notification.

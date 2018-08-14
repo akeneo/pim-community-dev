@@ -4,8 +4,8 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Produ
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
-use Pim\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;

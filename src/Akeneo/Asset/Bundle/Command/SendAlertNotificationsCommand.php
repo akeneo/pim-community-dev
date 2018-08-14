@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Bundle\Command;
 
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface;
-use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Console\Input\InputArgument;

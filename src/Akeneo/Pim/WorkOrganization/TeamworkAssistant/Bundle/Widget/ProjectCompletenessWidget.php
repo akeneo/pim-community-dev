@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Widget;
 
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 /**
  * Widget to display project progress

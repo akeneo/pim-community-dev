@@ -6,8 +6,8 @@ use Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscri
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Pim\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
+use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
