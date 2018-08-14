@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Channel\Component\Validator\Constraint;
 
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Symfony\Component\Validator\Constraint;

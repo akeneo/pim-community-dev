@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Channel\Component\Validator\Constraint;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

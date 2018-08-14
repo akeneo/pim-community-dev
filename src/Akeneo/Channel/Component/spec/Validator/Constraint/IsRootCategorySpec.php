@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Channel\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Validator\Constraints\IsRootCategory;
+use Akeneo\Channel\Component\Validator\Constraint\IsRootCategory;
 use Symfony\Component\Validator\Constraint;
 
 class IsRootCategorySpec extends ObjectBehavior

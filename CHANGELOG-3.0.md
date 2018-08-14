@@ -12,6 +12,12 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Validator\Constraints\ConversionUnits` to `Akeneo\Channel\Component\Validator\Constraint\ConversionUnits`
+- Move `Pim\Component\Catalog\Validator\Constraints\ConversionUnitsValidator` to `Akeneo\Channel\Component\Validator\Constraint\ConversionUnitsValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated` to `Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivated`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivatedValidator` to `Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivatedValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsRootCategory` to `Akeneo\Channel\Component\Validator\Constraint\IsRootCategory`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsRootCategoryValidator` to `Akeneo\Channel\Component\Validator\Constraint\IsRootCategoryValidator`
 - Move `Pim\Component\Catalog\Validator\Constraints\ValidRegex` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegex`
 - Move `Pim\Component\Catalog\Validator\Constraints\ValidRegexValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegexValidator`
 - Move `Pim\Component\Catalog\Validator\Constraints\ValidNumberRange` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange`

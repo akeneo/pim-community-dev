@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Channel\Component\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -9,16 +9,16 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class IsCurrencyActivated extends Constraint
+class IsRootCategory extends Constraint
 {
     /** @var string */
-    public $message = 'The currency "%currency%" has to be activated.';
+    public $message = 'The category "%category%" has to be a root category.';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pim_is_currency_activated_validator';
+        return 'pim_is_root_category_validator';
     }
 }

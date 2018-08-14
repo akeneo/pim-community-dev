@@ -62,20 +62,6 @@ services:
             - '%pim_catalog.entity.locale.class%'
             - '@pim_catalog.repository.locale'
 
-    pim_catalog.validator.constraints.locale_validator:
-        class: 'Akeneo\Channel\Component\Validator\Constraint\LocaleValidator'
-        arguments:
-            - '@pim_catalog.repository.locale'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_locale_validator }
-
-    pim_catalog.validator.constraint.activated_locale:
-        class: 'Akeneo\Channel\Component\Validator\Constraint\ActivatedLocaleValidator'
-        arguments:
-            - '@pim_catalog.repository.cached_locale'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
-
     pim_catalog.updater.locale:
         class: 'Akeneo\Channel\Component\Updater\LocaleUpdater'
 

@@ -6,6 +6,12 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ConversionUnits/Akeneo\\Channel\\Component\\Validator\\Constraint\\ConversionUnits/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ConversionUnitsValidator/Akeneo\\Channel\\Component\\Validator\\Constraint\\ConversionUnitsValidator/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\IsCurrencyActivated/Akeneo\\Channel\\Component\\Validator\\Constraint\\IsCurrencyActivated/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\IsCurrencyActivatedValidator/Akeneo\\Channel\\Component\\Validator\\Constraint\\IsCurrencyActivatedValidator/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\IsRootCategory/Akeneo\\Channel\\Component\\Validator\\Constraint\\IsRootCategory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\IsRootCategoryValidator/Akeneo\\Channel\\Component\\Validator\\Constraint\\IsRootCategoryValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ValidRegex/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ValidRegex/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ValidRegexValidator/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ValidRegexValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ValidNumberRange/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ValidNumberRange/g'

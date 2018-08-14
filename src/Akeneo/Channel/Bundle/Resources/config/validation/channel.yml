@@ -16,13 +16,13 @@ Akeneo\Channel\Component\Model\Channel:
             - NotBlank:
                 payload:
                     standardPropertyName: tree
-            - Pim\Component\Catalog\Validator\Constraints\IsRootCategory:
+            - Akeneo\Channel\Component\Validator\Constraint\IsRootCategory:
                 payload:
                     standardPropertyName: tree
         currencies:
             - Count: { min: 1 }
             - All:
-                - Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated:
+                - Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivated:
                     payload:
                       standardPropertyName: currencies
         locales:
@@ -30,7 +30,7 @@ Akeneo\Channel\Component\Model\Channel:
         translations:
             - Valid: ~
         conversionUnits:
-            - Pim\Component\Catalog\Validator\Constraints\ConversionUnits: ~
+            - Akeneo\Channel\Component\Validator\Constraint\ConversionUnits: ~
 
 Akeneo\Channel\Component\Model\ChannelTranslation:
     properties:

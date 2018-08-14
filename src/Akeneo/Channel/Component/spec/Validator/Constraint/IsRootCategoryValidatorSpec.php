@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Channel\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Pim\Component\Catalog\Validator\Constraints\IsRootCategory;
-use Pim\Component\Catalog\Validator\Constraints\IsRootCategoryValidator;
+use Akeneo\Channel\Component\Validator\Constraint\IsRootCategory;
+use Akeneo\Channel\Component\Validator\Constraint\IsRootCategoryValidator;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
