@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UniqueVa
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 class UniqueValueGuesserSpec extends ObjectBehavior

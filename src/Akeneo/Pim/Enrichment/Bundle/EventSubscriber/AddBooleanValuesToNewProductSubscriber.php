@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

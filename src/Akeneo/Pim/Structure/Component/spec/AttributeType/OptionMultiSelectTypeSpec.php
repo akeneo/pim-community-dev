@@ -2,11 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\AttributeType;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactory;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class OptionMultiSelectTypeSpec extends ObjectBehavior
 {

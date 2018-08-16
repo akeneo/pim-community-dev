@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AttributeType\AbstractCompletenessPerAttributeTypeTestCase;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**

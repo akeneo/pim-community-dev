@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\tests\integration\Updater\Copier;
 
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)

@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 use Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;

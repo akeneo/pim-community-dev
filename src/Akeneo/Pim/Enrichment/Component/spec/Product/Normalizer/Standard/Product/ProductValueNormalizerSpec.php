@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Produ
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;

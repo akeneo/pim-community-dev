@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\AttributeType;
 
 use Akeneo\Pim\Structure\Component\AttributeTypeInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Abstract attribute type

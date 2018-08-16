@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullProperties;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

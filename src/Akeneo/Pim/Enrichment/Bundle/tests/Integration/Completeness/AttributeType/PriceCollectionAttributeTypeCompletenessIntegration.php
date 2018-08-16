@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 

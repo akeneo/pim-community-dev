@@ -12,6 +12,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\AttributeTypes` to `Akeneo\Pim\Structure\Component\AttributeTypes`
 - Move `Pim\Component\Catalog\AttributeTypeInterface` to `Akeneo\Pim\Structure\Component\AttributeTypeInterface`
 - Move `Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException`
 - Move `Pim\Component\Catalog\Exception\InvalidArgumentException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException`

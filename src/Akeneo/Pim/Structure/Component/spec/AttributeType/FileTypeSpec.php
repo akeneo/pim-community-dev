@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class FileTypeSpec extends ObjectBehavior
 {

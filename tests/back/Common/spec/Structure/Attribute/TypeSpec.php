@@ -4,7 +4,7 @@ namespace spec\Akeneo\Test\Common\Structure\Attribute;
 
 use Akeneo\Test\Common\Structure\Attribute\Type;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Prophecy\Argument;
 
 class TypeSpec extends ObjectBehavior

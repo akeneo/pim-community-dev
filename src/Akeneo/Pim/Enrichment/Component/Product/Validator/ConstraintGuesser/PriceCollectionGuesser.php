@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Type;

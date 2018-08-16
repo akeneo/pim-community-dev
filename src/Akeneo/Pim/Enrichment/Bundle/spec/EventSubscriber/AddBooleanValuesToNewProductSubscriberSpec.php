@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AddBooleanValuesToNewProductSubscriber;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

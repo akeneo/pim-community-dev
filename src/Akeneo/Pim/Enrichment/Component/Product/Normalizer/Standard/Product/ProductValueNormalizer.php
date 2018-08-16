@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
