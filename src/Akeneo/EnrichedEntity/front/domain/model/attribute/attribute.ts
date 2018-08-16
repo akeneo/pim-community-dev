@@ -16,6 +16,25 @@ export enum AttributeType {
   Image = 'image',
 }
 
+export enum ValidationRuleOptions {
+  Email = 'email',
+  RegularExpression = 'regular_expression',
+  Url = 'url'
+};
+
+export enum AllowedExtensionsOptions {
+  gif = 'gif',
+  jfif = 'jfif',
+  jif = 'jif',
+  jpeg = 'jpeg',
+  jpg = 'jpg',
+  pdf = 'pdf',
+  png = 'png',
+  psd = 'psd',
+  tif = 'tif',
+  tiff = 'tiff',
+};
+
 interface CommonNormalizedAttribute {
   identifier: NormalizedAttributeIdentifier;
   enrichedEntityIdentifier: string;
@@ -32,6 +51,8 @@ export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
   maxLength: MaxLength;
   isTextarea: IsTextarea;
   isRichTextEditor: IsRichTextEditor;
+  validationRule: ValidationRule;
+  regularExpression: RegularExpression;
 }
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
@@ -44,7 +65,16 @@ export type MaxFileSize = number | null;
 export type AllowedExtensions = string[] | null;
 export type IsTextarea = boolean;
 export type IsRichTextEditor = boolean;
-export type AdditionalProperty = MaxLength | MaxFileSize | AllowedExtensions | IsTextarea | IsRichTextEditor;
+export type ValidationRule = string | null;
+export type RegularExpression = string | null;
+export type AdditionalProperty =
+  MaxLength
+  | MaxFileSize
+  | AllowedExtensions
+  | IsTextarea
+  | IsRichTextEditor
+  | ValidationRule
+  | RegularExpression;
 
 export type NormalizedAttribute = NormalizedTextAttribute | NormalizedImageAttribute;
 
@@ -168,7 +198,9 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
     required: boolean,
     readonly maxLength: MaxLength,
     readonly isTextarea: IsTextarea,
-    readonly isRichTextEditor: IsRichTextEditor
+    readonly isRichTextEditor: IsRichTextEditor,
+    readonly validationRule: ValidationRule,
+    readonly regularExpression: RegularExpression
   ) {
     super(
       identifier,
@@ -201,7 +233,9 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
       normalizedTextAttribute.required,
       normalizedTextAttribute.maxLength,
       normalizedTextAttribute.isTextarea,
-      normalizedTextAttribute.isRichTextEditor
+      normalizedTextAttribute.isRichTextEditor,
+      normalizedTextAttribute.validationRule,
+      normalizedTextAttribute.regularExpression
     );
   }
 
@@ -211,6 +245,8 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
       maxLength: this.maxLength,
       isTextarea: this.isTextarea,
       isRichTextEditor: this.isRichTextEditor,
+      validationRule: this.validationRule,
+      regularExpression: this.regularExpression
     };
   }
 }
@@ -243,6 +279,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
 
     Object.freeze(this);
   }
+
   public static createFromNormalized(normalizedImageAttribute: NormalizedImageAttribute) {
     return new ConcreteImageAttribute(
       createIdentifier(

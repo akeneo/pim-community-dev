@@ -112,6 +112,13 @@ pim_enriched_entity:
                 rich_text_editor: Rich Text Editor
                 max_file_size: Max file size (MB)
                 allowed_extensions: Allowed extensions
+                validation_rule: Validation rule
+                regular_expression: Regular expression
+                options:
+                    validation_rule:
+                        email: E-mail
+                        regular_expression: Regular expression
+                        url: URL
         delete:
             confirm: The attribute will be deleted. Confirm?
         notification:

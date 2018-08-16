@@ -3,7 +3,45 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Switch from 'akeneoenrichedentity/application/component/app/switch';
-import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AdditionalProperty, ValidationRuleOptions} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
+
+const AttributeValidationRuleItemView = ({
+   element,
+   isActive,
+   onClick,
+ }: {
+  element: DropdownElement;
+  isActive: boolean;
+  onClick: (element: DropdownElement) => void;
+}) => {
+  const className = `AknDropdown-menuLink AknDropdown-menuLink--withImage ${
+    isActive ? 'AknDropdown-menuLink--active' : ''
+  }`;
+
+  return (
+    <div
+      className={className}
+      data-identifier={element.identifier}
+      onClick={() => onClick(element)}
+      onKeyPress={event => {
+        if (' ' === event.key) onClick(element);
+      }}
+      tabIndex={0}
+    >
+      <span>{element.label}</span>
+    </div>
+  );
+};
+
+const getValidationRuleOptions = (): DropdownElement[] => {
+  return Object.values(ValidationRuleOptions).map((option: string) => {
+    return {
+      identifier: option,
+      label: __(`pim_enriched_entity.attribute.edit.input.options.validation_rule.${option}`),
+    };
+  });
+};
 
 export default ({
   attribute,
@@ -73,6 +111,50 @@ export default ({
         </div>
         {getErrorsView(errors, 'richTextEditor')}
       </div>
+      }
+      {!attribute.isTextarea &&
+        <div className="AknFieldContainer" data-code="validation-rule">
+          <div className="AknFieldContainer-header">
+            <label
+              className="AknFieldContainer-label"
+              htmlFor="pim_enriched_entity.attribute.edit.input.validation_rule"
+            >
+              {__('pim_enriched_entity.attribute.edit.input.validation_rule')}
+            </label>
+          </div>
+          <div className="AknFieldContainer-inputContainer">
+            <Dropdown
+              ItemView={AttributeValidationRuleItemView}
+              label={__('pim_enriched_entity.attribute.edit.input.validation_rule')}
+              elements={getValidationRuleOptions()}
+              selectedElement={(attribute.validationRule) ? attribute.validationRule : ValidationRuleOptions.Email}
+              onSelectionChange={(value: DropdownElement) => onAdditionalPropertyUpdated('validationRule', value.identifier)}
+            />
+          </div>
+          {getErrorsView(errors, 'validationRule')}
+        </div>
+      }
+      {(!attribute.isTextarea && attribute.validationRule === ValidationRuleOptions.RegularExpression) &&
+        <div className="AknFieldContainer" data-code="regular_expression">
+          <div className="AknFieldContainer-header">
+            <label
+              className="AknFieldContainer-label"
+              htmlFor="pim_enriched_entity.attribute.edit.input.regular_expression"
+            >
+              {__('pim_enriched_entity.attribute.edit.input.regular_expression')}
+            </label>
+          </div>
+          <div className="AknFieldContainer-inputContainer">
+            <input
+              type="text"
+              className="AknTextField"
+              id="pim_enriched_entity.attribute.edit.input.regular_expression"
+              name="regularExpression"
+              onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
+            />
+          </div>
+          {getErrorsView(errors, 'regularExpression')}
+        </div>
       }
     </div>
   );

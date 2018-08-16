@@ -3,6 +3,7 @@ import {
   NormalizedAttribute,
   AdditionalProperty,
   AttributeType,
+  ValidationRuleOptions
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
 export interface EditState {
@@ -29,12 +30,15 @@ const initEditState = (): EditState => ({
     maxLength: 0,
     isTextarea: false,
     isRichTextEditor: false,
+    validationRule: ValidationRuleOptions.Email,
+    maxFileSize: 0,
+    allowedExtensions: []
   },
   errors: [],
 });
 
 const allowedAdditionalData = {
-  [AttributeType.Text]: ['maxLength', 'isTextarea', 'isRichTextEditor'],
+  [AttributeType.Text]: ['maxLength', 'isTextarea', 'isRichTextEditor', 'validationRule'],
   [AttributeType.Image]: ['maxFileSize', 'allowedExtensions'],
 };
 

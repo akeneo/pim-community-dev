@@ -3,7 +3,7 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Select2 from 'akeneoenrichedentity/application/component/app/select2';
-import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AdditionalProperty, AllowedExtensionsOptions} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
 export default ({
   attribute,
@@ -14,19 +14,6 @@ export default ({
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
   errors: ValidationError[];
 }) => {
-  const allowedExtensionsList = {
-    gif: 'gif',
-    jfif: 'jfif',
-    jif: 'jif',
-    jpeg: 'jpeg',
-    jpg: 'jpg',
-    pdf: 'pdf',
-    png: 'png',
-    psd: 'psd',
-    tif: 'tif',
-    tiff: 'tiff',
-  };
-
   return (
     <div>
       <div className="AknFieldContainer" data-code="max-file-size">
@@ -62,7 +49,7 @@ export default ({
           <Select2
             fieldId="pim_enriched_entity.attribute.edit.input.allowed_extensions"
             fieldName="allowed_extensions"
-            data={allowedExtensionsList}
+            data={AllowedExtensionsOptions}
             value={attribute.allowedExtensions}
             multiple={true}
             readonly={false}
