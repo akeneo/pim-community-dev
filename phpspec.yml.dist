@@ -200,11 +200,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
         src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
-    DashboardBundle:
-        namespace: Pim\Bundle\DashboardBundle
-        psr4_prefix: Pim\Bundle\DashboardBundle
-        spec_path: src/Pim/Bundle/DashboardBundle
-        src_path: src/Pim/Bundle/DashboardBundle
     DataGridBundle:
         namespace: Pim\Bundle\DataGridBundle
         psr4_prefix: Pim\Bundle\DataGridBundle
@@ -235,11 +230,6 @@ suites:
         psr4_prefix: Pim\Bundle\LocalizationBundle
         spec_path: src/Pim/Bundle/LocalizationBundle
         src_path: src/Pim/Bundle/LocalizationBundle
-    NotificationBundle:
-        namespace: Pim\Bundle\NotificationBundle
-        psr4_prefix: Pim\Bundle\NotificationBundle
-        spec_path: src/Pim/Bundle/NotificationBundle
-        src_path: src/Pim/Bundle/NotificationBundle
     ReferenceDataBundle:
         namespace: Pim\Bundle\ReferenceDataBundle
         psr4_prefix: Pim\Bundle\ReferenceDataBundle

@@ -1,6 +1,0 @@
-Pim\Bundle\NotificationBundle\Entity\Notification:
-    properties:
-        comment:
-            - Length:
-                max: 255
-                maxMessage: 'Your comment cannot be longer than {{ limit }} characters.'

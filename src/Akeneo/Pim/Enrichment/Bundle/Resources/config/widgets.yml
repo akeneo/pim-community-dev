@@ -1,0 +1,10 @@
+services:
+    pim_dashboard.widget.completeness:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Widget\CompletenessWidget'
+        arguments:
+            - '@pim_catalog.repository.completeness'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: pim_dashboard.widget, position: 20 }

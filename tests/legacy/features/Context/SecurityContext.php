@@ -2,10 +2,10 @@
 
 namespace Context;
 
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Doctrine\Common\Util\ClassUtils;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

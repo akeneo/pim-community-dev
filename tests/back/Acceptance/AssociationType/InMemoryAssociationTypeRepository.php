@@ -4,7 +4,7 @@ namespace Akeneo\Test\Acceptance\AssociationType;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface;
-use \Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
@@ -54,7 +54,7 @@ class InMemoryAssociationTypeRepository implements AssociationTypeRepositoryInte
     {
         $associations = $entity->getAssociations();
         $associationType = $this->associationType->filter(function (AssociationTypeInterface $associationType) use ($associations) {
-            return !$associations->exists(function ($key, ProductAssociationInterface $productAssociation) use ($associationType){
+            return !$associations->exists(function ($key, ProductAssociationInterface $productAssociation) use ($associationType) {
                 return $productAssociation->getAssociationType()->getCode() === $associationType->getCode();
             });
         });
