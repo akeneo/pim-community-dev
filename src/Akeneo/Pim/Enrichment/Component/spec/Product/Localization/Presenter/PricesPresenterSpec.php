@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Localization\Presenter;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use PhpSpec\ObjectBehavior;

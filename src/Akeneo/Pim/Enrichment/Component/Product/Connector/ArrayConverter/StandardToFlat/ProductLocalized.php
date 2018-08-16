@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 
 /**
  * Convert standard format to flat format for product with localized values.

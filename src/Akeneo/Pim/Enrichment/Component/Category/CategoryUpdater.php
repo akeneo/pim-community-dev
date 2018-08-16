@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Localization;
+namespace Akeneo\Pim\Enrichment\Component\Category;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;

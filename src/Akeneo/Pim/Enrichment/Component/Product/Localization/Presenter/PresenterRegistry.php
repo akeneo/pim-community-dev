@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Localization\Presenter;
+namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
