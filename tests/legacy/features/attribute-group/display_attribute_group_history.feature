@@ -11,6 +11,7 @@ Feature: Display the attribute group history
       | label-en_US | group | type             | code        |
       | Description | other | pim_catalog_text | description |
 
+  @ce
   Scenario: Successfully edit a group and see the history
     Given I am on the attribute group creation page
     And I change the Code to "Technical"

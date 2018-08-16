@@ -8,6 +8,7 @@ Feature: Ensure versioning on attribute group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @ce
   Scenario: Successfully version an attribute group
     Given I am on the "sizes" attribute group page
     And I visit the "History" tab
