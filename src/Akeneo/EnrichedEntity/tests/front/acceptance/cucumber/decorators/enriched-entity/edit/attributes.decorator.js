@@ -15,7 +15,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
 
   const isEmpty = async () => {
     await isLoaded();
-    await page.waitFor('.AknDefault-mainContent .AknSubsection .empty-attributes');
+    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknGridContainer-noData');
 
     return true;
   };

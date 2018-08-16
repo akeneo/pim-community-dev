@@ -27,7 +27,7 @@ module.exports = async function(cucumber) {
       await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
-    await this.page.waitFor('.AknFormContainer.AknFormContainer--withPadding');
+    await this.page.waitFor('.AknDefault-mainContent[data-tab="pim-enriched-entity-edit-form-attribute"] .content');
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const isLoaded = await properties.isLoaded();
@@ -56,7 +56,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  When('the user asks for the enriched entity {string}', askForEnrichedEntity);
+  When('the user asks for the enriched entity {string}', {timeout: 90000}, askForEnrichedEntity);
 
   When('the user gets the enriched entity {string} with label {string}', async function(
     expectedIdentifier,

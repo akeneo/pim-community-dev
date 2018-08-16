@@ -90,8 +90,7 @@ class Attribute extends React.Component<CreateProps> {
                       entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale),
                     })}
                   </div>
-                  <div
-                      className="AknGridContainer-noDataSubtitle">{__('pim_enriched_entity.attribute.no_data.subtitle')}</div>
+                  <div className="AknGridContainer-noDataSubtitle">{__('pim_enriched_entity.attribute.no_data.subtitle')}</div>
                   <button
                       className="AknButton AknButton--action"
                       onClick={this.props.events.onAttributeCreationStart}

@@ -8,7 +8,6 @@ Feature: Lists all attributes related to an enriched entity
     Given the following enriched entity:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
-      | brand      | {"en_US": "Brand", "fr_FR": "Marque"} |
     And the following attributes for the enriched entity "designer":
       | code     | type  | labels                                  |
       | name     | text  | {"en_US": "Name", "fr_FR": "Name"}      |
