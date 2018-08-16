@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Component\tests\integration\Validator;
 
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 
 class PropertyActionValidatorIntegration extends TestCase

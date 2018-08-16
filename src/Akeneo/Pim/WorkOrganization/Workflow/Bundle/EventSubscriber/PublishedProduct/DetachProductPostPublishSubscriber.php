@@ -16,7 +16,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

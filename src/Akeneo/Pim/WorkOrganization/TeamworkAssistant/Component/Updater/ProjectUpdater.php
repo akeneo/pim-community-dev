@@ -18,7 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 
 /**
  * Project updater is able to hydrate a project with given parameters.

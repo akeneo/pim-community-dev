@@ -11,7 +11,7 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Psr\Container\ContainerInterface;
 
 /**
