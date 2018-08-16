@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Test\Common\Structure\Attribute;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class BuilderSpec extends ObjectBehavior
 {

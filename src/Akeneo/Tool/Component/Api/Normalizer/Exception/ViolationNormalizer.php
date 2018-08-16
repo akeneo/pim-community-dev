@@ -3,10 +3,10 @@
 namespace Akeneo\Tool\Component\Api\Normalizer\Exception;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Doctrine\Common\Inflector\Inflector;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -54,7 +54,7 @@ class ViolationNormalizer implements NormalizerInterface
      *
      * Also, product field "identifier" has a unique entity constraint with the message
      * "The same identifier is already set on another product". The same behavior is ensured thanks to the
-     * {@see Pim\Component\Catalog\Validator\Constraints\UniqueValue} constraint, but with a different message.
+     * {@see Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue} constraint, but with a different message.
      * Here we keep only the first violation.
      *
      * TODO: TIP-722 - to revert once the identifier product value is dropped.

@@ -12,6 +12,274 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\ProductEvents` to `Akeneo\Pim\Enrichment\Component\Product\ProductEvents`
+- Move `Pim\Component\Catalog\FileStorage` to `Akeneo\Pim\Enrichment\Component\FileStorage`
+- Move `Pim\Component\Catalog\AttributeTypes` to `Akeneo\Pim\Structure\Component\AttributeTypes`
+- Move `Pim\Component\Catalog\AttributeTypeInterface` to `Akeneo\Pim\Structure\Component\AttributeTypeInterface`
+- Move `Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException`
+- Move `Pim\Component\Catalog\Exception\InvalidArgumentException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException`
+- Move `Pim\Component\Catalog\Exception\InvalidAttributeException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException`
+- Move `Pim\Component\Catalog\Exception\InvalidDirectionException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException`
+- Move `Pim\Component\Catalog\Exception\InvalidOperatorException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException`
+- Move `Pim\Component\Catalog\Exception\InvalidOptionException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException`
+- Move `Pim\Component\Catalog\Exception\InvalidOptionsException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException`
+- Move `Pim\Component\Catalog\Exception\MissingIdentifierException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\MissingIdentifierException`
+- Move `Pim\Component\Catalog\Exception\ObjectNotFoundException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException`
+- Move `Pim\Component\Catalog\Exception\ProductQueryException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\ProductQueryException`
+- Move `Pim\Component\Catalog\Exception\UnsupportedFilterException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException`
+- Move `Pim\Component\Catalog\Localization\Localizer\AttributeConverter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverter`
+- Move `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface`
+- Move `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistry`
+- Move `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistryInterface`
+- Move `Pim\Component\Catalog\Localization\Localizer\MetricLocalizer` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\MetricLocalizer`
+- Move `Pim\Component\Catalog\Localization\Localizer\PriceLocalizer` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\PriceLocalizer`
+- Move `Pim\Component\Catalog\Localization\Presenter\MetricPresenter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\MetricPresenter`
+- Move `Pim\Component\Catalog\Localization\Presenter\PresenterRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistry`
+- Move `Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface`
+- Move `Pim\Component\Catalog\Localization\Presenter\PricesPresenter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PricesPresenter`
+- Move `Pim\Component\Catalog\Localization\CategoryUpdater` to `Akeneo\Pim\Enrichment\Component\Category\CategoryUpdater`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\BooleanGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\BooleanGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\CurrencyGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\CurrencyGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\DateGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\DateGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\EmailGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\EmailGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\FileGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\FileGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\LengthGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\LengthGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\MetricGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\MetricGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\NotBlankGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\NotBlankGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\NotDecimalGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\NotDecimalGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\NumericGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\NumericGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\PriceCollectionGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\PriceCollectionGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\RangeGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\RangeGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\RegexGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\RegexGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\StringGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\StringGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\UniqueValueGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UniqueValueGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesser\UrlGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UrlGuesser`
+- Move `Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity`
+- Move `Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntityValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntity` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntity`
+- Move `Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntityValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntityValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\Boolean` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean`
+- Move `Pim\Component\Catalog\Validator\Constraints\BooleanValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\BooleanValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\Channel` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel`
+- Move `Pim\Component\Catalog\Validator\Constraints\ChannelValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ChannelValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\Currency` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Currency`
+- Move `Pim\Component\Catalog\Validator\Constraints\CurrencyValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\CurrencyValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\File` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File`
+- Move `Pim\Component\Catalog\Validator\Constraints\FileExtension` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileExtension`
+- Move `Pim\Component\Catalog\Validator\Constraints\FileExtensionValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileExtensionValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FileValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsNumeric` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsNumericValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumericValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsString` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsStringValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsStringValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\LocalizableValue` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValue`
+- Move `Pim\Component\Catalog\Validator\Constraints\LocalizableValueValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValueValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotDecimal` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotDecimalValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimalValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamily`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotEmptyFamilyValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamilyValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxes`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes`
+- Move `Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTree`
+- Move `Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\Range` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range`
+- Move `Pim\Component\Catalog\Validator\Constraints\RangeValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\RangeValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\SameFamilyThanParent`
+- Move `Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\SameFamilyThanParentValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ScopableValue` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValue`
+- Move `Pim\Component\Catalog\Validator\Constraints\ScopableValueValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValueValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\UniqueValue` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue`
+- Move `Pim\Component\Catalog\Validator\Constraints\UniqueValueValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValueValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis`
+- Move `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\VariantProductParent` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParent`
+- Move `Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParentValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\WritableDirectory` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory`
+- Move `Pim\Component\Catalog\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator`
+- Move `Pim\Component\Catalog\Validator\Mapping\ClassMetadataFactory` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\ClassMetadataFactory`
+- Move `Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\DelegatingClassMetadataFactory`
+- Move `Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory` to `Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\ProductValueMetadataFactory`
+- Move `Pim\Component\Catalog\Validator\AttributeConstraintGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeConstraintGuesser`
+- Move `Pim\Component\Catalog\Validator\AttributeValidatorHelper` to `Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper`
+- Move `Pim\Component\Catalog\Validator\ChainedAttributeConstraintGuesser` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ChainedAttributeConstraintGuesser`
+- Move `Pim\Component\Catalog\Validator\ConstraintGuesserInterface` to `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface`
+- Move `Pim\Component\Catalog\Validator\UniqueAxesCombinationSet` to `Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet`
+- Move `Pim\Component\Catalog\Validator\UniqueValuesSet` to `Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet`
+- Move `Pim\Component\Catalog\Validator\Constraints\ConversionUnits` to `Akeneo\Channel\Component\Validator\Constraint\ConversionUnits`
+- Move `Pim\Component\Catalog\Validator\Constraints\ConversionUnitsValidator` to `Akeneo\Channel\Component\Validator\Constraint\ConversionUnitsValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated` to `Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivated`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivatedValidator` to `Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivatedValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsRootCategory` to `Akeneo\Channel\Component\Validator\Constraint\IsRootCategory`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsRootCategoryValidator` to `Akeneo\Channel\Component\Validator\Constraint\IsRootCategoryValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidRegex` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegex`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidRegexValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegexValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidNumberRange` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidNumberRangeValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRangeValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidMetric` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidMetricValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidDateRange` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange`
+- Move `Pim\Component\Catalog\Validator\Constraints\ValidDateRangeValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRangeValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NullProperties` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties`
+- Move `Pim\Component\Catalog\Validator\Constraints\NullPropertiesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NullPropertiesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotNullProperties` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullProperties`
+- Move `Pim\Component\Catalog\Validator\Constraints\NotNullPropertiesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullPropertiesValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfigured` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfiguredValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfiguredValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilter`
+- Move `Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilterValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilterValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyVariant` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyVariant`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyVariantValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOption` to `Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOption`
+- Move `Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOptionValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\Immutable` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\ImmutableValidator`
+- Move `Pim\Component\Catalog\Model\AbstractMetric` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractMetric`
+- Move `Pim\Component\Catalog\Model\AbstractProductPrice` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductPrice`
+- Move `Pim\Component\Catalog\Model\AbstractValue` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue`
+- Move `Pim\Component\Catalog\Model\CommonAttributeCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection`
+- Move `Pim\Component\Catalog\Model\EntityWithAssociationsInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface`
+- Move `Pim\Component\Catalog\Model\EntityWithFamilyInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface`
+- Move `Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface`
+- Move `Pim\Component\Catalog\Model\EntityWithValuesInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface`
+- Move `Pim\Component\Catalog\Model\Metric` to `Akeneo\Pim\Enrichment\Component\Product\Model\Metric`
+- Move `Pim\Component\Catalog\Model\MetricInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface`
+- Move `Pim\Component\Catalog\Model\PriceCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection`
+- Move `Pim\Component\Catalog\Model\PriceCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface`
+- Move `Pim\Component\Catalog\Model\ProductPrice` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice`
+- Move `Pim\Component\Catalog\Model\ProductPriceInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface`
+- Move `Pim\Component\Catalog\Model\ProductUniqueValueCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueValueCollectionInterface`
+- Move `Pim\Component\Catalog\Model\ProductValueKeyGenerator` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductValueKeyGenerator`
+- Move `Pim\Component\Catalog\Model\ScopableInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ScopableInterface`
+- Move `Pim\Component\Catalog\Model\TimestampableInterface` to `Akeneo\Tool\Component\Versioning\Model\TimestampableInterface`
+- Move `Pim\Component\Catalog\Model\ValueCollection` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection`
+- Move `Pim\Component\Catalog\Model\ValueCollectionInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface`
+- Move `Pim\Component\Catalog\Model\VariantProductInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\VariantProductInterface`
+- Move `Pim\Component\Catalog\Updater\Adder\AbstractAttributeAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractAttributeAdder`
+- Move `Pim\Component\Catalog\Updater\Adder\AbstractFieldAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractFieldAdder`
+- Move `Pim\Component\Catalog\Updater\Adder\AdderInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface`
+- Move `Pim\Component\Catalog\Updater\Adder\AdderRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistry`
+- Move `Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface`
+- Move `Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder`
+- Move `Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AttributeAdderInterface`
+- Move `Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder`
+- Move `Pim\Component\Catalog\Updater\Adder\FieldAdderInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface`
+- Move `Pim\Component\Catalog\Updater\Adder\GroupFieldAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder`
+- Move `Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\MultiSelectAttributeAdder`
+- Move `Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\PriceCollectionAttributeAdder`
+- Move `Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier`
+- Move `Pim\Component\Catalog\Updater\Copier\AttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier`
+- Move `Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopierInterface`
+- Move `Pim\Component\Catalog\Updater\Copier\CopierInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface`
+- Move `Pim\Component\Catalog\Updater\Copier\CopierRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistry`
+- Move `Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface`
+- Move `Pim\Component\Catalog\Updater\Copier\FieldCopierInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\FieldCopierInterface`
+- Move `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\MediaAttributeCopier`
+- Move `Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\MetricAttributeCopier`
+- Move `Pim\Component\Catalog\Updater\Remover\AbstractAttributeRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AbstractAttributeRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\AbstractFieldRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AbstractFieldRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface`
+- Move `Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\FieldRemoverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface`
+- Move `Pim\Component\Catalog\Updater\Remover\GroupFieldRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\MultiSelectAttributeRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\RemoverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverInterface`
+- Move `Pim\Component\Catalog\Updater\Remover\RemoverRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistry`
+- Move `Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface`
+- Move `Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractAttributeSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\AttributeSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AttributeSetterInterface`
+- Move `Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\EnabledFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\FieldSetterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface`
+- Move `Pim\Component\Catalog\Updater\Setter\GroupFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\MediaAttributeSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\ParentFieldSetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\ParentFieldSetter`
+- Move `Pim\Component\Catalog\Updater\Setter\SetterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface`
+- Move `Pim\Component\Catalog\Updater\Setter\SetterRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistry`
+- Move `Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface`
+- Move `Pim\Component\Catalog\Updater\EntityWithValuesUpdater` to `Akeneo\Pim\Enrichment\Component\Product\Updater\EntityWithValuesUpdater`
+- Move `Pim\Component\Catalog\Updater\GroupUpdater` to `Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater`
+- Move `Pim\Component\Catalog\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\Updater\ProductModelUpdater`
+- Move `Pim\Component\Catalog\Updater\ProductUpdater` to `Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater`
+- Move `Pim\Component\Catalog\Updater\PropertyAdder` to `Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyAdder`
+- Move `Pim\Component\Catalog\Updater\PropertyCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyCopier`
+- Move `Pim\Component\Catalog\Updater\PropertyRemover` to `Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyRemover`
+- Move `Pim\Component\Catalog\Updater\PropertySetter` to `Akeneo\Pim\Enrichment\Component\Product\Updater\PropertySetter`
+- Move `Pim\Component\Catalog\Updater\Remover\FamilyVariantRemover` to `Akeneo\Pim\Structure\Component\Remover\FamilyVariantRemover`
+- Move `Pim\Component\Catalog\Updater\Remover\FamilyRemover` to `Akeneo\Pim\Structure\Component\Remover\FamilyRemover`
+- Move `Pim\Component\Catalog\Factory\Value\DateValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\MediaValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MediaValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\MetricValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\OptionsValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\OptionValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\ScalarValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ScalarValueFactory`
+- Move `Pim\Component\Catalog\Factory\Value\ValueFactoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface`
+- Move `Pim\Component\Catalog\Factory\GroupFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory`
+- Move `Pim\Component\Catalog\Factory\MetricFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory`
+- Move `Pim\Component\Catalog\Factory\PriceFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory`
+- Move `Pim\Component\Catalog\Factory\ProductUniqueDataFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ProductUniqueDataFactory`
+- Move `Pim\Component\Catalog\Factory\ValueCollectionFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`
+- Move `Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
+- Move `Pim\Component\Catalog\Factory\ValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
+- Move `Pim\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver` 
+- Move `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface` 
+- Move `Pim\Component\Catalog\Manager\CompletenessManager` to `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\CompletenessCollectionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\PropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\AbstractProductValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\BooleanNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\BooleanNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\DateNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DateNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\DummyNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\DummyNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\MediaNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MediaNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\MetricNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\NumberNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\NumberNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\OptionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\OptionsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\OptionsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\PriceCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\PriceCollectionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\TextAreaNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextAreaNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\TextNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\TextNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\Value\ValueCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\FileNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\GroupNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\AssociationsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\ParentsAssociationsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ParentsAssociationsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PriceNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValuesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductModelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\DateTimeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\FileNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\AssociationsNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\AssociationsNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\MetricNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PriceNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValueNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PropertiesNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\ProductNormalizer`
+
 - Register standard format normalizers into  `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer 
 - Register indexing normalizers into  `pim_indexing_serializer` serializer and untagged them from `pim_serializer` serializer
 - Register datagrid normalizers into  `pim_datagrid_serializer` serializer and untagged them from `pim_serializer` serializer
@@ -19,6 +287,32 @@
 - Register external API normalizers into  `pim_external_api_serializer` serializer and untagged them from `pim_serializer` serializer
 
 - Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument 
+
+- Move `Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider`
+- Move `Pim\Component\Catalog\Repository\AssociationRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\CompletenessRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\EntityWithFamilyVariantRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\GroupRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductCategoryRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductModelCategoryRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelCategoryRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface`
+
+- Move namespace `Pim\Component\Catalog\Query` to `Akeneo\Pim\Enrichment\Component\Product\Query`
+- Move namespace `Pim\Component\Catalog\Job` to `Akeneo\Pim\Enrichment\Component\Product\Job`
+- Move namespace `Pim\Component\Catalog\Converter` to `Akeneo\Pim\Enrichment\Component\Product\Converter`
+- Move namespace `Pim\Component\Catalog\Builder` to `Akeneo\Pim\Enrichment\Component\Product\Builder`
+- Move namespace `Pim\Component\Catalog\Association` to `Akeneo\Pim\Enrichment\Component\Product\Association`
+- Move namespace `Pim\Component\Catalog\Comparator` to `Akeneo\Pim\Enrichment\Component\Product\Comparator`
+- Move namespace `Pim\Component\Catalog\EntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant`
+- Move namespace `Pim\Component\Catalog\EntityWithFamily` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily`
+- Move namespace `Pim\Component\Catalog\ProductAndProductModel` to `Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel`
+- Move namespace `Pim\Component\Catalog\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\ProductModel`
+- Move namespace `Pim\Component\Catalog\Completeness` to `Akeneo\Pim\Enrichment\Component\Product\Completeness`
+- Move namespace `Pim\Component\Catalog\ValuesFiller` to `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller`
 
 - Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass`
 - Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass`
@@ -208,7 +502,7 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to add `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily` argument
 - Change constructor of `Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet`, replace `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
 - Change constructor of `Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet`, add `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` argument
-- Change constructor of `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`, add `Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation`, `Symfony\Component\Validator\Validator\ValidatorInterface` and a batch size arguments.
+- Change constructor of `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`, add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation`, `Symfony\Component\Validator\Validator\ValidatorInterface` and a batch size arguments.
 
 - Move namespace `Pim\Component\Catalog\Value` to `Akeneo\Pim\Enrichment\Component\Product\Value`
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`

@@ -9,6 +9,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
@@ -17,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -44,8 +46,6 @@ use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -91,7 +91,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
      *
      * @Given /^a "([^"]*)" product$/
      */
@@ -2441,7 +2441,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
@@ -2449,7 +2449,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface
      */
     protected function getProductModelRepository()
     {

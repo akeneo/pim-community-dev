@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\MetricInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior
 {

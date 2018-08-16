@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 
 /**
  * Resolve attribute field information

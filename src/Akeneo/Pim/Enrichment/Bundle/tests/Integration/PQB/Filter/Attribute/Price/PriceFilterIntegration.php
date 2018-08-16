@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Price;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -191,7 +191,7 @@ class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_price" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

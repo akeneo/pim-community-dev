@@ -2,18 +2,18 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ProductUniqueDataFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
 
 /**
  * Synchronize the $uniqueData persistent collection of the product with the unique values of the product.
  * Those unique values come from the $values collection
- * {@see Pim\Component\Catalog\Model\ValueCollectionInterface}.
+ * {@see Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface}.
  *
  * The only aim of the $uniqueData collection is to be able to save these information in the database via Doctrine.
  *

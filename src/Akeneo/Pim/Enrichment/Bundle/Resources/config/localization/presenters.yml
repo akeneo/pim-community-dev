@@ -1,8 +1,7 @@
 parameters:
-    pim_catalog.localization.presenter.registry.class: Pim\Component\Catalog\Localization\Presenter\PresenterRegistry
-
-    pim_catalog.localization.presenter.prices.class:   Pim\Component\Catalog\Localization\Presenter\PricesPresenter
-    pim_catalog.localization.presenter.metric.class:   Pim\Component\Catalog\Localization\Presenter\MetricPresenter
+    pim_catalog.localization.presenter.registry.class: Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistry
+    pim_catalog.localization.presenter.prices.class:   Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PricesPresenter
+    pim_catalog.localization.presenter.metric.class:   Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\MetricPresenter
     pim_catalog.localization.presenter.number.class:   Akeneo\Tool\Component\Localization\Presenter\NumberPresenter
     pim_catalog.localization.presenter.date.class:     Akeneo\Tool\Component\Localization\Presenter\DatePresenter
     pim_catalog.localization.presenter.boolean.class:  Akeneo\Tool\Component\Localization\Presenter\BooleanPresenter

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\AssociationsUpdateGuesser;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 
 class AssociationsUpdateGuesserSpec extends ObjectBehavior
 {

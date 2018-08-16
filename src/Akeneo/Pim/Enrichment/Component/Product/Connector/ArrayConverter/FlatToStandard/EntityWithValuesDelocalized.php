@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 
 /**
  * Convert an entity with values from Flat to Standard format with delocalized values.

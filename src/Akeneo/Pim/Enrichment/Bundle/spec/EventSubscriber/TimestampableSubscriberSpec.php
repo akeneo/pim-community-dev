@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Prophecy\Argument;
 
 class TimestampableSubscriberSpec extends ObjectBehavior

@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilder;
-use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 
 /**
  * Mass action repository for product entities

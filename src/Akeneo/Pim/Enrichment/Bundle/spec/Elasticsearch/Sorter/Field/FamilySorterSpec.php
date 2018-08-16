@@ -5,9 +5,9 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\FamilySorter;
-use Pim\Component\Catalog\Exception\InvalidDirectionException;
-use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 class FamilySorterSpec extends ObjectBehavior

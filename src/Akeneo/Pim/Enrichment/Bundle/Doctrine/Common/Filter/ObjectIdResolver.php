@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 
 /**
  * Object id resolver

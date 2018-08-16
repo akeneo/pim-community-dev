@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -51,7 +51,7 @@ class TimestampableSubscriber implements EventSubscriber
 
         $metadata = $this->em->getClassMetadata($version->getResourceName());
         $haveToBeUpdated = $metadata->getReflectionClass()
-            ->implementsInterface('Pim\Component\Catalog\Model\TimestampableInterface');
+            ->implementsInterface(TimestampableInterface::class);
 
         if (!$haveToBeUpdated) {
             return;

@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Widget;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales

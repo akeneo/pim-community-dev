@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\CommonAttributeCollection;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\CommonAttributeCollection;
 
 /**
  * A variant in a family defines the structure for the products with variants:

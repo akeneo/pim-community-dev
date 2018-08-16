@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\GroupNormalizer;
 use Prophecy\Argument;
 
 class GroupNormalizerSpec extends ObjectBehavior

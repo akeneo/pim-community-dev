@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 
 /**
  * Dummy filter for PQB.

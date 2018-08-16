@@ -10,6 +10,6 @@ parameters:
     pim_catalog.entity.category_translation.class:         Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation
     pim_catalog.entity.group.class:                        Akeneo\Pim\Enrichment\Component\Product\Model\Group
     pim_catalog.entity.group_translation.class:            Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation
-    pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric
-    pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice
+    pim_catalog.entity.metric.class:                       Akeneo\Pim\Enrichment\Component\Product\Model\Metric
+    pim_catalog.entity.product_price.class:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice
     pim_comment.entity.comment.class: Akeneo\Pim\Enrichment\Component\Comment\Model\Comment

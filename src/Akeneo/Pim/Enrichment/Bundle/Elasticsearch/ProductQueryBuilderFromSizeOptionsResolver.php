@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
-use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

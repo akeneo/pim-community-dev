@@ -1,17 +1,17 @@
 parameters:
     pim_catalog.query.elasticsearch.product_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFactory
     pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory
-    pim_catalog.query.product_query_builder.class: Pim\Component\Catalog\Query\ProductQueryBuilder
-    pim_catalog.query.product_and_product_model_query_builder.class: Pim\Component\Catalog\Query\ProductAndProductModelQueryBuilder
+    pim_catalog.query.product_query_builder.class: Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder
+    pim_catalog.query.product_and_product_model_query_builder.class: Akeneo\Pim\Enrichment\Component\Product\Query\ProductAndProductModelQueryBuilder
     pim_catalog.elasticsearch.cursor_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\CursorFactory
 
     # resolvers
     pim_catalog.elasticsearch.product_query_builder_search_after_resolver.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderSearchAfterOptionsResolver
     pim_catalog.elasticsearch.product_query_builder_from_size_resolver.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductQueryBuilderFromSizeOptionsResolver
-    pim_catalog.query.product_query_builder_resolver.class:  Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolver
+    pim_catalog.query.product_query_builder_resolver.class:  Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsResolver
 
-    pim_catalog.query.filter.registry.class:                      Pim\Component\Catalog\Query\Filter\FilterRegistry
-    pim_catalog.query.sorter.registry.class:                      Pim\Component\Catalog\Query\Sorter\SorterRegistry
+    pim_catalog.query.filter.registry.class:                      Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterRegistry
+    pim_catalog.query.sorter.registry.class:                      Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistry
     pim_catalog.query.filter.field_dumper.class:                  Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper
     pim_catalog.query.filter.attribute_dumper.class:              Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper
     pim_catalog.doctrine.query.filter.object_id_resolver.class:   Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver

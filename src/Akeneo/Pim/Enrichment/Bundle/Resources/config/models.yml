@@ -6,7 +6,7 @@ parameters:
     pim_catalog.model.completeness.interface:           Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface
     pim_catalog.model.category.interface:               Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
     pim_catalog.model.group.interface:                  Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
-    pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
-    pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
+    pim_catalog.model.metric.interface:                 Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface
+    pim_catalog.model.product_price.interface:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface
     pim_catalog.model.category_translation.interface:         Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface
     pim_catalog.model.group_translation.interface:            Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface

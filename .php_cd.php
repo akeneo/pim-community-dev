@@ -68,7 +68,15 @@ $cAkeneoRules = [
             ]),
             RuleInterface::TYPE_ONLY
     ),
-    new Rule('Akeneo\Tool\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule(
+        'Akeneo\Tool\Component\StorageUtils',
+        array_merge(
+            $cDeps,
+            //TODO: the file using those dependencies should be part of the bundle
+            ['Doctrine\ORM\EntityManager', 'Doctrine\ORM\PersistentCollection']
+        ),
+        RuleInterface::TYPE_ONLY
+    ),
     new Rule('Akeneo\Tool\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 

@@ -3,9 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactory;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class OptionSimpleSelectTypeSpec extends ObjectBehavior
 {

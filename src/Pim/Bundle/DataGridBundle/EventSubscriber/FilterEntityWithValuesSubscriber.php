@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Aims to filter raw values field (JSON array) when an entity with values is loaded by Doctrine.

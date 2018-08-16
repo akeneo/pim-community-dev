@@ -1,0 +1,14 @@
+services:
+    pim_catalog.remover.family:
+        class: 'Akeneo\Pim\Structure\Component\Remover\FamilyRemover'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_catalog.doctrine.query.count_products_with_family'
+
+    pim_catalog.remover.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Remover\FamilyVariantRemover'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_catalog.doctrine.query.count_entity_with_family_variant'

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\CompletenessRepositoryInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
 /**
  * Completeness Repository for ORM

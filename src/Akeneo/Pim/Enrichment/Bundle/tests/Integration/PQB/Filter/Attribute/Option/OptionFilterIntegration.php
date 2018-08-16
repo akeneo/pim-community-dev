@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Option;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -88,7 +88,7 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException
      * @expectedExceptionMessage Object "option" with code "NOT_FOUND" does not exist
      */
     public function testErrorOptionNotFound()
@@ -97,7 +97,7 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_simple_select" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

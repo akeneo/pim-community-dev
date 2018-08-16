@@ -6,11 +6,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Attribute\MetricSorter;
-use Pim\Component\Catalog\Exception\InvalidDirectionException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
-use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 
 class MetricSorterSpec extends ObjectBehavior
 {

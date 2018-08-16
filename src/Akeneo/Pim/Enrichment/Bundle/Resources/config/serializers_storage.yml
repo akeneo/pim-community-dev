@@ -1,13 +1,13 @@
 parameters:
-    pim_catalog.normalizer.storage.product.class: Pim\Component\Catalog\Normalizer\Storage\ProductNormalizer
-    pim_catalog.normalizer.storage.product.properties.class: Pim\Component\Catalog\Normalizer\Storage\Product\PropertiesNormalizer
-    pim_catalog.normalizer.storage.product.associations.class: Pim\Component\Catalog\Normalizer\Storage\Product\AssociationsNormalizer
-    pim_catalog.normalizer.storage.product.product_values.class: Pim\Component\Catalog\Normalizer\Storage\Product\ProductValuesNormalizer
-    pim_catalog.normalizer.storage.product.product_value.class: Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer
-    pim_catalog.normalizer.storage.product.price.class: Pim\Component\Catalog\Normalizer\Storage\Product\PriceNormalizer
-    pim_catalog.normalizer.storage.product.metric.class: Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer
-    pim_catalog.normalizer.storage.datetime.class: Pim\Component\Catalog\Normalizer\Storage\DateTimeNormalizer
-    pim_catalog.normalizer.storage.file.class: Pim\Component\Catalog\Normalizer\Storage\FileNormalizer
+    pim_catalog.normalizer.storage.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\ProductNormalizer
+    pim_catalog.normalizer.storage.product.properties.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PropertiesNormalizer
+    pim_catalog.normalizer.storage.product.associations.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\AssociationsNormalizer
+    pim_catalog.normalizer.storage.product.product_values.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValuesNormalizer
+    pim_catalog.normalizer.storage.product.product_value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\ProductValueNormalizer
+    pim_catalog.normalizer.storage.product.price.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PriceNormalizer
+    pim_catalog.normalizer.storage.product.metric.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\MetricNormalizer
+    pim_catalog.normalizer.storage.datetime.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\DateTimeNormalizer
+    pim_catalog.normalizer.storage.file.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\FileNormalizer
 services:
     pim_catalog.normalizer.storage.product:
         class: '%pim_catalog.normalizer.storage.product.class%'

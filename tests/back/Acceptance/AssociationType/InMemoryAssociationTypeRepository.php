@@ -2,15 +2,13 @@
 
 namespace Akeneo\Test\Acceptance\AssociationType;
 
-use \Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 
 class InMemoryAssociationTypeRepository implements AssociationTypeRepositoryInterface, SaverInterface
 {

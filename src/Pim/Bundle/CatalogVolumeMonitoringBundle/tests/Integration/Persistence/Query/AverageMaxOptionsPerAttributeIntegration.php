@@ -6,7 +6,7 @@ namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence
 
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class AverageMaxOptionsPerAttributeIntegration extends QueryTestCase
 {

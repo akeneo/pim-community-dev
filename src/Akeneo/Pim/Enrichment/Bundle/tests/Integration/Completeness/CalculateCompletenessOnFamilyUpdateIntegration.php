@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractComplete
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 

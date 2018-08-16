@@ -2,12 +2,12 @@
 
 namespace Akeneo\Tool\Component\Connector\Processor;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Fetch every media to the specific target during an export

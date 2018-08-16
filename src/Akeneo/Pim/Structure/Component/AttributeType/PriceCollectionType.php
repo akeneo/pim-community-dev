@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\AttributeType;
 
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Price attribute type

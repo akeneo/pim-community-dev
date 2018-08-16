@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.converter.metric.class: Pim\Component\Catalog\Converter\MetricConverter
+    pim_catalog.converter.metric.class: Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter
 
 services:
     pim_catalog.converter.metric:

@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
-    pim_catalog.resolver.attribute_values.class:         Pim\Component\Catalog\Manager\AttributeValuesResolver
+    pim_catalog.manager.completeness.class:        Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager
+    pim_catalog.resolver.attribute_values.class:         Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver
 
 services:
     # Managers

@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
-use Pim\Component\Catalog\Validator\UniqueValuesSet;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 
 class ResetUniqueValidationSubscriberSpec extends ObjectBehavior
 {

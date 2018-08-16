@@ -6,7 +6,7 @@ namespace Akeneo\Test\Common\Structure\Attribute;
 
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Pim\Structure\Component\Model;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @Todo This builder should be improved. For now, you can use to create a identifier attribute with a code

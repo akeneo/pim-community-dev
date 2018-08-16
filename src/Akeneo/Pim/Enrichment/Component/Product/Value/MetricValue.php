@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\MetricInterface;
 
 /**
  * Product value for "pim_catalog_metric" attribute type

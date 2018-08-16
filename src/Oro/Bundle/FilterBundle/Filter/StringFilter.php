@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\FilterBundle\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
-use Pim\Component\Catalog\Query\Filter\Operators;
 
 class StringFilter extends AbstractFilter
 {

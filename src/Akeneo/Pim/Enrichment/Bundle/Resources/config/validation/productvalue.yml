@@ -1,4 +1,4 @@
 Akeneo\Pim\Enrichment\Component\ProductValue:
     constraints:
-        - Pim\Component\Catalog\Validator\Constraints\ScopableValue: ~
-        - Pim\Component\Catalog\Validator\Constraints\LocalizableValue: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValue: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValue: ~

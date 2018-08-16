@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

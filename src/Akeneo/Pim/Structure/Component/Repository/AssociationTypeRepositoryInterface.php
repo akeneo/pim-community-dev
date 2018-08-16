@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Structure\Component\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 
 /**
  * Association repository interface

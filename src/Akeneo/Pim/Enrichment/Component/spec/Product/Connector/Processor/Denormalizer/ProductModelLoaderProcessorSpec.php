@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denor
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductModelLoaderProcessor;
 use PhpSpec\ObjectBehavior;
 

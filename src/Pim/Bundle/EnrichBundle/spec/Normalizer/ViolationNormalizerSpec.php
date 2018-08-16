@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute;
-use Pim\Component\Catalog\Validator\Constraints\ValidMetric;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetric;
 use Symfony\Component\Validator\ConstraintViolation;
 
 class ViolationNormalizerSpec extends ObjectBehavior

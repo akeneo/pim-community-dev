@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -21,7 +22,7 @@ class GroupRepositorySpec extends ObjectBehavior
 
     function it_is_a_group_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\GroupRepositoryInterface');
+        $this->shouldImplement(GroupRepositoryInterface::class);
     }
 
     function it_is_a_doctrine_repository()

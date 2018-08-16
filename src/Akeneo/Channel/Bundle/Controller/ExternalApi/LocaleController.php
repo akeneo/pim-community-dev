@@ -10,7 +10,6 @@ use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -168,7 +167,7 @@ class LocaleController
         foreach ($searchParameters as $searchKey => $searchParameter) {
             foreach ($searchParameter as $searchOperator) {
                 if (!in_array($searchKey, $this->authorizedFieldFilters)
-                    || Operators::EQUALS !== $searchOperator['operator']) {
+                    || '=' !== $searchOperator['operator']) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(
                             'Filter on property "%s" is not supported or does not support operator "%s".',

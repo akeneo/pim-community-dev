@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

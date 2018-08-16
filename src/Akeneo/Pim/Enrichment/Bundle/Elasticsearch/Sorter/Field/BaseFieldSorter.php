@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Exception\InvalidDirectionException;
-use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 
 /**
  * Field base sorter for an Elasticsearch query

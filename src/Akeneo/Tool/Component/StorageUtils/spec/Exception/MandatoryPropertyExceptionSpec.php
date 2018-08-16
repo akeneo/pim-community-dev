@@ -12,12 +12,12 @@ class MandatoryPropertyExceptionSpec extends ObjectBehavior
     {
         $exception = MandatoryPropertyException::mandatoryProperty(
             'property',
-            'Pim\Component\Catalog\Updater\FamilyVariant'
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\FamilyVariant'
         );
 
         $this->beConstructedWith(
             'property',
-            'Pim\Component\Catalog\Updater\FamilyVariant',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\FamilyVariant',
             'Property "property" is mandatory.',
             0
         );

@@ -10,7 +10,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

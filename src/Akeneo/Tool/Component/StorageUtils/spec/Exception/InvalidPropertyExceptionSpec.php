@@ -11,13 +11,13 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyException::valueNotEmptyExpected(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute'
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute'
         );
 
         $this->beConstructedWith(
             'attribute',
             null,
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" does not expect an empty value.',
             InvalidPropertyException::NOT_EMPTY_VALUE_EXPECTED_CODE
         );
@@ -36,14 +36,14 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
             'attribute',
             'code',
             'The attribute does not exist',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'unknown_code'
         );
 
         $this->beConstructedWith(
             'attribute',
             'unknown_code',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "attribute" expects a valid code. The attribute does not exist, "unknown_code" given.',
             InvalidPropertyException::VALID_ENTITY_CODE_EXPECTED_CODE
         );
@@ -61,14 +61,14 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
         $exception = InvalidPropertyException::dateExpected(
             'created_date',
             'yyyy-mm-dd',
-            'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\DateAttributeSetter',
             '2017/12/12'
         );
 
         $this->beConstructedWith(
             'created_date',
             '2017/12/12',
-            'Pim\Component\Catalog\Updater\Setter\DateAttributeSetter',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\DateAttributeSetter',
             'Property "created_date" expects a string with the format "yyyy-mm-dd" as data, "2017/12/12" given.',
             InvalidPropertyException::DATE_EXPECTED_CODE
         );
@@ -86,14 +86,14 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
         $exception = InvalidPropertyException::validGroupTypeExpected(
             'group',
             'Group is not valid',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'variant'
         );
 
         $this->beConstructedWith(
             'group',
             'variant',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "group" expects a valid group type. Group is not valid, "variant" given.',
             InvalidPropertyException::VALID_GROUP_TYPE_EXPECTED_CODE
         );
@@ -111,14 +111,14 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
         $exception = InvalidPropertyException::validGroupExpected(
             'group',
             'Group is not supported',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'foo'
         );
 
         $this->beConstructedWith(
             'group',
             'foo',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "group" expects a valid group. Group is not supported, "foo" given.',
             InvalidPropertyException::VALID_GROUP_EXPECTED_CODE
         );
@@ -135,14 +135,14 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyException::validPathExpected(
             'path',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             '/tmp/foo'
         );
 
         $this->beConstructedWith(
             'path',
             '/tmp/foo',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'Property "path" expects a valid pathname as data, "/tmp/foo" given.',
             InvalidPropertyException::VALID_PATH_EXPECTED_CODE
         );
@@ -159,14 +159,14 @@ class InvalidPropertyExceptionSpec extends ObjectBehavior
     {
         $exception = InvalidPropertyException::expectedFromPreviousException(
             'attribute',
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             new \Exception('This is an exception message.', 42)
         );
 
         $this->beConstructedWith(
             'attribute',
             null,
-            'Pim\Component\Catalog\Updater\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Attribute',
             'This is an exception message.',
             42
         );
