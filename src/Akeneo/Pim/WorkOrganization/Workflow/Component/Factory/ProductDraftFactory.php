@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Factory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
  * Product product draft factory

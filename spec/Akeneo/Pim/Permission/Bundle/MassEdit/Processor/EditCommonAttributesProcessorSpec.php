@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;

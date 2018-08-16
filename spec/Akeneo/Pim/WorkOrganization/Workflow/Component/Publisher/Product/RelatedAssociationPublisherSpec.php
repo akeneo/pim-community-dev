@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedAssociationRepositoryInterface;

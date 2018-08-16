@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Present textarea data

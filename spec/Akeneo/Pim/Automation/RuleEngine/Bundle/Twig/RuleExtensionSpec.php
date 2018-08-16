@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

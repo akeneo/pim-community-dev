@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Asset\Component\Completeness\Checker;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -13,7 +14,7 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
 {
     public function it_is_a_completeness_checker()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface');
+        $this->shouldImplement(ValueCompleteCheckerInterface::class);
     }
 
     public function it_suports_asset_collection_attribute(

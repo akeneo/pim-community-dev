@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;

@@ -7,7 +7,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;

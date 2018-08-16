@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Component\Comparator\Attribute;
 
-use Pim\Component\Catalog\Comparator\ComparatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

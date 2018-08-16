@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;

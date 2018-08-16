@@ -16,6 +16,8 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -25,8 +27,6 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

@@ -12,13 +12,13 @@
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Product asset repository

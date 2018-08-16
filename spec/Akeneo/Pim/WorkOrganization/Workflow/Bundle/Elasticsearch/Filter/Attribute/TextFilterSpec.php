@@ -4,10 +4,10 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\TextFilter;
 use PhpSpec\ObjectBehavior;

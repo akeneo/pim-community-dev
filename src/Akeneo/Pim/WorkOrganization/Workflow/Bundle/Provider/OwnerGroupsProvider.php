@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Provides a set of user groups having owner permission of a product.

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>

@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedAssociatedProductFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;

@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;

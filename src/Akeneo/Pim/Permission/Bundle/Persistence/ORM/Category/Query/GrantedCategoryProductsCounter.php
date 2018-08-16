@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

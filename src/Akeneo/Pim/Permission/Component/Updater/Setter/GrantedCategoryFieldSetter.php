@@ -13,15 +13,14 @@ namespace Akeneo\Pim\Permission\Component\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractFieldSetter;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\VariantProductInterface;
-use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
-use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;

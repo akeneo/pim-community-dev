@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\Catalog\Manager;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

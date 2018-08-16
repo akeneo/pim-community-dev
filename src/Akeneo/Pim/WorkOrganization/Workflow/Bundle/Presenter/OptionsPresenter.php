@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Present changes on options data

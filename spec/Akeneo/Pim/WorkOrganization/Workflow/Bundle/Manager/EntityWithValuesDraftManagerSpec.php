@@ -10,7 +10,7 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;

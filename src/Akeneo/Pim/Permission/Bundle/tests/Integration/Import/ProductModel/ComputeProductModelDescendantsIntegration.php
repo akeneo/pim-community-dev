@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Import\ProductModel;
 
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * +--------------+-----------------------------------+

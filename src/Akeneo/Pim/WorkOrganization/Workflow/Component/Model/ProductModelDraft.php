@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Product model model draft

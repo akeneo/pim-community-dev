@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction;

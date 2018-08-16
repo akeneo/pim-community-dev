@@ -1,7 +1,7 @@
 Akeneo\Asset\Component\Model\Tag:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
     properties:

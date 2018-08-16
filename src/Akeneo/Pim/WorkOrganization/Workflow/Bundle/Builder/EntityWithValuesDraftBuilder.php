@@ -13,18 +13,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
-use Pim\Component\Catalog\Factory\ValueFactory;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

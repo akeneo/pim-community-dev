@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
@@ -23,8 +25,6 @@ use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Present changes on prices

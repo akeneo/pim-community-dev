@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
@@ -19,7 +20,6 @@ use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

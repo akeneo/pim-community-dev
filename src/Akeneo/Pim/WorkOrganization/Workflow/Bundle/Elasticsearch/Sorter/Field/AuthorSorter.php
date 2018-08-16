@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Sorter\Field;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
-use Pim\Component\Catalog\Exception\InvalidDirectionException;
-use Pim\Component\Catalog\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>

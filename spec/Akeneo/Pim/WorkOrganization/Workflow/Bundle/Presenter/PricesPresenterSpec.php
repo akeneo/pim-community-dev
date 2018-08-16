@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Component\Catalog\Model;
-use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposal;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelNormalizer;
-use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;

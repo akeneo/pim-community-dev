@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Catalog\ProductModel\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

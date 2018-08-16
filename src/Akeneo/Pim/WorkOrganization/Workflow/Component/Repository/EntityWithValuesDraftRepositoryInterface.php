@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

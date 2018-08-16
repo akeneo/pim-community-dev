@@ -13,11 +13,11 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attri
  * file that was distributed with this source code.
  */
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * Proposal boolean filter for an Elasticsearch query

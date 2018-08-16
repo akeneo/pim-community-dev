@@ -15,8 +15,8 @@ use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
