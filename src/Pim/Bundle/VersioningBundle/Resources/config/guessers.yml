@@ -1,5 +1,6 @@
 parameters:
     pim_versioning.update_guesser.attribute_group.class:   Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser
+    pim_versioning.update_guesser.locale_specific_attribute.class: Pim\Bundle\VersioningBundle\UpdateGuesser\LocaleSpecificAttributeUpdateGuesser
     pim_versioning.update_guesser.attribute_option.class:  Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser
     pim_versioning.update_guesser.chained.class:           Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser
     pim_versioning.update_guesser.contains_products.class: Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
@@ -10,6 +11,11 @@ parameters:
 services:
     pim_versioning.update_guesser.attribute_group:
         class: '%pim_versioning.update_guesser.attribute_group.class%'
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.locale_specific_attribute:
+        class: '%pim_versioning.update_guesser.locale_specific_attribute.class%'
         tags:
             - { name: pim_versioning.update_guesser }
 
