@@ -14,7 +14,7 @@ namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
