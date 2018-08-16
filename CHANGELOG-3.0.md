@@ -12,6 +12,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\ProductEvents` to `Akeneo\Pim\Enrichment\Component\Product\ProductEvents`
 - Move `Pim\Component\Catalog\FileStorage` to `Akeneo\Pim\Enrichment\Component\FileStorage`
 - Move `Pim\Component\Catalog\AttributeTypes` to `Akeneo\Pim\Structure\Component\AttributeTypes`
 - Move `Pim\Component\Catalog\AttributeTypeInterface` to `Akeneo\Pim\Structure\Component\AttributeTypeInterface`
