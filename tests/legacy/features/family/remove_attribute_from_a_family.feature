@@ -26,7 +26,7 @@ Feature: Remove attribute from a family
     And I save the family
     Then I should not see the text "There are unsaved changes."
     And I should see the flash message "Attribute successfully removed from the family"
-    And I wait for the "compute_product_models_descendants" job to finish
+    And I wait for the "compute_family_variant_structure_changes" job to finish
     And I am on the "model-braided-hat" product model page
     Then I should see the text "Supplier"
     But I should not see the text "Material"
