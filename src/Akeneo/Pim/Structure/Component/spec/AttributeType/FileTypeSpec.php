@@ -3,9 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\AttributeType;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactory;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class FileTypeSpec extends ObjectBehavior
 {
@@ -21,6 +19,6 @@ class FileTypeSpec extends ObjectBehavior
 
     function it_is_an_attribute_type()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\AttributeTypeInterface');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\AttributeTypeInterface');
     }
 }

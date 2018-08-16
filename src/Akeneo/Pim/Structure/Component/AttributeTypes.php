@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Akeneo\Pim\Structure\Component;
 
 /**
  * Attribute types dictionary

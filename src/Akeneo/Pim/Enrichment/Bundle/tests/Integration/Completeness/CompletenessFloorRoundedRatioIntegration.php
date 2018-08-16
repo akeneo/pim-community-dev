@@ -4,7 +4,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class CompletenessFloorRoundedRatioIntegration extends AbstractCompletenessTestCase
 {

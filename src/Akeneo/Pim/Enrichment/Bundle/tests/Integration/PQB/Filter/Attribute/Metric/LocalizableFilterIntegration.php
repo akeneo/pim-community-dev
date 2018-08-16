@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Metric;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

@@ -5,7 +5,7 @@ namespace spec\Akeneo\Channel\Component\Validator\Constraint;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Validator\Constraint\ConversionUnits;
 use Akeneo\Channel\Component\Validator\Constraint\ConversionUnitsValidator;

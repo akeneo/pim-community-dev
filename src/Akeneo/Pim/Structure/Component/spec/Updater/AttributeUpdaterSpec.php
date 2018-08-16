@@ -2,15 +2,13 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
-use Pim\Component\Catalog\AttributeTypeInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypeInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
