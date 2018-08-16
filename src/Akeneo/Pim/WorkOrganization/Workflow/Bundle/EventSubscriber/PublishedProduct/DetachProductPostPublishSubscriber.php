@@ -12,11 +12,11 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configurator;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Filters configurator for proposal grid.

@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

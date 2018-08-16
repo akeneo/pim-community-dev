@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Media;
 
-use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Product\AbstractProductTestCase;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Product\AbstractProductTestCase;
 
 abstract class AbstractMediaFileTestCase extends AbstractProductTestCase
 {

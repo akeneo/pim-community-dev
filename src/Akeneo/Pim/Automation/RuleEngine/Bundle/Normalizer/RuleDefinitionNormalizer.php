@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Normalizer;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer as AkeneoRuleDefinitionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer as AkeneoRuleDefinitionNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

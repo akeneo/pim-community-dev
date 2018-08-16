@@ -15,12 +15,12 @@ namespace Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity;
 use Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
 /**
  * Decorates CE product model repository to apply permissions.

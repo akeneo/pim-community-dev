@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -18,7 +19,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 
 /**
  * Project updater is able to hydrate a project with given parameters.
