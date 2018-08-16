@@ -3,18 +3,15 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Select2 from 'akeneoenrichedentity/application/component/app/select2';
+import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
 export default ({
-  allowedExtensions,
+  attribute,
   onAdditionalPropertyUpdated,
-  onAllowedExtensionsAdded,
-  onAllowedExtensionsRemoved,
   errors
 }: {
-  allowedExtensions: string[];
-  onAdditionalPropertyUpdated: (property: string, value: string) => void;
-  onAllowedExtensionsAdded: (allowedExtension: string) => void;
-  onAllowedExtensionsRemoved: (allowedExtension: string) => void;
+  attribute: any;
+  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
   errors: ValidationError[];
 }) => {
   const allowedExtensionsList = {
@@ -66,11 +63,12 @@ export default ({
             fieldId="pim_enriched_entity.attribute.edit.input.allowed_extensions"
             fieldName="allowed_extensions"
             data={allowedExtensionsList}
-            value={allowedExtensions}
+            value={attribute.allowedExtensions}
             multiple={true}
             readonly={false}
-            onSelect={onAllowedExtensionsAdded}
-            onUnselect={onAllowedExtensionsRemoved}
+            onChange={(allowedExtensions: string[]) => {
+              onAdditionalPropertyUpdated('allowedExtensions', allowedExtensions)
+            }}
           />
         </div>
         {getErrorsView(errors, 'allowedExtensions')}
