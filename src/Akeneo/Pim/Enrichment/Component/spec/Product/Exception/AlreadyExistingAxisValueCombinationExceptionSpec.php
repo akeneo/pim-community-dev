@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Exception;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 
 class AlreadyExistingAxisValueCombinationExceptionSpec extends ObjectBehavior
 {

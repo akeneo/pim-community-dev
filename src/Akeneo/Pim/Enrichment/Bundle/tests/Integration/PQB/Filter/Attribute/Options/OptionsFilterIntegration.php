@@ -96,7 +96,7 @@ class OptionsFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException
      * @expectedExceptionMessage Object "options" with code "NOT_FOUND" does not exist
      */
     public function testErrorOptionNotFound()
@@ -105,7 +105,7 @@ class OptionsFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_multi_select" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

@@ -125,7 +125,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_ref_data_multi_select" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

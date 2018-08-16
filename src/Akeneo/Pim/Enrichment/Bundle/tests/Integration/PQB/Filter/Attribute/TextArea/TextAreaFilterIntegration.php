@@ -243,7 +243,7 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_text_area" is not supported or does not support operator ">="
      */
     public function testErrorOperatorNotSupported()

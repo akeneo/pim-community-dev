@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -70,7 +71,7 @@ class ObjectIdResolverSpec extends ObjectBehavior
 
         $camcorders->getId()->willReturn(2);
 
-        $this->shouldThrow('\Pim\Component\Catalog\Exception\ObjectNotFoundException')->during(
+        $this->shouldThrow(ObjectNotFoundException::class)->during(
             'getIdsFromCodes',
             ['family', ['camcorders', 'shirt', 'men']]
         );

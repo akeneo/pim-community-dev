@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 /**
  * This exception is thrown when an entity with family variant uses a combination

@@ -51,7 +51,7 @@ class StatusFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "enabled" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

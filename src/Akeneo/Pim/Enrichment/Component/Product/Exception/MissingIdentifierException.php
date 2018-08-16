@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 /**
  * Query exception

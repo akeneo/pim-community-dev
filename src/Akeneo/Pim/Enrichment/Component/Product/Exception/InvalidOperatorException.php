@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 /**
  * Exception thrown when performing an action on a PQB operators with an unexpected value type.

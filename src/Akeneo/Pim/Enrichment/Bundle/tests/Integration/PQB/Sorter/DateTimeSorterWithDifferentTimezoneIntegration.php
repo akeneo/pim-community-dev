@@ -49,7 +49,7 @@ class DateTimeSorterWithDifferentTimezoneIntegration extends AbstractProductQuer
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidDirectionException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
      * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
      */
     public function testErrorOperatorNotSupported()

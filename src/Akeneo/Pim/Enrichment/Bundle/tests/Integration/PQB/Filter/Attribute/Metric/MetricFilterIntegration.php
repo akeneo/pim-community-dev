@@ -189,7 +189,7 @@ class MetricFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_metric" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()
