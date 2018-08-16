@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
@@ -31,7 +32,7 @@ class LocaleSpecificAttributeUpdateGuesserSpec extends ObjectBehavior
     {
         $attribute = new Attribute();
         $em = new MyEntityManager();
-        $collection = new PersistentCollection($em, new ClassMetadata('Pim\Bundle\CatalogBundle\Entity\Attribute'), []);
+        $collection = new PersistentCollection($em, new ClassMetadata('Pim\Bundle\CatalogBundle\Entity\Attribute'), new ArrayCollection());
         $collection->setOwner($attribute, ['fieldName' => 'availableLocales', 'inversedBy' => 'foo']);
 
         $this->guessUpdates($em, $collection, UpdateGuesserInterface::ACTION_UPDATE_COLLECTION)
