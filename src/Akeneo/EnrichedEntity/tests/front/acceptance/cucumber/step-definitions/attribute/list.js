@@ -27,6 +27,11 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
+  const showAttributesTab = async function (page) {
+    const sidebar = await await getElement(page, 'Sidebar');
+    await sidebar.clickOnTab('pim-enriched-entity-edit-form-attribute');
+  }
+
   Given('the following attributes for the enriched entity {string}:', async function (enrichedEntityIdentifier, attributes) {
     let attributesSaved = attributes.hashes().map((normalizedAttribute) => {
       if ('text' === normalizedAttribute.type) {
@@ -77,13 +82,21 @@ module.exports = async function(cucumber) {
   });
 
   Then('the list of attributes should be:', async function (expectedAttributes) {
-    const sidebar = await await getElement(this.page, 'Sidebar');
-    await sidebar.clickOnTab('pim-enriched-entity-edit-form-attribute');
+    await showAttributesTab(this.page);
 
     const attributes = await await getElement(this.page, 'Attributes');
     const isValid = await expectedAttributes.hashes().reduce(async (isValid, expectedAttribute) => {
       return await isValid && await attributes.hasAttribute(expectedAttribute['code'], expectedAttribute['type']);
     }, true);
     assert.strictEqual(isValid, true);
+  });
+
+  Then('the list of attributes should be empty', async function () {
+    await showAttributesTab(this.page);
+
+    const attributes = await await getElement(this.page, 'Attributes');
+    const isEmpty = await attributes.isEmpty()
+
+    assert.strictEqual(isEmpty, true);
   });
 };

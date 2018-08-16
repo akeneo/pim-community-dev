@@ -1,18 +1,26 @@
 const Attributes = async (nodeElement, createElementDecorator, page) => {
   const isLoaded = async () => {
-    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknFieldContainer');
+    await page.waitFor('.AknDefault-mainContent .AknSubsection');
 
     return true;
   };
 
   const hasAttribute = async (code, type) => {
     await isLoaded();
+    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknFieldContainer');
     const attribute = await nodeElement.$(`.AknFieldContainer[data-identifier="${code}"][data-type="${type}"]`);
 
     return attribute !== null;
   };
 
-  return {hasAttribute, isLoaded};
+  const isEmpty = async () => {
+    await isLoaded();
+    await page.waitFor('.AknDefault-mainContent .AknSubsection .empty-attributes');
+
+    return true;
+  };
+
+  return {hasAttribute, isLoaded, isEmpty};
 };
 
 module.exports = Attributes;
