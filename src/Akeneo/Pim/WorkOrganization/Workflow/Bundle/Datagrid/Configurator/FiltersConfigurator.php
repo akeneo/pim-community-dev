@@ -9,7 +9,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Filters configurator for proposal grid.
