@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException;
 
 /**
  * Factory that creates option (simple-select) product values.

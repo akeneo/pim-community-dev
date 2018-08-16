@@ -2,14 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
 
 /**
  * Removes a data in the property of an object

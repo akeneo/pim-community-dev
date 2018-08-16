@@ -4,10 +4,10 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

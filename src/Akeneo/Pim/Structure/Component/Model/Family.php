@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Family entity

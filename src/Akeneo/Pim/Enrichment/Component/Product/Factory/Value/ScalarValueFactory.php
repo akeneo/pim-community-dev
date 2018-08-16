@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Factory that creates simple product values (text, textarea and number).

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * Overriding of boolean filter to filter by the product completeness

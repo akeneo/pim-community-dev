@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Catalog\Context;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Akeneo\Test\Common\Structure\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Context;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 /**
  * Use this context to create products

@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Converter;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 
 /**
  * Convert value into channel conversion unit if selected

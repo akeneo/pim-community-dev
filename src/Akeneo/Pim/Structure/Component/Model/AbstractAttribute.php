@@ -3,9 +3,9 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Abstract product attribute

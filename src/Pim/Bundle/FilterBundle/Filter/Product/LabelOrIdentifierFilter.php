@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * Filter on label and identifier

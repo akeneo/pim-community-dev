@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media;
 
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
 abstract class AbstractMediaFileTestCase extends ApiTestCase
 {

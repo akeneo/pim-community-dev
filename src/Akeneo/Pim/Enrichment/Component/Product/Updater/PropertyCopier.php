@@ -2,14 +2,14 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopierInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopierInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface;
 
 /**
  * Copy the property of an object to another object property

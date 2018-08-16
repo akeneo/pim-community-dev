@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterData;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CompleteFilterInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Find data used by the datagrid completeness filter. We need to know if a product model has at least one

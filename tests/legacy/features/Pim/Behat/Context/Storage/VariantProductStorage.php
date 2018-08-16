@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Behat\Context\Storage;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 
 final class VariantProductStorage implements Context
 {

@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Sorters configurator for product grid

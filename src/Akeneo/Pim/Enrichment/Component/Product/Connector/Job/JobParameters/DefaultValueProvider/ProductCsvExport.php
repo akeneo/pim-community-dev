@@ -4,10 +4,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\De
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * DefaultParameters for product CSV export

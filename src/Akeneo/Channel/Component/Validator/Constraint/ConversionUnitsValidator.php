@@ -2,9 +2,9 @@
 
 namespace Akeneo\Channel\Component\Validator\Constraint;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

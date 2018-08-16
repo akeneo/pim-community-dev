@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

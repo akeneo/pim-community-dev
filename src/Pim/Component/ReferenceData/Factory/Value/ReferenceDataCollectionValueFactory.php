@@ -2,10 +2,10 @@
 
 namespace Pim\Component\ReferenceData\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;

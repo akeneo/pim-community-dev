@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * Date filter

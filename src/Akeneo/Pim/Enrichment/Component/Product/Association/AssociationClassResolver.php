@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Association;
 
-use InvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use InvalidArgumentException;
 
 /**
  * For a given association aware entity,

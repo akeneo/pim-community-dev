@@ -2,12 +2,12 @@
 
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Copy a reference data collection value attribute in other reference data collection value attribute

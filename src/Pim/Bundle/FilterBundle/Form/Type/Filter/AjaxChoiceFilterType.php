@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

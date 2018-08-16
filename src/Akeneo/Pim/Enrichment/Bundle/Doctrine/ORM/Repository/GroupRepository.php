@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Group repository

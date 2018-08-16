@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
-use Doctrine\DBAL\Connection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Doctrine\DBAL\Connection;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 

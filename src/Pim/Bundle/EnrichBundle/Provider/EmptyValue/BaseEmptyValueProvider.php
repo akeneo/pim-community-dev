@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\EmptyValue;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for attributes

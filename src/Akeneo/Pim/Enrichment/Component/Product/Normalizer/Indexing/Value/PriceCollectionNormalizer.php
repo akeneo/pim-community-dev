@@ -3,11 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

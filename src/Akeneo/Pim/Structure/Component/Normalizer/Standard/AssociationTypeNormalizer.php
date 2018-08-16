@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

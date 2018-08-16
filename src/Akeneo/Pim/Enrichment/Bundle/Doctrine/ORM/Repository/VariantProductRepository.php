@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>

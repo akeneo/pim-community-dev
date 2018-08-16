@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

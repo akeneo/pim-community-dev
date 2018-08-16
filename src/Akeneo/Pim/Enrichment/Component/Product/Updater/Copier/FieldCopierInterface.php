@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
  * Copies a data from a product's field to another product's field

@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\tests\assert;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
 /**
  * Assert that the entity with values collection are correct.

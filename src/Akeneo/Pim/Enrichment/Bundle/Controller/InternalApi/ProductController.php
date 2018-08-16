@@ -6,8 +6,8 @@ use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredExcepti
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;

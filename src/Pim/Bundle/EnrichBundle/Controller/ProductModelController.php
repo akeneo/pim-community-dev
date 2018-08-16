@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
