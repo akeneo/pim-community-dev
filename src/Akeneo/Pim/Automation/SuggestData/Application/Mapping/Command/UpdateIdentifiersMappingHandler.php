@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\InvalidAttributeTypeException;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\MissingMandatoryAttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Handles the UpdateIdentifiersMapping command.
@@ -27,6 +30,13 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class UpdateIdentifiersMappingHandler
 {
+    private const ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER = [
+        AttributeTypes::TEXT,
+        AttributeTypes::OPTION_SIMPLE_SELECT,
+        AttributeTypes::IDENTIFIER,
+        AttributeTypes::NUMBER,
+    ];
+
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
@@ -51,11 +61,12 @@ class UpdateIdentifiersMappingHandler
     public function handle(UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand): void
     {
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
-
         $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
-        $identifiersMapping = new IdentifiersMapping($identifiers);
+        $this->validateAttributeTypes($identifiers);
+        $this->validateThatBrandAndMpnAreNotSavedAlone($identifiers);
 
+        $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingRepository->save($identifiersMapping);
     }
 
@@ -82,5 +93,28 @@ class UpdateIdentifiersMappingHandler
         }
 
         return $identifiers;
+    }
+
+    private function validateAttributeTypes(array $identifiers)
+    {
+        foreach ($identifiers as $attribute) {
+            if (empty($attribute)) {
+                continue;
+            }
+
+            if (! in_array($attribute->getType(), static::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER)) {
+                throw new InvalidAttributeTypeException();
+            }
+        }
+    }
+
+    private function validateThatBrandAndMpnAreNotSavedAlone(array $identifiers)
+    {
+        $isBrandDefined = isset($identifiers['brand']) && $identifiers['brand'] instanceof AttributeInterface;
+        $isMpnDefined = isset($identifiers['mpn']) && $identifiers['mpn'] instanceof AttributeInterface;
+
+        if (($isBrandDefined && ! $isMpnDefined) || (! $isBrandDefined && $isMpnDefined)) {
+            throw new MissingMandatoryAttributeMappingException();
+        }
     }
 }

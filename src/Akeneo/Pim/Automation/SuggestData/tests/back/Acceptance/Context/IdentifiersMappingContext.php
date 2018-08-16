@@ -51,11 +51,33 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
+     * @Given an empty identifiers mapping
+     */
+    public function anEmptyIdentifiersMapping(): void
+    {
+        $this->assertMappingIsEmpty();
+    }
+
+    /**
+     * @Given a predefined mapping as follows:
+     *
+     * @param TableNode $table
+     */
+    public function aPredefinedMapping(TableNode $table): void
+    {
+        $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
+        $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+
+        $tmp = array_fill_keys($identifiers, null);
+        $tmp = array_merge($tmp, $mapped);
+
+        $this->manageIdentifiersMapping->updateIdentifierMapping($tmp);
+    }
+
+    /**
      * @When the identifiers are mapped with valid values as follows:
      *
      * @param TableNode $table
-     *
-     * @throws \Exception
      *
      * @return bool
      */
@@ -69,6 +91,26 @@ class IdentifiersMappingContext implements Context
             return true;
         } catch (\Exception $e) {
             return false;
+        }
+    }
+
+    /**
+     * @When the identifiers are mapped with invalid values as follows:
+     *
+     * @param TableNode $table
+     *
+     * @return bool
+     */
+    public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
+    {
+        try {
+            $this->manageIdentifiersMapping->updateIdentifierMapping(
+                $this->getTableNodeAsArrayWithoutHeaders($table)
+            );
+
+            return false;
+        } catch (\Exception $e) {
+            return true;
         }
     }
 
@@ -91,51 +133,19 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * @When the identifiers are mapped with invalid values as follows:
-     *
-     * @param TableNode $table
-     *
-     * @throws \Exception
-     *
-     * @return bool
-     */
-    public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
-    {
-        try {
-            $this->manageIdentifiersMapping->updateIdentifierMapping(
-                $this->getTableNodeAsArrayWithoutHeaders($table)
-            );
-
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-    /**
      * @Then the identifiers mapping should not be defined
      */
     public function theIdentifiersMappingIsNotDefined(): void
     {
-        $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
-
-        Assert::assertEquals([], $identifiers);
+        $this->assertMappingIsEmpty();
     }
 
     /**
-     * @Given a predefined mapping as follows:
-     *
-     * @param TableNode $table
+     * @Then the identifiers mapping should not be saved
      */
-    public function aPredefinedMapping(TableNode $table):void
+    public function theIdentifiersMappingIsNotSaved(): void
     {
-        $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
-        $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
-
-        $tmp = array_fill_keys($identifiers, null);
-        $tmp = array_merge($tmp, $mapped);
-
-        $this->manageIdentifiersMapping->updateIdentifierMapping($tmp);
+        $this->assertMappingIsEmpty();
     }
 
     /**
@@ -148,6 +158,22 @@ class IdentifiersMappingContext implements Context
         $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
         Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
+    }
+
+    /**
+     * @Then the identifiers mapping should be valid
+     */
+    public function theIdentifiersMappingShouldBeValid(): void
+    {
+        $identifiers = $this->identifiersMappingRepository->find();
+        Assert::assertFalse($identifiers->isEmpty());
+    }
+
+    private function assertMappingIsEmpty(): void
+    {
+        $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
+
+        Assert::assertEquals([], $identifiers);
     }
 
     /**

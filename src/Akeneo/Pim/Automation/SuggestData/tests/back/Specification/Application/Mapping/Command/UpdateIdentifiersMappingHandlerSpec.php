@@ -15,6 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Co
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\InvalidAttributeTypeException;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\MissingMandatoryAttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -38,7 +40,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(UpdateIdentifiersMappingHandler::class);
     }
 
-    public function it_throws_an_exception_with_invalid_attributes(
+    public function it_throws_an_exception_if_an_attribute_does_not_exist(
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $model,
         $identifiersMappingRepository
@@ -84,6 +86,11 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
         $attributeRepository->findOneByIdentifier('id')->willReturn($id);
 
+        $manufacturer->getType()->willReturn('pim_catalog_text');
+        $model->getType()->willReturn('pim_catalog_text');
+        $ean->getType()->willReturn('pim_catalog_text');
+        $id->getType()->willReturn('pim_catalog_text');
+
         $identifiersMapping = new IdentifiersMapping([
             'brand' => $manufacturer->getWrappedObject(),
             'mpn' => $model->getWrappedObject(),
@@ -93,5 +100,68 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
 
         $this->handle($command);
+    }
+
+    public function it_throws_an_exception_with_invalid_attribute_type(
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $model,
+        $identifiersMappingRepository
+    ) {
+        $command = new UpdateIdentifiersMappingCommand([
+            'mpn' => 'model',
+            'upc' => null,
+            'asin' => null,
+            'brand' => null,
+        ]);
+
+        $attributeRepository->findOneByIdentifier('model')->willReturn($model);
+        $model->getType()->willReturn('unknown_attribute_type');
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(InvalidAttributeTypeException::class)->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_with_brand_is_saved_without_mpn(
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $manufacturer,
+        AttributeInterface $ean,
+        $identifiersMappingRepository
+    ) {
+        $command = new UpdateIdentifiersMappingCommand([
+            'brand' => 'manufacturer',
+            'mpn' => null,
+            'upc' => 'ean',
+            'asin' => null,
+        ]);
+
+        $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
+        $manufacturer->getType()->willReturn('pim_catalog_text');
+        $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
+        $ean->getType()->willReturn('pim_catalog_text');
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(MissingMandatoryAttributeMappingException::class)->during('handle', [$command]);
+    }
+
+    public function it_throws_an_exception_with_mpn_is_saved_without_brand(
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $model,
+        AttributeInterface $ean,
+        $identifiersMappingRepository
+    ) {
+        $command = new UpdateIdentifiersMappingCommand([
+            'brand' => null,
+            'mpn' => 'model',
+            'upc' => 'ean',
+            'asin' => null,
+        ]);
+
+        $attributeRepository->findOneByIdentifier('model')->willReturn($model);
+        $model->getType()->willReturn('pim_catalog_text');
+        $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
+        $ean->getType()->willReturn('pim_catalog_text');
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(MissingMandatoryAttributeMappingException::class)->during('handle', [$command]);
     }
 }
