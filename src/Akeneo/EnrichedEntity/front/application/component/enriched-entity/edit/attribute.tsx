@@ -20,7 +20,7 @@ interface CreateProps extends StateProps, DispatchProps {}
 
 const renderAttributes = (attributes: AttributeModel[]) => {
   return attributes.map((attribute: AttributeModel) => (
-    <div key={attribute.getCode().stringValue()} className="AknFieldContainer" data-identifier={attribute.getCode().stringValue()}>
+    <div key={attribute.getCode().stringValue()} className="AknFieldContainer" data-identifier={attribute.getCode().stringValue()} data-type={attribute.getType()}>
       <div className="AknFieldContainer-header">
         <label
           className="AknFieldContainer-label AknFieldContainer-label--withImage"
@@ -65,7 +65,7 @@ class Attribute extends React.Component<CreateProps> {
           <span className="group-label">{__('pim_enriched_entity.enriched_entity.attribute.title')}</span>
         </header>
         <div className="AknFormContainer AknFormContainer--withPadding">
-          {renderAttributes(this.props.attributes)}
+          {0 !== this.props.attributes.length ? renderAttributes(this.props.attributes) : (<span className="empty-attributes">No attributes</span>)}
           <button
             className="AknButton AknButton--action"
             onClick={this.props.events.onAttributeCreationStart}
