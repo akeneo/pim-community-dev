@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Bundle\Controller\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
@@ -168,7 +167,7 @@ class LocaleController
         foreach ($searchParameters as $searchKey => $searchParameter) {
             foreach ($searchParameter as $searchOperator) {
                 if (!in_array($searchKey, $this->authorizedFieldFilters)
-                    || Operators::EQUALS !== $searchOperator['operator']) {
+                    || '=' !== $searchOperator['operator']) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(
                             'Filter on property "%s" is not supported or does not support operator "%s".',

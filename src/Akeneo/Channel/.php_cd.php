@@ -29,6 +29,8 @@ $rules = [
         'Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface', // TODO: The versioning bundle will be moved to Akeneo\Tool
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface', // TODO: we should remove this dependencies, related to permissions
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: The current local should be given by $context (third parameter of normalize) instead of depending on UserContext
+        'Akeneo\Pim\Structure\Component\AttributeTypes', // TODO: Channels are currently tied to PIM_CATALOG_METRIC, to be able to convert units
+        'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager', // TODO: Channels are currently tied to PIM_CATALOG_METRIC, to be able to convert units
     ])->in('Akeneo\Channel\Component'),
 ];
 

@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Component\StorageUtils\Validator\Constraints;
 
-use Akeneo\Channel\Component\Model\Locale;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -37,7 +36,7 @@ class ImmutableValidator extends ConstraintValidator
     /**
      * Validate the property
      *
-     * @param Locale     $entity
+     * @param object     $entity
      * @param Constraint $constraint
      */
     public function validate($entity, Constraint $constraint)
