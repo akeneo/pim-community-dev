@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Validator\Constraints;
 
 /**

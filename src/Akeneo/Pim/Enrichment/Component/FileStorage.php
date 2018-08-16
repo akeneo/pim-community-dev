@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Akeneo\Pim\Enrichment\Component;
 
 /**
  * @author    Julien Janvier <jjanvier@akeneo.com>

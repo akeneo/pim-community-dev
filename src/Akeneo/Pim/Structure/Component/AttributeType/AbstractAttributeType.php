@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\AttributeType;
 
-use Pim\Component\Catalog\AttributeTypeInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypeInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * Abstract attribute type

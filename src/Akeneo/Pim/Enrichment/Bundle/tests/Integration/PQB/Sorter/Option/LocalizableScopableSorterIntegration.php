@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Sorter\Option;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
@@ -103,7 +103,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidDirectionException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
      * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
      */
     public function testErrorOperatorNotSupported()

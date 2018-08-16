@@ -6,6 +6,21 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\ProductEvents/Akeneo\\Pim\\Enrichment\\Component\\Product\\ProductEvents/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\FileStorage/Akeneo\\Pim\\Enrichment\\Component\\FileStorage/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\AttributeTypes/Akeneo\\Pim\\Structure\\Component\\AttributeTypes/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\AttributeTypeInterface/Akeneo\\Pim\\Structure\\Component\\AttributeTypeInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\AlreadyExistingAxisValueCombinationException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\AlreadyExistingAxisValueCombinationException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\InvalidArgumentException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\InvalidArgumentException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\InvalidAttributeException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\InvalidAttributeException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\InvalidDirectionException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\InvalidDirectionException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\InvalidOperatorException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\InvalidOperatorException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\InvalidOptionException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\InvalidOptionException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\InvalidOptionsException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\InvalidOptionsException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\MissingIdentifierException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\MissingIdentifierException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\ObjectNotFoundException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\ObjectNotFoundException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\ProductQueryException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\ProductQueryException/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\UnsupportedFilterException/Akeneo\\Pim\\Enrichment\\Component\\Product\\Exception\\UnsupportedFilterException/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\AttributeConverter/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\AttributeConverter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\AttributeConverterInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\AttributeConverterInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Localization\\Localizer\\LocalizerRegistry/Akeneo\\Pim\\Enrichment\\Component\\Product\\Localization\\Localizer\\LocalizerRegistry/g'

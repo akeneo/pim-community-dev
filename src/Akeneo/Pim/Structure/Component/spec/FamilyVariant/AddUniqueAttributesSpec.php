@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\FamilyVariant;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

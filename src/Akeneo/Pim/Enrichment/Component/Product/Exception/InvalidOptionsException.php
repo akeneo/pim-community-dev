@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 

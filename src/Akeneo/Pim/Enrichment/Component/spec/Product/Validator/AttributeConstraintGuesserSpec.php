@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeConstraintGuesser;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 class AttributeConstraintGuesserSpec extends ObjectBehavior

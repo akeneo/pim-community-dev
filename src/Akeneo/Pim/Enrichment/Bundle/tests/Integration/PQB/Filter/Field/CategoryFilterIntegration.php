@@ -84,7 +84,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "categories" is not supported or does not support operator ">="
      */
     public function testErrorOperatorNotSupported()

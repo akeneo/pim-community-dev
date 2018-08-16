@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Exception;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 
 class InvalidOperatorExceptionSpec extends ObjectBehavior
 {

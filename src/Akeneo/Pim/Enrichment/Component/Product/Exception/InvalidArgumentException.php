@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
 
 /**
  * Invalid argument exceptions the updater can throw when performing an action.

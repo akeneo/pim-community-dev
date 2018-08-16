@@ -71,7 +71,7 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException
      * @expectedExceptionMessage Object "family" with code "UNKNOWN_FAMILY" does not exist
      */
     public function testErrorValueNotFound()
@@ -80,7 +80,7 @@ class FamilyFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "family" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

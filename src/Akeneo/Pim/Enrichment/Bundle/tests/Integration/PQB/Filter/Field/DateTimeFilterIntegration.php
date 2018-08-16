@@ -147,7 +147,7 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "updated" is not supported or does not support operator "IN CHILDREN"
      */
     public function testErrorOperatorNotSupported()

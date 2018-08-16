@@ -2,13 +2,10 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\InvalidOptionsException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;

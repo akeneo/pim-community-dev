@@ -12,6 +12,21 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\ProductEvents` to `Akeneo\Pim\Enrichment\Component\Product\ProductEvents`
+- Move `Pim\Component\Catalog\FileStorage` to `Akeneo\Pim\Enrichment\Component\FileStorage`
+- Move `Pim\Component\Catalog\AttributeTypes` to `Akeneo\Pim\Structure\Component\AttributeTypes`
+- Move `Pim\Component\Catalog\AttributeTypeInterface` to `Akeneo\Pim\Structure\Component\AttributeTypeInterface`
+- Move `Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException`
+- Move `Pim\Component\Catalog\Exception\InvalidArgumentException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException`
+- Move `Pim\Component\Catalog\Exception\InvalidAttributeException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException`
+- Move `Pim\Component\Catalog\Exception\InvalidDirectionException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException`
+- Move `Pim\Component\Catalog\Exception\InvalidOperatorException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException`
+- Move `Pim\Component\Catalog\Exception\InvalidOptionException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionException`
+- Move `Pim\Component\Catalog\Exception\InvalidOptionsException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException`
+- Move `Pim\Component\Catalog\Exception\MissingIdentifierException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\MissingIdentifierException`
+- Move `Pim\Component\Catalog\Exception\ObjectNotFoundException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException`
+- Move `Pim\Component\Catalog\Exception\ProductQueryException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\ProductQueryException`
+- Move `Pim\Component\Catalog\Exception\UnsupportedFilterException` to `Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException`
 - Move `Pim\Component\Catalog\Localization\Localizer\AttributeConverter` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverter`
 - Move `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface`
 - Move `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistry` to `Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistry`
