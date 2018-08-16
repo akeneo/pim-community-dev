@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac030cd0d836579ed27b30974913fca0",
+    "content-hash": "c7568d7e9bad99a6f51af3755c2c7d02",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -5128,7 +5128,7 @@
     "packages-dev": [
         {
             "name": "akeneo/php-coupling-detector",
-            "version": "dev-master",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/php-coupling-detector.git",
@@ -8059,7 +8059,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "dompdf/dompdf": 20,
-        "akeneo/php-coupling-detector": 20,
         "behat/mink-selenium2-driver": 20
     },
     "prefer-stable": false,
