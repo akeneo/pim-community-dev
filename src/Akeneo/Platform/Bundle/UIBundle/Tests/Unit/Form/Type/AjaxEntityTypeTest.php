@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Tests\Unit\Form\Type;
 
-use PHPUnit\Framework\TestCase;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

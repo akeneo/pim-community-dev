@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Tests\Unit\Form\Transformer;
 
-use PHPUnit\Framework\TestCase;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests related class

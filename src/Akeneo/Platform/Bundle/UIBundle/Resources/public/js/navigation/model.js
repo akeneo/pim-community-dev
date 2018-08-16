@@ -26,6 +26,7 @@ function(_, routing, Backbone) {
             if (this.isNew()) {
                 return base;
             }
+
             return base + (base.charAt(base.length - 1) === '/' ? '' : '/') + 'ids/' + encodeURIComponent(this.id);
         }
     });
