@@ -33,8 +33,16 @@ services:
             - '@enriched_entity_serializer'
             - '@validator'
 
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.delete:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\DeleteAction'
+        arguments:
+            - '@oro_security.security_facade'
+            - '@serializer'
+            - '@validator'
+            - '@akeneo_enrichedentity.application.enriched_entity.delete_enriched_entity_handler'
+
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlEnrichedEntityRepository'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityRepository'
         arguments:
             - '@database_connection'
 
@@ -62,6 +70,12 @@ services:
             - '@validator'
             - '@oro_security.security_facade'
 
+    akeneo_enrichedentity.infrastructure.action.attribute.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\IndexAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
+
     akeneo_enrichedentity.infrastructure.action.attribute.create:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
         arguments:
@@ -73,52 +87,57 @@ services:
             - '@oro_security.security_facade'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordRepository'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.attribute:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlAttributeRepository'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindRecordItemsForEnrichedEntity'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForEnrichedEntity'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindRecordDetails'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordDetails'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlEnrichedEntityExists'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityExists'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordExists'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordExists'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityItems'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlFindEnrichedEntityItems'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityDetails'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlFindEnrichedEntityDetails'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlAttributeExists'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists'
         arguments:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlFindAttributeNextOrder'
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesDetails'
         arguments:
             - '@database_connection'
 
@@ -134,6 +153,11 @@ services:
 
     akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler:
         class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.application.enriched_entity.delete_enriched_entity_handler:
+        class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
 

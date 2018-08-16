@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints;
 
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
 use Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfigured;
 use Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfiguredValidator;
 use Akeneo\Pim\Structure\Component\Model\Attribute;

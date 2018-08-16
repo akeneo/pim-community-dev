@@ -27,6 +27,11 @@ akeneo_enriched_entities_enriched_entity_edit_rest:
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.edit }
     methods: [POST]
 
+akeneo_enriched_entities_enriched_entity_delete_rest:
+    path: '/rest/enriched_entity/{identifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.delete }
+    methods: [DELETE]
+
 akeneo_enriched_entities_record_index_rest:
     path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.index }
@@ -46,6 +51,11 @@ akeneo_enriched_entities_record_edit_rest:
     path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.edit }
     methods: [POST]
+
+akeneo_enriched_entities_attribute_index_rest:
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/attribute'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.attribute.index }
+    methods: [GET]
 
 akeneo_enriched_entities_attribute_create_rest:
     path: '/rest/enriched_entity/{enrichedEntityIdentifier}/attribute'

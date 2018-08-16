@@ -15,8 +15,8 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
+use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

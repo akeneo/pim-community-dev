@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\RecordExistsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>

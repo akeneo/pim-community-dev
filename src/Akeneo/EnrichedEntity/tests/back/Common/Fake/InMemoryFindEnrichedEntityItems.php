@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityItemsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

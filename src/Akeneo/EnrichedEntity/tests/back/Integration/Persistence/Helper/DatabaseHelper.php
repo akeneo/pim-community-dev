@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Helper;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * This class is responsible for helping calling web routes.

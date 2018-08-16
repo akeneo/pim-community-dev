@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectNotificationFactory;
 
 class ProjectNotificationFactorySpec extends ObjectBehavior

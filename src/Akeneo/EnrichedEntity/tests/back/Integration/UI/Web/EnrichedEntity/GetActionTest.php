@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
+    private const ENRICHED_ENTITY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
 
     /** @var Client */
     private $client;
@@ -49,7 +49,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_DETAIL_ROUTE,
+            self::ENRICHED_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'designer']
         );
         $expectedContent = json_encode([
@@ -69,7 +69,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITIY_DETAIL_ROUTE,
+            self::ENRICHED_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );

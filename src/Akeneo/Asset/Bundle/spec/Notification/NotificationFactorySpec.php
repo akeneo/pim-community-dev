@@ -11,7 +11,7 @@ class NotificationFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['mass_upload'], 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith(['mass_upload'], 'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_supports_type()
@@ -32,7 +32,7 @@ class NotificationFactorySpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('mass_upload');
         $jobInstance->getLabel()->willReturn('Mass upload');
 
-        $this->create($jobExecution)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->create($jobExecution)->shouldReturnAnInstanceOf('Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_throws_an_exception_if_param_is_not_an_exception()

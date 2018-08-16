@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
@@ -24,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITIY_LIST_ROUTE = 'akeneo_enriched_entities_enriched_entity_index_rest';
+    private const ENRICHED_ENTITY_LIST_ROUTE = 'akeneo_enriched_entities_enriched_entity_index_rest';
 
     /** @var Client */
     private $client;
@@ -47,7 +47,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_enriched_entities(): void
     {
-        $this->webClientHelper->callRoute($this->client, self::ENRICHED_ENTITIY_LIST_ROUTE);
+        $this->webClientHelper->callRoute($this->client, self::ENRICHED_ENTITY_LIST_ROUTE);
 
         $expectedContent = json_encode([
             'items' => [

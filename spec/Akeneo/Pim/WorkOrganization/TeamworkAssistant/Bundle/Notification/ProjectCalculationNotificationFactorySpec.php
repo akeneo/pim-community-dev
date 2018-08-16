@@ -22,7 +22,7 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
             $projectRepository,
             $datePresenter,
             ['project_calculation'],
-            'Pim\Bundle\NotificationBundle\Entity\Notification'
+            'Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification'
         );
     }
 
@@ -67,7 +67,7 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('import');
         $jobInstance->getLabel()->willReturn('Import');
 
-        $this->create($jobExecution)->shouldReturnAnInstanceOf('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->create($jobExecution)->shouldReturnAnInstanceOf('Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_throws_an_exception_if_param_is_not_a_job_exception()

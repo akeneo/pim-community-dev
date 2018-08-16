@@ -56,6 +56,19 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepositoryInterf
         return $enrichedEntity;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByIdentifier(EnrichedEntityIdentifier $identifier): void
+    {
+        $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
+        if (null === $enrichedEntity) {
+            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
+        }
+
+        unset($this->enrichedEntities[(string) $identifier]);
+    }
+
     public function count(): int
     {
         return count($this->enrichedEntities);

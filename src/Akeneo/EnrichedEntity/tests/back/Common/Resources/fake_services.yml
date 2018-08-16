@@ -43,7 +43,10 @@ services:
     akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributeNextOrder
         arguments:
-        - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributesDetails
 
     # Third party services
     oro_security.security_facade:
