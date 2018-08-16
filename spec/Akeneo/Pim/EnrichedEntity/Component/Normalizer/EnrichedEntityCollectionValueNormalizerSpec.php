@@ -8,7 +8,7 @@ use Akeneo\Pim\EnrichedEntity\Component\Normalizer\EnrichedEntityCollectionValue
 use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Prophecy\Argument;

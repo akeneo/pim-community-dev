@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

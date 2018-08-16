@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Media;
 use League\Flysystem\FilesystemInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
-use Pim\Component\Catalog\FileStorage;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 

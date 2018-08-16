@@ -14,7 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
