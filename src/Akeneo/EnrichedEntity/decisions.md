@@ -74,3 +74,25 @@ Right now in the PIM, it's really hard to manage attribute deletion. If we remov
 This way, when we hydrate a value from the db, we are able to tell right away if it's in sync with the current attribute type/scope/locale and reject it if needed. This will clearly be a bit more costly to load but it's totally errorproof and should solve the problem we have on this topic. This solution should be benchmarked to be sure that it's not too costly.
 
 This decision should be discussed with Alex
+
+## 16/08/2018
+
+### Attribute deletion
+
+Follow up of [attribute deletion](#attribute-deletion): after some benchmarks, the read operations (mysql, hydration, normalization) are almost free compared to symfony bootup. On a macbook air, it takes 100ms to load 25 attributes while it takes 110ms to load 250 attributes.
+
+We also discussed about a way to invalidate more easily the values of a record after an attribute deletion:
+
+#### First solution: unique hash generated at attribute creation
+
+We store this hash on the values. Each time we load a value, we compare this hash to the actual attribute and if it's different, it means that it has been deleted and re-created.
+Pros: Simple solution to implmement, the same for all attribute type and efficient in term of performances.
+Cons: If the user delete the attribute and re-create it with the same code, same type and same scopability/localizability, the values will be invalidated whereas they could have been restored.
+
+#### Second solution: sha1 of the attribute type, localizable and scopable
+
+At attribute creation, we calculate a hash of the "structure property" of the attribute into a hash and use it exaclty like the previous solution (store in value+xompare at hydration).
+The problem with this solution is that all attribute type does not have the same "structural properties". For example, if you delete a metric attribute and recreate it with the same code, same type, same scope but another metric family, the hydration of the values will fail. So for each attribute type, the `getHash` method could be different.
+
+Pros: Efficient in term of performance, the user can recover data if he deleted the attribute by error.
+Cons: require more code and different for each attribute types.
