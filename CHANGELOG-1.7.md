@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7585: apply permissions on the column picker of the product datagrid
+
 # 1.7.30 (2018-08-14)
 
 # 1.7.29 (2018-08-01)
