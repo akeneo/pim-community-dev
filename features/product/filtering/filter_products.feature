@@ -78,20 +78,6 @@ Feature: Filter products
     When I reset the grid
     Then the grid should contain 6 elements
 
-  Scenario: Successfully reset the filters for a selected view
-    Given I am on the products page
-    And I filter by "family" with operator "in list" and value "furniture"
-    And I create the view:
-      | new-view-label | Furniture only |
-    Then the grid should contain 2 elements
-    When I refresh the grid
-    Then I filter by "enabled" with operator "" and value "Disabled"
-    And the grid should contain 0 elements
-    Then I am on the families page
-    And I am on the products page
-    When I reset the grid
-    Then the grid should contain 2 elements
-
   Scenario: Successfully refresh the grid
     Given I am on the products page
     Then I filter by "enabled" with operator "" and value "Enabled"
