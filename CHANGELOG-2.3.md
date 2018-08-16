@@ -8,6 +8,7 @@
 - PIM-7563: Fix permissions on API filters
 - PIM-7582: Fix memory leak on assets mass upload
 - PIM-7579: Fix assets display in product edit form when they have full numeric codes, they don't disappear anymore after preview.
+- PIM-7568: Fix the history of the attribute groups on permission update
 
 # 2.3.4 (2018-08-08)
 
