@@ -32,6 +32,7 @@ cache:
 before_install:
     - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/EnrichedEntity/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
+    - php tests/travis/check-fake-implementations.php
     - phpenv config-rm xdebug.ini
     - composer config -g github-oauth.github.com cb6d948ada430cba6f71257ce0a57026061df22c
     - printf "\n" | pecl install apcu
