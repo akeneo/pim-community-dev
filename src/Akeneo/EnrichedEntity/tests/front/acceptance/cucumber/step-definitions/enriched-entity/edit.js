@@ -38,10 +38,13 @@ module.exports = async function(cucumber) {
   const changeEnrichedEntity = async function(editPage, identifier, updates) {
     const properties = await editPage.getProperties();
 
-    // To rework when we will be able to switch locale
     const labels = convertDataTable(updates).labels;
 
-    await properties.setLabel(labels.en_US);
+    Object.keys(labels).forEach(async locale => {
+      const label = labels[locale];
+      await (await editPage.getLocaleSwitcher()).switchLocale(locale);
+      await properties.setLabel(label);
+    });
   };
 
   const savedEnrichedEntityWillBe = function(page, identifier, updates) {
@@ -52,6 +55,22 @@ module.exports = async function(cucumber) {
 
       if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'GET' === request.method()) {
         answerJson(request, convertItemTable(updates)[0], 200);
+      }
+    });
+  };
+
+  const answerLocaleList = function() {
+    this.page.on('request', request => {
+      if ('http://pim.com/configuration/locale/rest?activated=true' === request.url() && 'GET' === request.method()) {
+        answerJson(
+          request,
+          [
+            {code: 'de_DE', label: 'German (Germany)', region: 'Germany', language: 'German'},
+            {code: 'en_US', label: 'English (United States)', region: 'United States', language: 'English'},
+            {code: 'fr_FR', label: 'French (France)', region: 'France', language: 'French'},
+          ],
+          200
+        );
       }
     });
   };
@@ -72,6 +91,7 @@ module.exports = async function(cucumber) {
   });
 
   When('the user updates the enriched entity {string} with:', async function(identifier, updates) {
+    await answerLocaleList.apply(this);
     await askForEnrichedEntity.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
@@ -81,6 +101,7 @@ module.exports = async function(cucumber) {
   });
 
   When('the user changes the enriched entity {string} with:', async function(identifier, updates) {
+    await answerLocaleList.apply(this);
     await askForEnrichedEntity.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
@@ -96,9 +117,12 @@ module.exports = async function(cucumber) {
     const identifierValue = await properties.getIdentifier();
     assert.strictEqual(identifierValue, enrichedEntity.identifier);
 
-    const labelValue = await properties.getLabel();
-    // To rework when we will be able to switch locale
-    assert.strictEqual(labelValue, enrichedEntity.labels.en_US);
+    await Object.keys(enrichedEntity.labels).forEach(async locale => {
+      const label = enrichedEntity.labels[locale];
+      await (await editPage.getLocaleSwitcher()).switchLocale(locale);
+      const labelValue = await properties.getLabel();
+      assert.strictEqual(labelValue, label);
+    });
   });
 
   Then('the saved enriched entity {string} will be:', async function(identifier, updates) {

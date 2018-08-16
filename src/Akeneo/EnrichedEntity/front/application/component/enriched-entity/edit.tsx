@@ -20,6 +20,7 @@ import ImageModel from 'akeneoenrichedentity/domain/model/image';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
+import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
 
 interface StateProps {
   sidebar: {
@@ -151,11 +152,11 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                   <div>
                     <div className="AknTitleContainer-line">
                       <div className="AknTitleContainer-context AknButtonList">
-                        {/* <LocaleSwitcher
+                        <LocaleSwitcher
                           localeCode={this.props.context.locale}
                           locales={this.props.structure.locales}
                           onLocaleChange={this.props.events.onLocaleChanged}
-                        /> */}
+                        />
                       </div>
                     </div>
                   </div>

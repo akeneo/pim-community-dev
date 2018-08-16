@@ -14,10 +14,9 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
 
   async fetchAll(enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Attribute[]> {
     const backendAttributes = await getJSON(
-        routing.generate(
-            'akeneo_enriched_entities_attribute_index_rest',
-            {enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue()}
-        )
+      routing.generate('akeneo_enriched_entities_attribute_index_rest', {
+        enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+      })
     );
 
     return hydrateAll<Attribute>(this.hydrator)(backendAttributes);
