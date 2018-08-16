@@ -47,6 +47,10 @@ define(
              * {@inheritdoc}
              */
             render() {
+                if (null === this.treeLabel || '' === this.treeLabel.trim()) {
+                    return;
+                }
+
                 this.$el.html(this.template({
                     label: __('pim_enrich.entity.product.category'),
                     isOpen: this.isOpen,
