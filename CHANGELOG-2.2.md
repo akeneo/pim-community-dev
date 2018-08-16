@@ -1,3 +1,13 @@
+# 2.2.x
+
+## Performances
+
+- PIM-7531: Improve indexation during the "compute product models descendants" step on product models import
+
+## BC Breaks
+
+- Added the method `removeForProductWithoutIndexing` on the `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface`
+
 # 2.2.12 (2018-07-25)
 
 # 2.2.11 (2018-07-04)
