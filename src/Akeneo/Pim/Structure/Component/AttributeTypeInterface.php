@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Akeneo\Pim\Structure\Component;
 
 /**
  * Contract for an attribute type. Defines its name, its backend type and if the related attributes

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypeInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypeInterface;
 
 class AttributeTypeRegistrySpec extends ObjectBehavior
 {
