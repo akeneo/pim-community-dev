@@ -835,6 +835,7 @@ Let's consider a *bar* product model, without any product model value. This prod
 * a parent product model
 * several groups
 * several categories
+* several associations related to groups, product models and/or other products
 
 Its standard format would be the following:
         
@@ -849,6 +850,32 @@ Its standard format would be the following:
           "values" => array:0 []
           "created" => "2016-06-23T11:24:44+02:00"
           "updated" => "2016-06-23T11:24:44+02:00"
+          "associations" => array:3 [
+            "PACK" => array:1 [
+              "groups" => []
+              "product_models" => []
+              "products" => array:2 [
+                0 => "foo"
+                1 => "baz"
+              ]
+            ]
+            "UPSELL" => array:1 [
+              "groups" => array:1 [
+                0 => "groupA"
+              ]
+              "product_models" => []
+              "products" => []
+            ]
+            "X_SELL" => array:2 [
+              "groups" => array:1 [
+                0 => "groupB"
+              ]
+              "product_models" => []
+              "products" => array:1 [
+                0 => "foo"
+              ]
+            ]
+          ]
         ]
 
 | type          | data structure | data example                                                              | notes                                                                                            |
@@ -862,6 +889,7 @@ Its standard format would be the following:
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
+| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "product_models" => [], "products" => [0 => "foo"]]]` | Product models associations respect the same structure than [Product Associations](#product-associations)                                                                                        |
 
 ### Product model values
 
