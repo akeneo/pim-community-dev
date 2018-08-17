@@ -15,10 +15,11 @@
         <div class="buttons AknAssetPreview-buttons">
             <ul class="AknAssetCollectionField-list AknAssetCollectionField-list--unwrapped">
                 <% assets.forEach((asset) => { %>
-                <li class="asset-thumbnail-item AknAssetCollectionField-listItem AknAssetCollectionField-listItem--transparent" data-url="<%- Routing.generate('pimee_product_asset_original', {
+                <li class="asset-thumbnail-item AknAssetCollectionField-listItem AknAssetCollectionField-listItem--transparent" data-url="<%- Routing.generate('pimee_product_asset_thumbnail', {
                     code: asset.code,
                     channelCode: scope,
-                    localeCode: locale
+                    localeCode: locale,
+                    filter: 'preview',
                  }) %>" data-asset="<%- asset.code %>" data-description="<%- asset.description %>">
                     <div class="AknAssetCollectionField-assetThumbnail asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
                             code: asset.code,

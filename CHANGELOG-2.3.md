@@ -9,6 +9,7 @@
 - PIM-7582: Fix memory leak on assets mass upload
 - PIM-7579: Fix assets display in product edit form when they have full numeric codes, they don't disappear anymore after preview.
 - PIM-7568: Fix the history of the attribute groups on permission update
+- PIM-7587: Fix issue with preview of non-images assets
 
 # 2.3.4 (2018-08-08)
 
