@@ -28,7 +28,7 @@ interface DispatchProps {
 }
 
 const records = ({context, grid, events, enrichedEntity}: StateProps & DispatchProps) => {
-  return 0 !== records.length ? (
+  return 0 !== grid.records.length ? (
     <Table
       onRedirectToRecord={events.onRedirectToRecord}
       locale={context.locale}

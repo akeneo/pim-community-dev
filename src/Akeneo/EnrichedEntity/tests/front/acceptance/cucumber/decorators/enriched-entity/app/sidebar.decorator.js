@@ -44,6 +44,7 @@ const Sidebar = async (nodeElement, createElementDecorator, page) => {
 
     const button = await nodeElement.$(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
     await button.click();
+    await page.waitForSelector(`.AknDefault-mainContent[data-tab="${tabName}"]`);
   };
 
   return {collapse, getTabsCode, getActiveTabCode, isCollapsed, clickOnTab};

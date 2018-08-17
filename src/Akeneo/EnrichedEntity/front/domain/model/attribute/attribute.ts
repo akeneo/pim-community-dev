@@ -46,6 +46,7 @@ export interface CommonAttribute {
   getIdentifier: () => Identifier;
   getCode: () => AttributeCode;
   getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
+  getType(): AttributeType;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
   equals: (attribute: Attribute) => boolean;
@@ -105,6 +106,10 @@ class CommonConcreteAttribute implements CommonAttribute {
 
   public getCode(): AttributeCode {
     return this.code;
+  }
+
+  public getType(): AttributeType {
+    return this.type;
   }
 
   public getLabel(locale: string) {
