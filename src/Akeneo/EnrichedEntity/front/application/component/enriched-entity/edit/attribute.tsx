@@ -112,7 +112,7 @@ class Attribute extends React.Component<CreateProps> {
 export default connect(
   (state: EditState): StateProps => {
     const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
-    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const locale = (undefined === state.user || undefined === state.user.catalogLocale) ? '' : state.user.catalogLocale;
 
     return {
       context: {

@@ -56,7 +56,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  When('the user asks for the enriched entity {string}', {timeout: 90000}, askForEnrichedEntity);
+  When('the user asks for the enriched entity {string}', askForEnrichedEntity);
 
   When('the user gets the enriched entity {string} with label {string}', async function(
     expectedIdentifier,

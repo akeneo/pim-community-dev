@@ -1,7 +1,7 @@
 Feature: Lists all records of an enriched entity
   In order to see the records of an enriched entity
   As a user
-  I want to list of of its records
+  I want to list all of its records
 
   @acceptance-front
   Scenario: List all records of an enriched entity

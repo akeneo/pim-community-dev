@@ -1,7 +1,7 @@
 Feature: Lists all attributes related to an enriched entity
   In order to see the structure of an enriched entity
   As a user
-  I want to list of of its attributes
+  I want to list all of its attributes
 
   @acceptance-front
   Scenario: List all attributes of an enriched entity

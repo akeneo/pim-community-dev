@@ -11,48 +11,48 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
     page.on('request', interceptedRequest => {
 
       if (
-        'http://pim.com/rest/enriched_entity/designer/attribute' === interceptedRequest.url() &&
-        'GET' === interceptedRequest.method()
+          'http://pim.com/rest/enriched_entity/designer/attribute' === interceptedRequest.url() &&
+          'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
           contentType: 'application/json',
           body: JSON.stringify([
-      {
-        identifier: {
-          identifier: 'description',
-          enriched_entity_identifier: 'designer',
-        },
-        enriched_entity_identifier: 'designer',
-        code: 'description',
-        required: true,
-        order: 0,
-        value_per_locale: true,
-        value_per_channel: false,
-        type: 'text',
-        labels: {
-          en_US: 'Description',
-        },
-        max_length: 255,
-      },
-      {
-        identifier: {
-          identifier: 'side_view',
-          enriched_entity_identifier: 'designer',
-        },
-        enriched_entity_identifier: 'designer',
-        code: 'side_view',
-        required: false,
-        order: 1,
-        value_per_locale: true,
-        value_per_channel: false,
-        type: 'image',
-        labels: {
-          en_US: 'Side view',
-        },
-        max_file_size: '124.12',
-        allowed_extensions: ['png', 'jpg']
-      },
-    ])
+            {
+              identifier: {
+                identifier: 'description',
+                enriched_entity_identifier: 'designer',
+              },
+              enriched_entity_identifier: 'designer',
+              code: 'description',
+              required: true,
+              order: 0,
+              value_per_locale: true,
+              value_per_channel: false,
+              type: 'text',
+              labels: {
+                en_US: 'Description',
+              },
+              max_length: 255,
+            },
+            {
+              identifier: {
+                identifier: 'side_view',
+                enriched_entity_identifier: 'designer',
+              },
+              enriched_entity_identifier: 'designer',
+              code: 'side_view',
+              required: false,
+              order: 1,
+              value_per_locale: true,
+              value_per_channel: false,
+              type: 'image',
+              labels: {
+                en_US: 'Side view',
+              },
+              max_file_size: '124.12',
+              allowed_extensions: ['png', 'jpg']
+            },
+          ])
         });
       }
     });

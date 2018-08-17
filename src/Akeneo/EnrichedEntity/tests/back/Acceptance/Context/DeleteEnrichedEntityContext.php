@@ -7,7 +7,7 @@ namespace Akeneo\EnrichedEntity\tests\back\Acceptance\Context;
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityExistsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 

@@ -3,7 +3,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const hasRecord = async (code, type) => {
+  const hasRecord = async (code) => {
     await isLoaded();
     await page.waitFor('.AknDefault-mainContent .AknGrid-bodyRow');
     const record = await nodeElement.$(`.AknGrid-bodyCell > a[data-identifier="${code}"]`);
@@ -12,6 +12,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   };
 
   const isEmpty = async () => {
+    await isLoaded();
     await page.waitFor('.AknDefault-mainContent .AknGridContainer-noData');
 
     return true;
