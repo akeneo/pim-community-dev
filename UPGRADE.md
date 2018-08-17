@@ -665,6 +665,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Bundle\\ApiBundle
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Bundle\\ApiBundle\\Doctrine\\ORM\\Repository\\ProductRepository/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ORM\\Repository\\ExternalApi\\ProductRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Normalizer\\CategoryNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Category\\Normalizer\\ExternalApi\\CategoryNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Normalizer\\ProductNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\ExternalApi\\ProductNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\ExternalApi\\ProductModelNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Repository\\ProductRepositoryInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Repository\\ExternalApi\\ProductRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Updater\\ProductModelUpdater/Akeneo\\Pim\\Enrichment\\Component\\Product\\ExternalApi\\Updater\\ProductModelUpdater/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard\\Category/Akeneo\\Pim\\Enrichment\\Component\\Category\\Connector\\ArrayConverter\\FlatToStandard\\Category/g'
