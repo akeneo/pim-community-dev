@@ -177,15 +177,6 @@ legacy:
 
 acceptance:
     suites:
-        pim:
-            paths:
-                - 'tests/features/pim'
-                - 'vendor/akeneo/pim-community-dev/tests/features/pim'
-            contexts_services:
-                - test.locale.context
-                - test.channel.context
-            filters:
-                tags: '@acceptance-back'
         enriched-entity:
             paths:
                 - '%paths.base%/src/Akeneo/EnrichedEntity/tests/features'
