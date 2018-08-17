@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- GITHUB-8627: Security vulnerabilities in dependencies
+
 # 1.7.30 (2018-08-14)
 
 - PIM-7570: Adds 'Locale specific' fields in attribute versioning
