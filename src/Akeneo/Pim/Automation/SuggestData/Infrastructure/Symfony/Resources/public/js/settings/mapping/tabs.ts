@@ -49,7 +49,6 @@ class Tabs extends BaseView {
     this.config = {...this.config, ...options.config};
   }
 
-
   /**
    * {@inheritdoc}
    */

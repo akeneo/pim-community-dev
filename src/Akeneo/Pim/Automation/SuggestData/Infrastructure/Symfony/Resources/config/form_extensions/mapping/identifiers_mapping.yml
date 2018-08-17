@@ -58,7 +58,6 @@ extensions:
         config:
             tabs:
                 - { label: akeneo_suggest_data.entity.identifier_mapping.plural_label, route: akeneo_suggest_data_settings_index }
-                - { label: pim_enrich.entity.family.plural_label, route: '', checkAllowed: true }
                 - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_suggest_data_settings_attributes_index, checkAllowed: true }
             selected: 0
 
