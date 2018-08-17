@@ -83,7 +83,8 @@ class AttributeMapping extends BaseForm {
             fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
             label: '',
             choiceRoute: 'pim_enrich_attribute_rest_index'
-          }
+          },
+          className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
         });
         attributeSelector.configure().then(() => {
           attributeSelector.setParent(this);

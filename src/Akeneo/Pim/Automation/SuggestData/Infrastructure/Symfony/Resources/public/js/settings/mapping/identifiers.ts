@@ -87,7 +87,8 @@ class EditIdentifiersMappingView extends BaseView {
           fieldName: pimAiAttributeCode,
           label: '',
           choiceRoute: 'pim_enrich_attribute_rest_index'
-        }
+        },
+        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
       });
       attributeSelector.setParent(this);
 
