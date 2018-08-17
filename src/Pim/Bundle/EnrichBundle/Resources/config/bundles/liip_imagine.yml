@@ -9,9 +9,10 @@ liip_imagine:
                 strip:        ~
         preview:
             quality:          95
-            format:           png
+            format:           jpg
             filters:
-                thumbnail:    { size: [900, 600], mode: inset }
+                background:
+                    color: "#ffffff"
                 strip:        ~
         thumbnail:
             quality:          95
