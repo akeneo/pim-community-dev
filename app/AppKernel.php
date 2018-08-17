@@ -74,7 +74,6 @@ class AppKernel extends Kernel
         return [
             // BAP overriden bundles
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Akeneo\UserManagement\Bundle\PimUserBundle(),
 
             // Channel bundles
@@ -95,7 +94,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
             new Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle(),
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
-            new Pim\Bundle\UIBundle\PimUIBundle(),
+            new Akeneo\Platform\Bundle\UIBundle\PimUIBundle(),
             new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
             new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
         ];

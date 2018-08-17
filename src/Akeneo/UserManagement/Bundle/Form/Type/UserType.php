@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Form\Event\UserFormBuilderEvent;
@@ -9,7 +10,6 @@ use Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Pim\Bundle\UIBundle\Form\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

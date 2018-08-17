@@ -1,0 +1,127 @@
+# ORO messages
+"Yes, Delete": "Yes, Delete"
+"Yes, I Agree": "Yes, I Agree"
+"Yes, do it": "Yes, do it"
+"Ok, got it.": "Ok, got it."
+"Delete Confirmation": "Delete Confirmation"
+"Edit": "Edit"
+"Unexpected error occured. Please contact system administrator.": "Unexpected error occured. Please contact system administrator."
+"Yes, revoke": "Yes, Revoke"
+"Revoke Confirmation": "Revoke Confirmation"
+Prev: Prev
+Today: Today
+Wk: Wk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Choose Time"
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+"Time Zone": "Time Zone"
+
+# PIM messages
+Localized value: Localized value
+Columns: Columns
+Datagrid Configuration: Datagrid Configuration
+
+# Filters
+Action:   Action
+Unit:     Unit
+Currency: Currency
+
+jstree:
+    all:          All products
+    unclassified: Unclassified products
+    product:
+        all:          All products
+        unclassified: Unclassified products
+    no_tree:      No tree available
+    include_sub:  Include sub-categories
+
+# Datetimepicker
+datetimepicker:
+    days:
+        Sunday: Sunday
+        Monday: Monday
+        Tuesday: Tuesday
+        Wednesday: Wednesday
+        Thursday: Thursday
+        Friday: Friday
+        Saturday: Saturday
+    daysShort:
+        Sun: Sun
+        Mon: Mon
+        Tue: Tue
+        Wed: Wed
+        Thu: Thu
+        Fri: Fri
+        Sat: Sat
+    daysMin:
+        Su: Su
+        Mo: Mo
+        Tu: Tu
+        We: We
+        Th: Th
+        Fr: Fr
+        Sa: Sa
+    months:
+       January: January
+       February: February
+       March: March
+       April: April
+       May: May
+       June: June
+       July: July
+       August: August
+       September: September
+       October: October
+       November: November
+       December: December
+    monthsShort:
+       Jan: Jan
+       Feb: Feb
+       Mar: Mar
+       Apr: Apr
+       May: May
+       Jun: Jun
+       Jul: Jul
+       Aug: Aug
+       Sep: Sep
+       Oct: Oct
+       Nov: Nov
+       Dec: Dec
+
+# ORO
+oro_config:
+    form:
+        config:
+            title: System configuration
+            tab:
+                system:
+                    title: System
+            group:
+                localization:
+                    title: Localization
+                    system_locale: Language
+                notification:
+                    title: Notifications
+                    system_notification: New versions notifications
+                loading_message:
+                    title: Loading messages
+                    label: Enable loading messages
+                loading_messages:
+                    label: Available loading messages
+
+pim_ui:
+  flash:
+    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
+
+"Sorry, page was not loaded correctly": "Sorry, page was not loaded correctly"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
+"navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
+"Content of pinned page is outdated": "Content of pinned page is outdated"
