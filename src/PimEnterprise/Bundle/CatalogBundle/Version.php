@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '2.0.33';
+    const VERSION = '2.0.34';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Hazel';
