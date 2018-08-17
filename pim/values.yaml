@@ -115,7 +115,6 @@ pimUsers:
     enabled: 1
     defaultAssetTree: asset_main_catalog
 
-
 mysql:
   mysql:
     serviceName: pim-mysql
@@ -123,8 +122,8 @@ mysql:
     userPassword: changeme
     rootPassword: changeme
     defaultDatabase: akeneo_pim
-  stateful:
-    enabled: true
+    stateful:
+      enabled: false
 
 elasticsearch:
   image:

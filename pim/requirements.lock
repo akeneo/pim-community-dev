@@ -1,12 +1,12 @@
 dependencies:
 - name: mysql
   repository: gs://akeneo-charts/
-  version: 0.1.6
+  version: 0.1.7
 - name: elasticsearch
   repository: gs://akeneo-charts/
-  version: 0.2.3
+  version: 0.2.4
 - name: nfs-server-provisioner
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 0.1.4
-digest: sha256:e08f81fa2f520104be5e22cd640cc9be399a7de4fe25e345018f6ae5665047b9
-generated: 2018-07-26T11:28:09.384353978+02:00
+digest: sha256:546be60fc91cafb802bf295c29263fb86ae719d8d075bd0665a54036f73173af
+generated: 2018-08-14T11:33:06.028352989+02:00

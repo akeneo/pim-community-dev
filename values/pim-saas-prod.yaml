@@ -20,7 +20,7 @@ pim:
     completeness-calculate:
       enabled: true
       pimCommand: "pim:completeness:calculate"
-      schedule: "0 2 * * *"
+      schedule: "0 2 * * 0"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"
@@ -37,7 +37,7 @@ pim:
 # Mysql
 mysql:
   mysql:
-    dataDiskSize: "50"
+    dataDiskSize: "50Gi"
   common:
     extraLabels:
       backup.enabled: "true"

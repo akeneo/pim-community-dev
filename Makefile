@@ -8,7 +8,6 @@ HELM_TIMEOUT=900
 HELM_VALUES_DIR:=${CURDIR}/values
 CUSTOMERS_DIR?=../../cloud-customers/
 
-
 DEBUG ?=--debug 
 
 .PHONY: helm-init
@@ -18,47 +17,35 @@ helm-init:
 	helm repo add akeneo-charts-dev gs://akeneo-charts-dev/
 	helm repo add akeneo-charts gs://akeneo-charts/
 
-
 .PHONY: helm-lint
 helm-lint: 
 	helm lint  ./$(HELM_CHART_NAME)/
 
 .PHONY: helm-build
-helm-build: helm-lint test-chart-exists
+helm-build: helm-lint
+ifeq ($(FORCE), true)
+	$(eval helm_force=--force)
+endif
 	helm repo update
 	helm package -u ./$(HELM_CHART_NAME)/ --version $(HELM_CHART_VERSION) $(DEBUG)
-	helm gcs push ./$(HELM_CHART_NAME)-$(HELM_CHART_VERSION).tgz $(HELM_REPO)
-	#rm ./$(HELM_CHART_NAME)-$(HELM_CHART_VERSION).tgz
+	helm gcs push ./$(HELM_CHART_NAME)-$(HELM_CHART_VERSION).tgz $(HELM_REPO) $(helm_force)
 
 .PHONY: helm-template
 helm-template:
 	helm template ./$(HELM_CHART_NAME)/ > "template_$(HELM_CHART_NAME)"
 
-.PHONY: test-chart-exists
-test-chart-exists:
-	$(info Check that chart is not existing yet : $(HELM_URL)$(HELM_CHART_NAME):$(HELM_CHART_VERSION))
-	@helm repo update
-	@$(eval CHART_EXISTS:=$(shell helm fetch $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION)  1>&2 2> /dev/null; echo $$?))
-	@echo "Exist: $(CHART_EXISTS)"
-	@if [ "$(CHART_EXISTS)" -eq "0" ] && [ "$(HELM_CHART_VERSION)" != "0.0.0-0" ]; \
-		then \
-			echo "WARNING: Chart $(HELM_URL)/$(HELM_CHART_NAME):$(HELM_CHART_VERSION) is ever existing!" ; \
-			if [ ! -z "$(FORCE)" ] ; then echo "!!! FORCING EXISTING CHART REBUILD AND PUSH !!!" ; else exit 1; fi ; \
-		else \
-			echo "Let's continue" ; \
-	fi
-
 .PHONY: helm-install
 helm-install: terraform-apply
 	@helm fetch $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION)
 	@echo -e == Install or update PIM ==
-	[[ -f "$(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" ]] && helmvalue="-f $(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" || helmvalue="" ; \
-	[[ ! -z "$(PIM_IMAGE_VERSION)" ]] && echo "image.pim.tag=$(PIM_IMAGE_VERSION)" && helmvalue+=" --set image.pim.tag=$(PIM_IMAGE_VERSION)"; \
-	[[ ! -z "$(PIM_IMAGE_REPO)" ]] && echo "image.pim.repository=$(PIM_IMAGE_REPO)" && helmvalue+=" --set image.pim.repository=$(PIM_IMAGE_REPO)"; \
+	[[ -f "$(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" ]] && helm_value="-f $(HELM_VALUES_DIR)/pim-saas-$(ENV_NAME).yaml" || helm_value="" ; \
+	[[ ! -z "$(PIM_IMAGE_VERSION)" ]] && echo "image.pim.tag=$(PIM_IMAGE_VERSION)" && helm_value+=" --set image.pim.tag=$(PIM_IMAGE_VERSION)"; \
+	[[ ! -z "$(PIM_IMAGE_REPO)" ]] && echo "image.pim.repository=$(PIM_IMAGE_REPO)" && helm_value+=" --set image.pim.repository=$(PIM_IMAGE_REPO)"; \
 	cluster_name=$$($(TERRAFORM) output cluster_name); \
 	env_name=$$($(TERRAFORM) output env_name); \
 	release_file="$(CUSTOMERS_DIR)saas/env/$${env_name}-env/$(PROJECT_NAME)/$${cluster_name}/srnt-releases/$(PFID)/srnt.yaml"; \
- 	helm upgrade --install --wait srnt-$(PFID) $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION) --namespace srnt-$(PFID) -f ./terraform/pim-master-values.yaml $${helmvalue} -f $${release_file}
+	[[ -f "$${release_file}" ]] && srnt_value="-f $${release_file}" || srnt_value="" ; \
+	helm upgrade --install --wait --timeout $(HELM_TIMEOUT) srnt-$(PFID) $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION) --namespace srnt-$(PFID) -f ./terraform/pim-master-values.yaml $${helm_value} $${srnt_value}
 
 .PHONY: helm-test
 helm-test: terraform-apply
@@ -66,7 +53,7 @@ helm-test: terraform-apply
 
 .PHONY: helm-delete
 helm-delete: terraform/kubeconfig
-	helm delete --purge srnt-$(PFID)
+	helm delete --purge --timeout $(HELM_TIMEOUT) srnt-$(PFID)
 	# workaround to clean https://github.com/kubernetes/helm/issues/4019
 	kubectl delete all --all -n srnt-$(PFID) --force --grace-period=0
 	kubectl delete ns srnt-$(PFID)
@@ -79,7 +66,7 @@ TERRAFORM := cd ./terraform && terraform
 export KUBECONFIG=./terraform/kubeconfig
 
 .PHONY: create-tfvars
-create-tfvars: #We don't use a file targe to recreate each time ./terraform/terraform.tfvars
+create-tfvars: # Not using a file target allow to recreate file "./terraform/terraform.tfvars" each time
 	@echo 'google_project_name="$(PROJECT_NAME)"' > ./terraform/terraform.tfvars
 	@echo 'pfid="$(PFID)"' >> ./terraform/terraform.tfvars
 
@@ -117,7 +104,7 @@ ifeq ($(FORCE), true)
 	find $(MODULE_DIR) -type f -print | xargs sed -i -E "s/(prevent_destroy\s+=\s+\"?)true(\"?)/\1false\2/g"
 	find $(MODULE_DIR) -type f -print | xargs sed -i -E "s/(force_destroy\s+=\s+\"?)false(\"?)/\1true\2/g"
 	$(TERRAFORM) plan -destroy
-	$(TERRAFORM) destroy -auto-approve -parallelism=5
+	$(TERRAFORM) destroy -auto-approve
 	find $(MODULE_DIR) -type f -print | xargs sed -i -E "s/(prevent_destroy\s+=\s+\"?)false(\"?)/\1true\2/g"
 	find $(MODULE_DIR) -type f -print | xargs sed -i -E "s/(force_destroy\s+=\s+\"?)true(\"?)/\1false\2/g"
 else 
