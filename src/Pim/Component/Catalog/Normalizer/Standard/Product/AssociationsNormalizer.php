@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -57,7 +58,7 @@ class AssociationsNormalizer implements NormalizerInterface
     {
         $data = [];
 
-        foreach ($associationAwareEntity->getAssociations() as $association) {
+        foreach ($associationAwareEntity->getAllAssociations() as $association) {
             $code = $association->getAssociationType()->getCode();
 
             $data[$code]['groups'] = [];
@@ -65,10 +66,22 @@ class AssociationsNormalizer implements NormalizerInterface
                 $data[$code]['groups'][] = $group->getCode();
             }
 
-            $data[$code]['products'] = $this->getAssociatedProductCodeByProduct->getCodes(
-                $associationAwareEntity->getId(),
-                $association->getAssociationType()->getId()
-            );
+            $data[$code]['products'] = [];
+            if ($associationAwareEntity instanceof ProductModelInterface) {
+                foreach ($association->getProducts() as $product) {
+                    $data[$code]['products'][] = $product->getReference();
+                }
+            } else {
+                $data[$code]['products'] = $this->getAssociatedProductCodeByProduct->getCodes(
+                    $associationAwareEntity->getId(),
+                    $association->getAssociationType()->getId()
+                );
+            }
+
+            $data[$code]['product_models'] = [];
+            foreach ($association->getProductModels() as $productModel) {
+                $data[$code]['product_models'][] = $productModel->getCode();
+            }
         }
 
         ksort($data);
