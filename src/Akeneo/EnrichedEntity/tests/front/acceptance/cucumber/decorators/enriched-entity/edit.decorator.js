@@ -1,5 +1,6 @@
 const Properties = require('./edit/properties.decorator');
 const Sidebar = require('./app/sidebar.decorator');
+const LocaleSwitcher = require('./app/locale-switcher.decorator');
 
 const config = {
   Sidebar: {
@@ -9,6 +10,10 @@ const config = {
   Properties: {
     selector: '.AknDefault-mainContent',
     decorator: Properties,
+  },
+  LocaleSwitcher: {
+    selector: '.locale-switcher',
+    decorator: LocaleSwitcher,
   },
 };
 
@@ -23,6 +28,10 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const getSidebar = async () => {
     return await await getElement(page, 'Sidebar');
+  };
+
+  const getLocaleSwitcher = async () => {
+    return await await getElement(page, 'LocaleSwitcher');
   };
 
   const getProperties = async () => {
@@ -68,7 +77,17 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  return {isLoaded, getSidebar, getProperties, isUpdated, isSaved, save, hasSuccessNotification, hasErrorNotification};
+  return {
+    isLoaded,
+    getSidebar,
+    getLocaleSwitcher,
+    getProperties,
+    isUpdated,
+    isSaved,
+    save,
+    hasSuccessNotification,
+    hasErrorNotification,
+  };
 };
 
 module.exports = Edit;

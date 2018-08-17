@@ -4,6 +4,7 @@ import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enrich
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
+import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 
 interface FormProps {
   locale: string;
@@ -82,7 +83,7 @@ export default class EditForm extends React.Component<FormProps> {
                 this.labelInput = input;
               }}
             />
-            <Flag locale={this.props.locale} displayLanguage={false} />
+            <Flag locale={createLocaleFromCode(this.props.locale)} displayLanguage={false} />
           </div>
           {getErrorsView(this.props.errors, 'labels')}
         </div>

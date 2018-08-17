@@ -39,3 +39,13 @@ export const denormalizeLocale = (normalizedLocale: any): Locale => {
     normalizedLocale.language
   );
 };
+
+export const createLocaleFromCode = (code: string): Locale => {
+  if ('string' !== typeof code) {
+    throw new InvalidTypeError(`CreateLocaleFromCode expect a string as parameter (${typeof code} given`);
+  }
+
+  const [language, region] = code.split('_');
+
+  return new ConcreteLocale(code, code, region.toLowerCase(), language);
+};

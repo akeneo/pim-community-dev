@@ -11,6 +11,7 @@ import {
 } from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import {createEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/create';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
+import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 
 interface StateProps {
   context: {
@@ -93,7 +94,7 @@ class Create extends React.Component<CreateProps> {
                         onChange={this.onLabelUpdate}
                         onKeyPress={this.onKeyPress}
                       />
-                      <Flag locale={this.props.context.locale} displayLanguage={false}/>
+                      <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false}/>
                     </div>
                     {getErrorsView(this.props.errors, 'labels')}
                   </div>
