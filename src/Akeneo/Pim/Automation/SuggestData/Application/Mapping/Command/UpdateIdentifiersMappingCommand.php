@@ -78,10 +78,16 @@ class UpdateIdentifiersMappingCommand
         $filteredMapping = array_filter($identifiersMapping, function ($attributeCode) {
             return null !== $attributeCode;
         });
+
         $values = array_count_values($filteredMapping);
         foreach ($values as $attributeCode => $frequency) {
             if ($frequency > 1) {
-                throw InvalidMappingException::duplicateAttributeCode($frequency, $attributeCode, static::class);
+                throw InvalidMappingException::duplicateAttributeCode(
+                    $frequency,
+                    $attributeCode,
+                    static::class,
+                    array_search($attributeCode, $filteredMapping)
+                );
             }
         }
     }

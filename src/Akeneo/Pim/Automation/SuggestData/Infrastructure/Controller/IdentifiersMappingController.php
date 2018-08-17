@@ -53,12 +53,16 @@ class IdentifiersMappingController
             $this->manageIdentifiersMapping->updateIdentifierMapping($identifiersMapping);
 
             return new JsonResponse(json_encode($identifiersMapping));
-        } catch (InvalidMappingException $e) {
-            return new JsonResponse(
-                [
-                    'message' => $e->getMessage(),
+        } catch (InvalidMappingException $invalidMapping) {
+            return new JsonResponse([
+                    [
+                        'message' => $invalidMapping->getMessage(),
+                        'messageParams' => $invalidMapping->getMessageParams(),
+                        'path' => $invalidMapping->getPath(),
+                        'global' => false,
+                    ]
                 ],
-                $e->getCode()
+                $invalidMapping->getCode()
             );
         }
     }

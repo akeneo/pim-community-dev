@@ -74,7 +74,7 @@ class UpdateIdentifiersMappingHandler
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
                 if (!$attribute instanceof AttributeInterface) {
-                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class);
+                    throw InvalidMappingException::attributeNotFound($attributeCode, static::class, $pimAiCode);
                 }
 
                 $identifiers[$pimAiCode] = $attribute;
