@@ -11,10 +11,10 @@
 
 namespace Akeneo\Asset\Bundle\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory;
-use Pim\Bundle\UIBundle\Form\Type\AjaxEntityType;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
