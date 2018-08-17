@@ -33,8 +33,8 @@ class TextAttribute extends AbstractAttribute
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
-        AttributeRequired $required,
         AttributeOrder $order,
+        AttributeRequired $required,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength
@@ -57,15 +57,8 @@ class TextAttribute extends AbstractAttribute
         AttributeMaxLength $maxLength
     ): self {
         return new self(
-            $identifier,
-            $enrichedEntityIdentifier,
-            $code,
-            $labelCollection,
-            $required,
-            $order,
-            $valuePerChannel,
-            $valuePerLocale,
-            $maxLength
+            $identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required, $valuePerChannel,
+            $valuePerLocale, $maxLength
         );
     }
 
@@ -76,6 +69,36 @@ class TextAttribute extends AbstractAttribute
             [
                 'max_length' => $this->maxLength->intValue()
             ]
+        );
+    }
+
+    public function setMaxLength(AttributeMaxLength $newMaxLength): self
+    {
+        return new self(
+            $this->identifier,
+            $this->enrichedEntityIdentifier,
+            $this->code,
+            $this->labelCollection,
+            $this->order,
+            $this->required,
+            $this->valuePerChannel,
+            $this->valuePerLocale,
+            $newMaxLength
+        );
+    }
+
+    public function updateLabels(LabelCollection $labelCollection): self
+    {
+        return new self(
+            $this->identifier,
+            $this->enrichedEntityIdentifier,
+            $this->code,
+            $labelCollection,
+            $this->order,
+            $this->required,
+            $this->valuePerChannel,
+            $this->valuePerLocale,
+            $this->maxLength
         );
     }
 

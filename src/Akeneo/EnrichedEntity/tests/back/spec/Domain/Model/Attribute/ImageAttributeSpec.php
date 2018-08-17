@@ -23,12 +23,12 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeIdentifier::create('designer', 'image'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
-            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString(300),
+            AttributeMaxFileSize::fromString('300'),
             AttributeAllowedExtensions::fromList(['pdf'])
         ]);
     }
@@ -44,7 +44,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeIdentifier::create('designer', 'image'),
             EnrichedEntityIdentifier::fromString('manufacturer'),
             AttributeCode::fromString('image'),
-            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
@@ -60,7 +60,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeIdentifier::create('designer', 'image'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('birth_date'),
-            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
@@ -85,13 +85,85 @@ class ImageAttributeSpec extends ObjectBehavior
                 ],
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'image',
-                'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
+                'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
                 'required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'image',
                 'max_file_size'              => '300',
+                'allowed_extensions'         => ['pdf'],
+            ]
+        );
+    }
+
+    function it_updates_its_label_and_returns_a_new_instance_of_itself()
+    {
+        $newPortrait = $this->updateLabels(LabelCollection::fromArray([
+            'fr_FR' => 'Portrait',
+            'de_DE' => 'Porträt',
+        ]));
+        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
+        $newPortrait->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'image',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'image',
+                'labels'                     => ['fr_FR' => 'Portrait', 'de_DE' => 'Porträt'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'image',
+                'max_file_size'              => '300',
+                'allowed_extensions'         => ['pdf'],
+            ]
+        );
+    }
+
+    function it_updates_its_allowed_extensions_and_returns_a_new_instance_of_itself()
+    {
+        $newPortrait = $this->setAllowedExtensions(AttributeAllowedExtensions::fromList(['jpeg']));
+        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
+        $newPortrait->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'image',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'image',
+                'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'image',
+                'max_file_size'              => '300',
+                'allowed_extensions'         => ['jpeg'],
+            ]
+        );
+    }
+
+    function it_updates_its_max_file_size_and_returns_a_new_instance_of_itself()
+    {
+        $newPortrait = $this->setMaxFileSize(AttributeMaxFileSize::fromString('1000'));
+        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
+        $newPortrait->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'image',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'image',
+                'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'image',
+                'max_file_size'              => '1000',
                 'allowed_extensions'         => ['pdf'],
             ]
         );

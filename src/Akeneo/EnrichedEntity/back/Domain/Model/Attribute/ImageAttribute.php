@@ -29,7 +29,7 @@ class ImageAttribute extends AbstractAttribute
     private $maxFileSize;
 
     /** @var AttributeAllowedExtensions */
-    private $extensions;
+    private $allowedExtensions;
 
     protected function __construct(
         AttributeIdentifier $identifier,
@@ -47,7 +47,7 @@ class ImageAttribute extends AbstractAttribute
             $valuePerChannel, $valuePerLocale);
 
         $this->maxFileSize = $maxFileSize;
-        $this->extensions = $extensions;
+        $this->allowedExtensions = $extensions;
     }
 
     public static function create(
@@ -82,7 +82,7 @@ class ImageAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'max_file_size' => $this->maxFileSize->normalize(),
-                'allowed_extensions' => $this->extensions->normalize()
+                'allowed_extensions' => $this->allowedExtensions->normalize()
             ]
         );
     }
@@ -90,5 +90,53 @@ class ImageAttribute extends AbstractAttribute
     protected function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
+    }
+
+    public function setMaxFileSize(AttributeMaxFileSize $maxFileSize): self
+    {
+        return new self(
+            $this->identifier,
+            $this->enrichedEntityIdentifier,
+            $this->code,
+            $this->labelCollection,
+            $this->order,
+            $this->required,
+            $this->valuePerChannel,
+            $this->valuePerLocale,
+            $maxFileSize,
+            $this->allowedExtensions
+        );
+    }
+
+    public function setAllowedExtensions(AttributeAllowedExtensions $allowedExtensions): self
+    {
+        return new self(
+            $this->identifier,
+            $this->enrichedEntityIdentifier,
+            $this->code,
+            $this->labelCollection,
+            $this->order,
+            $this->required,
+            $this->valuePerChannel,
+            $this->valuePerLocale,
+            $this->maxFileSize,
+            $allowedExtensions
+        );
+    }
+
+    public function updateLabels(LabelCollection $labelCollection): self
+    {
+        return new self(
+            $this->identifier,
+            $this->enrichedEntityIdentifier,
+            $this->code,
+            $labelCollection,
+            $this->order,
+            $this->required,
+            $this->valuePerChannel,
+            $this->valuePerLocale,
+            $this->maxFileSize,
+            $this->allowedExtensions
+        );
     }
 }

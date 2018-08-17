@@ -38,7 +38,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(300)
+            AttributeMaxLength::fromInteger(300),
         ]);
     }
 
@@ -58,7 +58,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(300)
+            AttributeMaxLength::fromInteger(300),
         ]);
     }
 
@@ -73,7 +73,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(300)
+            AttributeMaxLength::fromInteger(300),
         ]);
     }
 
@@ -99,6 +99,53 @@ class TextAttributeSpec extends ObjectBehavior
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
+            ]
+        );
+    }
+
+    function it_updates_its_label_and_returns_a_new_instance_of_itself()
+    {
+        $newName = $this->updateLabels(LabelCollection::fromArray([
+            'fr_FR' => 'Désignation',
+            'de_DE' => 'Bezeichnung',
+        ]));
+        $newName->shouldBeAnInstanceOf(TextAttribute::class);
+        $newName->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'name',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'Désignation', 'de_DE' => 'Bezeichnung'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'text',
+                'max_length'                 => 300,
+            ]
+        );
+    }
+
+    function it_updates_it_max_length_and_returns_a_new_instance_of_itself()
+    {
+        $newName = $this->setMaxLength(AttributeMaxLength::fromInteger(100));
+        $newName->shouldBeAnInstanceOf(TextAttribute::class);
+        $newName->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'name',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'text',
+                'max_length'                 => 100,
             ]
         );
     }

@@ -25,28 +25,28 @@ use Webmozart\Assert\Assert;
 abstract class AbstractAttribute
 {
     /** @var AttributeIdentifier */
-    private $identifier;
+    protected $identifier;
 
     /** @var EnrichedEntity */
-    private $enrichedEntityIdentifier;
+    protected $enrichedEntityIdentifier;
 
     /** @var AttributeCode */
-    private $code;
+    protected $code;
 
     /** @var LabelCollection */
-    private $labelCollection;
+    protected $labelCollection;
 
     /** @var AttributeOrder */
-    private $order;
+    protected $order;
 
     /** @var AttributeRequired */
-    private $required;
+    protected $required;
 
     /** @var AttributeValuePerChannel */
-    private $valuePerChannel;
+    protected $valuePerChannel;
 
     /** @var AttributeValuePerLocale */
-    private $valuePerLocale;
+    protected $valuePerLocale;
 
     protected function __construct(
         AttributeIdentifier $identifier,
@@ -107,11 +107,6 @@ abstract class AbstractAttribute
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function updateLabels(LabelCollection $labelCollection): void
-    {
-        $this->labelCollection = $labelCollection;
-    }
-
     public function hasOrder(AttributeOrder $order): bool
     {
         return $this->order->intValue() === $order->intValue();
@@ -123,6 +118,8 @@ abstract class AbstractAttribute
     }
 
     abstract protected function getType(): string;
+
+    abstract  public function updateLabels(LabelCollection $labelCollection);
 
     public function normalize(): array
     {
