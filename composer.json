@@ -49,7 +49,7 @@
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
-        "akeneo/php-coupling-detector": "dev-master",
+        "akeneo/php-coupling-detector": "0.3.*",
         "behat/behat": "3.4.3",
         "behat/gherkin":"4.5.1",
         "behat/mink":"1.7.1",
