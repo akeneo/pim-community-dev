@@ -1,21 +1,20 @@
 import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import attributeSaver from 'akeneoenrichedentity/infrastructure/saver/attribute';
 import {
-  attributeCreationSucceeded,
-  attributeCreationErrorOccured,
-} from 'akeneoenrichedentity/domain/event/attribute/create';
+  attributeEditionSucceeded,
+  attributeEditionErrorOccured,
+} from 'akeneoenrichedentity/domain/event/attribute/edit';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import {
-  notifyAttributeWellCreated,
-  notifyAttributeCreateFailed,
+  notifyAttributeWellSaved,
+  notifyAttributeSaveFailed,
 } from 'akeneoenrichedentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
-// import {attributeEditionStart} from 'akeneoenrichedentity/domain/event/attribute/edit';
 
-export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+export const saveAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = getState().form.data;
-  const formData = getState().createAttribute.data;
+  const formData = getState().attribute.data;
   const normalizedAttribute = {
     ...formData,
     identifier: {identifier: formData.code, enrichedEntityIdentifier: enrichedEntity.identifier},
@@ -24,25 +23,24 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
   const attribute = denormalizeAttribute(normalizedAttribute);
 
   try {
-    let errors = await attributeSaver.create(attribute);
+    let errors = await attributeSaver.save(attribute);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(attributeCreationErrorOccured(validationErrors));
-      dispatch(notifyAttributeCreateFailed());
+      dispatch(attributeEditionErrorOccured(validationErrors));
+      dispatch(notifyAttributeSaveFailed());
 
       return;
     }
   } catch (error) {
-    dispatch(notifyAttributeCreateFailed());
+    dispatch(notifyAttributeSaveFailed());
 
     return;
   }
 
-  dispatch(attributeCreationSucceeded());
-  dispatch(notifyAttributeWellCreated());
+  dispatch(attributeEditionSucceeded());
+  dispatch(notifyAttributeWellSaved());
   dispatch(updateAttributeList());
-  // dispatch(attributeEditionStart(attribute));
 
   return;
 };

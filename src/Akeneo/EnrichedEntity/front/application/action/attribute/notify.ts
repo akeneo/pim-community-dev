@@ -1,5 +1,13 @@
 import notify from 'akeneoenrichedentity/application/event/notify';
 
+export const notifyAttributeWellSaved = () => {
+  return notify('success', 'pim_enriched_entity.attribute.notification.save.success');
+};
+
+export const notifyAttributeSaveFailed = () => {
+  return notify('error', 'pim_enriched_entity.attribute.notification.save.fail');
+};
+
 export const notifyAttributeWellCreated = () => {
   return notify('success', 'pim_enriched_entity.attribute.notification.create.success');
 };
