@@ -27,6 +27,11 @@ services:
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.record'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityExists
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
     akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeExists
         arguments:
@@ -36,3 +41,6 @@ services:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributeNextOrder
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributesDetails
