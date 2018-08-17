@@ -8,6 +8,7 @@
 - PIM-7571: Fix job instance validation in case of attribute deletion
 - PIM-7542: Fix completeness filter on edit product group page
 - PIM-7589: Fix job `compute_product_models_descendants` launched too many times
+- PIM-7587: Fix the preview generation configuration with imagine
 
 # 2.3.4 (2018-08-08)
 
