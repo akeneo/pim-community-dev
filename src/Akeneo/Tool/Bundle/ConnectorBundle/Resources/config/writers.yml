@@ -58,7 +58,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.writer.database.job_instance:
-        class: '%pim_connector.writer.database.class%'
+        class: 'Akeneo\Tool\Component\Connector\Writer\Database\JobInstanceWriter'
         arguments:
             - '@akeneo_batch.saver.job_instance'
             - '@akeneo_storage_utils.doctrine.object_detacher'
