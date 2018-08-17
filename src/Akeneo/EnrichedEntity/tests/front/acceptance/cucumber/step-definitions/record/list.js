@@ -57,7 +57,6 @@ module.exports = async function(cucumber) {
   Then('the list of records should be:', async function (expectedRecords) {
     await showRecordTab(this.page);
 
-    debugger;
     const recordList = await await getElement(this.page, 'Records');
     const isValid = await expectedRecords.hashes().reduce(async (isValid, expectedRecord) => {
       return await isValid && await recordList.hasRecord(expectedRecord['code'], expectedRecord['type']);

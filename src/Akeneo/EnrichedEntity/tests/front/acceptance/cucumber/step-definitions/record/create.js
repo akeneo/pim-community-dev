@@ -1,7 +1,7 @@
 const Header = require('../../decorators/enriched-entity/app/header.decorator');
 const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
 const Modal = require('../../decorators/enriched-entity/create/modal.decorator');
-const Grid = require('../../decorators/record/index/grid.decorator');
+const Records = require('../../decorators/enriched-entity/edit/records.decorator');
 const path = require('path');
 
 const {
@@ -29,9 +29,9 @@ module.exports = async function(cucumber) {
       selector: '.modal--fullPage',
       decorator: Modal
     },
-    Grid: {
-      selector: '.AknGrid',
-      decorator: Grid
+    Records: {
+      selector: '.AknDefault-mainContent',
+      decorator: Records,
     }
   };
 
@@ -105,11 +105,11 @@ module.exports = async function(cucumber) {
 
     await listRecordUpdated(this.page, identifier, record.identifier, record.labels);
 
-    const grid = await await getElement(this.page, 'Grid');
-    await grid.hasRow(record.identifier);
+    const records = await await getElement(this.page, 'Records');
+    await records.hasRecord(record.identifier);
 
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
-      const label = await grid.getRecordLabel(record.identifier);
+      const label = await records.getRecordLabel(record.identifier);
       assert.strictEqual(label, record.labels.en_US);
     }
   });

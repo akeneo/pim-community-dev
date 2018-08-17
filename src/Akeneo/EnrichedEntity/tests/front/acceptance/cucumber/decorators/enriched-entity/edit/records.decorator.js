@@ -17,7 +17,14 @@ const Records = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  return {hasRecord, isLoaded, isEmpty};
+  const getRecordLabel = async identifier => {
+    const label = await nodeElement.$(`a[data-identifier="${identifier}"]`);
+    const labelProperty = await label.getProperty('textContent');
+
+    return await labelProperty.jsonValue();
+  };
+
+  return {hasRecord, isLoaded, isEmpty, getRecordLabel};
 };
 
 module.exports = Records;
