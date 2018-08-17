@@ -115,6 +115,20 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
+     * @When the identifiers mapping is saved with empty values
+     */
+    public function theIdentifiersMappingIsSavedWithEmptyValues()
+    {
+        try {
+            $this->manageIdentifiersMapping->updateIdentifierMapping([]);
+
+            return false;
+        } catch (\Exception $e) {
+            return true;
+        }
+    }
+
+    /**
      * @Then the identifiers mapping should be defined as follows:
      *
      * @param TableNode $table

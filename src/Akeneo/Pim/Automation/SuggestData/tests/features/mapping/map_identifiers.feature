@@ -153,5 +153,10 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | upc         | ean            |
     Then the identifiers mapping should not be saved
 
-  #Scenario: PIM.ai should not be notified when an error occured during the saving
+  Scenario: Fails to save an empty identifiers mapping
+    Given an empty identifiers mapping
+    When the identifiers mapping is saved with empty values
+    Then the identifiers mapping should not be saved
+
+  #Scenario: PIM.ai should not be notified when an error occured during the saving (not implemented in PIM.ai)
 
