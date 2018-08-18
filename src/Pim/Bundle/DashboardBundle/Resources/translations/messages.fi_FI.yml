@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Ohjauspaneeli
+  version: Versio
+  widget:
+    completeness:
+      title: Kanavien ja lokaatioiden täyttöaste
+    last_operations:
+      title: Viimeiset toiminnot
+      status: Status
+      type: Tyyppi

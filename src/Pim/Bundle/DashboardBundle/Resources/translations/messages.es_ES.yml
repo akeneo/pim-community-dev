@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Cartelera
+  version: Versión
+  widget:
+    completeness:
+      title: Integridad por Canales y Locales
+    last_operations:
+      title: Últimas operaciones
+      status: Estado
+      type: Tipo

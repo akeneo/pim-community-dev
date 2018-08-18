@@ -1,6 +1,7 @@
 batch_jobs:
   default_steps:
     validation: Validar arxius
+    import_associations: Importar associacions
   csv_product_export:
     label: Exportar productes a CSV
     export.label: Exportar productes
@@ -25,7 +26,6 @@ batch_jobs:
   csv_product_import:
     label: Importar producte en CSV
     import.label: Importar productes
-    import_associations.label: Importar associacions
   csv_category_import:
     label: Importar categories en CSV
     import.label: Importar categories
@@ -44,33 +44,15 @@ batch_jobs:
   csv_group_import:
     label: Importar grups en CSV
     import.label: Importar grups
-  csv_channel_export:
-    label: Canal d'exportació en CSV
-    export.label: Canal d'exportació
-  csv_locale_export:
-    label: Exportació de configuració regional en CSV
-    export.label: Exportació de configuració regional
   csv_attribute_group_export:
     label: Exportació de grup d'atributs en CSV
     export.label: Exportació de grup d'atributs
-  csv_currency_export:
-    label: Exportació de moneda en CSV
-    export.label: Exportació de moneda
   csv_group_type_export:
     label: Exportació de tipus de grup en CSV
     export.label: Exportació de tipus de grup
-  csv_channel_import:
-    label: Importació de canal en CSV
-    import.label: Importació de canal
-  csv_locale_import:
-    label: Importació de configuració regional en CSV
-    import.label: Importació de configuració regional
   csv_attribute_group_import:
     label: Impoftació de grup d'atributs en CSV
     import.label: Importació de grup d'atributs
-  csv_currency_import:
-    label: Importació de moneda en CSV
-    import.label: Importació de moneda
   csv_group_type_import:
     label: Importació de tipus de grup en CSV
     import.label: Importació de tipus de grup
@@ -95,7 +77,8 @@ batch_jobs:
   xlsx_product_import:
     label: Importació de producte en XLSX
     import.label: Importar productes
-    import_associations.label: Importar associacions
+  xlsx_product_model_import:
+    label: Importar model de producte a XLSX
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups
@@ -117,33 +100,15 @@ batch_jobs:
   xlsx_association_type_export:
     label: Exportació de tipus d'associació en CSV
     export.label: Exportació de tipus d'associació en CSV
-  xlsx_channel_export:
-    label: Exportació de canal en XLSX
-    export.label: Canal d'exportació
-  xlsx_locale_export:
-    label: Exportació de configuració regional en XLSX
-    export.label: Exportació de configuració regional
   xlsx_attribute_group_export:
     label: Exportació de grup d'atributs en XLSX
     export.label: Exportació de grup d'atributs
-  xlsx_currency_export:
-    label: Exportació de moneda en XLSX
-    export.label: Exportació de moneda
   xlsx_group_type_export:
     label: Exportació de tipus de grup en XLSX
     export.label: Exportació de tipus de grup
-  xlsx_channel_import:
-    label: Importació de canal de XLSX
-    import.label: Importació de canal
-  xlsx_locale_import:
-    label: Importació de configuració regional en XLSX
-    import.label: Importació de configuració regional
   xlsx_attribute_group_import:
     label: Impoftació de grup d'atributs en XLSX
     import.label: Importació de grup d'atributs
-  xlsx_currency_import:
-    label: Importació de moneda en XLSX
-    import.label: Importació de moneda
   xlsx_group_type_import:
     label: Importació de tipus de grup en XLSX
     import.label: Importació de tipus de grup

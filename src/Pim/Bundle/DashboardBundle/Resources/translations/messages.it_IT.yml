@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Dashboard
+  version: Versione
+  widget:
+    completeness:
+      title: Percentuale di completamento per canale e localizzazione
+    last_operations:
+      title: Ultime operazioni
+      status: Stato
+      type: Tipo
