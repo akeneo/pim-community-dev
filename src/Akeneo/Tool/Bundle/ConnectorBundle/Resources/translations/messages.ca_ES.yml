@@ -1,29 +1,3 @@
-pim_connector:
-  steps:
-    dummy_reader.title: Lector de proves
-    product_reader.title: Extracció de productes
-    entity_reader.title: Extracció d'entitats
-    csv_reader:
-      title: Lector de CSV
-    csv_product_reader.title: Lector CSV de productes
-    csv_category_reader.title: Lector CSV de categories
-    dummy_processor.title: Processador de proves
-    product_processor.title: Creació de producte
-    category_processor.title: Creació de categories
-    association_processor.title: Creació d'associacions
-    product_association_processor.title: Creació d'associacions
-    group_processor.title: Creació de grups
-    attribute_processor.title: Creació d'atributs
-    attribute_option_processor.title: Creación d'opcions d'atribut
-    heterogeneous_processor.title: Serialitzador CSV de productes
-    homogeneous_processor.title: Serialitzador CSV d'entitats
-    transformer_processor.title: Transformació
-    dummy_writer.title: Escriptor de proves
-    file_writer.title: Sortida
-    product_writer.title: Emmagatzematge de productes
-    category_writer.title: Emmagatzematge de categories
-    writer.title: Emmagatzematge d'entitats
-    csv_writer.title: Editor de CSV
 job_execution.summary:
   read: llegir
   write: escrit

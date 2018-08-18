@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Dashboard
+  version: Version
+  widget:
+    completeness:
+      title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
+    last_operations:
+      title: Letzte Vorgänge
+      status: Status
+      type: Typ

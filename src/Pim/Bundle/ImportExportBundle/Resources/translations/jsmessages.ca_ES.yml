@@ -8,14 +8,132 @@ pim_connector:
       selector:
         modal:
           title: Selecció de les categories
+        label: "{0}Tots els productes|{1}Una categoria seleccionada|]1,Inf[{{ count }} categories seleccionades"
         title: Selecciona categories
     locales:
       validation:
         not_blank: S'ha de seleccionar una configuració regional, trieu una configuració regional per exportar.
-page_title:
+pim_import_export:
+  entity:
+    job_instance:
+      label: perfil de treball
+      flash:
+        update:
+          fail: No s'ha pogut actualitzar el perfil de treball.
+        delete:
+          success: Instància de feina suprimida correctament
+    import_profile:
+      uppercase_label: Perfils d'importació
+      page_title:
+        index: "]Inf, 1] {{ count }} perfil d'importació|]1, Inf [{{ count }} perfils d'importació"
+    export_profile:
+      uppercase_label: Perfils d'exportació
+      flash:
+        create:
+          success: Perfil d'exportació creat correctament
+      page_title:
+        index: "]Inf, 1] {{ count }} perfil d'exportació|]1, Inf [{{ count }} perfils d'exportació"
+      module:
+        create:
+          button: Crear perfil d'exportació
+  form:
+    job_execution:
+      title.details: Detalls de l'execució
+      refreshBtn.title: Actualitza
+      button:
+        show_profile.title: Mostrar perfil
+        download_log.title: Descarregar registre
+        download_file.title: Descarregar arxiu generat
+        download_archive.title: Descarregar arxiu generat
+      summary:
+        fetching: Recollida de dades sobre l'execució del job...
+        warning: Avís
+        header.step: Pas
+        header.summary: Sumari
+        header.start: Començar
+        header.end: Fi
+    job_instance:
+      fail:
+        launch: No s'ha pogut iniciar el perfil de treball. Assegureu-vos que és vàlid i que teniu dret a executar-lo.
+        save: No ha pogut desar el perfil de treball. Assegureu-vos que teniu dret a editar-lo.
+      button:
+        export.title: Exportar ara
+        import.launch: Importar ara
+        import.upload: Carregar i importar ara
+        import.upload_file: Pujar un arxiu
+      meta:
+        job: Job
+        connector: Connector
+      subsection:
+        last_executions: Últimes execucions
+      tab:
+        content:
+          title: Contingut
+        properties:
+          decimal_separator:
+            title: Separador de decimals
+            help: Determinar el separador de decimals
+          date_format:
+            title: Format de data
+            help: Determinar el format dels camps de data
+          file_path:
+            title: Ruta de l'arxiu
+            help: On guardar l'arxiu generat al servidor
+          delimiter:
+            title: Delimitador
+            help: Caràcter utilitzat per definir el delimitador de camp
+          enclosure:
+            title: Enquadrament
+            help: Caràcter utilitzat per enquadrar el camp
+          with_header:
+            title: Amb capçalera
+            help: Si vol imprimir el nom de la columna o no
+          with_media:
+            title: Exportar arxius i imatges
+            help: Exportar, o no, arxius i imatges de productes
+          lines_per_file:
+            title: Nombre de línies per arxiu
+            help: Definir el nombre límit de línies per arxiu
+          upload_allowed:
+            title: Permetre la càrrega d'arxius
+            help: Permetre o no la càrrega directa de l'arxiu
+          categories_column:
+            title: Columna de categories
+            help: Nom de la columna categories
+          escape:
+            title: Escapada
+            help: Caràcter per establir l'escapada del camp
+          family_column:
+            title: Columna de famílies
+            help: Nom de la família de columnes
+          groups_column:
+            title: Columna de grups
+            help: Nom de la columna de grups
+          enabled:
+            title: Habilitar el producte
+            help: Habilitar o no els productes importats
+          enabled_comparison:
+            title: Comparar valors
+            help: Permet la comparació entre valors originals i valors importats. Pot accelerar la importació si el valors importats són molt similars als valors originals
+          real_time_versioning:
+            title: Actualització de l'historial en temps real
+            help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+          family_variant_column:
+            title: Columna de la variant familiar
+      file_path: Ruta de l'arxiu
+confirmation:
+  remove:
+    import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?
+    export_profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    job_instance: Esteu segur que voleu suprimir aquesta instància de feina?
+pim_title:
   pim_importexport_export_profile_index: Gestió de perfils d'exportació
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Exportar històric d'execucions
   pim_importexport_export_execution_show: Exportar execucions | Detalls
   pim_importexport_import_profile_index: Gestió de perfils d'importació
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Importar històric d'execucions
   pim_importexport_import_execution_show: Importar execucions | Detalls
