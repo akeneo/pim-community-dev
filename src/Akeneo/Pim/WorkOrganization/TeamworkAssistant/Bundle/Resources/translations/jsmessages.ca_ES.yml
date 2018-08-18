@@ -1,9 +1,23 @@
 teamwork_assistant:
   common:
     required: Obligatori
+    warning: No et preocupis, el càlcul del projecte pot tardar una estona. Podria no ser visible immediatament.
   project:
     label: Nom
     locale: Configuració Regional
     description: Descripció
   widget:
+    no_project_create: crear un nou projecte
     description: Descripció
+    completeness:
+      to_start: PRODUCTES A COMENÇAR
+batch_jobs:
+  project_calculation:
+    prepare_project_calculation.label: Preparar el càlcul del projecte
+    clean_contributor_group.label: Revisar permisos dels usuaris en el local del projecte
+  refresh_project_completeness_calculation:
+    label: Actualitzar la completesa del projecte
+    refresh_project_completeness_calculation.label: Actualitzar la completesa del projecte
+pim_notification:
+  types:
+    project_created: Un nou projecte per a vostè

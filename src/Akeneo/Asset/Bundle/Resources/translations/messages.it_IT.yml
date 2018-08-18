@@ -189,7 +189,11 @@ pim_assets_collection: Raccolta asset
 pim_api:
   acl:
     asset_category:
+      edit: Crea e aggiorna le categorie degli assets
       list: Elenca le categorie degli asset
+    asset:
+      edit: Modifica gli assets e carica i loro file di riferimento e di variazione
+      list: Elenca gli assets e riporta e scarica i loro file di riferimento e di variazione
   acl_group:
     asset_category: Categorie degli asset
     asset: Asset

@@ -1,14 +1,16 @@
 pim_enriched_entity:
-  button:
-    save: 保存
-    create: 新しく追加
   enriched_entity:
+    button:
+      save: 保存
+      create: 作成
     tab:
-      attributes: 属性
+      attribute: 属性
       properties: プロパティ
     properties:
       identifier: 識別子
       label: ラベル
+    attribute:
+      title: 属性
     create:
       header:
         title: 作成
@@ -16,12 +18,33 @@ pim_enriched_entity:
         label: ラベル
       confirm: 確認
   record:
+    button:
+      save: 保存
+      create: 新しく追加
     create:
       header:
         title: 作成
       input:
         label: ラベル
       confirm: 確認
+  attribute:
+    type:
+      text: テキスト
+      image: イメージ
+    create:
+      header:
+        title: 作成
+      input:
+        label: ラベル
+        type: 属性タイプ
+        value_per_locale: ロケールごとの値
+        value_per_channel: チャンネルごとの値
+      confirm: 確認
+    notification:
+      save:
+        success: 属性を更新しました
+      create:
+        success: 属性を作成しました
 pim_enrich:
   entity:
     attribute:

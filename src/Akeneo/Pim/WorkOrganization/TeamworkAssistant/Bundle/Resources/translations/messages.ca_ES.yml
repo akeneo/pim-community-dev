@@ -1,11 +1,20 @@
 teamwork_assistant:
+  project:
+    project_locale: El projecte local {{ locale }} hauria d'estar habilitat.
   notification:
     project_calculation:
+      success: El projecte <strong>%project_label%</strong> està preparat i els col·laboradors notificats. Comencem!
       start: Començar
     project_finished:
+      owner: '%project_label% per al %due_date% ha finalitzat.'
       show: Mostrar
     due_date:
       start: Començar
   datagrid:
+    project_completeness: Progrés del projecte
+    contributor_todo: A fer
     contributor_in_progress: En procés
     contributor_done: Fet
+    owner_todo: A fer (resum del projecte)
+    owner_in_progress: En progrés (resum del projecte)
+    owner_done: Fet (resum del projecte)

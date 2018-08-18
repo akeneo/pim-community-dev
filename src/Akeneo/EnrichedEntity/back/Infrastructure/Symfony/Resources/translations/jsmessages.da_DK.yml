@@ -1,14 +1,16 @@
 pim_enriched_entity:
-  button:
-    save: Gem
-    create: Tilføj ny
   enriched_entity:
+    button:
+      save: Gem
+      create: Opret
     tab:
-      attributes: Egenskaber
+      attribute: Egenskaber
       properties: Egenskaber
     properties:
       identifier: Id
       label: Etiket
+    attribute:
+      title: Egenskaber
     create:
       header:
         title: Opret
@@ -16,12 +18,33 @@ pim_enriched_entity:
         label: Etiket
       confirm: bekræft
   record:
+    button:
+      save: Gem
+      create: Tilføj ny
     create:
       header:
         title: Opret
       input:
         label: Etiket
       confirm: bekræft
+  attribute:
+    type:
+      text: Tekst
+      image: Billede
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+        type: Attributtype
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+      confirm: bekræft
+    notification:
+      save:
+        success: Atributten blev opdateret.
+      create:
+        success: Atributten blev oprettet.
 pim_enrich:
   entity:
     attribute:

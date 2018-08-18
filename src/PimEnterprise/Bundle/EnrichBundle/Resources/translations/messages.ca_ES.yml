@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "Configuracions regionals %locale.code% | Editar"
-Permissions: Permisos
-pane.accordion.permissions: Permisos
 attribute group.permissions:
   view.label: Permet veure els atributs
   view.help: Permet veure els productes en aquest grup d'atributs
@@ -84,18 +82,16 @@ pimee_enrich:
   product:
     tab:
       proposal.title: Propostes
-  category:
-    tab:
-      permission.title: Permisos
-  locale:
-    tab:
-      permission.title: Permisos
   channel:
     tab:
       asset_transformation.title: Transformacions de recursos
   acl.product_ownership.title: Propietat
   attributes:
     empty: cap
+  category:
+    tab:
+      permission:
+        title: Permisos
   groups:
     label: grups de propietaris
     empty: cap
@@ -140,6 +136,8 @@ edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_pr
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Afegir valor producte amb permisos
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualitzar el valor de producte amb permissos
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Treure el valor de producte amb permisos
+edit_common_attributes_with_permission: Editar els atributs amb permisos
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar els atributs amb permisos
 job_execution.summary:
   mass_published: Producte publicat
   mass_unpublished: Producte despublicat

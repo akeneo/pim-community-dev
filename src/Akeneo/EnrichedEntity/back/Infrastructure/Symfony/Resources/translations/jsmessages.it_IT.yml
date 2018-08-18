@@ -1,14 +1,16 @@
 pim_enriched_entity:
-  button:
-    save: Salva
-    create: Aggiungi nuovo
   enriched_entity:
+    button:
+      save: Salva
+      create: Crea
     tab:
-      attributes: Attributi
+      attribute: Attributi
       properties: Proprietà
     properties:
       identifier: Identificatore
       label: Etichetta
+    attribute:
+      title: Attributi
     create:
       header:
         title: Crea
@@ -16,12 +18,33 @@ pim_enriched_entity:
         label: Etichetta
       confirm: conferma
   record:
+    button:
+      save: Salva
+      create: Aggiungi nuovo
     create:
       header:
         title: Crea
       input:
         label: Etichetta
       confirm: conferma
+  attribute:
+    type:
+      text: Testo
+      image: Immagine
+    create:
+      header:
+        title: Crea
+      input:
+        label: Etichetta
+        type: Tipo di attributo
+        value_per_locale: Valore per impostazioni internazionali
+        value_per_channel: Valore per canale
+      confirm: conferma
+    notification:
+      save:
+        success: Attributo aggiornato con successo.
+      create:
+        success: Attributo creato con successo.
 pim_enrich:
   entity:
     attribute:

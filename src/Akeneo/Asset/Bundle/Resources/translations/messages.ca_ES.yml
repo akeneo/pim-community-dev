@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Eliminar recurs
       categories_view: Consultar les categories d'un recurs
       mass_upload: Carregar recursos en massa
+      remove_from_collection: Eliminar un recurs de producte d'una col·lecció de recursos
     category_asset_picker:
       list: Llistar categories de recursos en el selector de recursos
     category:
@@ -25,6 +26,7 @@ pimee_product_asset:
       download: Descarregar
       generate_from_reference: Generar des de la referència
       reset_variations: Reiniciar variacions
+    confirmation.remove: Està segur d'elimianr el recurs "%asset%" ?
     confirmation.subTitle: Recursos
     grid:
       edit: Edita les propietats del recurs
@@ -180,4 +182,14 @@ pim_datagrid:
   cells:
     type:
       mass_upload: Recursos de càrrega en massa
+pim_analytics:
+  info_type:
+    nb_assets: Número de recursos
 pim_assets_collection: Col·lecció de recursos
+pim_api:
+  acl:
+    asset_category:
+      list: Llistar categories de recursos
+  acl_group:
+    asset_category: Categories de recursos
+    asset: Recursos

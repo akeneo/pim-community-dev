@@ -36,6 +36,7 @@ pimee_product_asset:
       imported: Dateien importiert für Verarbeitung von Assets
       canceled: Upload erfolgreich abgebrochen
       deleted: Hochgeladene Datei erfolgreich gelöscht
+      need_refresh: <b>Asset Import wurde gestartet</b><br> Um die importierten Assets im Produktformular sehen zu können, aktualisieren Sie bitte die Produktseite sobald Sie die Import-Benachrichtigung erhalten haben.
     error:
       list: Bereits hochgeladene Dateien können nicht gelesen werden
       upload: Während des Hochladens ist ein Fehler aufgetreten
@@ -77,6 +78,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Massenupload von Assets
     perform.label: Massenupload
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets Massenupload und hinzufügen zum Produkt
+    perform.label: Assets Massenupload und hinzufügen zum Produkt
   yml_asset_channel_configuration_import:
     label: Assets Channel-Konfiguration in Yaml importieren
     import_asset.label: Assets Channel-Konfiguration in Yaml importieren

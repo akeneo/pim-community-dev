@@ -1,9 +1,13 @@
 pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} regla|]1, Inf[{{ count }} regles"
   execution_button: Executar regles
+  selected: 'regles seleccionades'
   popin:
     execute_rules:
+      confirm_title: Confirmar l'execució
       confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
   notification:
+    fail: L'acció no es pot realitzar
     launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
   attribute:
     list:
@@ -26,16 +30,20 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu executar la regla?
       mass_edit_action:
+        confirm_title: Confirmar el càlcul
         confirm_content: Esteu segur que voleu calcular els productes afectats per la regla?
       mass_action:
         execute:
+          confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu executar les regles seleccionades?
           success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
           error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
         delete:
+          confirm_title: Confirmar l'execució
           confirm_content: Esteu segur que voleu suprimir les regles seleccionades?
           success: Heu suprimit les regles correctament.
           error: S'ha produït un error durant l'execució de les regles.
@@ -48,9 +56,14 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: Esteu segur que voleu suprimir aquesta norma? No us en podreu fer enrera
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Rol eliminat correctament
 flash:
   rule:
-    removed: Rol eliminat correctament
     impacted_product_count: S'ha engegat l'acció massiva per calcular els productes afectats per la regla. Se li notificarà quan finalitzi.
     executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuració de les regles
@@ -72,6 +85,8 @@ batch_jobs:
   xlsx_product_import_with_rules:
     label: Importació de productes amb regles a XLSX
     import.label: Importar productes
+  xlsx_product_model_import_with_rules:
+    label: Importació de productes amb regles a XLSX
 pim_notification:
   types:
     rule: Configuració de les regles

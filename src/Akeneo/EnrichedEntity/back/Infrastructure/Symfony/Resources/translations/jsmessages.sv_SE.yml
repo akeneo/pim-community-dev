@@ -1,13 +1,16 @@
 pim_enriched_entity:
-  button:
-    save: Spara
   enriched_entity:
+    button:
+      save: Spara
+      create: Skapa
     tab:
-      attributes: Attribut
+      attribute: Attribut
       properties: Egenskaper
     properties:
       identifier: Identifierare
       label: Etikett
+    attribute:
+      title: Attribut
     create:
       header:
         title: Skapa
@@ -15,11 +18,24 @@ pim_enriched_entity:
         label: Etikett
       confirm: bekräfta
   record:
+    button:
+      save: Spara
     create:
       header:
         title: Skapa
       input:
         label: Etikett
+      confirm: bekräfta
+  attribute:
+    type:
+      text: Text
+      image: Bild
+    create:
+      header:
+        title: Skapa
+      input:
+        label: Etikett
+        type: Attribut typ
       confirm: bekräfta
 pim_enrich:
   entity:
