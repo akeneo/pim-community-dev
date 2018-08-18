@@ -185,6 +185,8 @@ pim_enrich:
       edit_attributes: Die Attribute einer Produktfamilie bearbeiten
       remove: Eine Produktfamilie löschen
       history: Produktfamilien-Historie ansehen
+    family_variant:
+      remove: Entfernen einer Variante der Produktfamilie
     attribute_group:
       index: Attributgruppen auflisten
       create: Eine Attributgruppe anlegen
@@ -218,6 +220,8 @@ pim_enrich:
       edit: Einen Verbindungstyp bearbeiten
       remove: Einen Verbindungstyp löschen
       history: Verbindungstypen-Historie ansehen
+    association:
+      remove: Verbindungen von einem Produkt entfernen
     job_tracker:
       index: Prozess-Tracker ansehen
     api_connection:
@@ -239,6 +243,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Wählen Sie den Referenz-Datentyp
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Das Gebietsschema wurde vom Ausgabekanal entfernt. Die damit verknüpfte Vollständigkeit wird nun bereinigt.
+        done: Löschen vom Gebietsschema bei einem Kanal beendet.
 attribute:
   title: Attribut
   edit: Attribut bearbeiten
@@ -758,6 +767,10 @@ pim_mass_edit:
       error: Quick Export <strong>%label%</strong> fehlgeschlagen
       warning: Quick Export <strong>%label%</strong> mit Warnungen abgeschlossen
       success: Quick Export <strong>%label%</strong> abgeschlossen
+    mass_delete:
+      error: Massenlöschen <strong>%label%</strong> fehlgeschlagen
+      warning: Massenlöschen <strong>%label%</strong> mit Warnungen abgeschlossen
+      success: Massenlöschen <strong>%label%</strong> abgeschlossen
 job_execution.summary:
   mass_edited: Massenbearbeitet
   skip: Übersprungen
@@ -809,6 +822,14 @@ batch_jobs:
     label: Aus der Kategorie entfernen
     perform:
       label: Aus der Kategorie entfernen
+  add_association:
+    label: Verbinden
+    perform:
+      label: Verbinden
+  add_to_existing_product_model:
+    label: Zu bestehendem Produktmodell hinzufügen
+    perform:
+      label: Zu bestehendem Produktmodell hinzufügen
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:

@@ -1048,6 +1048,7 @@ pim_enrich:
         edit_common:
           label: Attributwerte bearbeiten
           label_count: "{1}Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Bearbeite die Werte von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+          description: Nur die Attribute, die zu den Produktfamilien der ausgewählten Produkten gehören, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und dem {{ scope }} Ausgabekanal bearbeitet.
         add_attribute_value:
           label: Attributwerte hinzufügen
           label_count: "{1}Hinzufügen von Attributwerten für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Hinzufügen von Attributwerten für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
@@ -1068,21 +1069,28 @@ pim_enrich:
           description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
         move_to_category:
           label: Zwischen Kategorien verschieben
+          label_count: "{1}Verschiebe <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zwischen Kategorien|] 1, Inf [Verschiebe <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zwischen Kategorien"
           description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen gehen verloren.
         remove_from_category:
           label: Aus Kategorien entfernen
+          label_count: "{1}Entferne <span class=\"AknFullPage-title--highlight\">1 Produkt</span> aus Kategorien|] 1, Inf [Entferne <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> aus Kategorien"
           description: Die Produkte werden aus den folgenden Kategorien entfernt.
         add_to_existing_product_model:
           label: Bestehendem Produktmodell hinzufügen
+          label_count: "{1}Hinzufügen von <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu einem existierenden Produktmodell|] 1, Inf [Hinzufügen von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu einem existierenden Produktmodell"
           description: Das ausgewählte Produktmodell wird die Produkte zusammenfassen und ermöglicht so das Anreichern der gemeinsamen Eigenschaften.
         associate_to_product_and_product_model:
           label: Verbinden
+          label_count: "{1}Verbinde <span class=\"AknFullPage-title--highlight\">1 Produkt</span> zu Produkten oder Produktmodells|] 1, Inf [Verbinde <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> zu Produkten oder Produktmodells"
           description: Die im Raster ausgewählten Produkte werden den selektierten Produkten und Produktmodells für den ausgewählten Verbindungstyp zugeordnet
           validate: Fügen Sie eine Verbindung hinzu, bevor Sie mit dem nächsten Schritt fortfahren
         change_parent_product_model:
           label: Eltern Produktmodell ändern
+          label_count: "{1}Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Ändere Eltern des Produktmodells von <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkten</span>"
+          description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
     family:
       title: Massenbearbeitung Produktfamilien
+      confirm: "{1}Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu ändern. Bitte bestätigen Sie dies.|] 1, Inf [Sie sind dabei {{ itemsCount }} Produktfamilien mit den folgenden Informationen zu ändern. Bitte bestätigen Sie das."
       step:
         select:
           label: Produktfamilien auswählen
@@ -1099,6 +1107,7 @@ pim_enrich:
         set_requirements:
           label: Benötigte Attribute auswählen
           description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
+          label_count: "{1}Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">1 Familie</span>|] 1, Inf [Setze Attribut-Bedingungen für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Familie</span>"
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
@@ -1129,6 +1138,7 @@ page_title:
   pim_enrich_group_index: Gruppen
   pim_enrich_group_edit: Gruppe {{ group.label }} | Bearbeiten
   pim_enrich_associationtype_index: Verbindungstypen
+  pim_enrich_associationtype_edit: Verbindungstyp {{ association type.label }} | Bearbeiten
   pim_enrich_grouptype_index: Gruppentypen
   pim_enrich_grouptype_edit: Gruppentyp {{ group type.label }} | Bearbeiten
   pim_enrich_mass_edit_action_choose: Massenbearbeitung | Auswählen
@@ -1190,6 +1200,7 @@ batch_jobs:
       label: CSV Produkt-Schnellexport
   csv_product_grid_context_quick_export:
     quick_export.label: CSV Produkt-Schnellexport kontextabhängig
+    quick_export_product_model.label: CSV Produktmodell-Schnellexport kontextabhängig
     perform:
       label: CSV Produkt-Schnellexport kontextabhängig
   xlsx_product_quick_export:
@@ -1199,6 +1210,7 @@ batch_jobs:
       label: XLSX Produkt-Schnellexport
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
+    quick_export_product_model.label: XLSX Produktmodell-Schnellexport kontextabhängig
     perform:
       label: XLSX Produkt-Schnellexport kontextabhängig
   csv_product_export:
@@ -1256,6 +1268,8 @@ batch_jobs:
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
     compute_data_related_to_family_variants.label: Produktmodell-Daten berechnen
+    compute_data_related_to_family_root_product_models.label: Ursprungs-Produktmodell-Daten berechnen
+    compute_data_related_to_family_sub_product_models.label: Untergeordnete Produktmodell-Daten berechnen
     compute_data_related_to_family_products.label: Produktdaten berechnen
   csv_family_variant_import:
     label: Import der Varianten der Produktfamilien aus CSV-Datei
@@ -1320,6 +1334,9 @@ batch_jobs:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
+    compute_data_related_to_family_variants.label: Produktmodell-Daten berechnen
+    compute_data_related_to_family_root_product_models.label: Ursprungs-Produktmodell-Daten berechnen
+    compute_data_related_to_family_sub_product_models.label: Untergeordnete Produktmodell-Daten berechnen
     compute_data_related_to_family_products.label: Produktdaten berechnen
   xlsx_family_variant_import:
     label: Import der Varianten der Produktfamilien aus XLSX-Datei
@@ -1457,13 +1474,24 @@ pim_notification:
   no_notifications: Keine Benachrichtigungen
   loading: Lädt...
 catalog_volume:
+  link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
+  product_values: "Sie haben <span>{{values}}</span> Produktinformationen in Ihrem PIM! Durchschnittlich sind es <span>{{average}}</span> Produktinformationen je Produkt!&nbsp;💪"
+  product_values_description: 'Desto mehr Produktinformationen Sie haben, desto wertvoller ist Ihr PIM, umso höher ist Ihr ROI! Mehr Details <a href="{{link}}" target="_blank">hier</a>'
   section:
+    product_values:
+      hint: 'Wussten Sie, dass die Gesamtanzahl Ihrer Produktinformationen direkt mit folgenden Achsen verbunden sind? <br/> Für mehr Details, empfehlen wir Ihnen folgenden <a href="{{link}}" target="_blank">Artikel </a>.'
+      title: Achsen, die die Anzahl der Produktwerte nutzen
     catalog_structure:
+      hint: Sie wissen sicherlich, dass eine gute Katalogstruktur sehr wichtig ist und eine Voraussetzung für effizientes anreichern von Produkten. Im Folgenden sehen Sie die verschiedene Achsen, um Ihre Katalogstruktur zu überwachen.
       title: Achsen, verbunden mit der Katalogstruktur
+    variant_modelling:
+      hint: Falls Sie Variantenmodellierung nutzen, können diese Achsen Ihnen bei der Überwachung des Umfangs helfen.
+      title: Achsen für die Variante "Modellierung"
   axis:
     count_products: Produkte
     average_max_attributes_per_family: Attribute pro Produktfamilie
     count_channels: Ausgabekanäle
+    count_locales: Gebietsschemen (aktiviert)
     count_scopable_attributes: Ausgabekanalspezifisches Attribute
     count_localizable_and_scopable_attributes: Lokalisierbare und ausgabekanalspezifische Attribute
     count_localizable_attributes: Lokalisierbare Attribute
