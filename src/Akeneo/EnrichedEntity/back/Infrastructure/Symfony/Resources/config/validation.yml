@@ -117,3 +117,50 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttribute
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldBeUnique: { groups: [other_constraints] }
+
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeCommand:
+    group_sequence:
+        - EditAttributeCommand
+        - other_constraints
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        editCommands:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: ~
+    constraints:
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldBeUnique: { groups: [other_constraints] }
+
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditRequiredAttribute:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        required:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Required: ~
+
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditLabelsAttribute:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        labels:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditMaxLengthCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        maxLength:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\MaxLength: ~
+
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditMaxFileSizeCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        maxFileSize:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
+
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAllowedExtensionsCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        allowedExtensions:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~

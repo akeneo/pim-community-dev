@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -32,13 +32,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($allowedExtensions, [
-                new Constraints\Collection([
-                    'fields' => [new Constraints\Type(['type' => 'string'])],
-                    'allowMissingFields' => true
-                ]),
-            ]
-        );
+        $violations = $validator->validate($allowedExtensions, new Assert\NotBlank());
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
