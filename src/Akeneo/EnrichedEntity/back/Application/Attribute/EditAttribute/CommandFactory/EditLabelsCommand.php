@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute;
+namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractEditAttributeCommand
+class EditLabelsCommand extends AbstractEditAttributeCommand
 {
     /** @var array */
-    public $identifier;
+    public $labels;
 }
 

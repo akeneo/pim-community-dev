@@ -20,6 +20,8 @@
 - locale switcher to be able to edit all locales
 - enforce html event type
 - Change read models to enforce properties are coherent
+- Extract the buttons of the edit enriched entity view so it comes from each of the tabs
+- Rename "AttributeRequired" by "AttributeIsRequired"
 
 DONE:
 

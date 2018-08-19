@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute;
+namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

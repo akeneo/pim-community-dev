@@ -19,7 +19,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $this->supports(['type' => 'image'])->shouldReturn(false);
     }
 
-    function it_creates_a_command__to_create_a_text_attribute()
+    function it_creates_a_command_to_create_a_text_attribute()
     {
         $command = $this->create([
             'identifier'  => [
