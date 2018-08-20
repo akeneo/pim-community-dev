@@ -7,8 +7,10 @@ Refuse selected: Rebutja els seleccionats
 pim_datagrid:
   no_entities:
     proposal: No hi ha cap proposta per revisar.
+    product_draft: No hi ha cap projecte de producte per revisar.
   no_results:
     proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
+    product_draft: No hi ha cap projecte de producte per revisar. Intentar canviar els criteris de cerca.
 pimee_workflow:
   entity:
     published_product:
@@ -17,6 +19,8 @@ pimee_workflow:
     proposal:
       modal.title: Deixa un comentari (opcional - 255 caràcters màx.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} propostes"
+    selected: propostes seleccionades
     mass_action_group:
       review:
         label: Acció massiva

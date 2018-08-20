@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Vista de graella de productes publicats per defecte
 user:
   email:
     notifications: Notificacions per correu electrònic
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Recordatori de retard de recurs (en dies)
-  default_published_product_grid_view:
-    label: Vista de graella de productes publicats per defecte
 Default asset tree: Arbre de recursos per defecte
 pimee_user:
   user:

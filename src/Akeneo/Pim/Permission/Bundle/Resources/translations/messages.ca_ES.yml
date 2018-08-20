@@ -4,10 +4,11 @@ pimee_enrich.acl.attribute_group.edit_permissions: Administrar permisos de grup 
 pimee_importexport.acl.export_profile.edit_permissions: Administrar permisos de perfil d'exportació
 pimee_importexport.acl.import_profile.edit_permissions: Administrar permisos de perfil d'importació
 pimee_enrich.groups.label: Grups de propietaris
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Número de locals amb acceos personalitzats
+    nb_custom_category_accesses: Número de categories amb accessos personalitzats
+    nb_custom_attribute_group_accesses: Número de grup d'atributs amb accessos personalitzats
 job_profile.permissions:
   execute.label: Autoritzat per executar el perfil d'aquesta tasca
   edit.label: Autoritzat per editar el perfil d'aquesta tasca
-pimee_import_export:
-  job_profile:
-    tab:
-      permission.title: Permisos

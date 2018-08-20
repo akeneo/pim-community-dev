@@ -60,7 +60,6 @@ pimee_workflow:
     index: Administrar productes publicats
   product:
     permission:
-      label: Permisos
       own: Revisar / publicar
       edit: Editar
       view: Vista
@@ -98,11 +97,6 @@ pim_menu:
   item:
     published_product: Productes publicats
     proposal: Propostes
-pim_title:
-  published_product:
-    index: Productes publicats
-  proposal:
-    index: Propostes
 btn.editworkingcopy: Editar la còpia de treball
 confirmation:
   product:

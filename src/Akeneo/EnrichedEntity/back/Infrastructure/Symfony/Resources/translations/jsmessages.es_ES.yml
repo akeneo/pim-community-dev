@@ -1,19 +1,21 @@
 pim_title:
   akeneo_enriched_entities_enriched_entity_index: Crear una nueva entidad
 pim_enriched_entity:
-  button:
-    save: Guardar
-    create: Añadir nuevo
   enriched_entity:
+    button:
+      save: Guardar
+      create: Crear
     title: Entidades
     tab:
       records: Registros
-      attributes: Atributos
+      attribute: Atributos
       properties: Propiedades
     properties:
       title: Propiedades de la entidad
       identifier: Identificador
       label: Etiqueta
+    attribute:
+      title: Atributos
     index:
       grid:
         count: "{{ count }} resultados"
@@ -33,11 +35,13 @@ pim_enriched_entity:
         success: Entidad enriquecida creada correctamente.
         fail: Un error ha ocurrido durante la creación de la entidad enriquecida
   record:
+    button:
+      save: Guardar
+      create: Añadir nuevo
     create:
       header:
         title: Crear
-      subtitle: Registros
-      title: Crear un nuevo {{ entityLabel }}
+      subtitle: Entidades
       input:
         label: Etiqueta
         code: Código (requerido)
@@ -48,6 +52,28 @@ pim_enriched_entity:
         fail: Un error ha ocurrido durante el guardado del registro
       create:
         success: Registro creado correctamente.
+        fail: Un error ha ocurrido durante la creación del registro
+  attribute:
+    type:
+      text: Texto
+      image: Imagen
+    create:
+      header:
+        title: Crear
+      subtitle: Entidades
+      input:
+        code: Código (requerido)
+        label: Etiqueta
+        type: Tipo de atributo
+        value_per_locale: Valor por local
+        value_per_channel: Valor por canal
+      confirm: confirmar
+    notification:
+      save:
+        success: Atributo exitosamente actualizado.
+        fail: Un error ha ocurrido durante el guardado del registro
+      create:
+        success: Atributo creado exitosamente.
         fail: Un error ha ocurrido durante la creación del registro
 pim_enrich:
   confirmation:

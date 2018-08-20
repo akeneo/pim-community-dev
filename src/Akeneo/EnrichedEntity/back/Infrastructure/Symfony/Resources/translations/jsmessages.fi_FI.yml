@@ -1,14 +1,16 @@
 pim_enriched_entity:
-  button:
-    save: Tallenna
-    create: Luo uusi
   enriched_entity:
+    button:
+      save: Tallenna
+      create: Luo
     tab:
-      attributes: Attribuutit
+      attribute: Attribuutit
       properties: Ominaisuudet
     properties:
       identifier: Tunniste
       label: Nimike
+    attribute:
+      title: Attribuutit
     create:
       header:
         title: Luo
@@ -16,12 +18,33 @@ pim_enriched_entity:
         label: Nimike
       confirm: vahvista
   record:
+    button:
+      save: Tallenna
+      create: Luo uusi
     create:
       header:
         title: Luo
       input:
         label: Nimike
       confirm: vahvista
+  attribute:
+    type:
+      text: Teksti
+      image: Kuva
+    create:
+      header:
+        title: Luo
+      input:
+        label: Nimike
+        type: Attribuuttityyppi
+        value_per_locale: Kielikohtainen arvo
+        value_per_channel: Kanavakohtainen arvo
+      confirm: vahvista
+    notification:
+      save:
+        success: Attribuutin päivittäminen onnistui.
+      create:
+        success: Attribuutin luominen onnistui.
 pim_enrich:
   entity:
     attribute:

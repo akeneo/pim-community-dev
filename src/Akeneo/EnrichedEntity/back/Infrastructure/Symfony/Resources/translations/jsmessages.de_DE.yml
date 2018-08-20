@@ -1,13 +1,16 @@
 pim_enriched_entity:
-  button:
-    save: Speichern
   enriched_entity:
+    button:
+      save: Speichern
+      create: Anlegen
     tab:
-      attributes: Attribute
+      attribute: Attribute
       properties: Eigenschaften
     properties:
       identifier: Kennung
       label: Bezeichnung
+    attribute:
+      title: Attribute
     create:
       header:
         title: Anlegen
@@ -15,12 +18,32 @@ pim_enriched_entity:
         label: Bezeichnung
       confirm: Bestätigen
   record:
+    button:
+      save: Speichern
     create:
       header:
         title: Anlegen
       input:
         label: Bezeichnung
       confirm: Bestätigen
+  attribute:
+    type:
+      text: Text
+      image: Abbildung
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+        type: Attributtyp
+        value_per_locale: Wert je Gebietsschema
+        value_per_channel: Wert je Ausgabekanal
+      confirm: Bestätigen
+    notification:
+      save:
+        success: Attribut erfolgreich aktualisiert.
+      create:
+        success: Attribut erfolgreich erstellt.
 pim_enrich:
   entity:
     attribute:
