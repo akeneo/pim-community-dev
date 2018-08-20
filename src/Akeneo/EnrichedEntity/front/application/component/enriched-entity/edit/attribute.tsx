@@ -53,7 +53,12 @@ const renderAttributes = (attributes: AttributeModel[], onAttributeDelete: (attr
         />
         <button
           className="AknIconButton AknIconButton--trash"
-          onClick={() => onAttributeDelete(attribute)}
+          onClick={() => {
+            const message = __('pim_enriched_entity.attribute.delete.confirm');
+            if (confirm(message)) {
+              onAttributeDelete(attribute)
+            }
+          }}
         />
       </div>
     </div>
@@ -136,7 +141,7 @@ export default connect(
           dispatch(attributeCreationStart());
         },
         onAttributeDelete: (attribute: AttributeModel) => {
-          dispatch(deleteAttribute(attribute));
+            dispatch(deleteAttribute(attribute));
         },
       },
     };
