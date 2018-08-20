@@ -67,7 +67,6 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.completeness_collection'
             - '@pim_user.context.user'
-            - '@pim_catalog.context.catalog'
             - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.values_filler.product'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
@@ -76,6 +75,7 @@ services:
             - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
+            - '@pim_catalog.context.catalog'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

@@ -52,7 +52,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
-        CatalogContext $catalogContext,
         CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -60,7 +59,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         AscendantCategoriesInterface $ascendantCategories,
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -78,7 +78,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             $collectionFilter,
             $completenessCollectionNormalizer,
             $userContext,
-            $catalogContext,
             $completenessCalculator,
             $productValuesFiller,
             $attributesProvider,
@@ -86,7 +85,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $ascendantCategories,
             $incompleteValuesNormalizer,
             $missingAssociationAdder,
-            $parentAssociationsNormalizer
+            $parentAssociationsNormalizer,
+            $catalogContext
         );
     }
 

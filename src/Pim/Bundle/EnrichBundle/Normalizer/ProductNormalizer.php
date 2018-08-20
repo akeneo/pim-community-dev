@@ -80,9 +80,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var UserContext */
     protected $userContext;
 
-    /** @var CatalogContext */
-    protected $catalogContext;
-
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
@@ -108,6 +105,9 @@ class ProductNormalizer implements NormalizerInterface
      */
     private $missingAssociationAdder;
 
+    /** @var CatalogContext */
+    protected $catalogContext;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -124,7 +124,6 @@ class ProductNormalizer implements NormalizerInterface
      * @param CollectionFilterInterface                 $collectionFilter
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param UserContext                               $userContext
-     * @param CatalogContext                            $catalogContext
      * @param CompletenessCalculatorInterface           $completenessCalculator
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
@@ -133,6 +132,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $incompleteValuesNormalizer
      * @param MissingAssociationAdder                   $missingAssociationAdder
      * @param NormalizerInterface                       $parentAssociationsNormalizer
+     * @param CatalogContext                            $catalogContext
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -150,7 +150,6 @@ class ProductNormalizer implements NormalizerInterface
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
-        CatalogContext $catalogContext,
         CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -158,7 +157,8 @@ class ProductNormalizer implements NormalizerInterface
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -175,7 +175,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->collectionFilter                 = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
-        $this->catalogContext                   = $catalogContext;
         $this->completenessCalculator           = $completenessCalculator;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
@@ -184,6 +183,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->incompleteValuesNormalizer       = $incompleteValuesNormalizer;
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
+        $this->catalogContext                   = $catalogContext;
     }
 
     /**
