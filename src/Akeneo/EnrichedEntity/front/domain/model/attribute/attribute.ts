@@ -19,8 +19,8 @@ export enum AttributeType {
 export enum ValidationRuleOptions {
   Email = 'email',
   RegularExpression = 'regular_expression',
-  Url = 'url'
-};
+  Url = 'url',
+}
 
 export enum AllowedExtensionsOptions {
   gif = 'gif',
@@ -33,42 +33,43 @@ export enum AllowedExtensionsOptions {
   psd = 'psd',
   tif = 'tif',
   tiff = 'tiff',
-};
+}
 
 interface CommonNormalizedAttribute {
   identifier: NormalizedAttributeIdentifier;
-  enrichedEntityIdentifier: string;
+  enriched_entity_identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
-  type: string;
   order: number;
-  valuePerLocale: boolean;
-  valuePerChannel: boolean;
+  value_per_locale: boolean;
+  value_per_channel: boolean;
   required: boolean;
 }
 
 export interface NormalizedTextAttribute extends CommonNormalizedAttribute {
-  maxLength: MaxLength;
-  isTextarea: IsTextarea;
-  isRichTextEditor: IsRichTextEditor;
-  validationRule: ValidationRule;
-  regularExpression: RegularExpression;
+  type: 'text';
+  max_length: MaxLength;
+  is_textarea: IsTextarea;
+  is_rich_text_editor: IsRichTextEditor;
+  validation_rule: ValidationRule;
+  regular_expression: RegularExpression;
 }
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
-  allowedExtensions: AllowedExtensions;
-  maxFileSize: MaxFileSize;
+  type: 'image';
+  allowed_extensions: AllowedExtensions;
+  max_file_size: MaxFileSize;
 }
 
 export type MaxLength = number | null;
 export type MaxFileSize = number | null;
-export type AllowedExtensions = string[] | null;
+export type AllowedExtensions = AllowedExtensionsOptions[] | null;
 export type IsTextarea = boolean;
 export type IsRichTextEditor = boolean;
-export type ValidationRule = string | null;
+export type ValidationRule = ValidationRuleOptions | null;
 export type RegularExpression = string | null;
 export type AdditionalProperty =
-  MaxLength
+  | MaxLength
   | MaxFileSize
   | AllowedExtensions
   | IsTextarea
@@ -97,9 +98,16 @@ export interface CommonAttribute {
 
 export interface TextAttribute extends CommonAttribute {
   maxLength: MaxLength;
+  isTextarea: IsTextarea;
+  isRichTextEditor: IsRichTextEditor;
+  validationRule: ValidationRule;
+  regularExpression: RegularExpression;
 }
 
-export interface ImageAttribute extends CommonAttribute {}
+export interface ImageAttribute extends CommonAttribute {
+  maxFileSize: MaxFileSize;
+  allowedExtensions: AllowedExtensions;
+}
 
 type Attribute = TextAttribute | ImageAttribute;
 
@@ -168,16 +176,15 @@ abstract class CommonConcreteAttribute implements CommonAttribute {
     return attribute.getIdentifier().equals(this.identifier);
   }
 
-  protected commonNormalize() {
+  protected commonNormalize(): CommonNormalizedAttribute {
     return {
       identifier: this.identifier.normalize(),
-      enrichedEntityIdentifier: this.enrichedEntityIdentifier.stringValue(),
+      enriched_entity_identifier: this.enrichedEntityIdentifier.stringValue(),
       code: this.code.stringValue(),
       labels: this.labelCollection.normalize(),
-      type: AttributeType[(this.type.charAt(0).toUpperCase() + this.type.slice(1)) as any],
       order: this.order,
-      valuePerLocale: this.valuePerLocale,
-      valuePerChannel: this.valuePerChannel,
+      value_per_locale: this.valuePerLocale,
+      value_per_channel: this.valuePerChannel,
       required: this.required,
     };
   }
@@ -220,33 +227,34 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
   public static createFromNormalized(normalizedTextAttribute: NormalizedTextAttribute) {
     return new ConcreteTextAttribute(
       createIdentifier(
-        normalizedTextAttribute.identifier.enrichedEntityIdentifier,
+        normalizedTextAttribute.identifier.enriched_entity_identifier,
         normalizedTextAttribute.identifier.identifier
       ),
-      createEnrichedEntityIdentifier(normalizedTextAttribute.enrichedEntityIdentifier),
+      createEnrichedEntityIdentifier(normalizedTextAttribute.enriched_entity_identifier),
       createCode(normalizedTextAttribute.code),
       createLabelCollection(normalizedTextAttribute.labels),
       AttributeType.Text,
       normalizedTextAttribute.order,
-      normalizedTextAttribute.valuePerLocale,
-      normalizedTextAttribute.valuePerChannel,
+      normalizedTextAttribute.value_per_locale,
+      normalizedTextAttribute.value_per_channel,
       normalizedTextAttribute.required,
-      normalizedTextAttribute.maxLength,
-      normalizedTextAttribute.isTextarea,
-      normalizedTextAttribute.isRichTextEditor,
-      normalizedTextAttribute.validationRule,
-      normalizedTextAttribute.regularExpression
+      normalizedTextAttribute.max_length,
+      normalizedTextAttribute.is_textarea,
+      normalizedTextAttribute.is_rich_text_editor,
+      normalizedTextAttribute.validation_rule,
+      normalizedTextAttribute.regular_expression
     );
   }
 
   public normalize(): NormalizedTextAttribute {
     return {
       ...super.commonNormalize(),
-      maxLength: this.maxLength,
-      isTextarea: this.isTextarea,
-      isRichTextEditor: this.isRichTextEditor,
-      validationRule: this.validationRule,
-      regularExpression: this.regularExpression
+      type: 'text',
+      max_length: this.maxLength,
+      is_textarea: this.isTextarea,
+      is_rich_text_editor: this.isRichTextEditor,
+      validation_rule: this.validationRule,
+      regular_expression: this.regularExpression,
     };
   }
 }
@@ -283,27 +291,28 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
   public static createFromNormalized(normalizedImageAttribute: NormalizedImageAttribute) {
     return new ConcreteImageAttribute(
       createIdentifier(
-        normalizedImageAttribute.identifier.enrichedEntityIdentifier,
+        normalizedImageAttribute.identifier.enriched_entity_identifier,
         normalizedImageAttribute.identifier.identifier
       ),
-      createEnrichedEntityIdentifier(normalizedImageAttribute.enrichedEntityIdentifier),
+      createEnrichedEntityIdentifier(normalizedImageAttribute.enriched_entity_identifier),
       createCode(normalizedImageAttribute.code),
       createLabelCollection(normalizedImageAttribute.labels),
       AttributeType.Image,
       normalizedImageAttribute.order,
-      normalizedImageAttribute.valuePerLocale,
-      normalizedImageAttribute.valuePerChannel,
+      normalizedImageAttribute.value_per_locale,
+      normalizedImageAttribute.value_per_channel,
       normalizedImageAttribute.required,
-      normalizedImageAttribute.maxFileSize,
-      normalizedImageAttribute.allowedExtensions
+      normalizedImageAttribute.max_file_size,
+      normalizedImageAttribute.allowed_extensions
     );
   }
 
   public normalize(): NormalizedImageAttribute {
     return {
       ...super.commonNormalize(),
-      maxFileSize: this.maxFileSize,
-      allowedExtensions: this.allowedExtensions,
+      type: 'image',
+      max_file_size: this.maxFileSize,
+      allowed_extensions: this.allowedExtensions,
     };
   }
 }

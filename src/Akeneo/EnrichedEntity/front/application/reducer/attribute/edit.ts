@@ -3,7 +3,7 @@ import {
   NormalizedAttribute,
   AdditionalProperty,
   AttributeType,
-  ValidationRuleOptions
+  ValidationRuleOptions,
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
 export interface EditState {
@@ -17,29 +17,28 @@ const initEditState = (): EditState => ({
   data: {
     identifier: {
       identifier: '',
-      enrichedEntityIdentifier: '',
+      enriched_entity_identifier: '',
     },
-    enrichedEntityIdentifier: '',
+    enriched_entity_identifier: '',
     code: '',
     labels: {},
-    type: '',
+    type: 'text',
     order: 0,
-    valuePerLocale: false,
-    valuePerChannel: false,
+    value_per_locale: false,
+    value_per_channel: false,
     required: false,
-    maxLength: 0,
-    isTextarea: false,
-    isRichTextEditor: false,
-    validationRule: ValidationRuleOptions.Email,
-    maxFileSize: 0,
-    allowedExtensions: []
+    max_length: 0,
+    is_textarea: false,
+    is_rich_text_editor: false,
+    validation_rule: ValidationRuleOptions.Email,
+    regular_expression: '',
   },
   errors: [],
 });
 
 const allowedAdditionalData = {
-  [AttributeType.Text]: ['maxLength', 'isTextarea', 'isRichTextEditor', 'validationRule'],
-  [AttributeType.Image]: ['maxFileSize', 'allowedExtensions'],
+  [AttributeType.Text]: ['max_length', 'is_textarea', 'is_rich_text_editor', 'validation_rule'],
+  [AttributeType.Image]: ['max_file_size', 'allowed_extensions'],
 };
 
 const additionalPropertyReducer = (

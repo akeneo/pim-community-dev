@@ -29,8 +29,8 @@ interface StateProps {
       [localeCode: string]: string;
     };
     type: AttributeType;
-    valuePerLocale: boolean;
-    valuePerChannel: boolean;
+    value_per_locale: boolean;
+    value_per_channel: boolean;
   };
   errors: ValidationError[];
 }
@@ -211,7 +211,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <Switch
                         id="pim_enriched_entity.attribute.create.input.value_per_locale"
-                        value={this.props.data.valuePerLocale}
+                        value={this.props.data.value_per_locale}
                         onChange={this.props.events.onValuePerLocaleUpdated}
                       />
                     </div>
@@ -229,7 +229,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <Switch
                         id="pim_enriched_entity.attribute.create.input.value_per_channel"
-                        value={this.props.data.valuePerChannel}
+                        value={this.props.data.value_per_channel}
                         onChange={this.props.events.onValuePerChannelUpdated}
                       />
                     </div>

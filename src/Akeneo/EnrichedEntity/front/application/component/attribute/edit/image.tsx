@@ -3,14 +3,14 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Select2 from 'akeneoenrichedentity/application/component/app/select2';
-import {AdditionalProperty, AllowedExtensionsOptions} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AdditionalProperty, AllowedExtensionsOptions, ImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
 export default ({
   attribute,
   onAdditionalPropertyUpdated,
   errors
 }: {
-  attribute: any;
+  attribute: ImageAttribute;
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
   errors: ValidationError[];
 }) => {
@@ -30,7 +30,7 @@ export default ({
             type="text"
             className="AknTextField"
             id="pim_enriched_entity.attribute.edit.input.max_file_size"
-            name="maxFileSize"
+            name="max_file_size"
             onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
           />
         </div>
@@ -53,8 +53,8 @@ export default ({
             value={attribute.allowedExtensions}
             multiple={true}
             readonly={false}
-            onChange={(allowedExtensions: string[]) => {
-              onAdditionalPropertyUpdated('allowedExtensions', allowedExtensions)
+            onChange={(allowedExtensions: any[]) => {
+              onAdditionalPropertyUpdated('allowed_extensions', allowedExtensions)
             }}
           />
         </div>

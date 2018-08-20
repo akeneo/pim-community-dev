@@ -4,12 +4,9 @@ import Attribute, {
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
 
-const humps = require('humps');
-
 export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute) => (
   normalizedAttribute: any
 ): Attribute => {
-  let labels = {};
   const expectedKeys = [
     'identifier',
     'enriched_entity_identifier',
@@ -23,10 +20,7 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
 
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
 
-  ({labels, ...normalizedAttribute} = normalizedAttribute);
-  const formattedAttribute = {...humps.camelizeKeys(normalizedAttribute), labels};
-
-  return denormalizeAttribute(formattedAttribute);
+  return denormalizeAttribute(normalizedAttribute);
 };
 
 export default hydrator(denormalizeAttribute);

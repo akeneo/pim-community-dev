@@ -2,7 +2,7 @@ class InvalidTypeError extends Error {}
 
 export interface NormalizedAttributeIdentifier {
   identifier: string;
-  enrichedEntityIdentifier: string;
+  enriched_entity_identifier: string;
 }
 
 export default class Identifier {
@@ -22,13 +22,10 @@ export default class Identifier {
   }
 
   public static createFromNormalized({
-    enrichedEntityIdentifier,
+    enriched_entity_identifier,
     identifier,
-  }: {
-    enrichedEntityIdentifier: string;
-    identifier: string;
-  }): Identifier {
-    return new Identifier(enrichedEntityIdentifier, identifier);
+  }: NormalizedAttributeIdentifier): Identifier {
+    return new Identifier(enriched_entity_identifier, identifier);
   }
 
   public equals(identifier: Identifier): boolean {
@@ -40,7 +37,7 @@ export default class Identifier {
   public normalize(): NormalizedAttributeIdentifier {
     return {
       identifier: this.identifier,
-      enrichedEntityIdentifier: this.enrichedEntityIdentifier,
+      enriched_entity_identifier: this.enrichedEntityIdentifier,
     };
   }
 }

@@ -12,20 +12,23 @@ import {
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
 } from 'akeneoenrichedentity/domain/event/attribute/edit';
-import {
+import Attribute, {
   AttributeType,
   AdditionalProperty,
-  NormalizedAttribute
+  denormalizeAttribute,
+  TextAttribute,
+  ImageAttribute
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
-import TextProperty from 'akeneoenrichedentity/application/component/attribute/edit/text';
-import ImageProperty from 'akeneoenrichedentity/application/component/attribute/edit/image';
+import TextPropertyView from 'akeneoenrichedentity/application/component/attribute/edit/text';
+import ImagePropertyView from 'akeneoenrichedentity/application/component/attribute/edit/image';
+import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 
 interface StateProps {
   context: {
     locale: string;
   };
-  data: NormalizedAttribute;
+  data: Attribute;
   errors: ValidationError[];
 }
 
@@ -41,20 +44,25 @@ interface DispatchProps {
 
 interface EditProps extends StateProps, DispatchProps {}
 
+class InvalidAttributeTypeError extends Error {};
 
-const additionalDataViews = {
-  [AttributeType.Text]: TextProperty,
-  [AttributeType.Image]: ImageProperty,
-};
-
-const getAdditionalProperty = (data: NormalizedAttribute, onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void, errors: ValidationError[]): JSX.Element => {
-  const AdditionalProperty = additionalDataViews[data.type as AttributeType];
-
-  return (<AdditionalProperty
-    attribute={data}
-    onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-    errors={errors}
-  />);
+const getAdditionalProperty = (attribute: Attribute, onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void, errors: ValidationError[]): JSX.Element => {
+  switch (attribute.getType()) {
+    case AttributeType.Text:
+      return <TextPropertyView
+        attribute={attribute as TextAttribute}
+        onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+        errors={errors}
+      />;
+    case AttributeType.Image:
+      return <ImagePropertyView
+        attribute={attribute as ImageAttribute}
+        onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+        errors={errors}
+      />;
+    default:
+      throw new InvalidAttributeTypeError(`There is no view capable of rendering attribute of type "${attribute.getType()}"`);
+  }
 };
 
 class Edit extends React.Component<EditProps> {
@@ -116,11 +124,11 @@ class Edit extends React.Component<EditProps> {
                     className="AknTextField"
                     id="pim_enriched_entity.attribute.edit.input.label"
                     name="label"
-                    value={this.props.data.labels[this.props.context.locale]}
+                    value={this.props.data.getLabelCollection().hasLabel(this.props.context.locale) ? this.props.data.getLabelCollection().getLabel(this.props.context.locale) : ''}
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
                   />
-                  <Flag locale={this.props.context.locale} displayLanguage={false} />
+                  <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
                 </div>
                 {getErrorsView(this.props.errors, 'labels')}
               </div>
@@ -139,7 +147,7 @@ class Edit extends React.Component<EditProps> {
                     className="AknTextField"
                     id="pim_enriched_entity.attribute.edit.input.code"
                     name="code"
-                    value={this.props.data.code}
+                    value={this.props.data.code.stringValue()}
                     readOnly
                   />
                 </div>
@@ -217,7 +225,7 @@ export default connect(
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
     return {
-      data: state.attribute.data,
+      data: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
       context: {
         locale: locale,

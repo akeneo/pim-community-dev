@@ -1,4 +1,4 @@
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {denormalizeAttribute, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import attributeSaver from 'akeneoenrichedentity/infrastructure/saver/attribute';
 import {
   attributeCreationSucceeded,
@@ -18,9 +18,9 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
   const formData = getState().createAttribute.data;
   const normalizedAttribute = {
     ...formData,
-    identifier: {identifier: formData.code, enrichedEntityIdentifier: enrichedEntity.identifier},
-    enrichedEntityIdentifier: enrichedEntity.identifier,
-  };
+    identifier: {identifier: formData.code, enriched_entity_identifier: enrichedEntity.identifier},
+    enriched_entity_identifier: enrichedEntity.identifier,
+  } as NormalizedAttribute;
   const attribute = denormalizeAttribute(normalizedAttribute);
 
   try {

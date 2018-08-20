@@ -109,7 +109,7 @@ pim_enriched_entity:
                 required: Required for completeness
                 max_length: Max characters
                 text_area: Text Area
-                rich_text_editor: Rich Text Editor
+                is_rich_text_editor: Rich Text Editor
                 max_file_size: Max file size (MB)
                 allowed_extensions: Allowed extensions
                 validation_rule: Validation rule
