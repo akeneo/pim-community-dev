@@ -58,6 +58,7 @@ class FiltersColumn extends BaseView {
   public defaultFilters: any = []
   public page: number = 1
 
+  // @TODO cache filters and re-render the whole list, when the search is cleared load the filters from cache and keep the scroll disabled
   fetchFilters(search?: any, page: number = this.page) {
       const url = 'datagrid/product-grid/attributes-filters'
       return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`)
@@ -70,11 +71,21 @@ class FiltersColumn extends BaseView {
       const isBottom = bottomPosition === scrollPosition;
 
       if (isBottom) {
-          this.page = this.page + 1
-          this.fetchFilters(null, this.page).then(loadedFilters => {
+        this.fetchFilters(null, this.page).then(loadedFilters => {
+            const onLastPage = loadedFilters.length === 0
+
+            console.log('onLastPage?', onLastPage)
+
+            if (onLastPage) {
+                return this.stopListeningToListScroll();
+            }
+
+            this.page = this.page + 1
             return this.renderFilters(loadedFilters, false)
-          })
+        })
       }
+
+
   }
 
   searchFilters(event: JQueryEventObject) {
@@ -92,7 +103,7 @@ class FiltersColumn extends BaseView {
   doSearch() {
       const searchValue: any = this.$('input[type="search"]').val()
 
-      this.fetchFilters(searchValue).then((loadedFilters: any) => {
+      this.fetchFilters(searchValue, 1).then((loadedFilters: any) => {
         const filters = this.defaultFilters.concat(loadedFilters)
 
         return this.renderFilters(filters.filter((filter: any) => {
@@ -100,6 +111,14 @@ class FiltersColumn extends BaseView {
             return label.includes(searchValue.toLowerCase())
         }))
       })
+  }
+
+  listenToListScroll() {
+    this.$('.filter-list').on('scroll', this.fetchNextFilters.bind(this))
+  }
+
+  stopListeningToListScroll() {
+    this.$('.filter-list').off('scroll')
   }
 
   renderFilters(filters: any, empty: boolean = true) {
@@ -115,7 +134,8 @@ class FiltersColumn extends BaseView {
         this.renderFilterGroup(group, groupName)
     }
 
-    this.$('.filter-list').on('scroll', this.fetchNextFilters.bind(this))
+    this.stopListeningToListScroll()
+    this.listenToListScroll()
   }
 
   loadFilterList(gridCollection: any, gridElement: any) {
