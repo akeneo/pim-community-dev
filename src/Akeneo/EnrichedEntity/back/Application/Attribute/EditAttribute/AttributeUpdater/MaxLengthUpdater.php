@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater;
+namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditMaxLengthUpdater implements EditAttributeUpdaterInterface
+class MaxLengthUpdater implements AttributeUpdaterInterface
 {
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {

@@ -15,13 +15,8 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
 
 class EditAttributeCommandFactoryRegistry implements EditAttributeCommandFactoryRegistryInterface
 {
-    /** @var EditAttributeCommandFactoryInterface */
-    private $factories;
-
-    public function __construct()
-    {
-        $this->factories = [];
-    }
+    /** @var EditAttributeCommandFactoryInterface[] */
+    private $factories = [];
 
     public function register(EditAttributeCommandFactoryInterface $factory): void
     {

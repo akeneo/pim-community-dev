@@ -1,20 +1,20 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater;
+namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater\EditMaxFileSizeUpdater;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxFileSizeUpdater;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
-class EditMaxFileSizeUpdaterSpec extends ObjectBehavior
+class MaxFileSizeUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditMaxFileSizeUpdater::class);
+        $this->shouldHaveType(MaxFileSizeUpdater::class);
     }
 
     function it_only_supports_edit_max_file_size_command_of_image_attributes(

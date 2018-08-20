@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater;
+namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
@@ -14,7 +14,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditAllowedExtensionsUpdater implements EditAttributeUpdaterInterface
+class AllowedExtensionsUpdater implements AttributeUpdaterInterface
 {
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {

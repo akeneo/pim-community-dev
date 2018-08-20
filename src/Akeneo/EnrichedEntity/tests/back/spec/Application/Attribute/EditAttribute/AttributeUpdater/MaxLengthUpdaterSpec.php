@@ -1,20 +1,20 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater;
+namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater\EditMaxLengthUpdater;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
-class EditMaxLengthUpdaterSpec extends ObjectBehavior
+class MaxLengthUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditMaxLengthUpdater::class);
+        $this->shouldHaveType(MaxLengthUpdater::class);
     }
 
     function it_only_supports_edit_max_length_command_for_text_attributes(

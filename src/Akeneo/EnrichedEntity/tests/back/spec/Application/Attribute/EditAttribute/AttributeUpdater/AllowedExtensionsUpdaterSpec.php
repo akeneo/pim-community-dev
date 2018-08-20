@@ -1,20 +1,20 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater;
+namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater\EditAllowedExtensionsUpdater;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AllowedExtensionsUpdater;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
-class EditAllowedExtensionsUpdaterSpec extends ObjectBehavior
+class AllowedExtensionsUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditAllowedExtensionsUpdater::class);
+        $this->shouldHaveType(AllowedExtensionsUpdater::class);
     }
 
     function it_only_supports_edit_allowed_extensions_command_of_image_attributes(
