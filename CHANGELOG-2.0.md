@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7557: Don't display attribute group filter if no attribute is chosen in "edit common attributes" action
+
 # 2.0.34 (2018-08-17)
 
 # 2.0.33 (2018-08-16)
