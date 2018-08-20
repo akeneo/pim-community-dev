@@ -54,26 +54,6 @@ Feature: Apply a mass action on all entities
     Then the family of product "mega_boots" should be "sandals"
     And the family of product "ultra_boots" should be "boots"
 
-  Scenario: Edit all families, filtered by name
-    Given the following families:
-      | code       | label-en_US     |
-      | 4_blocks   | Lego 4 blocks   |
-      | 2_blocks   | Lego 2 blocks   |
-      | characters | Lego characters |
-    When I am on the families grid
-    And I search "blocks"
-    Then the grid should contain 2 elements
-    And I select rows Lego 2 blocks
-    And I select all entities
-    And I press the "Bulk actions" button
-    And I choose the "Set attributes requirements" operation
-    And I display the Length attribute
-    And I switch the attribute "length" requirement in channel "mobile"
-    And I confirm mass edit
-    And I wait for the "set_attribute_requirements" job to finish
-    Then attribute "Length" should be required in family "4_blocks" for channel "Mobile"
-    And attribute "Length" should be required in family "2_blocks" for channel "Mobile"
-
   @jira https://akeneo.atlassian.net/browse/PIM-5000
   Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
     Given I am on the products grid
