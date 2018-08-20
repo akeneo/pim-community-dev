@@ -67,3 +67,7 @@ akeneo_enriched_entities_attribute_delete_rest:
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.attribute.delete }
     methods: [DELETE]
 
+akeneo_enriched_entities_attribute_edit_rest:
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/attribute/{attributeIdentifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.attribute.edit }
+    methods: [POST]
