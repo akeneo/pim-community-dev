@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
@@ -79,6 +80,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var UserContext */
     protected $userContext;
 
+    /** @var CatalogContext */
+    protected $catalogContext;
+
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
@@ -120,6 +124,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param CollectionFilterInterface                 $collectionFilter
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param UserContext                               $userContext
+     * @param CatalogContext                            $catalogContext
      * @param CompletenessCalculatorInterface           $completenessCalculator
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
@@ -145,6 +150,7 @@ class ProductNormalizer implements NormalizerInterface
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
+        CatalogContext $catalogContext,
         CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -169,6 +175,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->collectionFilter                 = $collectionFilter;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
+        $this->catalogContext                   = $catalogContext;
         $this->completenessCalculator           = $completenessCalculator;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
@@ -227,7 +234,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'required_missing_attributes' => $incompleteValues,
-            'image'             => $this->normalizeImage($product->getImage(), $context),
+            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
@@ -307,13 +314,13 @@ class ProductNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface $value
-     * @param array          $context
+     * @param string         $localeCode
      *
      * @return array|null
      */
-    protected function normalizeImage(?ValueInterface $value, array $context = []): ?array
+    protected function normalizeImage(?ValueInterface $value, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($value, $context['locale']);
+        return $this->imageNormalizer->normalize($value, $localeCode);
     }
 
     /**

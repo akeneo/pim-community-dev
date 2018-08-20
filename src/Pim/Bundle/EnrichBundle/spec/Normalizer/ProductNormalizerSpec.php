@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
@@ -51,6 +52,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $collectionFilter,
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
+        CatalogContext $catalogContext,
         CompletenessCalculatorInterface $completenessCalculator,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -76,6 +78,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $collectionFilter,
             $completenessCollectionNormalizer,
             $userContext,
+            $catalogContext,
             $completenessCalculator,
             $productValuesFiller,
             $attributesProvider,
