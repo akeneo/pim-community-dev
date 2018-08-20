@@ -21,20 +21,31 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class IdentifiersMappingContext implements Context
 {
+    /** @var ManageIdentifiersMapping */
     private $manageIdentifiersMapping;
+
+    /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
+
+    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     /**
-     * @param ManageIdentifiersMapping $manageIdenfifiersMapping
+     * @param ManageIdentifiersMapping              $manageIdentifiersMapping
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
      */
-    public function __construct(ManageIdentifiersMapping $manageIdenfifiersMapping, IdentifiersMappingRepositoryInterface $identifiersMappingRepository, AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->manageIdentifiersMapping = $manageIdenfifiersMapping;
+    public function __construct(
+        ManageIdentifiersMapping $manageIdentifiersMapping,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $this->manageIdentifiersMapping = $manageIdentifiersMapping;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
     }
@@ -43,8 +54,12 @@ class IdentifiersMappingContext implements Context
      * @When the identifiers are mapped with valid values as follows:
      *
      * @param TableNode $table
+     *
+     * @throws \Exception
+     *
+     * @return bool
      */
-    public function theIdentifiersAreMappedWithValidValues(TableNode $table)
+    public function theIdentifiersAreMappedWithValidValues(TableNode $table): bool
     {
         try {
             $this->manageIdentifiersMapping->updateIdentifierMapping(
@@ -62,7 +77,7 @@ class IdentifiersMappingContext implements Context
      *
      * @param TableNode $table
      */
-    public function theIdentifiersMappingIsDefined(TableNode $table)
+    public function theIdentifiersMappingIsDefined(TableNode $table): void
     {
         $databaseIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
@@ -79,8 +94,12 @@ class IdentifiersMappingContext implements Context
      * @When the identifiers are mapped with invalid values as follows:
      *
      * @param TableNode $table
+     *
+     * @throws \Exception
+     *
+     * @return bool
      */
-    public function theIdentifiersAreMappedWithInvalidValues(TableNode $table)
+    public function theIdentifiersAreMappedWithInvalidValues(TableNode $table): bool
     {
         try {
             $this->manageIdentifiersMapping->updateIdentifierMapping(
@@ -96,7 +115,7 @@ class IdentifiersMappingContext implements Context
     /**
      * @Then the identifiers mapping should not be defined
      */
-    public function theIdentifiersMappingIsNotDefined()
+    public function theIdentifiersMappingIsNotDefined(): void
     {
         $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
@@ -108,7 +127,7 @@ class IdentifiersMappingContext implements Context
      *
      * @param TableNode $table
      */
-    public function aPredefinedMapping(TableNode $table)
+    public function aPredefinedMapping(TableNode $table):void
     {
         $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
         $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
@@ -116,9 +135,7 @@ class IdentifiersMappingContext implements Context
         $tmp = array_fill_keys($identifiers, null);
         $tmp = array_merge($tmp, $mapped);
 
-        $this->manageIdentifiersMapping->updateIdentifierMapping(
-            $tmp
-        );
+        $this->manageIdentifiersMapping->updateIdentifierMapping($tmp);
     }
 
     /**
@@ -126,7 +143,7 @@ class IdentifiersMappingContext implements Context
      *
      * @param TableNode $table
      */
-    public function theRetrievedMappingIsTheFollowing(TableNode $table)
+    public function theRetrievedMappingIsTheFollowing(TableNode $table): void
     {
         $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
@@ -138,7 +155,7 @@ class IdentifiersMappingContext implements Context
      *
      * @return array
      */
-    private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode)
+    private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode): array
     {
         $extractedData = $tableNode->getRowsHash();
         array_shift($extractedData);

@@ -38,9 +38,10 @@ class ProductSubscriptionContext implements Context
     private $dataFixturesContext;
 
     /**
-     * @param InMemoryProductRepository $productRepository
+     * @param InMemoryProductRepository             $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
-     * @param SubscribeProduct $subscribeProduct
+     * @param SubscribeProduct                      $subscribeProduct
+     * @param DataFixturesContext                   $dataFixturesContext
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -56,16 +57,20 @@ class ProductSubscriptionContext implements Context
 
     /**
      * @When I subscribe the product :identifier to PIM.ai
+     *
+     * @param string $identifier
      */
-    public function iSubscribeTheProductToPimAi(string $identifier)
+    public function iSubscribeTheProductToPimAi(string $identifier): void
     {
         $this->subscribeProductToPimAi($identifier);
     }
 
     /**
      * @Given the following product subscribed to pim.ai:
+     *
+     * @param TableNode $table
      */
-    public function theFollowingProductSubscribedToPimAi(TableNode $table)
+    public function theFollowingProductSubscribedToPimAi(TableNode $table): void
     {
         $this->dataFixturesContext->theFollowingProduct($table);
 
@@ -75,15 +80,20 @@ class ProductSubscriptionContext implements Context
 
     /**
      * @Then the product :identifier should be subscribed
+     *
+     * @param string $identifier
      */
-    public function theProductShouldBeSubscribed(string $identifier)
+    public function theProductShouldBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         Assert::true($this->productSubscriptionRepository->existsForProductId($product->getId()));
     }
 
-    private function subscribeProductToPimAi(string $identifier)
+    /**
+     * @param string $identifier
+     */
+    private function subscribeProductToPimAi(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
         if (null === $product) {
