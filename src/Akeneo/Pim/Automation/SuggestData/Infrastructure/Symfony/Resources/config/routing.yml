@@ -3,6 +3,11 @@ akeneo_suggest_data_push_product:
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:subscribeAction }
     methods: [GET]
 
+akeneo_suggest_data_is_product_subscribed:
+    path: /suggest-data/{productId}/is-subscribed
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:isProductSubscribedAction }
+    methods: [GET]
+
 akeneo_suggest_data_connection_index:
     path: /suggest-data/connection
     methods: [GET]

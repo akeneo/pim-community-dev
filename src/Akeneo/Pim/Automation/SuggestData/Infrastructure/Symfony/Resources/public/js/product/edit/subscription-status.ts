@@ -1,5 +1,6 @@
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from "underscore";
+import {isProductSubscribed} from "../fetcher/subscription-fetcher";
 
 const __ = require('oro/translator');
 const template = require('pimee/template/form/product/subscription-status');
@@ -27,12 +28,16 @@ class SubscriptionStatus extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    this.$el.html(
-      this.template({
-        subscribeStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
-        subscribeStatus: 'Yes or No',
-      })
-    );
+    const productId = this.getFormData().meta.id;
+
+    isProductSubscribed(productId).then((subscriptionStatus: boolean) => {
+      this.$el.html(
+        this.template({
+          subscriptionStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
+          subscriptionStatus: subscriptionStatus ? __('pim_common.yes') : __('pim_common.no'),
+        })
+      );
+    });
 
     return this;
   }
