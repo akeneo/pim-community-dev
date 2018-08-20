@@ -20,13 +20,13 @@ class EditAttributeHandler
     private $attributeRepository;
 
     /** @var AttributeUpdaterRegistryInterface */
-    private $editAttributeAdapterRegistry;
+    private $AttributeUpdaterRegistry;
 
     public function __construct(
-        AttributeUpdaterRegistryInterface $editAttributeAdapterRegistry,
+        AttributeUpdaterRegistryInterface $attributeUpdaterRegistry,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->editAttributeAdapterRegistry = $editAttributeAdapterRegistry;
+        $this->AttributeUpdaterRegistry = $attributeUpdaterRegistry;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -51,7 +51,7 @@ class EditAttributeHandler
     private function editAttribute($attribute, EditAttributeCommand $command): AbstractAttribute
     {
         foreach ($command->editCommands as $editCommand) {
-            $editAttribute = $this->editAttributeAdapterRegistry->getUpdater($editCommand);
+            $editAttribute = $this->AttributeUpdaterRegistry->getUpdater($attribute, $editCommand);
             $attribute = ($editAttribute)($attribute, $editCommand);
         }
 
