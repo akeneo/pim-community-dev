@@ -26,17 +26,6 @@ Feature: Apply a mass action on products only (and not product models)
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Apply a mass action on products and product models
-    Given I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Crimson red"
-    And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
-    And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
-    And I display the Composition attribute
-    And I change the "Composition" to "my composition"
-    When I move to the confirm page
-    Then I should see the text "You are about to update 6 products with the following information, please confirm."
-
   Scenario: Mass edits family of only products within a selection of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
