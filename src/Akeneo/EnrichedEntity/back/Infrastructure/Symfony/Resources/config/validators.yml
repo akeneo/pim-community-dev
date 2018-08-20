@@ -21,7 +21,7 @@ services:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.identifier_is_unique' }
 
     akeneo_enrichedentity.infrastructure.validation.attribute.attribute_should_exist:
-        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeIdentifierShouldExistValidator
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldExistValidator
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists'
         tags:

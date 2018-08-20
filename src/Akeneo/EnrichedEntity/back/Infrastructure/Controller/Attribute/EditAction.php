@@ -8,10 +8,12 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Abs
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,22 +35,30 @@ class EditAction
     /** @var ValidatorInterface  */
     private $validator;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
     public function __construct(
         EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
         EditAttributeHandler $editAttributeHandler,
         NormalizerInterface $normalizer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SecurityFacade $securityFacade
     ) {
         $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->editAttributeHandler = $editAttributeHandler;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
+        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_edit')) {
+            throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
             return new JsonResponse(

@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraint;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeIdentifierShouldExist extends Constraint
+class AttributeShouldExist extends Constraint
 {
     public const ERROR_MESSAGE = 'pim_enriched_entity.attribute.validation.identifier.should_exist';
 
@@ -30,6 +30,6 @@ class AttributeIdentifierShouldExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.attribute.identifier_exists';
+        return 'akeneo_enrichedentity.infrastructure.validation.attribute.attribute_should_exist';
     }
 }

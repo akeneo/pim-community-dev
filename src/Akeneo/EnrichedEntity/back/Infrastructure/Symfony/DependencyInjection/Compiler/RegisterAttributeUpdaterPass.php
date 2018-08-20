@@ -21,10 +21,10 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
+class RegisterAttributeUpdaterPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry';
-    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.create_attribute_command_factory';
+    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry';
+    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.attribute_updater';
 
     /**
      * {@inheritdoc}

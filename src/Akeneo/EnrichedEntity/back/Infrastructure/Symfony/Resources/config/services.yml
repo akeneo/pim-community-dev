@@ -61,6 +61,7 @@ services:
             - '@akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler'
             - '@serializer'
             - '@validator'
+            - '@oro_security.security_facade'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository'
@@ -167,8 +168,34 @@ services:
     akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler:
         class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler'
         arguments:
-            - '@akeneo_enrichedentity.application.attribute.edit_attribute.attribute_updater.attribute_updater_registry'
+            - '@akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry'
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
 
-    akeneo_enrichedentity.application.attribute.edit_attribute.attribute_updater.attribute_updater_registry:
+    # Attribute updaters
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry:
         class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistry'
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.labels_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\LabelsUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.required_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\RequiredUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.max_length_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.max_file_size_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxFileSizeUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.allowed_extensions_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AllowedExtensionsUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater }

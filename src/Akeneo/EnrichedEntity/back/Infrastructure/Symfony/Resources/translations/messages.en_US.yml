@@ -9,3 +9,4 @@ akeneo_enrichedentity:
             create: Create a record
         attribute:
             create: Add an attribute to an enriched entity
+            edit: Edit an attribute of an enriched entity
