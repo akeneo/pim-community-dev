@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
@@ -38,12 +47,12 @@ class DataFixturesContext implements Context
     private $valueCollectionFactory;
 
     /**
-     * @param InMemoryProductRepository $productRepository
-     * @param ProductBuilderInterface $productBuilder
+     * @param InMemoryProductRepository       $productRepository
+     * @param ProductBuilderInterface         $productBuilder
      * @param ValueCollectionFactoryInterface $valueCollectionFactory
-     * @param InMemoryFamilyRepository $familyRepository
-     * @param FamilyFactory $familyFactory
-     * @param InMemoryAttributeRepository $attributeRepository
+     * @param InMemoryFamilyRepository        $familyRepository
+     * @param FamilyFactory                   $familyFactory
+     * @param InMemoryAttributeRepository     $attributeRepository
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -63,8 +72,10 @@ class DataFixturesContext implements Context
 
     /**
      * @Given the following product:
+     *
+     * @param TableNode $table
      */
-    public function theFollowingProduct(TableNode $table)
+    public function theFollowingProduct(TableNode $table): void
     {
         foreach ($table->getHash() as $productRow) {
             $product = $this->productBuilder->createProduct($productRow['identifier'], $productRow['family']);
@@ -78,7 +89,7 @@ class DataFixturesContext implements Context
                     ]
                 ];
             }
-            
+
             $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
             $product->setValues($values);
 
@@ -88,8 +99,12 @@ class DataFixturesContext implements Context
 
     /**
      * @Given the following family:
+     *
+     * @param TableNode $table
+     *
+     * @throws \Exception
      */
-    public function theFollowingFamily(TableNode $table)
+    public function theFollowingFamily(TableNode $table): void
     {
         foreach ($table->getHash() as $familyData) {
             $family = $this->familyFactory->create();
