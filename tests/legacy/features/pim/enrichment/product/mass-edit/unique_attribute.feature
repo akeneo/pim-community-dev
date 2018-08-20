@@ -12,13 +12,6 @@ Feature: Use an unique attribute
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6428
-  Scenario: Successfully use unique attributes on family edit
-    Given I am on the "boots" family page
-    When I visit the "Attributes" tab
-    Then I should see available attribute Unique attribute
-    And I should see available attribute Handmade
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6428
   Scenario: Successfully hide unique attributes on product mass edit
     Given I am on the products grid
     And I create a product
