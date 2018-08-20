@@ -28,16 +28,21 @@ class EditAttributeCommandFactoryRegistry implements EditAttributeCommandFactory
         $this->factories[] = $factory;
     }
 
-    public function getFactory(array $normalizedCommand): EditAttributeCommandFactoryInterface
+    public function getFactories(array $normalizedCommand): array
     {
+        $factories = [];
         foreach ($this->factories as $factory) {
             if ($factory->supports($normalizedCommand)) {
-                return $factory;
+                $factories[] = $factory;
             }
         }
 
-        throw new \RuntimeException(
-            sprintf('There was no create attribute command factory found for command  of type "%s"', $normalizedCommand['type'])
-        );
+        if (empty($factories)) {
+            throw new \RuntimeException(
+                sprintf('There was no create attribute command factory found for command  of type "%s"', $normalizedCommand['type'])
+            );
+        }
+
+        return $factories;
     }
 }

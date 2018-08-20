@@ -10,6 +10,6 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
  */
 class EditAttributeCommand extends AbstractEditAttributeCommand
 {
-    /** @var AbstractEditAttributeCommand */
+    /** @var AbstractEditAttributeCommand[] */
     public $editCommands;
 }

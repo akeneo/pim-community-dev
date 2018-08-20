@@ -16,7 +16,7 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class EditLabelsAdapter implements EditAttributeAdapterInterface
 {
-    public function supports(AbstractEditAttributeCommand $command): bool
+    public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
         return $command instanceof EditLabelsCommand;
     }

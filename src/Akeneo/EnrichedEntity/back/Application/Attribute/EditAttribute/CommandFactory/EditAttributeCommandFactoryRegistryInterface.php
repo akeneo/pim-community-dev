@@ -17,5 +17,8 @@ interface EditAttributeCommandFactoryRegistryInterface
 {
     public function register(EditAttributeCommandFactoryInterface $factory): void;
 
-    public function getFactory(array $normalizedCommand): EditAttributeCommandFactoryInterface;
+    /**
+     * @return EditAttributeCommandFactoryInterface[]
+     */
+    public function getFactories(array $normalizedCommand): array;
 }

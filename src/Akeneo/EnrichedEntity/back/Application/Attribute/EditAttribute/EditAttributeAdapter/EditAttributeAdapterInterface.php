@@ -8,7 +8,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 
 interface EditAttributeAdapterInterface
 {
-    public function supports(AbstractEditAttributeCommand $command): bool;
+    public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool;
 
     public function __invoke(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): AbstractAttribute;
 }
