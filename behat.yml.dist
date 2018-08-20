@@ -4,7 +4,7 @@ legacy:
             paths:
                 - tests/legacy/features
             filters:
-                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated'
             contexts:
                 - Context\FeatureContext:
                     -
@@ -145,7 +145,7 @@ acceptance:
     suites:
         pim:
             paths:
-                - 'tests/features/pim'
+                - '%paths.base%/tests/features/pim'
             contexts_services:
                 - test.catalog.product_creation.context
                 - test.catalog.product_validation.context
@@ -153,7 +153,7 @@ acceptance:
                 tags: '@acceptance-back'
         channel:
             paths:
-                - 'tests/features/channel'
+                - '%paths.base%/tests/features/channel'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
@@ -161,7 +161,7 @@ acceptance:
                 tags: '@acceptance-back'
         platform:
             paths:
-                - 'tests/features/platform'
+                - '%paths.base%/tests/features/platform'
             contexts_services:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.system_info_context
@@ -180,8 +180,6 @@ acceptance:
                 - test.catalog_volume_limits.variant_product_context
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
-                - test.catalog.product_creation.context
-                - test.catalog.product_validation.context
                 - test.catalog_volume_limits.user_context
                 - test.catalog_volume_limits.category_in_one_category_context
                 - test.catalog_volume_limits.category_level_context
