@@ -10,7 +10,7 @@ pim:
   replicas: 1
   numDaemon: 1
   persistence:
-    diskSize: 10Gi  
+    diskSize: 10Gi
   # Default Catalog Installation
   defaultCatalog: minimal
 
@@ -26,7 +26,7 @@ pim:
     rule-run:
       enabled: false
       pimCommand: "akeneo:rule:run"
-      schedule: "0 */1 * * *"
+      schedule: "0 5 * * *"
     versionning-refresh:
       enabled: false
       pimCommand: "pim:versioning:refresh"
@@ -36,10 +36,29 @@ pim:
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
 
+# Mailgun login/pws are provided and updated by terraform
+pimUsers:
+  cloudadmin:
+    firstName: Cloud
+    lastName: Admin
+    email: tech-cloud@akeneo.com
+    password: weloveplatypus
+    catalogDefaultLocale: fr_FR
+    userDefaultLocale: fr_FR
+    catalogDefaultScope: minimal
+    defaultCategoryTree: master
+    roles: ROLE_ADMINISTRATOR
+    groups: IT support
+    enabled: 1
+    defaultAssetTree: asset_main_catalog
+
 # Mysql
 mysql:
   mysql:
-    dataDiskSize: "13"
+    dataDiskSize: "13Gi"
+    defaultUser: akeneo_pim
+    userPassword: changeme
+    rootPassword: changeme
   common:
   # K8S storage class
     class: standard

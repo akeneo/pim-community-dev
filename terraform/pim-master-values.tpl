@@ -6,7 +6,6 @@ common:
   mailgunLogin: ${mailgun_login}
   mailgunPassword: ${mailgun_password}
 
-
 nfs:
   storageClass:
     name: nfs-${pfid}

@@ -37,7 +37,7 @@ pim:
 # Mysql
 mysql:
   mysql:
-    dataDiskSize: "50"
+    dataDiskSize: "50Gi"
   common:
     extraLabels:
       backup.enabled: "true"

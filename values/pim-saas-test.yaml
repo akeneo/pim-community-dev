@@ -23,7 +23,7 @@ pim:
     rule-run:
       enabled: false
       pimCommand: "akeneo:rule:run"
-      schedule: "0 */1 * * *"
+      schedule: "0 5 * * *"
     versionning-refresh:
       enabled: false
       pimCommand: "pim:versioning:refresh"
@@ -36,7 +36,7 @@ pim:
 # Mysql
 mysql:
   mysql:
-    dataDiskSize: "13"
+    dataDiskSize: "13Gi"
   common:
   # K8S storage class
     class: standard-retain
