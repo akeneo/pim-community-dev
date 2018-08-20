@@ -105,7 +105,7 @@ stage("Test") {
             "back-acceptance": {testif(
                 condition: launchAcceptanceTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv && vendor/bin/behat --strict -p acceptance -vv -c vendor/akeneo/pim-community-dev/behat.yml"
+                script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
 
             // INTEGRATION TESTS
