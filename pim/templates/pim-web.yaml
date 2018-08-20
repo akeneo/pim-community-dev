@@ -120,18 +120,6 @@ spec:
             - mountPath: /usr/local/apache2/conf/
               name: conf-httpd
               readOnly: true
-        - name: fpm-exporter
-          image: "{{ .Values.image.fpmExporter.repository }}:{{ .Values.image.fpmExporter.tag }}"
-          imagePullPolicy: {{ .Values.image.fpmExporter.pullPolicy | quote }}
-          ports:
-            - containerPort: 9101
-              name: fpm-exporter
-        - name: httpd-exporter
-          image: "{{ .Values.image.httpdExporter.repository }}:{{ .Values.image.httpdExporter.tag }}"
-          imagePullPolicy: {{ .Values.image.httpdExporter.pullPolicy | quote }}
-          ports:
-            - containerPort: 9117
-              name: httpd-exporter
       volumes:
         - name: web-src
           emptyDir: {}
