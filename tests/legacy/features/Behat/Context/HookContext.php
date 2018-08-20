@@ -25,6 +25,6 @@ class HookContext extends BaseHookContext
     public function registerConfigurationDirectory()
     {
         $this->getMainContext()->getSubcontext('catalogConfiguration')
-            ->addConfigurationDirectory(__DIR__.'/../../../Context/catalog');
+            ->addConfigurationDirectory(__DIR__.'/../../Context/catalog');
     }
 }
