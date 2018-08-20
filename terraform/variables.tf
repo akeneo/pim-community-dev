@@ -13,6 +13,9 @@ variable "pfid" {
   type        = "string"
   description = "retailer pfid"
 }
+variable "cluster_name" {
+  type        = "string"
+}
 
 variable "subdomain" {
   type        = "string"

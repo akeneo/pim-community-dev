@@ -7,7 +7,7 @@ HELM_CHART_VERSION ?= 0.0.0-0
 HELM_TIMEOUT=900
 HELM_VALUES_DIR:=${CURDIR}/values
 CUSTOMERS_DIR?=../../cloud-customers/
-
+GCLOUD_PROJECT_NAME := akecld-$(PROJECT_NAME)
 
 DEBUG ?=--debug 
 
@@ -57,7 +57,7 @@ helm-install: terraform-apply
 	[[ ! -z "$(PIM_IMAGE_REPO)" ]] && echo "image.pim.repository=$(PIM_IMAGE_REPO)" && helmvalue+=" --set image.pim.repository=$(PIM_IMAGE_REPO)"; \
 	cluster_name=$$($(TERRAFORM) output cluster_name); \
 	env_name=$$($(TERRAFORM) output env_name); \
-	release_file="$(CUSTOMERS_DIR)saas/env/$${env_name}-env/$(PROJECT_NAME)/$${cluster_name}/srnt-releases/$(PFID)/srnt.yaml"; \
+	release_file="$(CUSTOMERS_DIR)saas/projects/$(PROJECT_NAME)/$${cluster_name}/srnt-releases/$(PFID)/srnt.yaml"; \
  	helm upgrade --install --wait srnt-$(PFID) $(HELM_REPO)/$(HELM_CHART_NAME) --version $(HELM_CHART_VERSION) --namespace srnt-$(PFID) -f ./terraform/pim-master-values.yaml $${helmvalue} -f $${release_file}
 
 .PHONY: helm-test
@@ -80,8 +80,10 @@ export KUBECONFIG=./terraform/kubeconfig
 
 .PHONY: create-tfvars
 create-tfvars: #We don't use a file targe to recreate each time ./terraform/terraform.tfvars
-	@echo 'google_project_name="$(PROJECT_NAME)"' > ./terraform/terraform.tfvars
+	@echo 'google_project_name="$(GCLOUD_PROJECT_NAME)"' > ./terraform/terraform.tfvars
 	@echo 'pfid="$(PFID)"' >> ./terraform/terraform.tfvars
+	@echo 'cluster_name="$(CLUSTER_NAME)"' >> ./terraform/terraform.tfvars
+
 
 check_var = $(if $(strip $(shell echo "$2")),,$(error "$1" is not defined))
 
@@ -89,10 +91,12 @@ check_var = $(if $(strip $(shell echo "$2")),,$(error "$1" is not defined))
 check-input: # Check cluster input
 	$(call check_var,PROJECT_NAME,$(PROJECT_NAME))
 	$(call check_var,PFID,$(PFID))
+	$(call check_var,CLUSTER_NAME,$(CLUSTER_NAME))
+
 
 .PHONY: terraform-init 
 terraform-init: check-input create-tfvars
-	@$(TERRAFORM) init -backend-config="prefix=saas/$(PROJECT_NAME)/pim-$(PFID)"
+	@$(TERRAFORM) init -backend-config="prefix=saas/$(GCLOUD_PROJECT_NAME)/pim-$(PFID)"
 
 .PHONY: terraform-kubeconfig
 terraform-kubeconfig: check-input create-tfvars terraform-init

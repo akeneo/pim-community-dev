@@ -68,7 +68,7 @@ pim:
     completeness-calculate:
       enabled: false
       pimCommand: "pim:completeness:calculate"
-      schedule: "0/30 * * * *"
+      schedule: "0 2 1 * *"
     rule-run:
       enabled: false
       pimCommand: "akeneo:rule:run"

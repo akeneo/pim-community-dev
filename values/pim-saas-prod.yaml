@@ -6,8 +6,8 @@
 ###
 
 pim:
-  replicas: 2
-  numDaemon: 2
+  replicas: 1
+  numDaemon: 1
   persistence:
     diskSize: 50Gi  
   # Default Catalog Installation
@@ -20,7 +20,7 @@ pim:
     completeness-calculate:
       enabled: true
       pimCommand: "pim:completeness:calculate"
-      schedule: "0 2 * * *"
+      schedule: "0 2 1 * *"
     rule-run:
       enabled: true
       pimCommand: "akeneo:rule:run"

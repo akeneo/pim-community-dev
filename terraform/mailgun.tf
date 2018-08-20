@@ -1,5 +1,5 @@
 data "template_file" "mailgun_login" {
-  template = "${format ("%s-%s@mg.cloud.akeneo.com", var.pfid, data.terraform_remote_state.saas-cluster.env_name)}"
+  template = "${format ("%s@mg.cloud.akeneo.com", var.pfid)}"
 }
 
 resource "random_string" "mailgun_password" {
