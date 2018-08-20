@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeAdapter\EditAttributeAdapterRegistryInterface;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater\EditAttributeUpdaterRegistryInterface;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
@@ -19,12 +19,12 @@ class EditAttributeHandler
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
-    /** @var EditAttributeAdapterRegistryInterface */
+    /** @var EditAttributeUpdaterRegistryInterface */
     private $editAttributeAdapterRegistry;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        EditAttributeAdapterRegistryInterface $editAttributeAdapterRegistry
+        EditAttributeUpdaterRegistryInterface $editAttributeAdapterRegistry
     ) {
         $this->editAttributeAdapterRegistry = $editAttributeAdapterRegistry;
         $this->attributeRepository = $attributeRepository;

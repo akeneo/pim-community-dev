@@ -117,9 +117,11 @@ abstract class AbstractAttribute
         return $this->order;
     }
 
+    abstract public function setIsRequired(AttributeRequired $required);
+
     abstract protected function getType(): string;
 
-    abstract  public function updateLabels(LabelCollection $labelCollection);
+    abstract public function updateLabels(LabelCollection $labelCollection);
 
     public function normalize(): array
     {

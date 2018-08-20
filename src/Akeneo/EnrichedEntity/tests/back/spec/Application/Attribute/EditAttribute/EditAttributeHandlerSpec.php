@@ -5,8 +5,8 @@ namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeAdapter\EditAttributeAdapterInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeAdapter\EditAttributeAdapterRegistryInterface;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater\EditAttributeUpdaterInterface;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater\EditAttributeUpdaterRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -18,7 +18,7 @@ class EditAttributeHandlerSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
-        EditAttributeAdapterRegistryInterface $editAttributeAdapterRegistry
+        EditAttributeUpdaterRegistryInterface $editAttributeAdapterRegistry
     ) {
         $this->beConstructedWith($attributeRepository, $editAttributeAdapterRegistry);
     }
@@ -32,8 +32,8 @@ class EditAttributeHandlerSpec extends ObjectBehavior
         $attributeRepository,
         $editAttributeAdapterRegistry,
         TextAttribute $attribute,
-        EditAttributeAdapterInterface $editRequiredAdapter,
-        EditAttributeAdapterInterface $editMaxFileSizeAdapter
+        EditAttributeUpdaterInterface $editRequiredAdapter,
+        EditAttributeUpdaterInterface $editMaxFileSizeAdapter
     ) {
         $editAttributeCommand = $this->getEditCommand();
         $attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'name'))->willReturn($attribute);

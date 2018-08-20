@@ -149,4 +149,26 @@ class TextAttributeSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_updates_is_required_and_returns_a_new_instance_of_itself()
+    {
+        $toggleIsRequired = $this->setIsRequired(AttributeRequired::fromBoolean(false));
+        $toggleIsRequired->shouldBeAnInstanceOf(TextAttribute::class);
+        $toggleIsRequired->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'name',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
+                'order'                      => 0,
+                'required'                   => false,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'text',
+                'max_length'                 => 300,
+            ]
+        );
+    }
 }

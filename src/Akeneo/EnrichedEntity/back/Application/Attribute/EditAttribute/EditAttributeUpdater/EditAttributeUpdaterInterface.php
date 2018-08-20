@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeAdapter;
+namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 
-interface EditAttributeAdapterInterface
+interface EditAttributeUpdaterInterface
 {
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool;
 

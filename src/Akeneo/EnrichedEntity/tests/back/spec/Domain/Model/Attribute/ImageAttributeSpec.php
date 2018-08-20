@@ -168,4 +168,27 @@ class ImageAttributeSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_updates_its_required_property_size_and_returns_a_new_instance_of_itself()
+    {
+        $newPortrait = $this->setIsRequired(AttributeRequired::fromBoolean(false));
+        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
+        $newPortrait->normalize()->shouldBe([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'image',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'image',
+                'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
+                'order'                      => 0,
+                'required'                   => false,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'image',
+                'max_file_size'              => '300',
+                'allowed_extensions'         => ['pdf'],
+            ]
+        );
+    }
 }

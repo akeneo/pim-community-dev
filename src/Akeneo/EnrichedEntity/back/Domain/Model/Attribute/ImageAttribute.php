@@ -92,6 +92,22 @@ class ImageAttribute extends AbstractAttribute
         return self::ATTRIBUTE_TYPE;
     }
 
+    public function setIsRequired(AttributeRequired $required): self
+    {
+        return new self(
+            $this->identifier,
+            $this->enrichedEntityIdentifier,
+            $this->code,
+            $this->labelCollection,
+            $this->order,
+            $required,
+            $this->valuePerChannel,
+            $this->valuePerLocale,
+            $this->maxFileSize,
+            $this->allowedExtensions
+        );
+    }
+
     public function setMaxFileSize(AttributeMaxFileSize $maxFileSize): self
     {
         return new self(
