@@ -50,15 +50,31 @@ class FiltersColumn extends BaseView {
   public events(): Backbone.EventsHash {
     return {
       'keyup input[type="search"]': 'searchFilters',
+      'scroll .filter-list': 'fetchNextFilters'
     }
   }
 
   public timer: any = null
   public defaultFilters: any = []
+  public page: number = 1
 
-  fetchFilters(search?: any) {
+  fetchFilters(search?: any, page: number = this.page) {
       const url = 'datagrid/product-grid/attributes-filters'
-      return $.get(search ? `${url}?search=${search}` : url)
+      return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`)
+  }
+
+  fetchNextFilters(event: JQueryMouseEventObject) {
+      const list: any = event.currentTarget
+      const scrollPosition = Math.max(0, list.scrollTop - 15)
+      const bottomPosition = (list.scrollHeight - list.offsetHeight)
+      const isBottom = bottomPosition === scrollPosition;
+
+      if (isBottom) {
+          this.page = this.page + 1
+          this.fetchFilters(null, this.page).then(loadedFilters => {
+            return this.renderFilters(loadedFilters, false)
+          })
+      }
   }
 
   searchFilters(event: JQueryEventObject) {
@@ -86,15 +102,20 @@ class FiltersColumn extends BaseView {
       })
   }
 
-  renderFilters(filters: any) {
+  renderFilters(filters: any, empty: boolean = true) {
     const groupedFilters: any = this.groupFilters(filters)
 
-    this.$('.filters-column').empty()
+    if (empty) {
+        this.$('.filters-column').empty()
+    }
 
+    // collect the divs in a variable and append all at once
     for (let groupName in groupedFilters) {
         const group = groupedFilters[groupName]
         this.renderFilterGroup(group, groupName)
     }
+
+    this.$('.filter-list').on('scroll', this.fetchNextFilters.bind(this))
   }
 
   loadFilterList(gridCollection: any, gridElement: any) {
