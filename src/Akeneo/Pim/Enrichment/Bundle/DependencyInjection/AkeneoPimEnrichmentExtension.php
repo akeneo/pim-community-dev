@@ -67,7 +67,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('queries.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
-        $loader->load('api_batch_validators.yml');
+        $loader->load('fill_product_values_command.yml');
         $loader->load('values_fillers.yml');
         $loader->load('versions.yml');
         $loader->load('serializers.yml');

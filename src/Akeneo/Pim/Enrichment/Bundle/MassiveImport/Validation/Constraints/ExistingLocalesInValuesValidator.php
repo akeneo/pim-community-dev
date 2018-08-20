@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -31,17 +32,17 @@ class ExistingLocalesInValuesValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($command, Constraint $constraint)
     {
-        if (!$product instanceof Product) {
-            throw new UnexpectedTypeException($constraint, Product::class);
+        if (!$command instanceof FillProductValuesCommand) {
+            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
         }
 
         if (!$constraint instanceof ExistingLocalesInValues) {
             throw new UnexpectedTypeException($constraint, ExistingLocalesInValues::class);
         }
 
-        if (null === $product->values()) {
+        if (null === $command->values()) {
             return;
         }
 
@@ -55,7 +56,7 @@ class ExistingLocalesInValuesValidator extends ConstraintValidator
                 AND l.is_activated = 1
 SQL;
 
-        $localeCodes = $this->getLocaleCodes($product);
+        $localeCodes = $this->getLocaleCodes($command);
         $existingLocales = $this->connection->executeQuery(
             $sql,
             ['locale_codes' => $localeCodes],
@@ -69,10 +70,10 @@ SQL;
         }
     }
 
-    private function getLocaleCodes(Product $product): array
+    private function getLocaleCodes(FillProductValuesCommand $command): array
     {
         $locales = [];
-        foreach ($product->values()->all() as $value) {
+        foreach ($command->values()->all() as $value) {
             if (null !== $value->localeCode()) {
                 $locales[$value->localeCode()] = $value->localeCode();
             }

@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
-use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
-use Doctrine\DBAL\Connection;
-use PDO;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,17 +18,17 @@ class ProductValueCollectionValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($command, Constraint $constraint)
     {
-        if (!$product instanceof Product) {
-            throw new UnexpectedTypeException($constraint, Product::class);
+        if (!$command instanceof FillProductValuesCommand) {
+            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
         }
 
         if (!$constraint instanceof ProductValueCollection) {
             throw new UnexpectedTypeException($constraint, ProductValueCollection::class);
         }
 
-        if (null === $product->values()) {
+        if (null === $command->values()) {
             return;
         }
 

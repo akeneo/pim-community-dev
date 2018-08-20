@@ -1,0 +1,6 @@
+Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand:
+    constraints:
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingAttributesInValues: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingLocalesInValues: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingChannelsInValues: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ProductValueCollection: ~

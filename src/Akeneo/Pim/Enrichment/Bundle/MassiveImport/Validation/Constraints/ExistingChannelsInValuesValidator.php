@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -31,17 +32,17 @@ class ExistingChannelsInValuesValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($command, Constraint $constraint)
     {
-        if (!$product instanceof Product) {
-            throw new UnexpectedTypeException($constraint, Product::class);
+        if (!$command instanceof FillProductValuesCommand) {
+            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
         }
 
         if (!$constraint instanceof ExistingChannelsInValues) {
             throw new UnexpectedTypeException($constraint, ExistingChannelsInValues::class);
         }
 
-        if (null === $product->values()) {
+        if (null === $command->values()) {
             return;
         }
 
@@ -54,7 +55,7 @@ class ExistingChannelsInValuesValidator extends ConstraintValidator
                 c.code IN (:channel_codes)
 SQL;
 
-        $channelCodes = $this->getChannelCodes($product);
+        $channelCodes = $this->getChannelCodes($command);
         $existingLocales = $this->connection->executeQuery(
             $sql,
             ['channel_codes' => $channelCodes],
@@ -68,10 +69,10 @@ SQL;
         }
     }
 
-    private function getChannelCodes(Product $product): array
+    private function getChannelCodes(FillProductValuesCommand $command): array
     {
         $channels = [];
-        foreach ($product->values()->all() as $value) {
+        foreach ($command->values()->all() as $value) {
             if (null !== $value->channelCode()) {
                 $channels[$value->channelCode()] = $value->channelCode();
             }

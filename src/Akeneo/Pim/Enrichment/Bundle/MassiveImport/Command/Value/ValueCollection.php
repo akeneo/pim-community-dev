@@ -2,47 +2,46 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Value;
+namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\Value;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueCollection
+class ValueCollection
 {
     private $valuesIndexedByAttribute = [];
+
+    /** @var Value[] */
     private $values = [];
 
-    private function __construct()
+    /**
+     * @param Value[] $values
+     */
+    public function __construct(array $values)
     {
+        foreach ($values as $value) {
+            $this->add($value);
+        }
     }
 
     /**
-     * @return ProductValue[]
+     * @return Value[]
      */
     public function all(): array
     {
         return $this->values;
     }
 
+    /**
+     * @return Value[]
+     */
     public function indexedByAttribute(): array
     {
         return $this->valuesIndexedByAttribute;
     }
 
-    public static function fromApiFormat(array $values): ProductValueCollection
-    {
-        $collection = new self();
-        foreach ($values as $attribute => $valuesPerAttribute) {
-            foreach ($valuesPerAttribute as $value) {
-                $collection->add(new ProductValue($attribute, $value['locale'], $value['scope'], $value['data']));
-            }
-        }
-
-        return $collection;
-    }
-
-    private function add(ProductValue $value)
+    private function add(Value $value)
     {
         $attributeCode = $value->attributeCode();
         $this->valuesIndexedByAttribute[$attributeCode][] = $value;

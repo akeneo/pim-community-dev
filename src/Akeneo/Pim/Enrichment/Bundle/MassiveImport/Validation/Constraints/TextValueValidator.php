@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
 use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Value\ProductValue;

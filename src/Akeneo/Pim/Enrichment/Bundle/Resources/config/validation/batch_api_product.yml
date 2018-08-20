@@ -1,6 +1,0 @@
-Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product:
-    constraints:
-        - Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints\ExistingAttributesInValues: ~
-        - Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints\ExistingLocalesInValues: ~
-        - Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints\ExistingChannelsInValues: ~
-        - Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints\ProductValueCollection: ~

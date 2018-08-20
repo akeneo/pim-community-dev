@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Validation\Constraints;
+namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
-use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
 use Doctrine\DBAL\Connection;
 use PDO;
 use Symfony\Component\Validator\Constraint;
@@ -31,17 +31,17 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($command, Constraint $constraint)
     {
-        if (!$product instanceof Product) {
-            throw new UnexpectedTypeException($constraint, Product::class);
+        if (!$command instanceof FillProductValuesCommand) {
+            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
         }
 
         if (!$constraint instanceof ExistingAttributesInValues) {
             throw new UnexpectedTypeException($constraint, ExistingAttributesInValues::class);
         }
 
-        if (null === $product->values()) {
+        if (null === $command->values()) {
             return;
         }
 
@@ -54,7 +54,7 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
                 a.code IN (:attribute_codes)
 SQL;
 
-        $attributeCodes = $this->getAttributeCodes($product);
+        $attributeCodes = $this->getAttributeCodes($command);
         $existingAttributes = $this->connection->executeQuery(
             $sql,
             ['attribute_codes' => $attributeCodes],
@@ -68,8 +68,8 @@ SQL;
         }
     }
 
-    private function getAttributeCodes(Product $product): array
+    private function getAttributeCodes(FillProductValuesCommand $command): array
     {
-        return array_keys($product->values()->indexedByAttribute());
+        return array_keys($command->values()->indexedByAttribute());
     }
 }

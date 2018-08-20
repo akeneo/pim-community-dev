@@ -1,0 +1,26 @@
+services:
+    pim_enrichment.massive_import.command.constraint.existing_attributes_in_values:
+        class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingAttributesInValuesValidator'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: validator.constraint_validator, alias: batch_api_existing_attributes }
+
+    pim_enrichment.massive_import.command.constraint.existing_locales_in_values:
+        class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingLocalesInValuesValidator'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: validator.constraint_validator, alias: batch_api_existing_locales }
+
+    pim_enrichment.massive_import.command.constraint.existing_channels_in_values:
+        class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingChannelsInValuesValidator'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: validator.constraint_validator, alias: batch_api_existing_channels }
+
+    pim_enrichment.massive_import.command.constraint.product_value_constraint:
+        class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ProductValueCollectionValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: batch_api_validate_product_value_collection }
