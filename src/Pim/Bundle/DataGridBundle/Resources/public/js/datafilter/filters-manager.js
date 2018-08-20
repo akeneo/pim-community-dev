@@ -104,6 +104,9 @@ define(
             if (options.filters) {
                 this.filters = options.filters;
             }
+
+            console.log('filters-manager', options)
+
             this.displayAsPanel = options.displayAsPanel;
 
             _.each(this.filters, function (filter) {
@@ -455,6 +458,7 @@ define(
          */
         _processFilterStatus: function () {
             const activeFilters = this.$(this.filterSelector).val();
+            console.log(activeFilters)
 
             _.each(this.filters, function (filter, name) {
                 if (!filter.enabled && _.indexOf(activeFilters, name) !== -1) {

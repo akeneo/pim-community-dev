@@ -49,20 +49,28 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                 this.collection = collection;
                 this.gridElement = gridElement;
                 this.metadata = this.gridElement.data('metadata') || {};
-                this.filters = this.metadata.filters;
-                this.modules = this.collectModules();
 
-                tools.loadModules(this.modules, () => {
-                    const options = this.combineOptions.call(this);
-                    options.collection = this.collection;
-                    options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
+                this.fetchFilters().then(loadedFilters => {
+                    this.filters = this.metadata.filters.concat(loadedFilters);
 
-                    this.filters = options.filters || [];
-                    this.render();
+                    this.modules = this.collectModules();
+                    tools.loadModules(this.modules, () => {
+                        const options = this.combineOptions.call(this);
+                        options.collection = this.collection;
+                        options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
 
-                    mediator.trigger('datagrid_filters:loaded', options);
-                    mediator.trigger('datagrid_filters:rendered', this.collection, this.filters);
-                });
+                        this.filters = options.filters || [];
+                        this.render();
+
+                        mediator.trigger('datagrid_filters:loaded', options);
+                        mediator.trigger('datagrid_filters:rendered', this.collection, this.filters);
+                    });
+                })
+
+            },
+
+            fetchFilters() {
+                return $.get('datagrid/product-grid/attributes-filters')
             },
 
             /**
@@ -89,7 +97,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
             combineOptions() {
                 const filters = {};
 
-                _.each(this.metadata.filters, options => {
+                _.each(this.filters, options => {
                     if (_.has(options, 'name') && _.has(options, 'type')) {
                         if (options.type === 'selectrow') {
                             options.collection = this.collection;
