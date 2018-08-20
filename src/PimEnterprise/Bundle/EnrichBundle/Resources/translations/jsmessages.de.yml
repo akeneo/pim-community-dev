@@ -177,6 +177,7 @@ pimee_enrich:
           warning: '{{ itemsCount }} gewählte Produkte werden veröffentlicht.'
         unpublish:
           label: Veröffentlichung entziehen
+          label_count: "{1}Veröffentlichung rückgängig machen für <span class=\"AknFullPage-title--highlight\">1 Produkt</span>|] 1, Inf [Veröffentlichung rückgängig machen für <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span>"
           description: Die Veröffentlichung der Produkte wird entzogen
           warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
@@ -256,6 +257,7 @@ batch_jobs:
 catalog_volume:
   section:
     assets:
+      title: Achsen auf Assets
       hint: Sie können den Umfang bezüglich der Assets genau hier verfolgen
   axis:
     count_assets: Assets

@@ -19,6 +19,7 @@ pimee_product_asset:
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
       alpha_numeric_plus_underscore: Der Code sollte nur alphanumerisch oder unterstreichen sein.
+      unique: Code muss einzigartig sein. Wir generieren einen neuen für Sie.
   enrich_asset:
     grid:
       edit: Eigenschaften des Assets bearbeiten
@@ -40,6 +41,7 @@ pimee_product_asset:
     success:
       new: Ein neues Asset wird erstellt
       imported: Dateien importiert für Verarbeitung von Assets
+      need_refresh: <b>Asset Import wurde gestartet</b><br> Um die importierten Assets im Produktformular sehen zu können, aktualisieren Sie bitte die Produktseite sobald Sie die Import-Benachrichtigung erhalten haben.
       canceled: Upload erfolgreich abgebrochen
       deleted: Hochgeladene Datei erfolgreich gelöscht
     error:
@@ -87,6 +89,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Massenupload von Assets
     perform.label: Massenupload
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets Massenupload und hinzufügen zum Produkt
+    perform.label: Assets Massenupload und hinzufügen zum Produkt
   yml_asset_channel_configuration_import:
     label: Assets Channel-Konfiguration in Yaml importieren
     validation.label: Dateivalidierung
@@ -139,6 +144,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Assetkategorie-Export in XLSX-Datei
     export.label: Assetkategorie-Export in XLSX-Datei
+  xlsx_asset_variation_export:
+    label: Assetvariation-Export in XLSX-Datei
+    export.label: Assetvariation-Export in XLSX-Datei
   classify_assets:
     perform.label: Assets in Kategorien verschieben
   add_tags_to_assets:
