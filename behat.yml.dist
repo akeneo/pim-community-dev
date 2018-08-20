@@ -5,7 +5,7 @@ legacy:
                 - tests/legacy/features
                 - vendor/akeneo/pim-community-dev/tests/legacy/features
             filters:
-                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce"
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce'
             contexts:
                 - Context\EnterpriseFeatureContext:
                     -
@@ -177,6 +177,24 @@ legacy:
 
 acceptance:
     suites:
+#        This CE suite cannot work in EE because of permissions.
+#        Contexts need to be overriden.
+#        pim:
+#            paths:
+#                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/pim'
+#            contexts_services:
+#                - test.catalog.product_creation.context
+#                - test.catalog.product_validation.context
+#            filters:
+#                tags: '@acceptance-back'
+        channel:
+            paths:
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/channel'
+            contexts_services:
+                - test.locale.context
+                - test.channel.context
+            filters:
+                tags: '@acceptance-back'
         enriched-entity:
             paths:
                 - '%paths.base%/src/Akeneo/EnrichedEntity/tests/features'
@@ -200,7 +218,7 @@ acceptance:
                 - test.attribute.context
             filters:
                 tags: '@acceptance-back'
-        volume-monitoring:
+        platform:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'
                 - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
@@ -233,11 +251,11 @@ acceptance:
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
-               - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
-               - "src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml"
-               - "src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/behat/services.yml"
-               - "src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml"
+               - 'vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
