@@ -72,14 +72,14 @@ class FiltersColumn extends BaseView {
       const isBottom = bottomPosition === scrollPosition
 
       if (isBottom) {
+        this.page = this.page + 1
+
         this.fetchFilters(null, this.page).then(loadedFilters => {
             if (loadedFilters.length === 0) {
                 return this.stopListeningToListScroll()
             }
 
             this.loadedFilters = [ ...this.loadedFilters, ...loadedFilters ]
-            this.page = this.page + 1
-
             return this.renderFilters()
         })
       }
@@ -116,7 +116,7 @@ class FiltersColumn extends BaseView {
   }
 
   listenToListScroll(): void {
-    this.$('.filter-list').on('scroll', this.fetchNextFilters.bind(this))
+    this.$('.filter-list').off('scroll').on('scroll', this.fetchNextFilters.bind(this))
   }
 
   stopListeningToListScroll(): void {
@@ -124,18 +124,19 @@ class FiltersColumn extends BaseView {
   }
 
   renderFilters(filters = this.loadedFilters) {
-    console.log('renderFilters', filters)
     const groupedFilters: any = this.groupFilters(filters)
-    this.$('.filters-column').empty()
+    const list = document.createDocumentFragment();
 
-    // @TODO: collect the divs in a variable and append all at once
+    this.$('.filters-column').empty()
+    this.el.appendChild(list);
+
     for (let groupName in groupedFilters) {
         const group = groupedFilters[groupName]
-        this.renderFilterGroup(group, groupName)
+        const groupElement = this.renderFilterGroup(group, groupName)
+        list.appendChild($(groupElement).get(0));
     }
 
-    this.stopListeningToListScroll()
-    this.listenToListScroll()
+    this.$('.filters-column').append(list)
   }
 
   loadFilterList(gridCollection: any, gridElement: any) {
@@ -145,14 +146,13 @@ class FiltersColumn extends BaseView {
     this.defaultFilters = metadata.filters
     this.fetchFilters().then(loadedFilters => {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
-        return this.renderFilters()
+        this.renderFilters()
+        this.listenToListScroll()
     })
   }
 
   renderFilterGroup(filters: any, groupName: string) {
-      return this.$('.filters-column').append(
-          _.template(this.filterListTemplate)({ filters, groupName})
-      )
+      return _.template(this.filterListTemplate)({ filters, groupName})
   }
 
   groupFilters(filters: any) {
