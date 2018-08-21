@@ -8,7 +8,20 @@ interface FiltersConfig {
   description: string
 }
 
+interface Filter {
+    group: string
+    label: string
+}
+
+// @TODO only load when you expand the column
+// @TODO only initialize filters when you click on them
+
 class FiltersColumn extends BaseView {
+  public timer: any = null
+  public defaultFilters: Filter[]
+  public loadedFilters: Filter[]
+  public page: number = 1
+
   readonly config: FiltersConfig
   readonly template: string = `
     <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px">
@@ -54,13 +67,7 @@ class FiltersColumn extends BaseView {
     }
   }
 
-  public timer: any = null
-  public defaultFilters: any = []
-  public loadedFilters: any = []
-  public page: number = 1
-
-  // @TODO cache filters and re-render the whole list, when the search is cleared load the filters from cache and keep the scroll disabled
-  fetchFilters(search?: any, page: number = this.page) {
+  fetchFilters(search?: string | null, page: number = this.page) {
       const url = 'datagrid/product-grid/attributes-filters'
       return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`)
   }
@@ -104,11 +111,11 @@ class FiltersColumn extends BaseView {
           return this.renderFilters()
       }
 
-      this.fetchFilters(searchValue, 1).then((loadedFilters: any) => {
-        const filters = this.defaultFilters.concat(loadedFilters)
+      this.fetchFilters(searchValue, 1).then((loadedFilters: Filter[]) => {
+        const filters: Filter[] = this.defaultFilters.concat(loadedFilters)
 
-        return this.renderFilters(filters.filter((filter: any) => {
-            const label: any = filter.label.toLowerCase()
+        return this.renderFilters(filters.filter((filter: Filter) => {
+            const label: string = filter.label.toLowerCase()
 
             return label.includes(searchValue.toLowerCase())
         }))
@@ -131,7 +138,7 @@ class FiltersColumn extends BaseView {
     this.el.appendChild(list);
 
     for (let groupName in groupedFilters) {
-        const group = groupedFilters[groupName]
+        const group: Filter[] = groupedFilters[groupName]
         const groupElement = this.renderFilterGroup(group, groupName)
         list.appendChild($(groupElement).get(0));
     }
@@ -144,19 +151,19 @@ class FiltersColumn extends BaseView {
     const metadata = gridElement.data('metadata') || {}
 
     this.defaultFilters = metadata.filters
-    this.fetchFilters().then(loadedFilters => {
+    this.fetchFilters().then((loadedFilters: Filter[]) => {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
     })
   }
 
-  renderFilterGroup(filters: any, groupName: string) {
+  renderFilterGroup(filters: Filter[], groupName: string) {
       return _.template(this.filterListTemplate)({ filters, groupName})
   }
 
-  groupFilters(filters: any) {
-      return _.groupBy(filters, (filter: any) => filter.group || 'System')
+  groupFilters(filters: Filter[]) {
+      return _.groupBy(filters, (filter: Filter) => filter.group || 'System')
   }
 
   configure() {
