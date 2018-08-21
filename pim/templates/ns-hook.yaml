@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: label-ns
+  name: label-ns-{{ .Release.Namespace }}
   namespace: kube-system
   labels:
     release: {{ .Release.Name }}
