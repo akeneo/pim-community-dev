@@ -39,7 +39,7 @@ class FiltersColumn extends BaseView {
     </div>
   `
 
-  readonly filterListTemplate: string = `
+  readonly filterGroupTemplate: string = `
     <ul class="ui-multiselect-checkboxes ui-helper-reset">
         <li class="ui-multiselect-optgroup-label">
             <a href="#"><%- groupName %></a>
@@ -146,8 +146,7 @@ class FiltersColumn extends BaseView {
     this.$('.filters-column').append(list)
   }
 
-  loadFilterList(gridCollection: any, gridElement: any) {
-    console.log(gridCollection)
+  loadFilterList(_: any, gridElement: any) {
     const metadata = gridElement.data('metadata') || {}
 
     this.defaultFilters = metadata.filters
@@ -155,11 +154,20 @@ class FiltersColumn extends BaseView {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
+        this.renderSelectedFilters()
     })
   }
 
+  getSelectedFilters() {
+    return this.$('input[checked]').map(((_, el) => $(el).attr('id'))).toArray()
+  }
+
+  renderSelectedFilters() {
+      console.log('render selected filters', this.getSelectedFilters())
+  }
+
   renderFilterGroup(filters: Filter[], groupName: string) {
-      return _.template(this.filterListTemplate)({ filters, groupName})
+      return _.template(this.filterGroupTemplate)({ filters, groupName})
   }
 
   groupFilters(filters: Filter[]) {
