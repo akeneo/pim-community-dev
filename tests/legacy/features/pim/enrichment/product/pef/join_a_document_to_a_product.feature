@@ -14,10 +14,6 @@ Feature: Join a document to a product
     And I am logged in as "Julia"
     And I am on the "Car" product page
 
-  @ce
-  Scenario: Successfully leave the document empty
-    When I save the product
-
   Scenario: Successfully upload a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
