@@ -1,6 +1,3 @@
 Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\CategorizeProductCommand:
     constraints:
-        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingAttributesInValues: ~
-        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingLocalesInValues: ~
-        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingChannelsInValues: ~
-        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ProductValueCollection: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingCategories: ~
