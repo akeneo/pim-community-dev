@@ -23,7 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 class InMemoryProductSubscriptionRepository implements ProductSubscriptionRepositoryInterface
 {
     /** @var array */
-    private $subscriptions = [];
+    public $subscriptions = [];
 
     /**
      * @param ProductSubscriptionInterface[] $subscriptions
@@ -52,19 +52,5 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     {
         $productId = $subscription->getProduct()->getId();
         $this->subscriptions[$productId] = $subscription;
-    }
-
-    /**
-     * @param $productId
-     *
-     * @return bool
-     */
-    public function existsForProductId(int $productId): bool
-    {
-        if (!isset($this->subscriptions[$productId])) {
-            return false;
-        }
-
-        return count($this->subscriptions[$productId]) > 0;
     }
 }

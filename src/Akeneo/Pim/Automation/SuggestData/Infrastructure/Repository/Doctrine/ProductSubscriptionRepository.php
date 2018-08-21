@@ -64,12 +64,4 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
             ]
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function existsForProductId(int $productId): bool
-    {
-        return true;
-    }
 }

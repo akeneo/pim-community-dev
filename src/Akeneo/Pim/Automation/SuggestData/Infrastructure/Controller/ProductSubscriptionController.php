@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Domain\Query\GetSubscriptionStatusForProductInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,19 +27,19 @@ class ProductSubscriptionController
     /** @var SubscribeProduct */
     private $subscribeProduct;
 
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $productSubscriptionRepository;
+    /** @var GetSubscriptionStatusForProductInterface */
+    private $getSubscriptionStatusForProduct;
 
     /**
      * @param SubscribeProduct $subscribeProduct
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+     * @param GetSubscriptionStatusForProductInterface $getSubscriptionStatusForProduct
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+        GetSubscriptionStatusForProductInterface $getSubscriptionStatusForProduct
     ) {
         $this->subscribeProduct = $subscribeProduct;
-        $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->getSubscriptionStatusForProduct = $getSubscriptionStatusForProduct;
     }
 
     /**
@@ -64,7 +65,7 @@ class ProductSubscriptionController
      */
     public function isProductSubscribedAction(int $productId): Response
     {
-        $isSubscribed = $this->productSubscriptionRepository->existsForProductId($productId);
+        $isSubscribed = $this->getSubscriptionStatusForProduct->query($productId);
 
         return new JsonResponse($isSubscribed);
     }
