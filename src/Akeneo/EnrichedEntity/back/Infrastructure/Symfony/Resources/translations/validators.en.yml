@@ -16,5 +16,5 @@ pim_enriched_entity:
     attribute:
         validation:
             identifier:
-                should_be_unique: 'Attribute identifier already exists for enriched entity "%enriched_entity_identifier%" and attribute code "%code%"'
-                should_exist: 'Attribute not found for enriched entity "%enriched_entity_identifier%" and attribute code "%code%"'
+                should_not_exist: 'The attribute already exists for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
+                should_exist: 'The attribute was not found for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'

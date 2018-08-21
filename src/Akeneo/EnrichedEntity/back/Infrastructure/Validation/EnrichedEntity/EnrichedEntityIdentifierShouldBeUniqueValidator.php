@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Checks whether a given record already exists in the data referential
+ * Checks whether a given enriched_entity already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -29,11 +29,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class EnrichedEntityIdentifierShouldBeUniqueValidator extends ConstraintValidator
 {
     /** @var EnrichedEntityExistsInterface */
-    private $recordExists;
+    private $enrichedEntityExists;
 
     public function __construct(EnrichedEntityExistsInterface $recordExists)
     {
-        $this->recordExists = $recordExists;
+        $this->enrichedEntityExists = $recordExists;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -67,7 +67,7 @@ class EnrichedEntityIdentifierShouldBeUniqueValidator extends ConstraintValidato
     private function validateCommand(CreateEnrichedEntityCommand $command): void
     {
         $enrichedEntityIdentifier = $command->identifier;
-        $alreadyExists = $this->recordExists->withIdentifier(
+        $alreadyExists = $this->enrichedEntityExists->withIdentifier(
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier)
         );
         if ($alreadyExists) {

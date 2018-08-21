@@ -30,6 +30,6 @@ class AttributeShouldExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.infrastructure.validation.attribute.attribute_should_exist';
+        return 'akeneo_enrichedentity.validator.attribute.attribute_should_exist';
     }
 }

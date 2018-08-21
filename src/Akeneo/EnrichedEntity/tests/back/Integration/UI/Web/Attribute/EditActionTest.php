@@ -40,6 +40,8 @@ class EditActionTest extends ControllerIntegrationTestCase
     /** @var WebClientHelper */
     private $webClientHelper;
 
+    private const RESPONSES_DIR = 'Attribute/Edit/';
+
     public function setUp(): void
     {
         parent::setUp();
@@ -175,7 +177,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_does_not_edit_if_the_attribute_does_not_exist()
     {
-        $updateLabel = [
+        $updateUnkownAttribute = [
             'identifier'                 => [
                 'enriched_entity_identifier' => 'designer',
                 'identifier'                 => 'unknown_attribute_code',
@@ -188,7 +190,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
-            'max_file_size'              => '500',
+            'max_file_size'              => '500.2',
             'allowed_extensions'         => ['jpeg'],
         ];
 
@@ -201,34 +203,13 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE'          => 'application/json',
             ],
-            $updateLabel
+            $updateUnkownAttribute
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
-
-        $repository = $this->getAttributeRepository();
-        $updatedPortrait = $repository->getByIdentifier(AttributeIdentifier::create(
-            $updateLabel['identifier']['enriched_entity_identifier'],
-            $updateLabel['identifier']['identifier']
-        ));
-
-        Assert::assertEquals(
-            [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'portrait',
-                ],
-                'enriched_entity_identifier' => 'designer',
-                'code'                       => 'portrait',
-                'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
-                'order'                      => 1,
-                'type'                       => 'image',
-                'required'                   => false, // updated
-                'value_per_channel'          => false,
-                'value_per_locale'           => false,
-                'max_file_size'              => '500', // updated
-                'allowed_extensions'         => ['jpeg'], // updated
-            ], $updatedPortrait->normalize());
+        $this->webClientHelper->assertFromFile(
+            $this->client->getResponse(),
+            self::RESPONSES_DIR . 'attribute_does_not_exist.json'
+        );
     }
 
     /**

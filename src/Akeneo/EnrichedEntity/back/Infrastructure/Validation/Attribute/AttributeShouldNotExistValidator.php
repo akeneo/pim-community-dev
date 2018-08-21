@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeIdentifierShouldBeUniqueValidator extends ConstraintValidator
+class AttributeShouldNotExistValidator extends ConstraintValidator
 {
     /** @var AttributeExistsInterface */
     private $attributeExists;
@@ -51,7 +51,7 @@ class AttributeIdentifierShouldBeUniqueValidator extends ConstraintValidator
         );
 
         if ($alreadyExists) {
-            $this->context->buildViolation(AttributeIdentifierShouldBeUnique::ERROR_MESSAGE)
+            $this->context->buildViolation(AttributeShouldNotExist::ERROR_MESSAGE)
                 ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
                 ->setParameter('%code%', $identifier)
                 ->atPath('identifier')
@@ -75,7 +75,7 @@ class AttributeIdentifierShouldBeUniqueValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof AttributeIdentifierShouldBeUnique) {
+        if (!$constraint instanceof AttributeShouldNotExist) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }

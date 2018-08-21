@@ -26,6 +26,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class WebClientHelper
 {
+    private const SHARED_RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../../shared/responses/';
+
     /** @var RouterInterface */
     private $router;
 
@@ -46,7 +48,7 @@ class WebClientHelper
         $client->request($method, $url, [], [], $headers, json_encode($content));
     }
 
-    public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
+    public function assertResponse(Response $response, int $statusCode, string $expectedContent): void
     {
         $errorMessage = sprintf(
             'Expected request status code is not the same as the actual. Failed with content %s',
@@ -88,5 +90,11 @@ HTML;
     public function assert404NotFound(Response $response): void
     {
         Assert::assertSame(404, $response->getStatusCode());
+    }
+
+    public function assertFromFile(Response $response, string $relativeFilePath): void
+    {
+        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        $this->assertResponse($response, $expectedResponse['status'], json_encode($expectedResponse['content']));
     }
 }
