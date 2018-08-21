@@ -14,10 +14,9 @@ interface GetAssociatedProductCodesByProduct
     /**
      * Return codes of associated products
      *
-     * @param int|string $productId
      * @param int $associationTypeId
      *
      * @return array
      */
-    public function getCodes($productId, $associationTypeId);
+    public function getCodes($association);
 }

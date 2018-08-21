@@ -923,9 +923,8 @@ abstract class AbstractProduct implements ProductInterface
             foreach ($association->getGroups() as $group) {
                 $foundInCollection->addGroup($group);
             }
-        } else {
-            $associationsCollection->add($association);
         }
+        $associationsCollection->add($association);
 
         return $associationsCollection;
     }
