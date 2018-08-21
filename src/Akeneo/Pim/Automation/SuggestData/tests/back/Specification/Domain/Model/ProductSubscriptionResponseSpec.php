@@ -22,37 +22,37 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionResponseSpec extends ObjectBehavior
 {
-    public function it_is_a_product_subscription_response(ProductInterface $product)
+    public function it_is_a_product_subscription_response()
     {
-        $this->beConstructedWith($product, 'subscription-id', []);
+        $this->beConstructedWith(42, 'subscription-id', []);
         $this->shouldHaveType(ProductSubscriptionResponse::class);
     }
 
-    public function it_cannot_be_instantiated_with_an_empty_subscription_id(ProductInterface $product)
+    public function it_cannot_be_instantiated_with_an_empty_subscription_id()
     {
-        $this->beConstructedWith($product, '', []);
+        $this->beConstructedWith(42, '', []);
         $this->shouldThrow(new \InvalidArgumentException('subscription id cannot be empty'))->duringInstantiation();
     }
 
-    public function it_exposes_the_product(ProductInterface $product)
+    public function it_exposes_the_product_id()
     {
-        $this->beConstructedWith($product, 'some-subscription-id', []);
-        $this->getProduct()->shouldReturn($product);
+        $this->beConstructedWith(42, 'some-subscription-id', []);
+        $this->getProductId()->shouldReturn(42);
     }
 
-    public function it_exposes_the_subscription_id(ProductInterface $product)
+    public function it_exposes_the_subscription_id()
     {
-        $this->beConstructedWith($product, 'a-random-id', []);
+        $this->beConstructedWith(42, 'a-random-id', []);
         $this->getSubscriptionId()->shouldReturn('a-random-id');
     }
 
-    public function it_exposes_the_suggested_data(ProductInterface $product)
+    public function it_exposes_the_suggested_data()
     {
         $suggestedData = [
             'foo' => 'bar',
             'bar' => 'baz',
         ];
-        $this->beConstructedWith($product, 'subscription-id', $suggestedData);
+        $this->beConstructedWith(42, 'subscription-id', $suggestedData);
         $this->getSuggestedData()->shouldReturn($suggestedData);
     }
 }

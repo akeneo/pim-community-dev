@@ -93,7 +93,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $subscriptionRepository->findOneByProductAndSubscriptionId($product, 'test-id')->willReturn(null);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
-        $response = new ProductSubscriptionResponse($product->getWrappedObject(), 'test-id', []);
+        $response = new ProductSubscriptionResponse(42, 'test-id', []);
         $dataProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willReturn($response);
 
         $subscriptionRepository->save(Argument::type(ProductSubscription::class))->shouldBeCalled();

@@ -78,13 +78,16 @@ class PimAISpec extends ObjectBehavior
         $product->getValue('sku')->willReturn($skuValue);
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
+        $product->getId()->willReturn(42);
 
         $subscriptionApi->subscribeProduct([
             'upc' => '123456789',
             'asin' => '987654321',
         ])->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
-        $this->subscribe($productSubscriptionRequest)->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
+        $this
+             ->subscribe($productSubscriptionRequest)
+            ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
     }
 
     private function buildFakeApiResponse()
