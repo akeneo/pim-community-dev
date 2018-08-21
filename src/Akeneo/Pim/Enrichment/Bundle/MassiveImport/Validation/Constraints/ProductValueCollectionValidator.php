@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
 use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,6 +18,17 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ProductValueCollectionValidator extends ConstraintValidator
 {
+    /** @var AttributeRepository */
+    private $attributeRepository;
+
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,9 +46,13 @@ class ProductValueCollectionValidator extends ConstraintValidator
             return;
         }
 
-        //foreach ($product->values()->all() as $value) {
-        //    $violations = $this->context->getValidator()->validate($value);
-        //    $this->context->getViolations()->addAll($violations);
-        //}
+        foreach ($command->values()->all() as $value) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->attributeCode());
+
+            if (AttributeTypes::TEXT === $attribute->getType()) {
+                $violations = $this->context->getValidator()->validate($value, new TextValue());
+                $this->context->getViolations()->addAll($violations);
+            }
+        }
     }
 }

@@ -20,7 +20,16 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: batch_api_existing_channels }
 
-    pim_enrichment.massive_import.command.constraint.product_value_constraint:
+    pim_enrichment.massive_import.command.constraint.product_value_collection:
         class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ProductValueCollectionValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator, alias: batch_api_validate_product_value_collection }
+
+    pim_enrichment.massive_import.command.constraint.text_value_validator:
+        class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\TextValueValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: batch_api_validate_text_value }

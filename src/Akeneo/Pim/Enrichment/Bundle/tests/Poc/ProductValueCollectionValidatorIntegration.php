@@ -18,8 +18,7 @@ class ProductValueCollectionValidatorIntegration extends TestCase
     {
         $valueCollection = new ValueCollection(
             [
-                new Value('a_file', null, null, 'file'),
-                new Value('a_date', 'foo', 'ecommerce', '2016-06-13T00:00:00+02:00')
+                new Value('a_text', 'en_US', 'ecommerce', 'text')
             ]
         );
 
