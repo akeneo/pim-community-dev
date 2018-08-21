@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 
 class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCodesByProduct
@@ -23,7 +23,7 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
     /**
      * {@inheritdoc}
      */
-    public function getCodes($association)
+    public function getCodes(AssociationInterface $association)
     {
         $associations = $this->entityManager->createQueryBuilder()
             ->select('p.identifier')
@@ -31,7 +31,7 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
             ->innerJoin('a.products', 'p')
             ->andWhere('a.id = :associationId')
             ->setParameters([
-                'associationId' => $association,
+                'associationId' => $association->getId(),
             ])
             ->orderBy('p.identifier')
             ->getQuery()

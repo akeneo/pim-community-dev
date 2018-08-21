@@ -2,8 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\AssociatedProduct;
 
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +13,9 @@ interface GetAssociatedProductCodesByProduct
     /**
      * Return codes of associated products
      *
-     * @param int $associationTypeId
+     * @param AssociationInterface $association
      *
      * @return array
      */
-    public function getCodes($association);
+    public function getCodes(AssociationInterface $association);
 }
