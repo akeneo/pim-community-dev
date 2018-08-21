@@ -1,5 +1,0 @@
-services:
-    akeneo.pim.automation.suggest_data.query.get_subscription_status_for_product:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Query\Doctrine\GetSubscriptionStatusForProduct'
-        arguments:
-            - '@database_connection'

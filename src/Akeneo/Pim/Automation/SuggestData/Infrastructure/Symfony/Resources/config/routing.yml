@@ -3,9 +3,9 @@ akeneo_suggest_data_push_product:
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:subscribeAction }
     methods: [GET]
 
-akeneo_suggest_data_is_product_subscribed:
-    path: /suggest-data/{productId}/is-subscribed
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:isProductSubscribedAction }
+akeneo_suggest_data_franklin_subscription_status:
+    path: /suggest-data/{productId}/subscription-status
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:getSubscriptionStatusAction }
     methods: [GET]
 
 akeneo_suggest_data_connection_index:

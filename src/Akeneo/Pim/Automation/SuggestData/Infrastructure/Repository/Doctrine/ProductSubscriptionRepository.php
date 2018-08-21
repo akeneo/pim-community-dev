@@ -16,24 +16,24 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInterface
 {
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     private $em;
 
     /** @var string */
     private $className;
 
     /**
-     * @param ObjectManager $em
+     * @param EntityManagerInterface $em
      * @param string $className
      */
-    public function __construct(ObjectManager $em, string $className)
+    public function __construct(EntityManagerInterface $em, string $className)
     {
         $this->em = $em;
         $this->className = $className;
@@ -63,5 +63,24 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
                 'subscriptionId' => $subscriptionId,
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscriptionStatusForProductId(int $productId): array
+    {
+        $query = <<<SQL
+SELECT subscription_id
+FROM pim_suggest_data_product_subscription
+WHERE product_id = :product_id
+SQL;
+
+        $statement = $this->em->getConnection()->prepare($query);
+        $statement->bindValue('product_id', $productId);
+        $statement->execute();
+        $result = $statement->fetch();
+
+        return !$result ? ['subscription_id' => ''] : $result;
     }
 }

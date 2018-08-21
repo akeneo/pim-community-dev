@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
-use Akeneo\Pim\Automation\SuggestData\Domain\Query\GetSubscriptionStatusForProductInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,19 +26,19 @@ class ProductSubscriptionController
     /** @var SubscribeProduct */
     private $subscribeProduct;
 
-    /** @var GetSubscriptionStatusForProductInterface */
-    private $getSubscriptionStatusForProduct;
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $productSubscriptionRepository;
 
     /**
      * @param SubscribeProduct $subscribeProduct
-     * @param GetSubscriptionStatusForProductInterface $getSubscriptionStatusForProduct
+     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
-        GetSubscriptionStatusForProductInterface $getSubscriptionStatusForProduct
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
     ) {
         $this->subscribeProduct = $subscribeProduct;
-        $this->getSubscriptionStatusForProduct = $getSubscriptionStatusForProduct;
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
     }
 
     /**
@@ -63,10 +62,10 @@ class ProductSubscriptionController
      *
      * @return Response
      */
-    public function isProductSubscribedAction(int $productId): Response
+    public function getSubscriptionStatusAction(int $productId): Response
     {
-        $isSubscribed = $this->getSubscriptionStatusForProduct->query($productId);
+        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId($productId);
 
-        return new JsonResponse($isSubscribed);
+        return new JsonResponse($subscriptionStatus);
     }
 }

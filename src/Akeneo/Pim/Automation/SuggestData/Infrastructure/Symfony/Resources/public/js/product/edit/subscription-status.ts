@@ -1,9 +1,13 @@
 import BaseView = require('pimenrich/js/view/base');
 import * as _ from "underscore";
-import {isProductSubscribed} from "../fetcher/subscription-fetcher";
+import {getSubscriptionStatus} from "../fetcher/subscription-fetcher";
 
 const __ = require('oro/translator');
 const template = require('pimee/template/form/product/subscription-status');
+
+interface SubscriptionStatusInterface {
+  subscription_id: string;
+}
 
 /**
  * Meta that displays is a product is Subscribed to Franklin or not.
@@ -30,11 +34,11 @@ class SubscriptionStatus extends BaseView {
   public render(): BaseView {
     const productId = this.getFormData().meta.id;
 
-    isProductSubscribed(productId).then((subscriptionStatus: boolean) => {
+    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatusInterface) => {
       this.$el.html(
         this.template({
           subscriptionStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
-          subscriptionStatus: subscriptionStatus ? __('pim_common.yes') : __('pim_common.no'),
+          subscriptionStatus: '' !== subscriptionStatus.subscription_id ? __('pim_common.yes') : __('pim_common.no'),
         })
       );
     });
