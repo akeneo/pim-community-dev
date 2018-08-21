@@ -79,7 +79,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /** @test */
     public function it_returns_an_error_when_the_user_do_not_have_the_rights()
     {
-        $this->revokeCreationRights();
+        $this->revokeDeletionRights();
         $this->webClientHelper->callRoute(
             $this->client,
             self::DELETE_ATTRIBUTE_ROUTE,
@@ -164,7 +164,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         return $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
     }
 
-    private function revokeCreationRights(): void
+    private function revokeDeletionRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_delete', false);

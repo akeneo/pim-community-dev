@@ -33,8 +33,8 @@ class DeleteAttributeHandler
     public function __invoke(DeleteAttributeCommand $deleteAttributeCommand): void
     {
         $identifier = AttributeIdentifier::create(
-            $deleteAttributeCommand->enrichedEntityIdentifier,
-            $deleteAttributeCommand->identifier
+            $deleteAttributeCommand->identifier['enrichedEntityIdentifier'],
+            $deleteAttributeCommand->identifier['identifier']
         );
 
         $this->attributeRepository->deleteByIdentifier($identifier);

@@ -56,7 +56,7 @@ class DeleteAction
         $this->deleteAttributeHandler = $deleteAttributeHandler;
     }
 
-    public function __invoke(Request $request, string $enrichedEntityIdentifier): Response
+    public function __invoke(Request $request, string $enrichedEntityIdentifier, string $attributeIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -65,7 +65,12 @@ class DeleteAction
             throw new AccessDeniedException();
         }
 
-        $command = $this->getDeleteCommand($request);
+        $command = new DeleteAttributeCommand();
+        $command->identifier = [
+            'identifier' => $attributeIdentifier,
+            'enrichedEntityIdentifier' => $enrichedEntityIdentifier,
+        ];
+
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
@@ -82,14 +87,5 @@ class DeleteAction
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    private function getDeleteCommand(Request $request): DeleteAttributeCommand
-    {
-        $command = new DeleteAttributeCommand();
-        $command->identifier = $request->get('attributeIdentifier');
-        $command->enrichedEntityIdentifier = $request->get('enrichedEntityIdentifier');
-
-        return $command;
     }
 }

@@ -86,14 +86,6 @@ services:
             - '@validator'
             - '@oro_security.security_facade'
 
-    akeneo_enrichedentity.infrastructure.action.attribute.delete:
-        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\DeleteAction'
-        arguments:
-            - '@akeneo_enrichedentity.application.enriched_entity.delete_attribute_handler'
-            - '@serializer'
-            - '@validator'
-            - '@oro_security.security_facade'
-
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository'
         arguments:

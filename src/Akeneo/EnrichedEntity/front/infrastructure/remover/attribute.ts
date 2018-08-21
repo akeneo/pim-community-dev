@@ -1,9 +1,10 @@
+import AttributeRemover from 'akeneoenrichedentity/domain/remover/attribute';
 import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
 import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
 
 const routing = require('routing');
 
-export class AttributeRemoverImplementation {
+export class AttributeRemoverImplementation implements AttributeRemover {
   constructor() {
     Object.freeze(this);
   }

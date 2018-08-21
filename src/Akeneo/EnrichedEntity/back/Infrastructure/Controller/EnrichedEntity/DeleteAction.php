@@ -78,8 +78,6 @@ class DeleteAction
             );
         }
 
-
-
         try {
             ($this->deleteEnrichedEntityHandler)($command);
         } catch (EnrichedEntityNotFoundException $e) {
