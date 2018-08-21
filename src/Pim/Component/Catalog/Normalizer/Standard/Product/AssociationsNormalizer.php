@@ -83,6 +83,11 @@ class AssociationsNormalizer implements NormalizerInterface
             }
         }
 
+        $data = array_map(function ($association) {
+            $association['products'] = array_unique($association['products']);
+            return $association;
+        }, $data);
+
         ksort($data);
 
         return $data;
