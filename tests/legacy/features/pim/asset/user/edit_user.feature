@@ -16,16 +16,6 @@ Feature: Edit a user
       | john_deere     | IT support | view   |
     And I am logged in as "Peter"
 
-  Scenario: Product grid filters preference applies on the published product grid
-    When I edit the "Peter" user
-    And I visit the "Additional" tab
-    And I fill in the following information:
-      | Product grid filters | SKU, Name, Family |
-    And I save the user
-    When I am on the published products grid
-    And I should see the filters name, family and sku
-    And I should not see the filters Status
-
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
