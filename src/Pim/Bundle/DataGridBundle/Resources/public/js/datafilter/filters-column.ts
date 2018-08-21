@@ -56,6 +56,7 @@ class FiltersColumn extends BaseView {
 
   public timer: any = null
   public defaultFilters: any = []
+  public loadedFilters: any = []
   public page: number = 1
 
   // @TODO cache filters and re-render the whole list, when the search is cleared load the filters from cache and keep the scroll disabled
@@ -68,24 +69,20 @@ class FiltersColumn extends BaseView {
       const list: any = event.currentTarget
       const scrollPosition = Math.max(0, list.scrollTop - 15)
       const bottomPosition = (list.scrollHeight - list.offsetHeight)
-      const isBottom = bottomPosition === scrollPosition;
+      const isBottom = bottomPosition === scrollPosition
 
       if (isBottom) {
         this.fetchFilters(null, this.page).then(loadedFilters => {
-            const onLastPage = loadedFilters.length === 0
-
-            console.log('onLastPage?', onLastPage)
-
-            if (onLastPage) {
-                return this.stopListeningToListScroll();
+            if (loadedFilters.length === 0) {
+                return this.stopListeningToListScroll()
             }
 
+            this.loadedFilters = [ ...this.loadedFilters, ...loadedFilters ]
             this.page = this.page + 1
-            return this.renderFilters(loadedFilters, false)
+
+            return this.renderFilters()
         })
       }
-
-
   }
 
   searchFilters(event: JQueryEventObject) {
@@ -96,39 +93,42 @@ class FiltersColumn extends BaseView {
     if (13 === event.keyCode) {
         this.doSearch()
     } else {
-        this.timer = setTimeout(this.doSearch.bind(this), 500)
+        this.timer = setTimeout(this.doSearch.bind(this), 200)
     }
   }
 
   doSearch() {
       const searchValue: any = this.$('input[type="search"]').val()
 
+      if (searchValue.length === 0) {
+          return this.renderFilters()
+      }
+
       this.fetchFilters(searchValue, 1).then((loadedFilters: any) => {
         const filters = this.defaultFilters.concat(loadedFilters)
 
         return this.renderFilters(filters.filter((filter: any) => {
             const label: any = filter.label.toLowerCase()
+
             return label.includes(searchValue.toLowerCase())
         }))
       })
   }
 
-  listenToListScroll() {
+  listenToListScroll(): void {
     this.$('.filter-list').on('scroll', this.fetchNextFilters.bind(this))
   }
 
-  stopListeningToListScroll() {
+  stopListeningToListScroll(): void {
     this.$('.filter-list').off('scroll')
   }
 
-  renderFilters(filters: any, empty: boolean = true) {
+  renderFilters(filters = this.loadedFilters) {
+    console.log('renderFilters', filters)
     const groupedFilters: any = this.groupFilters(filters)
+    this.$('.filters-column').empty()
 
-    if (empty) {
-        this.$('.filters-column').empty()
-    }
-
-    // collect the divs in a variable and append all at once
+    // @TODO: collect the divs in a variable and append all at once
     for (let groupName in groupedFilters) {
         const group = groupedFilters[groupName]
         this.renderFilterGroup(group, groupName)
@@ -141,10 +141,12 @@ class FiltersColumn extends BaseView {
   loadFilterList(gridCollection: any, gridElement: any) {
     console.log(gridCollection)
     const metadata = gridElement.data('metadata') || {}
-    const defaultFilters = metadata.filters
-    this.defaultFilters = defaultFilters
 
-    this.fetchFilters().then(loadedFilters => this.renderFilters(this.defaultFilters.concat(loadedFilters)))
+    this.defaultFilters = metadata.filters
+    this.fetchFilters().then(loadedFilters => {
+        this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
+        return this.renderFilters()
+    })
   }
 
   renderFilterGroup(filters: any, groupName: string) {
