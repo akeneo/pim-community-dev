@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\Query\Sql;
 
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Pim\Bundle\DataGridBundle\Query\ListAttributesQuery;
@@ -36,7 +37,7 @@ class AttributesUseableInProductGrid implements ListAttributesQuery
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $page, string $searchOnLabel = ''): array
+    public function fetch(string $locale, int $page, string $searchOnLabel = '', User $user = null): array
     {
         $page = max($page, 1);
         $offset = ($page - 1) * $this->attributesPerPage;

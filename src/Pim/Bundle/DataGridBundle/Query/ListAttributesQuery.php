@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\Query;
 
+use Akeneo\UserManagement\Component\Model\User;
+
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -17,8 +19,9 @@ interface ListAttributesQuery
      * @param string      $locale        Code of the locale for the translation of the labels
      * @param int         $page          Number of the page (start at 1)
      * @param string|null $searchOnLabel String to search in the attribute label
+     * @param User|null   $user          Context's user if needed
      *
      * @return array
      */
-    public function fetch(string $locale, int $page, string $searchOnLabel = ''): array;
+    public function fetch(string $locale, int $page, string $searchOnLabel = '', User $user = null): array;
 }

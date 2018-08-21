@@ -65,12 +65,13 @@ class ProductGridController
         $page = (int) $request->get('page', 1);
         $search = (string) $request->get('search', '');
         $locale = $request->get('locale', null);
+        $user = $this->userContext->getUser();
 
         if (null == $locale) {
-            $locale = $this->userContext->getUser()->getCatalogLocale()->getCode();
+            $locale = $user->getCatalogLocale()->getCode();
         }
 
-        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search);
+        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search, $user);
         $attributesAsFilters = empty($attributes) ? [] : $this->formatAttributesAsFilters($attributes);
 
         return new JsonResponse($attributesAsFilters);
