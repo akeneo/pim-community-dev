@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -17,40 +19,39 @@ use Symfony\Component\Validator\Validation;
  */
 class EditCommandsValidator extends ConstraintValidator
 {
-    public function validate($editCommands, Constraint $constraint)
+    /** @var ValidatorInterface */
+    private $validator;
+
+    public function __construct(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
+    }
+
+    public function validate($editCommand, Constraint $constraint)
     {
         if (!$constraint instanceof EditCommands) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
-
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($editCommands, new Assert\NotBlank());
-        if ($violations->count() > 0) {
-            $this->addViolations($violations);
-
-            return;
+        if (!$editCommand instanceof EditAttributeCommand) {
+            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
+                EditAttributeCommand::class, get_class($editCommand)));
         }
 
-        $this->validateEditCommands($editCommands);
-    }
+        if (empty($editCommand->editCommands)) {
+            $this->context->addViolation('There should be updates to perform on the attribute. None found.');
+        }
 
-    private function validateEditCommands(array $editCommands): void
-    {
-        foreach ($editCommands as $editCommand) {
-            $violations = $this->context->getValidator()->validate($editCommand);
-            if ($violations->count() > 0) {
-                $this->addViolations($violations);
+        foreach ($editCommand->editCommands as $command) {
+            $violations = $this->validator->validate($command);
+            foreach ($violations as $violation) {
+                $this->context->buildViolation($violation->getMessage())
+                    ->setParameters($violation->getParameters())
+                    ->atPath($violation->getPropertyPath())
+                    ->setCode($violation->getCode())
+                    ->setPlural($violation->getPlural())
+                    ->setInvalidValue($violation->getInvalidValue())
+                    ->addViolation();
             }
-        }
-    }
-
-    private function addViolations(ConstraintViolationListInterface $violations): void
-    {
-        foreach ($violations as $violation) {
-            $this->context->addViolation(
-                $violation->getMessage(),
-                $violation->getParameters()
-            );
         }
     }
 }

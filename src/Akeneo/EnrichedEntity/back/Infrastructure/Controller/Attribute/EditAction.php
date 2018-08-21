@@ -69,7 +69,6 @@ class EditAction
 
         $command = $this->getEditCommand($request);
         $violations = $this->validator->validate($command);
-
         if ($violations->count() > 0) {
             return new JsonResponse(
                 $this->normalizer->normalize($violations, 'internal_api'),
@@ -89,7 +88,8 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['identifier'] !== $request->get('identifier');
+        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier')
+            || $normalizedCommand['identifier']['identifier'] !== $request->get('attributeIdentifier');
     }
 
     private function getEditCommand(Request $request): AbstractEditAttributeCommand

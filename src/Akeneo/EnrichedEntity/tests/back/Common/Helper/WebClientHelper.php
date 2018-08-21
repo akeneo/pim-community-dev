@@ -48,7 +48,7 @@ class WebClientHelper
         $client->request($method, $url, [], [], $headers, json_encode($content));
     }
 
-    public function assertResponse(Response $response, int $statusCode, string $expectedContent): void
+    public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
     {
         $errorMessage = sprintf(
             'Expected request status code is not the same as the actual. Failed with content %s',
@@ -95,6 +95,18 @@ HTML;
     public function assertFromFile(Response $response, string $relativeFilePath): void
     {
         $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
-        $this->assertResponse($response, $expectedResponse['status'], json_encode($expectedResponse['content']));
+        $expectedContent = $this->getContent($expectedResponse);
+        $this->assertResponse($response, $expectedResponse['status'], $expectedContent);
+    }
+
+    /**
+     */
+    private function getContent($expectedResponse): string
+    {
+        if (!$expectedResponse['content'] || empty($expectedResponse['content'])) {
+            return '';
+        }
+
+        return json_encode($expectedResponse['content'], JSON_HEX_QUOT);
     }
 }

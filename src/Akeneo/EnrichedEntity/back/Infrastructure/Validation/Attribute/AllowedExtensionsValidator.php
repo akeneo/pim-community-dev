@@ -32,14 +32,28 @@ class AllowedExtensionsValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($allowedExtensions, new Assert\NotBlank());
+        $violations = $validator->validate($allowedExtensions, [new Assert\NotBlank()]);
 
         if ($violations->count() > 0) {
+            $this->addViolations($violations);
+
+            return;
+        }
+
+        foreach ($allowedExtensions as $allowedExtension) {
+            $violations = $validator->validate($allowedExtension, [new Assert\Type('string')]);
+            if ($violations->count() > 0 ) {
+                $this->addViolations($violations);
+            }
+        }
+
+    }
+
+    private function addViolations($violations): void
+    {
+        if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                $this->context->addViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                );
+                $this->context->addViolation($violation->getMessage(), $violation->getParameters());
             }
         }
     }

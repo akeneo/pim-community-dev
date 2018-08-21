@@ -57,7 +57,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_text_attribute_properties()
     {
-        $updateLabel = [
+        $updateAllProperties = [
             'identifier'                 => [
                 'enriched_entity_identifier' => 'designer', // not udpated
                 'identifier'                 => 'name', // not updated
@@ -82,31 +82,31 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE'          => 'application/json',
             ],
-            $updateLabel
+            $updateAllProperties
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->webClientHelper->assertFromFile($this->client->getResponse(), self::RESPONSES_DIR . 'ok.json');
 
         $repository = $this->getAttributeRepository();
         $updatedName = $repository->getByIdentifier(AttributeIdentifier::create(
-            $updateLabel['identifier']['enriched_entity_identifier'],
-            $updateLabel['identifier']['identifier']
+            $updateAllProperties['identifier']['enriched_entity_identifier'],
+            $updateAllProperties['identifier']['identifier']
         ));
 
         Assert::assertEquals(
             [
             'identifier'                 => [
-                'enriched_entity_identifier' => 'designer', // not updated
-                'identifier'                 => 'name', //not updated
+                'enriched_entity_identifier' => 'designer',
+                'identifier'                 => 'name',
             ],
-            'enriched_entity_identifier' => 'designer', // not updated
-            'code'                       => 'name', // not updated
+            'enriched_entity_identifier' => 'designer',
+            'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
-            'order'                      => 0, // not updated
+            'order'                      => 0,
             'required'                   => false, // updated
-            'value_per_channel'          => true, // not updated
-            'value_per_locale'           => true, // not updated
-            'type'                       => 'text', // not updated
+            'value_per_channel'          => true,
+            'value_per_locale'           => true,
+            'type'                       => 'text',
             'max_length'                 => 200, // updated
         ], $updatedName->normalize());
     }
@@ -116,7 +116,7 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_an_image_attribute_properties()
     {
-        $updateLabel = [
+        $updateAllProperties = [
             'identifier'                 => [
                 'enriched_entity_identifier' => 'designer', // not updated
                 'identifier'                 => 'portrait', // not updated
@@ -142,15 +142,15 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE'          => 'application/json',
             ],
-            $updateLabel
+            $updateAllProperties
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+        $this->webClientHelper->assertFromFile($this->client->getResponse(), self::RESPONSES_DIR . 'ok.json');
 
         $repository = $this->getAttributeRepository();
         $updatedPortrait = $repository->getByIdentifier(AttributeIdentifier::create(
-            $updateLabel['identifier']['enriched_entity_identifier'],
-            $updateLabel['identifier']['identifier']
+            $updateAllProperties['identifier']['enriched_entity_identifier'],
+            $updateAllProperties['identifier']['identifier']
         ));
 
         Assert::assertEquals(
@@ -197,7 +197,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'portrait'],
+            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'unknown_attribute_code'],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -209,6 +209,120 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertFromFile(
             $this->client->getResponse(),
             self::RESPONSES_DIR . 'attribute_does_not_exist.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_edit_if_the_max_file_size_property_is_invalid()
+    {
+        $invalidMaxFileSize = [
+            'identifier'                 => [
+                'enriched_entity_identifier' => 'designer',
+                'identifier'                 => 'portrait',
+            ],
+            'enriched_entity_identifier' => 'designer',
+            'code'                       => 'portrait',
+            'labels'                     => ['fr_FR' => 'Uknown'],
+            'order'                      => 0,
+            'required'                   => false,
+            'value_per_channel'          => false,
+            'value_per_locale'           => false,
+            'type'                       => 'wrong_type',
+            'max_file_size'              => '-1',
+            'allowed_extensions'         => ['jpeg'],
+        ];
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::EDIT_ATTRIBUTE_ROUTE,
+            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'portrait'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $invalidMaxFileSize
+        );
+
+        $this->webClientHelper->assertFromFile(
+            $this->client->getResponse(),
+            self::RESPONSES_DIR . 'max_file_size_is_invalid.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_edit_if_the_allowed_extensions_is_invalid()
+    {
+        $invalidAllowedExtensions = [
+            'identifier'                 => [
+                'enriched_entity_identifier' => 'designer',
+                'identifier'                 => 'portrait',
+            ],
+            'enriched_entity_identifier' => 'designer',
+            'code'                       => 'portrait',
+            'labels'                     => ['fr_FR' => 'Image autobiographique', 'en_US' => 'Name'], // updated
+            'order'                      => 1,
+            'type'                       => 'image',
+            'required'                   => true,
+            'value_per_channel'          => false,
+            'value_per_locale'           => false,
+            'max_file_size'              => '200.10',
+            'allowed_extensions'         => [150, 122], // updated
+        ];
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::EDIT_ATTRIBUTE_ROUTE,
+            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'portrait'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $invalidAllowedExtensions
+        );
+
+        $this->webClientHelper->assertFromFile(
+            $this->client->getResponse(),
+            self::RESPONSES_DIR . 'allowed_extensions_is_invalid.json'
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidIdentifierForUrlAndBody
+     */
+    public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body(
+        string $enrichedEntityIdentifierUrl,
+        string $enrichedEntityIdentifierBody,
+        string $attributeCodeUrl,
+        string $attributeCodeBody
+    ) {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::EDIT_ATTRIBUTE_ROUTE,
+            ['enrichedEntityIdentifier' => $enrichedEntityIdentifierUrl, 'attributeIdentifier' => $attributeCodeUrl],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier'                 => [
+                    'enriched_entity_identifier' => $enrichedEntityIdentifierBody,
+                    'identifier'                 => $attributeCodeBody,
+                ]
+            ]
+        );
+
+        $this->webClientHelper->assertResponse(
+            $this->client->getResponse(),
+            Response::HTTP_BAD_REQUEST,
+            '"The identifier provided in the route and the one given in the body of the request are different"'
         );
     }
 
@@ -313,5 +427,23 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_edit', false);
+    }
+
+    public function invalidIdentifierForUrlAndBody()
+    {
+        return [
+            'enriched_entity_identifier is not the same' => [
+                'not_the_same_enriched_entity_identifier_url',
+                'not_the_same_enriched_entity_identifier_body',
+                'portrait',
+                'portrait',
+            ],
+            'attribute code is not the same' => [
+                'designer',
+                'designer',
+                'not_the_same_attribute_code_url',
+                'not_the_same_attribute_code_body',
+            ]
+        ];
     }
 }

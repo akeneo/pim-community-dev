@@ -40,3 +40,10 @@ services:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_is_linked_to_at_least_one_product_attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.enriched_entity.should_not_be_linked_any_product_attribute' }
+
+    akeneo_enrichedentity.infrastructure.validation.attribute.edit_command_validator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommandsValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.edit_command_validator' }

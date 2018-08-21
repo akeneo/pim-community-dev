@@ -125,10 +125,9 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAtt
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
-        editCommands:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: ~
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [other_constraints] }
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredAttribute:
     properties:
@@ -149,7 +148,7 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMax
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         maxLength:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\MaxLength: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand:
     properties:
