@@ -1,0 +1,7 @@
+services:
+
+    pim_catalog.query.get_associated_product_codes_by_product:
+        class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.token_storage'

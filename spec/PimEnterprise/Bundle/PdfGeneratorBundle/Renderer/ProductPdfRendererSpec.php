@@ -194,7 +194,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $assetB->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoB);
 
         $fileInfoA->getKey()->willReturn('fileA');
+        $fileInfoA->getMimeType()->willReturn('image/jpeg');
+
         $fileInfoB->getKey()->willReturn('fileB');
+        $fileInfoB->getMimeType()->willReturn('image/jpeg');
 
         $cacheManager->isStored('fileA', 'pdf_thumbnail')->willReturn(true);
         $cacheManager->isStored('fileB', 'pdf_thumbnail')->willReturn(false);
@@ -211,6 +214,84 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'scope'             => 'mobile',
             'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
             'imagePaths'        => ['fileA', 'fileB'],
+            'customFont'        => null,
+            'filter'            => 'pdf_thumbnail',
+            'renderingDate'     => $renderingDate,
+        ])->shouldBeCalled();
+
+        $this->render(
+            $blender,
+            'pdf',
+            ['locale' => 'fr_FR', 'scope' => 'mobile', 'renderingDate' => $renderingDate]
+        );
+    }
+
+    function it_does_not_render_a_product_with_an_asset_that_has_not_a_mimetype_of_type_image(
+        $filterHelper,
+        $templating,
+        $dataManager,
+        $filterManager,
+        $cacheManager,
+        $channelRepository,
+        $localeRepository,
+        ProductInterface $blender,
+        ArrayCollection $blenderValues,
+        AttributeGroupInterface $media,
+        AttributeInterface $assetCollectionAttr,
+        ValueInterface $productValue,
+        AssetInterface $assetA,
+        AssetInterface $assetB,
+        FileInfoInterface $fileInfoImage,
+        FileInfoInterface $fileInfoPdf,
+        LocaleInterface $localeFr,
+        ChannelInterface $channelMobile,
+        BinaryInterface $srcFile,
+        BinaryInterface $thumbnailFile
+    ) {
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($localeFr);
+
+        $filterHelper->filter([$productValue], 'fr_FR')->willReturn([$productValue]);
+        $blender->getValues()->willReturn($blenderValues);
+        $blenderValues->toArray()->willReturn([$productValue]);
+
+        $blender->getAttributes()->willReturn([$assetCollectionAttr]);
+        $blender->getValue('front_view', 'fr_FR', 'mobile')->willReturn($productValue);
+
+        $productValue->getAttribute()->willReturn($assetCollectionAttr);
+        $assetCollectionAttr->getCode()->willReturn('front_view');
+        $assetCollectionAttr->getType()->willReturn('pim_assets_collection');
+        $assetCollectionAttr->isScopable()->willReturn(true);
+        $assetCollectionAttr->isLocalizable()->willReturn(true);
+
+        $assetCollectionAttr->getGroup()->willReturn($media);
+        $media->getLabel()->willReturn('Media');
+
+        $productValue->getData()->willReturn([$assetA, $assetB]);
+        $assetA->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoImage);
+        $assetB->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoPdf);
+
+        $fileInfoImage->getKey()->willReturn('image_file');
+        $fileInfoImage->getMimeType()->willReturn('image/jpeg');
+
+        $fileInfoPdf->getKey()->willReturn('pdf_file');
+        $fileInfoPdf->getMimeType()->willReturn('application/pdf');
+
+        $cacheManager->isStored('image_file', 'pdf_thumbnail')->willReturn(true);
+        $cacheManager->isStored('pdf_file', 'pdf_thumbnail')->willReturn(true);
+
+        $dataManager->find('pdf_thumbnail', 'pdf')->willReturn($srcFile);
+        $filterManager->applyFilter($srcFile, 'pdf_thumbnail')->willReturn($thumbnailFile);
+        $cacheManager->store($thumbnailFile, 'pdf', 'pdf_thumbnail')->shouldNotBeCalled();
+
+        $renderingDate = new \DateTime();
+
+        $templating->render(self::TEMPLATE_NAME, [
+            'product'           => $blender,
+            'locale'            => 'fr_FR',
+            'scope'             => 'mobile',
+            'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
+            'imagePaths'        => ['image_file'],
             'customFont'        => null,
             'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
