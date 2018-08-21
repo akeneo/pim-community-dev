@@ -11,8 +11,10 @@
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony;
 
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\FetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterDataProviderPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -41,5 +43,13 @@ class AkeneoSuggestDataBundle extends Bundle
                 false
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCommands(Application $application)
+    {
+        $application->add(new FetchProductsCommand());
     }
 }

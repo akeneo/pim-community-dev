@@ -5,8 +5,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -21,17 +20,14 @@ interface DataProviderInterface
     public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
-     * @param ProductInterface[] $products
+     * @param string $token
      *
-     * @return SuggestedDataCollectionInterface
+     * @return bool
      */
-    public function bulkPush(array $products): SuggestedDataCollectionInterface;
+    public function authenticate(string $token): bool;
 
-    public function pull(ProductInterface $product);
-
-    public function bulkPull(array $products);
-
-    public function authenticate(?string $token): bool;
-
-    public function configure(array $config);
+    /**
+     * @return ProductSubscriptionsResponse
+     */
+    public function fetch(): ProductSubscriptionsResponse;
 }
