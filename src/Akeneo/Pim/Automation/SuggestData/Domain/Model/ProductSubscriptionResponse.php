@@ -23,8 +23,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 final class ProductSubscriptionResponse
 {
-    /** @var ProductInterface */
-    private $product;
+    /** @var int */
+    private $productId;
 
     /** @var string */
     private $subscriptionId;
@@ -33,25 +33,25 @@ final class ProductSubscriptionResponse
     private $suggestedData;
 
     /**
-     * @param ProductInterface $product
+     * @param int $productId
      * @param string $subscriptionId
      * @param array $suggestedData
      */
-    public function __construct(ProductInterface $product, string $subscriptionId, array $suggestedData)
+    public function __construct(int $productId, string $subscriptionId, array $suggestedData)
     {
-        $this->validate($subscriptionId, $suggestedData);
+        $this->validate($productId, $subscriptionId, $suggestedData);
 
-        $this->product = $product;
+        $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
         $this->suggestedData = $suggestedData;
     }
 
     /**
-     * @return ProductInterface
+     * @return integer
      */
-    public function getProduct(): ProductInterface
+    public function getProductId(): int
     {
-        return $this->product;
+        return $this->productId;
     }
 
     /**
@@ -71,11 +71,14 @@ final class ProductSubscriptionResponse
     }
 
     /**
+     * @param int $productId
      * @param string $subscriptionId
      * @param array $suggestedData
      */
-    private function validate(string $subscriptionId, array $suggestedData): void
+    private function validate(int $productId, string $subscriptionId, array $suggestedData): void
     {
+        // TODO: Validate $productId
+
         if ('' === $subscriptionId) {
             throw new \InvalidArgumentException('subscription id cannot be empty');
         }

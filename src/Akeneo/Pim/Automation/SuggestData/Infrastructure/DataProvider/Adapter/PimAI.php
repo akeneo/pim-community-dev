@@ -68,7 +68,7 @@ class PimAI implements DataProviderInterface
         $subscriptions = $clientResponse->content();
 
         return new ProductSubscriptionResponse(
-            $request->getProduct(),
+            $request->getProduct()->getId(),
             $subscriptions->getFirst()->getSubscriptionId(),
             $subscriptions->getFirst()->getAttributes()
         );
@@ -86,5 +86,6 @@ class PimAI implements DataProviderInterface
     public function fetch(): ProductSubscriptionsResponse
     {
         //TODO
+
     }
 }

@@ -91,7 +91,7 @@ class SubscribeProductHandler
         $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
 
         $subscription = $this->findOrCreateSubscription(
-            $subscriptionResponse->getProduct(),
+            $product,
             $subscriptionResponse->getSubscriptionId()
         );
         $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
