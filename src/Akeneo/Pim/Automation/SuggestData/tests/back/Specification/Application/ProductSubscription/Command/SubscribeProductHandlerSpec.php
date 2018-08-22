@@ -61,6 +61,26 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
+    function it_throws_an_exception_if_the_product_has_no_family(
+        $productRepository,
+        $identifiersMappingRepository,
+        SubscribeProductCommand $command,
+        IdentifiersMapping $identifiersMapping,
+        ProductInterface $product
+    ) {
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+        $identifiersMapping->isEmpty()->willReturn(false);
+
+        $productId = 42;
+        $command->getProductId()->willReturn($productId);
+        $productRepository->find($productId)->willReturn($product);
+        $product->getFamily()->willReturn(null);
+
+        $this->shouldThrow(
+            new \Exception('Cannot subscribe a product without family')
+        )->during('handle', [$command]);
+    }
+
     function it_throws_an_exception_if_the_identifiers_mapping_is_empty(
         $identifiersMappingRepository,
         SubscribeProductCommand $command,

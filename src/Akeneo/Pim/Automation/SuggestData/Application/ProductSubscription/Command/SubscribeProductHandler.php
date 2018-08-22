@@ -76,7 +76,12 @@ class SubscribeProductHandler
 
         $product = $this->productRepository->find($command->getProductId());
         if (null === $product) {
-            throw new ProductSubscriptionException(sprintf('Could not find product with id "%s"', $command->getProductId()));
+            throw new ProductSubscriptionException(
+                sprintf('Could not find product with id "%d"', $command->getProductId())
+            );
+        }
+        if (null === $product->getFamily()) {
+            throw new ProductSubscriptionException(sprintf('Cannot subscribe a product without family'));
         }
 
         $this->subscribe($product);

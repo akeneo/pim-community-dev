@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -66,6 +68,21 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
+     * @When I try to subscribe the product without family :identifier
+     *
+     * @param string $identifier
+     */
+    public function tryToSubscribeProductWithoutFamily(string $identifier): void
+    {
+        $product = [
+            ['identifier', 'family'],
+            [$identifier, ''],
+        ];
+        $this->dataFixturesContext->theFollowingProduct(new TableNode($product));
+        $this->subscribeProductToPimAi($identifier, false);
+    }
+
+    /**
      * @Given the following product subscribed to pim.ai:
      *
      * @param TableNode $table
@@ -79,11 +96,12 @@ class ProductSubscriptionContext implements Context
     }
 
     /**
-     * @Then the product :identifier should be subscribed
+     * @Then /^the product "([^"]*)" should(| not) be subscribed$/
      *
      * @param string $identifier
+     * @param bool $not
      */
-    public function theProductShouldBeSubscribed(string $identifier): void
+    public function theProductShouldBeSubscribed(string $identifier, bool $not): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
         $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId(
@@ -92,13 +110,35 @@ class ProductSubscriptionContext implements Context
 
         Assert::isArray($subscriptionStatus);
         Assert::keyExists($subscriptionStatus, 'subscription_id');
-        Assert::notEmpty($subscriptionStatus['subscription_id']);
+        if (true === $not) {
+            Assert::isEmpty($subscriptionStatus['subscription_id']);
+        } else {
+            Assert::notEmpty($subscriptionStatus['subscription_id']);
+        }
     }
 
     /**
      * @param string $identifier
+     * @param bool $throwExceptions
      */
-    private function subscribeProductToPimAi(string $identifier): void
+    private function subscribeProductToPimAi(string $identifier, bool $throwExceptions = true): void
+    {
+        $product = $this->findProduct($identifier);
+        try {
+            $this->subscribeProduct->subscribe($product->getId());
+        } catch (ProductSubscriptionException $e) {
+            if (true === $throwExceptions) {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     */
+    private function findProduct(string $identifier): ProductInterface
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
         if (null === $product) {
@@ -107,6 +147,6 @@ class ProductSubscriptionContext implements Context
             );
         }
 
-        $this->subscribeProduct->subscribe($product->getId());
+        return $product;
     }
 }

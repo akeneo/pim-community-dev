@@ -21,11 +21,22 @@ Feature: Subscribe a product to PIM.ai
     When I subscribe the product "ts_0013" to PIM.ai
     Then the product "ts_0013" should be subscribed
 
+  Scenario: Fail to subscribe a product without family
+    Given the following attribute:
+      | code | type                   |
+      | ean  | pim_catalog_text       |
+      | sku  | pim_catalog_identifier |
+    And a predefined mapping as follows:
+      | pim_ai_code | attribute_code |
+      | upc         | ean            |
+    When I try to subscribe the product without family "product_without_family"
+    Then the product "product_without_family" should not be subscribed
+
   #Scenario: Successfully subscribe a product to PIM.ai that does not exist on PIM.ai
   # Tried with UPC 606449099813
   # Error 500 thrown by PIM.ai
 
-  #Scenario: Fail to subscribe a product without family
+
 
   #Scenario: Fail to subscribe a product that does not exist
 
