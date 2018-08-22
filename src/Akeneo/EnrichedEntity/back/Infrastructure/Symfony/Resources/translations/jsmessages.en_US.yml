@@ -1,5 +1,6 @@
 pim_title:
     akeneo_enriched_entities_enriched_entity_index: Create a new entity
+    akeneo_enriched_entities_enriched_entity_edit: Edit an enriched entity
 
 pim_enriched_entity:
     enriched_entity:
@@ -89,13 +90,18 @@ pim_enriched_entity:
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
             confirm: confirm
+        delete:
+            confirm: The attribute will be deleted. Confirm?
         notification:
             save:
                 success: Attribute successfully updated.
-                fail: An error occured during the save of the record
+                fail: An error occured during the save of the attribute
             create:
                 success: Attribute successfully created.
-                fail: An error occured during the creation of the record
+                fail: An error occured during the creation of the attribute
+            delete:
+                success: Attribute successfully deleted.
+                fail: An error occured during the deletion of the attribute
 
 pim_enrich:
     confirmation:

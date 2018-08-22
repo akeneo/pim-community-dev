@@ -14,7 +14,7 @@ Feature: Lists all attributes related to an enriched entity
       | bio      | text  | {"en_US": "Bio", "fr_FR": "Biographie"} |
       | portrait | image | {"en_US": "Portrait", "fr_FR": "Image"} |
     When the user asks for the enriched entity "designer"
-    Then the list of attributes should be:
+    Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
       | bio      | text  |

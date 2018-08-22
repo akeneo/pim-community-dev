@@ -11,26 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
+use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
+use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Delete an Enriched Entity
- *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class DeleteAction
 {
@@ -43,32 +40,36 @@ class DeleteAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var DeleteEnrichedEntityHandler */
-    private $deleteEnrichedEntityHandler;
+    /** @var DeleteAttributeHandler */
+    private $deleteAttributeHandler;
 
     public function __construct(
-        SecurityFacade $securityFacade,
+        DeleteAttributeHandler $deleteAttributeHandler,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        DeleteEnrichedEntityHandler $deleteEnrichedEntityHandler
+        SecurityFacade $securityFacade
     ) {
-        $this->securityFacade = $securityFacade;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
-        $this->deleteEnrichedEntityHandler = $deleteEnrichedEntityHandler;
+        $this->securityFacade = $securityFacade;
+        $this->deleteAttributeHandler = $deleteAttributeHandler;
     }
 
-    public function __invoke(Request $request, string $identifier): Response
+    public function __invoke(Request $request, string $enrichedEntityIdentifier, string $attributeIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_enriched_entity_delete')) {
+        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_delete')) {
             throw new AccessDeniedException();
         }
 
-        $command = $this->getDeleteCommand($identifier);
+        $command = new DeleteAttributeCommand();
+        $command->identifier = [
+            'identifier' => $attributeIdentifier,
+            'enrichedEntityIdentifier' => $enrichedEntityIdentifier,
+        ];
+
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
@@ -79,19 +80,11 @@ class DeleteAction
         }
 
         try {
-            ($this->deleteEnrichedEntityHandler)($command);
-        } catch (EnrichedEntityNotFoundException $e) {
-            throw new NotFoundHttpException();
+            ($this->deleteAttributeHandler)($command);
+        } catch (AttributeNotFoundException $e) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    private function getDeleteCommand(string $identifier): DeleteEnrichedEntityCommand
-    {
-        $command = new DeleteEnrichedEntityCommand();
-        $command->identifier = $identifier;
-
-        return $command;
     }
 }

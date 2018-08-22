@@ -204,6 +204,7 @@ acceptance:
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_enriched_entity_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_record_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.create_attribute_context
+                - akeneo_enrichedentity.tests.back.acceptance.context.edit_attribute_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.exception_context
             filters:
                 tags: '@acceptance-back'
