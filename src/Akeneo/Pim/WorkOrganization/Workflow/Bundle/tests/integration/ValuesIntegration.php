@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\integration;
 
-use PimEnterprise\Component\Catalog\tests\integration\Security\AbstractSecurityTestCase;
+use Akeneo\Pim\Permission\Component\tests\integration\Security\AbstractSecurityTestCase;
 
 /**
  * +------------------------------------------+-----------------------+

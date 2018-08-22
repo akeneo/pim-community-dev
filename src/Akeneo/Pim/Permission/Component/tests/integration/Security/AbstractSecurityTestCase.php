@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Component\Catalog\tests\integration\Security;
+namespace Akeneo\Pim\Permission\Component\tests\integration\Security;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
