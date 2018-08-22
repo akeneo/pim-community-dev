@@ -11,7 +11,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/router',
+        'oro/datagrid/back_router',
         'routing',
         'oro/messenger',
         'pim/form/common/edit-form',
@@ -22,7 +22,7 @@ define(
         $,
         _,
         __,
-        router,
+        backRouter,
         Routing,
         messenger,
         BaseForm,
@@ -181,7 +181,7 @@ define(
             applyAction: function (action) {
                 switch (action) {
                     case 'grid':
-                        router.redirectToRoute(this.config.backRoute);
+                        backRouter.redirectToBackRoute();
                         break;
                     case 'choose':
                         this.currentStep = 'choose';
@@ -224,7 +224,7 @@ define(
                             url: Routing.generate('pim_enrich_mass_edit_rest_launch'),
                             data: JSON.stringify(this.getFormData())
                         }).then(() => {
-                            router.redirectToRoute(this.config.backRoute);
+                            backRouter.redirectToBackRoute();
 
                             messenger.notify(
                                 'success',
