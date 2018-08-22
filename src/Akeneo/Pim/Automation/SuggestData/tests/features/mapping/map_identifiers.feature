@@ -48,7 +48,6 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
-    #And PIM.ai should be notified about the identifiers mapping (not implemented yet in pim.ai)
 
   Scenario: successfully update an already existing mapping
     Given the following attribute:
@@ -157,6 +156,3 @@ Feature: map the pim identifiers with PIM.ai identifiers
     Given an empty identifiers mapping
     When the identifiers mapping is saved with empty values
     Then the identifiers mapping should not be saved
-
-  #Scenario: PIM.ai should not be notified when an error occured during the saving (not implemented in PIM.ai)
-

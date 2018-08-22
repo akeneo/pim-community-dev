@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Co
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\InvalidAttributeTypeException;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\MissingMandatoryAttributeMappingException;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\InvalidAttributeTypeException;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\MissingMandatoryAttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;

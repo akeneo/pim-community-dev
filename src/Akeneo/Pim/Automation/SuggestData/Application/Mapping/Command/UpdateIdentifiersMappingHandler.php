@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\InvalidAttributeTypeException;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions\MissingMandatoryAttributeMappingException;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\InvalidAttributeTypeException;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\MissingMandatoryAttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -30,6 +30,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  */
 class UpdateIdentifiersMappingHandler
 {
+    /** @var array */
     private const ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER = [
         AttributeTypes::TEXT,
         AttributeTypes::OPTION_SIMPLE_SELECT,

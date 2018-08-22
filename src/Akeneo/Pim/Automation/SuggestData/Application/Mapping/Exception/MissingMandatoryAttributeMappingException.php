@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
