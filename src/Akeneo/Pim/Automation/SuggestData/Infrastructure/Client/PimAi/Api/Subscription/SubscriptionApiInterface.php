@@ -14,4 +14,6 @@ interface SubscriptionApiInterface
      * @return ApiResponse
      */
     public function subscribeProduct(array $identifiers): ApiResponse;
+
+    public function fetchProducts(): array;
 }

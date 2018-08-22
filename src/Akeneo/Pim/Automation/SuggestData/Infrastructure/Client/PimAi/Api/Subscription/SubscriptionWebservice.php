@@ -45,16 +45,29 @@ class SubscriptionWebservice implements SubscriptionApiInterface
                 new SubscriptionCollection(json_decode($response->getBody()->getContents(), true))
             );
         } catch (ServerException $e) {
-            throw new PimAiServerException(sprintf('Something went wrong on pim.ai side during product subscription : ', $e->getMessage()));
+            throw new PimAiServerException(sprintf('Something went wrong on PIM.ai side during product subscription : ', $e->getMessage()));
         } catch (ClientException $e) {
             if ($e->getCode() === Response::HTTP_PAYMENT_REQUIRED) {
-                throw new InsufficientCreditsException('Not enough credits on pim.ai to subscribe');
+                throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
             }
             if ($e->getCode() === Response::HTTP_FORBIDDEN) {
-                throw new InvalidTokenException('The pim.ai token is missing or invalid');
+                throw new InvalidTokenException('The PIM.ai token is missing or invalid');
             }
 
             throw new BadRequestException(sprintf('Something went wrong during product subscription : ', $e->getMessage()));
         }
+    }
+
+
+    public function fetchProducts(): array
+    {
+        $dateParam = 'yesterday';
+        $route = $this->uriGenerator->generate(
+            sprintf('/subscriptions/updated-since/%s', $dateParam)
+        );
+
+        $response = $this->httpClient->request('GET', $route);
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

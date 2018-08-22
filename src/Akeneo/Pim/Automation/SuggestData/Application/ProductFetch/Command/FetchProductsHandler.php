@@ -33,7 +33,9 @@ class FetchProductsHandler
 
         // TODO: Deal with many pages
         $dataProvider = $this->dataProviderFactory->create();
-        $dataProvider->fetch();
+        $subscriptions = $dataProvider->fetch();
+
+        echo "pouic";
 
         // TODO: Store fetched data in DB
 

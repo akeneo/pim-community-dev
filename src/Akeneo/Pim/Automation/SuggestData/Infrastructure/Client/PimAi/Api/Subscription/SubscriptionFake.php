@@ -28,4 +28,9 @@ final class SubscriptionFake implements SubscriptionApiInterface
                 ), true))
         );
     }
+
+    public function fetchProducts(): array
+    {
+        // TODO: Implement fetchProducts() method.
+    }
 }
