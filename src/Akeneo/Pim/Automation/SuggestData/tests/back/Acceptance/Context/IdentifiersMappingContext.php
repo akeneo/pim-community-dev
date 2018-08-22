@@ -116,8 +116,10 @@ class IdentifiersMappingContext implements Context
 
     /**
      * @When the identifiers mapping is saved with empty values
+     *
+     * @return bool
      */
-    public function theIdentifiersMappingIsSavedWithEmptyValues()
+    public function theIdentifiersMappingIsSavedWithEmptyValues(): bool
     {
         try {
             $this->manageIdentifiersMapping->updateIdentifierMapping([]);

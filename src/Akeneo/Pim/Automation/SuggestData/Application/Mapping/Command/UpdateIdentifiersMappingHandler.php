@@ -95,7 +95,10 @@ class UpdateIdentifiersMappingHandler
         return $identifiers;
     }
 
-    private function validateAttributeTypes(array $identifiers)
+    /**
+     * @param array $identifiers
+     */
+    private function validateAttributeTypes(array $identifiers): void
     {
         foreach ($identifiers as $attribute) {
             if (empty($attribute)) {
@@ -108,12 +111,15 @@ class UpdateIdentifiersMappingHandler
         }
     }
 
-    private function validateThatBrandAndMpnAreNotSavedAlone(array $identifiers)
+    /**
+     * @param array $identifiers
+     */
+    private function validateThatBrandAndMpnAreNotSavedAlone(array $identifiers): void
     {
         $isBrandDefined = isset($identifiers['brand']) && $identifiers['brand'] instanceof AttributeInterface;
         $isMpnDefined = isset($identifiers['mpn']) && $identifiers['mpn'] instanceof AttributeInterface;
 
-        if (($isBrandDefined && ! $isMpnDefined) || (! $isBrandDefined && $isMpnDefined)) {
+        if ($isBrandDefined xor $isMpnDefined) {
             throw new MissingMandatoryAttributeMappingException();
         }
     }

@@ -30,8 +30,10 @@ use Prophecy\Argument;
  */
 class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 {
-    public function let(AttributeRepositoryInterface $attributeRepository, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
-    {
+    public function let(
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ) {
         $this->beConstructedWith($attributeRepository, $identifiersMappingRepository);
     }
 
@@ -42,15 +44,17 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_an_attribute_does_not_exist(
         AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $model,
-        $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        AttributeInterface $model
     ) {
-        $command = new UpdateIdentifiersMappingCommand([
-            'mpn' => 'model',
-            'upc' => null,
-            'asin' => null,
-            'brand' => 'attributeNotFound',
-        ]);
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'mpn'   => 'model',
+                'upc'   => null,
+                'asin'  => null,
+                'brand' => 'attributeNotFound',
+            ]
+        );
 
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $attributeRepository->findOneByIdentifier('attributeNotFound')->willReturn(null);
@@ -66,19 +70,19 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     public function it_saves_the_identifiers_mapping(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        UpdateIdentifiersMappingCommand $command,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
         AttributeInterface $id
     ) {
-        $identifiers = [
-            'brand' => 'manufacturer',
-            'mpn' => 'model',
-            'upc' => 'ean',
-            'asin' => 'id',
-        ];
-        $command->getIdentifiersMapping()->willReturn($identifiers);
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'brand' => 'manufacturer',
+                'mpn'   => 'model',
+                'upc'   => 'ean',
+                'asin'  => 'id',
+            ]
+        );
 
         $attributeRepository->findOneByIdentifier(Argument::any())->shouldBeCalledTimes(4);
         $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
@@ -91,12 +95,14 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $ean->getType()->willReturn('pim_catalog_text');
         $id->getType()->willReturn('pim_catalog_text');
 
-        $identifiersMapping = new IdentifiersMapping([
-            'brand' => $manufacturer->getWrappedObject(),
-            'mpn' => $model->getWrappedObject(),
-            'upc' => $ean->getWrappedObject(),
-            'asin' => $id->getWrappedObject(),
-        ]);
+        $identifiersMapping = new IdentifiersMapping(
+            [
+                'brand' => $manufacturer->getWrappedObject(),
+                'mpn'   => $model->getWrappedObject(),
+                'upc'   => $ean->getWrappedObject(),
+                'asin'  => $id->getWrappedObject(),
+            ]
+        );
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
 
         $this->handle($command);
@@ -107,12 +113,14 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         AttributeInterface $model,
         $identifiersMappingRepository
     ) {
-        $command = new UpdateIdentifiersMappingCommand([
-            'mpn' => 'model',
-            'upc' => null,
-            'asin' => null,
-            'brand' => null,
-        ]);
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'mpn'   => 'model',
+                'upc'   => null,
+                'asin'  => null,
+                'brand' => null,
+            ]
+        );
 
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $model->getType()->willReturn('unknown_attribute_type');
@@ -121,18 +129,20 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->shouldThrow(InvalidAttributeTypeException::class)->during('handle', [$command]);
     }
 
-    public function it_throws_an_exception_with_brand_is_saved_without_mpn(
+    public function it_throws_an_exception_when_brand_is_saved_without_mpn(
         AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         AttributeInterface $manufacturer,
-        AttributeInterface $ean,
-        $identifiersMappingRepository
+        AttributeInterface $ean
     ) {
-        $command = new UpdateIdentifiersMappingCommand([
-            'brand' => 'manufacturer',
-            'mpn' => null,
-            'upc' => 'ean',
-            'asin' => null,
-        ]);
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'brand' => 'manufacturer',
+                'mpn'   => null,
+                'upc'   => 'ean',
+                'asin'  => null,
+            ]
+        );
 
         $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
         $manufacturer->getType()->willReturn('pim_catalog_text');
@@ -143,18 +153,20 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->shouldThrow(MissingMandatoryAttributeMappingException::class)->during('handle', [$command]);
     }
 
-    public function it_throws_an_exception_with_mpn_is_saved_without_brand(
+    public function it_throws_an_exception_when_mpn_is_saved_without_brand(
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $model,
         AttributeInterface $ean,
         $identifiersMappingRepository
     ) {
-        $command = new UpdateIdentifiersMappingCommand([
-            'brand' => null,
-            'mpn' => 'model',
-            'upc' => 'ean',
-            'asin' => null,
-        ]);
+        $command = new UpdateIdentifiersMappingCommand(
+            [
+                'brand' => null,
+                'mpn'   => 'model',
+                'upc'   => 'ean',
+                'asin'  => null,
+            ]
+        );
 
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $model->getType()->willReturn('pim_catalog_text');
