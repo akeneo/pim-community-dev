@@ -13,6 +13,15 @@ services:
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
+    pim_api.normalizer.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_api.repository.attribute'
+            - '@router'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
     pim_api.normalizer.category:
         class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer'
         arguments:

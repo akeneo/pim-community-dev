@@ -35,6 +35,7 @@ composer.phar
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
 !/bin/console
+!/bin/check-pullup
 !/bin/pim-front.sh
 behat.yml
 /phpspec.yml

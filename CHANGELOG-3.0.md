@@ -704,6 +704,7 @@
 - Move `Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\ProductRepository`
 - Move `Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer`
 - Move `Akeneo\Tool\Component\Api\Normalizer\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductNormalizer`
+- Move `Akeneo\Tool\Component\Api\Normalizer\ProductModelNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer`
 - Move `Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface`
 - Move `Akeneo\Tool\Component\Api\Updater\ProductModelUpdater` to `Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater`
 - Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Category` to `Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category`

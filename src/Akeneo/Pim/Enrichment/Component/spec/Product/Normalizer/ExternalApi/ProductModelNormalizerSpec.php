@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Api\Normalizer\ProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ProductModelNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
