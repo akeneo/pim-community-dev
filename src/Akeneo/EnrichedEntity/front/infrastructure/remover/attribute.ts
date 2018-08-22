@@ -14,7 +14,7 @@ export class AttributeRemoverImplementation implements AttributeRemover<Attribut
     return await deleteJSON(
       routing.generate('akeneo_enriched_entities_attribute_delete_rest', {
         attributeIdentifier: attributeIdentifier.normalize().identifier,
-        enrichedEntityIdentifier: attributeIdentifier.normalize().enrichedEntityIdentifier,
+        enrichedEntityIdentifier: attributeIdentifier.normalize().enriched_entity_identifier,
       })
     ).catch(error => {
       if (500 === error.status) {

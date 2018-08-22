@@ -3,8 +3,14 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Switch from 'akeneoenrichedentity/application/component/app/switch';
-import {AdditionalProperty, ValidationRuleOptions, TextAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
+import {TextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
+import {RegularExpression} from "akeneoenrichedentity/domain/model/attribute/type/text/regular-expression";
+import {ValidationRuleOption, ValidationRule} from "akeneoenrichedentity/domain/model/attribute/type/text/validation-rule";
+import {IsRichTextEditor} from "akeneoenrichedentity/domain/model/attribute/type/text/is-rich-text-editor";
+import {IsTextarea} from "akeneoenrichedentity/domain/model/attribute/type/text/is-textarea";
+import {MaxLength} from "akeneoenrichedentity/domain/model/attribute/type/text/max-length";
 
 const AttributeValidationRuleItemView = ({
    element,
@@ -35,7 +41,7 @@ const AttributeValidationRuleItemView = ({
 };
 
 const getValidationRuleOptions = (): DropdownElement[] => {
-  return Object.values(ValidationRuleOptions).map((option: string) => {
+  return Object.values(ValidationRuleOption).map((option: string) => {
     return {
       identifier: option,
       label: __(`pim_enriched_entity.attribute.edit.input.options.validation_rule.${option}`),
@@ -69,7 +75,16 @@ export default ({
             className="AknTextField"
             id="pim_enriched_entity.attribute.edit.input.max_length"
             name="max_length"
-            onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
+            value={attribute.maxLength.stringValue()}
+            onChange={(event: React.FormEvent<HTMLInputElement>) => {
+              if (!MaxLength.isValid(event.currentTarget.value)) {
+                event.currentTarget.value = attribute.maxLength.stringValue();
+                event.preventDefault();
+                return;
+              }
+
+              onAdditionalPropertyUpdated('max_length', MaxLength.createFromString(event.currentTarget.value));
+            }}
           />
         </div>
         {getErrorsView(errors, 'maxLength')}
@@ -86,14 +101,14 @@ export default ({
         <div className="AknFieldContainer-inputContainer">
           <Switch
             id="pim_enriched_entity.attribute.edit.input.text_area"
-            value={attribute.isTextarea}
-            onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', isTextarea)}
+            value={attribute.isTextarea.booleanValue()}
+            onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))}
           />
         </div>
         {getErrorsView(errors, 'isTextarea')}
       </div>
-      {attribute.isTextarea &&
-      <div className="AknFieldContainer" data-code="richTextEditor">
+      {attribute.isTextarea.booleanValue() &&
+      <div className="AknFieldContainer" data-code="isRichTextEditor">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
@@ -105,14 +120,14 @@ export default ({
         <div className="AknFieldContainer-inputContainer">
           <Switch
             id="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
-            value={attribute.isRichTextEditor}
-            onChange={(richTextEditor: boolean) => onAdditionalPropertyUpdated('is_rich_text_editor', richTextEditor)}
+            value={attribute.isRichTextEditor.booleanValue()}
+            onChange={(isrichTextEditor: boolean) => onAdditionalPropertyUpdated('is_rich_text_editor', IsRichTextEditor.createFromBoolean(isrichTextEditor))}
           />
         </div>
         {getErrorsView(errors, 'richTextEditor')}
       </div>
       }
-      {!attribute.isTextarea &&
+      {!attribute.isTextarea.booleanValue() &&
         <div className="AknFieldContainer" data-code="validation-rule">
           <div className="AknFieldContainer-header">
             <label
@@ -127,14 +142,14 @@ export default ({
               ItemView={AttributeValidationRuleItemView}
               label={__('pim_enriched_entity.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
-              selectedElement={(attribute.validationRule) ? attribute.validationRule : ValidationRuleOptions.Email}
-              onSelectionChange={(value: DropdownElement) => onAdditionalPropertyUpdated('validation_rule', value.identifier)}
+              selectedElement={attribute.validationRule.stringValue()}
+              onSelectionChange={(value: DropdownElement) => onAdditionalPropertyUpdated('validation_rule', ValidationRule.createFromString(value.identifier))}
             />
           </div>
           {getErrorsView(errors, 'validationRule')}
         </div>
       }
-      {(!attribute.isTextarea && attribute.validationRule === ValidationRuleOptions.RegularExpression) &&
+      {(!attribute.isTextarea.booleanValue() && attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression) &&
         <div className="AknFieldContainer" data-code="regular_expression">
           <div className="AknFieldContainer-header">
             <label
@@ -150,7 +165,8 @@ export default ({
               className="AknTextField"
               id="pim_enriched_entity.attribute.edit.input.regular_expression"
               name="regular_expression"
-              onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
+              value={attribute.regularExpression.stringValue()}
+              onChange={(event: React.FormEvent<HTMLInputElement>) => onAdditionalPropertyUpdated('regular_expression', RegularExpression.createFromString(event.currentTarget.value))}
             />
           </div>
           {getErrorsView(errors, 'regularExpression')}

@@ -5,5 +5,5 @@ export const attributeListUpdated = (attributes: Attribute[]) => {
 };
 
 export const attributeDeleted = (deletedAttribute: Attribute) => {
-  return {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute};
+  return {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute: deletedAttribute.normalize()};
 };

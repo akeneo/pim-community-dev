@@ -19,6 +19,11 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
   ];
 
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
+  normalizedAttribute.max_length = null;
+  normalizedAttribute.is_textarea = false;
+  normalizedAttribute.is_rich_text_editor = false;
+  normalizedAttribute.validation_rule = 'none';
+  normalizedAttribute.regular_expression = null;
 
   return denormalizeAttribute(normalizedAttribute);
 };

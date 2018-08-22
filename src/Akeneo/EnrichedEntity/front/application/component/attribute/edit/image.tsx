@@ -3,7 +3,10 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Select2 from 'akeneoenrichedentity/application/component/app/select2';
-import {AdditionalProperty, AllowedExtensionsOptions, ImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {ImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/image';
+import {AllowedExtensionsOptions, AllowedExtensions} from "akeneoenrichedentity/domain/model/attribute/type/image/allowed-extensions";
+import {MaxFileSize} from "akeneoenrichedentity/domain/model/attribute/type/image/max-file-size";
 
 export default ({
   attribute,
@@ -31,7 +34,15 @@ export default ({
             className="AknTextField"
             id="pim_enriched_entity.attribute.edit.input.max_file_size"
             name="max_file_size"
-            onChange={(event: any) => onAdditionalPropertyUpdated(event.target.name, event.target.value)}
+            onChange={(event: React.FormEvent<HTMLInputElement>) => {
+              if (!MaxFileSize.isValid(event.currentTarget.value)) {
+                event.currentTarget.value = attribute.maxFileSize.stringValue();
+                event.preventDefault();
+                return;
+              }
+
+              onAdditionalPropertyUpdated('max_file_size', MaxFileSize.createFromString(event.currentTarget.value));
+            }}
           />
         </div>
         {getErrorsView(errors, 'maxFileSize')}
@@ -50,11 +61,11 @@ export default ({
             fieldId="pim_enriched_entity.attribute.edit.input.allowed_extensions"
             fieldName="allowed_extensions"
             data={AllowedExtensionsOptions}
-            value={attribute.allowedExtensions}
+            value={attribute.allowedExtensions.arrayValue()}
             multiple={true}
             readonly={false}
-            onChange={(allowedExtensions: any[]) => {
-              onAdditionalPropertyUpdated('allowed_extensions', allowedExtensions)
+            onChange={(allowedExtensions: string[]) => {
+              onAdditionalPropertyUpdated('allowed_extensions', AllowedExtensions.createFromArray(allowedExtensions))
             }}
           />
         </div>

@@ -3,10 +3,10 @@ import {hydrator} from 'akeneoenrichedentity/application/hydrator/attribute';
 describe('akeneo > enriched entity > application > hydrator --- attribute', () => {
   test('I can hydrate a new attribute', () => {
     const hydrate = hydrator(
-      ({identifier, enrichedEntityIdentifier, code, labels, required, valuePerLocale, valuePerChannel, type}) => {
-        expect(identifier).toEqual({identifier: 'description', enrichedEntityIdentifier: 'designer'});
+      ({identifier, enriched_entity_identifier, code, labels, required, valuePerLocale, valuePerChannel, type}) => {
+        expect(identifier).toEqual({identifier: 'description', enriched_entity_identifier: 'designer'});
         expect(code).toEqual('description');
-        expect(enrichedEntityIdentifier).toEqual('designer');
+        expect(enriched_entity_identifier).toEqual('designer');
         expect(labels).toEqual({en_US: 'Description'});
       }
     );
@@ -29,7 +29,7 @@ describe('akeneo > enriched entity > application > hydrator --- attribute', () =
     expect(() => hydrator()({})).toThrow();
     expect(() => hydrator()({labels: {}})).toThrow();
     expect(() => hydrator()({identifier: 'starck'})).toThrow();
-    expect(() => hydrator()({enrichedEntityIdentifier: 'designer'})).toThrow();
+    expect(() => hydrator()({enriched_entity_identifier: 'designer'})).toThrow();
     expect(() => hydrator()({valuePerLocale: false})).toThrow();
   });
 });

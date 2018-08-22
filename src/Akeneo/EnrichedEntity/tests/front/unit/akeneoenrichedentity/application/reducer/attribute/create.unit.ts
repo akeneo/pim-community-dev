@@ -1,5 +1,5 @@
 import reducer from 'akeneoenrichedentity/application/reducer/attribute/create';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
 
 describe('akeneo > enriched entity > application > reducer > attribute --- create', () => {
   test('I ignore other commands', () => {
@@ -21,8 +21,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -35,8 +35,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -50,8 +50,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -64,8 +64,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -80,8 +80,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: 'code_test',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -94,15 +94,15 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED',
-      valuePerLocale: true,
+      value_per_locale: true,
     });
 
     expect(newState).toEqual({
@@ -110,8 +110,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: true,
-        valuePerChannel: false,
+        value_per_locale: true,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -124,15 +124,15 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_VALUE_PER_CHANNEL_UPDATED',
-      valuePerChannel: true,
+      value_per_channel: true,
     });
 
     expect(newState).toEqual({
@@ -140,8 +140,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: true,
+        value_per_locale: false,
+        value_per_channel: true,
         labels: {},
       },
       errors: [],
@@ -154,8 +154,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Text,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],
@@ -170,8 +170,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
       data: {
         code: '',
         type: AttributeType.Image,
-        valuePerLocale: false,
-        valuePerChannel: false,
+        value_per_locale: false,
+        value_per_channel: false,
         labels: {},
       },
       errors: [],

@@ -41,4 +41,40 @@ describe('>>>COMPONENT --- switch', () => {
       switchView.is('#my_awesome_switch')
     ).toEqual(true);
   });
+
+  test('Display a simple switch in read only', () => {
+    var value = true
+    const switchView = mount(
+      <Switch
+        value={value}
+        readOnly={true}
+      />
+    );
+
+    expect(
+      switchView.find('.AknSwitch').is('[aria-checked="true"]')
+    ).toEqual(true);
+    expect(
+      switchView.find('.AknSwitch-input').is('[checked]')
+    ).toEqual(true);
+    expect(value).toEqual(true);
+
+    switchView.find('input').simulate('change', {target: {checked: false}});
+    expect(value).toEqual(true);
+  });
+
+  test('Non read only switch need an onChange method', () => {
+    console.error = jest.fn()
+
+    expect(() => {
+      mount(
+        <Switch
+          value={true}
+          readOnly={false}
+        />
+      );
+    }).toThrow();
+
+    expect(console.error).toHaveBeenCalled();
+  });
 });

@@ -14,7 +14,7 @@ import {
   attributeCreationValuePerLocaleUpdated,
   attributeCreationValuePerChannelUpdated,
 } from 'akeneoenrichedentity/domain/event/attribute/create';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
 import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
 import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';

@@ -22,10 +22,13 @@
 - Change read models to enforce properties are coherent
 - Extract the buttons of the edit enriched entity view so it comes from each of the tabs
 - Rename "AttributeRequired" by "AttributeIsRequired"
+- remove index in model constructor
+- switch to view models
 
 Specific back-end:
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
   (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint)
+
 
 DONE:
 

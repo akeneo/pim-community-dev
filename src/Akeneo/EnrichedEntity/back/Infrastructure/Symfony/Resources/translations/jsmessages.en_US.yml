@@ -116,6 +116,7 @@ pim_enriched_entity:
                 regular_expression: Regular expression
                 options:
                     validation_rule:
+                        none: None
                         email: E-mail
                         regular_expression: Regular expression
                         url: URL
