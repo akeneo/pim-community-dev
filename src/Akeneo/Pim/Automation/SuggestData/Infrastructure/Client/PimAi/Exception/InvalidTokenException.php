@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception;
 
 /**
- * Exception thrown when a request to PIM.ai fails because of invalid request parameters.
+ * Exception thrown when an invalid token is used during any request to PIM.ai
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class BadRequestException extends \Exception
+class InvalidTokenException extends \Exception
 {
 }

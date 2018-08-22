@@ -96,7 +96,11 @@ class SubscribeProductHandler
     {
         $subscriptionRequest = new ProductSubscriptionRequest($product);
         $dataProvider = $this->dataProviderFactory->create();
-        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
+        try {
+            $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
+        } catch (\Exception $e) {
+            throw new ProductSubscriptionException($e->getMessage());
+        }
 
         $subscription = $this->findOrCreateSubscription(
             $subscriptionResponse->getProduct(),

@@ -64,21 +64,6 @@ class ProductSubscriptionContext implements Context
      */
     public function iSubscribeTheProductToPimAi(string $identifier): void
     {
-        $this->subscribeProductToPimAi($identifier);
-    }
-
-    /**
-     * @When I try to subscribe the product without family :identifier
-     *
-     * @param string $identifier
-     */
-    public function tryToSubscribeProductWithoutFamily(string $identifier): void
-    {
-        $product = [
-            ['identifier', 'family'],
-            [$identifier, ''],
-        ];
-        $this->dataFixturesContext->theFollowingProduct(new TableNode($product));
         $this->subscribeProductToPimAi($identifier, false);
     }
 
@@ -121,7 +106,7 @@ class ProductSubscriptionContext implements Context
      * @param string $identifier
      * @param bool $throwExceptions
      */
-    private function subscribeProductToPimAi(string $identifier, bool $throwExceptions = true): void
+    private function subscribeProductToPimAi(string $identifier, bool $throwExceptions = false): void
     {
         $product = $this->findProduct($identifier);
         try {

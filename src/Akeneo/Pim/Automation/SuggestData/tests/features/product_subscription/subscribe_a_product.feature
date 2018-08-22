@@ -26,17 +26,31 @@ Feature: Subscribe a product to PIM.ai
       | code | type                   |
       | ean  | pim_catalog_text       |
       | sku  | pim_catalog_identifier |
+    And the following product:
+      | identifier             | family | ean          |
+      | product_without_family |        | 606449099812 |
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
-    When I try to subscribe the product without family "product_without_family"
+    When I subscribe the product "product_without_family" to PIM.ai
     Then the product "product_without_family" should not be subscribed
 
-  #Scenario: Successfully subscribe a product to PIM.ai that does not exist on PIM.ai
-  # Tried with UPC 606449099813
-  # Error 500 thrown by PIM.ai
-
-
+  Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
+    Given the following attribute:
+      | code  | type                   |
+      | sku   | pim_catalog_identifier |
+      | ean   | pim_catalog_text       |
+    And the following family:
+      | code   | attributes |
+      | tshirt | sku,ean    |
+    And the following product:
+      | identifier             | family |
+      | product_without_values | tshirt |
+    And a predefined mapping as follows:
+      | pim_ai_code | attribute_code |
+      | upc         | ean            |
+    When I subscribe the product "product_without_values" to PIM.ai
+    Then the product "product_without_values" should not be subscribed
 
   #Scenario: Fail to subscribe a product that does not exist
 
