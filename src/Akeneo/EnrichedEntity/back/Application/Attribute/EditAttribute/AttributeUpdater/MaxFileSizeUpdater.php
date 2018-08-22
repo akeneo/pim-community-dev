@@ -27,6 +27,10 @@ class MaxFileSizeUpdater implements AttributeUpdaterInterface
             throw new \RuntimeException('Impossible to update the max file size property of the given attribute with the given command.');
         }
 
+        if (AttributeMaxFileSize::NO_LIMIT === $command->maxFileSize) {
+            return $attribute->setMaxFileSize(AttributeMaxFileSize::infinite());
+        }
+
         return $attribute->setMaxFileSize(AttributeMaxFileSize::fromString($command->maxFileSize));
     }
 }

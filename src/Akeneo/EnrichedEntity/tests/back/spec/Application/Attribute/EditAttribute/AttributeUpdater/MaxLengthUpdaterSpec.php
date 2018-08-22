@@ -37,6 +37,14 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
         $this->__invoke($textAttribute, $editMaxLength);
     }
 
+    function it_edits_updates_the_max_length_property_to_set_it_infinite(TextAttribute $textAttribute)
+    {
+        $editMaxLength = new EditMaxLengthCommand();
+        $editMaxLength->maxLength = null;
+        $textAttribute->setMaxLength(AttributeMaxLength::infinite())->willReturn($textAttribute);
+        $this->__invoke($textAttribute, $editMaxLength);
+    }
+
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $rightAttribute, ImageAttribute $wrongAttribute)
     {
         $wrongCommand = new EditLabelsCommand();

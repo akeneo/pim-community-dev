@@ -27,6 +27,10 @@ class MaxLengthUpdater implements AttributeUpdaterInterface
             throw new \RuntimeException('Impossible to update the max length property of the given attribute with the given command.');
         }
 
+        if (AttributeMaxLength::NO_LIMIT === $command->maxLength) {
+            return $attribute->setMaxLength(AttributeMaxLength::infinite());
+        }
+
         return $attribute->setMaxLength(AttributeMaxLength::fromInteger($command->maxLength));
     }
 }

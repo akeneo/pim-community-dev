@@ -63,7 +63,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
             AttributeRequired::fromBoolean($command->required),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeMaxLength::fromInteger($command->maxLength)
+            AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength)
         );
     }
 }

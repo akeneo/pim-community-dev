@@ -67,7 +67,7 @@ class TextAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'max_length' => $this->maxLength->intValue()
+                'max_length' => $this->maxLength->normalize()
             ]
         );
     }

@@ -5,6 +5,7 @@ namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Attri
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use PhpSpec\ObjectBehavior;
 
 class TextAttributeFactorySpec extends ObjectBehavior
@@ -53,5 +54,40 @@ class TextAttributeFactorySpec extends ObjectBehavior
            'type' => 'text',
            'max_length' => 155,
        ]);
+    }
+
+    function it_creates_a_text_attribute_with_infinite_max_length()
+    {
+        $command = new CreateTextAttributeCommand();
+        $command->identifier = [
+            'identifier' => 'name',
+            'enriched_entity_identifier' => 'designer'
+        ];
+        $command->enrichedEntityIdentifier = 'designer';
+        $command->code = 'name';
+        $command->labels = [
+            'fr_FR' => 'Nom'
+        ];
+        $command->order = 0;
+        $command->required = true;
+        $command->valuePerChannel = false;
+        $command->valuePerLocale = false;
+        $command->maxLength = AttributeMaxLength::NO_LIMIT;
+
+        $this->create($command)->normalize()->shouldReturn([
+            'identifier' => [
+                'enriched_entity_identifier' => 'designer',
+                'identifier' => 'name'
+            ],
+            'enriched_entity_identifier' => 'designer',
+            'code' => 'name',
+            'labels' => ['fr_FR' => 'Nom'],
+            'order' => 0,
+            'required' => true,
+            'value_per_channel' => false,
+            'value_per_locale' => false,
+            'type' => 'text',
+            'max_length' => null,
+        ]);
     }
 }

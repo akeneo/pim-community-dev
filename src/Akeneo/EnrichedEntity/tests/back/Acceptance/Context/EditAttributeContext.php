@@ -205,7 +205,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' and max file size \'([^\']*)\'$/
+     * @Given /^an enriched entity with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
      */
     public function anEnrichedEntityWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
     {
@@ -259,18 +259,7 @@ class EditAttributeContext implements Context
      */
     public function anEnrichedEntityWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
     {
-        $this->attributeRepository->create(ImageAttribute::create(
-            AttributeIdentifier::create('dummy_identifier', $attributeCode),
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
-            AttributeCode::fromString($attributeCode),
-            LabelCollection::fromArray([]),
-            AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString('200'),
-            AttributeAllowedExtensions::fromList([])
-        ));
+        $this->anEnrichedEntityWithAnImageAttributeWithAllowedExtensions($attributeCode, '[]');
     }
 
     /**
@@ -340,14 +329,6 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user updates the \'([^\']*)\' attribute label with \'([^\']*)\' of type \'([^\']*)\' on the locale \'([^\']*)\' of type \'([^\']*)\'$/
-     */
-    public function theUserUpdatesTheAttributeLabelWithOfTypeOnTheLocaleOfType($arg1, $arg2, $arg3, $arg4, $arg5)
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @When /^the user updates the \'([^\']*)\' attribute label with \'([^\']*)\' on the locale \'([^\']*)\'$/
      */
     public function theUserUpdatesTheAttributeLabelWithOnTheLocale1(string $attributeCode, string $label, string $localeCode): void
@@ -392,5 +373,85 @@ class EditAttributeContext implements Context
         if (0 === $this->violations->count()) {
             ($this->handler)($editAttribute);
         }
+    }
+
+    /**
+     * @Then /^then there should be no limit for the max length of \'([^\']*)\'$/
+     */
+    public function thenThereShouldBeNoLimitForTheMaxLengthOf(string $attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
+            'dummy_identifier',
+            $attributeCode
+        ));
+        Assert::assertEquals(AttributeMaxLength::NO_LIMIT, $attribute->normalize()['max_length']);
+    }
+
+    /**
+     * @When /^the user changes the max length of \'([^\']*)\' to no limit$/
+     */
+    public function theUserChangesTheMaxLengthOfToNoLimit(string $attributeCode)
+    {
+        $this->theUserChangesTheMaxLengthOfTo($attributeCode, 'null');
+    }
+
+    /**
+     * @When /^the user changes the max file size of \'([^\']*)\' to no limit$/
+     */
+    public function theUserChangesTheMaxFileSizeOfToNoLimit(string $attributeCode)
+    {
+        $this->theUserChangesTheMaxFileSizeOfTo($attributeCode, 'null');
+    }
+
+    /**
+     * @Then /^then there should be no limit for the max file size of \'([^\']*)\'$/
+     */
+    public function thenThereShouldBeNoLimitForTheMaxFileSizeOf(string $attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
+            'dummy_identifier',
+            $attributeCode
+        ));
+        Assert::assertEquals(AttributeMaxFileSize::NO_LIMIT, $attribute->normalize()['max_file_size']);
+    }
+
+    /**
+     * @Given /^an enriched entity with an image attribute \'([^\']*)\' non required$/
+     */
+    public function anEnrichedEntityWithAnImageAttributeNonRequired(string $attributeCode)
+    {
+        $this->attributeRepository->create(ImageAttribute::create(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('200'),
+            AttributeAllowedExtensions::fromList(['png'])
+        ));
+    }
+
+    /**
+     * @Given /^an enriched entity with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
+     */
+    public function anEnrichedEntityWithAnImageAttributeWithAllowedExtensions(string $attributeCode, string $normalizedExtensions): void
+    {
+        $extensions = json_decode($normalizedExtensions);
+
+        $this->attributeRepository->create(ImageAttribute::create(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxFileSize::fromString('200'),
+            AttributeAllowedExtensions::fromList($extensions)
+        ));
     }
 }

@@ -12,9 +12,11 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -39,9 +41,14 @@ class CodeValidator extends ConstraintValidator
                 new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern',
+                        'message' => Code::MESSAGE_WRONG_PATTERN,
                     ]
                 ),
+                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
+                    if (in_array($value, AttributeCode::RESERVED_CODES)) {
+                        $context->buildViolation(Code::MESSAGE_RESERVED_CODE)->addViolation();
+                    }
+                }),
             ]
         );
 

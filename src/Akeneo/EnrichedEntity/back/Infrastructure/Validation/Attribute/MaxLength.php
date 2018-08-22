@@ -21,4 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class MaxLength extends Constraint
 {
+    public const MESSAGE_SHOULD_BE_AN_INTEGER = 'pim_enriched_entity.attribute.validation.max_length.should_be_an_integer';
 }

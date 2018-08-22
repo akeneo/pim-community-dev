@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -32,22 +33,15 @@ class AllowedExtensionsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
-        $validator = Validation::createValidator();
-        $violations = $validator->validate($allowedExtensions, [new Assert\Type('array')]);
-
-        if ($violations->count() > 0) {
-            $this->addViolations($violations);
-
+        if ($this->isArray($allowedExtensions)) {
             return;
         }
 
-        foreach ($allowedExtensions as $allowedExtension) {
-            $violations = $validator->validate($allowedExtension, [new Assert\Type('string')]);
-            if ($violations->count() > 0 ) {
-                $this->addViolations($violations);
-            }
+        if ($this->isArrayOfStrings($allowedExtensions)) {
+            return;
         }
 
+        $this->checkExtensionsAreValid($allowedExtensions);
     }
 
     private function addViolations(ConstraintViolationListInterface $violations): void
@@ -56,6 +50,48 @@ class AllowedExtensionsValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->addViolation($violation->getMessage(), $violation->getParameters());
             }
+        }
+    }
+
+    private function isArray($allowedExtensions): bool
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($allowedExtensions, [
+            new Assert\Type('array'),
+        ]);
+
+        $notValid = $violations->count() > 0;
+        if ($notValid) {
+            $this->addViolations($violations);
+        }
+
+        return $notValid;
+    }
+
+    private function isArrayOfStrings($allowedExtensions): bool
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($allowedExtensions, [
+            new Assert\Collection([new Assert\Type('string')]),
+        ]);
+
+        $notValid = $violations->count() > 0;
+        if ($notValid) {
+            $this->addViolations($violations);
+        }
+
+        return $notValid;
+    }
+
+    private function checkExtensionsAreValid($allowedExtensions): void
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($allowedExtensions, [
+            new Assert\Choice(['choices' => AttributeAllowedExtensions::VALID_EXTENSIONS, 'multiple' => true]),
+        ]);
+
+        if ($violations->count() > 0) {
+            $this->addViolations($violations);
         }
     }
 }

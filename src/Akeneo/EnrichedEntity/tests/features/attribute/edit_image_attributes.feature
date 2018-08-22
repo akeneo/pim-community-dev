@@ -24,13 +24,13 @@ Feature: Edit an attribute of an enriched entity
 
   @acceptance-back
   Scenario: Updating is required property
-    Given an enriched entity with a text attribute 'image' non required
+    Given an enriched entity with an image attribute 'image' non required
     When the user sets the 'image' attribute required
     Then then 'image' should be required
 
   @acceptance-back
   Scenario Outline: Invalid is required edit
-    Given an enriched entity with a text attribute 'image' non required
+    Given an enriched entity with an image attribute 'image' non required
     When the user sets the is required property of 'image' to '<invalid_required>'
     Then there should be a validation error on the property 'required' with message '<message>'
 
@@ -41,13 +41,19 @@ Feature: Edit an attribute of an enriched entity
 
   @acceptance-back
   Scenario: Updating max file size
-    Given an enriched entity with a text attribute 'image' and max file size '3000'
+    Given an enriched entity with an image attribute 'image' with max file size '3000'
     When the user changes the max file size of 'image' to '"200"'
     Then then the max file size of 'image' should be '200'
 
   @acceptance-back
+  Scenario: Updating max file size to no limit
+    Given an enriched entity with an image attribute 'name' with max file size '250'
+    When the user changes the max file size of 'name' to no limit
+    Then then there should be no limit for the max file size of 'name'
+
+  @acceptance-back
   Scenario Outline: Invalid max file size edit
-    Given an enriched entity with a text attribute 'image' and max file size '3000'
+    Given an enriched entity with an image attribute 'image' with max file size '3000'
     When the user changes the max file size of 'image' to '<invalid_max_file_size>'
     Then there should be a validation error on the property 'maxFileSize' with message '<message>'
 
@@ -59,16 +65,22 @@ Feature: Edit an attribute of an enriched entity
 
   @acceptance-back
   Scenario: Updating allowed extensions
-    Given an enriched entity with a text attribute 'image' and no allowed extensions
+    Given an enriched entity with an image attribute 'image' with allowed extensions: '["png"]'
     When the user changes adds '["png"]' to the allowed extensions of 'image'
     Then then 'image' should have 'png' as an allowed extension
 
+  Scenario: Updating allowed extensions to extensions all allowed
+    Given an enriched entity with an image attribute 'image' with allowed extensions: '[]'
+    When the user changes adds '[]' to the allowed extensions of 'image'
+    Then then 'image' should have '"[]"' as an allowed extension
+
   @acceptance-back
   Scenario Outline: Invalid allowed extensions
-    Given an enriched entity with a text attribute 'image' and no allowed extensions
+    Given an enriched entity with an image attribute 'image' with allowed extensions: '["png", "jpeg"]'
     When the user changes adds '<invalid_allowed_extensions>' to the allowed extensions of 'image'
     Then there should be a validation error on the property 'allowedExtensions' with message '<message>'
 
     Examples:
-      | invalid_allowed_extensions | message                             |
-      | "not_an_array"             | This value should be of type array. |
+      | invalid_allowed_extensions | message                                     |
+      | "not_an_array"             | This value should be of type array.         |
+      | ["not_a_valid_extension"]  | One or more of the given values is invalid. |

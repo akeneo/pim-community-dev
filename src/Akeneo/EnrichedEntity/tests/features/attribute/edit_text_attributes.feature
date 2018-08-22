@@ -29,8 +29,14 @@ Feature: Edit a text attribute of an enriched entity
   @acceptance-back
   Scenario: Updating max length
     Given an enriched entity with a text attribute 'name' and max length 100
-    When the user changes the max length of 'name' to 250
+    When the user changes the max length of 'name' to '250'
     Then then 'name' max length should be 250
+
+  @acceptance-back
+  Scenario: Updating max length to no limit
+    Given an enriched entity with a text attribute 'name' and max length 100
+    When the user changes the max length of 'name' to no limit
+    Then then there should be no limit for the max length of 'name'
 
   @acceptance-back
   Scenario Outline: Invalid max length

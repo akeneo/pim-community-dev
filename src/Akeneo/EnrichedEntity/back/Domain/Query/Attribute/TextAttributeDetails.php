@@ -32,7 +32,7 @@ class TextAttributeDetails extends AbstractAttributeDetails
         return array_merge(
             parent::normalize(),
             [
-                self::MAX_LENGTH => $this->maxLength->intValue(),
+                self::MAX_LENGTH => $this->maxLength->normalize(),
                 self::TYPE => self::ATTRIBUTE_TYPE
             ]
         );

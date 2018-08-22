@@ -22,6 +22,9 @@ use Webmozart\Assert\Assert;
  */
 class AttributeAllowedExtensions
 {
+    public const ALL_ALLOWED = [];
+    public const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
+
     /** @var string[] */
     private $allowedExtensions;
 
@@ -29,6 +32,14 @@ class AttributeAllowedExtensions
     {
         array_walk($allowedExtensions, function ($allowedExtension) {
             Assert::string($allowedExtension, 'Expected allowed extension to be a string');
+            Assert::true(
+                in_array($allowedExtension, self::VALID_EXTENSIONS),
+                sprintf(
+                    'Expected extensions to be any of "%s", "%s" given',
+                    implode(', ', self::VALID_EXTENSIONS),
+                    $allowedExtension
+                )
+            );
         });
 
         $this->allowedExtensions = $allowedExtensions;

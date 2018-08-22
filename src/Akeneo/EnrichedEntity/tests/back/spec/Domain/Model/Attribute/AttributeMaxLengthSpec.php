@@ -17,6 +17,17 @@ class AttributeMaxLengthSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeMaxLength::class);
     }
 
+    function it_can_be_infinite()
+    {
+        $this->beConstructedThrough('infinite', []);
+    }
+
+    function it_normalizes_itself()
+    {
+        $this->normalize()->shouldReturn(300);
+        $this::infinite()->normalize()->shouldReturn(null);
+    }
+
     function it_cannot_be_greater_than_the_limit()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromInteger', [65536]);

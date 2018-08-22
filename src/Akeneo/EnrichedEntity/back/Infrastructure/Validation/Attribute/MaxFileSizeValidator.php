@@ -36,8 +36,7 @@ class MaxFileSizeValidator extends ConstraintValidator
         $violations = $validator->validate($maxFileSize, [
             new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
                 if (null !== $value && !is_numeric($value)) {
-                    $context->buildViolation('This value should be a number.')
-                        ->addViolation();
+                    $context->buildViolation(MaxFileSize::MESSAGE_SHOULD_BE_A_NUMBER)->addViolation();
                 }
             }),
         ]);

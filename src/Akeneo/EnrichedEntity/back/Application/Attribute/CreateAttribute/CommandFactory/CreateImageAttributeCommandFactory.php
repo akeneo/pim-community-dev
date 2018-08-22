@@ -15,6 +15,8 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFac
 
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -31,9 +33,10 @@ class CreateImageAttributeCommandFactory extends AbstractCreateAttributeCommandF
     {
         $command = new CreateImageAttributeCommand();
         $this->fillCommonProperties($command, $normalizedCommand);
-        $command->maxFileSize = isset($normalizedCommand['max_file_size']) ? (string) $normalizedCommand['max_file_size'] : null;
-        $command->allowedExtensions = isset($normalizedCommand['allowed_extensions']) ? $normalizedCommand['allowed_extensions'] : [];
-        $command->required = $normalizedCommand['required'] ?? false;
+        $command->maxFileSize = isset($normalizedCommand['max_file_size']) ?
+            (string) $normalizedCommand['max_file_size'] : AttributeMaxFileSize::NO_LIMIT;
+        $command->allowedExtensions = isset($normalizedCommand['allowed_extensions']) ?
+            $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
 
         return $command;
     }
