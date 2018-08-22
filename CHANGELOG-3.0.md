@@ -10,6 +10,9 @@
 - PAV3-4: Regroup PAM Classes
 
 ## BC breaks
+
+- Move `PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder` to `Akeneo\Pim\Asset\Component\Updater\Adder\AssetCollectionAdder`
+- Move `PimEnterprise\Component\Catalog\\AssetCollectionValueFactory` to `Akeneo\Pim\Asset\Component\AssetCollectionValueFactory`
 - Move namespace `PimEnterprise\Component\Catalog\Security` to `PimEnterprise\Component\Security`
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.

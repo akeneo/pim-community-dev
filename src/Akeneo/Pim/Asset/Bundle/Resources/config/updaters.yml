@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog.updater.adder.asset_collection_value.class: PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder
+    pimee_catalog.updater.adder.asset_collection_value.class: Akeneo\Pim\Asset\Component\Updater\Adder\AssetCollectionAdder
 
 services:
     pimee_catalog.updater.adder.asset_collection_value:
