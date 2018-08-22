@@ -1,6 +1,5 @@
 services:
     pim_datagrid.product_grid.query.list_attributes:
-        class: Pim\Bundle\DataGridBundle\Query\Sql\AttributesUseableInProductGrid
+        class: Pim\Bundle\DataGridBundle\Query\Sql\ListAttributesUseableInProductGrid
         arguments:
             - '@database_connection'
-            - '%pim_datagrid_productgrid_attributes_per_page%'

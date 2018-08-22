@@ -12,6 +12,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Query\ListAttributesQuery;
+use Pim\Bundle\DataGridBundle\Query\ListAttributesUseableInProductGrid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,12 +38,13 @@ class ProductGridController
     private $userContext;
 
     /**
-     * @param ListAttributesQuery $listAttributesQuery
-     * @param FiltersConfigurator $filtersConfigurator
-     * @param FilterExtension     $filterExtension
+     * @param ListAttributesUseableInProductGrid $listAttributesQuery
+     * @param FiltersConfigurator                $filtersConfigurator
+     * @param FilterExtension                    $filterExtension
+     * @param UserContext                        $userContext
      */
     public function __construct(
-        ListAttributesQuery $listAttributesQuery,
+        ListAttributesUseableInProductGrid $listAttributesQuery,
         FiltersConfigurator $filtersConfigurator,
         FilterExtension $filterExtension,
         UserContext $userContext
@@ -71,7 +73,7 @@ class ProductGridController
             $locale = $user->getCatalogLocale()->getCode();
         }
 
-        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search, $user);
+        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search, $user->getId());
         $attributesAsFilters = empty($attributes) ? [] : $this->formatAttributesAsFilters($attributes);
 
         return new JsonResponse($attributesAsFilters);
@@ -89,12 +91,13 @@ class ProductGridController
         $page = (int) $request->get('page', 1);
         $search = (string) $request->get('search', '');
         $locale = $request->get('locale', null);
+        $user = $this->userContext->getUser();
 
         if (null == $locale) {
-            $locale = $this->userContext->getUser()->getCatalogLocale()->getCode();
+            $locale = $user->getCatalogLocale()->getCode();
         }
 
-        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search);
+        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search, $user->getId());
 
         return new JsonResponse($attributes);
     }

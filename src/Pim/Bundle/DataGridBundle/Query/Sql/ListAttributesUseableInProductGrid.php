@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\Query\Sql;
 
-use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Pim\Bundle\DataGridBundle\Query\ListAttributesQuery;
+use Pim\Bundle\DataGridBundle\Query\ListAttributesUseableInProductGrid as ListAttributesUseableInProductGridQuery;
 
 /**
  * List the attributes useable as filters or columns in the product grid.
@@ -16,44 +15,38 @@ use Pim\Bundle\DataGridBundle\Query\ListAttributesQuery;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributesUseableInProductGrid implements ListAttributesQuery
+class ListAttributesUseableInProductGrid implements ListAttributesUseableInProductGridQuery
 {
     /** @var Connection */
     private $connection;
 
-    /** @var int */
-    private $attributesPerPage;
-
     /**
      * @param Connection $connection
-     * @param int        $attributesPerPage
      */
-    public function __construct(Connection $connection, int $attributesPerPage)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->attributesPerPage = $attributesPerPage;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $locale, int $page, string $searchOnLabel = '', User $user = null): array
+    public function fetch(string $locale, int $page, string $searchOnLabel = '', int $userId = null): array
     {
         $page = max($page, 1);
-        $offset = ($page - 1) * $this->attributesPerPage;
-        $limit = $this->attributesPerPage;
+        $offset = ($page - 1) * ListAttributesUseableInProductGridQuery::ATTRIBUTES_PER_PAGE;
+        $limit = ListAttributesUseableInProductGridQuery::ATTRIBUTES_PER_PAGE;
 
         $sql = <<<SQL
-SELECT DISTINCT(att.code) AS code,
-  att.attribute_type AS type, att.sort_order AS `order`, att.metric_family AS metricFamily, g.sort_order AS groupOrder,
+SELECT DISTINCT 
+  att.code, att.attribute_type AS type, att.sort_order AS `order`, att.metric_family AS metricFamily, g.sort_order AS groupOrder,
   COALESCE(att_trans.label, CONCAT('[', att.code, ']')) AS label,
   COALESCE(group_trans.label, CONCAT('[', g.code, ']')) AS `group`
 FROM pim_catalog_attribute AS att
-LEFT JOIN pim_catalog_attribute_group AS g ON att.group_id = g.id
+INNER JOIN pim_catalog_attribute_group AS g ON att.group_id = g.id
 LEFT JOIN pim_catalog_attribute_translation AS att_trans ON att.id = att_trans.foreign_key AND att_trans.locale = :locale
 LEFT JOIN pim_catalog_attribute_group_translation AS group_trans ON g.id = group_trans.foreign_key AND group_trans.locale = :locale
-WHERE att.useable_as_grid_filter = 1
-HAVING label LIKE :search
+WHERE att.useable_as_grid_filter = 1 AND COALESCE(att_trans.label, att.code) LIKE :search
 ORDER BY g.sort_order ASC, att.sort_order ASC
 LIMIT $limit OFFSET $offset
 SQL;

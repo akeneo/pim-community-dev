@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\tests\integration\Query\Sql;
 
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Bundle\DataGridBundle\Query\ListAttributesUseableInProductGrid;
 
-class AttributesUsableInProductGridIntegration extends TestCase
+class ListAttributesUsableInProductGridIntegration extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -18,9 +20,11 @@ class AttributesUsableInProductGridIntegration extends TestCase
 
     public function testFetchAttributesUsableInProductGridWithoutSearch(): void
     {
-        for($i = 3; $i >= 1; $i--)
+        $attributes = [];
+        // Index decremented to check that the creation order has no impact on the result order
+        for($i = ListAttributesUseableInProductGrid::ATTRIBUTES_PER_PAGE - 1; $i >= 1; $i--)
         {
-            $this->createAttribute([
+            $attributes[] = $this->createAttribute([
                 'code' => "att_groupA_$i",
                 'type' => 'pim_catalog_text',
                 'group' => 'attributeGroupA',
@@ -30,9 +34,9 @@ class AttributesUsableInProductGridIntegration extends TestCase
             ]);
         }
 
-        for($i = 3; $i >= 1; $i--)
+        for($i = 2; $i >= 1; $i--)
         {
-            $this->createAttribute([
+            $attributes[] = $this->createAttribute([
                 'code' => "att_other_$i",
                 'type' => 'pim_catalog_text',
                 'group' => 'other',
@@ -42,45 +46,38 @@ class AttributesUsableInProductGridIntegration extends TestCase
             ]);
         }
 
+        $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
+
         $firstPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1);
 
+        $expectedAttributes = [[
+            'code'         => 'sku',
+            'type'         => 'pim_catalog_identifier',
+            'order'        => 0,
+            'groupOrder'   => 1,
+            'metricFamily' => null,
+            'label'        => '[sku]',
+            'group'        => 'Attribute group A',
+        ]];
+
+        for($i = 1; $i <= ListAttributesUseableInProductGrid::ATTRIBUTES_PER_PAGE - 1; $i++)
+        {
+            $expectedAttributes[] = [
+                'code'         => "att_groupA_$i",
+                'type'         => "pim_catalog_text",
+                'order'        => $i,
+                'metricFamily' => null,
+                'groupOrder'   => 1,
+                'label'        => "Attribute group A $i",
+                'group'        => "Attribute group A",
+            ];
+        }
+
+        $this->assertSameAttributes($expectedAttributes , $firstPageAttributes);
+
+        $secondPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 2);
+
         $this->assertSameAttributes([
-            [
-                'code'         => 'sku',
-                'type'         => 'pim_catalog_identifier',
-                'order'        => 0,
-                'groupOrder'   => 1,
-                'metricFamily' => null,
-                'label'        => '[sku]',
-                'group'        => 'Attribute group A',
-            ],
-            [
-                'code'         => 'att_groupA_1',
-                'type'         => 'pim_catalog_text',
-                'order'        => 1,
-                'metricFamily' => null,
-                'groupOrder'   => 1,
-                'label'        => 'Attribute group A 1',
-                'group'        => 'Attribute group A',
-            ],
-            [
-                'code'         => 'att_groupA_2',
-                'type'         => 'pim_catalog_text',
-                'order'        => 2,
-                'metricFamily' => null,
-                'groupOrder'   => 1,
-                'label'        => 'Attribute group A 2',
-                'group'        => 'Attribute group A',
-            ],
-            [
-                'code'         => 'att_groupA_3',
-                'type'         => 'pim_catalog_text',
-                'order'        => 3,
-                'metricFamily' => null,
-                'groupOrder'   => 1,
-                'label'        => 'Attribute group A 3',
-                'group'        => 'Attribute group A',
-            ],
             [
                 'code'         => 'att_other_1',
                 'type'         => 'pim_catalog_text',
@@ -90,11 +87,6 @@ class AttributesUsableInProductGridIntegration extends TestCase
                 'label'        => 'Attribute other 1',
                 'group'        => 'Other',
             ],
-        ] , $firstPageAttributes);
-
-        $secondPageAttributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 2);
-
-        $this->assertSameAttributes([
             [
                 'code'         => 'att_other_2',
                 'type'         => 'pim_catalog_text',
@@ -104,21 +96,13 @@ class AttributesUsableInProductGridIntegration extends TestCase
                 'label'        => 'Attribute other 2',
                 'group'        => 'Other',
             ],
-            [
-                'code'         => 'att_other_3',
-                'type'         => 'pim_catalog_text',
-                'order'        => 3,
-                'metricFamily' => null,
-                'groupOrder'   => 100,
-                'label'        => 'Attribute other 3',
-                'group'        => 'Other',
-            ],
         ], $secondPageAttributes);
     }
 
     public function testFetchAttributesUsableInProductGridWithSearch()
     {
-        $this->createAttribute([
+        $attributes = [];
+        $attributes[] = $this->createAttribute([
             'code' => "att_ok",
             'type' => 'pim_catalog_text',
             'group' => 'other',
@@ -127,7 +111,7 @@ class AttributesUsableInProductGridIntegration extends TestCase
             'labels' => ['en_US' => "Attribute that matches the search"]
         ]);
 
-        $this->createAttribute([
+        $attributes[] = $this->createAttribute([
             'code' => "att_ok_matches_without_label",
             'type' => 'pim_catalog_text',
             'group' => 'other',
@@ -135,7 +119,7 @@ class AttributesUsableInProductGridIntegration extends TestCase
             'sort_order' => 1,
         ]);
 
-        $this->createAttribute([
+        $attributes[] = $this->createAttribute([
             'code' => "att_ko",
             'type' => 'pim_catalog_text',
             'group' => 'other',
@@ -143,6 +127,8 @@ class AttributesUsableInProductGridIntegration extends TestCase
             'sort_order' => 2,
             'labels' => ['en_US' => "Attribute that matches the search but is not useable in grid"]
         ]);
+
+        $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
 
         $attributes = $this->get('pim_datagrid.product_grid.query.list_attributes')->fetch('en_US', 1, 'match') ;
 
@@ -168,14 +154,17 @@ class AttributesUsableInProductGridIntegration extends TestCase
         ], $attributes);
     }
 
+
     /**
      * @param array $attributeData
+     * @return Attribute
      */
-    private function createAttribute(array $attributeData): void
+    private function createAttribute(array $attributeData): Attribute
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $attributeData);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        return $attribute;
     }
 
     /**

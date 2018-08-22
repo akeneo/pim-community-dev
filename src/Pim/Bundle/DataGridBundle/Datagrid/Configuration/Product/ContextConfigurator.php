@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
@@ -364,11 +366,12 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Get Ids of the attributes used in the datagrid as filter or column
+     * Get Ids of the attributes that have been selected as filter or column by the user
+     * The other available attributes will be loaded in a dedicated end-point
      *
      * @return integer[]
      */
-    private function getAttributeIdsUsed()
+    private function getAttributeIdsUsed(): array
     {
         $filterValues = $this->requestParams->get('_filter');
         unset($filterValues['scope']);
