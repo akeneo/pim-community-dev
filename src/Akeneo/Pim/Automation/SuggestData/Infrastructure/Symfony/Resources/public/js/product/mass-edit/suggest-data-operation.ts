@@ -7,16 +7,17 @@ const template = require('pimee/template/product/mass-edit/suggest-data');
 interface SuggestDataOperationConfig {
   title: string;
   label: string;
-  labelCount: string;
+  subLabel: string;
   description: string;
   code: string;
   jobInstanceCode: string;
   warning: string;
   icon: string;
+  illustration: string;
 }
 
 /**
- * Mass suggest data operation
+ * Mass operation to subscribe/unsubscribe products to Franklin.
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
@@ -25,12 +26,13 @@ class SuggestDataOperation extends Operation {
   readonly config: SuggestDataOperationConfig = {
     title: '',
     label: '',
-    labelCount: '',
+    subLabel: '',
     description: '',
     code: '',
     jobInstanceCode: '',
     warning: '',
     icon: '',
+    illustration: '',
   };
 
   /**

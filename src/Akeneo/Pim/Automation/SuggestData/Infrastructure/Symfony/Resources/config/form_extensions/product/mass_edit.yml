@@ -13,3 +13,4 @@ extensions:
             jobInstanceCode: suggest_data_push_products
             warning: akeneo_suggest_data.mass_edit.product.operation.suggest_data.warning
             icon: icon-robot
+            illustration: robot
