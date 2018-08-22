@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {
@@ -79,5 +80,56 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     {
         $product->getAllAssociations()->willReturn([]);
         $this->normalize($product, 'standard')->shouldReturn([]);
+    }
+
+    function it_normalizes_a_product_associations_with_query_to_find_associated_products_codes(
+        GetAssociatedProductCodesByProduct $getAssociatedProductCodesByProduct,
+        ProductInterface $product,
+        ProductModelInterface $productModel,
+        AssociationInterface $association1,
+        AssociationInterface $association2,
+        AssociationTypeInterface $associationType1,
+        AssociationTypeInterface $associationType2,
+        GroupInterface $group1,
+        ProductInterface $productAssociated
+    ) {
+        $this->beConstructedWith($getAssociatedProductCodesByProduct);
+
+        $group1->getCode()->willReturn('group_code');
+        $associationType1->getCode()->willReturn('XSELL');
+        $association1->getAssociationType()->willReturn($associationType1);
+        $association1->getGroups()->willReturn([$group1]);
+        $association1->getProducts()->willReturn(new ArrayCollection());
+        $association1->getProductModels()->willReturn(new ArrayCollection());
+        $getAssociatedProductCodesByProduct->getCodes($association1)->willReturn([]);
+
+
+        $productAssociated->getReference()->willReturn('product_code');
+        $productModel->getCode()->willReturn('product_model_code');
+        $associationType2->getCode()->willReturn('PACK');
+        $associationType2->getId()->willReturn(7);
+        $association2->getAssociationType()->willReturn($associationType2);
+        $association2->getGroups()->willReturn(new ArrayCollection());
+        $association2->getProducts()->willReturn([$productAssociated->getWrappedObject()]);
+        $association2->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
+
+        $getAssociatedProductCodesByProduct->getCodes($association2)->willReturn(['product_code']);
+
+        $product->getAllAssociations()->willReturn([$association1, $association2]);
+
+        $this->normalize($product, 'standard')->shouldReturn(
+            [
+                'PACK' => [
+                    'groups' => [],
+                    'products' => ['product_code'],
+                    'product_models' => ['product_model_code'],
+                ],
+                'XSELL' => [
+                    'groups' => ['group_code'],
+                    'products' => [],
+                    'product_models' => [],
+                ]
+            ]
+        );
     }
 }

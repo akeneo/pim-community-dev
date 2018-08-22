@@ -1,8 +1,13 @@
+# 1.7.30 (2018-08-14)
+
+- PIM-7570: Adds 'Locale specific' fields in attribute versioning
+
 # 1.7.29 (2018-08-01)
 
 ## Bug fixes
 
 - PIM-7538: Fix persistent grid filters
+- GITHUB-8418: Cast entity id for comparison with MongoObject
 
 # 1.7.28 (2018-07-26)
 

@@ -11,7 +11,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 use Pim\Component\Connector\Writer\File\FlatItemBufferFlusher;
-use Prophecy\Argument;
 
 class WriterSpec extends ObjectBehavior
 {
@@ -45,9 +44,10 @@ class WriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTimeImmutable('1967-08-05 15:15:00'));
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('job_label');
-        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/%job_label%_%datetime%.csv');
+        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->get('withHeader')->willReturn(true);
 
@@ -127,9 +127,10 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/%job_label%_%datetime%.csv');
+        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTimeImmutable('1967-08-05 15:15:00'));
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('job_label');
 
@@ -146,14 +147,26 @@ class WriterSpec extends ObjectBehavior
         $this->initialize();
         $flusher->flush(
             $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
+            [
+                'type'           => 'csv',
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+                'shouldAddBOM'   => false,
+            ],
+            sys_get_temp_dir() . '/my/file/path/job_label_1967-08-05_15-15-00.csv',
             -1
-        )->willReturn([
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo1',
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo2',
-        ]);
+        )->willReturn(
+            [
+                sys_get_temp_dir() . '/my/file/path/job_label_1967-08-05_15-15-00.csv'
+            ]
+        );
 
         $this->flush();
+
+        $this->getWrittenFiles()->shouldReturn(
+            [
+                sys_get_temp_dir() . '/my/file/path/job_label_1967-08-05_15-15-00.csv' => 'job_label_1967-08-05_15-15-00.csv',
+            ]
+        );
     }
 }
