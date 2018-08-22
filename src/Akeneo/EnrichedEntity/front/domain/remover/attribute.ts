@@ -1,5 +1,5 @@
-import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
+import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
-export default interface Remover {
-  remove: (attributeIdentifier: AttributeIdentifier) => Promise<void>;
+export default interface Remover<Identifier> {
+  remove: (identifier: Identifier) => Promise<ValidationError[] | null>;
 }

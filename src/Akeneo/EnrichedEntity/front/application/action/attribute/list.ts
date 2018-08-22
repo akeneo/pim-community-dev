@@ -21,7 +21,13 @@ export const updateAttributeList = () => async (dispatch: any, getState: () => E
 
 export const deleteAttribute = (attribute: Attribute) => async (dispatch: any): Promise<void> => {
   try {
-    await attributeRemover.remove(attribute.getIdentifier());
+    const errors = await attributeRemover.remove(attribute.getIdentifier());
+
+    if (errors) {
+      dispatch(notifyAttributeDeletionFailed());
+      return;
+    }
+
     dispatch(attributeDeleted(attribute));
     dispatch(notifyAttributeWellDeleted());
     dispatch(updateAttributeList());
