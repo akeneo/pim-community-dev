@@ -1,6 +1,6 @@
 parameters:
-    pimee_security.filter.granted_product_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
-    pimee_security.filter.granted_product_model_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
+    pimee_security.filter.granted_product_attribute_filter.class: Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter
+    pimee_security.filter.granted_product_model_attribute_filter.class: Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter
     pimee_catalog.filter.attribute_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter
     pimee_catalog.filter.attribute_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeEditRightFilter
     pimee_catalog.filter.attribute_group_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeGroupViewRightFilter

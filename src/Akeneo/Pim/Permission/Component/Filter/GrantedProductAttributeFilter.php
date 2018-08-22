@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PimEnterprise\Component\Catalog\ProductModel\Filter;
+namespace Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;

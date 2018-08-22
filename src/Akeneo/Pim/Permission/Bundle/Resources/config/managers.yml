@@ -71,7 +71,7 @@ services:
             - '@security.token_storage'
 
     pim_catalog.resolver.attribute_values_with_permissions:
-        class: 'PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver'
+        class: 'Akeneo\Pim\Permission\Component\Manager\AttributeValuesResolver'
         decorates: pim_catalog.resolver.attribute_values
         decoration_inner_name: pim_catalog.resolver.attribute_values_without_permission
         arguments:

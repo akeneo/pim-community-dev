@@ -11,6 +11,8 @@
 
 ## BC breaks
 
+- Move `PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Permission\Component\Manager\AttributeValuesResolver`
+- Move `PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter` to `Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter`
 - Move `PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder` to `Akeneo\Pim\Asset\Component\Updater\Adder\AssetCollectionAdder`
 - Move `PimEnterprise\Component\Catalog\\AssetCollectionValueFactory` to `Akeneo\Pim\Asset\Component\AssetCollectionValueFactory`
 - Move namespace `PimEnterprise\Component\Catalog\Security` to `PimEnterprise\Component\Security`
