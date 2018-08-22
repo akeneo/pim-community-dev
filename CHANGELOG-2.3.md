@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7600: Change the default return value of ResetIndexesCommand to true to allow the --no-interaction parameter.
+
 # 2.3.5 (2018-08-22)
 
 ## Bug fixes
