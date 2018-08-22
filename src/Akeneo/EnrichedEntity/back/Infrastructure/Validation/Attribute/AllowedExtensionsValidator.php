@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -32,7 +33,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($allowedExtensions, [new Assert\NotBlank()]);
+        $violations = $validator->validate($allowedExtensions, [new Assert\Type('array')]);
 
         if ($violations->count() > 0) {
             $this->addViolations($violations);
@@ -49,7 +50,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
 
     }
 
-    private function addViolations($violations): void
+    private function addViolations(ConstraintViolationListInterface $violations): void
     {
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
