@@ -14,11 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 /**
- * Exception thrown when a provided suggest data configuration does not allow
- * to connect to the data provider.
- *
- * @author Damien Carcel <damien.carcel@akeneo.com>
+ * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-final class InvalidConnectionConfigurationException extends SuggestDataException
+class ProductSubscriptionException extends SuggestDataException
 {
 }

@@ -15,13 +15,14 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\Family;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class SubscribeProductHandlerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ProductRepositoryInterface $productRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
@@ -35,12 +36,12 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_a_subscribe_product_handler()
+    function it_is_a_subscribe_product_handler()
     {
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_product_does_not_exist(
+    function it_throws_an_exception_if_the_product_does_not_exist(
         $productRepository,
         $identifiersMappingRepository,
         SubscribeProductCommand $command,
@@ -60,7 +61,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
-    public function it_throws_an_exception_if_the_identifiers_mapping_is_empty(
+    function it_throws_an_exception_if_the_identifiers_mapping_is_empty(
         $identifiersMappingRepository,
         SubscribeProductCommand $command,
         IdentifiersMapping $identifierMapping
@@ -69,11 +70,11 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $identifierMapping->isEmpty()->willReturn(true);
 
         $this
-            ->shouldThrow(new \Exception('Identifiers mapping has not identifier defined'))
+            ->shouldThrow(new \Exception('Identifiers mapping has no identifier defined'))
             ->during('handle', [$command]);
     }
 
-    public function it_subscribes_a_product_to_the_data_provider(
+    function it_subscribes_a_product_to_the_data_provider(
         ProductRepositoryInterface $productRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
@@ -86,6 +87,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
 
         $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn(new Family());
         $productRepository->find(42)->willReturn($product);
 
         $command->getProductId()->willReturn(42);

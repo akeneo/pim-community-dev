@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
@@ -63,17 +64,19 @@ class SubscribeProductHandler
 
     /**
      * @param SubscribeProductCommand $command
+     *
+     * @throws ProductSubscriptionException
      */
     public function handle(SubscribeProductCommand $command): void
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
-            throw new \Exception('Identifiers mapping has not identifier defined');
+            throw new ProductSubscriptionException('Identifiers mapping has no identifier defined');
         }
 
         $product = $this->productRepository->find($command->getProductId());
         if (null === $product) {
-            throw new \Exception(sprintf('Could not find product with id "%s"', $command->getProductId()));
+            throw new ProductSubscriptionException(sprintf('Could not find product with id "%s"', $command->getProductId()));
         }
 
         $this->subscribe($product);

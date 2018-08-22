@@ -109,6 +109,11 @@ class DataFixturesContext implements Context
         foreach ($table->getHash() as $familyData) {
             $family = $this->familyFactory->create();
 
+            if (!isset($familyData['code']) || '' === (string)$familyData['code']) {
+                throw new \Exception('Missing required field code for family creation');
+            }
+            $family->setCode($familyData['code']);
+
             $attributeCodes = explode(',', $familyData['attributes']);
             foreach ($attributeCodes as $attributeCode) {
                 $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
