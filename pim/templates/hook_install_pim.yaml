@@ -49,7 +49,7 @@ spec:
             - name: SYMFONY_ENV
               value: prod
             - name: PIM_INSTALLER_DATA
-              value: {{ .Values.pim.defaultCatalogPath }}
+              value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
             - name: PIM_ELASTICSEARCH_HOST
               value: elasticsearch
             - name: PIM_ELASTICSEARCH_PORT
@@ -79,8 +79,8 @@ spec:
             - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
               value:  {{ .Values.onboarder.pubsub.queueName | quote }}
             {{- end }}
-{{- if .Values.common.phpConf }}
-{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
           volumeMounts:
             - name: fpm-data

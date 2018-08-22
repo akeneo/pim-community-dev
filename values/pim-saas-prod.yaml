@@ -5,6 +5,14 @@
 # Charts components default definition
 ###
 
+global:
+  extraLabels:
+  #   pfid: "customer"
+  #   type: "srnt"
+  #   env:  "prod"
+# monitoring in the global scope
+  monitoring:
+    enabled: true
 pim:
   replicas: 1
   numDaemon: 1
@@ -74,6 +82,5 @@ elasticsearch:
         memory: 512Mi
     env:
       NUMBER_OF_MASTERS: "2"
-      # Required to expose /_prometheus/metrics to ServiceMonitor
     stateful:
       size: 1Gi

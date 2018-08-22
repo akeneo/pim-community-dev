@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: label-ns
+  name: label-ns-{{ .Release.Namespace }}
   namespace: kube-system
   labels:
     release: {{ .Release.Name }}
@@ -15,6 +15,7 @@ spec:
       containers:
       - name: labeler
         image: gcr.io/google_containers/hyperkube:v1.9.7
+        imagePullPolicy: IfNotPresent
         command:
         - kubectl
         - label
@@ -23,5 +24,4 @@ spec:
         - namespace={{ .Release.Namespace }}
         - --overwrite
       restartPolicy: Never
-      # use tiller service account since it should have permissions to do namespace labeling
       serviceAccountName: tiller

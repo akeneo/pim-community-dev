@@ -4,19 +4,32 @@ global:
     type: srnt
 # REMOVE REMOVE
     pfid: test-pim
-    
   monitoring:
     enabled: false
-    namespace: monitoring
-
 common:
   extraLabels: []
   pimMasterUrl: nil
   retailerUrl: nil
   mailgunPassword: generateme
-  phpConf:
+  phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"
     value: "60"
+  - name: "PHP_CONF_UPLOAD_LIMIT"
+    value: "512M"
+  - name: "PHP_CONF_MAX_POST_SIZE"
+    value: "512M"
+  - name: "PHP_CONF_MEMORY_LIMIT"
+    value: "512M"
+  - name: "PHP_CONF_DISPLAY_ERRORS"
+    value: "off"
+  - name: "PHP_CONF_ERROR_REPORTING"
+    value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
+  - name: "PHP_CONF_DATE_TIMEZONE"
+    value: "Etc/UTC"
+
+  phpConfCLI:
+  - name: "PHP_CONF_MAX_EXECUTION_TIME"
+    value: "0"
   - name: "PHP_CONF_UPLOAD_LIMIT"
     value: "512M"
   - name: "PHP_CONF_MAX_POST_SIZE"
@@ -30,10 +43,11 @@ common:
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
 
+
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-    tag: cloud2.3-AOB-v1.0.0-BETA2
+    tag: v2.3.4-1
     pullPolicy: Always
   httpd:
     repository: httpd
@@ -59,7 +73,6 @@ pim:
   persistence:
     diskSize: 10Gi
   defaultCatalog: minimal
-  defaultCatalogPath: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/minimal
   jobs:
     batch-purge:
       enabled: false
@@ -122,6 +135,7 @@ mysql:
     userPassword: changeme
     rootPassword: changeme
     defaultDatabase: akeneo_pim
+    dataDiskSize: 10Gi
     stateful:
       enabled: false
 
