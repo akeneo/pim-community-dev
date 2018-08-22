@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Asset\Component\Comparator\Attribute;
+namespace spec\Akeneo\Pim\Asset\Component\Comparator\Attribute;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as EnterpriseAttributeTypes;
-use Akeneo\Asset\Component\Comparator\Attribute\AssetCollectionComparator;
+use Akeneo\Pim\Asset\Component\Comparator\Attribute\AssetCollectionComparator;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

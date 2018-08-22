@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Asset\Bundle\Doctrine\ORM;
+namespace spec\Akeneo\Pim\Asset\Bundle\Doctrine\ORM;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeTypes;
-use Akeneo\Asset\Bundle\Doctrine\ORM\CompletenessRemover;
+use Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Prophecy\Argument;
 

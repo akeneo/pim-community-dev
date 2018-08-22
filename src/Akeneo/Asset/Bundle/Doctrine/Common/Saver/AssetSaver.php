@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

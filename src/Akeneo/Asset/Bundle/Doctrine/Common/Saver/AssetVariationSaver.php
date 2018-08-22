@@ -11,14 +11,13 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

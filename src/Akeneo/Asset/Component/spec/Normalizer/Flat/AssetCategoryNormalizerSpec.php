@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Asset\Component\Normalizer\Flat;
 
+use Akeneo\Asset\Component\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
