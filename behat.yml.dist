@@ -149,6 +149,7 @@ acceptance:
             contexts_services:
                 - test.catalog.product_creation.context
                 - test.catalog.product_validation.context
+                - test.enrichment.enrichment_follow_up_context
             filters:
                 tags: '@acceptance-back'
         channel:
@@ -187,9 +188,10 @@ acceptance:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
-            imports:
-                - 'tests/back/Acceptance/Resources/config/behat/services.yml'
-                - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+           imports:
+               - 'tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/Pim/Enrichment/Bundle/tests/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

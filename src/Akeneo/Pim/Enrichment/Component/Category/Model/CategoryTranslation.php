@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Model;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 
 /**

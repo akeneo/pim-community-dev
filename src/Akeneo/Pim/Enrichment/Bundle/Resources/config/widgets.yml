@@ -2,9 +2,7 @@ services:
     pim_dashboard.widget.completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Widget\CompletenessWidget'
         arguments:
-            - '@pim_catalog.repository.completeness'
             - '@pim_user.context.user'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.locale'
+            - '@akeneo.pim.enrichment.follow_up.completeness_widget_query'
         tags:
             - { name: pim_dashboard.widget, position: 20 }
