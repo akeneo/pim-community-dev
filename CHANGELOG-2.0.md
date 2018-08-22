@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7595: Add missing acl on family variant managment 
 - PIM-7557: Don't display attribute group filter if no attribute is chosen in "edit common attributes" action
 
 # 2.0.34 (2018-08-17)

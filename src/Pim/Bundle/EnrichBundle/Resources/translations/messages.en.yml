@@ -210,6 +210,7 @@ pim_enrich:
             create: Create a family
             edit_properties: Edit properties of a family
             edit_attributes: Edit attributes of a family
+            edit_variants: Edit a family variant
             remove: Remove a family
             history: View family history
         attribute_group:
