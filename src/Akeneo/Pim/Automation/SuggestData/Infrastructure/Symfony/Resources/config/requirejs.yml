@@ -64,7 +64,7 @@ config:
         # Forms
         pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push
         pimee/form/product/subscription-status: akeneosuggestdata/js/product/edit/subscription-status.ts
-        pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation
+        pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation.ts
         pimee/pim-ai-connection/edit: akeneosuggestdata/js/pim-ai/form/edit.ts
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
         pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute.ts
