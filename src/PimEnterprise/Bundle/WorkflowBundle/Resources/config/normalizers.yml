@@ -26,3 +26,18 @@ services:
             - '@pim_catalog.normalizer.standard.product'
         tags:
             - { name: pim_serializer.normalizer, priority: 130 }
+
+    pimee_workflow.normalizer.standard.published_product:
+        class: '%pim_catalog.normalizer.standard.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+            - '@pimee_workflow.normalizer.standard.published_product.associations'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_workflow.normalizer.standard.published_product.associations:
+        class: '%pim_catalog.normalizer.standard.product.associations.class%'
+        arguments:
+            - '@pimee_workflow.query.get_associated_product_codes_by_published_product'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
