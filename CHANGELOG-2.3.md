@@ -3,6 +3,11 @@
 ## Bug fixes
 
 - PIM-7628: Fix the initialization of the product datagrid identifier filter.
+- PIM-7594: Fix memory leak in `pim:versioning:purge` command
+
+## BC breaks
+
+- PIM-7594: Method `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface::findPotentiallyPurgeableBy` returns now an CursorInterface
 
 # 2.3.6 (2018-09-06)
 
