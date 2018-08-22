@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -22,7 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 class InMemoryProductSubscriptionRepository implements ProductSubscriptionRepositoryInterface
 {
-    /** @var array */
+    /** @var ProductSubscription[] */
     private $subscriptions = [];
 
     /**
@@ -42,7 +43,16 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
         ProductInterface $product,
         string $subscriptionId
     ): ?ProductSubscriptionInterface {
-        return $this->subscriptions[$product->getId()] ?? null;
+        if (!isset($this->subscriptions[$product->getId()])) {
+            return null;
+        }
+
+        $subscription = $this->subscriptions[$product->getId()];
+        if ($subscriptionId !== $subscription->getSubscriptionId()) {
+            return null;
+        }
+
+        return $subscription;
     }
 
     /**
@@ -55,16 +65,14 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     }
 
     /**
-     * @param $productId
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function existsForProductId(int $productId): bool
+    public function getSubscriptionStatusForProductId(int $productId): array
     {
         if (!isset($this->subscriptions[$productId])) {
-            return false;
+            return ['subscription_id' => ''];
         }
 
-        return count($this->subscriptions[$productId]) > 0;
+        return ['subscription_id' => $this->subscriptions[$productId]->getSubscriptionId()];
     }
 }

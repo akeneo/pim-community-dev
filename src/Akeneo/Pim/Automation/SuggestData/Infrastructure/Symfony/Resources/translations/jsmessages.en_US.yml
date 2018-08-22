@@ -51,6 +51,7 @@ akeneo_suggest_data:
             flash:
                 success: Successfully asked for suggest data
                 error: Error during suggest data
+            subscription_status_title: 'Franklin Subscription'
 
     pim_ai:
         page_title: 'PIM.ai connection'

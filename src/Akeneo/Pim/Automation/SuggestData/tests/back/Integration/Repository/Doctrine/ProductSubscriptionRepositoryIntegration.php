@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Doctrine\Repository;
+namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
@@ -19,6 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepos
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\ORM\EntityManager;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -39,8 +40,8 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         );
         $retrievedSubscriptions = $statement->fetchAll();
 
-        static::assertCount(1, $retrievedSubscriptions);
-        static::assertEquals(
+        Assert::assertCount(1, $retrievedSubscriptions);
+        Assert::assertEquals(
             [
                 'product_id'      => $product->getId(),
                 'subscription_id' => $subscriptionId,
@@ -73,10 +74,48 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         );
 
         $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
-        static::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
-        static::assertSame($product, $subscription->getProduct());
-        static::assertSame($subscriptionId, $subscription->getSubscriptionId());
-        static::assertSame($suggestedData, $subscription->getSuggestedData());
+        Assert::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
+        Assert::assertSame($product, $subscription->getProduct());
+        Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
+        Assert::assertSame($suggestedData, $subscription->getSuggestedData());
+    }
+
+    function test_that_it_gets_a_subscription_status_for_a_subscribed_product_id()
+    {
+        $product = $this->createProduct('a_product');
+        $subscriptionId = uniqid();
+
+        $query = <<<SQL
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, suggested_data) 
+VALUES (:productId, :subscriptionId, :suggestedData)
+SQL;
+
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute([
+            'productId'      => $product->getId(),
+            'subscriptionId' => $subscriptionId,
+            'suggestedData'  => json_encode([]),
+        ]);
+
+        $subscriptionStatus = $this->getRepository()->getSubscriptionStatusForProductId($product->getId());
+
+        Assert::assertTrue(is_array($subscriptionStatus));
+        Assert::assertSame(
+            ['subscription_id' => $subscriptionId],
+            $subscriptionStatus
+        );
+    }
+
+    function test_that_it_gets_a_subscription_status_for_a_non_subscribed_product_id()
+    {
+        $subscriptionStatus = $this->getRepository()->getSubscriptionStatusForProductId(42);
+
+        Assert::assertTrue(is_array($subscriptionStatus));
+        Assert::assertSame(
+            ['subscription_id' => ''],
+            $subscriptionStatus
+        );
     }
 
     /**

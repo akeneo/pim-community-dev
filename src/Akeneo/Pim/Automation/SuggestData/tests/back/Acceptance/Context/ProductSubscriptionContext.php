@@ -86,8 +86,13 @@ class ProductSubscriptionContext implements Context
     public function theProductShouldBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
+        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId(
+            $product->getId()
+        );
 
-        Assert::true($this->productSubscriptionRepository->existsForProductId($product->getId()));
+        Assert::isArray($subscriptionStatus);
+        Assert::keyExists($subscriptionStatus, 'subscription_id');
+        Assert::notEmpty($subscriptionStatus['subscription_id']);
     }
 
     /**
