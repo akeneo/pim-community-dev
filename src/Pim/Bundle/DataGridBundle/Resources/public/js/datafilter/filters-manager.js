@@ -105,8 +105,6 @@ define(
                 this.filters = options.filters;
             }
 
-            console.log('filters-manager', options)
-
             this.displayAsPanel = options.displayAsPanel;
 
             _.each(this.filters, function (filter) {

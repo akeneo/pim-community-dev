@@ -8,9 +8,11 @@ interface FiltersConfig {
   description: string
 }
 
-interface Filter {
+interface GridFilter {
     group: string
     label: string
+    name: string
+    enabled: boolean
 }
 
 // @TODO only load when you expand the column
@@ -18,8 +20,8 @@ interface Filter {
 
 class FiltersColumn extends BaseView {
   public timer: any = null
-  public defaultFilters: Filter[]
-  public loadedFilters: Filter[]
+  public defaultFilters: GridFilter[] = []
+  public loadedFilters: GridFilter[] = []
   public page: number = 1
 
   readonly config: FiltersConfig
@@ -58,13 +60,30 @@ class FiltersColumn extends BaseView {
     super(options)
 
     this.config = {...this.config, ...options.config}
+    this.defaultFilters = []
+    this.loadedFilters = []
   }
 
   public events(): Backbone.EventsHash {
     return {
       'keyup input[type="search"]': 'searchFilters',
+      'change input[type="checkbox"]': 'toggleFilter',
       'scroll .filter-list': 'fetchNextFilters'
     }
+  }
+
+  toggleFilter(event: JQueryEventObject): void {
+    const name = $(event.currentTarget).attr('id')
+    const checked = $(event.currentTarget).is(':checked')
+    const filter = this.loadedFilters.find(filter => filter.name === name)
+
+    if (filter) {
+        filter.enabled = checked
+    }
+  }
+
+  getEnabledFilters(): GridFilter[] {
+    return this.loadedFilters.filter((filter: GridFilter) => filter.enabled)
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
@@ -111,10 +130,10 @@ class FiltersColumn extends BaseView {
           return this.renderFilters()
       }
 
-      this.fetchFilters(searchValue, 1).then((loadedFilters: Filter[]) => {
-        const filters: Filter[] = this.defaultFilters.concat(loadedFilters)
+     return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
+        const filters: GridFilter[] = this.defaultFilters.concat(loadedFilters)
 
-        return this.renderFilters(filters.filter((filter: Filter) => {
+        return this.renderFilters(filters.filter((filter: GridFilter) => {
             const label: string = filter.label.toLowerCase()
 
             return label.includes(searchValue.toLowerCase())
@@ -138,7 +157,7 @@ class FiltersColumn extends BaseView {
     this.el.appendChild(list);
 
     for (let groupName in groupedFilters) {
-        const group: Filter[] = groupedFilters[groupName]
+        const group: GridFilter[] = groupedFilters[groupName]
         const groupElement = this.renderFilterGroup(group, groupName)
         list.appendChild($(groupElement).get(0));
     }
@@ -150,7 +169,7 @@ class FiltersColumn extends BaseView {
     const metadata = gridElement.data('metadata') || {}
 
     this.defaultFilters = metadata.filters
-    this.fetchFilters().then((loadedFilters: Filter[]) => {
+    this.fetchFilters().then((loadedFilters: GridFilter[]) => {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
@@ -166,12 +185,12 @@ class FiltersColumn extends BaseView {
       console.log('render selected filters', this.getSelectedFilters())
   }
 
-  renderFilterGroup(filters: Filter[], groupName: string) {
-      return _.template(this.filterGroupTemplate)({ filters, groupName})
+  renderFilterGroup(filters: GridFilter[], groupName: string) {
+      return _.template(this.filterGroupTemplate)({ filters, groupName })
   }
 
-  groupFilters(filters: Filter[]) {
-      return _.groupBy(filters, (filter: Filter) => filter.group || 'System')
+  groupFilters(filters: GridFilter[]) {
+      return _.groupBy(filters, (filter: GridFilter) => filter.group || 'System')
   }
 
   configure() {
