@@ -18,6 +18,7 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
+    And PIM.ai is configured with a valid token
     When I subscribe the product "ts_0013" to PIM.ai
     Then the product "ts_0013" should be subscribed
 
@@ -32,6 +33,7 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
+    And PIM.ai is configured with a valid token
     When I subscribe the product "product_without_family" to PIM.ai
     Then the product "product_without_family" should not be subscribed
 
@@ -49,6 +51,7 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
+    And PIM.ai is configured with a valid token
     When I subscribe the product "product_without_values" to PIM.ai
     Then the product "product_without_values" should not be subscribed
 
@@ -63,11 +66,30 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
+    And PIM.ai is configured with a valid token
     And the following product subscribed to pim.ai:
       | identifier | family | ean          |
       | ts_0013    | tshirt | 606449099812 |
     When I subscribe the product "ts_0013" to PIM.ai
     Then the product "ts_0013" should be subscribed
+
+  Scenario: Fail to subscribe a product with an invalid token
+    Given the following attribute:
+      | code | type                   |
+      | ean  | pim_catalog_text       |
+      | sku  | pim_catalog_identifier |
+    And the following family:
+      | code   | attributes |
+      | tshirt | sku,ean    |
+    And the following product:
+      | identifier | family | ean          |
+      | ts_0013    | tshirt | 606449099812 |
+    And a predefined mapping as follows:
+      | pim_ai_code | attribute_code |
+      | upc         | ean            |
+    And PIM.ai is configured with an expired token
+    When I subscribe the product "ts_0013" to PIM.ai
+    Then the product "ts_0013" should not be subscribed
 
   #Scenario: Fail to subscribe a product that does not exist
 
