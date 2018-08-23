@@ -25,13 +25,11 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $productRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $identifiersMappingRepository,
             $subscriptionRepository,
             $dataProviderFactory
         );
@@ -42,14 +40,8 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    function it_throws_an_exception_if_the_product_does_not_exist(
-        $productRepository,
-        $identifiersMappingRepository,
-        IdentifiersMapping $identifiersMapping
-    ) {
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isEmpty()->willReturn(false);
-
+    function it_throws_an_exception_if_the_product_does_not_exist($productRepository)
+    {
         $productId = 42;
         $productRepository->find($productId)->willReturn(null);
 
@@ -63,13 +55,8 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_product_has_no_family(
         $productRepository,
-        $identifiersMappingRepository,
-        IdentifiersMapping $identifiersMapping,
         ProductInterface $product
     ) {
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-        $identifiersMapping->isEmpty()->willReturn(false);
-
         $productId = 42;
         $productRepository->find($productId)->willReturn($product);
         $product->getFamily()->willReturn(null);
@@ -80,27 +67,11 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
-    function it_throws_an_exception_if_the_identifiers_mapping_is_empty(
-        $identifiersMappingRepository,
-        IdentifiersMapping $identifierMapping
-    ) {
-        $identifiersMappingRepository->find()->willReturn($identifierMapping);
-        $identifierMapping->isEmpty()->willReturn(true);
-
-        $this
-            ->shouldThrow(new ProductSubscriptionException('Identifiers mapping has no identifier defined'))
-            ->during('handle', [new SubscribeProductCommand(42)]);
-    }
-
     function it_throws_an_exception_if_the_product_is_already_subscribed(
         $productRepository,
-        $identifiersMappingRepository,
         $subscriptionRepository,
         ProductInterface $product
     ) {
-        $identifiersMapping = new IdentifiersMapping(['foo' => 'bar']);
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
@@ -118,15 +89,11 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_data_provider_sends_an_error(
         ProductRepositoryInterface $productRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider,
         ProductInterface $product
     ) {
-        $identifiersMapping = new IdentifiersMapping(['foo' => 'bar']);
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
@@ -146,15 +113,11 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
     function it_subscribes_a_product_to_the_data_provider(
         ProductRepositoryInterface $productRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider,
         ProductInterface $product
     ) {
-        $identifiersMapping = new IdentifiersMapping(['foo' => 'bar']);
-        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
-
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
