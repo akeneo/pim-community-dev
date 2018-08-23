@@ -18,9 +18,14 @@ Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnri
         - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityIdentifierShouldBeUnique: { groups: [other_constraints] }
 
 Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand:
+    group_sequence:
+        - DeleteEnrichedEntityCommand
+        - other_constraints
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+    constraints:
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldHaveNoRecord: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:

@@ -69,6 +69,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_has_records:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityHasRecords'
+        arguments:
+            - '@database_connection'
+
     akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler:
         class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler'
         arguments:

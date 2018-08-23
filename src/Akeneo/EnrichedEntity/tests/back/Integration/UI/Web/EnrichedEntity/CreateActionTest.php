@@ -143,7 +143,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-'[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer"},"plural":null,"message":"pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique","root":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer"},"plural":null,"message":"An enriched entity already exists with identifier \u0022designer\u0022","root":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
     }
 
     /**

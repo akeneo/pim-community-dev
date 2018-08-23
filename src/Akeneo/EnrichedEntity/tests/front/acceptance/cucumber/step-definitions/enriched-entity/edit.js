@@ -1,4 +1,5 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
+const Header = require('../../decorators/enriched-entity/app/header.decorator');
 const path = require('path');
 
 const {
@@ -11,6 +12,10 @@ module.exports = async function(cucumber) {
   const assert = require('assert');
 
   const config = {
+    Header: {
+      selector: '.AknTitleContainer',
+      decorator: Header
+    },
     Edit: {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
@@ -158,5 +163,95 @@ module.exports = async function(cucumber) {
     const hasErrorNotification = await editPage.hasErrorNotification();
 
     assert.strictEqual(hasErrorNotification, true);
+  });
+
+  When('the user deletes the enriched entity {string}', async function(identifier) {
+    const header = await await getElement(this.page, 'Header');
+
+    this.page.once('request', request => {
+      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
+        request.respond({
+          status: 204,
+          contentType: 'application/json',
+          body: null,
+        });
+      }
+    });
+
+    this.page.once('dialog', async dialog => {
+      await dialog.accept();
+    });
+
+    header.clickOnDeleteButton();
+  });
+
+  When('the user fails to delete the enriched entity {string}', async function (identifier) {
+    const header = await await getElement(this.page, 'Header');
+    const response = JSON.stringify([{
+      'messageTemplate': 'pim_enriched_entity.enriched_entity.validation.records.should_have_no_record',
+      'parameters': {'%enriched_entity_identifier%': []},
+      'plural': null,
+      'message': 'You cannot delete this entity because records exist for this entity',
+      'root': {'identifier': `${identifier}`},
+      'propertyPath': '',
+      'invalidValue': {'identifier': `${identifier}`},
+      'constraint': {'targets': 'class', 'defaultOption': null, 'requiredOptions': [], 'payload': null},
+      'cause': null,
+      'code': null
+    }]);
+
+    this.page.once('request', request => {
+      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
+        request.respond({
+          status: 400,
+          contentType: 'application/json',
+          body: response,
+        });
+      }
+    });
+
+    this.page.once('dialog', async dialog => {
+      await dialog.accept();
+    });
+
+    header.clickOnDeleteButton();
+  });
+
+  When('the user refuses to delete the current enriched entity', async function () {
+    const header = await await getElement(this.page, 'Header');
+
+    this.page.once('dialog', async dialog => {
+      await dialog.dismiss();
+    });
+
+    header.clickOnDeleteButton();
+  });
+
+  Then('the user should see the deleted notification', async function() {
+    const editPage = await await getElement(this.page, 'Edit');
+    const hasSuccessNotification = await editPage.hasSuccessNotification();
+
+    assert.strictEqual(hasSuccessNotification, true);
+  });
+
+  Then('the user should see the delete notification error', async function() {
+    const editPage = await await getElement(this.page, 'Edit');
+    const hasErrorNotification = await editPage.hasErrorNotification();
+
+    assert.strictEqual(hasErrorNotification, true);
+  });
+
+  Then('the user should not be notified that deletion has been made', async function () {
+    const editPage = await await getElement(this.page, 'Edit');
+    const hasNoNotification = await editPage.hasNoNotification();
+
+    assert.strictEqual(hasNoNotification, true);
+  });
+
+  Then('the user should not see the deletion button', async function () {
+    const header = await await getElement(this.page, 'Header');
+    const isDeleteButtonVisible = await header.isDeleteButtonVisible();
+
+    assert.strictEqual(isDeleteButtonVisible, false);
   });
 };

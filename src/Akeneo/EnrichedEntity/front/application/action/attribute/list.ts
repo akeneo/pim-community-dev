@@ -4,8 +4,12 @@ import Attribute from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import attributeFetcher from 'akeneoenrichedentity/infrastructure/fetcher/attribute';
 import attributeRemover from 'akeneoenrichedentity/infrastructure/remover/attribute';
 import {attributeListUpdated} from 'akeneoenrichedentity/domain/event/attribute/list';
-import {notifyAttributeListUpdateFailed, notifyAttributeWellDeleted, notifyAttributeDeletionFailed} from 'akeneoenrichedentity/application/action/attribute/notify';
-import {attributeDeleted} from 'akeneoenrichedentity/domain/event/attribute/list'
+import {
+  notifyAttributeListUpdateFailed,
+  notifyAttributeWellDeleted,
+  notifyAttributeDeletionFailed,
+} from 'akeneoenrichedentity/application/action/attribute/notify';
+import {attributeDeleted} from 'akeneoenrichedentity/domain/event/attribute/list';
 
 export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = denormalizeEnrichedEntity(getState().form.data);

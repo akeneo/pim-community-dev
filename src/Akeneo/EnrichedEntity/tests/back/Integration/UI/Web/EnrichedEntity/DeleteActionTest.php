@@ -7,7 +7,11 @@ namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\EnrichedEntity;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
@@ -129,20 +133,68 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_an_error_if_the_enriched_entity_has_some_records()
+    {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            ['identifier' => 'brand'],
+            'DELETE',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ]
+        );
+
+        $expectedResponse = '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.records.should_have_no_record","parameters":{"%enriched_entity_identifier%":[]},"plural":null,"message":"You cannot delete this entity because records exist for this entity","root":{"identifier":"brand"},"propertyPath":"","invalidValue":{"identifier":"brand"},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
+    }
+
     private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
     {
         return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
     }
 
+    private function getRecordRepository(): RecordRepositoryInterface
+    {
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+    }
+
+    private function resetDB(): void
+    {
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
+    }
+
     private function loadFixtures(): void
     {
         $enrichedEntityRepository = $this->getEnrichEntityRepository();
+        $recordRepository = $this->getRecordRepository();
 
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
         $enrichedEntityRepository->create($entityItem);
+
+        $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [
+            'en_US' => 'Brand',
+            'fr_FR' => 'Marque',
+        ]);
+        $enrichedEntityRepository->create($entityItem);
+
+        $recordItem = Record::create(
+            RecordIdentifier::create('brand', 'asus'),
+            EnrichedEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('asus'),
+            [
+                'en_US' => 'ASUS',
+                'fr_FR' => 'ASUS',
+            ]
+        );
+        $recordRepository->create($recordItem);
 
         $user = new User();
         $user->setUsername('julia');

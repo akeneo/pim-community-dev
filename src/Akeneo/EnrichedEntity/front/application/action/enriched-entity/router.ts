@@ -6,3 +6,7 @@ export const redirectToEnrichedEntity = (enrichedEntity: EnrichedEntity) => {
     identifier: enrichedEntity.getIdentifier().stringValue(),
   });
 };
+
+export const redirectToEnrichedEntityIndex = () => {
+  return redirectToRoute('akeneo_enriched_entities_enriched_entity_index', {});
+};

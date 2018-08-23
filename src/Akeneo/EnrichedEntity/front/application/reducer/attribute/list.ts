@@ -1,6 +1,6 @@
 import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import AttributeCode from 'akeneoenrichedentity/domain/model/attribute/code';
-import {denormalizeAttribute} from "akeneoenrichedentity/domain/model/attribute/attribute";
+import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 
 export interface ListState {
   attributes: NormalizedAttribute[];
@@ -16,7 +16,12 @@ export default (
       state = {...state, attributes};
       break;
     case 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED':
-      state = {...state, attributes: state.attributes.filter((currentAttribute: NormalizedAttribute) => !denormalizeAttribute(currentAttribute).equals(deletedAttribute))};
+      state = {
+        ...state,
+        attributes: state.attributes.filter(
+          (currentAttribute: NormalizedAttribute) => !denormalizeAttribute(currentAttribute).equals(deletedAttribute)
+        ),
+      };
       break;
     default:
       break;

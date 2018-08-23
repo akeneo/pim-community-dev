@@ -12,13 +12,10 @@ export class AttributeRemoverImplementation implements AttributeRemover<Attribut
 
   async remove(attributeIdentifier: AttributeIdentifier): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate(
-        'akeneo_enriched_entities_attribute_delete_rest',
-        {
-          attributeIdentifier: attributeIdentifier.normalize().identifier,
-          enrichedEntityIdentifier: attributeIdentifier.normalize().enrichedEntityIdentifier
-        }
-      )
+      routing.generate('akeneo_enriched_entities_attribute_delete_rest', {
+        attributeIdentifier: attributeIdentifier.normalize().identifier,
+        enrichedEntityIdentifier: attributeIdentifier.normalize().enrichedEntityIdentifier,
+      })
     ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');

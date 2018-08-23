@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
@@ -71,6 +72,17 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         $key = $this->getKey($identifier);
 
         return isset($this->records[$key]);
+    }
+
+    public function enrichedEntityHasRecords(EnrichedEntityIdentifier $enrichedEntityIdentifier)
+    {
+        foreach ($this->records as $record) {
+            if ($record->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getKey(RecordIdentifier $recordIdentifier): string

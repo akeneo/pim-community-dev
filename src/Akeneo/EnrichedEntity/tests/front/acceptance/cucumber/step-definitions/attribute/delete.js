@@ -83,20 +83,6 @@ module.exports = async function(cucumber) {
     }
   );
 
-  Then('the user should see the deleted notification', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
-    const hasSuccessNotification = await editPage.hasSuccessNotification();
-
-    assert.strictEqual(hasSuccessNotification, true);
-  });
-
-  Then('the user should see the delete notification error', async function() {
-    const editPage = await await getElement(this.page, 'Edit');
-    const hasErrorNotification = await editPage.hasErrorNotification();
-
-    assert.strictEqual(hasErrorNotification, true);
-  });
-
   Then('the user should not see the delete notification', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasNoNotification = await editPage.hasNoNotification();
