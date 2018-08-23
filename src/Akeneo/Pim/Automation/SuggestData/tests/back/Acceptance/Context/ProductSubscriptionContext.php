@@ -77,7 +77,7 @@ class ProductSubscriptionContext implements Context
         $this->dataFixturesContext->theFollowingProduct($table);
 
         $productDefinition = $table->getColumnsHash()[0];
-        $this->subscribeProductToPimAi($productDefinition['identifier']);
+        $this->subscribeProductToPimAi($productDefinition['identifier'], true);
     }
 
     /**

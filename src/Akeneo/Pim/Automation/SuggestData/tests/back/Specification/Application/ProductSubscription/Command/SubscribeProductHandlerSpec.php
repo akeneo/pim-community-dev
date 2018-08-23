@@ -82,7 +82,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_identifiers_mapping_is_empty(
         $identifiersMappingRepository,
-        SubscribeProductCommand $command,
         IdentifiersMapping $identifierMapping
     ) {
         $identifiersMappingRepository->find()->willReturn($identifierMapping);
@@ -90,11 +89,34 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new ProductSubscriptionException('Identifiers mapping has no identifier defined'))
-            ->during('handle', [$command]);
+            ->during('handle', [new SubscribeProductCommand(42)]);
     }
 
-    function it_throws_an_exception_if_data_provider_sends_an_error
-    (
+    function it_throws_an_exception_if_the_product_is_already_subscribed(
+        $productRepository,
+        $identifiersMappingRepository,
+        $subscriptionRepository,
+        ProductInterface $product
+    ) {
+        $identifiersMapping = new IdentifiersMapping(['foo' => 'bar']);
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
+
+        $productId = 42;
+        $product->getId()->willReturn($productId);
+        $product->getFamily()->willReturn(new Family());
+        $productRepository->find(42)->willReturn($product);
+
+        $subscriptionRepository->getSubscriptionStatusForProductId(42)->willReturn(
+            ['subscription_id' => 'a-subscription-id']
+        );
+
+        $command = new SubscribeProductCommand($productId);
+        $this->shouldThrow(
+            new ProductSubscriptionException(sprintf('The product with id "%d" is alreaduy subscribed', $productId))
+        )->during('handle', [$command]);
+    }
+
+    function it_throws_an_exception_if_data_provider_sends_an_error(
         ProductRepositoryInterface $productRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
@@ -109,8 +131,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
         $productRepository->find(42)->willReturn($product);
-
-        $subscriptionRepository->findOneByProductAndSubscriptionId($product, 'test-id')->willReturn(null);
+        $subscriptionRepository->getSubscriptionStatusForProductId(42)->willReturn(['subscription_id' => '']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willThrow(
@@ -139,7 +160,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $product->getFamily()->willReturn(new Family());
         $productRepository->find(42)->willReturn($product);
 
-        $subscriptionRepository->findOneByProductAndSubscriptionId($product, 'test-id')->willReturn(null);
+        $subscriptionRepository->getSubscriptionStatusForProductId(42)->willReturn(['subscription_id' => '']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $response = new ProductSubscriptionResponse($product->getWrappedObject(), 'test-id', []);
