@@ -66,7 +66,7 @@ CREATE TABLE `@pimee_teamwork_assistant.completeness_per_attribute_group@` (
     CONSTRAINT `attr_grp_completeness_channel_foreign_key` FOREIGN KEY (`channel_id`) REFERENCES `@pim_catalog.entity.channel@` (id) ON DELETE CASCADE,
     CONSTRAINT `attr_grp_completeness_product_foreign_key` FOREIGN KEY (`product_id`) REFERENCES `@pim_catalog.entity.product@` (id) ON DELETE CASCADE,
     CONSTRAINT `attr_grp_completeness_attribute_group_foreign_key` FOREIGN KEY (`attribute_group_id`) REFERENCES `@pim_catalog.entity.attribute_group@` (id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `@pimee_teamwork_assistant.project_product@`;
 CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
@@ -77,7 +77,7 @@ CREATE TABLE `@pimee_teamwork_assistant.project_product@` (
   KEY `product_selection_product_index`  (`product_id`),
   CONSTRAINT product_selection_project_foreign_key FOREIGN KEY (`project_id`) REFERENCES `@pimee_teamwork_assistant.model.project@` (id) ON DELETE CASCADE,
   CONSTRAINT product_selection_product_foreign_key FOREIGN KEY (`product_id`) REFERENCES `@pim_catalog.entity.product@` (id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 
         $sql = $this->getContainer()->get('pimee_teamwork_assistant.table_name_mapper')->createQuery($sql);

@@ -11,9 +11,11 @@
 - PAV3-4: Regroup PAM Classes
 - Composer use Packagist to retrieve pim-community-dev
 - Uses centralized community edition technical requirements
+- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
 
 ## BC breaks
 
+- MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts applies the conversion.
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension` to `Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents`
 - Move `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\OroToPimGridFilterAdapter`
