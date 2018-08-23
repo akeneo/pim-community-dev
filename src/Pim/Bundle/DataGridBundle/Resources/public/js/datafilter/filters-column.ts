@@ -68,8 +68,13 @@ class FiltersColumn extends BaseView {
     return {
       'keyup input[type="search"]': 'searchFilters',
       'change input[type="checkbox"]': 'toggleFilter',
-      'scroll .filter-list': 'fetchNextFilters'
+      'scroll .filter-list': 'fetchNextFilters',
+      'click .AknFilterBox-addFilterButton': 'togglePanel'
     }
+  }
+
+  togglePanel() {
+    console.log('toggle panel')
   }
 
   toggleFilter(event: JQueryEventObject): void {
@@ -80,10 +85,6 @@ class FiltersColumn extends BaseView {
     if (filter) {
         filter.enabled = checked
     }
-  }
-
-  getEnabledFilters(): GridFilter[] {
-    return this.loadedFilters.filter((filter: GridFilter) => filter.enabled)
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
