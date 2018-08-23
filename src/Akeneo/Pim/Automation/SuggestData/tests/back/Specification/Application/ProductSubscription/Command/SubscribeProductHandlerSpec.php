@@ -87,30 +87,6 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
-    function it_throws_an_exception_if_data_provider_sends_an_error(
-        ProductRepositoryInterface $productRepository,
-        ProductSubscriptionRepositoryInterface $subscriptionRepository,
-        DataProviderFactory $dataProviderFactory,
-        DataProviderInterface $dataProvider,
-        ProductInterface $product
-    ) {
-        $productId = 42;
-        $product->getId()->willReturn($productId);
-        $product->getFamily()->willReturn(new Family());
-        $productRepository->find(42)->willReturn($product);
-        $subscriptionRepository->getSubscriptionStatusForProductId(42)->willReturn(['subscription_id' => '']);
-
-        $dataProviderFactory->create()->willReturn($dataProvider);
-        $dataProvider->subscribe(Argument::type(ProductSubscriptionRequest::class))->willThrow(
-            new \Exception('exception-message')
-        );
-
-        $command = new SubscribeProductCommand($productId);
-        $this
-            ->shouldThrow(new ProductSubscriptionException('exception-message'))
-            ->during('handle', [$command]);
-    }
-
     function it_subscribes_a_product_to_the_data_provider(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,

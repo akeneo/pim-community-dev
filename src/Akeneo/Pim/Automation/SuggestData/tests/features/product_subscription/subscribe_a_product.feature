@@ -93,19 +93,11 @@ Feature: Subscribe a product to PIM.ai
 
   #Scenario: Fail to subscribe a product that does not exist
 
-  #Scenario: Fail to subscribe a product with an invalid token
-  # Should return a 403
-
   #Scenario: Fail to subscribe a product that has an incorrect UPC
   # wrong UPC format
 
-  #Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
-
   #Scenario: Fail to subscribe a product that does not have one value on mapped identifiers
   # Check with MPN + Brand with Brand not filled
-
-  #Scenario: Fail to subscribe a product with an invalid identifiers mapping
-  # No request to PIM.ai
 
   #Scenario: Subscribe a product without enough money on PIM.ai account
   # Should return a 402

@@ -75,12 +75,8 @@ class SubscribeProductHandler
     {
         $subscriptionRequest = new ProductSubscriptionRequest($product);
         $dataProvider = $this->dataProviderFactory->create();
-        try {
-            $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
-        } catch (\Exception $e) {
-            throw new ProductSubscriptionException($e->getMessage());
-        }
 
+        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription($product, $subscriptionResponse->getSubscriptionId());
         $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
 
