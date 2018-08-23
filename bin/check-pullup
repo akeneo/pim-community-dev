@@ -144,6 +144,8 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Bundle/PdfGeneratorBundle', new Moved('src/Akeneo/Pim/Enrichment')),
         new ForbiddenDirectory('src/Pim/Bundle/UserBundle', new Moved('src/Akeneo/UserManagement')),
         new ForbiddenDirectory('src/Pim/Bundle/VersioningBundle', new Moved('src/Akeneo/Tool')),
+        new ForbiddenDirectory('src/Pim/Bundle/PimUIBundle', new Moved('src/Akeneo/Platform')),
+        new ForbiddenDirectory('src/Pim/Bundle/NavigationBundle', new Moved('src/Akeneo/Platform/Bundle/UIBundle')),
 
         // Community Components
         new ForbiddenDirectory('src/Pim/Component/Api', Dispatched::everywhereCommunity()),
@@ -190,6 +192,7 @@ $pullUpOk = $check(
 
         // Enterprise Components
         new ForbiddenDirectory('src/PimEnterprise/Component/Api', Dispatched::mainEnterpriseBusinessTopics()),
+        new ForbiddenDirectory('src/PimEnterprise/Component/Catalog', Dispatched::mainEnterpriseBusinessTopics()),
         new ForbiddenDirectory('src/PimEnterprise/Component/CatalogRule', new Moved('src/Akeneo/Pim/Automation')),
         new ForbiddenDirectory('src/PimEnterprise/Component/Connector', Dispatched::mainEnterpriseBusinessTopics()),
         new ForbiddenDirectory('src/PimEnterprise/Component/ProductAsset', new Moved('src/Akeneo/Asset')),
