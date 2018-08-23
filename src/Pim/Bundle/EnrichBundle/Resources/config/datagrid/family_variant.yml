@@ -33,6 +33,7 @@ datagrid:
                 fetcher:      family-variant
                 form:         pim-family-variant-edit-form
                 rowAction:    true
+                acl_resource: pim_enrich_family_edit_variants
         filters:
             columns:
                 label:
