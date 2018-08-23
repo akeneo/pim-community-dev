@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Manager;
+namespace spec\Akeneo\Pim\Permission\Component\Manager;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInter
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver;
+use Akeneo\Pim\Permission\Component\Manager\AttributeValuesResolver;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

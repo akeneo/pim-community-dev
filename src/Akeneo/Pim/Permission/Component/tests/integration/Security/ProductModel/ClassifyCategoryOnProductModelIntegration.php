@@ -1,8 +1,8 @@
 <?php
 
-namespace PimEnterprise\Component\Catalog\tests\integration\Security\Product;
+namespace Akeneo\Pim\Permission\Component\tests\integration\Security\ProductModel;
 
-use PimEnterprise\Component\Catalog\tests\integration\Security\AbstractSecurityTestCase;
+use Akeneo\Pim\Permission\Component\tests\integration\Security\AbstractSecurityTestCase;
 
 /**
  * +----------+--------------------------------------------------------------------------+

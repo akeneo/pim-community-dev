@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Catalog;
+namespace Akeneo\Pim\Asset\Component;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;

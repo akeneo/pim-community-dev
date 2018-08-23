@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Component\Catalog\Updater\Adder;
+namespace spec\Akeneo\Pim\Asset\Component\Updater\Adder;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;

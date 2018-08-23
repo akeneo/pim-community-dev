@@ -2,24 +2,17 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Component\Catalog\ProductModel\Filter;
+namespace spec\Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
-use PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter;
+use Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GrantedProductAttributeFilterSpec extends ObjectBehavior

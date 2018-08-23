@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog;
+namespace spec\Akeneo\Pim\Asset\Component;
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
-use PimEnterprise\Component\Catalog\AssetCollectionValueFactory;
+use Akeneo\Pim\Asset\Component\AssetCollectionValueFactory;
 use Prophecy\Argument;
 
 class AssetCollectionValueFactorySpec extends ObjectBehavior
