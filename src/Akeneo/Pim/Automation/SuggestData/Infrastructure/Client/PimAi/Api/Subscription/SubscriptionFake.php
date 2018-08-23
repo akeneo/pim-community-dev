@@ -29,8 +29,9 @@ final class SubscriptionFake implements SubscriptionApiInterface
         );
     }
 
-    public function fetchProducts(): array
+    public function fetchProducts(): ApiResponse
     {
         // TODO: Implement fetchProducts() method.
+        return [];
     }
 }

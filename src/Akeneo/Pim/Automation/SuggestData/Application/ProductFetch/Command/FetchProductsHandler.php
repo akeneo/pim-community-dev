@@ -35,8 +35,6 @@ class FetchProductsHandler
         $dataProvider = $this->dataProviderFactory->create();
         $subscriptions = $dataProvider->fetch();
 
-        echo "pouic";
-
         // TODO: Store fetched data in DB
 
 

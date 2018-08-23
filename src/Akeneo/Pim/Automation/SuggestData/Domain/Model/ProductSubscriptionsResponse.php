@@ -21,10 +21,24 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-final class ProductSubscriptionsResponse
+class ProductSubscriptionsResponse implements \Countable
 {
-    public function __construct(array $productSubscriptionsResponse)
+
+    private $collection = [];
+
+    public function __construct(array $collection)
     {
-        $this->productSubscriptions = [];
+        foreach ($collection as $rawApiResponse) {
+            $this->collection[] = new ProductSubscriptionResponse(
+                $rawApiResponse
+            );
+        }
     }
+
+    public function count()
+    {
+        return count($this->collection);
+    }
+
+
 }

@@ -95,29 +95,10 @@ class PimAI implements DataProviderInterface
      */
     public function fetch(): ProductSubscriptionsResponse
     {
-        try {
-            $response = $this->subscriptionApi->fetchProducts();
+        $clientResponse = $this->subscriptionApi->fetchProducts();
 
-
-
-        } catch (ServerException $e) {
-            throw new PimAiServerException(
-                sprintf('Something went wrong on PIM.ai side during product subscription : ', $e->getMessage())
-            );
-        } catch (ClientException $e) {
-            if ($e->getCode() === Response::HTTP_PAYMENT_REQUIRED) {
-                throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
-            }
-            if ($e->getCode() === Response::HTTP_FORBIDDEN) {
-                throw new InvalidTokenException('The PIM.ai token is missing or invalid');
-            }
-
-            throw new BadRequestException(sprintf('Something went wrong during product subscription : ', $e->getMessage()));
-        }
-
-        var_dump($response);
-
-        return new ProductSubcriptionsResponse();
-
+        return new ProductSubscriptionsResponse(
+            $clientResponse->content()->getSubscriptions()
+        );
     }
 }
