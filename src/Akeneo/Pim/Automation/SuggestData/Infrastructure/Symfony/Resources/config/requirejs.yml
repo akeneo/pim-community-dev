@@ -8,19 +8,19 @@ config:
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: pim-ai-connection
-                akeneo_suggest_data_settings_index:
+                akeneo_suggest_data_identifiers_mapping_edit:
                     module: pimee/settings/mapping/controller
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-identifiers-mapping
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
-                akeneo_suggest_data_settings_attributes_index:
+                akeneo_suggest_data_attributes_mapping_index:
                     module: pimee/controller/attributes_mapping/index
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-attributes-mapping
-                akeneo_suggest_data_family_mapping_edit:
+                akeneo_suggest_data_attributes_mapping_edit:
                     module: pimee/controller/attributes_mapping/edit
                     aclResourceId: akeneo_suggest_data_settings_mapping
 
@@ -39,12 +39,11 @@ config:
                     options:
                         urls:
                             list: akeneo_suggest_data_identifiers_mapping_get
-                suggest_data_family_mapping:
+                suggest_data_attribute_mapping_by_family:
                     module: pim/base-fetcher
                     options:
                         urls:
-                            list: akeneo_sugggest_data_family_mapping_index
-                            get: akeneo_sugggest_data_family_mapping_get
+                            get: akeneo_sugggest_data_attributes_mapping_get
 
     paths:
         # Fetchers
