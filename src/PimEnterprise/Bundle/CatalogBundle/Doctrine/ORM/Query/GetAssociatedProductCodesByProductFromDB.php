@@ -15,6 +15,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\ProductModelAssociationInterface;
 use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -48,10 +49,13 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
         $user = $this->tokenStorage->getToken()->getUser();
         $userGroupsIds = $user->getGroupsIds();
 
+        $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
+        $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';
+
         $sql = <<<SQL
 SELECT DISTINCT(p.identifier) as code
-FROM pim_catalog_association a
-    INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
+FROM $associationTable a
+    INNER JOIN $associationProductTable ap ON a.id = ap.association_id
     INNER JOIN pim_catalog_product p ON p.id = ap.product_id
     LEFT JOIN pim_catalog_category_product cp on p.id = cp.product_id
     LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
