@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
@@ -39,22 +40,28 @@ class ProductSubscriptionContext implements Context
     /** @var DataFixturesContext */
     private $dataFixturesContext;
 
+    /** @var SubscriptionFake */
+    private $subscriptionApi;
+
     /**
      * @param InMemoryProductRepository             $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
      * @param SubscribeProduct                      $subscribeProduct
      * @param DataFixturesContext                   $dataFixturesContext
+     * @param SubscriptionFake                      $subscriptionApi
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
         InMemoryProductSubscriptionRepository $productSubscriptionRepository,
         SubscribeProduct $subscribeProduct,
-        DataFixturesContext $dataFixturesContext
+        DataFixturesContext $dataFixturesContext,
+        SubscriptionFake $subscriptionApi
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscribeProduct = $subscribeProduct;
         $this->dataFixturesContext = $dataFixturesContext;
+        $this->subscriptionApi = $subscriptionApi;
     }
 
     /**
@@ -100,6 +107,22 @@ class ProductSubscriptionContext implements Context
         } else {
             Assert::notEmpty($subscriptionStatus['subscription_id']);
         }
+    }
+
+    /**
+     * @Given the PIM.ai token is expired
+     */
+    public function theTokenIsExpired(): void
+    {
+        $this->subscriptionApi->expireToken();
+    }
+
+    /**
+     * @Given there are no more credits on my PIM.ai account
+     */
+    public function thereAreNoMoreCreditsOnMyAccount()
+    {
+        $this->subscriptionApi->disableCredit();
     }
 
     /**

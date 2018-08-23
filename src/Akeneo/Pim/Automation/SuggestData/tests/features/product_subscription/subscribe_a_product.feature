@@ -18,7 +18,6 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
-    And PIM.ai is configured with a valid token
     When I subscribe the product "ts_0013" to PIM.ai
     Then the product "ts_0013" should be subscribed
 
@@ -33,7 +32,6 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
-    And PIM.ai is configured with a valid token
     When I subscribe the product "product_without_family" to PIM.ai
     Then the product "product_without_family" should not be subscribed
 
@@ -51,7 +49,6 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
-    And PIM.ai is configured with a valid token
     When I subscribe the product "product_without_values" to PIM.ai
     Then the product "product_without_values" should not be subscribed
 
@@ -87,7 +84,25 @@ Feature: Subscribe a product to PIM.ai
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
-    And PIM.ai is configured with an expired token
+    And the PIM.ai token is expired
+    When I subscribe the product "ts_0013" to PIM.ai
+    Then the product "ts_0013" should not be subscribed
+
+  Scenario: Subscribe a product without enough money on PIM.ai account
+    Given the following attribute:
+      | code | type                   |
+      | ean  | pim_catalog_text       |
+      | sku  | pim_catalog_identifier |
+    And the following family:
+      | code   | attributes |
+      | tshirt | sku,ean    |
+    And the following product:
+      | identifier | family | ean          |
+      | ts_0013    | tshirt | 606449099812 |
+    And a predefined mapping as follows:
+      | pim_ai_code | attribute_code |
+      | upc         | ean            |
+    And there are no more credits on my PIM.ai account
     When I subscribe the product "ts_0013" to PIM.ai
     Then the product "ts_0013" should not be subscribed
 
@@ -98,8 +113,5 @@ Feature: Subscribe a product to PIM.ai
 
   #Scenario: Fail to subscribe a product that does not have one value on mapped identifiers
   # Check with MPN + Brand with Brand not filled
-
-  #Scenario: Subscribe a product without enough money on PIM.ai account
-  # Should return a 402
 
   #Scenario: Handle a bad request to PIM.ai

@@ -7,35 +7,36 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 final class SubscriptionFake implements SubscriptionApiInterface
 {
-    /** @var ConfigurationRepositoryInterface */
-    private $configurationRepository;
+    /** @var string */
+    private const STATUS_EXPIRED_TOKEN = 'expired_token';
 
-    /** @var AuthenticationApiInterface */
-    private $authenticationApi;
+    /** @var string */
+    private const STATUS_INSUFFICIENT_CREDITS = 'insufficient_credits';
 
-    /**
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param AuthenticationApiInterface $authenticationApi
-     */
-    public function __construct(
-        ConfigurationRepositoryInterface $configurationRepository,
-        AuthenticationApiInterface $authenticationApi
-    ) {
-        $this->configurationRepository = $configurationRepository;
-        $this->authenticationApi = $authenticationApi;
-    }
+    /** @var string */
+    private $status;
 
     /**
      * {@inheritdoc}
      */
     public function subscribeProduct(array $identifiers): ApiResponse
     {
-        $this->authenticate();
+        switch ($this->status) {
+            case self::STATUS_EXPIRED_TOKEN:
+                throw new InvalidTokenException();
+                break;
+            case self::STATUS_INSUFFICIENT_CREDITS:
+                throw new InsufficientCreditsException();
+                break;
+            default:
+                break;
+        }
 
         $filename = sprintf('subscribe-%s-%s.json', key($identifiers), current($identifiers));
 
@@ -53,13 +54,18 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
-     * @throws InvalidTokenException
+     * Fakes an expired token
      */
-    private function authenticate(): void
+    public function expireToken(): void
     {
-        $token = $this->configurationRepository->findOneByCode('pim-ai')->getToken();
-        if (true !== $this->authenticationApi->authenticate($token)) {
-            throw new InvalidTokenException('The pim.ai token is missing or invalid');
-        }
+        $this->status = self::STATUS_EXPIRED_TOKEN;
+    }
+
+    /**
+     * Fakes an empty credit
+     */
+    public function disableCredit(): void
+    {
+        $this->status = self::STATUS_INSUFFICIENT_CREDITS;
     }
 }
