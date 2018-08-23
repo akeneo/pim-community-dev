@@ -13,7 +13,7 @@ const lineTemplate = require('pimee/template/settings/mapping/family-line');
 class FamilySelector extends BaseSelect {
   readonly lineView = _.template(lineTemplate);
 
-  constructor(config: any) {
+  constructor(config: { config: Object }) {
     super(config);
     this.events = {
       'change input': (event: { target: any }) => {

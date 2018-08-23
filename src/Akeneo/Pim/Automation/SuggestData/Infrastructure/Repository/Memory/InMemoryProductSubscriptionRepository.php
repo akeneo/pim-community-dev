@@ -67,6 +67,18 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /**
      * {@inheritdoc}
      */
+    public function findOneByProductId(int $productId): ?ProductSubscriptionInterface
+    {
+        if (!isset($this->subscriptions[$productId])) {
+            return null;
+        }
+
+        return $this->subscriptions[$productId];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscriptionStatusForProductId(int $productId): array
     {
         if (!isset($this->subscriptions[$productId])) {

@@ -1,13 +1,9 @@
 extensions:
-    pimee-product-edit-suggest-data-push:
-        module: pimee/product-edit-form/suggest-data-push
-        parent: pim-product-edit-form-attributes
-        targetZone: other-actions
-        aclResourceId: akeneo_suggest_data_product_index
-        position: 120
-
-    pimee-product-edit-form-subscription-status:
-        module: pimee/form/product/subscription-status
+    pimee-product-edit-form-subscription-status-switcher:
+        module: pimee/form/product/subscription-status-switcher
         parent: pim-product-edit-form-meta
         targetZone: meta
         position: 85
+        config:
+            default_error_message: akeneo_suggest_data.product.edit.flash.error
+            default_success_message: akeneo_suggest_data.product.edit.flash.success

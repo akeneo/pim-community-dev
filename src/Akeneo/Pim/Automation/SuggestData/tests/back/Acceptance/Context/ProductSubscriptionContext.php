@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Behat\Behat\Context\Context;
@@ -86,13 +87,11 @@ class ProductSubscriptionContext implements Context
     public function theProductShouldBeSubscribed(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId(
+        $subscription = $this->productSubscriptionRepository->findOneByProductId(
             $product->getId()
         );
 
-        Assert::isArray($subscriptionStatus);
-        Assert::keyExists($subscriptionStatus, 'subscription_id');
-        Assert::notEmpty($subscriptionStatus['subscription_id']);
+        Assert::true($subscription instanceof ProductSubscriptionInterface);
     }
 
     /**

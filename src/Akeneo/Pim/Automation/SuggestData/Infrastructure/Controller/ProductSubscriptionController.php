@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,10 +63,10 @@ class ProductSubscriptionController
      *
      * @return Response
      */
-    public function getSubscriptionStatusAction(int $productId): Response
+    public function isProductSubscribedAction(int $productId): Response
     {
-        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId($productId);
+        $result = $this->productSubscriptionRepository->findOneByProductId($productId);
 
-        return new JsonResponse($subscriptionStatus);
+        return new JsonResponse($result instanceof ProductSubscriptionInterface);
     }
 }
