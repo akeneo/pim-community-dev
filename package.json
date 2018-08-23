@@ -63,7 +63,6 @@
     "exports-loader": "0.6.4",
     "expose-loader": "0.7.3",
     "html-loader": "0.5.1",
-    "humps": "^2.0.1",
     "imports-loader": "0.7.1",
     "jquery": "1.11.0",
     "loader-utils": "1.1.0",

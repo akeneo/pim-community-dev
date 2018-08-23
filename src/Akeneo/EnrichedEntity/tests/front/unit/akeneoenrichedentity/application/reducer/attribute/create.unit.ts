@@ -162,7 +162,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- creat
     };
     const newState = reducer(state, {
       type: 'ATTRIBUTE_CREATION_TYPE_UPDATED',
-      attributeType: AttributeType.Image,
+      attribute_type: AttributeType.Image,
     });
 
     expect(newState).toEqual({

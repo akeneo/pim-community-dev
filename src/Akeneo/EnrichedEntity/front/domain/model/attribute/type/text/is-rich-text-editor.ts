@@ -1,5 +1,6 @@
 import {InvalidArgumentError} from 'akeneoenrichedentity/domain/model/attribute/type/text';
 export type NormalizedIsRichTextEditor = boolean;
+
 export class IsRichTextEditor {
   private constructor(readonly isRichTextEditor: boolean) {
     if (!IsRichTextEditor.isValid(isRichTextEditor)) {

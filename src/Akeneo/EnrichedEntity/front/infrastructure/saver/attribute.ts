@@ -1,11 +1,12 @@
-import Saver from 'akeneoenrichedentity/domain/saver/saver';
+import Saver from 'akeneoenrichedentity/domain/saver/attribute';
 import Attribute from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import MinimalAttribute from 'akeneoenrichedentity/domain/model/attribute/minimal';
 
 const routing = require('routing');
 
-export interface AttributeSaver extends Saver<Attribute> {}
+export interface AttributeSaver extends Saver<MinimalAttribute, Attribute> {}
 
 export class AttributeSaverImplementation implements AttributeSaver {
   constructor() {
@@ -30,7 +31,7 @@ export class AttributeSaverImplementation implements AttributeSaver {
     });
   }
 
-  async create(attribute: Attribute): Promise<ValidationError[] | null> {
+  async create(attribute: MinimalAttribute): Promise<ValidationError[] | null> {
     const normalizedAttribute = attribute.normalize();
 
     return await postJSON(

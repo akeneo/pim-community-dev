@@ -1,6 +1,4 @@
-import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import AttributeCode from 'akeneoenrichedentity/domain/model/attribute/code';
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {denormalizeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
 
 export interface ListState {

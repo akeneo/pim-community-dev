@@ -89,10 +89,9 @@ class Edit extends React.Component<EditProps> {
   render(): JSX.Element | JSX.Element[] | null {
     return (
       <React.Fragment>
-        <div className="AknQuickEdit-mask" onClick={this.props.events.onCancel} />
-        <div className="AknQuickEdit" style={{paddingTop: 0}}>
+        <div className="AknQuickEdit">
           <div className="AknSubsection">
-            <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: 0, paddingTop: '10px'}}>
+            <header className="AknSubsection-title AknSubsection-title--sticky">
               {__('pim_enriched_entity.attribute.edit.common.title')}
               <span
                 title={__('pim_enriched_entity.attribute.edit.cancel')}
@@ -153,24 +152,6 @@ class Edit extends React.Component<EditProps> {
                   />
                 </div>
               </div>
-              <div className="AknFieldContainer" data-code="valuePerLocale">
-                <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.value_per_locale"
-                  >
-                    {__('pim_enriched_entity.attribute.edit.input.value_per_locale')}
-                  </label>
-                </div>
-                <div className="AknFieldContainer-inputContainer">
-                  <Switch
-                    id="pim_enriched_entity.attribute.edit.input.value_per_locale"
-                    value={this.props.attribute.valuePerLocale}
-                    readOnly
-                  />
-                </div>
-                {getErrorsView(this.props.errors, 'valuePerLocale')}
-              </div>
               <div className="AknFieldContainer" data-code="valuePerChannel">
                 <div className="AknFieldContainer-header">
                   <label
@@ -188,6 +169,24 @@ class Edit extends React.Component<EditProps> {
                   />
                 </div>
                 {getErrorsView(this.props.errors, 'valuePerChannel')}
+              </div>
+              <div className="AknFieldContainer" data-code="valuePerLocale">
+                <div className="AknFieldContainer-header">
+                  <label
+                    className="AknFieldContainer-label"
+                    htmlFor="pim_enriched_entity.attribute.edit.input.value_per_locale"
+                  >
+                    {__('pim_enriched_entity.attribute.edit.input.value_per_locale')}
+                  </label>
+                </div>
+                <div className="AknFieldContainer-inputContainer">
+                  <Switch
+                    id="pim_enriched_entity.attribute.edit.input.value_per_locale"
+                    value={this.props.attribute.valuePerLocale}
+                    readOnly
+                  />
+                </div>
+                {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
               <div className="AknFieldContainer" data-code="required">
                 <div className="AknFieldContainer-header">

@@ -5,12 +5,11 @@ import {attributeCreationStart} from 'akeneoenrichedentity/domain/event/attribut
 import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import {CreateState} from 'akeneoenrichedentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoenrichedentity/application/component/attribute/create';
-import AttributeModel, {denormalizeAttribute, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import AttributeModel, {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import EnrichedEntity, {denormalizeEnrichedEntity,} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {deleteAttribute} from "akeneoenrichedentity/application/action/attribute/list";
 import {attributeEditionStart} from 'akeneoenrichedentity/domain/event/attribute/edit';
 import AttributeEditForm from 'akeneoenrichedentity/application/component/attribute/edit';
-import {denormalizeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
 
 interface StateProps {
   context: {
@@ -19,7 +18,7 @@ interface StateProps {
   enrichedEntity: EnrichedEntity;
   createAttribute: CreateState;
   attributes: AttributeModel[];
-  editedAttribute: NormalizedAttribute | null;
+  editedAttribute: AttributeModel | null;
 }
 interface DispatchProps {
   events: {
@@ -30,7 +29,7 @@ interface DispatchProps {
 }
 interface CreateProps extends StateProps, DispatchProps {}
 
-const renderAttributes = (attributes: AttributeModel[], onAttributeEdit: (attribute: AttributeModel) => void, onAttributeDelete: (attribute: AttributeModel) => void, editedAttribute: NormalizedAttribute|null, locale: string) => {
+const renderAttributes = (attributes: AttributeModel[], onAttributeEdit: (attribute: AttributeModel) => void, onAttributeDelete: (attribute: AttributeModel) => void, locale: string) => {
   return attributes.map((attribute: AttributeModel) => (
     <div key={attribute.getCode().stringValue()} className="AknFieldContainer" data-identifier={attribute.getCode().stringValue()} data-type={attribute.getType()}>
       <div className="AknFieldContainer-header">
@@ -72,9 +71,6 @@ const renderAttributes = (attributes: AttributeModel[], onAttributeEdit: (attrib
             if (' ' === event.key) onAttributeEdit(attribute)
           }}
         />
-        {null !== editedAttribute && attribute.getIdentifier().equals(denormalizeIdentifier(editedAttribute.identifier)) ? (
-          <AttributeEditForm />
-        ) : null}
       </div>
     </div>
   ));
@@ -92,28 +88,27 @@ class Attribute extends React.Component<CreateProps> {
   render() {
     return (
       <div className="AknSubsection">
-        <header
-          className="AknSubsection-title"
-          style={{
-            position: 'sticky',
-            top: '192px'
-          }}
-        >
+        <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
           <span className="group-label">{__('pim_enriched_entity.enriched_entity.attribute.title')}</span>
         </header>
         {0 < this.props.attributes.length ?
           (
-            <div className="AknFormContainer AknFormContainer--withPadding">
-              {renderAttributes(this.props.attributes, this.props.events.onAttributeEdit, this.props.events.onAttributeDelete, this.props.editedAttribute, this.props.context.locale)}
-              <button
-                className="AknButton AknButton--action"
-                onClick={this.props.events.onAttributeCreationStart}
-                ref={(button: HTMLButtonElement) => {
-                  this.addButton = button;
-                }}
-              >
-                {__('pim_enriched_entity.attribute.button.add')}
-              </button>
+            <div className="AknSubsection-container">
+              <div className="AknFormContainer AknFormContainer--withPadding">
+                {renderAttributes(this.props.attributes, this.props.events.onAttributeEdit, this.props.events.onAttributeDelete, this.props.context.locale)}
+                <button
+                  className="AknButton AknButton--action"
+                  onClick={this.props.events.onAttributeCreationStart}
+                  ref={(button: HTMLButtonElement) => {
+                    this.addButton = button;
+                  }}
+                >
+                  {__('pim_enriched_entity.attribute.button.add')}
+                </button>
+              </div>
+              {null !== this.props.editedAttribute ? (
+                <AttributeEditForm />
+              ) : null}
             </div>
           ) : (
             <div className="AknGridContainer-noData">
@@ -153,7 +148,7 @@ export default connect(
       enrichedEntity,
       createAttribute: state.createAttribute,
       attributes: state.attributes.attributes.map(denormalizeAttribute),
-      editedAttribute: state.attribute.active ? state.attribute.data : null
+      editedAttribute: state.attribute.active ? denormalizeAttribute(state.attribute.data) : null
     };
   },
   (dispatch: any): DispatchProps => {

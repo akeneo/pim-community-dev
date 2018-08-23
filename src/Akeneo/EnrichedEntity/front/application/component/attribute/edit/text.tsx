@@ -60,7 +60,7 @@ export default ({
 }) => {
   return (
     <div className="AknFormContainer">
-      <div className="AknFieldContainer" data-code="max-length">
+      <div className="AknFieldContainer" data-code="maxLength">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
@@ -128,7 +128,7 @@ export default ({
       </div>
       }
       {!attribute.isTextarea.booleanValue() &&
-        <div className="AknFieldContainer" data-code="validation-rule">
+        <div className="AknFieldContainer" data-code="validationRule">
           <div className="AknFieldContainer-header">
             <label
               className="AknFieldContainer-label"
@@ -150,7 +150,7 @@ export default ({
         </div>
       }
       {(!attribute.isTextarea.booleanValue() && attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression) &&
-        <div className="AknFieldContainer" data-code="regular_expression">
+        <div className="AknFieldContainer" data-code="regularExpression">
           <div className="AknFieldContainer-header">
             <label
               className="AknFieldContainer-label"

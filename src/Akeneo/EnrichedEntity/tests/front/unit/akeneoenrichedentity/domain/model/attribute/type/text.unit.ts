@@ -35,6 +35,7 @@ describe('akeneo > attribute > domain > model > attribute > type --- TextAttribu
       normalizedDescription
     );
   });
+
   test('I cannot create an invalid ConcreteTextAttribute', () => {
     expect(() => {
       new ConcreteTextAttribute(

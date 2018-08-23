@@ -57,7 +57,6 @@ const textAttributeReducer = (
   switch (propertyCode) {
     case 'max_length':
       return {...normalizedAttribute, max_length: propertyValue as NormalizedMaxLength};
-      break;
     case 'is_textarea':
       const is_textarea = propertyValue as NormalizedIsTextarea;
       return {
@@ -67,7 +66,6 @@ const textAttributeReducer = (
         validation_rule: true === is_textarea ? ValidationRuleOption.None : normalizedAttribute.validation_rule,
         regular_expression: true === is_textarea ? null : normalizedAttribute.regular_expression,
       };
-      break;
     case 'is_rich_text_editor':
       const is_rich_text_editor = propertyValue as NormalizedIsRichTextEditor;
       if (false === normalizedAttribute.is_textarea) {
@@ -78,7 +76,6 @@ const textAttributeReducer = (
         ...normalizedAttribute,
         is_rich_text_editor,
       };
-      break;
     case 'validation_rule':
       const validation_rule = propertyValue as NormalizedValidationRule;
       if (true === normalizedAttribute.is_textarea) {
@@ -91,7 +88,6 @@ const textAttributeReducer = (
         regular_expression:
           ValidationRuleOption.RegularExpression !== validation_rule ? null : normalizedAttribute.regular_expression,
       };
-      break;
     case 'regular_expression':
       const regular_expression = propertyValue as NormalizedRegularExpression;
       if (
@@ -105,7 +101,6 @@ const textAttributeReducer = (
         ...normalizedAttribute,
         regular_expression,
       };
-      break;
 
     default:
       break;
@@ -122,12 +117,10 @@ const imageAttributeReducer = (
   switch (propertyCode) {
     case 'max_file_size':
       const max_file_size = propertyValue as NormalizedMaxFileSize;
-      return {...normalizedAttribute, max_file_size: max_file_size};
-      break;
+      return {...normalizedAttribute, max_file_size};
     case 'allowed_extensions':
       const allowed_extensions = propertyValue as NormalizedAllowedExtensions;
       return {...normalizedAttribute, allowed_extensions};
-      break;
 
     default:
       break;
@@ -144,14 +137,12 @@ const additionalPropertyReducer = (
   switch (normalizedAttribute.type) {
     case 'text':
       return textAttributeReducer(normalizedAttribute, propertyCode, propertyValue as NormalizedTextAdditionalProperty);
-      break;
     case 'image':
       return imageAttributeReducer(
         normalizedAttribute,
         propertyCode,
         propertyValue as NormalizedImageAdditionalProperty
       );
-      break;
 
     default:
       break;

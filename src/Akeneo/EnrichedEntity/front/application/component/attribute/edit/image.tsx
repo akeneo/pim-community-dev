@@ -19,7 +19,7 @@ export default ({
 }) => {
   return (
     <div>
-      <div className="AknFieldContainer" data-code="max-file-size">
+      <div className="AknFieldContainer" data-code="maxFileSize">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"
@@ -47,7 +47,7 @@ export default ({
         </div>
         {getErrorsView(errors, 'maxFileSize')}
       </div>
-      <div className="AknFieldContainer" data-code="allowed-extensions">
+      <div className="AknFieldContainer" data-code="allowedExtensions">
         <div className="AknFieldContainer-header">
           <label
             className="AknFieldContainer-label"

@@ -35,7 +35,7 @@ export default (
     locale: string;
     value: string;
     errors: ValidationError[];
-    attributeType: AttributeType;
+    attribute_type: AttributeType;
     value_per_locale: boolean;
     value_per_channel: boolean;
   }
@@ -55,7 +55,7 @@ export default (
     case 'ATTRIBUTE_CREATION_TYPE_UPDATED':
       state = {
         ...state,
-        data: {...state.data, type: action.attributeType},
+        data: {...state.data, type: action.attribute_type},
       };
       break;
 

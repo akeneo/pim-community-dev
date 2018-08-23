@@ -17,13 +17,16 @@
 - Add remaining ACLs
 - add keyboard shortcuts
 - rework the record identifier to have one identifier
-- locale switcher to be able to edit all locales
-- enforce html event type
-- Change read models to enforce properties are coherent
 - Extract the buttons of the edit enriched entity view so it comes from each of the tabs
 - Rename "AttributeRequired" by "AttributeIsRequired"
 - remove index in model constructor
 - switch to view models
+- Change read models to enforce properties are coherent (front)
+- remove index in error throw by the model constructor (front)
+- switch the rest of entities to models for the views (like attribute edit) (front)
+- switch from image to files
+- open quick edit after attribute create
+- split create and edit model in files
 
 Specific back-end:
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
@@ -42,3 +45,5 @@ DONE:
 - clean classes on form [DONE]
 - fix validation error display [DONE]
 - enforce getState type [DONE]
+- enforce html event type [DONE]
+- locale switcher to be able to edit all locales [DONE]

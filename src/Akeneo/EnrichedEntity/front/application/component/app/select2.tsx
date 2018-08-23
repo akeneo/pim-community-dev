@@ -18,29 +18,30 @@ export interface Select2Props {
 export default class Select2 extends React.Component<Select2Props> {
   public props: any;
   private el: any;
-  private events: any = [
-    ['change', 'onChange']
-  ];
+  private events: {[eventName: string]: string} = {
+    'change': 'onChange'
+  };
 
   componentDidMount() {
     this.el = $(ReactDOM.findDOMNode(this) as Element);
-    this.el.val(this.props.value).select2({allowClear: true});
-    this.attachEventHandlers();
+
+    if (undefined !== this.el.val(this.props.value).select2) {
+      this.el.val(this.props.value).select2({allowClear: true});
+      this.attachEventHandlers();
+    }
   }
 
   componentWillUnmount() {
-    this.events.map((event: any) => {
-      this.el.off(event[0]);
+    Object.keys(this.events).forEach((eventName: string) => {
+      this.el.off(eventName);
     });
   }
 
   private attachEventHandlers = () => {
-    this.events.map((event: any) => {
-      if (typeof this.props[event[1]] !== 'undefined') {
-        this.el.on(event[0], (e: any) => {
-          this.props[event[1] as string](e.val);
-        });
-      }
+    Object.keys(this.events).forEach((eventName: string) => {
+      this.el.on(eventName, (e: any) => {
+        this.props[this.events[eventName] as string](e.val);
+      });
     });
   }
 
@@ -54,6 +55,12 @@ export default class Select2 extends React.Component<Select2Props> {
         name={props.fieldName}
         multiple={props.multiple}
         disabled={props.readonly}
+        onChange={(event) => {
+          const newValues = Array.prototype.slice.call(event.currentTarget.childNodes)
+            .filter((option: HTMLOptionElement) => option.selected).map((option: HTMLOptionElement) => option.value);
+
+          this.props.onChange(newValues);
+        }}
       >
         {Object.keys(data).map((choiceValue: string) => {
           return (
