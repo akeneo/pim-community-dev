@@ -17,6 +17,7 @@ interface GridFilter {
 
 // @TODO only load when you expand the column
 // @TODO only initialize filters when you click on them
+// @TODO restore enabled status after search
 
 class FiltersColumn extends BaseView {
   public timer: any = null
