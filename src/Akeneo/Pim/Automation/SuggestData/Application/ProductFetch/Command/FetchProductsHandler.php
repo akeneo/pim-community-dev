@@ -19,8 +19,9 @@ class FetchProductsHandler
     /**
      * @param DataProviderFactory $dataProviderFactory
      */
-    public function __construct(DataProviderFactory $dataProviderFactory)
-    {
+    public function __construct(
+        DataProviderFactory $dataProviderFactory
+    ) {
         $this->dataProviderFactory = $dataProviderFactory;
     }
 
@@ -33,24 +34,9 @@ class FetchProductsHandler
 
         // TODO: Deal with many pages
         $dataProvider = $this->dataProviderFactory->create();
-        $subscriptions = $dataProvider->fetch();
+        $subscribedProducts = $dataProvider->fetch();
 
         // TODO: Store fetched data in DB
-
-
-
-
-        /**
-         * GET /api/subscriptions/updated-since/yesterday
-        [
-            {
-                upc: "upc1",
-                attributes: {},
-                "missing_mapping": true,
-                unmapped_attributes: {…}
-            }
-        ]
-         */
 
     }
 }
