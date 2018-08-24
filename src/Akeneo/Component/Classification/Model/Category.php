@@ -185,7 +185,8 @@ class Category implements CategoryInterface
      */
     public function hasChildren()
     {
-        return count($this->getChildren()) > 0;
+        return true;
+        return !$this->children->isEmpty();
     }
 
     /**
