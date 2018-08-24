@@ -79,8 +79,8 @@ spec:
             - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
               value:  {{ .Values.onboarder.pubsub.queueName | quote }}
             {{- end }}
-{{- if .Values.common.phpConf }}
-{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
           volumeMounts:
             - name: fpm-data

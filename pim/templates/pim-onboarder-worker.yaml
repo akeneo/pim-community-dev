@@ -32,7 +32,7 @@ spec:
         {{ include "pim.extravarsPim" . | indent 8}}
     spec:
       containers:
-        - name: fpm
+        - name: php
           image: "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console akeneo:synchronization:message:consumer --ttl=-1"']
@@ -86,8 +86,8 @@ spec:
               value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
             - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
               value:  {{ .Values.onboarder.pubsub.queueName | quote }}
-{{- if .Values.common.phpConf }}
-{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
       volumes:
         - name: pim-parameter

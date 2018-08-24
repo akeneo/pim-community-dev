@@ -71,6 +71,5 @@ elasticsearch:
         memory: 256Mi
     env:
       NUMBER_OF_MASTERS: "2"
-      # Required to expose /_prometheus/metrics to ServiceMonitor
     stateful:
       size: 1Gi

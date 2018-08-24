@@ -1,11 +1,11 @@
 dependencies:
 - name: mysql
-  version: "0.1.7"
+  version: "1.0.0"
   repository: "gs://akeneo-charts/"
 - name: elasticsearch
   version: "0.2.4"
   repository: "gs://akeneo-charts/"
 - name: nfs-server-provisioner
-  version: "0.1.4"
+  version: "0.1.5"
   repository: "@stable"
   alias: nfs
