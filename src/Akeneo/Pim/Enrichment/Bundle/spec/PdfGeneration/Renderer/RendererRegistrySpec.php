@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -61,6 +62,6 @@ class RendererRegistrySpec extends ObjectBehavior
         $renderer->supports($blender, 'pdf')->willReturn(false);
         $betterRenderer->supports($blender, 'pdf')->willReturn(false);
 
-        $this->shouldThrow('Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException')->during('render', [$blender, 'pdf', []]);
+        $this->shouldThrow(RendererRequiredException::class)->during('render', [$blender, 'pdf', []]);
     }
 }

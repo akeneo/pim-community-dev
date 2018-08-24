@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 
+use Oro\Bundle\SecurityBundle\Acl\Cache\AclCache;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -23,7 +24,7 @@ class AclConfigurationPass implements CompilerPassInterface
     const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
     const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
 
-    const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
+    const DEFAULT_ACL_CACHE_CLASS = AclCache::class;
 
     const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
     const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';

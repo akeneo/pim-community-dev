@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Metadata;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
+use Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 
@@ -28,7 +29,7 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
             true,
             ['fetch', 'save', 'delete', 'deleteAll']
         );
-        $this->loader = $this->createMock('Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface');
+        $this->loader = $this->createMock(AclAnnotationLoaderInterface::class);
         $this->provider = new AclAnnotationProvider($this->cache);
         $this->provider->addLoader($this->loader);
     }

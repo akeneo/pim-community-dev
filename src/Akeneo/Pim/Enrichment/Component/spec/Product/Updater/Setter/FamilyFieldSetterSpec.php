@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -39,7 +40,7 @@ class FamilyFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::stringExpected(
                 'family',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter',
+                FamilyFieldSetter::class,
                 ['not a string']
             )
         )->during('setFieldData', [$product, 'family', ['not a string']]);
@@ -72,7 +73,7 @@ class FamilyFieldSetterSpec extends ObjectBehavior
                 'family',
                 'family code',
                 'The family does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FamilyFieldSetter',
+                FamilyFieldSetter::class,
                 'shirt'
             )
         )->during('setFieldData', [$product, 'family', 'shirt']);

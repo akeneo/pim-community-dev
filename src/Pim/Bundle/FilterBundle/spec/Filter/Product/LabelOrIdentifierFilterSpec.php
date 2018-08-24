@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
+use Oro\Bundle\FilterBundle\Filter\StringFilter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -18,7 +19,7 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
 
     function it_is_an_oro_choice_filter()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\StringFilter');
+        $this->shouldBeAnInstanceOf(StringFilter::class);
     }
 
     function it_applies_a_filter_on_product_when_its_in_an_expected_group(

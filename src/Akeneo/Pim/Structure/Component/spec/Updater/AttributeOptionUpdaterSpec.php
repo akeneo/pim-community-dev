@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
+use Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -21,12 +23,12 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater');
+        $this->shouldHaveType(AttributeOptionUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()
@@ -34,7 +36,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface'
+                AttributeOptionInterface::class
             )
         )->during(
             'update',
@@ -125,7 +127,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 'attribute',
                 'attribute code',
                 'The attribute does not exist',
-                'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater',
+                AttributeOptionUpdater::class,
                 'myattribute'
             )
         )->during(
@@ -154,7 +156,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::scalarExpected(
                     'code',
-                    'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater',
+                    AttributeOptionUpdater::class,
                     []
                 )
             )
@@ -171,7 +173,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'labels',
-                    'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater',
+                    AttributeOptionUpdater::class,
                     'not_an_array'
                 )
             )

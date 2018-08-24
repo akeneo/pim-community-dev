@@ -2,13 +2,14 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Tool\Component\Connector\Writer\File\MediaExporterPathGenerator;
 use PhpSpec\ObjectBehavior;
 
 class MediaExporterPathGeneratorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\MediaExporterPathGenerator');
+        $this->shouldHaveType(MediaExporterPathGenerator::class);
     }
 
     function it_generates_the_path()

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PhpSpec\ObjectBehavior;
@@ -35,6 +36,6 @@ class ContextConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
+        $this->shouldImplement(ConfiguratorInterface::class);
     }
 }

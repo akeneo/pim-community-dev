@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Channel\Bundle\Doctrine\Repository;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;
@@ -28,7 +29,7 @@ class ChannelRepositorySpec extends ObjectBehavior
 
     function it_is_a_channel_repository()
     {
-        $this->shouldImplement('Akeneo\Channel\Component\Repository\ChannelRepositoryInterface');
+        $this->shouldImplement(ChannelRepositoryInterface::class);
     }
 
     function it_count_all_channels($em, QueryBuilder $queryBuilder, AbstractQuery $query)

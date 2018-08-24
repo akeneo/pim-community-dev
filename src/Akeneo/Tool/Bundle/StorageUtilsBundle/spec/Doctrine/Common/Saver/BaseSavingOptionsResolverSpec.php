@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
+use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
@@ -9,7 +10,7 @@ class BaseSavingOptionsResolverSpec extends ObjectBehavior
 {
     function it_a_saving_options_resolver()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface');
+        $this->shouldHaveType(SavingOptionsResolverInterface::class);
     }
 
     function it_resolves_default_values_for_single_save_options()

@@ -3,13 +3,15 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Voter;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter;
 
 class AclVoterTest extends \PHPUnit_Framework_TestCase
 {
     public function testVote()
     {
-        $selector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
+        $selector = $this->getMockBuilder(AclExtensionSelector::class)
             ->disableOriginalConstructor()
             ->getMock();
         $permissionMap = $this->createMock('Symfony\Component\Security\Acl\Permission\PermissionMapInterface');
@@ -23,7 +25,7 @@ class AclVoterTest extends \PHPUnit_Framework_TestCase
 
         $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $object = new \stdClass();
-        $extension = $this->createMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface');
+        $extension = $this->createMock(AclExtensionInterface::class);
         $extension->expects($this->once())
             ->method('getAccessLevel')
             ->with($this->equalTo(1))

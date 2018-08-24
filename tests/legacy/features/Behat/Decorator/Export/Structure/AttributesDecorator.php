@@ -3,6 +3,7 @@
 namespace Pim\Behat\Decorator\Export\Structure;
 
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\Common\AttributeSelectorDecorator;
 use Pim\Behat\Decorator\ElementDecorator;
 
 /**
@@ -48,6 +49,6 @@ class AttributesDecorator extends ElementDecorator
             return $this->getBody()->find('css', '.column-configurator-modal');
         }, 'Cannot find the select filter modal');
 
-        return $this->decorate($modal, ['Pim\Behat\Decorator\Common\AttributeSelectorDecorator']);
+        return $this->decorate($modal, [AttributeSelectorDecorator::class]);
     }
 }

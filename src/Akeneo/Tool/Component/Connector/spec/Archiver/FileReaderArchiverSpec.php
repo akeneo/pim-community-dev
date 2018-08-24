@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Archiver;
 
+use Akeneo\Tool\Component\Connector\Archiver\FileReaderArchiver;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -26,7 +27,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Archiver\FileReaderArchiver');
+        $this->shouldHaveType(FileReaderArchiver::class);
     }
 
     function it_create_a_file_when_reader_is_valid(

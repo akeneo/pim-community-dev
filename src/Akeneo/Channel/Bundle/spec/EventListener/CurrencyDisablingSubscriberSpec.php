@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Channel\Bundle\EventListener;
 
+use Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Exception\LinkedChannelException;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
@@ -17,7 +18,7 @@ class CurrencyDisablingSubscriberSpec extends ObjectBehavior
 
     public function it_is_an_event_subscriber()
     {
-        $this->shouldImplement('Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber');
+        $this->shouldImplement(CurrencyDisablingSubscriber::class);
     }
 
     public function it_does_not_throw_when_this_is_not_a_currency(

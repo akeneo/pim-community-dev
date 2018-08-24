@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\MultiSelectAttributeRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -82,7 +83,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\MultiSelectAttributeRemover',
+                MultiSelectAttributeRemover::class,
                 $data
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -99,7 +100,7 @@ class MultiSelectAttributeRemoverSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'attributeCode',
                 'one of the option codes is not a string, "integer" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\MultiSelectAttributeRemover',
+                MultiSelectAttributeRemover::class,
                 $data
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Channel\Bundle\Doctrine\Repository;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;
@@ -29,7 +30,7 @@ class LocaleRepositorySpec extends ObjectBehavior
 
     function it_is_a_locale_repository()
     {
-        $this->shouldImplement('Akeneo\Channel\Component\Repository\LocaleRepositoryInterface');
+        $this->shouldImplement(LocaleRepositoryInterface::class);
     }
 
     function it_count_all_activated_locales($em, QueryBuilder $queryBuilder, AbstractQuery $query, Expr $expr)

@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
@@ -16,7 +18,7 @@ class AttributeOptionSpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface'
+            ArrayConverterInterface::class
         );
     }
 
@@ -59,10 +61,10 @@ class AttributeOptionSpec extends ObjectBehavior
 
         $fieldChecker
             ->checkFieldsPresence($item, ['attribute', 'code'])
-            ->willThrow('Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException');
+            ->willThrow(StructureArrayConversionException::class);
 
         $this
-            ->shouldThrow('Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException')
+            ->shouldThrow(StructureArrayConversionException::class)
             ->during('convert', [$item]);
     }
 
@@ -71,7 +73,7 @@ class AttributeOptionSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
 
         $this
-            ->shouldThrow('Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException')
+            ->shouldThrow(StructureArrayConversionException::class)
             ->during(
                 'convert',
                 [

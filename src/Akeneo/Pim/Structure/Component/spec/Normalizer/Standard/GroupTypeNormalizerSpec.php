@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
@@ -15,7 +16,7 @@ class GroupTypeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer');
+        $this->shouldHaveType(GroupTypeNormalizer::class);
     }
 
     function it_is_a_normalizer()

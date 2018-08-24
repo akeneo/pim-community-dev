@@ -2,13 +2,14 @@
 
 namespace spec\Akeneo\Platform\Bundle\NotificationBundle\Entity;
 
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification;
 use PhpSpec\ObjectBehavior;
 
 class NotificationSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Platform\Bundle\NotificationBundle\Entity\Notification');
+        $this->shouldHaveType(Notification::class);
     }
 
     function it_can_have_a_route()

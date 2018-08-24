@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Channel\Component\Updater;
 
+use Akeneo\Channel\Component\Updater\LocaleUpdater;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -10,12 +12,12 @@ class LocaleUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Channel\Component\Updater\LocaleUpdater');
+        $this->shouldHaveType(LocaleUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_locale()
@@ -23,7 +25,7 @@ class LocaleUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Channel\Component\Model\LocaleInterface'
+                LocaleInterface::class
             )
         )->during(
             'update',

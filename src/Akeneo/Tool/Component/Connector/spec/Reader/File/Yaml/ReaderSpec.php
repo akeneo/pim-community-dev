@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 
+use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -85,7 +86,7 @@ class ReaderSpec extends ObjectBehavior
             new DataArrayConversionException('message', 0, null, new ConstraintViolationList())
         );
 
-        $this->shouldThrow('Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException')->during('read');
+        $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
     }
 
     function it_reads_entities_from_a_yml_file_one_by_one(

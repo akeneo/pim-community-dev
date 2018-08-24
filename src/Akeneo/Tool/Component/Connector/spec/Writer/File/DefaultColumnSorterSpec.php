@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
+use Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldSplitter;
 
@@ -14,12 +16,12 @@ class DefaultColumnSorterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter');
+        $this->shouldHaveType(DefaultColumnSorter::class);
     }
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface');
+        $this->shouldImplement(ColumnSorterInterface::class);
     }
 
     function it_sort_headers_columns($fieldSplitter)

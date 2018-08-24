@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
@@ -64,11 +66,11 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_POST_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
 
         $this->handle($datagrid, $massAction);
@@ -86,7 +88,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
         $this
             ->handle($datagrid, $massAction)
-            ->shouldReturnAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
+            ->shouldReturnAnInstanceOf(MassActionResponseInterface::class);
     }
 
     function it_returns_failed_message_if_an_exception_occurs(
@@ -108,15 +110,15 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_POST_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldNotBeCalled();
 
         $this
             ->handle($datagrid, $massAction)
-            ->shouldReturnAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
+            ->shouldReturnAnInstanceOf(MassActionResponseInterface::class);
     }
 }

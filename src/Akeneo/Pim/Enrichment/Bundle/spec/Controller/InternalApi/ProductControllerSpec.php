@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -51,7 +52,7 @@ class ProductControllerSpec extends ObjectBehavior
 
         $rendererRegistry
             ->render($blender, 'pdf', Argument::type('array'))
-            ->willThrow('Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException');
+            ->willThrow(RendererRequiredException::class);
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')

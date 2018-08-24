@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -165,7 +163,7 @@ class Group implements GroupInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation';
+        return GroupTranslation::class;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -29,11 +30,11 @@ class ExportMassActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_EXPORT_PRE_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_EXPORT_POST_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);

@@ -2,9 +2,6 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelTranslation;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -163,7 +160,7 @@ class Channel implements ChannelInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Akeneo\Channel\Component\Model\ChannelTranslation';
+        return ChannelTranslation::class;
     }
 
     /**

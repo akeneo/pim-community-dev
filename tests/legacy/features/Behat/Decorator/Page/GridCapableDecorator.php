@@ -6,6 +6,8 @@ use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
+use Pim\Behat\Decorator\Grid\PaginationDecorator;
 
 /**
  * Decorator to handle the grid of a page
@@ -32,12 +34,12 @@ class GridCapableDecorator extends ElementDecorator
 
     /** @var array */
     protected $gridDecorators = [
-        'Pim\Behat\Decorator\Grid\PaginationDecorator',
+        PaginationDecorator::class,
     ];
 
     /** @var array */
     protected $viewSelectorDecorators = [
-        'Pim\Behat\Decorator\Field\Select2Decorator',
+        Select2Decorator::class,
     ];
 
     /**

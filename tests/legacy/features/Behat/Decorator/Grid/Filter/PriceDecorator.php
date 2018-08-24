@@ -19,11 +19,11 @@ class PriceDecorator extends ElementDecorator
     {
         $operatorDropdown = $this->decorate(
             $this->find('css', '.operator *[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            [OperatorDecorator::class]
         );
         $currencyDropdown = $this->decorate(
             $this->find('css', '.currency *[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            [OperatorDecorator::class]
         );
 
         // Split '10.5 EUR' -> $data = 10.5; $currency = 'EUR'

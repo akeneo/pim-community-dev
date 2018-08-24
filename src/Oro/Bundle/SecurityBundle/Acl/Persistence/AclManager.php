@@ -90,7 +90,7 @@ class AclManager extends AbstractAclManager
             : new AceManipulationHelper();
         $this->privilegeRepositoryClass = $privilegeRepositoryClass !== null
             ? $privilegeRepositoryClass
-            : 'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository';
+            : AclPrivilegeRepository::class;
     }
 
     /**

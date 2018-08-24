@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\SkipLastVersionPurgerAdvisor;
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
@@ -15,12 +17,12 @@ class SkipLastVersionPurgerAdvisorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\VersioningBundle\Purger\SkipLastVersionPurgerAdvisor');
+        $this->shouldHaveType(SkipLastVersionPurgerAdvisor::class);
     }
 
     function it_implements_purger_interface()
     {
-        $this->shouldImplement('Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface');
+        $this->shouldImplement(VersionPurgerAdvisorInterface::class);
     }
 
     function it_supports_versions_types_only(VersionInterface $version, $notAVersionObject)

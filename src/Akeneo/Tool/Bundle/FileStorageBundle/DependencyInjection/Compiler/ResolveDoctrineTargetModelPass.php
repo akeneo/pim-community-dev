@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\FileStorageBundle\DependencyInjection\Compiler;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * Resolves doctrine ORM Target entities.
@@ -19,7 +20,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface' => 'akeneo_file_storage.model.file_info.class',
+            FileInfoInterface::class => 'akeneo_file_storage.model.file_info.class',
         ];
     }
 }

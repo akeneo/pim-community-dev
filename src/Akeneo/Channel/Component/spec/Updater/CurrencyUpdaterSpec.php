@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Channel\Component\Updater;
 
+use Akeneo\Channel\Component\Updater\CurrencyUpdater;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
@@ -10,12 +12,12 @@ class CurrencyUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Channel\Component\Updater\CurrencyUpdater');
+        $this->shouldHaveType(CurrencyUpdater::class);
     }
 
     function it_is_an_updater()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_group()
@@ -23,7 +25,7 @@ class CurrencyUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Channel\Component\Model\CurrencyInterface'
+                CurrencyInterface::class
             )
         )->during(
             'update',

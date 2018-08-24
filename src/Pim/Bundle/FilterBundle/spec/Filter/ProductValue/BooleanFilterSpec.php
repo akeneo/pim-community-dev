@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -23,7 +24,7 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_is_an_oro_boolean_filter()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\BooleanFilter');
+        $this->shouldBeAnInstanceOf(BooleanFilter::class);
     }
 
     function it_initializes_filter_with_name()

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 
+use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -53,7 +54,7 @@ class ServiceLinkPass implements CompilerPassInterface
                 );
             }
 
-            $serviceLinkDef->setClass('Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink');
+            $serviceLinkDef->setClass(ServiceLink::class);
             $serviceLinkDef->setArguments([new Reference('service_container'), $serviceId, $isOptional]);
         }
     }

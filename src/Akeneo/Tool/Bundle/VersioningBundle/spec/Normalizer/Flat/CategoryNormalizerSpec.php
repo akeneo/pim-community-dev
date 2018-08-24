@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
-use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
 
 use Prophecy\Argument;
 
@@ -20,7 +20,7 @@ class CategoryNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer');
+        $this->shouldHaveType(CategoryNormalizer::class);
     }
 
     function it_is_a_normalizer()

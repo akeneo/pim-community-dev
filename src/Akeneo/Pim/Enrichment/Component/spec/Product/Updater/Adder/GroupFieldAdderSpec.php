@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -40,7 +41,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'groups',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder',
+                GroupFieldAdder::class,
                 'not an array'
             )
         )->during('addFieldData', [$product, 'groups', 'not an array']);
@@ -49,7 +50,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'groups',
                 'one of the group codes is not a string, "array" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder',
+                GroupFieldAdder::class,
                 [['array of array']]
             )
         )->during('addFieldData', [$product, 'groups', [['array of array']]]);
@@ -90,7 +91,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
                 'groups',
                 'group code',
                 'The group does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\GroupFieldAdder',
+                GroupFieldAdder::class,
                 'not valid code'
             )
         )->during('addFieldData', [$product, 'groups', ['pack', 'not valid code']]);

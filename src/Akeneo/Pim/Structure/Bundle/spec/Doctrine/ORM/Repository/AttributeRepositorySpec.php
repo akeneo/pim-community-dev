@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;
@@ -30,7 +31,7 @@ class AttributeRepositorySpec extends ObjectBehavior
 
     function it_is_a_attribute_repository()
     {
-        $this->shouldImplement('Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface');
+        $this->shouldImplement(AttributeRepositoryInterface::class);
     }
 
     function it_finds_the_axis_attribute(

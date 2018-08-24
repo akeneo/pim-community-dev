@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -39,7 +40,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder',
+                CategoryFieldAdder::class,
                 'not an array'
             )
         )->during('addFieldData', [$product, 'categories', 'not an array']);
@@ -48,7 +49,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'categories',
                 'one of the category codes is not a string, "array" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder',
+                CategoryFieldAdder::class,
                 [['array of array']]
             )
         )->during('addFieldData', [$product, 'categories', [['array of array']]]);
@@ -86,7 +87,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
                 'categories',
                 'category code',
                 'The category does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder',
+                CategoryFieldAdder::class,
                 'non valid category code'
             )
         )->during('addFieldData', [$product, 'categories', ['mug', 'non valid category code']]);

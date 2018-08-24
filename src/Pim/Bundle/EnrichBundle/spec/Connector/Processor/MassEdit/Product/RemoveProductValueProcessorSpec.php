@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -23,7 +24,7 @@ class RemoveProductValueProcessorSpec extends ObjectBehavior
 
     function it_is_a_remover()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor');
+        $this->shouldHaveType(AbstractProcessor::class);
     }
 
     function it_should_remove_value_from_product(

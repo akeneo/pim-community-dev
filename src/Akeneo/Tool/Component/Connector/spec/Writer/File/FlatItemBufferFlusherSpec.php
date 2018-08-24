@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File;
 
+use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +22,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher');
+        $this->shouldHaveType(FlatItemBufferFlusher::class);
     }
 
     function let(ColumnSorterInterface $columnSorter, StepExecution $stepExecution)

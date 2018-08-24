@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
@@ -17,7 +18,7 @@ class DatasourceSpec extends ObjectBehavior
 
     function it_is_a_datasource()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $this->shouldImplement(DatasourceInterface::class);
     }
 
     function it_processes_a_datasource_with_repository_configuration(

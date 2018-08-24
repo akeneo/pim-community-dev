@@ -15,7 +15,7 @@ class ProductCsvImportSpec extends ObjectBehavior
 
     function it_is_a_provider()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface');
+        $this->shouldImplement(DefaultValuesProviderInterface::class);
     }
 
     function it_provides_default_values($decoratedProvider)

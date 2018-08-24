@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -66,7 +67,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
                 'groups',
                 'group code',
                 'The group does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover',
+                GroupFieldRemover::class,
                 'not valid code'
             )
         )->during('removeFieldData', [$product, 'groups', ['pack', 'not valid code']]);
@@ -77,7 +78,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'groups',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover',
+                GroupFieldRemover::class,
                 'not an array'
             )
         )->during('removeFieldData', [$product, 'groups', 'not an array']);
@@ -86,7 +87,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'groups',
                 'one of the group codes is not a string, "array" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\GroupFieldRemover',
+                GroupFieldRemover::class,
                 [['array of array']]
             )
         )->during('removeFieldData', [$product, 'groups', [['array of array']]]);

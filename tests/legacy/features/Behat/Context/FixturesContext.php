@@ -16,6 +16,10 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\GroupType;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\UserManagement\Component\Model\Group as UserGroup;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
@@ -45,11 +49,11 @@ class FixturesContext extends PimContext
         'Category'         => Category::class, // TODO: To remove
         'ProductCategory'  => Category::class,
         'AssociationType'  => AssociationType::class,
-        'JobInstance'      => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
+        'JobInstance'      => JobInstance::class,
         'JobConfiguration' => 'Akeneo\Tool\Component\Connector\Model\JobConfiguration',
-        'User'             => 'Akeneo\UserManagement\Component\Model\User',
-        'Role'             => 'Akeneo\UserManagement\Component\Model\Role',
-        'UserGroup'        => 'Akeneo\UserManagement\Component\Model\Group',
+        'User'             => User::class,
+        'Role'             => Role::class,
+        'UserGroup'        => UserGroup::class,
         'Locale'           => Locale::class,
         'GroupType'        => GroupType::class,
         'Product'          => Product::class,

@@ -778,7 +778,7 @@ class Form extends Base
     {
         $field = $this->decorate(
             $this->getClosest($label, 'AknFieldContainer')->find('css', '.select2-container'),
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
 
         $field->setValue($value);
@@ -800,7 +800,7 @@ class Form extends Base
 
         $field = $this->decorate(
             $select2Container,
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
 
         $field->setValue($value);

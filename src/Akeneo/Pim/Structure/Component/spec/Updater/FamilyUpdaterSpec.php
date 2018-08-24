@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
+use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -44,12 +46,12 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Updater\FamilyUpdater');
+        $this->shouldHaveType(FamilyUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_family()
@@ -57,7 +59,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Pim\Structure\Component\Model\FamilyInterface'
+                FamilyInterface::class
             )
         )->during(
             'update',
@@ -422,7 +424,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attributes',
                 'code',
                 'The attribute does not exist',
-                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                FamilyUpdater::class,
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -456,7 +458,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The attribute does not exist',
-                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                FamilyUpdater::class,
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -487,7 +489,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_as_label',
                 'code',
                 'The attribute does not exist',
-                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                FamilyUpdater::class,
                 'unknown'
             )
         )->during('update', [$family, $data]);
@@ -523,7 +525,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The channel does not exist',
-                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                FamilyUpdater::class,
                 'ecommerce'
             )
         )->during('update', [$family, $data]);
@@ -553,7 +555,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::scalarExpected(
                     'code',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     []
                 )
             )
@@ -570,7 +572,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::scalarExpected(
                     'attribute_as_label',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     []
                 )
             )
@@ -587,7 +589,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'attributes',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     'foo'
                 )
             )
@@ -605,7 +607,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'attributes',
                     'one of the attributes is not a scalar',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     ['foo', []]
                 )
             )
@@ -622,7 +624,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'labels',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     'foo'
                 )
             )
@@ -643,7 +645,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'labels',
                     'one of the labels is not a scalar',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     ['en_US' => 'us_Label', 'fr_FR' => []]
                 )
             )
@@ -677,7 +679,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'attribute_requirements',
                     'the channel "tablet" is not an array',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     ['ecommerce' => ['sku'], 'tablet' => 'foo']
                 )
             )
@@ -698,7 +700,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'attribute_requirements',
                     'one of the attributes in the channel "tablet" is not a scalar',
-                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
+                    FamilyUpdater::class,
                     ['ecommerce' => ['sku'], 'tablet' => ['foo', []]]
                 )
             )

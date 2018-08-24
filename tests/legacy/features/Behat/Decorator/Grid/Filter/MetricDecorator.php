@@ -19,11 +19,11 @@ class MetricDecorator extends ElementDecorator
     {
         $operatorDropdown = $this->decorate(
             $this->find('css', '.operator *[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            [OperatorDecorator::class]
         );
         $unitDropdown = $this->decorate(
             $this->find('css', '.unit *[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            [OperatorDecorator::class]
         );
 
         // We set the value

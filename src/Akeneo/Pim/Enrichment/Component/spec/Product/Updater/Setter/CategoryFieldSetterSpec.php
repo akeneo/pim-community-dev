@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -39,7 +40,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter',
+                CategoryFieldSetter::class,
                 'not an array'
             )
         )->during('setFieldData', [$product, 'categories', 'not an array']);
@@ -48,7 +49,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'categories',
                 'one of the category codes is not a string, "array" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter',
+                CategoryFieldSetter::class,
                 [['array of array']]
             )
         )->during('setFieldData', [$product, 'categories', [['array of array']]]);
@@ -88,7 +89,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
                 'categories',
                 'category code',
                 'The category does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter',
+                CategoryFieldSetter::class,
                 'non valid category code'
             )
         )->during('setFieldData', [$product, 'categories', ['mug', 'non valid category code']]);

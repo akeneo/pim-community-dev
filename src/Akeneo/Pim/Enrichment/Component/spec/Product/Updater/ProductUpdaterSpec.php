@@ -42,7 +42,7 @@ class ProductUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
+                ProductInterface::class
             )
         )->during(
             'update',

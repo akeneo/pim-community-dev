@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
+use Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
@@ -16,7 +17,7 @@ class WidgetControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController');
+        $this->shouldHaveType(WidgetController::class);
     }
 
     function it_renders_widgets_by_their_position(WidgetInterface $foo, WidgetInterface $bar, $registry, $templating)

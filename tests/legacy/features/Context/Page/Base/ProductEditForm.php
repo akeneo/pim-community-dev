@@ -7,6 +7,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Decorator\Completeness\DropdownDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 use Pim\Behat\Decorator\VariantNavigationDecorator;
 
 /**
@@ -226,7 +227,7 @@ class ProductEditForm extends Form
 
         $field = $this->decorate(
             $element,
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
 
         $field->setValue($value);
@@ -290,7 +291,7 @@ class ProductEditForm extends Form
 
         $field = $this->decorate(
             $element,
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
 
         $this->getSession()->wait($this->getTimeout(), '!$.active');

@@ -2,6 +2,9 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -48,8 +51,8 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement(ItemProcessorInterface::class);
+        $this->shouldImplement(StepExecutionAwareInterface::class);
     }
 
     function it_updates_an_existing_product(
@@ -391,7 +394,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow(InvalidItemException::class)
             ->during(
                 'process',
                 [$convertedData]
@@ -497,7 +500,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow(InvalidItemException::class)
             ->during(
                 'process',
                 [$convertedData]
@@ -609,7 +612,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this
-            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow(InvalidItemException::class)
             ->during(
                 'process',
                 [$convertedData]

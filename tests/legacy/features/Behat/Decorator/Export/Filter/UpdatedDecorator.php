@@ -4,6 +4,7 @@ namespace Pim\Behat\Decorator\Export\Filter;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 class UpdatedDecorator extends ElementDecorator
 {
@@ -19,7 +20,7 @@ class UpdatedDecorator extends ElementDecorator
     {
         $operatorField = $this->decorate(
             $this->find('css', '.select2-container.operator'),
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
         $operatorField->setValue($operator);
 

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -49,7 +50,7 @@ class ProductProcessorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(
-            'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'
+            ProductProcessor::class
         );
     }
 

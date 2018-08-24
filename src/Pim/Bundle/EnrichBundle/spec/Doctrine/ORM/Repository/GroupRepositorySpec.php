@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -23,12 +25,12 @@ class GroupRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository');
+        $this->shouldHaveType(GroupRepository::class);
     }
 
     function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
+        $this->shouldImplement(TranslatedLabelsProviderInterface::class);
     }
 
     function it_is_a_doctrine_repository()

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Localization\Factory;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation;
@@ -21,12 +22,12 @@ class TranslationFactorySpec extends ObjectBehavior
     function it_creates_a_translation()
     {
         $this->beConstructedWith(
-            'Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation',
+            AttributeGroupTranslation::class,
             'Pim\Bundle\TranslationBundle\Tests\Entity\Item',
             'bar'
         );
         $this->createTranslation('en_US')
-            ->shouldReturnAnInstanceOf('Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation');
+            ->shouldReturnAnInstanceOf(AttributeGroupTranslation::class);
 
         $this->createTranslation('en_US')
             ->getLocale()
@@ -36,7 +37,7 @@ class TranslationFactorySpec extends ObjectBehavior
     function it_throws_an_exception_when_an_invalid_translation_class_is_provided()
     {
         $this->beConstructedWith(
-            'Akeneo\Channel\Component\Model\LocaleInterface',
+            LocaleInterface::class,
             'Pim\Bundle\TranslationBundle\Tests\Entity\Item',
             'bar'
         );

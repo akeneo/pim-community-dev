@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
@@ -24,7 +25,7 @@ class CursorSpec extends ObjectBehavior
         From $from
     ) {
         $rootIdExpr = 'o.id';
-        $from->getFrom()->willReturn('Akeneo\Pim\Enrichment\Component\Product\Model\Product');
+        $from->getFrom()->willReturn(Product::class);
         $from->getAlias()->willReturn('o');
 
         $queryBuilder->getRootAliases()->willReturn(['o']);
@@ -81,7 +82,7 @@ class CursorSpec extends ObjectBehavior
         $data = array_merge($page1, $page2);
 
         $rootIdExpr = 'o.id';
-        $entityClass = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
+        $entityClass = Product::class;
 
         $from->getFrom()->shouldBeCalled()->willReturn($entityClass);
         $from->getAlias()->shouldBeCalled()->willReturn('o');
@@ -156,7 +157,7 @@ class CursorSpec extends ObjectBehavior
         $entityManager,
         CursorableRepositoryInterface $repository
     ) {
-        $entityClass = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
+        $entityClass = Product::class;
 
         $ids = [
             5 => 15,
@@ -202,7 +203,7 @@ class CursorSpec extends ObjectBehavior
         $entityManager,
         CursorableRepositoryInterface $repository
     ) {
-        $entityClass = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
+        $entityClass = Product::class;
 
         $ids = [
             5 => 15,

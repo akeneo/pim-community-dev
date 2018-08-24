@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Archiver;
 
+use Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -25,7 +26,7 @@ class FileWriterArchiverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Archiver\FileWriterArchiver');
+        $this->shouldHaveType(FileWriterArchiver::class);
     }
 
     function it_creates_a_file_when_writer_is_valid(

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -11,7 +12,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer');
+        $this->shouldHaveType(AttributeOptionNormalizer::class);
     }
 
     function it_is_a_normalizer()

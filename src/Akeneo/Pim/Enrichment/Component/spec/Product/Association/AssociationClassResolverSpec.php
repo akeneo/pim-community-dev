@@ -20,8 +20,8 @@ class AssociationClassResolverSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedWith([
-            'Akeneo\Pim\Enrichment\Component\Product\Model\Product' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation',
+            Product::class => ProductAssociation::class,
+            ProductModel::class => ProductModelAssociation::class,
         ]);
     }
 

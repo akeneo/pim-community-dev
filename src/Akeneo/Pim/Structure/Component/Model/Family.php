@@ -347,7 +347,7 @@ class Family implements FamilyInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Akeneo\Pim\Structure\Component\Model\FamilyTranslation';
+        return FamilyTranslation::class;
     }
 
     /**

@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
+use Pim\Behat\Decorator\ContextSwitcherDecorator;
+use Pim\Behat\Decorator\Tree\JsTreeDecorator;
 
 /**
  * Product index page
@@ -34,7 +36,7 @@ class Index extends Grid
                 'Categories tree'         => ['css' => '#tree'],
                 'Main context selector'   => [
                     'css'        => '.AknColumn-innerTop',
-                    'decorators' => ['Pim\Behat\Decorator\ContextSwitcherDecorator'],
+                    'decorators' => [ContextSwitcherDecorator::class],
                 ],
                 'Tree select'             => ['css' => '#tree_select'],
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
@@ -43,7 +45,7 @@ class Index extends Grid
                 'Manage filters options'  => ['css' => '.filter-list.select-filter-widget .ui-multiselect-checkboxes li label span'],
                 'Category tree'           => [
                     'css'        => '#tree',
-                    'decorators' => [ 'Pim\Behat\Decorator\Tree\JsTreeDecorator' ]
+                    'decorators' => [ JsTreeDecorator::class ]
                 ]
             ]
         );

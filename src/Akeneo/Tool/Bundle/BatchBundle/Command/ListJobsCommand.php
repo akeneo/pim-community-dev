@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,7 +50,7 @@ class ListJobsCommand extends ContainerAwareCommand
         if (static::LIST_ALL !== $type) {
             $criteria['type'] = $type;
         }
-        $jobs = $this->getJobManager()->getRepository('Akeneo\Tool\Component\Batch\Model\JobInstance')
+        $jobs = $this->getJobManager()->getRepository(JobInstance::class)
             ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
         $table = $this->buildTable($jobs, $output);
         $table->render($output);

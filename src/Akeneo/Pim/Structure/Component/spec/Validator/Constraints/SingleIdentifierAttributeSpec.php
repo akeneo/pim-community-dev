@@ -2,13 +2,14 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute;
 use PhpSpec\ObjectBehavior;
 
 class SingleIdentifierAttributeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute');
+        $this->shouldHaveType(SingleIdentifierAttribute::class);
     }
 
     function it_is_a_validator_constraint()

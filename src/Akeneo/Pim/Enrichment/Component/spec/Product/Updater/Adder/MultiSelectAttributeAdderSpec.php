@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\MultiSelectAttributeAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -44,7 +45,7 @@ class MultiSelectAttributeAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\MultiSelectAttributeAdder',
+                MultiSelectAttributeAdder::class,
                 $data
             )
         )->during('addAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

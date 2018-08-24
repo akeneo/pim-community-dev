@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp\GetComplet
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\ChannelCompleteness;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\CompletenessWidget;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\LocaleCompleteness;
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
@@ -18,7 +19,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
 
     function it_is_a_widget()
     {
-        $this->shouldImplement('Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface');
+        $this->shouldImplement(WidgetInterface::class);
     }
 
     function it_has_an_alias()

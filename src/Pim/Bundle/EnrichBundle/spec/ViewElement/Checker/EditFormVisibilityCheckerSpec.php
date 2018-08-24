@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\EditFormVisibilityChecker;
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\FormInterface;
@@ -10,12 +12,12 @@ class EditFormVisibilityCheckerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\ViewElement\Checker\EditFormVisibilityChecker');
+        $this->shouldHaveType(EditFormVisibilityChecker::class);
     }
 
     function it_is_a_visibility_checker()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface');
+        $this->shouldImplement(VisibilityCheckerInterface::class);
     }
 
     function it_checks_if_a_form_for_a_persisted_entity_exists_in_the_context(FormInterface $form)

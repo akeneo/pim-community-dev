@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\DependencyInjection\Compiler;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Resolves doctrine ORM Target entities
@@ -19,7 +20,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Akeneo\UserManagement\Component\Model\UserInterface' => 'pim_user.entity.user.class',
+            UserInterface::class => 'pim_user.entity.user.class',
         ];
     }
 }

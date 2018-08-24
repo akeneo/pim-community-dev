@@ -5,6 +5,7 @@ namespace Pim\Behat\Decorator\Export\Filter;
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 class DateDecorator extends ElementDecorator
 {
@@ -21,7 +22,7 @@ class DateDecorator extends ElementDecorator
         if (null !== $operator && '' !== $operator) {
             $operatorField = $this->decorate(
                 $this->find('css', '.operator.select2-container'),
-                ['Pim\Behat\Decorator\Field\Select2Decorator']
+                [Select2Decorator::class]
             );
             $operatorField->setValue($operator);
         }

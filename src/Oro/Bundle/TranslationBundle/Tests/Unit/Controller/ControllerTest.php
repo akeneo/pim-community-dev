@@ -3,6 +3,7 @@
 namespace Oro\Bundle\TranslationBundle\Tests\Unit\Controller;
 
 use Oro\Bundle\TranslationBundle\Controller\Controller;
+use Oro\Bundle\TranslationBundle\Translation\Translator;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +26,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     {
         $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
             ->getMockForAbstractClass();
-        $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         new Controller($translator, $templating, '', []);
@@ -39,7 +40,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $templating->expects($this->once())
             ->method('render')
             ->will($this->returnValue($content));
-        $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
         $translator->expects($this->once())
@@ -84,7 +85,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
+        $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();
 

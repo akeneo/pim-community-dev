@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Csv;
 
+use Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -17,7 +19,7 @@ class WriterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer');
+        $this->shouldHaveType(Writer::class);
     }
 
     function let(
@@ -30,7 +32,7 @@ class WriterSpec extends ObjectBehavior
 
     function it_is_a_writer()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldImplement(ItemWriterInterface::class);
     }
 
     function it_prepares_the_export(

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -40,7 +41,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'groups',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter',
+                GroupFieldSetter::class,
                 'not an array'
             )
         )->during('setFieldData', [$product, 'groups', 'not an array']);
@@ -49,7 +50,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'groups',
                 'one of the group codes is not a string, "array" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter',
+                GroupFieldSetter::class,
                 [['array of array']]
             )
         )->during('setFieldData', [$product, 'groups', [['array of array']]]);
@@ -94,7 +95,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
                 'groups',
                 'group code',
                 'The group does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\GroupFieldSetter',
+                GroupFieldSetter::class,
                 'not valid code'
             )
         )->during('setFieldData', [$product, 'groups', ['pack', 'not valid code']]);

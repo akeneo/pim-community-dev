@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine;
 
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -16,7 +17,7 @@ class ReferenceDataIdResolverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver');
+        $this->shouldHaveType(ReferenceDataIdResolver::class);
     }
 
     function it_resolves_an_id($resolver, ObjectRepository $repository, ReferenceDataInterface $referenceData)

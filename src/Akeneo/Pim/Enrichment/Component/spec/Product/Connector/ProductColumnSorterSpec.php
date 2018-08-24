@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector;
 
+use Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter;
+use Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
@@ -25,12 +27,12 @@ class ProductColumnSorterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\DefaultColumnSorter');
+        $this->shouldHaveType(DefaultColumnSorter::class);
     }
 
     function it_is_a_sorter()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Connector\Writer\File\ColumnSorterInterface');
+        $this->shouldImplement(ColumnSorterInterface::class);
     }
 
     function it_sort_headers_columns($attributeRepository, $fieldSplitter)

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
@@ -32,6 +33,6 @@ class GroupRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\GroupRepository');
+        $this->shouldHaveType(GroupRepository::class);
     }
 }

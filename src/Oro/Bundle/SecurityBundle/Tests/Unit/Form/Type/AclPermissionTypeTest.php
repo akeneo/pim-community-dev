@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPermissionType;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
 
 class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,7 +44,7 @@ class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
                 [
-                    'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
+                    'data_class'        => AclPermission::class,
                     'privileges_config' => []
                 ]
             );

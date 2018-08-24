@@ -2,6 +2,9 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 
+use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -25,17 +28,17 @@ class WriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer');
+        $this->shouldHaveType(Writer::class);
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement(StepExecutionAwareInterface::class);
     }
 
     function it_is_a_writer()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldImplement(ItemWriterInterface::class);
     }
 
     function it_prepares_items_to_write(

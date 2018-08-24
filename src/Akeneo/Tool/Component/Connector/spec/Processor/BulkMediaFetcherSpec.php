@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Processor;
 
+use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -30,7 +31,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher');
+        $this->shouldHaveType(BulkMediaFetcher::class);
     }
 
     function it_copies_media_to_the_export_dir(

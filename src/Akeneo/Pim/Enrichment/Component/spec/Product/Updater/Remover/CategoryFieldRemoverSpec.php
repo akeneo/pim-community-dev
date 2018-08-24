@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -55,7 +56,7 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
                 'categories',
                 'category code',
                 'The category does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover',
+                CategoryFieldRemover::class,
                 'unknown_category'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', ['unknown_category']);
@@ -66,7 +67,7 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'categories',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover',
+                CategoryFieldRemover::class,
                 'category_code'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', 'category_code');
@@ -75,7 +76,7 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'categories',
                 'one of the category codes is not a string, "integer" given',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover',
+                CategoryFieldRemover::class,
                 [42]
             )
         )->duringRemoveFieldData($bookProduct, 'categories', [42]);

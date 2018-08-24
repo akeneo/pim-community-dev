@@ -15,7 +15,7 @@ class AbstractNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->node = $this->getMockForAbstractClass(
-            'Oro\Bundle\ConfigBundle\Config\Tree\AbstractNodeDefinition',
+            AbstractNodeDefinition::class,
             [self::TEST_NAME, []]
         );
     }

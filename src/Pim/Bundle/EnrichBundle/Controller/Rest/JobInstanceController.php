@@ -452,7 +452,7 @@ class JobInstanceController
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', 'Akeneo\Tool\Component\Batch\Model\JobInstance'));
+            throw new NotFoundHttpException(sprintf('%s entity not found', JobInstance::class));
         }
 
         $job = $this->jobRegistry->get($jobInstance->getJobName());
