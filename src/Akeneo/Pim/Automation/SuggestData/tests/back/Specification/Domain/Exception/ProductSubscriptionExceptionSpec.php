@@ -18,8 +18,8 @@ class ProductSubscriptionExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(ProductSubscriptionException::class);
     }
 
-    function it_is_a_suggest_data_exception()
+    function it_is_an_exception()
     {
-        $this->shouldBeAnInstanceOf(SuggestDataException::class);
+        $this->shouldBeAnInstanceOf(\Exception::class);
     }
 }

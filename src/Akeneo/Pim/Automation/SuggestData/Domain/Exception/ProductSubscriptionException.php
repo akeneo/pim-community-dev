@@ -16,6 +16,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class ProductSubscriptionException extends SuggestDataException
+final class ProductSubscriptionException extends \Exception
 {
 }

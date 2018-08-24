@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-final class InvalidMappingException extends SuggestDataException
+final class InvalidMappingException extends \Exception
 {
     /** @var string */
     private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';

@@ -27,8 +27,8 @@ class InvalidConnectionConfigurationExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(InvalidConnectionConfigurationException::class);
     }
 
-    function it_is_an_suggest_data_exception()
+    function it_is_an_exception()
     {
-        $this->shouldBeAnInstanceOf(SuggestDataException::class);
+        $this->shouldBeAnInstanceOf(\Exception::class);
     }
 }

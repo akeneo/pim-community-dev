@@ -103,7 +103,7 @@ class SubscribeProductHandler
         $status = $this->productSubscriptionRepository->getSubscriptionStatusForProductId($productId);
         if (!empty($status['subscription_id'])) {
             throw new ProductSubscriptionException(
-                sprintf('The product with id "%d" is alreaduy subscribed', $productId)
+                sprintf('The product with id "%d" is already subscribed', $productId)
             );
         }
 

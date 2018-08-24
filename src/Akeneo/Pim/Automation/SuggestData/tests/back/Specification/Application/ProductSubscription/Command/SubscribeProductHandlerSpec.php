@@ -83,7 +83,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
-            new ProductSubscriptionException(sprintf('The product with id "%d" is alreaduy subscribed', $productId))
+            new ProductSubscriptionException(sprintf('The product with id "%d" is already subscribed', $productId))
         )->during('handle', [$command]);
     }
 

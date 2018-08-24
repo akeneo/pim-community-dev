@@ -60,7 +60,7 @@ class PimAI implements DataProviderInterface
         $mapped = $request->getMappedValues($identifiersMapping);
         if (empty($mapped)) {
             throw new ProductSubscriptionException(
-                sprintf('No mapped values for product %s', $request->getProduct()->getId())
+                sprintf('No mapped values for product with id "%s"', $request->getProduct()->getId())
             );
         }
 

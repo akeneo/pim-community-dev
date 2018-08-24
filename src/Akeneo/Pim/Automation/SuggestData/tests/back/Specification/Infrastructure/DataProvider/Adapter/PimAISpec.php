@@ -76,7 +76,7 @@ class PimAISpec extends ObjectBehavior
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
-        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product 42'))
+        $this->shouldThrow(new ProductSubscriptionException('No mapped values for product with id "42"'))
              ->during('subscribe', [$productSubscriptionRequest]);
     }
 

@@ -29,11 +29,11 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(InvalidMappingException::class);
     }
 
-    function it_is_asuggest_data_exception()
+    function it_is_an_exception()
     {
         $this->beConstructedWith('className');
 
-        $this->shouldBeAnInstanceOf(SuggestDataException::class);
+        $this->shouldBeAnInstanceOf(\Exception::class);
     }
 
     function it_returns_the_name_of_the_class_the_exception_was_thrown_from()
