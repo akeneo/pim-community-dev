@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
@@ -32,7 +32,7 @@ abstract class AbstractAttributeDetails
     public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
     public const CODE = 'code';
     public const LABELS = 'labels';
-    public const REQUIRED = 'required';
+    public const IS_REQUIRED = 'is_required';
     public const ORDER = 'order';
     public const VALUE_PER_LOCALE = 'value_per_locale';
     public const VALUE_PER_CHANNEL = 'value_per_channel';
@@ -53,8 +53,8 @@ abstract class AbstractAttributeDetails
     /** @var AttributeOrder */
     public $order;
 
-    /** @var AttributeRequired */
-    public $required;
+    /** @var AttributeIsRequired */
+    public $isRequired;
 
     /** @var AttributeValuePerChannel */
     public $valuePerChannel;
@@ -69,7 +69,7 @@ abstract class AbstractAttributeDetails
             self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->enrichedEntityIdentifier,
             self::CODE                       => (string) $this->code,
             self::LABELS                     => $this->labels->normalize(),
-            self::REQUIRED                   => $this->required->normalize(),
+            self::IS_REQUIRED                => $this->isRequired->normalize(),
             self::ORDER                      => $this->order->intValue(),
             self::VALUE_PER_LOCALE           => $this->valuePerLocale->normalize(),
             self::VALUE_PER_CHANNEL          => $this->valuePerChannel->normalize(),

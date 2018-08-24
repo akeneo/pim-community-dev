@@ -209,7 +209,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'code' => 'name',
                 'labels'                     => [],
                 'type'                       => $invalidAttributeType,
-                'required'                   => false,
+                'is_required'                   => false,
                 'value_per_channel'          => false,
                 'value_per_locale'           => false,
             ]
@@ -253,7 +253,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'code' => $recordCode,
                 'labels'                     => [],
                 'type'                       => $type,
-                'required'                   => false,
+                'is_required'                   => false,
                 'value_per_channel'          => false,
                 'value_per_locale'           => false,
             ]

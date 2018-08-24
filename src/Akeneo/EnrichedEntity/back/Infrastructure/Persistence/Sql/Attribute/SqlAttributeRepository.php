@@ -20,7 +20,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -61,7 +61,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             labels,
             attribute_type,
             attribute_order,
-            required,
+            is_required,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -72,7 +72,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             :labels,
             :attribute_type,
             :attribute_order,
-            :required,
+            :is_required,
             :value_per_channel,
             :value_per_locale,
             :additional_properties
@@ -81,15 +81,15 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => $normalizedAttribute['code'],
+                'identifier'                 => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
-                'labels' => json_encode($normalizedAttribute['labels']),
-                'attribute_type' => $normalizedAttribute['type'],
-                'attribute_order' => $normalizedAttribute['order'],
-                'required' => $normalizedAttribute['required'],
-                'value_per_channel' => $normalizedAttribute['value_per_channel'],
-                'value_per_locale' => $normalizedAttribute['value_per_locale'],
-                'additional_properties' => json_encode($additionalProperties),
+                'labels'                     => json_encode($normalizedAttribute['labels']),
+                'attribute_type'             => $normalizedAttribute['type'],
+                'attribute_order'            => $normalizedAttribute['order'],
+                'is_required'                => $normalizedAttribute['is_required'],
+                'value_per_channel'          => $normalizedAttribute['value_per_channel'],
+                'value_per_locale'           => $normalizedAttribute['value_per_locale'],
+                'additional_properties'      => json_encode($additionalProperties),
             ],
             [
                 'required' => Type::getType('boolean'),
@@ -122,7 +122,7 @@ SQL;
             labels,
             attribute_type,
             attribute_order,
-            required,
+            is_required,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -161,7 +161,7 @@ SQL;
             labels,
             attribute_type,
             attribute_order,
-            required,
+            is_required,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -192,7 +192,7 @@ SQL;
         unset($normalizedAttribute['code']);
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);
-        unset($normalizedAttribute['required']);
+        unset($normalizedAttribute['is_required']);
         unset($normalizedAttribute['value_per_channel']);
         unset($normalizedAttribute['value_per_locale']);
         unset($normalizedAttribute['type']);
@@ -214,7 +214,7 @@ SQL;
         $enrichedEntityIdentifier = $result['enriched_entity_identifier'];
         $labels = json_decode($result['labels'], true);
         $order = (int) $result['attribute_order'];
-        $required = (bool) $result['required'];
+        $isRequired = (bool) $result['is_required'];
         $valuePerChannel = (bool) $result['value_per_channel'];
         $valuePerLocale = (bool) $result['value_per_locale'];
         $additionnalProperties = json_decode($result['additional_properties'], true);
@@ -228,7 +228,7 @@ SQL;
                 AttributeCode::fromString($code),
                 LabelCollection::fromArray($labels),
                 AttributeOrder::fromInteger($order),
-                AttributeRequired::fromBoolean($required),
+                AttributeIsRequired::fromBoolean($isRequired),
                 AttributeValuePerChannel::fromBoolean($valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
                 AttributeMaxLength::fromInteger($maxLength)
@@ -245,7 +245,7 @@ SQL;
                 AttributeCode::fromString($code),
                 LabelCollection::fromArray($labels),
                 AttributeOrder::fromInteger($order),
-                AttributeRequired::fromBoolean($required),
+                AttributeIsRequired::fromBoolean($isRequired),
                 AttributeValuePerChannel::fromBoolean($valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
                 AttributeMaxFileSize::fromString($maxFileSize),

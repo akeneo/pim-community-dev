@@ -35,7 +35,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'fr_FR' => 'Nom'
         ];
         $command->order = 0;
-        $command->required = true;
+        $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxFileSize = '30.0';
@@ -50,7 +50,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,
-            'required' => true,
+            'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'type' => 'image',
@@ -72,7 +72,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'fr_FR' => 'Nom'
         ];
         $command->order = 0;
-        $command->required = true;
+        $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxFileSize = AttributeMaxFileSize::NO_LIMIT;
@@ -87,7 +87,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,
-            'required' => true,
+            'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'type' => 'image',
@@ -109,7 +109,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'fr_FR' => 'Nom'
         ];
         $command->order = 0;
-        $command->required = true;
+        $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxFileSize = AttributeMaxFileSize::NO_LIMIT;
@@ -124,7 +124,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,
-            'required' => true,
+            'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'type' => 'image',

@@ -8,11 +8,11 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRequiredCommandFactory implements EditAttributeCommandFactoryInterface
+class EditIsRequiredCommandFactory implements EditAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['required'])
+        return isset($normalizedCommand['is_required'])
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }
@@ -23,9 +23,9 @@ class EditRequiredCommandFactory implements EditAttributeCommandFactoryInterface
             throw new \RuntimeException('Impossible to create an edit required property command.');
         }
 
-        $command = new EditRequiredCommand();
+        $command = new EditIsRequiredCommand();
         $command->identifier = $normalizedCommand['identifier'];
-        $command->required = $normalizedCommand['required'];
+        $command->required = $normalizedCommand['is_required'];
 
         return $command;
     }

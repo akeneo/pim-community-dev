@@ -9,7 +9,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Edi
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -78,7 +78,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([$localeCode => $label]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(100)
@@ -109,7 +109,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(100)
@@ -133,7 +133,7 @@ class EditAttributeContext implements Context
             'dummy_identifier',
             $attributeCode
         ));
-        Assert::assertEquals(true, $attribute->normalize()['required']);
+        Assert::assertEquals(true, $attribute->normalize()['is_required']);
     }
 
     /**
@@ -147,7 +147,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger($maxLength)
@@ -196,7 +196,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([$localeCode => $label]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('210'),
@@ -215,7 +215,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString($maxFileSize),
@@ -356,7 +356,7 @@ class EditAttributeContext implements Context
         $invalidValue = json_decode($invalidValue);
 
         $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
-        $editIsRequired = new EditRequiredCommand();
+        $editIsRequired = new EditIsRequiredCommand();
         $editIsRequired->identifier = $identifier;
         $editIsRequired->required = $invalidValue;
 
@@ -426,7 +426,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(false),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200'),
@@ -447,7 +447,7 @@ class EditAttributeContext implements Context
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('200'),

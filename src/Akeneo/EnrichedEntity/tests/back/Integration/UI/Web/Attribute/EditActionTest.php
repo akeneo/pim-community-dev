@@ -10,7 +10,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -66,7 +66,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'code'                       => 'A magic name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
             'order'                      => 10,
-            'required'                   => false,
+            'is_required'                   => false,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
@@ -103,7 +103,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
             'order'                      => 0,
-            'required'                   => false, // updated
+            'is_required'                   => false, // updated
             'value_per_channel'          => true,
             'value_per_locale'           => true,
             'type'                       => 'text',
@@ -125,7 +125,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'code'                       => 'new_name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
             'order'                      => 1,
-            'required'                   => false,
+            'is_required'                   => false,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
@@ -164,7 +164,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
                 'order'                      => 1,
                 'type'                       => 'image',
-                'required'                   => false, // updated
+                'is_required'                   => false, // updated
                 'value_per_channel'          => false,
                 'value_per_locale'           => false,
                 'max_file_size'              => '500', // updated
@@ -186,7 +186,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'code'                       => 'unknown_attribute_code',
             'labels'                     => ['fr_FR' => 'Uknown'],
             'order'                      => 0,
-            'required'                   => false,
+            'is_required'                   => false,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
@@ -226,7 +226,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'code'                       => 'portrait',
             'labels'                     => ['fr_FR' => 'Uknown'],
             'order'                      => 0,
-            'required'                   => false,
+            'is_required'                   => false,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
@@ -267,7 +267,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'labels'                     => ['fr_FR' => 'Image autobiographique', 'en_US' => 'Name'], // updated
             'order'                      => 1,
             'type'                       => 'image',
-            'required'                   => true,
+            'is_required'                   => true,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'max_file_size'              => '200.10',
@@ -370,7 +370,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
                 'order'                      => 0,
-                'required'                   => false,
+                'is_required'                   => false,
                 'value_per_channel'          => false,
                 'value_per_locale'           => false,
                 'type'                       => 'text',
@@ -397,7 +397,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(100)
@@ -408,7 +408,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(1),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('200.10'),

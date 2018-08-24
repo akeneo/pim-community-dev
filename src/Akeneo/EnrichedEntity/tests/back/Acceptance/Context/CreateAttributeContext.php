@@ -64,7 +64,7 @@ class CreateAttributeContext implements Context
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $command->labels = json_decode($attributeData['labels'], true);
         $command->order = (int) $attributeData['order'];
-        $command->required = (bool) $attributeData['required'];
+        $command->isRequired = (bool) $attributeData['is_required'];
         $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
         $command->valuePerLocale = (bool) $attributeData['value_per_locale'];
         $command->maxLength = (int) $attributeData['max_length'];
@@ -92,7 +92,7 @@ class CreateAttributeContext implements Context
         $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
-        $expected['required'] = (bool) $expected['required'];
+        $expected['is_required'] = (bool) $expected['is_required'];
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
         $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
         $expected['max_length'] = (int) $expected['max_length'];
@@ -144,7 +144,7 @@ class CreateAttributeContext implements Context
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $command->labels = json_decode($attributeData['labels'], true);
         $command->order = (int) $attributeData['order'];
-        $command->required = (bool) $attributeData['required'];
+        $command->isRequired = (bool) $attributeData['is_required'];
         $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
         $command->valuePerLocale = (bool) $attributeData['value_per_locale'];
         $command->maxFileSize = $attributeData['max_file_size'];
@@ -169,7 +169,7 @@ class CreateAttributeContext implements Context
         $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
-        $expected['required'] = (bool) $expected['required'];
+        $expected['is_required'] = (bool) $expected['is_required'];
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
         $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
         $expected['max_file_size'] = $expected['max_file_size'];

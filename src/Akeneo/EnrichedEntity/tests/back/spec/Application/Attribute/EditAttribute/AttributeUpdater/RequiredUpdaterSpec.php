@@ -3,9 +3,9 @@
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\RequiredUpdater;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRequiredUpdater;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +14,7 @@ class RequiredUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RequiredUpdater::class);
+        $this->shouldHaveType(IsRequiredUpdater::class);
     }
 
     function it_only_supports_edit_required_command_for_all_attributes(
@@ -22,18 +22,18 @@ class RequiredUpdaterSpec extends ObjectBehavior
         ImageAttribute $imageAttribute
     ) {
         $labelEditCommand = new EditLabelsCommand();
-        $requiredEditCommand = new EditRequiredCommand();
+        $isRequiredEditCommand = new EditIsRequiredCommand();
 
-        $this->supports($textAttribute, $requiredEditCommand)->shouldReturn(true);
-        $this->supports($imageAttribute, $requiredEditCommand)->shouldReturn(true);
+        $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(true);
+        $this->supports($imageAttribute, $isRequiredEditCommand)->shouldReturn(true);
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
     }
 
     function it_edits_the_required_property_of_an_attribute(TextAttribute $textAttribute)
     {
-        $editRequired = new EditRequiredCommand();
+        $editRequired = new EditIsRequiredCommand();
         $editRequired->required = false;
-        $textAttribute->setIsRequired(AttributeRequired::fromBoolean(false))->willReturn($textAttribute);
+        $textAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false))->willReturn($textAttribute);
         $this->__invoke($textAttribute, $editRequired);
     }
 

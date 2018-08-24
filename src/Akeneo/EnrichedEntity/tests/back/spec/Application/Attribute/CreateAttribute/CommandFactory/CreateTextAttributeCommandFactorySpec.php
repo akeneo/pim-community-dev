@@ -30,7 +30,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 1,
-            'required' => false,
+            'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_length' => 255,
@@ -44,7 +44,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo('name');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
         $command->order->shouldBeEqualTo(1);
-        $command->required->shouldBeEqualTo(false);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
         $command->maxLength->shouldBeEqualTo(255);
@@ -63,7 +63,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);
         $command->order->shouldBeEqualTo(null);
-        $command->required->shouldBeEqualTo(false);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(null);
         $command->valuePerLocale->shouldBeEqualTo(null);
         $command->maxLength->shouldBeEqualTo(null);

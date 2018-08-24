@@ -15,9 +15,12 @@ namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -29,16 +32,17 @@ class TextAttributeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('create', [
+        $this->beConstructedThrough('createTextArea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(false),
         ]);
     }
 
@@ -47,33 +51,104 @@ class TextAttributeSpec extends ObjectBehavior
         $this->shouldHaveType(TextAttribute::class);
     }
 
-    function it_cannot_have_an_enriched_entity_identifier_different_from_the_composite_key()
+    function it_can_create_a_text_area_with_rich_text_editor()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
+        $this->beConstructedThrough('createTextArea', [
             AttributeIdentifier::create('designer', 'name'),
-            EnrichedEntityIdentifier::fromString('manufacturer'),
+            EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(true),
+        ]);
+    }
+
+    function it_can_create_simple_texts()
+    {
+        $this::createText(
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegex::none()
+        );
+    }
+
+    function it_can_create_a_simple_text_with_a_validation_rule_on_regex_with_a_regex()
+    {
+        $this::createText(
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::EMAIL),
+            AttributeRegex::none()
+        );
+    }
+
+    function it_cannot_have_an_enriched_entity_identifier_different_from_the_composite_key()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('different_enriched_entity_code'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegex::none()
         ]);
     }
 
     function it_cannot_have_a_code_different_from_the_composite_key()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
+        $this->shouldThrow(\InvalidArgumentException::class)->during('createText', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('birth_date'),
+            AttributeCode::fromString('different_attribute_code'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegex::none()
+        ]);
+    }
+
+    function it_cannot_create_a_simple_text_with_validation_regex_without_specifying_a_regex()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegex::none()
         ]);
     }
 
@@ -83,7 +158,7 @@ class TextAttributeSpec extends ObjectBehavior
         $this->hasOrder(AttributeOrder::fromInteger(1))->shouldReturn(false);
     }
 
-    function it_normalizes_itself()
+    function it_normalizes_a_text_area()
     {
         $this->normalize()->shouldReturn([
                 'identifier'                 => [
@@ -94,23 +169,62 @@ class TextAttributeSpec extends ObjectBehavior
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
+                'is_text_area'               => true,
+                'is_rich_text_editor'        => false,
+                'valdiation_rule'            => null,
+                'regex'                      => null,
+            ]
+        );
+    }
+
+    function it_normalizes_a_simple_text_with_a_validation_rule_and_regex()
+    {
+        $this::createText(
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegex::fromString('\w+-[0-9]')
+        )->normalize()->shouldReturn([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'name',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
+                'order'                      => 0,
+                'is_required'                => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'text',
+                'max_length'                 => 300,
+                'is_text_area'               => false,
+                'is_rich_text_editor'        => false,
+                'valdiation_rule'            => 'regular_expression',
+                'regex'                      => '\w+-[0-9]',
             ]
         );
     }
 
     function it_updates_its_label_and_returns_a_new_instance_of_itself()
     {
-        $newName = $this->updateLabels(LabelCollection::fromArray([
+        $this->updateLabels(LabelCollection::fromArray([
             'fr_FR' => 'Désignation',
             'de_DE' => 'Bezeichnung',
         ]));
-        $newName->shouldBeAnInstanceOf(TextAttribute::class);
-        $newName->normalize()->shouldBe([
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'name',
@@ -119,20 +233,23 @@ class TextAttributeSpec extends ObjectBehavior
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Désignation', 'de_DE' => 'Bezeichnung'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
+                'is_text_area'               => true,
+                'is_rich_text_editor'        => false,
+                'valdiation_rule'            => null,
+                'regex'                      => null,
             ]
         );
     }
 
-    function it_updates_it_max_length_and_returns_a_new_instance_of_itself()
+    function it_updates_its_max_length()
     {
-        $newName = $this->setMaxLength(AttributeMaxLength::fromInteger(100));
-        $newName->shouldBeAnInstanceOf(TextAttribute::class);
-        $newName->normalize()->shouldBe([
+        $this->setMaxLength(AttributeMaxLength::fromInteger(100));
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'name',
@@ -141,20 +258,23 @@ class TextAttributeSpec extends ObjectBehavior
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 100,
+                'is_text_area'               => true,
+                'is_rich_text_editor'        => false,
+                'valdiation_rule'            => null,
+                'regex'                      => null,
             ]
         );
     }
 
     function it_updates_is_required_and_returns_a_new_instance_of_itself()
     {
-        $toggleIsRequired = $this->setIsRequired(AttributeRequired::fromBoolean(false));
-        $toggleIsRequired->shouldBeAnInstanceOf(TextAttribute::class);
-        $toggleIsRequired->normalize()->shouldBe([
+        $this->setIsRequired(AttributeIsRequired::fromBoolean(false));
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'name',
@@ -163,11 +283,15 @@ class TextAttributeSpec extends ObjectBehavior
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
-                'required'                   => false,
+                'is_required'                   => false,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
+                'is_text_area'               => true,
+                'is_rich_text_editor'        => false,
+                'valdiation_rule'            => null,
+                'regex'                      => null,
             ]
         );
     }

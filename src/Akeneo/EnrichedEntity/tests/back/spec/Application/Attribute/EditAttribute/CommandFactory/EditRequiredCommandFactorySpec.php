@@ -2,22 +2,22 @@
 
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommandFactory;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditRequiredCommandFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditRequiredCommandFactory::class);
+        $this->shouldHaveType(EditIsRequiredCommandFactory::class);
     }
 
     function it_only_supports_attribute_property_required_edits()
     {
         $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
-            'required'   => true,
+            'is_required'   => true,
         ])->shouldReturn(true);
         $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
@@ -33,9 +33,9 @@ class EditRequiredCommandFactorySpec extends ObjectBehavior
                 'identifier'                 => 'name',
                 'enriched_entity_identifier' => 'designer',
             ],
-            'required'   => true,
+            'is_required'   => true,
         ]);
-        $command->shouldBeAnInstanceOf(EditRequiredCommand::class);
+        $command->shouldBeAnInstanceOf(EditIsRequiredCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'name',
             'enriched_entity_identifier' => 'designer',

@@ -19,7 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -94,7 +94,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155)
@@ -105,7 +105,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(1),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('1000'),
@@ -148,7 +148,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->code = AttributeCode::fromString('name');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Name']);
         $expectedName->order = AttributeOrder::fromInteger(0);
-        $expectedName->required = AttributeRequired::fromBoolean(true);
+        $expectedName->required = AttributeIsRequired::fromBoolean(true);
         $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
@@ -194,7 +194,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedImage->code = AttributeCode::fromString('name');
         $expectedImage->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
         $expectedImage->order = AttributeOrder::fromInteger(1);
-        $expectedImage->required = AttributeRequired::fromBoolean(true);
+        $expectedImage->required = AttributeIsRequired::fromBoolean(true);
         $expectedImage->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $expectedImage->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $expectedImage->maxFileSize = AttributeMaxFileSize::fromString('1000');

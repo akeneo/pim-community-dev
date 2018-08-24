@@ -18,7 +18,7 @@ class EditAttributeCommandFactoryRegistrySpec extends ObjectBehavior
         EditAttributeCommandFactoryInterface $supportedFactory2,
         EditAttributeCommandFactoryInterface $notSupportedFactory
     ) {
-        $normalizedCommand = ['required' => 'true', 'labels' => ['fr_FR' => 'A label'], 'max_length' => 155];
+        $normalizedCommand = ['is_required' => 'true', 'labels' => ['fr_FR' => 'A label'], 'max_length' => 155];
         $supportedFactory1->supports($normalizedCommand)->willReturn(true);
         $supportedFactory2->supports($normalizedCommand)->willReturn(true);
         $notSupportedFactory->supports($normalizedCommand)->willReturn(false);

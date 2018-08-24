@@ -34,7 +34,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'fr_FR' => 'Nom'
         ];
         $command->order = 0;
-        $command->required = true;
+        $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = 155;
@@ -48,7 +48,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
            'code' => 'name',
            'labels' => ['fr_FR' => 'Nom'],
            'order' => 0,
-           'required' => true,
+           'is_required' => true,
            'value_per_channel' => false,
            'value_per_locale' => false,
            'type' => 'text',
@@ -69,7 +69,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'fr_FR' => 'Nom'
         ];
         $command->order = 0;
-        $command->required = true;
+        $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = AttributeMaxLength::NO_LIMIT;
@@ -83,7 +83,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,
-            'required' => true,
+            'is_required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'type' => 'text',

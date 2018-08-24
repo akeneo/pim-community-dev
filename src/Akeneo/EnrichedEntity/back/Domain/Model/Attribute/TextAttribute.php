@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -28,38 +29,144 @@ class TextAttribute extends AbstractAttribute
     /** @var AttributeMaxLength */
     private $maxLength;
 
+    /** @var AttributeIsTextArea */
+    private $isTextArea;
+
+    /** @var AttributeValidationRule */
+    private $validationRule;
+
+    /** @var AttributeRegex */
+    private $regex;
+
+    /** @var AttributeIsRichTextEditor */
+    private $isRichTextEditor;
+
+    /**
+     * TextAttribute constructor.
+     *
+     * @param AttributeIdentifier       $identifier
+     * @param EnrichedEntityIdentifier  $enrichedEntityIdentifier
+     * @param AttributeCode             $code
+     * @param LabelCollection           $labelCollection
+     * @param AttributeOrder            $order
+     * @param AttributeIsRequired       $isRequired
+     * @param AttributeValuePerChannel  $valuePerChannel
+     * @param AttributeValuePerLocale   $valuePerLocale
+     * @param AttributeMaxLength        $maxLength
+     * @param AttributeIsTextArea       $isTextArea
+     * @param AttributeValidationRule   $validationRule
+     * @param AttributeRegex            $regex
+     * @param AttributeIsRichTextEditor $isRichTextEditor
+     */
     protected function __construct(
         AttributeIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeMaxLength $maxLength
+        AttributeMaxLength $maxLength,
+        AttributeIsTextArea $isTextArea,
+        AttributeValidationRule $validationRule,
+        AttributeRegex $regex,
+        AttributeIsRichTextEditor $isRichTextEditor
     ) {
-        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required,
-            $valuePerChannel, $valuePerLocale);
+        if ($isTextArea->isYes()) {
+            Assert::true(
+                $validationRule->isNone() && $regex->isNone(),
+                'It is not possible to create a text area attribute with a validation rule.'
+            );
+        } else{
+            Assert::false($isRichTextEditor->isYes());
+            if ($validationRule->isRegex()) {
+                Assert::false(
+                    $regex->isNone(),
+                    'It is not possible to create a text attribute with a regex without specifying a regex'
+                );
+            }
+        }
+        parent::__construct(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $code,
+            $labelCollection,
+            $order,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale
+        );
 
         $this->maxLength = $maxLength;
+        $this->isTextArea = $isTextArea;
+        $this->validationRule = $validationRule;
+        $this->regex = $regex;
+        $this->isRichTextEditor = $isRichTextEditor;
     }
 
-    public static function create(
+    public static function createText(
         AttributeIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeMaxLength $maxLength
-    ): self {
+        AttributeMaxLength $maxLength,
+        AttributeValidationRule $validationRule,
+        AttributeRegex $regex
+    ) {
         return new self(
-            $identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required, $valuePerChannel,
-            $valuePerLocale, $maxLength
+            $identifier,
+            $enrichedEntityIdentifier,
+            $code,
+            $labelCollection,
+            $order,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale,
+            $maxLength,
+            AttributeIsTextArea::fromBoolean(false),
+            $validationRule,
+            $regex,
+            AttributeIsRichTextEditor::fromBoolean(false)
         );
+    }
+
+    public static function createTextArea(
+        AttributeIdentifier $identifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        AttributeCode $code,
+        LabelCollection $labelCollection,
+        AttributeOrder $order,
+        AttributeIsRequired $isRequired,
+        AttributeValuePerChannel $valuePerChannel,
+        AttributeValuePerLocale $valuePerLocale,
+        AttributeMaxLength $maxLength,
+        AttributeIsRichTextEditor $isRichTextEditor
+    ) {
+        return new self(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $code,
+            $labelCollection,
+            $order,
+            $isRequired,
+            $valuePerChannel,
+            $valuePerLocale,
+            $maxLength,
+            AttributeIsTextArea::fromBoolean(true),
+            AttributeValidationRule::none(),
+            AttributeRegex::none(),
+            $isRichTextEditor
+        );
+    }
+
+    public function setMaxLength(AttributeMaxLength $newMaxLength): void
+    {
+        $this->maxLength = $newMaxLength;
     }
 
     public function normalize(): array
@@ -67,54 +174,12 @@ class TextAttribute extends AbstractAttribute
         return array_merge(
             parent::normalize(),
             [
-                'max_length' => $this->maxLength->normalize()
+                'max_length'          => $this->maxLength->normalize(),
+                'is_text_area'        => $this->isTextArea->normalize(),
+                'is_rich_text_editor' => $this->isRichTextEditor->normalize(),
+                'valdiation_rule'     => $this->validationRule->normalize(),
+                'regex'               => $this->regex->normalize(),
             ]
-        );
-    }
-
-
-    public function setIsRequired(AttributeRequired $required): self
-    {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $this->labelCollection,
-            $this->order,
-            $required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $this->maxLength
-        );
-    }
-
-    public function setMaxLength(AttributeMaxLength $newMaxLength): self
-    {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $this->labelCollection,
-            $this->order,
-            $this->required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $newMaxLength
-        );
-    }
-
-    public function updateLabels(LabelCollection $labelCollection): self
-    {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $labelCollection,
-            $this->order,
-            $this->required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $this->maxLength
         );
     }
 

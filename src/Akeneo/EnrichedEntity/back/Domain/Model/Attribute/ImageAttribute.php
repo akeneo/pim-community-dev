@@ -37,13 +37,13 @@ class ImageAttribute extends AbstractAttribute
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
         AttributeAllowedExtensions $extensions
     ) {
-        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required,
+        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $isRequired,
             $valuePerChannel, $valuePerLocale);
 
         $this->maxFileSize = $maxFileSize;
@@ -56,7 +56,7 @@ class ImageAttribute extends AbstractAttribute
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
@@ -68,7 +68,7 @@ class ImageAttribute extends AbstractAttribute
             $code,
             $labelCollection,
             $order,
-            $required,
+            $isRequired,
             $valuePerChannel,
             $valuePerLocale,
             $maxFileSize,
@@ -92,67 +92,13 @@ class ImageAttribute extends AbstractAttribute
         return self::ATTRIBUTE_TYPE;
     }
 
-    public function setIsRequired(AttributeRequired $required): self
+    public function setMaxFileSize(AttributeMaxFileSize $newMaxFileSize): void
     {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $this->labelCollection,
-            $this->order,
-            $required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $this->maxFileSize,
-            $this->allowedExtensions
-        );
+        $this->maxFileSize = $newMaxFileSize;
     }
 
-    public function setMaxFileSize(AttributeMaxFileSize $maxFileSize): self
+    public function setAllowedExtensions(AttributeAllowedExtensions $newAllowedExtensions): void
     {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $this->labelCollection,
-            $this->order,
-            $this->required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $maxFileSize,
-            $this->allowedExtensions
-        );
-    }
-
-    public function setAllowedExtensions(AttributeAllowedExtensions $allowedExtensions): self
-    {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $this->labelCollection,
-            $this->order,
-            $this->required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $this->maxFileSize,
-            $allowedExtensions
-        );
-    }
-
-    public function updateLabels(LabelCollection $labelCollection): self
-    {
-        return new self(
-            $this->identifier,
-            $this->enrichedEntityIdentifier,
-            $this->code,
-            $labelCollection,
-            $this->order,
-            $this->required,
-            $this->valuePerChannel,
-            $this->valuePerLocale,
-            $this->maxFileSize,
-            $this->allowedExtensions
-        );
+        $this->allowedExtensions = $newAllowedExtensions;
     }
 }

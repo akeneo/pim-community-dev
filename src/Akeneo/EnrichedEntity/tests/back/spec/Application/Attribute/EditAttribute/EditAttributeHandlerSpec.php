@@ -4,7 +4,7 @@ namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
@@ -37,9 +37,9 @@ class EditAttributeHandlerSpec extends ObjectBehavior
     ) {
         $editAttributeCommand = $this->getEditCommand();
         $attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'name'))->willReturn($attribute);
-        $editAttributeAdapterRegistry->getAdapter(Argument::type(EditRequiredCommand::class))->willReturn($editRequiredAdapter);
+        $editAttributeAdapterRegistry->getAdapter(Argument::type(EditIsRequiredCommand::class))->willReturn($editRequiredAdapter);
         $editAttributeAdapterRegistry->getAdapter(Argument::type(EditMaxFileSizeCommand::class))->willReturn($editMaxFileSizeAdapter);
-        $editRequiredAdapter->__invoke($attribute, Argument::type(EditRequiredCommand::class))->willReturn($attribute);
+        $editRequiredAdapter->__invoke($attribute, Argument::type(EditIsRequiredCommand::class))->willReturn($attribute);
         $editMaxFileSizeAdapter->__invoke($attribute, Argument::type(EditMaxFileSizeCommand::class))->willReturn($attribute);
         $attributeRepository->update($attribute)->shouldBeCalled();
 
@@ -48,7 +48,7 @@ class EditAttributeHandlerSpec extends ObjectBehavior
 
     private function getEditCommand(): EditAttributeCommand
     {
-        $editRequiredAttribute = new EditRequiredCommand();
+        $editRequiredAttribute = new EditIsRequiredCommand();
         $editRequiredAttribute->identifier = ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'];
         $editRequiredAttribute->required = true;
 

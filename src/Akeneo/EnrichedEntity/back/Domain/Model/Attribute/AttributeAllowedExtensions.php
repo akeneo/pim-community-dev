@@ -28,7 +28,7 @@ class AttributeAllowedExtensions
     /** @var string[] */
     private $allowedExtensions;
 
-    public function __construct(array $allowedExtensions)
+    private function __construct(array $allowedExtensions)
     {
         array_walk($allowedExtensions, function ($allowedExtension) {
             Assert::string($allowedExtension, 'Expected allowed extension to be a string');

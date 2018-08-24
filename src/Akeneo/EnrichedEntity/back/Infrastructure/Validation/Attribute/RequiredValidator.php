@@ -25,14 +25,14 @@ use Symfony\Component\Validator\Validation;
  */
 class RequiredValidator extends ConstraintValidator
 {
-    public function validate($required, Constraint $constraint)
+    public function validate($isRequired, Constraint $constraint)
     {
         if (!$constraint instanceof Required) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($required, [
+        $violations = $validator->validate($isRequired, [
                 new Constraints\NotNull(),
                 new Constraints\Type(['type' => 'boolean'])
             ]

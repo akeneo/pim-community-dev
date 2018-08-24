@@ -7,7 +7,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -25,7 +25,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('300'),
@@ -46,7 +46,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('300.0'),
@@ -62,7 +62,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeCode::fromString('birth_date'),
             LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxFileSize::fromString('300'),
@@ -87,7 +87,7 @@ class ImageAttributeSpec extends ObjectBehavior
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'image',
@@ -99,12 +99,8 @@ class ImageAttributeSpec extends ObjectBehavior
 
     function it_updates_its_label_and_returns_a_new_instance_of_itself()
     {
-        $newPortrait = $this->updateLabels(LabelCollection::fromArray([
-            'fr_FR' => 'Portrait',
-            'de_DE' => 'Porträt',
-        ]));
-        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
-        $newPortrait->normalize()->shouldBe([
+        $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Portrait', 'de_DE' => 'Porträt']));
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'image',
@@ -113,7 +109,7 @@ class ImageAttributeSpec extends ObjectBehavior
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'de_DE' => 'Porträt'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'image',
@@ -125,9 +121,8 @@ class ImageAttributeSpec extends ObjectBehavior
 
     function it_updates_its_allowed_extensions_and_returns_a_new_instance_of_itself()
     {
-        $newPortrait = $this->setAllowedExtensions(AttributeAllowedExtensions::fromList(['jpeg']));
-        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
-        $newPortrait->normalize()->shouldBe([
+        $this->setAllowedExtensions(AttributeAllowedExtensions::fromList(['jpeg']));
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'image',
@@ -136,7 +131,7 @@ class ImageAttributeSpec extends ObjectBehavior
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'image',
@@ -148,9 +143,8 @@ class ImageAttributeSpec extends ObjectBehavior
 
     function it_updates_its_max_file_size_and_returns_a_new_instance_of_itself()
     {
-        $newPortrait = $this->setMaxFileSize(AttributeMaxFileSize::fromString('1000'));
-        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
-        $newPortrait->normalize()->shouldBe([
+        $this->setMaxFileSize(AttributeMaxFileSize::fromString('1000'));
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'image',
@@ -159,7 +153,7 @@ class ImageAttributeSpec extends ObjectBehavior
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'required'                   => true,
+                'is_required'                   => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'image',
@@ -169,11 +163,10 @@ class ImageAttributeSpec extends ObjectBehavior
         );
     }
 
-    function it_updates_its_required_property_size_and_returns_a_new_instance_of_itself()
+    function it_updates_its_is_required_property_size_and_returns_a_new_instance_of_itself()
     {
-        $newPortrait = $this->setIsRequired(AttributeRequired::fromBoolean(false));
-        $newPortrait->shouldBeAnInstanceOf(ImageAttribute::class);
-        $newPortrait->normalize()->shouldBe([
+        $this->setIsRequired(AttributeIsRequired::fromBoolean(false));
+        $this->normalize()->shouldBe([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
                     'identifier'                 => 'image',
@@ -182,7 +175,7 @@ class ImageAttributeSpec extends ObjectBehavior
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
-                'required'                   => false,
+                'is_required'                   => false,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'image',

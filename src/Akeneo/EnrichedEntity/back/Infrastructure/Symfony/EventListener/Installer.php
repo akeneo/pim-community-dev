@@ -115,7 +115,7 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     `labels` JSON NOT NULL,
     `attribute_type` VARCHAR(255) NOT NULL,
     `attribute_order` INT NOT NULL,
-    `required` BOOLEAN NOT NULL,
+    `is_required` BOOLEAN NOT NULL,
     `value_per_channel` BOOLEAN NOT NULL,
     `value_per_locale` BOOLEAN NOT NULL,
     `additional_properties` JSON NOT NULL,
@@ -264,7 +264,7 @@ INSERT INTO `akeneo_enriched_entity_attribute` (
   `labels`,
   `attribute_type`,
   `attribute_order`,
-  `required`,
+  `is_required`,
   `value_per_channel`,
   `value_per_locale`,
   `additional_properties`

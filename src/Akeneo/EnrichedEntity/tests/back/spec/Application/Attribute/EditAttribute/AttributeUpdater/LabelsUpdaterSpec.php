@@ -3,7 +3,7 @@
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\LabelsUpdater;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -22,11 +22,11 @@ class LabelsUpdaterSpec extends ObjectBehavior
         ImageAttribute $imageAttribute
     ) {
         $labelEditCommand = new EditLabelsCommand();
-        $requiredEditCommand = new EditRequiredCommand();
+        $isRequiredEditCommand = new EditIsRequiredCommand();
 
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(true);
         $this->supports($imageAttribute, $labelEditCommand)->shouldReturn(true);
-        $this->supports($textAttribute, $requiredEditCommand)->shouldReturn(false);
+        $this->supports($textAttribute, $isRequiredEditCommand)->shouldReturn(false);
     }
 
     function it_edits_the_labels_of_an_attribute(TextAttribute $textAttribute)
@@ -39,7 +39,7 @@ class LabelsUpdaterSpec extends ObjectBehavior
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)
     {
-        $wrongCommand = new EditRequiredCommand();
+        $wrongCommand = new EditIsRequiredCommand();
         $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$textAttribute, $wrongCommand]);
     }
 }

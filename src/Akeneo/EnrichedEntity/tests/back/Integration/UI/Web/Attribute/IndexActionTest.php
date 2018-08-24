@@ -19,7 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
@@ -82,7 +82,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['en_US' => 'Name'],
-                'required'                   => true,
+                'is_required'                   => true,
                 'order'                      => 0,
                 'value_per_locale'           => true,
                 'value_per_channel'          => true,
@@ -97,7 +97,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['en_US' => 'Portrait'],
-                'required'                   => true,
+                'is_required'                   => true,
                 'order'                      => 1,
                 'value_per_locale'           => true,
                 'value_per_channel'          => true,
@@ -182,7 +182,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $nameAttribute->code = AttributeCode::fromString('name');
         $nameAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
         $nameAttribute->order = AttributeOrder::fromInteger(0);
-        $nameAttribute->required = AttributeRequired::fromBoolean(true);
+        $nameAttribute->required = AttributeIsRequired::fromBoolean(true);
         $nameAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $nameAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $nameAttribute->maxLength = AttributeMaxLength::fromInteger(155);
@@ -198,7 +198,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $imageAttribute->code = AttributeCode::fromString('name');
         $imageAttribute->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
         $imageAttribute->order = AttributeOrder::fromInteger(1);
-        $imageAttribute->required = AttributeRequired::fromBoolean(true);
+        $imageAttribute->required = AttributeIsRequired::fromBoolean(true);
         $imageAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $imageAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $imageAttribute->maxFileSize = AttributeMaxFileSize::fromString('1000');

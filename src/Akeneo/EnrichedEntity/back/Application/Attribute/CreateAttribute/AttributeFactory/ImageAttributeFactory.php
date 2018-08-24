@@ -21,7 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -61,7 +61,7 @@ class ImageAttributeFactory implements AttributeFactoryInterface
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),
             AttributeOrder::fromInteger($command->order),
-            AttributeRequired::fromBoolean($command->required),
+            AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
             AttributeMaxFileSize::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::infinite() : AttributeMaxFileSize::fromString($command->maxFileSize),

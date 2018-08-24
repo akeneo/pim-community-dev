@@ -28,7 +28,7 @@ class AttributeMaxLength
     /*** @var ?int */
     private $maxLength;
 
-    public function __construct(?int $maxLength)
+    private function __construct(?int $maxLength)
     {
         if (self::NO_LIMIT !== $maxLength) {
             Assert::natural($maxLength, sprintf('The maximum length should be positive, %d given', $maxLength));

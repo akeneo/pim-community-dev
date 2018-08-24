@@ -39,8 +39,8 @@ abstract class AbstractAttribute
     /** @var AttributeOrder */
     protected $order;
 
-    /** @var AttributeRequired */
-    protected $required;
+    /** @var AttributeIsRequired */
+    protected $isRequired;
 
     /** @var AttributeValuePerChannel */
     protected $valuePerChannel;
@@ -54,7 +54,7 @@ abstract class AbstractAttribute
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
     ) {
@@ -76,7 +76,7 @@ abstract class AbstractAttribute
         $this->code = $code;
         $this->labelCollection = $labelCollection;
         $this->order = $order;
-        $this->required = $required;
+        $this->isRequired = $isRequired;
         $this->valuePerChannel = $valuePerChannel;
         $this->valuePerLocale = $valuePerLocale;
     }
@@ -117,11 +117,15 @@ abstract class AbstractAttribute
         return $this->order;
     }
 
-    abstract public function setIsRequired(AttributeRequired $required);
+    public function updateLabels(LabelCollection $labelCollection): void
+    {
+        $this->labelCollection = $labelCollection;
+    }
 
-    abstract protected function getType(): string;
-
-    abstract public function updateLabels(LabelCollection $labelCollection);
+    public function setIsRequired(AttributeIsRequired $isRequired): void
+    {
+        $this->isRequired = $isRequired;
+    }
 
     public function normalize(): array
     {
@@ -134,10 +138,12 @@ abstract class AbstractAttribute
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),
-            'required' => $this->required->normalize(),
+            'is_required' => $this->isRequired->normalize(),
             'value_per_channel' => $this->valuePerChannel->normalize(),
             'value_per_locale' => $this->valuePerLocale->normalize(),
             'type' => $this->getType(),
         ];
     }
+
+    abstract protected function getType(): string;
 }
