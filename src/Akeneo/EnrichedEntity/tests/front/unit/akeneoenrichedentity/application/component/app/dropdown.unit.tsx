@@ -52,7 +52,7 @@ describe('>>>COMPONENT --- dropdown', () => {
         .text()
         .trim()
     ).toEqual('and this is the second item');
-    dropdown.setProps({selectedElement: 'nice_item'})
+    dropdown.setProps({selectedElement: 'nice_item'});
     expect(
       dropdown
         .find('.AknActionButton-highlight')
@@ -150,7 +150,7 @@ describe('>>>COMPONENT --- dropdown', () => {
     ).toEqual('my dropdown');
   });
 
-  test('doesn\'t open on keypress on other key, list options and change value on selection', () => {
+  test("doesn't open on keypress on other key, list options and change value on selection", () => {
     const dropdown = mount(
       <Dropdown
         elements={elements}

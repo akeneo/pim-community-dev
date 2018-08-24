@@ -5,8 +5,12 @@ import __ from 'akeneoenrichedentity/tools/translator';
 export const getErrorsView = (errors: ValidationError[], field: string) => {
   const errorMessages = errors
     .filter((error: ValidationError) => field === error.propertyPath)
-    .map((error: ValidationError, key:number) => {
-      return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
+    .map((error: ValidationError, key: number) => {
+      return (
+        <span className="error-message" key={key}>
+          {__(error.messageTemplate, error.parameters)}
+        </span>
+      );
     });
 
   if (0 === errorMessages.length) {
@@ -16,7 +20,7 @@ export const getErrorsView = (errors: ValidationError[], field: string) => {
   return (
     <div className="AknFieldContainer-footer AknFieldContainer-validationErrors">
       <span className="AknFieldContainer-validationError">
-        <i className="icon-warning-sign"></i>
+        <i className="icon-warning-sign" />
         {errorMessages}
       </span>
     </div>

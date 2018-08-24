@@ -11,10 +11,7 @@ import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity, {
   denormalizeEnrichedEntity,
 } from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {
-  saveEnrichedEntity,
-  deleteEnrichedEntity
-} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {saveEnrichedEntity, deleteEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
@@ -111,7 +108,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     if (canDelete) {
       return (
         <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-          <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+          <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
@@ -253,7 +250,7 @@ export default connect(
         },
         onDelete: (enrichedEntity: EnrichedEntity) => {
           dispatch(deleteEnrichedEntity(enrichedEntity));
-        }
+        },
       },
     };
   }

@@ -66,22 +66,15 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
           position={itemPosition > 0 ? itemPosition : 0}
         />
       );
-    })
+    });
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {
-      records,
-      locale,
-      onRedirectToRecord,
-      isLoading
-    } = this.props;
+    const {records, locale, onRedirectToRecord, isLoading} = this.props;
 
     return (
       <table className="AknGrid">
-        <tbody className="AknGrid-body">
-          {this.renderItems(records, locale, isLoading, onRedirectToRecord)}
-        </tbody>
+        <tbody className="AknGrid-body">{this.renderItems(records, locale, isLoading, onRedirectToRecord)}</tbody>
       </table>
     );
   }

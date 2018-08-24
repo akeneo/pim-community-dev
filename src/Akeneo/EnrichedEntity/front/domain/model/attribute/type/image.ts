@@ -40,7 +40,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     order: number,
-    required: boolean,
+    is_required: boolean,
     readonly maxFileSize: MaxFileSize,
     readonly allowedExtensions: AllowedExtensions
   ) {
@@ -53,7 +53,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
       valuePerLocale,
       valuePerChannel,
       order,
-      required
+      is_required
     );
 
     if (!(maxFileSize instanceof MaxFileSize)) {
@@ -79,7 +79,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
       normalizedImageAttribute.value_per_locale,
       normalizedImageAttribute.value_per_channel,
       normalizedImageAttribute.order,
-      normalizedImageAttribute.required,
+      normalizedImageAttribute.is_required,
       MaxFileSize.createFromNormalized(normalizedImageAttribute.max_file_size),
       AllowedExtensions.createFromNormalized(normalizedImageAttribute.allowed_extensions)
     );

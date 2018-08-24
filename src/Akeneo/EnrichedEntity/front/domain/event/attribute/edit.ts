@@ -9,8 +9,8 @@ export const attributeEditionLabelUpdated = (value: string, locale: string) => {
   return {type: 'ATTRIBUTE_EDITION_LABEL_UPDATED', value, locale};
 };
 
-export const attributeEditionRequiredUpdated = (required: boolean) => {
-  return {type: 'ATTRIBUTE_EDITION_REQUIRED_UPDATED', required};
+export const attributeEditionIsRequiredUpdated = (is_required: boolean) => {
+  return {type: 'ATTRIBUTE_EDITION_REQUIRED_UPDATED', is_required};
 };
 
 export const attributeEditionAdditionalPropertyUpdated = (

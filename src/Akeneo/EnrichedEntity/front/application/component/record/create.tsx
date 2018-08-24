@@ -7,11 +7,13 @@ import Flag from 'akeneoenrichedentity/tools/component/flag';
 import {
   recordCreationRecordCodeUpdated,
   recordCreationLabelUpdated,
-  recordCreationCancel
+  recordCreationCancel,
 } from 'akeneoenrichedentity/domain/event/record/create';
 import {createRecord} from 'akeneoenrichedentity/application/action/record/create';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import EnrichedEntity, {denormalizeEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import EnrichedEntity, {
+  denormalizeEnrichedEntity,
+} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 
 interface StateProps {
@@ -34,7 +36,7 @@ interface DispatchProps {
     onLabelUpdated: (value: string, locale: string) => void;
     onCancel: () => void;
     onSubmit: () => void;
-  }
+  };
 }
 
 interface CreateProps extends StateProps, DispatchProps {}
@@ -70,44 +72,41 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage AknFullPage--modal">
             <div className="AknFullPage-content">
               <div className="AknFullPage-left">
-                <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image"/>
+                <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
-                <div className="AknFullPage-subTitle">
-                  {__('pim_enriched_entity.record.create.subtitle')}
-                </div>
-                <div
-                  className="AknFullPage-title"
-                >
-                  {__(
-                    'pim_enriched_entity.record.create.title',
-                    {entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale).toLowerCase()}
-                  )}
+                <div className="AknFullPage-subTitle">{__('pim_enriched_entity.record.create.subtitle')}</div>
+                <div className="AknFullPage-title">
+                  {__('pim_enriched_entity.record.create.title', {
+                    entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale).toLowerCase(),
+                  })}
                 </div>
                 <div className="AknFieldContainer" data-code="label">
                   <div className="AknFieldContainer-header">
-                    <label className="AknFieldContainer-label"
-                      htmlFor="pim_enriched_entity.record.create.input.label">
+                    <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.record.create.input.label">
                       {__('pim_enriched_entity.record.create.input.label')}
                     </label>
                   </div>
                   <div className="AknFieldContainer-inputContainer">
-                    <input ref={(input: HTMLInputElement) => { this.labelInput = input; }}
+                    <input
+                      ref={(input: HTMLInputElement) => {
+                        this.labelInput = input;
+                      }}
                       type="text"
-                      className="AknTextField" id="pim_enriched_entity.record.create.input.label"
+                      className="AknTextField"
+                      id="pim_enriched_entity.record.create.input.label"
                       name="label"
                       value={this.props.data.labels[this.props.context.locale]}
                       onChange={this.onLabelUpdate}
                       onKeyPress={this.onKeyPress}
                     />
-                    <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false}/>
+                    <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
                   </div>
                   {getErrorsView(this.props.errors, 'labels')}
                 </div>
                 <div className="AknFieldContainer" data-code="code">
                   <div className="AknFieldContainer-header">
-                    <label className="AknFieldContainer-label"
-                      htmlFor="pim_enriched_entity.record.create.input.code">
+                    <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.record.create.input.code">
                       {__('pim_enriched_entity.record.create.input.code')}
                     </label>
                   </div>
@@ -129,7 +128,8 @@ class Create extends React.Component<CreateProps> {
           </div>
         </div>
         <div className="AknButtonList AknButtonList--right modal-footer">
-          <span title="{__('pim_enriched_entity.record.create.cancel')}"
+          <span
+            title="{__('pim_enriched_entity.record.create.cancel')}"
             className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
             onClick={this.props.events.onCancel}
           >
@@ -144,36 +144,39 @@ class Create extends React.Component<CreateProps> {
         </div>
       </div>
     );
-  };
+  }
 }
 
-export default connect((state: EditState): StateProps => {
-  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-  const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
+export default connect(
+  (state: EditState): StateProps => {
+    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
 
-  return {
-    data: state.createRecord.data,
-    errors: state.createRecord.errors,
-    context: {
-      locale: locale
-    },
-    enrichedEntity
-  };
-}, (dispatch: any): DispatchProps => {
-  return {
-    events: {
-      onRecordCodeUpdated: (value: string) => {
-        dispatch(recordCreationRecordCodeUpdated(value));
+    return {
+      data: state.createRecord.data,
+      errors: state.createRecord.errors,
+      context: {
+        locale: locale,
       },
-      onLabelUpdated: (value: string, locale: string) => {
-        dispatch(recordCreationLabelUpdated(value, locale));
+      enrichedEntity,
+    };
+  },
+  (dispatch: any): DispatchProps => {
+    return {
+      events: {
+        onRecordCodeUpdated: (value: string) => {
+          dispatch(recordCreationRecordCodeUpdated(value));
+        },
+        onLabelUpdated: (value: string, locale: string) => {
+          dispatch(recordCreationLabelUpdated(value, locale));
+        },
+        onCancel: () => {
+          dispatch(recordCreationCancel());
+        },
+        onSubmit: () => {
+          dispatch(createRecord());
+        },
       },
-      onCancel: () => {
-        dispatch(recordCreationCancel());
-      },
-      onSubmit: () => {
-        dispatch(createRecord());
-      }
-    }
+    };
   }
-})(Create);
+)(Create);

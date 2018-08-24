@@ -63,7 +63,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     order: number,
-    required: boolean,
+    is_required: boolean,
     readonly maxLength: MaxLength,
     readonly isTextarea: IsTextarea,
     readonly isRichTextEditor: IsRichTextEditor,
@@ -79,7 +79,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
       valuePerLocale,
       valuePerChannel,
       order,
-      required
+      is_required
     );
 
     if (!(maxLength instanceof MaxLength)) {
@@ -131,7 +131,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
       normalizedTextAttribute.value_per_locale,
       normalizedTextAttribute.value_per_channel,
       normalizedTextAttribute.order,
-      normalizedTextAttribute.required,
+      normalizedTextAttribute.is_required,
       MaxLength.createFromNormalized(normalizedTextAttribute.max_length),
       IsTextarea.createFromNormalized(normalizedTextAttribute.is_textarea),
       IsRichTextEditor.createFromNormalized(normalizedTextAttribute.is_rich_text_editor),

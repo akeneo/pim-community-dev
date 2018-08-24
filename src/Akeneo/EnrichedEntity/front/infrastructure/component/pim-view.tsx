@@ -25,7 +25,7 @@ export default class PimView extends React.Component<PimViewProps, {}> {
   }
 
   render() {
-    return <div className={this.props.className}></div>;
+    return <div className={this.props.className} />;
   }
 
   componentWillUnmount() {

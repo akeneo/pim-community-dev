@@ -13,9 +13,9 @@ interface SidebarState {
 
 interface SidebarDispatch {
   events: {
-    toggleSidebar: (isCollapsed: boolean) => void,
-    updateCurrentTab: (tabCode: string) => void
-  }
+    toggleSidebar: (isCollapsed: boolean) => void;
+    updateCurrentTab: (tabCode: string) => void;
+  };
 }
 
 interface SidebarProps extends SidebarState, SidebarDispatch {}
@@ -35,16 +35,16 @@ class Sidebar extends React.Component<SidebarProps> {
   };
 
   render(): JSX.Element | JSX.Element[] {
-    const colapsedClass = (this.props.isCollapsed) ? 'AknColumn--collapsed' : '';
+    const colapsedClass = this.props.isCollapsed ? 'AknColumn--collapsed' : '';
 
     return (
       <div className={`AknColumn ${colapsedClass}`}>
         <div className="AknColumn-inner column-inner">
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
-              <div className="AknColumn-title">{ __('pim_enriched_entity.enriched_entity.title') }</div>
+              <div className="AknColumn-title">{__('pim_enriched_entity.enriched_entity.title')}</div>
               {this.props.tabs.map((tab: any) => {
-                const activeClass = (this.props.currentTab === tab.code) ? 'AknColumn-navigationLink--active' : '';
+                const activeClass = this.props.currentTab === tab.code ? 'AknColumn-navigationLink--active' : '';
 
                 return (
                   <span
@@ -62,33 +62,36 @@ class Sidebar extends React.Component<SidebarProps> {
               })}
             </div>
           </div>
-          <div className="AknColumn-innerBottom"></div>
+          <div className="AknColumn-innerBottom" />
         </div>
-        <div className="AknColumn-collapseButton" onClick={this.toggleSidebar}></div>
+        <div className="AknColumn-collapseButton" onClick={this.toggleSidebar} />
       </div>
     );
   }
 }
 
-export default connect((state: EditState): SidebarState => {
-  const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
-  const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
-  const isCollapsed = undefined === state.sidebar.isCollapsed ? false : state.sidebar.isCollapsed;
+export default connect(
+  (state: EditState): SidebarState => {
+    const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
+    const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
+    const isCollapsed = undefined === state.sidebar.isCollapsed ? false : state.sidebar.isCollapsed;
 
-  return {
-    tabs,
-    currentTab,
-    isCollapsed
-  }
-}, (dispatch: any): SidebarDispatch => {
-  return {
-    events: {
-      toggleSidebar: (isCollapsed: boolean) => {
-        dispatch(toggleSidebar(isCollapsed))
+    return {
+      tabs,
+      currentTab,
+      isCollapsed,
+    };
+  },
+  (dispatch: any): SidebarDispatch => {
+    return {
+      events: {
+        toggleSidebar: (isCollapsed: boolean) => {
+          dispatch(toggleSidebar(isCollapsed));
+        },
+        updateCurrentTab: (tabCode: string) => {
+          dispatch(updateCurrentTab(tabCode));
+        },
       },
-      updateCurrentTab: (tabCode: string) => {
-        dispatch(updateCurrentTab(tabCode))
-      }
-    }
+    };
   }
-})(Sidebar);
+)(Sidebar);

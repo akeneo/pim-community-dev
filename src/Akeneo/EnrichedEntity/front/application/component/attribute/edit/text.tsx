@@ -6,17 +6,20 @@ import Switch from 'akeneoenrichedentity/application/component/app/switch';
 import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
 import {TextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
-import {RegularExpression} from "akeneoenrichedentity/domain/model/attribute/type/text/regular-expression";
-import {ValidationRuleOption, ValidationRule} from "akeneoenrichedentity/domain/model/attribute/type/text/validation-rule";
-import {IsRichTextEditor} from "akeneoenrichedentity/domain/model/attribute/type/text/is-rich-text-editor";
-import {IsTextarea} from "akeneoenrichedentity/domain/model/attribute/type/text/is-textarea";
-import {MaxLength} from "akeneoenrichedentity/domain/model/attribute/type/text/max-length";
+import {RegularExpression} from 'akeneoenrichedentity/domain/model/attribute/type/text/regular-expression';
+import {
+  ValidationRuleOption,
+  ValidationRule,
+} from 'akeneoenrichedentity/domain/model/attribute/type/text/validation-rule';
+import {IsRichTextEditor} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-rich-text-editor';
+import {IsTextarea} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-textarea';
+import {MaxLength} from 'akeneoenrichedentity/domain/model/attribute/type/text/max-length';
 
 const AttributeValidationRuleItemView = ({
-   element,
-   isActive,
-   onClick,
- }: {
+  element,
+  isActive,
+  onClick,
+}: {
   element: DropdownElement;
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
@@ -52,7 +55,7 @@ const getValidationRuleOptions = (): DropdownElement[] => {
 export default ({
   attribute,
   onAdditionalPropertyUpdated,
-  errors
+  errors,
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
@@ -62,10 +65,7 @@ export default ({
     <div className="AknFormContainer">
       <div className="AknFieldContainer" data-code="maxLength">
         <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.edit.input.max_length"
-          >
+          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.max_length">
             {__('pim_enriched_entity.attribute.edit.input.max_length')}
           </label>
         </div>
@@ -91,10 +91,7 @@ export default ({
       </div>
       <div className="AknFieldContainer" data-code="isTextarea">
         <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.edit.input.text_area"
-          >
+          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.text_area">
             {__('pim_enriched_entity.attribute.edit.input.text_area')}
           </label>
         </div>
@@ -102,32 +99,36 @@ export default ({
           <Switch
             id="pim_enriched_entity.attribute.edit.input.text_area"
             value={attribute.isTextarea.booleanValue()}
-            onChange={(isTextarea: boolean) => onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))}
+            onChange={(isTextarea: boolean) =>
+              onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
+            }
           />
         </div>
         {getErrorsView(errors, 'isTextarea')}
       </div>
-      {attribute.isTextarea.booleanValue() &&
-      <div className="AknFieldContainer" data-code="isRichTextEditor">
-        <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
-          >
-            {__('pim_enriched_entity.attribute.edit.input.is_rich_text_editor')}
-          </label>
+      {attribute.isTextarea.booleanValue() && (
+        <div className="AknFieldContainer" data-code="isRichTextEditor">
+          <div className="AknFieldContainer-header">
+            <label
+              className="AknFieldContainer-label"
+              htmlFor="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
+            >
+              {__('pim_enriched_entity.attribute.edit.input.is_rich_text_editor')}
+            </label>
+          </div>
+          <div className="AknFieldContainer-inputContainer">
+            <Switch
+              id="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
+              value={attribute.isRichTextEditor.booleanValue()}
+              onChange={(isrichTextEditor: boolean) =>
+                onAdditionalPropertyUpdated('is_rich_text_editor', IsRichTextEditor.createFromBoolean(isrichTextEditor))
+              }
+            />
+          </div>
+          {getErrorsView(errors, 'richTextEditor')}
         </div>
-        <div className="AknFieldContainer-inputContainer">
-          <Switch
-            id="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
-            value={attribute.isRichTextEditor.booleanValue()}
-            onChange={(isrichTextEditor: boolean) => onAdditionalPropertyUpdated('is_rich_text_editor', IsRichTextEditor.createFromBoolean(isrichTextEditor))}
-          />
-        </div>
-        {getErrorsView(errors, 'richTextEditor')}
-      </div>
-      }
-      {!attribute.isTextarea.booleanValue() &&
+      )}
+      {!attribute.isTextarea.booleanValue() && (
         <div className="AknFieldContainer" data-code="validationRule">
           <div className="AknFieldContainer-header">
             <label
@@ -143,35 +144,43 @@ export default ({
               label={__('pim_enriched_entity.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
               selectedElement={attribute.validationRule.stringValue()}
-              onSelectionChange={(value: DropdownElement) => onAdditionalPropertyUpdated('validation_rule', ValidationRule.createFromString(value.identifier))}
+              onSelectionChange={(value: DropdownElement) =>
+                onAdditionalPropertyUpdated('validation_rule', ValidationRule.createFromString(value.identifier))
+              }
             />
           </div>
           {getErrorsView(errors, 'validationRule')}
         </div>
-      }
-      {(!attribute.isTextarea.booleanValue() && attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression) &&
-        <div className="AknFieldContainer" data-code="regularExpression">
-          <div className="AknFieldContainer-header">
-            <label
-              className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.attribute.edit.input.regular_expression"
-            >
-              {__('pim_enriched_entity.attribute.edit.input.regular_expression')}
-            </label>
+      )}
+      {!attribute.isTextarea.booleanValue() &&
+        attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression && (
+          <div className="AknFieldContainer" data-code="regularExpression">
+            <div className="AknFieldContainer-header">
+              <label
+                className="AknFieldContainer-label"
+                htmlFor="pim_enriched_entity.attribute.edit.input.regular_expression"
+              >
+                {__('pim_enriched_entity.attribute.edit.input.regular_expression')}
+              </label>
+            </div>
+            <div className="AknFieldContainer-inputContainer">
+              <input
+                type="text"
+                className="AknTextField"
+                id="pim_enriched_entity.attribute.edit.input.regular_expression"
+                name="regular_expression"
+                value={attribute.regularExpression.stringValue()}
+                onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                  onAdditionalPropertyUpdated(
+                    'regular_expression',
+                    RegularExpression.createFromString(event.currentTarget.value)
+                  )
+                }
+              />
+            </div>
+            {getErrorsView(errors, 'regularExpression')}
           </div>
-          <div className="AknFieldContainer-inputContainer">
-            <input
-              type="text"
-              className="AknTextField"
-              id="pim_enriched_entity.attribute.edit.input.regular_expression"
-              name="regular_expression"
-              value={attribute.regularExpression.stringValue()}
-              onChange={(event: React.FormEvent<HTMLInputElement>) => onAdditionalPropertyUpdated('regular_expression', RegularExpression.createFromString(event.currentTarget.value))}
-            />
-          </div>
-          {getErrorsView(errors, 'regularExpression')}
-        </div>
-      }
+        )}
     </div>
   );
 };

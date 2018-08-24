@@ -10,12 +10,12 @@ import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection'
 
 export interface CommonNormalizedAttribute extends MinimalNormalizedAttribute {
   order: number;
-  required: boolean;
+  is_required: boolean;
 }
 
 export interface CommonAttribute extends MinimalAttribute {
   order: number;
-  required: boolean;
+  isRequired: boolean;
   normalize(): CommonNormalizedAttribute;
 }
 
@@ -29,15 +29,15 @@ export abstract class CommonConcreteAttribute extends MinimalConcreteAttribute i
     valuePerLocale: boolean,
     valuePerChannel: boolean,
     readonly order: number,
-    readonly required: boolean
+    readonly isRequired: boolean
   ) {
     super(identifier, enrichedEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
     if (typeof order !== 'number') {
       throw new InvalidArgumentError('Attribute expect a number as order');
     }
-    if (typeof required !== 'boolean') {
-      throw new InvalidArgumentError('Attribute expect a boolean as required value');
+    if (typeof isRequired !== 'boolean') {
+      throw new InvalidArgumentError('Attribute expect a boolean as isRequired value');
     }
   }
 
@@ -45,7 +45,7 @@ export abstract class CommonConcreteAttribute extends MinimalConcreteAttribute i
     return {
       ...super.normalize(),
       order: this.order,
-      required: this.required,
+      is_required: this.isRequired,
     };
   }
 }

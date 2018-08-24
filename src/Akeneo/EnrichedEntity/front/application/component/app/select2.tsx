@@ -19,7 +19,7 @@ export default class Select2 extends React.Component<Select2Props> {
   public props: any;
   private el: any;
   private events: {[eventName: string]: string} = {
-    'change': 'onChange'
+    change: 'onChange',
   };
 
   componentDidMount() {
@@ -43,7 +43,7 @@ export default class Select2 extends React.Component<Select2Props> {
         this.props[this.events[eventName] as string](e.val);
       });
     });
-  }
+  };
 
   render(): JSX.Element | JSX.Element[] {
     const {data, value, ...props} = this.props;
@@ -55,9 +55,11 @@ export default class Select2 extends React.Component<Select2Props> {
         name={props.fieldName}
         multiple={props.multiple}
         disabled={props.readonly}
-        onChange={(event) => {
-          const newValues = Array.prototype.slice.call(event.currentTarget.childNodes)
-            .filter((option: HTMLOptionElement) => option.selected).map((option: HTMLOptionElement) => option.value);
+        onChange={event => {
+          const newValues = Array.prototype.slice
+            .call(event.currentTarget.childNodes)
+            .filter((option: HTMLOptionElement) => option.selected)
+            .map((option: HTMLOptionElement) => option.value);
 
           this.props.onChange(newValues);
         }}

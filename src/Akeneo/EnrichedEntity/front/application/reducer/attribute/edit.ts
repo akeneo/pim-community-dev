@@ -39,7 +39,7 @@ const initEditState = (): EditState => ({
     order: 0,
     value_per_locale: false,
     value_per_channel: false,
-    required: false,
+    is_required: false,
     max_length: null,
     is_textarea: false,
     is_rich_text_editor: false,
@@ -157,7 +157,7 @@ export default (
     type,
     locale,
     value,
-    required,
+    is_required,
     errors,
     propertyCode,
     propertyValue,
@@ -166,7 +166,7 @@ export default (
     type: string;
     locale: string;
     value: string;
-    required: boolean;
+    is_required: boolean;
     errors: ValidationError[];
     propertyCode: string;
     propertyValue: NormalizedAdditionalProperty;
@@ -190,7 +190,7 @@ export default (
     case 'ATTRIBUTE_EDITION_REQUIRED_UPDATED':
       state = {
         ...state,
-        data: {...state.data, required: required},
+        data: {...state.data, is_required: is_required},
       };
       break;
     case 'ATTRIBUTE_EDITION_ADDITIONAL_PROPERTY_UPDATED':

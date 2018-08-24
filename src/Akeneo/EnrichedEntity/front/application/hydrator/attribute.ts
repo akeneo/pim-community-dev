@@ -12,15 +12,16 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
     'enriched_entity_identifier',
     'code',
     'labels',
-    'required',
+    'is_required',
     'value_per_locale',
     'value_per_channel',
     'type',
   ];
 
+  //To remove when backend answer the good things
+  normalizedAttribute.is_required = false;
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
   //To remove when backend answer the good things
-  normalizedAttribute.max_length = null;
   normalizedAttribute.allowed_extensions = [];
   normalizedAttribute.max_file_size = null;
   normalizedAttribute.is_textarea = false;

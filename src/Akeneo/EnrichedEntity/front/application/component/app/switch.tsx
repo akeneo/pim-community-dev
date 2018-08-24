@@ -2,7 +2,17 @@ import * as React from 'react';
 
 class InvalidArgumentError extends Error {}
 
-const Switch = ({value, onChange, id = '', readOnly = false}: {value: boolean; id: string; onChange?: (value: boolean) => void, readOnly?: boolean}) => {
+const Switch = ({
+  value,
+  onChange,
+  id = '',
+  readOnly = false,
+}: {
+  value: boolean;
+  id: string;
+  onChange?: (value: boolean) => void;
+  readOnly?: boolean;
+}) => {
   if (undefined === onChange && false === readOnly) {
     throw new InvalidArgumentError(`A Switch element expect a onChange attribute if not readOnly`);
   }

@@ -8,16 +8,15 @@ import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entit
 import Switch from 'akeneoenrichedentity/application/component/app/switch';
 import {
   attributeEditionLabelUpdated,
-  attributeEditionRequiredUpdated,
+  attributeEditionIsRequiredUpdated,
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
 } from 'akeneoenrichedentity/domain/event/attribute/edit';
 import Attribute, {
-  AdditionalProperty, denormalizeAttribute,
+  AdditionalProperty,
+  denormalizeAttribute,
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {
-  AttributeType
-} from 'akeneoenrichedentity/domain/model/attribute/minimal';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
 import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
 import TextPropertyView from 'akeneoenrichedentity/application/component/attribute/edit/text';
 import ImagePropertyView from 'akeneoenrichedentity/application/component/attribute/edit/image';
@@ -36,7 +35,7 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onLabelUpdated: (value: string, locale: string) => void;
-    onRequiredUpdated: (required: boolean) => void;
+    onIsRequiredUpdated: (isRequired: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
     onCancel: () => void;
     onSubmit: () => void;
@@ -45,24 +44,34 @@ interface DispatchProps {
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class InvalidAttributeTypeError extends Error {};
+class InvalidAttributeTypeError extends Error {}
 
-const getAdditionalProperty = (attribute: Attribute, onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void, errors: ValidationError[]): JSX.Element => {
+const getAdditionalProperty = (
+  attribute: Attribute,
+  onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void,
+  errors: ValidationError[]
+): JSX.Element => {
   switch (attribute.type) {
     case AttributeType.Text:
-      return <TextPropertyView
-        attribute={attribute as TextAttribute}
-        onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-        errors={errors}
-      />;
+      return (
+        <TextPropertyView
+          attribute={attribute as TextAttribute}
+          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+          errors={errors}
+        />
+      );
     case AttributeType.Image:
-      return <ImagePropertyView
-        attribute={attribute as ImageAttribute}
-        onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
-        errors={errors}
-      />;
+      return (
+        <ImagePropertyView
+          attribute={attribute as ImageAttribute}
+          onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+          errors={errors}
+        />
+      );
     default:
-      throw new InvalidAttributeTypeError(`There is no view capable of rendering attribute of type "${attribute.type}"`);
+      throw new InvalidAttributeTypeError(
+        `There is no view capable of rendering attribute of type "${attribute.type}"`
+      );
   }
 };
 
@@ -108,10 +117,7 @@ class Edit extends React.Component<EditProps> {
             <div className="AknFormContainer">
               <div className="AknFieldContainer" data-code="label">
                 <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.label"
-                  >
+                  <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.label">
                     {__('pim_enriched_entity.attribute.edit.input.label')}
                   </label>
                 </div>
@@ -134,10 +140,7 @@ class Edit extends React.Component<EditProps> {
               </div>
               <div className="AknFieldContainer" data-code="code">
                 <div className="AknFieldContainer-header">
-                  <label
-                    className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.code"
-                  >
+                  <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.code">
                     {__('pim_enriched_entity.attribute.edit.input.code')}
                   </label>
                 </div>
@@ -188,22 +191,22 @@ class Edit extends React.Component<EditProps> {
                 </div>
                 {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
-              <div className="AknFieldContainer" data-code="required">
+              <div className="AknFieldContainer" data-code="isRequired">
                 <div className="AknFieldContainer-header">
                   <label
                     className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.required"
+                    htmlFor="pim_enriched_entity.attribute.edit.input.is_required"
                   >
-                    {__('pim_enriched_entity.attribute.edit.input.required')}
+                    {__('pim_enriched_entity.attribute.edit.input.is_required')}
                   </label>
                 </div>
                 <div className="AknFieldContainer-inputContainer">
                   <Switch
-                    id="pim_enriched_entity.attribute.edit.input.required"
-                    value={this.props.attribute.required}
-                    onChange={this.props.events.onRequiredUpdated}
+                    id="pim_enriched_entity.attribute.edit.input.is_required"
+                    value={this.props.attribute.isRequired}
+                    onChange={this.props.events.onIsRequiredUpdated}
                   />
-                  {getErrorsView(this.props.errors, 'required')}
+                  {getErrorsView(this.props.errors, 'isRequired')}
                 </div>
               </div>
             </div>
@@ -212,7 +215,11 @@ class Edit extends React.Component<EditProps> {
             <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: 0, paddingTop: '10px'}}>
               {__('pim_enriched_entity.attribute.edit.additional.title')}
             </header>
-            {getAdditionalProperty(this.props.attribute, this.props.events.onAdditionalPropertyUpdated, this.props.errors)}
+            {getAdditionalProperty(
+              this.props.attribute,
+              this.props.events.onAdditionalPropertyUpdated,
+              this.props.errors
+            )}
           </div>
         </div>
       </React.Fragment>
@@ -238,8 +245,8 @@ export default connect(
         onLabelUpdated: (value: string, locale: string) => {
           dispatch(attributeEditionLabelUpdated(value, locale));
         },
-        onRequiredUpdated: (required: boolean) => {
-          dispatch(attributeEditionRequiredUpdated(required));
+        onIsRequiredUpdated: (isRequired: boolean) => {
+          dispatch(attributeEditionIsRequiredUpdated(isRequired));
         },
         onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => {
           dispatch(attributeEditionAdditionalPropertyUpdated(property, value));

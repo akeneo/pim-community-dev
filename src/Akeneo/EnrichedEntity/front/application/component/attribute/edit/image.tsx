@@ -5,13 +5,16 @@ import {getErrorsView} from 'akeneoenrichedentity/application/component/app/vali
 import Select2 from 'akeneoenrichedentity/application/component/app/select2';
 import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {ImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/image';
-import {AllowedExtensionsOptions, AllowedExtensions} from "akeneoenrichedentity/domain/model/attribute/type/image/allowed-extensions";
-import {MaxFileSize} from "akeneoenrichedentity/domain/model/attribute/type/image/max-file-size";
+import {
+  AllowedExtensionsOptions,
+  AllowedExtensions,
+} from 'akeneoenrichedentity/domain/model/attribute/type/image/allowed-extensions';
+import {MaxFileSize} from 'akeneoenrichedentity/domain/model/attribute/type/image/max-file-size';
 
 export default ({
   attribute,
   onAdditionalPropertyUpdated,
-  errors
+  errors,
 }: {
   attribute: ImageAttribute;
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
@@ -21,10 +24,7 @@ export default ({
     <div>
       <div className="AknFieldContainer" data-code="maxFileSize">
         <div className="AknFieldContainer-header">
-          <label
-            className="AknFieldContainer-label"
-            htmlFor="pim_enriched_entity.attribute.edit.input.max_file_size"
-          >
+          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.max_file_size">
             {__('pim_enriched_entity.attribute.edit.input.max_file_size')}
           </label>
         </div>
@@ -65,7 +65,7 @@ export default ({
             multiple={true}
             readonly={false}
             onChange={(allowedExtensions: string[]) => {
-              onAdditionalPropertyUpdated('allowed_extensions', AllowedExtensions.createFromArray(allowedExtensions))
+              onAdditionalPropertyUpdated('allowed_extensions', AllowedExtensions.createFromArray(allowedExtensions));
             }}
           />
         </div>
