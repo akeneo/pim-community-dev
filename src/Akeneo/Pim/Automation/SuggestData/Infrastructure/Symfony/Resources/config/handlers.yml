@@ -22,4 +22,5 @@ services:
     akeneo.pim.automation.suggest_data.product_fetch.handler.fetch_products:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductFetch\Command\FetchProductsHandler'
         arguments:
-        - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'

@@ -40,5 +40,8 @@ class ProductSubscriptionsResponse implements \Countable
         return count($this->collection);
     }
 
+    public function getSubscription()
+    {
 
+    }
 }

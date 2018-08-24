@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductFetch\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
  *
@@ -18,11 +19,14 @@ class FetchProductsHandler
 
     /**
      * @param DataProviderFactory $dataProviderFactory
+     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
-        DataProviderFactory $dataProviderFactory
+        DataProviderFactory $dataProviderFactory,
+        ProductSusbcriptionRepositoryInterface $productSusbcriptionRepository
     ) {
         $this->dataProviderFactory = $dataProviderFactory;
+        $this->productSubscriptionRepository = $productSusbcriptionRepository;
     }
 
     /**
@@ -34,9 +38,16 @@ class FetchProductsHandler
 
         // TODO: Deal with many pages
         $dataProvider = $this->dataProviderFactory->create();
-        $subscribedProducts = $dataProvider->fetch();
+        $subscribedResponses = $dataProvider->fetch();
 
         // TODO: Store fetched data in DB
+        foreach ($subscribedResponses as $subscriptionResponse) {
+            /*$subscription = $this->findOrCreateSubscription(
+                $product,
+                $subscriptionResponse->getSubscriptionId()
+            );*/
+            $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
+        }
 
     }
 }
