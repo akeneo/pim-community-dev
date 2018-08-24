@@ -6,7 +6,12 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Edi
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistryInterface;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class EditAttributeCommandFactorySpec extends ObjectBehavior
 {
@@ -28,7 +33,7 @@ class EditAttributeCommandFactorySpec extends ObjectBehavior
         $this->supports(['dummy' => 10])->shouldReturn(false);
     }
 
-    function it_creates_a_edit_attribute_command_by_recursively_calling_other_edit_attribute_property_factories(
+    function it_creates_an_edit_attribute_command_by_recursively_calling_other_edit_attribute_property_factories(
        $editAttributeCommandFactoryRegistry,
         EditAttributeCommandFactoryInterface $editMaxFileSizeCommandFactory,
         EditAttributeCommandFactoryInterface $editLabelsCommandFactory
@@ -38,13 +43,17 @@ class EditAttributeCommandFactorySpec extends ObjectBehavior
             'labels' => ['fr_FR' => 'Image autobiographique'],
             'max_file_size' => '172.50'
         ];
-        $editAttributeCommandFactoryRegistry->getFactories($normalizedCommand)
-            ->willReturn([$editMaxFileSizeCommandFactory, $editLabelsCommandFactory]);
+        $editAttributeCommandFactoryRegistry->getFactories($normalizedCommand)->willReturn([$editMaxFileSizeCommandFactory, $editLabelsCommandFactory]);
+        $editMaxFileSizeCommand = new EditMaxFileSizeCommand();
+        $editLabelsCommand = new EditLabelsCommand();
+
+        $editMaxFileSizeCommandFactory->create($normalizedCommand)->willReturn($editMaxFileSizeCommand);
+        $editLabelsCommandFactory->create($normalizedCommand)->willReturn($editLabelsCommand);
 
         $command = $this->create($normalizedCommand);
         $command->shouldBeAnInstanceOf(EditAttributeCommand::class);
         $command->identifier->shouldBeEqualTo(['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer']);
-        $command->editCommands->shouldBeEqualTo([$editMaxFileSizeCommandFactory, $editLabelsCommandFactory]);
+        $command->editCommands->shouldBeEqualTo([$editMaxFileSizeCommand, $editLabelsCommand]);
     }
 
     function it_throws_if_it_cannot_create_the_command()

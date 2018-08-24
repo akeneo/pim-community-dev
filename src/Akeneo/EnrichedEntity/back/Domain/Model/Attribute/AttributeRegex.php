@@ -13,16 +13,16 @@ class AttributeRegex
     public const NONE = null;
 
     /** @var ?string */
-    private $regex;
+    private $regularExpression;
 
-    private function __construct(?string $regex)
+    private function __construct(?string $regularExpression)
     {
-        $this->regex = $regex;
+        $this->regularExpression = $regularExpression;
     }
 
-    public static function fromString(string $regex): self
+    public static function fromString(string $regularExpression): self
     {
-        return new self($regex);
+        return new self($regularExpression);
     }
 
     public static function none(): self
@@ -32,11 +32,11 @@ class AttributeRegex
 
     public function isNone(): bool
     {
-        return self::NONE === $this->regex;
+        return self::NONE === $this->regularExpression;
     }
 
     public function normalize(): ?string
     {
-        return $this->regex;
+        return $this->regularExpression;
     }
 }

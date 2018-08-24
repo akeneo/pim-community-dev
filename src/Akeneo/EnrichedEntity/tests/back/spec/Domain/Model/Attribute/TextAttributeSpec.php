@@ -177,7 +177,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
                 'valdiation_rule'            => null,
-                'regex'                      => null,
+                'regular_expression'         => null,
             ]
         );
     }
@@ -213,7 +213,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'is_text_area'               => false,
                 'is_rich_text_editor'        => false,
                 'valdiation_rule'            => 'regular_expression',
-                'regex'                      => '\w+-[0-9]',
+                'regular_expression'         => '\w+-[0-9]',
             ]
         );
     }
@@ -241,7 +241,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
                 'valdiation_rule'            => null,
-                'regex'                      => null,
+                'regular_expression'         => null,
             ]
         );
     }
@@ -258,7 +258,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
-                'is_required'                   => true,
+                'is_required'                => true,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'text',
@@ -266,7 +266,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
                 'valdiation_rule'            => null,
-                'regex'                      => null,
+                'regular_expression'         => null,
             ]
         );
     }
@@ -283,7 +283,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
                 'order'                      => 0,
-                'is_required'                   => false,
+                'is_required'                => false,
                 'value_per_channel'          => true,
                 'value_per_locale'           => true,
                 'type'                       => 'text',
@@ -291,7 +291,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
                 'valdiation_rule'            => null,
-                'regex'                      => null,
+                'regular_expression'         => null,
             ]
         );
     }

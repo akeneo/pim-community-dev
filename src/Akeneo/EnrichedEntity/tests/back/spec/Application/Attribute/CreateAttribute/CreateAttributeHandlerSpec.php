@@ -11,6 +11,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -58,16 +60,18 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
 
     private function getAttribute(): TextAttribute
     {
-        return TextAttribute::create(
+        return TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Name']),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegex::none()
         );
     }
 }

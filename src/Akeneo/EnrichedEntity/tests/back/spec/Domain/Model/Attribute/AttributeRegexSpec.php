@@ -17,13 +17,13 @@ class AttributeRegexSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeRegex::class);
     }
 
-    function it_can_be_created_with_no_regex()
+    function it_can_be_created_with_no_regular_expression()
     {
         $noRegex = $this::NONE();
         $noRegex->normalize()->shouldReturn(null);
     }
 
-    function it_says_if_it_holds_no_regex()
+    function it_says_if_it_holds_no_regularExpression()
     {
         $this->isNone()->shouldReturn(false);
         $this::none()->isNone()->shouldReturn(true);

@@ -36,7 +36,7 @@ class TextAttribute extends AbstractAttribute
     private $validationRule;
 
     /** @var AttributeRegex */
-    private $regex;
+    private $regularExpression;
 
     /** @var AttributeIsRichTextEditor */
     private $isRichTextEditor;
@@ -55,7 +55,7 @@ class TextAttribute extends AbstractAttribute
      * @param AttributeMaxLength        $maxLength
      * @param AttributeIsTextArea       $isTextArea
      * @param AttributeValidationRule   $validationRule
-     * @param AttributeRegex            $regex
+     * @param AttributeRegex            $regularExpression
      * @param AttributeIsRichTextEditor $isRichTextEditor
      */
     protected function __construct(
@@ -70,20 +70,20 @@ class TextAttribute extends AbstractAttribute
         AttributeMaxLength $maxLength,
         AttributeIsTextArea $isTextArea,
         AttributeValidationRule $validationRule,
-        AttributeRegex $regex,
+        AttributeRegex $regularExpression,
         AttributeIsRichTextEditor $isRichTextEditor
     ) {
         if ($isTextArea->isYes()) {
             Assert::true(
-                $validationRule->isNone() && $regex->isNone(),
+                $validationRule->isNone() && $regularExpression->isNone(),
                 'It is not possible to create a text area attribute with a validation rule.'
             );
         } else{
             Assert::false($isRichTextEditor->isYes());
             if ($validationRule->isRegex()) {
                 Assert::false(
-                    $regex->isNone(),
-                    'It is not possible to create a text attribute with a regex without specifying a regex'
+                    $regularExpression->isNone(),
+                    'It is not possible to create a text attribute with a regular expression without specifying it'
                 );
             }
         }
@@ -101,7 +101,7 @@ class TextAttribute extends AbstractAttribute
         $this->maxLength = $maxLength;
         $this->isTextArea = $isTextArea;
         $this->validationRule = $validationRule;
-        $this->regex = $regex;
+        $this->regularExpression = $regularExpression;
         $this->isRichTextEditor = $isRichTextEditor;
     }
 
@@ -116,7 +116,7 @@ class TextAttribute extends AbstractAttribute
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength,
         AttributeValidationRule $validationRule,
-        AttributeRegex $regex
+        AttributeRegex $regularExpression
     ) {
         return new self(
             $identifier,
@@ -130,7 +130,7 @@ class TextAttribute extends AbstractAttribute
             $maxLength,
             AttributeIsTextArea::fromBoolean(false),
             $validationRule,
-            $regex,
+            $regularExpression,
             AttributeIsRichTextEditor::fromBoolean(false)
         );
     }
@@ -178,7 +178,7 @@ class TextAttribute extends AbstractAttribute
                 'is_text_area'        => $this->isTextArea->normalize(),
                 'is_rich_text_editor' => $this->isRichTextEditor->normalize(),
                 'valdiation_rule'     => $this->validationRule->normalize(),
-                'regex'               => $this->regex->normalize(),
+                'regular_expression'  => $this->regularExpression->normalize(),
             ]
         );
     }

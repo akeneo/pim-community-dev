@@ -6,7 +6,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Edi
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory;
 use PhpSpec\ObjectBehavior;
 
-class EditRequiredCommandFactorySpec extends ObjectBehavior
+class EditIsRequiredCommandFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {

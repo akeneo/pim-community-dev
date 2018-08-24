@@ -33,7 +33,7 @@ class MaxFileSizeUpdaterSpec extends ObjectBehavior
     {
         $editMaxFileSize = new EditMaxFileSizeCommand();
         $editMaxFileSize->maxFileSize = '151.1';
-        $imageAttribute->setMaxFileSize(AttributeMaxFileSize::fromString('151.1'))->willReturn($imageAttribute);
+        $imageAttribute->setMaxFileSize(AttributeMaxFileSize::fromString('151.1'));
         $this->__invoke($imageAttribute, $editMaxFileSize);
     }
 
@@ -41,7 +41,7 @@ class MaxFileSizeUpdaterSpec extends ObjectBehavior
     {
         $editMaxFileSize = new EditMaxFileSizeCommand();
         $editMaxFileSize->maxLength = null;
-        $textAttribute->setMaxFileSize(AttributeMaxFileSize::infinite())->willReturn($textAttribute);
+        $textAttribute->setMaxFileSize(AttributeMaxFileSize::infinite());
         $this->__invoke($textAttribute, $editMaxFileSize);
     }
 

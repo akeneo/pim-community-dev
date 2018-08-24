@@ -28,9 +28,11 @@ class MaxLengthUpdater implements AttributeUpdaterInterface
         }
 
         if (AttributeMaxLength::NO_LIMIT === $command->maxLength) {
-            return $attribute->setMaxLength(AttributeMaxLength::infinite());
+            $attribute->setMaxLength(AttributeMaxLength::infinite());
+        } else {
+            $attribute->setMaxLength(AttributeMaxLength::fromInteger($command->maxLength));
         }
 
-        return $attribute->setMaxLength(AttributeMaxLength::fromInteger($command->maxLength));
+        return $attribute;
     }
 }

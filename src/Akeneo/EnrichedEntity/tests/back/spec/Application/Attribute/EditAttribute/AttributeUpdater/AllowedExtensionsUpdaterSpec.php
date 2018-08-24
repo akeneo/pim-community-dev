@@ -33,7 +33,7 @@ class AllowedExtensionsUpdaterSpec extends ObjectBehavior
     {
         $editAllowedExtensions = new EditAllowedExtensionsCommand();
         $editAllowedExtensions->allowedExtensions = ['png'];
-        $imageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList(['png']))->willReturn($imageAttribute);
+        $imageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList(['png']));
         $this->__invoke($imageAttribute, $editAllowedExtensions);
     }
 

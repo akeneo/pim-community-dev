@@ -18,9 +18,12 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttrib
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -50,8 +53,26 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 )
             );
         }
+        if ($command->isTextArea) {
+            return TextAttribute::createTextArea(
+                AttributeIdentifier::create(
+                    $command->identifier['enriched_entity_identifier'],
+                    $command->identifier['identifier']
+                ),
+                EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
+                AttributeCode::fromString($command->code),
+                LabelCollection::fromArray($command->labels),
+                AttributeOrder::fromInteger($command->order),
+                AttributeIsRequired::fromBoolean($command->isRequired),
+                AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
+                AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
+                AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength),
+                AttributeIsRichTextEditor::fromBoolean($command->isRichTextEditor)
+            );
 
-        return TextAttribute::create(
+        }
+
+        return TextAttribute::createText(
             AttributeIdentifier::create(
                 $command->identifier['enriched_entity_identifier'],
                 $command->identifier['identifier']
@@ -60,10 +81,12 @@ class TextAttributeFactory implements AttributeFactoryInterface
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),
             AttributeOrder::fromInteger($command->order),
-            AttributeIsRequired::fromBoolean($command->required),
+            AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength)
+            AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength),
+            AttributeValidationRule::NONE === $command->validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($command->validationRule),
+            AttributeRegex::NONE === $command->regularExpression ? AttributeRegex::none() : AttributeRegex::fromString($command->regularExpression)
         );
     }
 }

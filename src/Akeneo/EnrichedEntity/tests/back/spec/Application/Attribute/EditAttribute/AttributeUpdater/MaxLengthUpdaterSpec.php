@@ -33,7 +33,7 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
     {
         $editMaxLength = new EditMaxLengthCommand();
         $editMaxLength->maxLength = 200;
-        $textAttribute->setMaxLength(AttributeMaxLength::fromInteger(200))->willReturn($textAttribute);
+        $textAttribute->setMaxLength(AttributeMaxLength::fromInteger(200));
         $this->__invoke($textAttribute, $editMaxLength);
     }
 
@@ -41,7 +41,7 @@ class MaxLengthUpdaterSpec extends ObjectBehavior
     {
         $editMaxLength = new EditMaxLengthCommand();
         $editMaxLength->maxLength = null;
-        $textAttribute->setMaxLength(AttributeMaxLength::infinite())->willReturn($textAttribute);
+        $textAttribute->setMaxLength(AttributeMaxLength::infinite());
         $this->__invoke($textAttribute, $editMaxLength);
     }
 

@@ -10,7 +10,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
-class RequiredUpdaterSpec extends ObjectBehavior
+class IsRequiredUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
@@ -33,7 +33,7 @@ class RequiredUpdaterSpec extends ObjectBehavior
     {
         $editRequired = new EditIsRequiredCommand();
         $editRequired->required = false;
-        $textAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false))->willReturn($textAttribute);
+        $textAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false));
         $this->__invoke($textAttribute, $editRequired);
     }
 

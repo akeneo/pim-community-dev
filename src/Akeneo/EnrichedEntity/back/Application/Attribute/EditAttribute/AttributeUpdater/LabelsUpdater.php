@@ -33,6 +33,8 @@ class LabelsUpdater implements AttributeUpdaterInterface
             );
         }
 
-        return $attribute->updateLabels(LabelCollection::fromArray($command->labels));
+        $attribute->updateLabels(LabelCollection::fromArray($command->labels));
+
+        return $attribute;
     }
 }

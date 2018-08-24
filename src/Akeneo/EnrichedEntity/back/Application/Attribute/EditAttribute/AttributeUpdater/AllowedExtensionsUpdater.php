@@ -27,6 +27,8 @@ class AllowedExtensionsUpdater implements AttributeUpdaterInterface
             throw new \RuntimeException('Impossible to update the allowed extensions property of the given attribute with the given command.');
         }
 
-        return $attribute->setAllowedExtensions(AttributeAllowedExtensions::fromList($command->allowedExtensions));
+        $attribute->setAllowedExtensions(AttributeAllowedExtensions::fromList($command->allowedExtensions));
+
+        return $attribute;
     }
 }

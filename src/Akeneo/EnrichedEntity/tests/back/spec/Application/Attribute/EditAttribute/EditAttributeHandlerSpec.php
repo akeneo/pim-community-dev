@@ -17,10 +17,10 @@ use Prophecy\Argument;
 class EditAttributeHandlerSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeUpdaterRegistryInterface $editAttributeAdapterRegistry
+        AttributeUpdaterRegistryInterface $editAttributeAdapterRegistry,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($attributeRepository, $editAttributeAdapterRegistry);
+        $this->beConstructedWith($editAttributeAdapterRegistry, $attributeRepository);
     }
 
     function it_is_initializable()
@@ -37,8 +37,8 @@ class EditAttributeHandlerSpec extends ObjectBehavior
     ) {
         $editAttributeCommand = $this->getEditCommand();
         $attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'name'))->willReturn($attribute);
-        $editAttributeAdapterRegistry->getAdapter(Argument::type(EditIsRequiredCommand::class))->willReturn($editRequiredAdapter);
-        $editAttributeAdapterRegistry->getAdapter(Argument::type(EditMaxFileSizeCommand::class))->willReturn($editMaxFileSizeAdapter);
+        $editAttributeAdapterRegistry->getUpdater($attribute, Argument::type(EditIsRequiredCommand::class))->willReturn($editRequiredAdapter);
+        $editAttributeAdapterRegistry->getUpdater($attribute, Argument::type(EditMaxFileSizeCommand::class))->willReturn($editMaxFileSizeAdapter);
         $editRequiredAdapter->__invoke($attribute, Argument::type(EditIsRequiredCommand::class))->willReturn($attribute);
         $editMaxFileSizeAdapter->__invoke($attribute, Argument::type(EditMaxFileSizeCommand::class))->willReturn($attribute);
         $attributeRepository->update($attribute)->shouldBeCalled();
