@@ -11,7 +11,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -71,7 +71,7 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegex::none()
+            AttributeRegularExpression::none()
         );
     }
 }

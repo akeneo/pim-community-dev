@@ -15,9 +15,11 @@ namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -97,7 +99,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
     {
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
         $attributeRepository->create(
-            TextAttribute::create(
+            TextAttribute::createText(
                 AttributeIdentifier::create($enrichedEntityIdentifier, $identifier),
                 EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
                 AttributeCode::fromString($identifier),
@@ -106,7 +108,9 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeMaxLength::fromInteger(25)
+                AttributeMaxLength::fromInteger(25),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::none()
             )
         );
     }

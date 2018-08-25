@@ -12,7 +12,7 @@
       "root": {
         "editCommands": [
           {
-            "required": true,
+            "isRequired": true,
             "identifier": {
               "enriched_entity_identifier": "designer",
               "identifier": "portrait"
@@ -66,17 +66,16 @@
       "code": null
     },
     {
-      "messageTemplate": "This value should be of type string.",
+      "messageTemplate": "This field was not expected.",
       "parameters": {
-        "{{ value }}": "122",
-        "{{ type }}": "string"
+        "{{ field }}": "1"
       },
       "plural": null,
-      "message": "This value should be of type string.",
+      "message": "This field was not expected.",
       "root": {
         "editCommands": [
           {
-            "required": true,
+            "isRequired": true,
             "identifier": {
               "enriched_entity_identifier": "designer",
               "identifier": "portrait"

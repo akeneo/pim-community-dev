@@ -40,7 +40,7 @@ class EditIsRequiredCommandFactorySpec extends ObjectBehavior
             'identifier'                 => 'name',
             'enriched_entity_identifier' => 'designer',
         ]);
-        $command->required->shouldBeEqualTo(true);
+        $command->isRequired->shouldBeEqualTo(true);
     }
 
     function it_throws_if_it_cannot_create_the_command()

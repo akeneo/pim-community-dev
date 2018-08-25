@@ -8,7 +8,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeRegex
+class AttributeRegularExpression
 {
     public const NONE = null;
 

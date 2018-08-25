@@ -79,14 +79,22 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
         order:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
-        required:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Required: ~
+        isRequired:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxLength:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+        isTextArea:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextArea: ~
+        isRichTextEditor:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+        validationRule:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
+        regularExpression:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
 
@@ -105,8 +113,8 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttribute
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
         order:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
-        required:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Required: ~
+        isRequired:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
@@ -133,8 +141,8 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditReq
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
-        required:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Required: ~
+        isRequired:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand:
     properties:

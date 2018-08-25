@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use PhpSpec\ObjectBehavior;
 
-class AttributeRegexSpec extends ObjectBehavior
+class AttributeRegularExpressionSpec extends ObjectBehavior
 {
     function let()
     {
@@ -14,7 +14,7 @@ class AttributeRegexSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeRegex::class);
+        $this->shouldHaveType(AttributeRegularExpression::class);
     }
 
     function it_can_be_created_with_no_regular_expression()

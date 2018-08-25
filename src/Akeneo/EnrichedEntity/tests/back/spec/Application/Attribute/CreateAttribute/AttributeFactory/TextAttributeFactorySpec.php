@@ -6,7 +6,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use PhpSpec\ObjectBehavior;
 
@@ -37,7 +37,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->maxLength = 155;
         $command->isTextArea = false;
         $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegex::NONE;
+        $command->regularExpression = AttributeRegularExpression::NONE;
 
         $this->create($command)->normalize()->shouldReturn([
             'identifier'                 => [
@@ -55,12 +55,12 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => 155,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'valdiation_rule'            => null,
+            'validation_rule'            => null,
             'regular_expression'         => null,
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_having_a_validation_with_a_command()
+    function it_creates_a_simple_text_attribute_having_no_validation_with_a_command()
     {
         $command = new CreateTextAttributeCommand();
         $command->identifier = ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'];
@@ -74,7 +74,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->maxLength = 155;
         $command->isTextArea = false;
         $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegex::NONE;
+        $command->regularExpression = AttributeRegularExpression::NONE;
 
         $this->create($command)->normalize()->shouldReturn([
             'identifier'                 => ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'],
@@ -89,7 +89,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => 155,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'valdiation_rule'            => null,
+            'validation_rule'            => null,
             'regular_expression'         => null,
         ]);
     }
@@ -128,12 +128,12 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => null,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'valdiation_rule'            => null,
+            'validation_rule'            => null,
             'regular_expression'         => null,
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_with_a_regular_expression_validation_()
+    function it_creates_a_simple_text_attribute_with_a_regular_expression_validation()
     {
         $command = new CreateTextAttributeCommand();
         $command->identifier = [
@@ -170,7 +170,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => null,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'valdiation_rule'            => 'regular_expression',
+            'validation_rule'            => 'regular_expression',
             'regular_expression'         => '/\w+/',
         ]);
     }
@@ -203,7 +203,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => 155,
             'is_text_area'               => true,
             'is_rich_text_editor'        => true,
-            'valdiation_rule'            => null,
+            'validation_rule'            => null,
             'regular_expression'         => null,
         ]);
     }

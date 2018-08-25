@@ -25,7 +25,7 @@ class EditIsRequiredCommandFactory implements EditAttributeCommandFactoryInterfa
 
         $command = new EditIsRequiredCommand();
         $command->identifier = $normalizedCommand['identifier'];
-        $command->required = $normalizedCommand['is_required'];
+        $command->isRequired = $normalizedCommand['is_required'];
 
         return $command;
     }

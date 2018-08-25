@@ -257,7 +257,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'label as an integer'           => [
                 ['labels' => ['fr_FR' => 1]],
-                '[{"messageTemplate":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string.","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string.","root":{"identifier":"designer","labels":{"fr_FR":1}},"propertyPath":"labels","invalidValue":{"fr_FR":1},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","root":{"identifier":"designer","labels":{"fr_FR":1}},"propertyPath":"labels","invalidValue":{"fr_FR":1},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'The locale code as an integer' => [
                 ['labels' => [1 => 'Designer']],

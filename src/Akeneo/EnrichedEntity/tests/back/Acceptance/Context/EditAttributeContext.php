@@ -358,7 +358,7 @@ class EditAttributeContext implements Context
         $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
         $editIsRequired = new EditIsRequiredCommand();
         $editIsRequired->identifier = $identifier;
-        $editIsRequired->required = $invalidValue;
+        $editIsRequired->isRequired = $invalidValue;
 
         $editAttribute = new EditAttributeCommand();
         $editAttribute->identifier = $identifier;

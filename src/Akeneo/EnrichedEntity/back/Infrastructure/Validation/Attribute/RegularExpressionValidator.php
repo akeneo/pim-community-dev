@@ -2,41 +2,28 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RequiredValidator extends ConstraintValidator
+class RegularExpressionValidator extends ConstraintValidator
 {
-    public function validate($isRequired, Constraint $constraint)
+    public function validate($regularExpression, Constraint $constraint)
     {
-        if (!$constraint instanceof Required) {
+        if (!$constraint instanceof RegularExpression) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($isRequired, [
-                new Constraints\NotNull(),
-                new Constraints\Type(['type' => 'boolean'])
-            ]
-        );
+        $violations = $validator->validate($regularExpression, [new Assert\Type('string')]);
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {

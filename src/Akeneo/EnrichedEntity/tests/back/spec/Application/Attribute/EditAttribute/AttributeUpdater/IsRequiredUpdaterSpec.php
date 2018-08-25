@@ -32,7 +32,7 @@ class IsRequiredUpdaterSpec extends ObjectBehavior
     function it_edits_the_required_property_of_an_attribute(TextAttribute $textAttribute)
     {
         $editRequired = new EditIsRequiredCommand();
-        $editRequired->required = false;
+        $editRequired->isRequired = false;
         $textAttribute->setIsRequired(AttributeIsRequired::fromBoolean(false));
         $this->__invoke($textAttribute, $editRequired);
     }

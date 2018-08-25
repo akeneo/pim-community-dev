@@ -22,8 +22,8 @@ services:
         arguments:
             - '@akeneo_enrichedentity.application.registry.edit_attribute_command_factory_registry'
 
-    akeneo_enrichedentity.application.factory.edit_required_command_factory:
-        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRequiredCommandFactory
+    akeneo_enrichedentity.application.factory.edit_is_required_command_factory:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommandFactory
         arguments:
             - '@akeneo_enrichedentity.application.registry.edit_attribute_command_factory_registry'
         tags:

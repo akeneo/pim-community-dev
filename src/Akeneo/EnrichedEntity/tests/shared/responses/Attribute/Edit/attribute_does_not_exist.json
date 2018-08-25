@@ -12,7 +12,7 @@
       "root": {
         "editCommands": [
           {
-            "required": false,
+            "isRequired": false,
             "identifier": {
               "enriched_entity_identifier": "designer",
               "identifier": "unknown_attribute_code"
@@ -53,7 +53,7 @@
       "invalidValue": {
         "editCommands": [
           {
-            "required": false,
+            "isRequired": false,
             "identifier": {
               "enriched_entity_identifier": "designer",
               "identifier": "unknown_attribute_code"

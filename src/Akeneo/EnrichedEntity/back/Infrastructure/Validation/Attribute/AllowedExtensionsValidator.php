@@ -37,6 +37,10 @@ class AllowedExtensionsValidator extends ConstraintValidator
             return;
         }
 
+        if (AttributeAllowedExtensions::ALL_ALLOWED === $allowedExtensions) {
+            return;
+        }
+
         if ($this->isArrayOfStrings($allowedExtensions)) {
             return;
         }

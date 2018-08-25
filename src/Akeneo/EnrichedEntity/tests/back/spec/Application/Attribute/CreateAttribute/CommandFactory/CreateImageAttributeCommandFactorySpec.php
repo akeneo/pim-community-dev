@@ -52,7 +52,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->allowedExtensions->shouldBeEqualTo(['pdf', 'png']);
     }
 
-    function it_creates_a_command_with_a_null_property_if_the_value_is_missing()
+    function it_creates_a_command_with_a_default_properties_if_the_value_is_missing()
     {
         $command = $this->create([]);
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
@@ -64,7 +64,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);
         $command->order->shouldBeEqualTo(null);
-        $command->isRequired->shouldBeEqualTo(null);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(null);
         $command->valuePerLocale->shouldBeEqualTo(null);
         $command->maxFileSize->shouldBeEqualTo(null);

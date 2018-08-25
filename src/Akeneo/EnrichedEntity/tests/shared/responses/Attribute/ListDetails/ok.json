@@ -1,0 +1,67 @@
+{
+  "status": 200,
+  "content": [
+    {
+      "identifier": {
+        "enriched_entity_identifier": "designer",
+        "identifier": "name"
+      },
+      "enriched_entity_identifier": "designer",
+      "code": "name",
+      "labels": {
+        "en_US": "Name"
+      },
+      "is_required": true,
+      "order": 0,
+      "value_per_locale": true,
+      "value_per_channel": true,
+      "max_length": 155,
+      "type": "text",
+      "is_text_area": true,
+      "is_rich_text_editor": true,
+      "validation_rule": null,
+      "regular_expression": null
+    },
+    {
+      "identifier": {
+        "enriched_entity_identifier": "designer",
+        "identifier": "email"
+      },
+      "enriched_entity_identifier": "designer",
+      "code": "email",
+      "labels": {
+        "en_US": "Name"
+      },
+      "is_required": true,
+      "order": 0,
+      "value_per_locale": true,
+      "value_per_channel": true,
+      "max_length": 155,
+      "type": "text",
+      "is_text_area": false,
+      "is_rich_text_editor": false,
+      "validation_rule": "email",
+      "regular_expression": null
+    },
+    {
+      "identifier": {
+        "enriched_entity_identifier": "designer",
+        "identifier": "image"
+      },
+      "enriched_entity_identifier": "designer",
+      "code": "name",
+      "labels": {
+        "en_US": "Portrait"
+      },
+      "is_required": true,
+      "order": 1,
+      "value_per_locale": true,
+      "value_per_channel": true,
+      "max_file_size": "1000",
+      "allowed_extensions": [
+        "pdf"
+      ],
+      "type": "image"
+    }
+  ]
+}

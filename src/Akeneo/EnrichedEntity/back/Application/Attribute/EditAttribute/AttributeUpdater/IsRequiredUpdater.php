@@ -33,7 +33,7 @@ class IsRequiredUpdater implements AttributeUpdaterInterface
             );
         }
 
-        $attribute->setIsRequired(AttributeIsRequired::fromBoolean($command->required));
+        $attribute->setIsRequired(AttributeIsRequired::fromBoolean($command->isRequired));
 
         return $attribute;
     }

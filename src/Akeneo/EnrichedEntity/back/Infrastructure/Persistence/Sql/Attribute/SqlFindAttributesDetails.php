@@ -16,10 +16,14 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -66,7 +70,7 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
             labels,
             attribute_type,
             attribute_order,
-            required,
+            is_required,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -100,6 +104,10 @@ SQL;
 
             if ('text' === $result['attribute_type']) {
                 $maxLength = (int) $additionnalProperties['max_length'];
+                $isTextArea = (bool) $additionnalProperties['is_text_area'];
+                $isRichTextEditor = (bool) $additionnalProperties['is_rich_text_editor'];
+                $validationRule = $additionnalProperties['validation_rule'];
+                $regularExpression = $additionnalProperties['regular_expression'];
 
                 $textAttributeDetails = new TextAttributeDetails();
                 $textAttributeDetails->identifier = AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']);
@@ -107,10 +115,14 @@ SQL;
                 $textAttributeDetails->code = AttributeCode::fromString($code);
                 $textAttributeDetails->order = AttributeOrder::fromInteger($order);
                 $textAttributeDetails->labels = LabelCollection::fromArray($labels);
-                $textAttributeDetails->required = AttributeIsRequired::fromBoolean($isRequired);
+                $textAttributeDetails->isRequired = AttributeIsRequired::fromBoolean($isRequired);
                 $textAttributeDetails->valuePerChannel = AttributeValuePerChannel::fromBoolean($valuePerChannel);
                 $textAttributeDetails->valuePerLocale = AttributeValuePerLocale::fromBoolean($valuePerLocale);
                 $textAttributeDetails->maxLength = AttributeMaxLength::fromInteger($maxLength);
+                $textAttributeDetails->isTextArea = AttributeIsTextArea::fromBoolean($isTextArea);
+                $textAttributeDetails->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean($isRichTextEditor);
+                $textAttributeDetails->validationRule = null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule);
+                $textAttributeDetails->regularExpression = null === $regularExpression ? AttributeRegularExpression::none() : AttributeRegularExpression::fromString($regularExpression);
 
                 $recordDetails[] = $textAttributeDetails;
             } elseif ('image' === $result['attribute_type']) {
@@ -123,7 +135,7 @@ SQL;
                 $imageAttributeDetails->code = AttributeCode::fromString($code);
                 $imageAttributeDetails->order = AttributeOrder::fromInteger($order);
                 $imageAttributeDetails->labels = LabelCollection::fromArray($labels);
-                $imageAttributeDetails->required = AttributeIsRequired::fromBoolean($isRequired);
+                $imageAttributeDetails->isRequired = AttributeIsRequired::fromBoolean($isRequired);
                 $imageAttributeDetails->valuePerChannel = AttributeValuePerChannel::fromBoolean($valuePerChannel);
                 $imageAttributeDetails->valuePerLocale = AttributeValuePerLocale::fromBoolean($valuePerLocale);
                 $imageAttributeDetails->maxFileSize = AttributeMaxFileSize::fromString($maxFileSize);

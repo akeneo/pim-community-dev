@@ -17,10 +17,13 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -31,6 +34,7 @@ use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Type;
 use PDO;
 use Symfony\Component\Intl\Exception\NotImplementedException;
@@ -92,9 +96,9 @@ SQL;
                 'additional_properties'      => json_encode($additionalProperties),
             ],
             [
-                'required' => Type::getType('boolean'),
+                'is_required'       => Type::getType('boolean'),
                 'value_per_channel' => Type::getType('boolean'),
-                'value_per_locale' => Type::getType('boolean'),
+                'value_per_locale'  => Type::getType('boolean'),
             ]
         );
         if ($affectedRows > 1) {
@@ -222,7 +226,27 @@ SQL;
         if ('text' === $result['attribute_type']) {
             $maxLength = (int) $additionnalProperties['max_length'];
 
-            return TextAttribute::create(
+            if (true === $additionnalProperties['is_text_area']) {
+                $isRichTextEditor = $additionnalProperties['is_rich_text_editor'];
+
+                return TextAttribute::createTextArea(
+                    AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
+                    EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+                    AttributeCode::fromString($code),
+                    LabelCollection::fromArray($labels),
+                    AttributeOrder::fromInteger($order),
+                    AttributeIsRequired::fromBoolean($isRequired),
+                    AttributeValuePerChannel::fromBoolean($valuePerChannel),
+                    AttributeValuePerLocale::fromBoolean($valuePerLocale),
+                    AttributeMaxLength::fromInteger($maxLength),
+                    AttributeIsRichTextEditor::fromBoolean($isRichTextEditor)
+                );
+            }
+
+            $validationRule = $additionnalProperties['validation_rule'];
+            $regularExpression = $additionnalProperties['regular_expression'];
+
+            return TextAttribute::createText(
                 AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
                 EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
                 AttributeCode::fromString($code),
@@ -231,7 +255,9 @@ SQL;
                 AttributeIsRequired::fromBoolean($isRequired),
                 AttributeValuePerChannel::fromBoolean($valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                AttributeMaxLength::fromInteger($maxLength)
+                AttributeMaxLength::fromInteger($maxLength),
+                null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule),
+                null === $regularExpression ? AttributeRegularExpression::none() : AttributeRegularExpression::fromString($regularExpression)
             );
         }
 

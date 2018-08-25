@@ -17,10 +17,13 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -56,7 +59,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::create(
+        $expectedAttribute = TextAttribute::createTextArea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
@@ -65,7 +68,8 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(255)
+            AttributeMaxLength::fromInteger(255),
+            AttributeIsRichTextEditor::fromBoolean(false)
         );
 
         $this->attributeRepository->create($expectedAttribute);
@@ -183,7 +187,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             labels,
             attribute_type,
             attribute_order,
-            required,
+            is_required,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -194,7 +198,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             :labels,
             :attribute_type,
             :attribute_order,
-            :required,
+            :is_required,
             :value_per_channel,
             :value_per_locale,
             :additional_properties

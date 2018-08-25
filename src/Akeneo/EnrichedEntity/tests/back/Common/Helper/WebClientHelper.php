@@ -103,6 +103,9 @@ HTML;
      */
     private function getContent($expectedResponse): string
     {
+        if (is_array($expectedResponse['content'])) {
+            return json_encode($expectedResponse['content'], JSON_HEX_QUOT);
+        }
         if (!$expectedResponse['content'] || empty($expectedResponse['content'])) {
             return '';
         }

@@ -180,8 +180,8 @@ services:
         tags:
             - { name: akeneo_enrichedentity.attribute_updater }
 
-    akeneo_enrichedentity.application.edit_attribute.attribute_updater.required_updater:
-        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\RequiredUpdater'
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_required_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRequiredUpdater'
         tags:
             - { name: akeneo_enrichedentity.attribute_updater }
 

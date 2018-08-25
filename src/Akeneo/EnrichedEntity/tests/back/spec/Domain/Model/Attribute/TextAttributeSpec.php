@@ -19,7 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegex;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
@@ -80,7 +80,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegex::none()
+            AttributeRegularExpression::none()
         );
     }
 
@@ -97,7 +97,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::EMAIL),
-            AttributeRegex::none()
+            AttributeRegularExpression::none()
         );
     }
 
@@ -114,7 +114,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegex::none()
+            AttributeRegularExpression::none()
         ]);
     }
 
@@ -131,7 +131,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegex::none()
+            AttributeRegularExpression::none()
         ]);
     }
 
@@ -148,7 +148,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegex::none()
+            AttributeRegularExpression::none()
         ]);
     }
 
@@ -176,7 +176,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'valdiation_rule'            => null,
+                'validation_rule'            => null,
                 'regular_expression'         => null,
             ]
         );
@@ -195,7 +195,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegex::fromString('\w+-[0-9]')
+            AttributeRegularExpression::fromString('\w+-[0-9]')
         )->normalize()->shouldReturn([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
@@ -212,7 +212,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => false,
                 'is_rich_text_editor'        => false,
-                'valdiation_rule'            => 'regular_expression',
+                'validation_rule'            => 'regular_expression',
                 'regular_expression'         => '\w+-[0-9]',
             ]
         );
@@ -240,7 +240,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'valdiation_rule'            => null,
+                'validation_rule'            => null,
                 'regular_expression'         => null,
             ]
         );
@@ -265,7 +265,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 100,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'valdiation_rule'            => null,
+                'validation_rule'            => null,
                 'regular_expression'         => null,
             ]
         );
@@ -290,7 +290,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'valdiation_rule'            => null,
+                'validation_rule'            => null,
                 'regular_expression'         => null,
             ]
         );

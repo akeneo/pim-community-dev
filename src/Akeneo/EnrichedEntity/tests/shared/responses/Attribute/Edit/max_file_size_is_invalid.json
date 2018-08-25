@@ -13,7 +13,7 @@
       "root": {
         "editCommands": [
           {
-            "required": false,
+            "isRequired": false,
             "identifier": {
               "enriched_entity_identifier": "designer",
               "identifier": "portrait"

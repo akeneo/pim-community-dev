@@ -7,10 +7,12 @@ namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -95,20 +97,24 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         Assert::assertEquals(
             [
-            'identifier'                 => [
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'name',
+                ],
                 'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'name',
-            ],
-            'enriched_entity_identifier' => 'designer',
-            'code'                       => 'name',
-            'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
-            'order'                      => 0,
-            'is_required'                   => false, // updated
-            'value_per_channel'          => true,
-            'value_per_locale'           => true,
-            'type'                       => 'text',
-            'max_length'                 => 200, // updated
-        ], $updatedName->normalize());
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
+                'order'                      => 0,
+                'is_required'                => false, // updated
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'type'                       => 'text',
+                'max_length'                 => 200, // updated
+                'is_text_area'               => false,
+                'is_rich_text_editor'        => false,
+                'validation_rule'            => null,
+                'regular_expression'         => null,
+            ], $updatedName->normalize());
     }
 
     /**
@@ -391,7 +397,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), []));
 
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
-        $name = TextAttribute::create(
+        $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -400,7 +406,9 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(100)
+            AttributeMaxLength::fromInteger(100),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         );
         $portrait = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'portrait'),

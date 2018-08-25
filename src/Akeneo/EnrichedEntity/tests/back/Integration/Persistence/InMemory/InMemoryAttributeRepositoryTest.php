@@ -19,6 +19,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -26,6 +28,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule;
 use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -46,7 +49,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
     public function it_creates_an_attribute_and_returns_it()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
-        $textAttribute = TextAttribute::create(
+        $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -55,7 +58,9 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         );
 
         $this->attributeRepository->create($textAttribute);
@@ -70,7 +75,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
-        $textAttribute = TextAttribute::create(
+        $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -79,7 +84,9 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         );
 
         $this->attributeRepository->create($textAttribute);
@@ -94,7 +101,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
     public function it_updates_an_attribute_and_returns_it()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
-        $textAttribute = TextAttribute::create(
+        $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -103,7 +110,9 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         );
 
         $this->attributeRepository->create($textAttribute);
@@ -121,7 +130,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
     public function it_throws_when_udpating_a_non_existing_attribute()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
-        $textAttribute = TextAttribute::create(
+        $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -130,7 +139,9 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         );
 
         $this->expectException(\RuntimeException::class);

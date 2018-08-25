@@ -50,7 +50,7 @@ class EditAttributeHandlerSpec extends ObjectBehavior
     {
         $editRequiredAttribute = new EditIsRequiredCommand();
         $editRequiredAttribute->identifier = ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'];
-        $editRequiredAttribute->required = true;
+        $editRequiredAttribute->isRequired = true;
 
         $editMaxFileSize = new EditMaxFileSizeCommand();
         $editMaxFileSize->identifier = ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'];
