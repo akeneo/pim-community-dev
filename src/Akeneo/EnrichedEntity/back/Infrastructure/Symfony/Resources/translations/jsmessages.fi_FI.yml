@@ -11,6 +11,9 @@ pim_enriched_entity:
       label: Nimike
     attribute:
       title: Attribuutit
+    module:
+      delete:
+        button: Poista
     create:
       header:
         title: Luo
@@ -45,6 +48,8 @@ pim_enriched_entity:
         success: Attribuutin päivittäminen onnistui.
       create:
         success: Attribuutin luominen onnistui.
+      delete:
+        success: Attribuutin poistaminen onnistui.
 pim_enrich:
   entity:
     attribute:

@@ -47,8 +47,3 @@ akeneo_suggest_data:
         sub_title: 'Bienvenido a la configuración IA de Información de Producto'
       inactive_connection:
         title: Lo sentimos, no hay nada que mostrar aquí todavía
-  mass_edit:
-    product:
-      operation:
-        suggest_data:
-          warning: 'Los productos {{ itemsCount }} seleccionados serán enviados.'

@@ -58,6 +58,7 @@ akeneo_suggest_data:
         paste_activation_code: 'Coller le code d''activation'
         activated: 'Activé'
         activate: 'Activater'
+        invalid: Désolé, code d'activation invalide. Veuillez réessayer avec un code valide.
   settings:
     page_title: 'Paramètres PIM.ai'
     module:
@@ -69,11 +70,3 @@ akeneo_suggest_data:
       inactive_connection:
         title: Désolé, rien à afficher pour le moment
         sub_title: Veuillez activer votre compte dans Système > Connexion PIM.ai puis revenez sur cette page.
-  mass_edit:
-    product:
-      operation:
-        suggest_data:
-          label: Suggestion de données
-          label_count: "{1}Suggérer des données pour <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Suggérer des données pour <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          description: 'Nous vous suggèrerons des données pour les produits'
-          warning: 'Les {{ itemsCount }} produits sélectionnés vont être envoyés.'

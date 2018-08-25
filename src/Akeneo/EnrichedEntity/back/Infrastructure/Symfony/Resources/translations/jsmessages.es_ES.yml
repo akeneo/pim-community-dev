@@ -16,6 +16,9 @@ pim_enriched_entity:
       label: Etiqueta
     attribute:
       title: Atributos
+    module:
+      delete:
+        button: Eliminar
     index:
       grid:
         count: "{{ count }} resultados"
@@ -71,10 +74,10 @@ pim_enriched_entity:
     notification:
       save:
         success: Atributo exitosamente actualizado.
-        fail: Un error ha ocurrido durante el guardado del registro
       create:
         success: Atributo creado exitosamente.
-        fail: Un error ha ocurrido durante la creación del registro
+      delete:
+        success: Atributo exitosamente borrado.
 pim_enrich:
   confirmation:
     discard_changes: 'Perderá los cambios realizados sobre "{{ entity }}" la entidad si abandona esta página.'
