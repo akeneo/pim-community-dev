@@ -602,6 +602,11 @@ pim_enrich.mass_edit.product:
     add_to_existing_product_model:
       label: Føj til en eksisterende produktmodel
       description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
+    associate_to_product_and_product_model:
+      label: Associeret
+    change_parent_product_model:
+      label: Ændre forældre produkt model
+      description: Det overordnede tilknytning til variantprodukterne eller underproduktmodellerne, der er valgt i nettet, vil blive ændret til den valgte produktmodel.
 pim_enrich.mass_edit.family:
   title: Familier massehandling
   step:
@@ -624,6 +629,7 @@ pim_title:
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attribut grupper | Oprette
   pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
+  pim_enrich_catalog_volume_index: Katalog volumen overvågning
   pim_enrich_categorytree_index: Kategoritræstrukturen
   pim_enrich_categorytree_create: Kategori træer | Oprette
   pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
@@ -688,6 +694,7 @@ pim_menu:
     info: Systemoplysninger
     job_tracker: Processen overvågning
     api_connection: API-forbindelser
+    catalog_volume: Katalog volumen overvågning
   navigation:
     activity: Aktivitet navigation
     system: System navigation

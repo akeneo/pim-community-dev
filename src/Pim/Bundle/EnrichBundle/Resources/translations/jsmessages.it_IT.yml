@@ -737,6 +737,9 @@ batch_jobs:
   update_product_value:
     label: Modifica un valore di prodotto
     perform.label: Modifica un valore di prodotto
+  remove_from_category:
+    label: Rimuovi dalla categoria
+    perform.label: Rimuovi dalla categoria
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform.label: Imposta i requisiti degli attributi

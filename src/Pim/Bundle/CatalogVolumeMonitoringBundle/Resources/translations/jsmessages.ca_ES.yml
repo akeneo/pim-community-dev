@@ -1,0 +1,14 @@
+pim_catalog_volume:
+  axis:
+    count_products: Productes
+    average_max_attributes_per_family: Atributs per família
+    count_channels: Canals
+    count_locales: Locals (activats)
+    count_localizable_attributes: Atributs localitzables
+    count_families: Famílies
+    count_attributes: Atributs
+    average_max_options_per_attribute: Opcions per atribut
+    count_categories: Categories
+    count_category_trees: Arbres de categories
+    count_variant_products: Variant de productes
+    count_product_models: Models de producte
