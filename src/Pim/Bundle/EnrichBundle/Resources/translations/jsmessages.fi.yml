@@ -984,7 +984,7 @@ pim_enrich:
     export_history:
       title: Vientiraportit
     family:
-      title: "[] -Inf, 1] {{ count }} perhe |] 1, Inf [{{ count }} perhettä"
+      title: "] -Inf, 1] {{ count }} perhe |] 1, Inf [{{ count }} perhettä"
       create_btn: Luo perhe
     grouptype:
       title: "] -Inf, 1] {{ count }} ryhmätyyppi|] 1, Inf [{{ count }} ryhmätyyppiä"
