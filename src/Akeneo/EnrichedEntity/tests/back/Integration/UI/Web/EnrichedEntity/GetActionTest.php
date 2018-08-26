@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
@@ -52,12 +53,17 @@ class GetActionTest extends ControllerIntegrationTestCase
             self::ENRICHED_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'designer']
         );
+
         $expectedContent = json_encode([
             'identifier' => 'designer',
             'labels'     => [
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur',
             ],
+            'image'      => [
+                'filePath'         => '/path/image.jpg',
+                'originalFilename' => 'image.jpg'
+            ]
         ]);
         $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
@@ -86,6 +92,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
+        $entityItem->image = Image::fromString('/path/image.jpg');
         $queryHandler->save($entityItem);
 
         $user = new User();

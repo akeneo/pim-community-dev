@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
@@ -56,6 +57,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                     'labels'     => [
                         'en_US' => 'Designer',
                     ],
+                    'image' => null
                 ],
                 [
                     'identifier' => 'manufacturer',
@@ -63,6 +65,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
                         'en_US' => 'Manufacturer',
                         'fr_FR' => 'Fabricant',
                     ],
+                    'image'      => [
+                        'filePath'         => '/path/image.jpg',
+                        'originalFilename' => 'image.jpg'
+                    ]
                 ],
             ],
             'total' => 2,
@@ -89,6 +95,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
             'en_US' => 'Manufacturer',
             'fr_FR' => 'Fabricant',
         ]);
+        $entityItem->image = Image::fromString('/path/image.jpg');
         $queryHandler->save($entityItem);
 
         $user = new User();

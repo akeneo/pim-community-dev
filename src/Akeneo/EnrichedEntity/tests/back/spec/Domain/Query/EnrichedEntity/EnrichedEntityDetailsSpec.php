@@ -3,6 +3,7 @@
 namespace spec\Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use PhpSpec\ObjectBehavior;
@@ -21,6 +22,7 @@ class EnrichedEntityDetailsSpec extends ObjectBehavior
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
         ]);
+        $this->image = Image::fromString('/path/image.jpg');
 
         $this->normalize()->shouldReturn(
             [
@@ -29,6 +31,10 @@ class EnrichedEntityDetailsSpec extends ObjectBehavior
                     'fr_FR' => 'Philippe starck',
                     'en_US' => 'Philip starck',
                 ],
+                'image'      => [
+                    'filePath'         => '/path/image.jpg',
+                    'originalFilename' => 'image.jpg'
+                ]
             ]
         );
     }

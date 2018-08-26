@@ -23,6 +23,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
@@ -83,6 +84,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
         $this->repository->create($enrichedEntity);
         $enrichedEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
+        $enrichedEntity->updateImage(Image::fromString('/path/image.jpg'));
 
         $this->repository->update($enrichedEntity);
 

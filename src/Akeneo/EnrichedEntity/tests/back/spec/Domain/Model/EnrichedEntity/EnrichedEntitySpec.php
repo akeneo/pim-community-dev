@@ -15,6 +15,7 @@ namespace spec\Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -27,7 +28,8 @@ class EnrichedEntitySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $this->beConstructedThrough('create', [$identifier, $labelCollection]);
+        $image = Image::fromString('/path/image.jpg');
+        $this->beConstructedThrough('create', [$identifier, $labelCollection, $image]);
     }
 
     public function it_is_initializable()
@@ -74,5 +76,13 @@ class EnrichedEntitySpec extends ObjectBehavior
 
         $this->updateLabels($labelCollection);
         $this->getLabel('fr_FR')->shouldBe('Concepteur');
+    }
+
+    public function it_updates_image()
+    {
+        $image = Image::fromString('/path/image.jpg');
+
+        $this->updateImage($image);
+        $this->getImage()->shouldBe('/path/image.jpg');
     }
 }
