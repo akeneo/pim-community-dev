@@ -13,8 +13,11 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -22,21 +25,40 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
  */
 class EditEnrichedEntityHandler
 {
+    public const CATALOG_STORAGE_ALIAS = 'catalogStorage';
+
     /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
 
-    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
+    /** @var FileStorerInterface */
+    private $storer;
+
+    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository, FileStorerInterface $storer)
     {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->storer = $storer;
     }
 
     public function __invoke(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
     {
+        $file = $this->storeFile($editEnrichedEntityCommand->image);
         $identifier = EnrichedEntityIdentifier::fromString($editEnrichedEntityCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editEnrichedEntityCommand->labels);
+        $image = Image::fromString($file->getKey());
 
         $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
         $enrichedEntity->updateLabels($labelCollection);
+        $enrichedEntity->updateImage($image);
+
         $this->enrichedEntityRepository->update($enrichedEntity);
+    }
+
+    private function storeFile(array $image): FileInfoInterface
+    {
+        $rawFile = new \SplFileInfo($image['filePath']);
+
+        $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+
+        return $file;
     }
 }

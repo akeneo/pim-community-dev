@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
@@ -50,13 +51,13 @@ class SqlFindEnrichedEntityDetails implements FindEnrichedEntityDetailsInterface
             return null;
         }
 
-        return $this->hydrateEnrichedEntityDetails($result['identifier'], $result['labels']);
+        return $this->hydrateEnrichedEntityDetails($result['identifier'], $result['labels'], $result['image']);
     }
 
     private function fetchResult(EnrichedEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT identifier, labels
+        SELECT identifier, labels, image
         FROM akeneo_enriched_entity_enriched_entity
         WHERE identifier = :identifier;
 SQL;
@@ -73,6 +74,7 @@ SQL;
     /**
      * @param string $identifier
      * @param string $normalizedLabels
+     * @param string|null $image
      *
      * @return EnrichedEntityDetails
      *
@@ -80,7 +82,8 @@ SQL;
      */
     private function hydrateEnrichedEntityDetails(
         string $identifier,
-        string $normalizedLabels
+        string $normalizedLabels,
+        ?string $image = null
     ): EnrichedEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -90,6 +93,7 @@ SQL;
         $enrichedEntityItem = new EnrichedEntityDetails();
         $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
+        $enrichedEntityItem->image = (null !== $image) ? Image::fromString($image) : null;
 
         return $enrichedEntityItem;
     }

@@ -78,6 +78,7 @@ CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
+    `image` VARCHAR(255) NULL,
     PRIMARY KEY (`id`),
     UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

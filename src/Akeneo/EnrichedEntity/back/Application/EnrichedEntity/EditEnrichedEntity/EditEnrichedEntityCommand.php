@@ -23,4 +23,7 @@ class EditEnrichedEntityCommand
 
     /** @var array */
     public $labels;
+
+    /** @var array */
+    public $image;
 }

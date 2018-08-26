@@ -70,14 +70,15 @@ SQL;
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
         $update = <<<SQL
         UPDATE akeneo_enriched_entity_enriched_entity
-        SET labels = :labels
+        SET labels = :labels, image = :image
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
                 'identifier' => (string) $enrichedEntity->getIdentifier(),
-                'labels' => $serializedLabels
+                'labels' => $serializedLabels,
+                'image' => $enrichedEntity->getImage()
             ]
         );
 
