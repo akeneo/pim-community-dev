@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -115,15 +115,15 @@ class ProductDatasource extends Datasource
     /**
      * Normalizes an entity with values with the complete set of fields required to show it.
      *
-     * @param EntityWithValuesInterface $item
-     * @param array                     $context
+     * @param Row   $item
+     * @param array $context
      *
      * @return array
      */
-    private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
+    private function normalizeEntityWithValues(Row $item, array $context): array
     {
         $defaultNormalizedItem = [
-            'id'               => $item->getId(),
+            'id'               => $item->technicalId(),
             'dataLocale'       => $this->getParameters()['dataLocale'],
             'family'           => null,
             'values'           => [],

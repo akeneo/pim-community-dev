@@ -49,7 +49,11 @@ services:
         class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_model'
+            - '@akeneo.pim.enrichment.query.get_product_rows_from_identifiers'
+            - '@akeneo.pim.enrichment.query.get_product_rows_from_identifiers'
             - '%pim_enrich.datagrid.product_batch_size%'
             - 'pim_catalog_product'
+
+    akeneo.pim.enrichment.query.get_product_rows_from_identifiers:
+        public: false;
+        class: 'Pim\Bundle\DataGridBundle\Query\GetProductRowsFromIdentifiers'

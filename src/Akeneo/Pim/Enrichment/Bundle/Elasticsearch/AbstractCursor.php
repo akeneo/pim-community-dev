@@ -122,7 +122,7 @@ abstract class AbstractCursor implements CursorInterface
             }
         }
 
-        return $orderedItems;
+        return $hydratedItems;
     }
 
     /**

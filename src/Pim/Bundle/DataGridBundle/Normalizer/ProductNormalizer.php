@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
@@ -11,6 +12,7 @@ use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product normalizer for datagrid
@@ -50,27 +52,45 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        Assert::isInstanceOf($product, Row::class);
+
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
         $locale = current($context['locales']);
         $scope = current($context['channels']);
 
-        $data['identifier'] = $product->getIdentifier();
-        $data['family'] = $this->getFamilyLabel($product, $locale);
-        $data['groups'] = $this->getGroupsLabels($product, $locale);
-        $data['enabled'] = (bool) $product->isEnabled();
-        $data['values'] = $this->normalizeValues($product->getValues(), $format, $context);
-        $data['created'] = $this->normalizer->normalize($product->getCreated(), $format, $context);
-        $data['updated'] = $this->normalizer->normalize($product->getUpdated(), $format, $context);
-        $data['label'] = $product->getLabel($locale, $scope);
-        $data['image'] = $this->normalizeImage($product->getImage(), $context);
-        $data['completeness'] = $this->getCompleteness($product, $context);
-        $data['document_type'] = IdEncoder::PRODUCT_TYPE;
-        $data['technical_id'] = $product->getId();
-        $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
-        $data['is_checked'] = false;
-        $data['complete_variant_product'] = null;
-        $data['parent'] = $this->getParentCode($product);
+        $data['identifier'] = $product->identifier();
+        $data['family'] = $product->family();
+        $data['groups'] = $product->groups();
+        $data['enabled'] = $product->enabled();
+        $data['values'] = $this->normalizeValues($product->values(), $format, $context);
+        $data['created'] = $this->normalizer->normalize($product->created(), $format, $context);
+        $data['updated'] = $this->normalizer->normalize($product->updated(), $format, $context);
+        $data['label'] = $this->normalizer->normalize($product->label());
+        $data['image'] = $this->normalizeImage($product->image(), $context);
+        $data['completeness'] = $product->completeness();
+        $data['document_type'] = $product->documentType();
+        $data['technical_id'] = $product->technicalId();
+        $data['search_id'] = $product->searchId();
+        $data['is_checked'] = $product->checked();
+        $data['complete_variant_product'] = $product->isCompleteVariantProduct();
+        $data['parent'] = $product->parent();
+
+        //$data['family'] = $this->getFamilyLabel($product, $locale);
+        //$data['groups'] = $this->getGroupsLabels($product, $locale);
+        //$data['enabled'] = (bool) $product->isEnabled();
+        //$data['values'] = $this->normalizeValues($product->getValues(), $format, $context);
+        //$data['created'] = $this->normalizer->normalize($product->getCreated(), $format, $context);
+        //$data['updated'] = $this->normalizer->normalize($product->getUpdated(), $format, $context);
+        //$data['label'] = $product->getLabel($locale, $scope);
+        //$data['image'] = $this->normalizeImage($product->getImage(), $context);
+        //$data['completeness'] = $this->getCompleteness($product, $context);
+        //$data['document_type'] = IdEncoder::PRODUCT_TYPE;
+        //$data['technical_id'] = $product->getId();
+        //$data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
+        //$data['is_checked'] = false;
+        //$data['complete_variant_product'] = null;
+        //$data['parent'] = $this->getParentCode($product);
 
         return $data;
     }
@@ -80,7 +100,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'datagrid' === $format;
+        return $data instanceof Row && 'datagrid' === $format;
     }
 
     /**
