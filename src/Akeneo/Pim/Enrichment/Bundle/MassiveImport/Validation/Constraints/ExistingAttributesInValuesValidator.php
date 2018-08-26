@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
-use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\EditProductCommand;
 use Doctrine\DBAL\Connection;
 use PDO;
 use Symfony\Component\Validator\Constraint;
@@ -33,8 +33,8 @@ class ExistingAttributesInValuesValidator extends ConstraintValidator
      */
     public function validate($command, Constraint $constraint)
     {
-        if (!$command instanceof FillProductValuesCommand) {
-            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
+        if (!$command instanceof EditProductCommand) {
+            throw new UnexpectedTypeException($constraint, EditProductCommand::class);
         }
 
         if (!$constraint instanceof ExistingAttributesInValues) {
@@ -68,7 +68,7 @@ SQL;
         }
     }
 
-    private function getAttributeCodes(FillProductValuesCommand $command): array
+    private function getAttributeCodes(EditProductCommand $command): array
     {
         return array_keys($command->values()->indexedByAttribute());
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
-use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\EditProductCommand;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
@@ -34,8 +34,8 @@ class ProductValueCollectionValidator extends ConstraintValidator
      */
     public function validate($command, Constraint $constraint)
     {
-        if (!$command instanceof FillProductValuesCommand) {
-            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
+        if (!$command instanceof EditProductCommand) {
+            throw new UnexpectedTypeException($constraint, EditProductCommand::class);
         }
 
         if (!$constraint instanceof ProductValueCollection) {

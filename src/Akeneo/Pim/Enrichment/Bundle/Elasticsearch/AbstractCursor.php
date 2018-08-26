@@ -34,6 +34,9 @@ abstract class AbstractCursor implements CursorInterface
     /** @var int */
     protected $count;
 
+    /** callable */
+    protected $orderCallable;
+
     /**
      * {@inheritdoc}
      */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
-use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\EditProductCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -34,8 +34,8 @@ class ExistingChannelsInValuesValidator extends ConstraintValidator
      */
     public function validate($command, Constraint $constraint)
     {
-        if (!$command instanceof FillProductValuesCommand) {
-            throw new UnexpectedTypeException($constraint, FillProductValuesCommand::class);
+        if (!$command instanceof EditProductCommand) {
+            throw new UnexpectedTypeException($constraint, EditProductCommand::class);
         }
 
         if (!$constraint instanceof ExistingChannelsInValues) {
@@ -69,7 +69,7 @@ SQL;
         }
     }
 
-    private function getChannelCodes(FillProductValuesCommand $command): array
+    private function getChannelCodes(EditProductCommand $command): array
     {
         $channels = [];
         foreach ($command->values()->all() as $value) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Attribute;
 
-use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\EditProductCommand;
 use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\Value\Value;
 use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\Value\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Batch\Api\Product\Product;
@@ -22,7 +22,7 @@ class ProductValueCollectionValidatorIntegration extends TestCase
             ]
         );
 
-        $command = new FillProductValuesCommand('identifier_product', $valueCollection);
+        $command = new EditProductCommand('identifier_product', null, $valueCollection);
 
         $violations = $this->get('validator')->validate($command);
         Assert::assertCount(0, $violations);

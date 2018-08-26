@@ -1,0 +1,11 @@
+Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\EditProductCommand:
+    group_sequence:
+        - EditProductCommand
+        - relation_existence
+    constraints:
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingCategories: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingAttributesInValues: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingLocalesInValues: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ExistingChannelsInValues: ~
+        - Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints\ProductValueCollection:
+            groups: [relation_existence]

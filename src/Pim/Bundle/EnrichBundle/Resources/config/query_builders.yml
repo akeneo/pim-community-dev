@@ -53,3 +53,13 @@ services:
             - '@pim_catalog.repository.product_model'
             - '%pim_enrich.datagrid.product_batch_size%'
             - 'pim_catalog_product'
+
+        pim_enrich.factory.product_and_product_model_from_size_cursor:
+            public: false
+            class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
+            arguments:
+                - '@akeneo_elasticsearch.client.product_and_product_model'
+                - '@pim_catalog.repository.product_without_permission'
+                - '@pim_catalog.repository.product_model'
+                - '%pim_enrich.datagrid.product_batch_size%'
+                - 'pim_catalog_product'

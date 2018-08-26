@@ -75,7 +75,7 @@ class TextValueValidator extends ConstraintValidator
         }
 
         foreach ($constraints as $constraint) {
-            $violations = $this->context->getValidator()->validate($value, $constraint);
+            $violations = $this->context->getValidator()->validate($value->data(), $constraint);
             $this->context->getViolations()->addAll($violations);
         }
     }

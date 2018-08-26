@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Validation\Constraints;
 
-use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\CategorizeProductCommand;
-use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\FillProductValuesCommand;
+use Akeneo\Pim\Enrichment\Bundle\MassiveImport\Command\EditProductCommand;
 use Doctrine\DBAL\Connection;
 use PDO;
 use Symfony\Component\Validator\Constraint;
@@ -34,8 +33,8 @@ class ExistingCategoriesValidator extends ConstraintValidator
      */
     public function validate($command, Constraint $constraint)
     {
-        if (!$command instanceof CategorizeProductCommand) {
-            throw new UnexpectedTypeException($constraint, CategorizeProductCommand::class);
+        if (!$command instanceof EditProductCommand) {
+            throw new UnexpectedTypeException($constraint, EditProductCommand::class);
         }
 
         if (!$constraint instanceof ExistingCategories) {
