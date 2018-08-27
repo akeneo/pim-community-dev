@@ -88,4 +88,21 @@
   &--hidden {
     display: none;
   }
+
+  &--inline {
+    display: flex;
+  }
+
+  &--inline &-inputContainer {
+    width: @AknMaxFormWidth;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  &--inline &-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 10px;
+  }
 }

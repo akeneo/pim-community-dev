@@ -31,6 +31,13 @@
     margin-right: 10px;
   }
 
+  &-item--forbidden &-link {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: url("../../../images/icon-lock2.svg") no-repeat right;
+    background-size: 21px;
+  }
+
   &-link {
     font-size: @AknFontSizeBig;
     height: @AknTabHeight;
@@ -64,7 +71,7 @@
     width: 100%;
   }
 
-  &-item:not(&-item--active) &-link:not(&-link--active):hover,
+  &-item:not(&-item--forbidden):not(&-item--active) &-link:not(&-link--active):hover,
   &-item--active &-link,
   &-link--active {
     background: none;
