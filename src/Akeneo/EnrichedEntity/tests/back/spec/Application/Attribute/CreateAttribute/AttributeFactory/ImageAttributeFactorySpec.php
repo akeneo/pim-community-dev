@@ -75,7 +75,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
-        $command->maxFileSize = AttributeMaxFileSize::NO_LIMIT;
+        $command->maxFileSize = null;
         $command->allowedExtensions = ['pdf', 'png'];
 
         $this->create($command)->normalize()->shouldReturn([
@@ -112,7 +112,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->isRequired = true;
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
-        $command->maxFileSize = AttributeMaxFileSize::NO_LIMIT;
+        $command->maxFileSize = null;
         $command->allowedExtensions = AttributeAllowedExtensions::ALL_ALLOWED;
 
         $this->create($command)->normalize()->shouldReturn([

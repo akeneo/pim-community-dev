@@ -431,7 +431,7 @@ class EditAttributeContext implements Context
             'dummy_identifier',
             $attributeCode
         ));
-        Assert::assertEquals(AttributeMaxFileSize::NO_LIMIT, $attribute->normalize()['max_file_size']);
+        Assert::assertEquals(null, $attribute->normalize()['max_file_size']);
     }
 
     /**

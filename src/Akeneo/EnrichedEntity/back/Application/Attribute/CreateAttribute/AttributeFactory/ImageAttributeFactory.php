@@ -35,6 +35,8 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ImageAttributeFactory implements AttributeFactoryInterface
 {
+    private const NO_LIMIT = null;
+
     public function supports(AbstractCreateAttributeCommand $command): bool
     {
         return $command instanceof CreateImageAttributeCommand;
@@ -64,7 +66,7 @@ class ImageAttributeFactory implements AttributeFactoryInterface
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeMaxFileSize::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::infinite() : AttributeMaxFileSize::fromString($command->maxFileSize),
+            self::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::infinite() : AttributeMaxFileSize::fromString($command->maxFileSize),
             AttributeAllowedExtensions::fromList($command->allowedExtensions)
         );
     }
