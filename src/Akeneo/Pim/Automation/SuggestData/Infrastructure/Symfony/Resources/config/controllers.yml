@@ -3,7 +3,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\ProductSubscriptionController'
         arguments:
             - '@akeneo.pim.automation.suggest_data.service.subscribe_product'
-            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.handler.get_product_subscription_status'
 
     akeneo.pim.automation.suggest_data.controller.pim_ai:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\PimAiConnectionController'
