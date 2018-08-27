@@ -78,6 +78,36 @@ class EditAttributeContext implements Context
     }
 
     /**
+     * @Given /^the following text attributes:$/
+     */
+    public function theFollowingTextAttributes(TableNode $attributesTable)
+    {
+        foreach ($attributesTable->getHash() as $attribute) {
+            $this->attributeRepository->create(TextAttribute::createText(
+                AttributeIdentifier::create($attribute['entity_identifier'], $attribute['code']),
+                EnrichedEntityIdentifier::fromString($attribute['entity_identifier']),
+                AttributeCode::fromString($attribute['code']),
+                LabelCollection::fromArray(json_decode($attribute['labels'], true)),
+                AttributeOrder::fromInteger((int) $attribute['order']),
+                AttributeIsRequired::fromBoolean((bool) $attribute['required']),
+                AttributeValuePerChannel::fromBoolean((bool) $attribute['value_per_channel']),
+                AttributeValuePerLocale::fromBoolean((bool) $attribute['value_per_locale']),
+                AttributeMaxLength::fromInteger((int) $attribute['max_length']),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::none()
+            ));
+        }
+    }
+    /**
+     * @When /^the user deletes the attribute "(.+)" linked to the enriched entity "(.+)"$/
+     */
+    public function theUserDeletesTheAttribute(string $attributeIdentifier, string $entityIdentifier)
+    {
+        $identifier = AttributeIdentifier::create($entityIdentifier, $attributeIdentifier);
+        $this->attributeRepository->deleteByIdentifier($identifier);
+    }
+
+    /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
     public function anEnrichedEntityWithATextAttributeAndTheLabelEqualTo(

@@ -35,7 +35,6 @@ use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Type;
 use PDO;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 

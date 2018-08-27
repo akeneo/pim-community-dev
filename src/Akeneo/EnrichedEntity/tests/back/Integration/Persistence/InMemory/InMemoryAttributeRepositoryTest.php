@@ -28,14 +28,13 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule;
 use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryAttributeRepositoryTest extends TestCase
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var InMemoryAttributeRepository*/
     private $attributeRepository;
 
     public function setup()
@@ -176,16 +175,18 @@ class InMemoryAttributeRepositoryTest extends TestCase
 
     private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
-        return TextAttribute::create(
+        return TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         );
     }
 }
