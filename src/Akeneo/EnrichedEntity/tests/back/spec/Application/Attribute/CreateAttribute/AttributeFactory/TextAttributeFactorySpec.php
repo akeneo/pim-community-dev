@@ -94,7 +94,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_with_infinite_max_length()
+    function it_creates_a_simple_text_attribute_with_no_max_length_limit()
     {
         $command = new CreateTextAttributeCommand();
         $command->identifier = [

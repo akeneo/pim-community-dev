@@ -46,7 +46,7 @@ class AttributeMaxFileSize
         return new self($maxFileSize);
     }
 
-    public static function infinite(): self
+    public static function noLimit(): self
     {
         return new self(self::NO_LIMIT);
     }

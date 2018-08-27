@@ -66,7 +66,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 AttributeIsRequired::fromBoolean($command->isRequired),
                 AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-                AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength),
+                AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength),
                 AttributeIsRichTextEditor::fromBoolean($command->isRichTextEditor)
             );
         }
@@ -83,7 +83,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength),
+            AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength),
             AttributeValidationRule::NONE === $command->validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($command->validationRule),
             AttributeRegularExpression::NONE === $command->regularExpression ? AttributeRegularExpression::none() : AttributeRegularExpression::fromString($command->regularExpression)
         );

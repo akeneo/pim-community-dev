@@ -66,7 +66,7 @@ class ImageAttributeFactory implements AttributeFactoryInterface
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            self::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::infinite() : AttributeMaxFileSize::fromString($command->maxFileSize),
+            self::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($command->maxFileSize),
             AttributeAllowedExtensions::fromList($command->allowedExtensions)
         );
     }

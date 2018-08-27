@@ -59,7 +59,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_an_image_attribute_with_infinite_max_file_size()
+    function it_creates_an_image_attribute_with_no_max_file_size_limit()
     {
         $command = new CreateImageAttributeCommand();
         $command->identifier = [

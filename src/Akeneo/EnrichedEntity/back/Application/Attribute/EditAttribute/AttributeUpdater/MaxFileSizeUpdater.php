@@ -30,7 +30,7 @@ class MaxFileSizeUpdater implements AttributeUpdaterInterface
         }
 
         if (self::NO_LIMIT === $command->maxFileSize) {
-            $attribute->setMaxFileSize(AttributeMaxFileSize::infinite());
+            $attribute->setMaxFileSize(AttributeMaxFileSize::noLimit());
         } else {
             $attribute->setMaxFileSize(AttributeMaxFileSize::fromString($command->maxFileSize));
         }

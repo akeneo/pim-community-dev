@@ -17,15 +17,15 @@ class AttributeMaxFileSizeSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeMaxFileSize::class);
     }
 
-    function it_can_be_infinite()
+    function it_can_have_no_limit()
     {
-        $this->beConstructedThrough('infinite', []);
+        $this->beConstructedThrough('noLimit', []);
     }
 
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn('10.0');
-        $this::infinite()->normalize()->shouldReturn(null);
+        $this::noLimit()->normalize()->shouldReturn(null);
     }
 
     function it_cannot_be_greater_than_the_limit()
