@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
@@ -114,7 +115,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::none(),
         ]);
     }
 
@@ -131,7 +132,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::none(),
         ]);
     }
 
@@ -148,7 +149,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::none(),
         ]);
     }
 
@@ -294,5 +295,243 @@ class TextAttributeSpec extends ObjectBehavior
                 'regular_expression'         => null,
             ]
         );
+    }
+
+    function it_updates_the_validation_rule_of_a_simple_text_when_setting_the_is_text_area_flag_to_true()
+    {
+        $this->beConstructedThrough('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/\w+/')
+        ]);
+        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(true));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
+        $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
+        $normalizedAttribute['validation_rule']->shouldBeNull();
+        $normalizedAttribute['regular_expression']->shouldBeNull();
+    }
+
+    function it_updates_the_optional_options_to_default_values_when_changing_the_is_text_area_flag()
+    {
+        $this->beConstructedThrough('createTextArea', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(true)
+        ]);
+        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(false));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
+        $normalizedAttribute['validation_rule']->shouldBeNull();
+        $normalizedAttribute['regular_expression']->shouldBeNull();
+    }
+
+    function it_does_not_update_optional_options_if_it_updates_the_is_text_area_flag_to_the_same_value()
+    {
+        $this->beConstructedThrough('createTextArea', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(true)
+        ]);
+        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(true));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
+        $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(true);
+    }
+
+    function it_updates_the_validation_rule_a_simple_text_attribute()
+    {
+        $this->beConstructedThrough('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
+        ]);
+        $this->setValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::EMAIL);
+        $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeValidationRule::NONE);
+    }
+
+    function it_sets_the_regular_expression_to_empty_if_the_validation_rule_is_not_regular_expression()
+    {
+        $this->beConstructedThrough('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/\w+/')
+        ]);
+        $this->setValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::EMAIL);
+        $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeRegularExpression::NONE);
+    }
+
+    function it_does_not_update_the_validation_rule_a_text_area_attribute()
+    {
+        $this->beConstructedThrough('createTextArea', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        ]);
+        $this->shouldThrow(\LogicException::class)->duringSetValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
+    }
+
+    function it_updates_the_regular_expression_of_a_text_attribute()
+    {
+        $this->beConstructedThrough('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString('/[0-9]*/')
+        ]);
+        $this->setRegularExpression(AttributeRegularExpression::fromString('/\w+/'));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::REGULAR_EXPRESSION);
+        $normalizedAttribute['regular_expression']->shouldBeEqualTo('/\w+/');
+    }
+
+    function it_does_not_update_the_regular_expression_if_the_is_text_area_flag_is_true()
+    {
+        $this->beConstructedThrough('createTextArea', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(true)
+        ]);
+        $this->shouldThrow(\LogicException::class)->duringSetRegularExpression(AttributeRegularExpression::fromString('/\w+/'));
+    }
+
+    function it_does_not_update_the_regular_expression_if_the_validation_rule_is_not_set_to_regular_expression()
+    {
+        $this->beConstructedThrough('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::fromString(AttributeValidationRule::URL),
+            AttributeRegularExpression::none()
+        ]);
+        $this->shouldThrow(\LogicException::class)->duringSetRegularExpression(AttributeRegularExpression::fromString('/\w+/'));
+    }
+
+    function it_tells_if_it_is_a_text_area()
+    {
+        $this->beConstructedThrough('createTextArea', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(true)
+        ]);
+        $this->isTextArea()->shouldBeEqualTo(true);
+    }
+
+    function it_updates_the_is_rich_text_editor_flag_of_a_text_area_attribute()
+    {
+        $this->beConstructedThrough('createTextArea', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        ]);
+        $this->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
+        $normalizedAttribute = $this->normalize();
+        $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
+        $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(true);
+    }
+
+    function it_does_not_update_the_is_rich_text_editor_flag_if_the_text_area_flag_is_false()
+    {
+        $this->beConstructedThrough('createText', [
+            AttributeIdentifier::create('designer', 'name'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(300),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
+        ]);
+        $this->shouldThrow(\LogicException::class)->duringSetIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
     }
 }

@@ -78,7 +78,7 @@ class TextAttribute extends AbstractAttribute
                 $validationRule->isNone() && $regularExpression->isNone(),
                 'It is not possible to create a text area attribute with a validation rule.'
             );
-        } else{
+        } else {
             Assert::false($isRichTextEditor->isYes());
             if ($validationRule->isRegex()) {
                 Assert::false(
@@ -181,6 +181,57 @@ class TextAttribute extends AbstractAttribute
                 'regular_expression'  => $this->regularExpression->normalize(),
             ]
         );
+    }
+
+    public function setIsTextArea(AttributeIsTextArea $isTextArea): void
+    {
+        if ($this->isTextArea->equals($isTextArea)) {
+            return;
+        }
+        $this->isTextArea = $isTextArea;
+        $this->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
+        $this->validationRule = AttributeValidationRule::none();
+        $this->regularExpression = AttributeRegularExpression::none();
+    }
+
+    public function setValidationRule(AttributeValidationRule $validationRule): void
+    {
+        if ($this->isTextArea->isYes()) {
+            throw new \LogicException('Cannot update the validation rule when the text area flag is true');
+        }
+        $this->validationRule = $validationRule;
+        if (!$this->validationRule->isRegex()) {
+            $this->regularExpression = AttributeRegularExpression::none();
+        }
+    }
+
+    public function setRegularExpression(AttributeRegularExpression $regularExpression): void
+    {
+        if ($this->isTextArea->isYes()) {
+            throw new \LogicException('Cannot update the regular expression when the text area flag is true');
+        }
+        if (!$this->validationRule->isRegex()) {
+            throw new \LogicException('Cannot update the regular expression when the validation rule is not set to regular expression');
+        }
+        $this->regularExpression = $regularExpression;
+    }
+
+    public function setIsRichTextEditor(AttributeIsRichTextEditor $isRichTextEditor): void
+    {
+        if (!$this->isTextArea->isYes()) {
+            throw new \LogicException('Cannot update the is rich text editor flag when the text area flag is false');
+        }
+        $this->isRichTextEditor = $isRichTextEditor;
+    }
+
+    public function isTextArea(): bool
+    {
+        return $this->isTextArea->isYes();
+    }
+
+    public function isValidationRuleRegularExpression(): bool
+    {
+        return $this->validationRule->isRegex();
     }
 
     protected function getType(): string

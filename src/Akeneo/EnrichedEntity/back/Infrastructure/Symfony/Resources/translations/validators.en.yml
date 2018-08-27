@@ -25,3 +25,14 @@ pim_enriched_entity:
             identifier:
                 should_not_exist: 'The attribute already exists for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
                 should_exist: 'The attribute was not found for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
+            regular_expression:
+                wrong_attribute_type_for_update: 'Cannot update the regular expression of attribute "%attribute_code%" for enriched entity "%enriched_entity_code%" because it is not a text attribute'
+                wrong_validation_rule_type: 'Cannot update the regular expression of attribute "%attribute_code%" for enriched entity "%enriched_entity_code%" because its validation rule is not set to regular expression'
+                attribute_should_be_a_simple_text: 'Cannot update the regular expression of attribute "%attribute_code%" for enriched entity "%enriched_entity_code%" because it should be a simple text'
+            wrong_attribute_type: 'Expected attribute "%attribute_code%" of enriched entity "%enriched_entity_identifier% to be of type text.'
+            should_be_a_text_area_to_update_is_rich_text_editor: 'Expected attribute "%attribute_code%" of enriched entity "%enriched_entity_identifier% to be a text area to update the is rich text editor flag'
+            should_be_a_simple_text_to_update_validation_rule: 'Expected attribute "%attribute_code%" of enriched entity "%enriched_entity_identifier% to be a simple text to update the validation rule'
+    enriched_entity:
+        validation:
+            identifier:
+                should_be_unique: 'An enriched entity already exists with identifier "%enriched_entity_identifier%"'

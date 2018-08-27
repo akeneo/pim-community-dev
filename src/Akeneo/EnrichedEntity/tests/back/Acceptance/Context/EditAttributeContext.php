@@ -6,18 +6,26 @@ namespace Akeneo\EnrichedEntity\tests\back\Acceptance\Context;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextAreaCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -43,6 +51,9 @@ class EditAttributeContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var EditAttributeCommandFactoryInterface */
+    private $editAttributeCommandFactory;
+
     /** @var EditAttributeHandler */
     private $handler;
 
@@ -54,12 +65,14 @@ class EditAttributeContext implements Context
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
+        EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
         EditAttributeHandler $handler,
         ValidatorInterface $validator,
         ExceptionContext $exceptionContext
     ) {
         $this->validator = $validator;
         $this->attributeRepository = $attributeRepository;
+        $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->handler = $handler;
         $this->exceptionContext = $exceptionContext;
     }
@@ -72,7 +85,7 @@ class EditAttributeContext implements Context
         string $localeCode,
         string $label
     ) : void {
-        $this->attributeRepository->create(TextAttribute::create(
+        $this->attributeRepository->create(TextAttribute::createText(
             AttributeIdentifier::create('dummy_identifier', $attributeCode),
             EnrichedEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
@@ -81,7 +94,9 @@ class EditAttributeContext implements Context
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(100)
+            AttributeMaxLength::fromInteger(100),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         ));
     }
 
@@ -103,7 +118,7 @@ class EditAttributeContext implements Context
      */
     public function anEnrichedEntityWithATextAttributeNonRequired(string $attributeCode)
     {
-        $this->attributeRepository->create(TextAttribute::create(
+        $this->attributeRepository->create(TextAttribute::createText(
             AttributeIdentifier::create('dummy_identifier', $attributeCode),
             EnrichedEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
@@ -112,7 +127,9 @@ class EditAttributeContext implements Context
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(100)
+            AttributeMaxLength::fromInteger(100),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         ));
     }
 
@@ -141,7 +158,7 @@ class EditAttributeContext implements Context
      */
     public function anEnrichedEntityWithATextAttributeAndMaxLength(string $attributeCode, int $maxLength)
     {
-        $this->attributeRepository->create(TextAttribute::create(
+        $this->attributeRepository->create(TextAttribute::createText(
             AttributeIdentifier::create('dummy_identifier', $attributeCode),
             EnrichedEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
@@ -150,7 +167,9 @@ class EditAttributeContext implements Context
             AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger($maxLength)
+            AttributeMaxLength::fromInteger($maxLength),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
         ));
     }
 
@@ -453,5 +472,361 @@ class EditAttributeContext implements Context
             AttributeMaxFileSize::fromString('200'),
             AttributeAllowedExtensions::fromList($extensions)
         ));
+    }
+
+    /**
+     * @Given /^an enriched entity with a text area attribute \'([^\']*)\'$/
+     */
+    public function anEnrichedEntityWithATextAreaAttribute(string $attributeCode)
+    {
+        $this->attributeRepository->create(TextAttribute::createTextArea(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(150),
+            AttributeIsRichTextEditor::fromBoolean(true)
+        ));
+    }
+
+    /**
+     * @When /^the user changes the is text area flag of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheIsTextAreaFlagTo(string $attributeCode, string $newIsTextArea)
+    {
+        $newIsTextArea = json_decode($newIsTextArea);
+
+        $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
+        $editIsTextArea = new EditIsTextAreaCommand();
+        $editIsTextArea->identifier = $identifier;
+        $editIsTextArea->isTextArea = $newIsTextArea;
+
+        $editAttribute = new EditAttributeCommand();
+        $editAttribute->identifier = $identifier;
+        $editAttribute->editCommands[] = $editIsTextArea;
+
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^the \'([^\']*)\' attribute should be a simple text$/
+     */
+    public function theAttributeShouldBeASimpleText(string $attributeCode): void
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertFalse($normalizedAttribute['is_rich_text_editor'], 'isRichTextEditor should be false');
+    }
+
+    /**
+     * @Given /^an enriched entity with a text attribute \'([^\']*)\'$/
+     */
+    public function anEnrichedEntityWithATextAttribute(string $attributeCode)
+    {
+        $this->attributeRepository->create(TextAttribute::createText(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(150),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
+        ));
+    }
+
+    /**
+     * @Then /^the \'([^\']*)\' attribute should be a text area$/
+     */
+    public function theAttributeShouldBeATextArea($attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertTrue($normalizedAttribute['is_text_area'], 'isTextArea should be true');
+        Assert::assertNull($normalizedAttribute['validation_rule'], 'validationRule should be null');
+        Assert::assertNull($normalizedAttribute['regular_expression'], 'regularExpression should be null');
+    }
+
+    /**
+     * @Given /^an enriched entity with a text attribute \'([^\']*)\' with no validation rule$/
+     */
+    public function anEnrichedEntityWithATextAttributeWithNoValidationRule(string $attributeCode)
+    {
+        $this->attributeRepository->create(TextAttribute::createText(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(150),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
+        ));
+    }
+
+    /**
+     * @When /^the user changes the validation rule of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheValidationRuleOfTo(string $attributeCode, string $newValidationRule)
+    {
+        $newValidationRule = json_decode($newValidationRule);
+
+        $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
+        $editValidationRule = new EditValidationRuleCommand();
+        $editValidationRule->identifier = $identifier;
+        $editValidationRule->validationRule = $newValidationRule;
+
+        $editAttribute = new EditAttributeCommand();
+        $editAttribute->identifier = $identifier;
+        $editAttribute->editCommands[] = $editValidationRule;
+
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^the validation rule of \'([^\']*)\' should be \'([^\']*)\'$/
+     */
+    public function theValidationRuleOfShouldBe(string $attributeCode, string $validationRule)
+    {
+        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations, but there was some found');
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertEquals($validationRule, $normalizedAttribute['validation_rule']);
+    }
+
+    /**
+     * @Given /^an enriched entity with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
+     */
+    public function anEnrichedEntityWithATextAttributeWithARegularExpression(string $attributeCode, string $regularExpression)
+    {
+        $this->attributeRepository->create(TextAttribute::createText(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(150),
+            AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+            AttributeRegularExpression::fromString($regularExpression)
+        ));
+    }
+
+    /**
+     * @Then /^the regular expression of \'([^\']*)\' should be empty$/
+     */
+    public function theRegularExpressionOfShouldBeEmpty(string $attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertNotNull($normalizedAttribute['validation_rule'], 'validationRule should be not be null');
+        Assert::assertNull($normalizedAttribute['regular_expression'], 'regularExpression should be null');
+    }
+
+    /**
+     * @When /^the user changes the regular expression of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheRegularExpressionOfToW09(string $attributeCode, string $newRegularExpression)
+    {
+        $newRegularExpression = json_decode($newRegularExpression);
+
+        $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
+        $editRegularExpression = new EditRegularExpressionCommand();
+        $editRegularExpression->identifier = $identifier;
+        $editRegularExpression->regularExpression = $newRegularExpression;
+
+        $editAttribute = new EditAttributeCommand();
+        $editAttribute->identifier = $identifier;
+        $editAttribute->editCommands[] = $editRegularExpression;
+
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^the regular expression of \'([^\']*)\' should be \'([^\']*)\'$/
+     */
+    public function theRegularExpressionOfShouldBeW09(string $attributeCode, string $regularExpression)
+    {
+        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations, but there was some found');
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertEquals(AttributeValidationRule::REGULAR_EXPRESSION, $normalizedAttribute['validation_rule']);
+        Assert::assertEquals($regularExpression, $normalizedAttribute['regular_expression']);
+    }
+
+    /**
+     * @When /^the user removes the regular expression of \'([^\']*)\'$/
+     */
+    public function theUserRemovesTheRegularExpressionOf(string $attributeCode)
+    {
+        $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
+        $editRegularExpression = new EditRegularExpressionCommand();
+        $editRegularExpression->identifier = $identifier;
+        $editRegularExpression->regularExpression = null;
+
+        $editAttribute = new EditAttributeCommand();
+        $editAttribute->identifier = $identifier;
+        $editAttribute->editCommands[] = $editRegularExpression;
+
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^there is no regular expression set on \'([^\']*)\'$/
+     */
+    public function thereIsNoRegularExpressionSetOn(string $attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertEquals(AttributeRegularExpression::NONE, $normalizedAttribute['regular_expression']);
+    }
+
+    /**
+     * @When /^the user removes the validation rule of \'([^\']*)\'$/
+     */
+    public function theUserRemovesTheValidationRuleOf(string $attributeCode)
+    {
+        $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
+        $editValidationRule = new EditValidationRuleCommand();
+        $editValidationRule->identifier = $identifier;
+        $editValidationRule->validationRule = null;
+
+        $editAttribute = new EditAttributeCommand();
+        $editAttribute->identifier = $identifier;
+        $editAttribute->editCommands[] = $editValidationRule;
+
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^there is no validation rule set on \'([^\']*)\'$/
+     */
+    public function thereIsNoValidationRuleSetOn(string $attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule']);
+        Assert::assertEquals(AttributeRegularExpression::NONE, $normalizedAttribute['regular_expression']);
+    }
+
+    /**
+     * @Then /^there should be a validation error with message \'([^\']*)\'$/
+     */
+    public function thereShouldBeAValidationErrorWithMessage(string $message)
+    {
+        Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected but none were found.');
+        $violation = $this->violations->get(0);
+        Assert::assertSame($message, $violation->getMessage());
+    }
+
+    /**
+     * @Given /^an enriched entity with a text area attribute \'([^\']*)\' with no rich text editor$/
+     */
+    public function anEnrichedEntityWithATextAreaAttributeWithNoRichTextEditor(string $attributeCode)
+    {
+        $this->attributeRepository->create(TextAttribute::createTextArea(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(150),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        ));
+    }
+
+    /**
+     * @When /^the user changes the is rich text editor flag of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheIsRichTextEditorFlagOfTo(string $attributeCode, string $newIsRichTextEditor)
+    {
+        $newIsRichTextEditor = json_decode($newIsRichTextEditor);
+
+        $identifier = ['identifier' => $attributeCode, 'enriched_entity_identifier' => 'dummy_identifier'];
+        $editIsTextArea = new EditIsRichTextEditorCommand();
+        $editIsTextArea->identifier = $identifier;
+        $editIsTextArea->isRichTextEditor = $newIsRichTextEditor;
+
+        $editAttribute = new EditAttributeCommand();
+        $editAttribute->identifier = $identifier;
+        $editAttribute->editCommands[] = $editIsTextArea;
+
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^the \'([^\']*)\' attribute should have a text editor$/
+     */
+    public function theAttributeShouldHaveATextEditor(string $attributeCode)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertTrue($normalizedAttribute['is_text_area'], 'isTextArea should be true');
+        Assert::assertTrue($normalizedAttribute['is_rich_text_editor'], 'IsRichTextEditor should be true');
+    }
+
+    /**
+     * @When /^the user changes the is text area flag and the is rich text editor of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheIsTextAreaFlagAndTheIsRichTextEditorOfTo(string $attributeCode, string $newflag)
+    {
+        $newflag = json_decode($newflag);
+        $updates = [
+            'identifier'          => [
+                'identifier'                 => $attributeCode,
+                'enriched_entity_identifier' => 'dummy_identifier',
+            ],
+            'is_rich_text_editor' => $newflag,
+            'is_text_area'        => $newflag,
+        ];
+        $editAttribute = $this->editAttributeCommandFactory->create($updates);
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @When /^the user changes the text area flag to \'([^\']*)\' and the validation rule of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserChangesTheTextAreaFlagToAndTheValidationRuleOfTo(string $textAreaFlag, string $attributeCode, string $validationRule)
+    {
+        $updates = [
+            'identifier'      => [
+                'identifier'                 => $attributeCode,
+                'enriched_entity_identifier' => 'dummy_identifier',
+            ],
+            'is_text_area'    => json_decode($textAreaFlag),
+            'validation_rule' => $validationRule
+        ];
+        $editAttribute = $this->editAttributeCommandFactory->create($updates);
+        $this->executeCommand($editAttribute);
+    }
+
+    /**
+     * @Then /^the attribute \'([^\']*)\' should have a text editor$/
+     */
+    public function theAttributeShouldHaveATextEditor1(string $attributeCode)
+    {
+        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations, but there was some found');
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
+        $normalizedAttribute = $attribute->normalize();
+        Assert::assertTrue($normalizedAttribute['is_rich_text_editor'], 'Expected is rich text editor to be true, but found false');
     }
 }

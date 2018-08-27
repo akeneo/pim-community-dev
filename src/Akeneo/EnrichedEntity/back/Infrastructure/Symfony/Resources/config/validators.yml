@@ -47,3 +47,24 @@ services:
             - '@validator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.edit_command_validator' }
+
+    akeneo_enrichedentity.infrastructure.validation.attribute.edit_validation_rule_should_be_regular_expression_to_update_regular_expression_validator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRuleShouldBeRegularExpressionToUpdateRegularExpressionValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.edit_validation_rule_should_be_regular_expression_to_update_regular_expression_validator' }
+
+    akeneo_enrichedentity.infrastructure.validation.attribute.should_be_a_text_area_to_update_is_rich_text_editor:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ShouldBeTextAreaToUpdateIsRichTextEditorValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.should_be_a_text_area_to_update_is_rich_text_editor' }
+
+    akeneo_enrichedentity.infrastructure.validation.attribute.should_be_a_simple_text_to_update_validation_rule:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ShouldBeASimpleTextToUpdateValidationRuleValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.should_be_a_simple_text_to_update_validation_rule' }

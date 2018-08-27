@@ -32,13 +32,14 @@ Feature: Edit an attribute of an enriched entity
   Scenario Outline: Invalid is required edit
     Given an enriched entity with an image attribute 'image' non required
     When the user sets the is required property of 'image' to '<invalid_required>'
-    Then there should be a validation error on the property 'required' with message '<message>'
+    Then there should be a validation error on the property 'isRequired' with message '<message>'
 
     Examples:
       | invalid_required | message                               |
       | null             | This value should not be null.        |
       | "not_a_boolean"  | This value should be of type boolean. |
 
+  # Max file size
   @acceptance-back
   Scenario: Updating max file size
     Given an enriched entity with an image attribute 'image' with max file size '3000'
@@ -63,6 +64,11 @@ Feature: Edit an attribute of an enriched entity
       | "-3.4"                | This value should be greater than 0.                |
       | 99999999999           | This value should be less than or equal to 9999.99. |
 
+
+  # TODO: imports
+  Scenario: Updating the max file size of an attribute that is not image fails
+
+  # Allowed extensions
   @acceptance-back
   Scenario: Updating allowed extensions
     Given an enriched entity with an image attribute 'image' with allowed extensions: '["png"]'
@@ -84,3 +90,6 @@ Feature: Edit an attribute of an enriched entity
       | invalid_allowed_extensions | message                                     |
       | "not_an_array"             | This value should be of type array.         |
       | ["not_a_valid_extension"]  | One or more of the given values is invalid. |
+
+  # TODO: imports
+  Scenario: Updating the allowed extensions of an attribute that is not image fails

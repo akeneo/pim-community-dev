@@ -34,7 +34,7 @@ class LabelsUpdaterSpec extends ObjectBehavior
         $labelEditCommand = new EditLabelsCommand();
         $labelEditCommand->labels = ['fr_FR' => 'Traduction francaise'];
         $textAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Traduction francaise']))->shouldBeCalled();
-        $this->__invoke($textAttribute, $labelEditCommand);
+        $this->__invoke($textAttribute, $labelEditCommand)->shouldReturn($textAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(TextAttribute $textAttribute)

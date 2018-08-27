@@ -33,8 +33,8 @@ class AllowedExtensionsUpdaterSpec extends ObjectBehavior
     {
         $editAllowedExtensions = new EditAllowedExtensionsCommand();
         $editAllowedExtensions->allowedExtensions = ['png'];
-        $imageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList(['png']));
-        $this->__invoke($imageAttribute, $editAllowedExtensions);
+        $imageAttribute->setAllowedExtensions(AttributeAllowedExtensions::fromList(['png']))->shouldBeCalled();
+        $this->__invoke($imageAttribute, $editAllowedExtensions)->shouldReturn($imageAttribute);
     }
 
     function it_throws_if_it_cannot_update_the_attribute(ImageAttribute $rightAttribute, TextAttribute $wrongAttribute)

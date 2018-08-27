@@ -32,4 +32,9 @@ class AttributeIsTextArea
     {
         return $this->isTextArea;
     }
+
+    public function equals(AttributeIsTextArea $otherIsTextArea): bool
+    {
+        return $this->isTextArea === $otherIsTextArea->isTextArea;
+    }
 }

@@ -25,6 +25,7 @@ class RegisterAttributeUpdaterPass implements CompilerPassInterface
 {
     private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry';
     private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.attribute_updater';
+    private const DEFAULT_PRIORITY = 50;
 
     /**
      * {@inheritdoc}
@@ -32,10 +33,28 @@ class RegisterAttributeUpdaterPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $registry = $container->getDefinition(self::ATTRIBUTE_FACTORY_REGISTRY);
-        $attributeFactories = $container->findTaggedServiceIds(self::ATTRIBUTE_FACTORY_TAG);
+        $sortedUpdatersByPriority = $this->findAndSortTaggedServices($container);
 
-        foreach (array_keys($attributeFactories) as $attributeFactoryId) {
-            $registry->addMethodCall('register', [new Reference($attributeFactoryId)]);
+        foreach ($sortedUpdatersByPriority as $attributeUpdaterId) {
+            $registry->addMethodCall('register', [new Reference($attributeUpdaterId)]);
         }
+    }
+
+    private function findAndSortTaggedServices(ContainerBuilder $container): array
+    {
+        $attributeUpdaters = $container->findTaggedServiceIds(self::ATTRIBUTE_FACTORY_TAG);
+
+        $sortedUpdatersByPriority = [];
+        foreach ($attributeUpdaters as $serviceId => $tags) {
+            foreach ($tags as $tag) {
+                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                $sortedUpdatersByPriority[$priority][] = new Reference($serviceId);
+            }
+        }
+
+        krsort($sortedUpdatersByPriority);
+        $sortedUpdatersByPriority = call_user_func_array('array_merge', $sortedUpdatersByPriority);
+
+        return $sortedUpdatersByPriority;
     }
 }

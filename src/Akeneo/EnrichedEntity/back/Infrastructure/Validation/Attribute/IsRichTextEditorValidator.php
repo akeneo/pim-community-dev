@@ -23,7 +23,7 @@ class IsRichTextEditorValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($isRichTextEditor, [new Assert\Type('boolean')]);
+        $violations = $validator->validate($isRichTextEditor, [new Assert\NotNull(), new Assert\Type('boolean')]);
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {

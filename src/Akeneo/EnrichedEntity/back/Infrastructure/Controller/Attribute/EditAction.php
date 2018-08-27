@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditAttributeCommandFactoryRegistryInterface */
+    /** @var EditAttributeCommandFactoryInterface */
     private $editAttributeCommandFactory;
 
     /** @var EditAttributeHandler */

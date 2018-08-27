@@ -96,6 +96,10 @@ class CreateAttributeContext implements Context
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
         $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
         $expected['max_length'] = (int) $expected['max_length'];
+        $expected['is_text_area'] = '' === $expected['is_text_area'] ? null : (bool) $expected['is_text_area'];
+        $expected['is_rich_text_editor'] = '' === $expected['is_rich_text_editor'] ? null : (bool) $expected['is_rich_text_editor'];
+        $expected['validation_rule'] = '' === $expected['validation_rule'] ? null : $expected['validation_rule'];
+        $expected['regular_expression'] = '' === $expected['regular_expression'] ? null : $expected['regular_expression'];
         ksort($expected);
 
         $attribute = $this->attributeRepository->getByIdentifier(
