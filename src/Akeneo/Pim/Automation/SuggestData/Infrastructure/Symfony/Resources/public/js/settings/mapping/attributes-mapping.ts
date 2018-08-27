@@ -1,6 +1,6 @@
 import * as _ from 'underscore';
+import BaseForm = require('pimenrich/js/view/base');
 const __ = require('oro/translator');
-const BaseForm = require('pim/form');
 const SimpleSelectAttribute = require('pimee/settings/mapping/simple-select-attribute');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
 
@@ -10,6 +10,16 @@ const template = require('pimee/template/settings/mapping/attributes-mapping');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
+interface Config {
+  labels: {
+    pending: string,
+    active: string,
+    inactive: string,
+    pim_ai_attribute: string,
+    catalog_attribute: string,
+    suggest_data: string
+  }
+}
 
 class InterfaceNormalizedAttributeMapping {
     mapping: { [key: string] : { attribute: string } };
@@ -17,13 +27,24 @@ class InterfaceNormalizedAttributeMapping {
 
 class AttributeMapping extends BaseForm {
   readonly template = _.template(template);
+  readonly config: Config = {
+    labels: {
+      pending: '',
+      active: '',
+      inactive: '',
+      pim_ai_attribute: '',
+      catalog_attribute: '',
+      suggest_data: ''
+    }
+  };
 
   /**
    * {@inheritdoc}
    */
-  initialize(meta: { config: any }) {
-    this.config = meta.config;
-    BaseForm.prototype.initialize.apply(this, arguments);
+  constructor(options: {config: Config}) {
+    super(options);
+
+    this.config = {...this.config, ...options.config};
   }
 
   /**
@@ -62,7 +83,8 @@ class AttributeMapping extends BaseForm {
             fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
             label: '',
             choiceRoute: 'pim_enrich_attribute_rest_index'
-          }
+          },
+          className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
         });
         attributeSelector.configure().then(() => {
           attributeSelector.setParent(this);

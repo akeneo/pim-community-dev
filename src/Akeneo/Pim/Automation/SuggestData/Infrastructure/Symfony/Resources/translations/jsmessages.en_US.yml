@@ -1,7 +1,7 @@
 pim_title:
     akeneo_suggest_data_connection_index: 'PIM.ai connection'
-    akeneo_suggest_data_settings_index: 'PIM.ai settings'
-    akeneo_suggest_data_settings_attributes_index: 'PIM.ai settings'
+    akeneo_suggest_data_identifiers_mapping_edit: 'PIM.ai settings'
+    akeneo_suggest_data_attributes_mapping_index: 'PIM.ai settings'
 
 pim_menu:
     item:

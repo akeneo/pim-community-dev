@@ -42,7 +42,7 @@ extensions:
         targetZone: buttons
         position: 0
         config:
-            url: akeneo_sugggest_data_family_mapping_update
+            url: akeneo_suggest_data_attributes_mapping_update
 
     pimee-suggest-data-settings-attributes-mapping-index-state:
         module: pim/form/common/state
@@ -59,10 +59,9 @@ extensions:
         position: 90
         config:
             tabs:
-                - { label: akeneo_suggest_data.entity.identifier_mapping.plural_label, route: akeneo_suggest_data_settings_index }
-                - { label: pim_enrich.entity.family.plural_label, route: '' }
-                - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_suggest_data_settings_attributes_index }
-            selected: 2
+                - { label: akeneo_suggest_data.entity.identifier_mapping.plural_label, route: akeneo_suggest_data_identifiers_mapping_edit }
+                - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_suggest_data_attributes_mapping_index }
+            selected: 1
 
     pimee-suggest-data-settings-attributes-mapping-index-tab-content:
         module: pim/common/simple-view
@@ -78,7 +77,7 @@ extensions:
         config:
             fieldName: code
             label: pim_enrich.entity.family.uppercase_label
-            choiceRoute: akeneo_sugggest_data_family_mapping_index
+            choiceRoute: pim_enrich_family_rest_index
 
     pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping

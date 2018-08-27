@@ -6,4 +6,4 @@ extensions:
         position: 210
         config:
             title: pim_menu.item.pim_ai
-            to: akeneo_suggest_data_settings_index
+            to: akeneo_suggest_data_identifiers_mapping_edit

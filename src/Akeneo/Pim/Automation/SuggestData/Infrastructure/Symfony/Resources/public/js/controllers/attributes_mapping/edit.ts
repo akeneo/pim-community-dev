@@ -6,7 +6,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 
 interface Route {
   name: string,
-  params: { identifier: string },
+  params: { familyCode: string },
   route: Object
 }
 
@@ -28,8 +28,8 @@ interface CanLeaveEvent {
 class EditAttributeMappingController extends BaseController {
   public renderForm(route: Route): BaseView {
     return FetcherRegistry
-      .getFetcher('suggest_data_family_mapping')
-      .fetch(route.params.identifier, {cached: false})
+      .getFetcher('suggest_data_attribute_mapping_by_family')
+      .fetch(route.params.familyCode, {cached: false})
       .then((familyMapping: FamilyMapping) => {
         if (!this.active) {
           return;

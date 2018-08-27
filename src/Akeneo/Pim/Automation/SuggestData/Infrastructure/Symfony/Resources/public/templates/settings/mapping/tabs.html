@@ -2,8 +2,8 @@
     <ul class="AknHorizontalNavtab-list nav nav-tabs form-tabs">
         <% tabs.forEach((tab, index) => { %>
             <% const active = index === selected %>
-            <li class="AknHorizontalNavtab-item<%- active ? ' active': '' %>">
-                <div class="AknHorizontalNavtab-link tab-link<%- active ? ' AknHorizontalNavtab-link--active': '' %>" data-route="<%= tab.route %>">
+            <li class="AknHorizontalNavtab-item<%- active ? ' active': '' %><%- checkAllowed(index) ? '' : ' AknHorizontalNavtab-item--forbidden' %>">
+                <div class="AknHorizontalNavtab-link tab-link<%- active ? ' AknHorizontalNavtab-link--active': '' %>" data-index="<%= index %>">
                     <%= __(tab.label) %>
                 </div>
             </li>
