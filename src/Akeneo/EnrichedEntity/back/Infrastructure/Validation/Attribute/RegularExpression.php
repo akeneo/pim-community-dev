@@ -13,4 +13,3 @@ use Symfony\Component\Validator\Constraint;
 class RegularExpression extends Constraint
 {
 }
-

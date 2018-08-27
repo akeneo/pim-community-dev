@@ -22,4 +22,3 @@ class EditMaxFileSizeCommand extends AbstractEditAttributeCommand
     /** @var string */
     public $maxFileSize;
 }
-

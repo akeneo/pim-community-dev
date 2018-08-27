@@ -13,4 +13,3 @@ use Symfony\Component\Validator\Constraint;
 class ValidationRule extends Constraint
 {
 }
-

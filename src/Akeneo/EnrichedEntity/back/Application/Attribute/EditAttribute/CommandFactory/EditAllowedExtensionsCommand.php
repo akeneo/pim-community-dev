@@ -22,4 +22,3 @@ class EditAllowedExtensionsCommand extends AbstractEditAttributeCommand
     /** @var array */
     public $allowedExtensions;
 }
-

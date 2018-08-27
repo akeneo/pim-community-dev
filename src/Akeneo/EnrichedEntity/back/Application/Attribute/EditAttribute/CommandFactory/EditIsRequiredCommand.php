@@ -22,4 +22,3 @@ class EditIsRequiredCommand extends AbstractEditAttributeCommand
     /** @var bool */
     public $isRequired;
 }
-

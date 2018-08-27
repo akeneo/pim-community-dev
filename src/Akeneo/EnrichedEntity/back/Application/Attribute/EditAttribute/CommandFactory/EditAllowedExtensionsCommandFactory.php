@@ -19,7 +19,7 @@ class EditAllowedExtensionsCommandFactory implements EditAttributeCommandFactory
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
-        if(!$this->supports($normalizedCommand)) {
+        if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit allowed extensions property command.');
         }
         $command = new EditAllowedExtensionsCommand();

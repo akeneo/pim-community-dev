@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

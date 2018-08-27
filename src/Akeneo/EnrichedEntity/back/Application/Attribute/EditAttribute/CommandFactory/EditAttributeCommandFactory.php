@@ -26,13 +26,13 @@ class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterfac
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
-        if(!$this->supports($normalizedCommand)) {
+        if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create a command of attribute edition.');
         }
 
         $command = new EditAttributeCommand();
         $command->identifier = $normalizedCommand['identifier'];
-        foreach($this->editAttributeCommandFactoryRegistry->getFactories($normalizedCommand) as $editCommandFactory) {
+        foreach ($this->editAttributeCommandFactoryRegistry->getFactories($normalizedCommand) as $editCommandFactory) {
             $command->editCommands[] = $editCommandFactory->create($normalizedCommand);
         }
 

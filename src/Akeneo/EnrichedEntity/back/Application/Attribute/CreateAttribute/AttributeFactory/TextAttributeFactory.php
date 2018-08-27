@@ -69,7 +69,6 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::infinite() : AttributeMaxLength::fromInteger($command->maxLength),
                 AttributeIsRichTextEditor::fromBoolean($command->isRichTextEditor)
             );
-
         }
 
         return TextAttribute::createText(

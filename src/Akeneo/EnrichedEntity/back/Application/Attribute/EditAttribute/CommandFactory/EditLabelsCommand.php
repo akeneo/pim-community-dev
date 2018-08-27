@@ -22,4 +22,3 @@ class EditLabelsCommand extends AbstractEditAttributeCommand
     /** @var array */
     public $labels;
 }
-

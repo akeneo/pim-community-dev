@@ -22,4 +22,3 @@ class EditMaxLengthCommand extends AbstractEditAttributeCommand
     /** @var int */
     public $maxLength;
 }
-

@@ -26,7 +26,7 @@ class AttributeUpdaterRegistry implements AttributeUpdaterRegistryInterface
         AbstractEditAttributeCommand $command
     ): AttributeUpdaterInterface {
         foreach ($this->updaters as $updater) {
-            if($updater->supports($attribute, $command)) {
+            if ($updater->supports($attribute, $command)) {
                 return $updater;
             }
         }

@@ -19,7 +19,7 @@ class EditIsRichTextEditorCommandFactory implements EditAttributeCommandFactoryI
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
-        if(!$this->supports($normalizedCommand)) {
+        if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit is rich text editor command.');
         }
 

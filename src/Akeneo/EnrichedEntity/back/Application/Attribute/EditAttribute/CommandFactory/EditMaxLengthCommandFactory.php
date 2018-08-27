@@ -28,7 +28,7 @@ class EditMaxLengthCommandFactory implements EditAttributeCommandFactoryInterfac
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand
     {
-        if(!$this->supports($normalizedCommand)) {
+        if (!$this->supports($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create an edit max length property command.');
         }
         $command = new EditMaxLengthCommand();
