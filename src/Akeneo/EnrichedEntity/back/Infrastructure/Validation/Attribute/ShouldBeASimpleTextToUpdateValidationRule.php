@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ShouldBeASimpleTextToUpdateValidationRule extends Constraint
 {
-    const SHOULD_BE_A_SIMPLE_TEXT_TO_UPDATE_VALIDATION_RULE = 'pim_enriched_entity.attribute.validation.should_be_a_simple_text_to_update_validation_rule';
+    public const SHOULD_BE_A_SIMPLE_TEXT_TO_UPDATE_VALIDATION_RULE = 'pim_enriched_entity.attribute.validation.should_be_a_simple_text_to_update_validation_rule';
 
     public function getTargets()
     {

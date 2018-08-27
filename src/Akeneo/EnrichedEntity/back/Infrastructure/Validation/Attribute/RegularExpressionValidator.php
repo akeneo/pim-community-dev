@@ -24,7 +24,6 @@ class RegularExpressionValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($regularExpression, [new Assert\Type('string')]);
-
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
                 $this->context->addViolation(

@@ -12,4 +12,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class RegularExpression extends Constraint
 {
+    // TODO: Add the validation on it @see Akeneo\Pim\Structure\Component\Validator\Constraints\ValidRegexValidator
+    public const INVALID_REGULAR_EXPRESSION = 'pim_enriched_entity.attribute.validation.regular_expression.invalid_regular_expression';
 }
