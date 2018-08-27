@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\DataGridBundle\Query;
+namespace Pim\Bundle\DataGridBundle\Storage\Sql;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -13,7 +13,7 @@ use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetProductRowsFromIdentifiers implements CursorableRepositoryInterface
+class GetProductModelRowsFromIdentifiers implements CursorableRepositoryInterface
 {
     /**
      * @inheritDoc
@@ -33,15 +33,14 @@ class GetProductRowsFromIdentifiers implements CursorableRepositoryInterface
                 null,
                 null,
                 10,
-                IdEncoder::PRODUCT_TYPE,
+                IdEncoder::PRODUCT_MODEL_TYPE,
                 $id,
-                IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $id),
+                IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $id),
                 true,
-                null,
+                true,
                 null,
                 new ValueCollection([])
             );
-
         }
 
         return $rows;

@@ -50,10 +50,17 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@akeneo.pim.enrichment.query.get_product_rows_from_identifiers'
-            - '@akeneo.pim.enrichment.query.get_product_rows_from_identifiers'
+            - '@akeneo.pim.enrichment.query.get_product_model_rows_from_identifiers'
             - '%pim_enrich.datagrid.product_batch_size%'
             - 'pim_catalog_product'
 
     akeneo.pim.enrichment.query.get_product_rows_from_identifiers:
-        public: false;
-        class: 'Pim\Bundle\DataGridBundle\Query\GetProductRowsFromIdentifiers'
+        public: false
+        class: 'Pim\Bundle\DataGridBundle\Storage\Sql\GetProductRowsFromIdentifiers'
+        arguments:
+            - '@database_connection'
+
+
+    akeneo.pim.enrichment.query.get_product_model_rows_from_identifiers:
+        public: false
+        class: 'Pim\Bundle\DataGridBundle\Storage\Sql\GetProductModelRowsFromIdentifiers'

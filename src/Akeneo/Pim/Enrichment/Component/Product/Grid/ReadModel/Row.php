@@ -32,10 +32,10 @@ class Row
     /** @var \DateTimeInterface */
     private $updated;
 
-    /** @var null|string */
+    /** @var null|ScalarValue */
     private $label;
 
-    /** @var null|string */
+    /** @var null|MediaValue */
     private $image;
 
     /** @var null|int */
@@ -69,8 +69,8 @@ class Row
      * @param bool               $enabled
      * @param \DateTimeInterface $created
      * @param \DateTimeInterface $updated
-     * @param null|string        $label
-     * @param null|string        $image
+     * @param null|ScalarValue   $label
+     * @param null|MediaValue    $image
      * @param null|int           $completeness
      * @param string             $documentType
      * @param int                $technicalId
@@ -87,8 +87,8 @@ class Row
         bool $enabled,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
-        ?string $label,
-        ?string $image,
+        ?ScalarValue $label,
+        ?MediaValue $image,
         ?int $completeness,
         string $documentType,
         int $technicalId,
