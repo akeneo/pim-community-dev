@@ -25,5 +25,7 @@ Feature: Lists all attributes related to an enriched entity
     Given the following enriched entity:
       | identifier | labels                                |
       | brand      | {"en_US": "Brand", "fr_FR": "Marque"} |
+    And the following attributes for the enriched entity "brand":
+      | code     | type  | labels                          |
     When the user asks for the enriched entity "brand"
     Then the list of attributes should be empty

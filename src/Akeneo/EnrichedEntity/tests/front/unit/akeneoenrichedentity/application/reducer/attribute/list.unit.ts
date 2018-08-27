@@ -16,7 +16,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
       type: 'ANOTHER_ACTION',
     });
 
-    expect(newState).toEqual({attributes: []});
+    expect(newState).toEqual({attributes: null});
   });
 
   test('I can receive an attribute list', () => {
@@ -116,6 +116,26 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
           labels: [],
         },
       ],
+    });
+  });
+
+  test('I can delete an attribute without any effect if no attribute are present', () => {
+    const state = {
+      attributes: null,
+    };
+
+    const deletedAttribute = {
+      type: 'text',
+      identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+      enriched_entity_identifier: 'designer',
+      code: 'description',
+      labels: [],
+    };
+
+    const newState = reducer(state, {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute});
+
+    expect(newState).toEqual({
+      attributes: null,
     });
   });
 });

@@ -38,16 +38,18 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
       const labelCollection = createLabelCollection({});
       const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection, null);
 
-      return Array(4).fill('placeholder').map((attributeIdentifier, key) => (
-        <ItemView
-          key={`${attributeIdentifier}_${key}`}
-          isLoading={isLoading}
-          enrichedEntity={enrichedEntity}
-          locale={locale}
-          onRedirectToEnrichedEntity={() => {}}
-          position={key}
-        />
-      ));
+      return Array(4)
+        .fill('placeholder')
+        .map((attributeIdentifier, key) => (
+          <ItemView
+            key={`${attributeIdentifier}_${key}`}
+            isLoading={isLoading}
+            enrichedEntity={enrichedEntity}
+            locale={locale}
+            onRedirectToEnrichedEntity={() => {}}
+            position={key}
+          />
+        ));
     }
 
     return enrichedEntities.map((enrichedEntity: EnrichedEntity, index: number) => {

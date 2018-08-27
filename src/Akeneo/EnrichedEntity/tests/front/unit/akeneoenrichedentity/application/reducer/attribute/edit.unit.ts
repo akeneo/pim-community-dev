@@ -12,7 +12,7 @@ const normalizedDescription = {
   order: 0,
   value_per_locale: true,
   value_per_channel: false,
-  required: true,
+  is_required: true,
   max_length: 0,
   is_textarea: false,
   is_rich_text_editor: false,
@@ -48,14 +48,16 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
       order: 0,
       value_per_locale: false,
       value_per_channel: false,
-      required: false,
+      is_required: false,
       max_length: null,
       is_textarea: false,
       is_rich_text_editor: false,
       validation_rule: ValidationRuleOption.Email,
       regular_expression: '',
     },
+    dirty: false,
     errors: [],
+    originalData: '',
   });
 
   test('I can start the edition of an attribute', () => {
@@ -72,6 +74,67 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     expect(newState).toEqual({
       active: true,
       data: normalizedDescription,
+      dirty: false,
+      originalData: JSON.stringify(normalizedDescription),
+      errors: [],
+    });
+  });
+
+  test('the list of attributes can be updated without effect', () => {
+    const state = {
+      active: false,
+      data: {},
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_LIST_UPDATED',
+      attribute: normalizedDescription,
+    });
+
+    expect(newState).toEqual({
+      active: false,
+      data: {},
+      errors: [],
+    });
+  });
+
+  test('the list of attributes can be updated', () => {
+    const newAttribute = {...normalizedDescription, labels: {en_US: 'new description'}};
+    const state = {
+      active: true,
+      data: normalizedDescription,
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_LIST_UPDATED',
+      attributes: [newAttribute],
+    });
+
+    expect(newState).toEqual({
+      active: true,
+      data: newAttribute,
+      originalData: JSON.stringify(newAttribute),
+      errors: [],
+    });
+  });
+
+  test('the list of attributes does not have any effect', () => {
+    const newAttribute = {...normalizedDescription, identifier: {identifier: 'new_description'}};
+    const state = {
+      active: true,
+      data: normalizedDescription,
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_LIST_UPDATED',
+      attributes: [newAttribute],
+    });
+
+    expect(newState).toEqual({
+      active: true,
+      data: normalizedDescription,
+
+      dirty: false,
       errors: [],
     });
   });
@@ -97,6 +160,60 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
           en_US: 'label testé-/$',
         },
       },
+      dirty: true,
+      errors: [],
+    });
+  });
+
+  test("It doesn't update the label if it's the same", () => {
+    const state = {
+      active: true,
+      data: {
+        labels: {
+          en_US: 'nice',
+        },
+      },
+      dirty: false,
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_EDITION_LABEL_UPDATED',
+      value: 'nice',
+      locale: 'en_US',
+    });
+
+    expect(newState).toEqual({
+      active: true,
+      data: {
+        labels: {
+          en_US: 'nice',
+        },
+      },
+      dirty: false,
+      errors: [],
+    });
+  });
+
+  test("It doesn't update the is required if it's the same", () => {
+    const state = {
+      active: true,
+      data: {
+        is_required: false,
+      },
+      dirty: false,
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED',
+      is_required: false,
+    });
+
+    expect(newState).toEqual({
+      active: true,
+      data: {
+        is_required: false,
+      },
+      dirty: false,
       errors: [],
     });
   });
@@ -105,20 +222,21 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     const state = {
       active: true,
       data: {
-        required: true,
+        is_required: true,
       },
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'ATTRIBUTE_EDITION_REQUIRED_UPDATED',
-      required: false,
+      type: 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED',
+      is_required: false,
     });
 
     expect(newState).toEqual({
       active: true,
       data: {
-        required: false,
+        is_required: false,
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -127,20 +245,21 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     const state = {
       active: true,
       data: {
-        required: true,
+        is_required: true,
       },
       errors: [],
     };
     const newState = reducer(state, {
-      type: 'ATTRIBUTE_EDITION_REQUIRED_UPDATED',
-      required: false,
+      type: 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED',
+      is_required: false,
     });
 
     expect(newState).toEqual({
       active: true,
       data: {
-        required: false,
+        is_required: false,
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -169,6 +288,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         regular_expression: null,
         validation_rule: 'none',
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -197,6 +317,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         regular_expression: null,
         validation_rule: 'none',
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -223,6 +344,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         is_textarea: false,
         is_rich_text_editor: false,
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -248,6 +370,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         type: 'text',
         is_rich_text_editor: true,
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -300,6 +423,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         type: 'text',
         max_length: 120,
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -327,6 +451,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         validation_rule: 'none',
         regular_expression: null,
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -353,6 +478,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         is_textarea: false,
         validation_rule: 'regular_expression',
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -406,6 +532,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         validation_rule: 'regular_expression',
         regular_expression: 'hey!',
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -480,6 +607,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         type: 'image',
         max_file_size: '12.3',
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -504,6 +632,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
         type: 'image',
         allowed_extensions: ['gif', 'png'],
       },
+      dirty: true,
       errors: [],
     });
   });
@@ -568,6 +697,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
       active: false,
       data: {},
       errors: [],
+      dirty: false,
     });
   });
 
@@ -602,6 +732,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
       active: true,
       data: {},
       errors: [],
+      dirty: true,
     };
 
     const newState = reducer(state, {
@@ -612,6 +743,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
       active: false,
       data: {},
       errors: [],
+      dirty: false,
     });
   });
 

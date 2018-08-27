@@ -21,12 +21,16 @@ import {NormalizedMaxLength} from 'akeneoenrichedentity/domain/model/attribute/t
 
 export interface EditState {
   active: boolean;
+  dirty: boolean;
+  originalData: string;
   data: NormalizedAttribute;
   errors: ValidationError[];
 }
 
 const initEditState = (): EditState => ({
   active: false,
+  dirty: false,
+  originalData: '',
   data: {
     identifier: {
       identifier: '',
@@ -151,6 +155,10 @@ const additionalPropertyReducer = (
   return normalizedAttribute;
 };
 
+const isDirty = (state: EditState, newData: NormalizedAttribute) => {
+  return state.originalData !== JSON.stringify(newData);
+};
+
 export default (
   state: EditState = initEditState(),
   {
@@ -162,6 +170,7 @@ export default (
     propertyCode,
     propertyValue,
     attribute,
+    attributes,
   }: {
     type: string;
     locale: string;
@@ -171,26 +180,65 @@ export default (
     propertyCode: string;
     propertyValue: NormalizedAdditionalProperty;
     attribute: NormalizedAttribute;
+    attributes: NormalizedAttribute[];
   }
 ) => {
   switch (type) {
+    case 'ATTRIBUTE_LIST_UPDATED':
+      if (!state.active) {
+        return state;
+      }
+      const newAttribute = attributes.find(
+        (currentAttribute: NormalizedAttribute) =>
+          state.data.identifier.identifier === currentAttribute.identifier.identifier
+      );
+
+      if (undefined === newAttribute) {
+        return {
+          ...state,
+          dirty: false,
+        };
+      }
+
+      state = {
+        ...state,
+        data: newAttribute,
+        originalData: JSON.stringify(newAttribute),
+      };
+      break;
     case 'ATTRIBUTE_EDITION_START':
       state = {
         ...state,
         active: true,
         data: attribute,
+        dirty: false,
+        originalData: JSON.stringify(attribute),
       };
       break;
     case 'ATTRIBUTE_EDITION_LABEL_UPDATED':
+      if (state.data.labels[locale] === value) {
+        return state;
+      }
+
+      const labelUpdatedAttribute = {...state.data, labels: {...state.data.labels, [locale]: value}};
+
       state = {
         ...state,
-        data: {...state.data, labels: {...state.data.labels, [locale]: value}},
+        data: labelUpdatedAttribute,
+        dirty: isDirty(state, labelUpdatedAttribute),
       };
       break;
-    case 'ATTRIBUTE_EDITION_REQUIRED_UPDATED':
+    case 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED':
+      if (state.data.is_required === is_required) {
+        return state;
+      }
+
+      const isRequiredUpdatedAttribute = {...state.data, is_required};
+
       state = {
         ...state,
-        data: {...state.data, is_required: is_required},
+        data: isRequiredUpdatedAttribute,
+        dirty: isDirty(state, isRequiredUpdatedAttribute),
       };
       break;
     case 'ATTRIBUTE_EDITION_ADDITIONAL_PROPERTY_UPDATED':
@@ -199,6 +247,7 @@ export default (
       if (data !== state.data) {
         state = {
           ...state,
+          dirty: isDirty(state, data),
           data,
         };
       }
@@ -210,6 +259,7 @@ export default (
       state = {
         ...state,
         active: false,
+        dirty: false,
       };
       break;
 
@@ -224,6 +274,7 @@ export default (
       state = {
         ...state,
         active: false,
+        dirty: false,
       };
       break;
 

@@ -7,8 +7,10 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
 
   const hasAttribute = async (code, type) => {
     await isLoaded();
-    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknFieldContainer');
-    const attribute = await nodeElement.$(`.AknFieldContainer[data-identifier="${code}"][data-type="${type}"]`);
+    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknFieldContainer[data-placeholder="false"]');
+    const attribute = await nodeElement.$(
+      `.AknFieldContainer[data-identifier="${code}"][data-type="${type}"][data-placeholder="false"]`
+    );
 
     return attribute !== null;
   };
@@ -24,7 +26,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     await page.evaluate(
       (attributes, attributeIdentifier) => {
         const button = attributes.querySelector(
-          `.AknFieldContainer[data-identifier="${attributeIdentifier}"] .AknIconButton--trash`
+          `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--trash`
         );
 
         button.style.width = '20px';
@@ -39,17 +41,19 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     });
 
     const deleteButton = await nodeElement.$(
-      `.AknFieldContainer[data-identifier="${attributeIdentifier}"] .AknIconButton--trash`
+      `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--trash`
     );
     await deleteButton.click();
   };
 
   const edit = async attributeIdentifier => {
-    await page.waitFor(`.AknFieldContainer[data-identifier="${attributeIdentifier}"] .AknIconButton--edit`);
+    await page.waitFor(
+      `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--edit`
+    );
     await page.evaluate(
       (attributes, attributeIdentifier) => {
         const button = attributes.querySelector(
-          `.AknFieldContainer[data-identifier="${attributeIdentifier}"] .AknIconButton--edit`
+          `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--edit`
         );
 
         button.style.width = '20px';
@@ -64,7 +68,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     });
 
     const deleteButton = await nodeElement.$(
-      `.AknFieldContainer[data-identifier="${attributeIdentifier}"] .AknIconButton--edit`
+      `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--edit`
     );
     await deleteButton.click();
   };

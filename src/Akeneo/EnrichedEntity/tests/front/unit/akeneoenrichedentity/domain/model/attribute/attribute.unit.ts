@@ -62,7 +62,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
       false,
       0
     );
-  }).toThrow('Attribute expect a boolean as required value');
+  }).toThrow('Attribute expect a boolean as isRequired value');
 
   expect(() => {
     new ConcreteImageAttribute(

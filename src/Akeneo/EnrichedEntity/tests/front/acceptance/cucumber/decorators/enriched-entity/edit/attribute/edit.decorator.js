@@ -15,8 +15,8 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const setIsRequired = async value => {
-    const required = await nodeElement.$('.AknFieldContainer[data-code="required"] input');
-    const requiredLabel = await nodeElement.$('.AknFieldContainer[data-code="required"] label');
+    const required = await nodeElement.$('.AknFieldContainer[data-code="isRequired"] input');
+    const requiredLabel = await nodeElement.$('.AknFieldContainer[data-code="isRequired"] label');
     const currentValue = await required.getProperty('checked');
 
     if (value != currentValue._remoteObject.value) {
