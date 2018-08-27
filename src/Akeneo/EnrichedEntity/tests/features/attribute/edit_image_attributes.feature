@@ -66,7 +66,7 @@ Feature: Edit an attribute of an enriched entity
 
 
   # TODO: imports
-  Scenario: Updating the max file size of an attribute that is not image fails
+  # Scenario: Updating the max file size of an attribute that is not image fails
 
   # Allowed extensions
   @acceptance-back
@@ -92,4 +92,4 @@ Feature: Edit an attribute of an enriched entity
       | ["not_a_valid_extension"]  | One or more of the given values is invalid. |
 
   # TODO: imports
-  Scenario: Updating the allowed extensions of an attribute that is not image fails
+  # Scenario: Updating the allowed extensions of an attribute that is not image fails

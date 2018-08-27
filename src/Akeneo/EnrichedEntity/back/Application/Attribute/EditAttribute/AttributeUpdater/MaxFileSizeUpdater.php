@@ -16,6 +16,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
  */
 class MaxFileSizeUpdater implements AttributeUpdaterInterface
 {
+    private const NO_LIMIT = null;
+
     public function supports(AbstractAttribute $attribute, AbstractEditAttributeCommand $command): bool
     {
         return $attribute instanceof ImageAttribute && $command instanceof EditMaxFileSizeCommand;
@@ -27,7 +29,7 @@ class MaxFileSizeUpdater implements AttributeUpdaterInterface
             throw new \RuntimeException('Impossible to update the max file size property of the given attribute with the given command.');
         }
 
-        if (AttributeMaxFileSize::NO_LIMIT === $command->maxFileSize) {
+        if (self::NO_LIMIT === $command->maxFileSize) {
             $attribute->setMaxFileSize(AttributeMaxFileSize::infinite());
         } else {
             $attribute->setMaxFileSize(AttributeMaxFileSize::fromString($command->maxFileSize));

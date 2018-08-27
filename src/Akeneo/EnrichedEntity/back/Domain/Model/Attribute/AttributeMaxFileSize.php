@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeMaxFileSize
 {
-    public const NO_LIMIT = null;
+    private const NO_LIMIT = null;
     private const LIMIT = 9999.99;
 
     /*** @var ?string */

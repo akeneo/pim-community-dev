@@ -51,8 +51,8 @@ class EditAttributeHandler
     private function editAttribute(AbstractAttribute $attribute, EditAttributeCommand $command): AbstractAttribute
     {
         foreach ($command->editCommands as $editCommand) {
-            $editAttribute = $this->AttributeUpdaterRegistry->getUpdater($attribute, $editCommand);
-            $attribute = ($editAttribute)($attribute, $editCommand);
+            $editAttributeUpdater = $this->AttributeUpdaterRegistry->getUpdater($attribute, $editCommand);
+            $attribute = ($editAttributeUpdater)($attribute, $editCommand);
         }
 
         return $attribute;

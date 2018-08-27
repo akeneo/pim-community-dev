@@ -16,23 +16,21 @@ class AttributeValidationRule
     public const EMAIL = 'email';
     public const REGULAR_EXPRESSION = 'regular_expression';
     public const URL = 'url';
-    public const VALIDATION_RULE_TYPES = [self::EMAIL, self::REGULAR_EXPRESSION, self::URL];
+    public const VALIDATION_RULE_TYPES = [self::EMAIL, self::REGULAR_EXPRESSION, self::URL, self::NONE];
 
     /** @var ?string */
     private $validationRule;
 
     private function __construct(?string $validationRule)
     {
-        if (self::NONE !== $validationRule) {
-            Assert::true(
-                in_array($validationRule, self::VALIDATION_RULE_TYPES),
-                sprintf(
-                    'Expected validation to be any of "%s", "%s" given.',
-                    implode(', ', self::VALIDATION_RULE_TYPES),
-                    $validationRule
-                )
-            );
-        }
+        Assert::true(
+            in_array($validationRule, self::VALIDATION_RULE_TYPES),
+            sprintf(
+                'Expected validation to be any of "%s", "%s" given.',
+                implode(', ', self::VALIDATION_RULE_TYPES),
+                $validationRule
+            )
+        );
         $this->validationRule = $validationRule;
     }
 

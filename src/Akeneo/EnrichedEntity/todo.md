@@ -24,7 +24,7 @@
 - Rename "AttributeRequired" by "AttributeIsRequired"
 
 Specific back-end:
-- for imports (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
+- for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
   (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint)
 
 DONE:

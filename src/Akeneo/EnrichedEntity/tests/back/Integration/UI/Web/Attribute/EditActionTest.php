@@ -68,7 +68,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'code'                       => 'A magic name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
             'order'                      => 10,
-            'is_required'                   => false,
+            'is_required'                => false,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
@@ -88,33 +88,6 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assertFromFile($this->client->getResponse(), self::RESPONSES_DIR . 'ok.json');
-
-        $repository = $this->getAttributeRepository();
-        $updatedName = $repository->getByIdentifier(AttributeIdentifier::create(
-            $updateAllProperties['identifier']['enriched_entity_identifier'],
-            $updateAllProperties['identifier']['identifier']
-        ));
-
-        Assert::assertEquals(
-            [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'name',
-                ],
-                'enriched_entity_identifier' => 'designer',
-                'code'                       => 'name',
-                'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
-                'order'                      => 0,
-                'is_required'                => false, // updated
-                'value_per_channel'          => true,
-                'value_per_locale'           => true,
-                'type'                       => 'text',
-                'max_length'                 => 200, // updated
-                'is_text_area'               => false,
-                'is_rich_text_editor'        => false,
-                'validation_rule'            => null,
-                'regular_expression'         => null,
-            ], $updatedName->normalize());
     }
 
     /**
