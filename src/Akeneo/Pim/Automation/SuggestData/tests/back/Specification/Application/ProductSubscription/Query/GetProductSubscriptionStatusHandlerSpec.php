@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatus;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
@@ -38,7 +38,7 @@ class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
         $productSubscriptionRepository,
         ProductSubscription $productSubscription
     ) {
-        $query = new GetProductSubscriptionStatus(42);
+        $query = new GetProductSubscriptionStatusQuery(42);
 
         $productSubscriptionRepository->findOneByProductId(42)->willReturn($productSubscription);
 

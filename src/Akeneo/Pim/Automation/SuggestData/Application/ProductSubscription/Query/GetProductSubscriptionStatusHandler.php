@@ -36,15 +36,13 @@ class GetProductSubscriptionStatusHandler
     }
 
     /**
-     * @param GetProductSubscriptionStatus $getProductSubscription
+     * @param GetProductSubscriptionStatusQuery $query
      *
      * @return ProductSubscriptionStatus
      */
-    public function handle(GetProductSubscriptionStatus $getProductSubscription): ProductSubscriptionStatus
+    public function handle(GetProductSubscriptionStatusQuery $query): ProductSubscriptionStatus
     {
-        $productSubscription = $this->productSubscriptionRepository->findOneByProductId(
-            $getProductSubscription->getProductId()
-        );
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($query->getProductId());
 
         return new ProductSubscriptionStatus($productSubscription instanceof ProductSubscription);
     }

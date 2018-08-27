@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatus;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,7 +65,7 @@ class ProductSubscriptionController
      */
     public function getProductSubscriptionStatusAction(int $productId): Response
     {
-        $getProductSubscriptionStatus = new GetProductSubscriptionStatus($productId);
+        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($productId);
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($getProductSubscriptionStatus);
 
         return new JsonResponse($productSubscriptionStatus->normalize());

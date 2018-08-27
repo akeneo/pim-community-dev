@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatus;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
@@ -89,7 +89,7 @@ class ProductSubscriptionContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $getProductSubscriptionStatus = new GetProductSubscriptionStatus($product->getId());
+        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($product->getId());
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
             $getProductSubscriptionStatus
         );

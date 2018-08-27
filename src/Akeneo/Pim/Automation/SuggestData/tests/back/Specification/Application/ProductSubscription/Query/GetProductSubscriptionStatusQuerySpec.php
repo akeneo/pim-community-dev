@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatus;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetProductSubscriptionStatusSpec extends ObjectBehavior
+class GetProductSubscriptionStatusQuerySpec extends ObjectBehavior
 {
     private $productId;
 
@@ -32,7 +32,7 @@ class GetProductSubscriptionStatusSpec extends ObjectBehavior
 
     function it_is_a_product_subscription_status_query()
     {
-        $this->shouldBeAnInstanceOf(GetProductSubscriptionStatus::class);
+        $this->shouldBeAnInstanceOf(GetProductSubscriptionStatusQuery::class);
     }
 
     function it_returns_the_product_id()

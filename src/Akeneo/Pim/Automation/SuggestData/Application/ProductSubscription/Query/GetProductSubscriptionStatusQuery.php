@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Quer
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetProductSubscriptionStatus
+class GetProductSubscriptionStatusQuery
 {
     /** @var int */
     private $productId;
