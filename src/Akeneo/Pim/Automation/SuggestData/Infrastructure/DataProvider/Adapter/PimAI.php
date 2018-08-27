@@ -15,8 +15,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentica
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Fetch\FetchApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exception\DataProviderException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * PIM.ai implementation to connect to a data provider
@@ -74,7 +72,7 @@ class PimAI implements DataProviderInterface
         $subscriptions = $clientResponse->content();
 
         return new ProductSubscriptionResponse(
-            $request->getProduct(),
+            $request->getProduct()->getId(),
             $subscriptions->getFirst()->getSubscriptionId(),
             $subscriptions->getFirst()->getAttributes()
         );
@@ -91,7 +89,6 @@ class PimAI implements DataProviderInterface
 
     /**
      * TODO: Deal with pagination
-     *
      *
      * @return ProductSubscriptionsResponse
      */

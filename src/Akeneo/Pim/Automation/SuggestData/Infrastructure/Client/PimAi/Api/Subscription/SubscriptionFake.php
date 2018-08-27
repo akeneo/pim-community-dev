@@ -22,6 +22,9 @@ final class SubscriptionFake implements SubscriptionApiInterface
     /** @var string */
     private $status;
 
+    /** @var string */
+    private $lastFetchDate;
+
     /**
      * {@inheritdoc}
      */
@@ -54,6 +57,26 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function fetchProducts(): ApiResponse
+    {
+        $filename = sprintf('fetch-%s.json', $this->lastFetchDate);
+
+        return new ApiResponse(
+            200,
+            new SubscriptionCollection(
+                json_decode(
+                    file_get_contents(
+                        sprintf(__DIR__ . '/../resources/%s', $filename)
+                    ),
+                    true
+                )
+            )
+        );
+    }
+
+    /**
      * Fakes an expired token
      */
     public function expireToken(): void
@@ -67,5 +90,16 @@ final class SubscriptionFake implements SubscriptionApiInterface
     public function disableCredit(): void
     {
         $this->status = self::STATUS_INSUFFICIENT_CREDITS;
+    }
+
+    /**
+     * Fakes a last fetch date
+     * Could be a date or "yesterday" or "today"
+     *
+     * @param string $lastFetchDate
+     */
+    public function defineLastFetchDate(string $lastFetchDate): void
+    {
+        $this->lastFetchDate = $lastFetchDate;
     }
 }

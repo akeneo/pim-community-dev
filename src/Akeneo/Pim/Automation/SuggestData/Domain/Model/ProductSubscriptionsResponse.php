@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 
 /**
  * Represents a standard response from a subscription request
@@ -28,9 +29,12 @@ class ProductSubscriptionsResponse implements \Countable
 
     public function __construct(array $collection)
     {
-        foreach ($collection as $rawApiResponse) {
+        foreach ($collection as $subscription) {
+            /** @var Subscription $subscription */
             $this->collection[] = new ProductSubscriptionResponse(
-                $rawApiResponse
+                42, // Tmp fake
+                $subscription->getSubscriptionId(),
+                $subscription->getAttributes()
             );
         }
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Application\ProductFetch\Command;
+namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
@@ -17,13 +17,16 @@ class FetchProductsHandler
     /** @var DataProviderFactory */
     private $dataProviderFactory;
 
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $productSusbcriptionRepository;
+
     /**
      * @param DataProviderFactory $dataProviderFactory
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
         DataProviderFactory $dataProviderFactory,
-        ProductSusbcriptionRepositoryInterface $productSusbcriptionRepository
+        ProductSubscriptionRepositoryInterface $productSusbcriptionRepository
     ) {
         $this->dataProviderFactory = $dataProviderFactory;
         $this->productSubscriptionRepository = $productSusbcriptionRepository;
@@ -34,19 +37,15 @@ class FetchProductsHandler
      */
     public function handle(FetchProductsCommand $command): void
     {
-        // TODO: Calculate last date (from command or fetch from repository)
+        // TODO: Calculate last date (from command or fetch from repository) APAI-170
 
-        // TODO: Deal with many pages
+        // TODO: Deal with many pages (APAI-92)
         $dataProvider = $this->dataProviderFactory->create();
         $subscribedResponses = $dataProvider->fetch();
 
         // TODO: Store fetched data in DB
         foreach ($subscribedResponses as $subscriptionResponse) {
-            /*$subscription = $this->findOrCreateSubscription(
-                $product,
-                $subscriptionResponse->getSubscriptionId()
-            );*/
-            $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
+            //TODO: Waiting APAI-142 + tracker id
         }
 
     }

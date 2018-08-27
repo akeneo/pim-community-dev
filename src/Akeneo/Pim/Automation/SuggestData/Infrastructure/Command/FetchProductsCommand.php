@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductFetch\Command\FetchProductsHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,7 +32,7 @@ class FetchProductsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = new \Akeneo\Pim\Automation\SuggestData\Application\ProductFetch\Command\FetchProductsCommand();
+        $command = new \Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand();
         $this->getFetchProductsHandler()->handle($command);
     }
 
