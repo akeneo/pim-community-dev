@@ -25,11 +25,9 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
   readonly lineView = _.template(LineTemplate);
   private attributeGroups: { [key: string]: InterfaceNormalizedAttributeGroup } = {};
 
-  constructor(options: { config: Object }) {
+  constructor(options: { config: Object, className: string }) {
     super({
-      ...options, ...{
-        className: 'AknFieldContainer AknFieldContainer--withoutMargin'
-      }
+      ...{ className: 'AknFieldContainer AknFieldContainer--withoutMargin' }, ...options
     });
   }
 

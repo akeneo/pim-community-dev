@@ -19,6 +19,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class InvalidConnectionConfigurationException extends \InvalidArgumentException
+final class InvalidConnectionConfigurationException extends \Exception
 {
 }

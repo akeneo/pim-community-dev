@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -26,8 +27,8 @@ class InvalidConnectionConfigurationExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(InvalidConnectionConfigurationException::class);
     }
 
-    function it_is_an_invalid_argument_exception()
+    function it_is_an_exception()
     {
-        $this->shouldBeAnInstanceOf(\InvalidArgumentException::class);
+        $this->shouldBeAnInstanceOf(\Exception::class);
     }
 }

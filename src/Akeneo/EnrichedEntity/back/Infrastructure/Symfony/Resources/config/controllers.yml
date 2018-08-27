@@ -1,0 +1,81 @@
+services:
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler'
+            - '@enriched_entity_serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\IndexAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items'
+
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.get:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\GetAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details'
+
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.edit:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\EditAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
+            - '@enriched_entity_serializer'
+            - '@validator'
+
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.delete:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\DeleteAction'
+        arguments:
+        - '@oro_security.security_facade'
+        - '@serializer'
+        - '@validator'
+        - '@akeneo_enrichedentity.application.enriched_entity.delete_enriched_entity_handler'
+
+    akeneo_enrichedentity.infrastructure.action.record.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\IndexAction'
+        arguments:
+          - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity'
+
+    akeneo_enrichedentity.infrastructure.action.record.get:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\GetAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_details'
+
+    akeneo_enrichedentity.infrastructure.action.record.edit:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\EditAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
+            - '@validator'
+
+    akeneo_enrichedentity.infrastructure.action.record.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_record_handler'
+            - '@enriched_entity_serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\IndexAction'
+        arguments:
+        - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details'
+        - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_enrichedentity.application.registry.create_attribute_command_factory'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.delete:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\DeleteAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.delete_attribute_handler'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'

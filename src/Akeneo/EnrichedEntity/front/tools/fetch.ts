@@ -12,3 +12,9 @@ export const postJSON = (url: any, data: {}) => {
 
   return promisify(promise);
 };
+
+export const deleteJSON = (url: any) => {
+  const promise = $.ajax({url, type: 'DELETE'});
+
+  return promisify(promise);
+};

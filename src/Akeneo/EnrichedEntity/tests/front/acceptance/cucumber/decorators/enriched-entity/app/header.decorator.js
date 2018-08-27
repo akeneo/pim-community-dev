@@ -19,7 +19,20 @@ const Header = async (nodeElement, createElementDecorator, page) => {
     return null !== await nodeElement.$('.AknButton');
   };
 
-  return {clickOnCreateButton, isCreateButtonVisible};
+  const clickOnDeleteButton = async () => {
+    await page.waitForSelector('.AknSecondaryActions .AknDropdown-menuLink');
+
+    const button = await nodeElement.$('.AknSecondaryActions .AknDropdown-menuLink');
+    await button.click();
+  };
+
+  const isDeleteButtonVisible = async () => {
+    await page.waitForSelector('.AknTitleContainer-rightButton');
+
+    return null !== await nodeElement.$('.AknSecondaryActions .AknDropdown-menuLink');
+  };
+
+  return {clickOnCreateButton, isCreateButtonVisible, isDeleteButtonVisible, clickOnDeleteButton};
 };
 
 module.exports = Header;

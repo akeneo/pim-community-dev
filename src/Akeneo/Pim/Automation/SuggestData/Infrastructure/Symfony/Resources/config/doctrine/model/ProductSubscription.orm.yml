@@ -27,4 +27,3 @@ Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription:
                 product_id:
                     referencedColumnName: id
                     onDelete: 'CASCADE'
-

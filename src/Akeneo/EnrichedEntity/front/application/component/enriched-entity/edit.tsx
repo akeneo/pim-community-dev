@@ -11,7 +11,10 @@ import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity, {
   denormalizeEnrichedEntity,
 } from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {
+  saveEnrichedEntity,
+  deleteEnrichedEntity
+} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
@@ -38,6 +41,7 @@ interface StateProps {
   };
   acls: {
     create: boolean;
+    delete: boolean;
   };
   enrichedEntity: EnrichedEntity;
   structure: {
@@ -51,6 +55,7 @@ interface DispatchProps {
     onRecordCreationStart: () => void;
     onLocaleChanged: (locale: Locale) => void;
     onImageUpdated: (image: ImageModel | null) => void;
+    onDelete: (enrichedEntity: EnrichedEntity) => void;
   };
 }
 
@@ -80,7 +85,13 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     this.forceUpdate();
   };
 
-  private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
+  private onClickDelete = () => {
+    if (confirm(__('pim_enriched_entity.enriched_entity.module.delete.confirm'))) {
+      this.props.events.onDelete(this.props.enrichedEntity);
+    }
+  };
+
+  private getPrimaryAction = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
     if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
@@ -94,6 +105,26 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
         {__('pim_enriched_entity.enriched_entity.button.save')}
       </button>
     );
+  };
+
+  private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
+    if (canDelete) {
+      return (
+        <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+          <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+          <div className="AknDropdown-menu AknDropdown-menu--right">
+            <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+            <div>
+              <button className="AknDropdown-menuLink" onClick={this.onClickDelete}>
+                {__('pim_enriched_entity.enriched_entity.module.delete.button')}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -138,8 +169,9 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                           />
                         </div>
                         <div className="AknButtonList">
+                          {this.getSecondaryActions(this.props.acls.delete)}
                           <div className="AknTitleContainer-rightButton">
-                            {this.getHeaderButton(this.props.acls.create, this.props.sidebar.currentTab)}
+                            {this.getPrimaryAction(this.props.acls.create, this.props.sidebar.currentTab)}
                           </div>
                         </div>
                       </div>
@@ -200,6 +232,7 @@ export default connect(
       },
       acls: {
         create: securityContext.isGranted('akeneo_enrichedentity_record_create'),
+        delete: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_delete'),
       },
     };
   },
@@ -218,6 +251,9 @@ export default connect(
         onImageUpdated: (image: ImageModel | null) => {
           dispatch(enrichedEntityImageUpdated(image));
         },
+        onDelete: (enrichedEntity: EnrichedEntity) => {
+          dispatch(deleteEnrichedEntity(enrichedEntity));
+        }
       },
     };
   }

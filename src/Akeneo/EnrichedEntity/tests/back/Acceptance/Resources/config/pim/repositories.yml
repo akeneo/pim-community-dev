@@ -44,3 +44,8 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributesDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_has_records:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityHasRecords
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'

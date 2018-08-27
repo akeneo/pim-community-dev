@@ -4,34 +4,68 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 final class SubscriptionFake implements SubscriptionApiInterface
 {
-    public function __construct()
-    {
-    }
+    /** @var string */
+    private const STATUS_EXPIRED_TOKEN = 'expired_token';
+
+    /** @var string */
+    private const STATUS_INSUFFICIENT_CREDITS = 'insufficient_credits';
+
+    /** @var string */
+    private $status;
 
     /**
      * {@inheritdoc}
      */
     public function subscribeProduct(array $identifiers): ApiResponse
     {
+        switch ($this->status) {
+            case self::STATUS_EXPIRED_TOKEN:
+                throw new InvalidTokenException();
+                break;
+            case self::STATUS_INSUFFICIENT_CREDITS:
+                throw new InsufficientCreditsException();
+                break;
+            default:
+                break;
+        }
+
         $filename = sprintf('subscribe-%s-%s.json', key($identifiers), current($identifiers));
 
         return new ApiResponse(
             200,
-            new SubscriptionCollection(json_decode(
-                file_get_contents(
-                    sprintf(__DIR__ .'/../resources/%s', $filename)
-                ), true))
+            new SubscriptionCollection(
+                json_decode(
+                    file_get_contents(
+                        sprintf(__DIR__ . '/../resources/%s', $filename)
+                    ),
+                    true
+                )
+            )
         );
     }
 
-    public function fetchProducts(): ApiResponse
+    /**
+     * Fakes an expired token
+     */
+    public function expireToken(): void
     {
-        // TODO: Implement fetchProducts() method.
-        return [];
+        $this->status = self::STATUS_EXPIRED_TOKEN;
+    }
+
+    /**
+     * Fakes an empty credit
+     */
+    public function disableCredit(): void
+    {
+        $this->status = self::STATUS_INSUFFICIENT_CREDITS;
     }
 }

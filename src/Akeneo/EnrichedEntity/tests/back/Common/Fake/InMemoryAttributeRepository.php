@@ -60,12 +60,12 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
         $key = $this->getKey($identifier);
-        $enrichedEntity = $this->attributes[$key] ?? null;
-        if (null === $enrichedEntity) {
+        $attribute = $this->attributes[$key] ?? null;
+        if (null === $attribute) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        return $enrichedEntity;
+        return $attribute;
     }
 
     /**
@@ -94,5 +94,16 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    public function deleteByIdentifier(AttributeIdentifier $identifier): void
+    {
+        $key = $this->getKey($identifier);
+        $attribute = $this->attributes[$key] ?? null;
+        if (null === $attribute) {
+            throw AttributeNotFoundException::withIdentifier($identifier);
+        }
+
+        unset($this->attributes[$key]);
     }
 }

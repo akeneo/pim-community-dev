@@ -16,6 +16,3 @@ services:
 
     akeneo.pim.automation.suggest_data.pimai_client.subscription_fake:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake'
-        arguments:
-            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
-            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'

@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -78,12 +77,10 @@ class DeleteAction
             );
         }
 
-
-
         try {
             ($this->deleteEnrichedEntityHandler)($command);
         } catch (EnrichedEntityNotFoundException $e) {
-            throw new NotFoundHttpException();
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

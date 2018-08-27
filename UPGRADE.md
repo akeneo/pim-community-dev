@@ -5,6 +5,11 @@
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
+
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Manager\\AttributeValuesResolver/Akeneo\\Pim\\Permission\\Component\\Manager\\AttributeValuesResolver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\ProductModel\\Filter\\GrantedProductAttributeFilter/Akeneo\\Pim\\Permission\\Component\\Filter\\GrantedProductAttributeFilter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Updater\\Adder\\AssetCollectionAdder/Akeneo\\Pim\\Asset\\Component\\Updater\\Adder\\AssetCollectionAdder/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\\\AssetCollectionValueFactory/Akeneo\\Pim\\Asset\\Component\\AssetCollectionValueFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Security/PimEnterprise\\Component\\Security/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle/PimEnterprise\\Bundle\\RevertBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle\\UpdateGuesser/Akeneo\\Pim\\Permission\\Bundle\\UpdateGuesser/g'

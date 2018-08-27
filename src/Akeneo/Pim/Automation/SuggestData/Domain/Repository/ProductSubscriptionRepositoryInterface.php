@@ -39,7 +39,8 @@ interface ProductSubscriptionRepositoryInterface
 
     /**
      * @param int $productId
-     * @return bool
+     *
+     * @return array
      */
-    public function existsForProductId(int $productId): bool;
+    public function getSubscriptionStatusForProductId(int $productId): array;
 }

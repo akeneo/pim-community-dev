@@ -88,35 +88,38 @@ class SubscribeProductHandler
     {
         $subscriptionRequest = new ProductSubscriptionRequest($product);
         $dataProvider = $this->dataProviderFactory->create();
-        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
 
-        $subscription = $this->findOrCreateSubscription(
-            $product,
-            $subscriptionResponse->getSubscriptionId()
-        );
+        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
+        $subscription = new ProductSubscription($product, $subscriptionResponse->getSubscriptionId());
         $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
 
         $this->productSubscriptionRepository->save($subscription);
     }
 
     /**
-     * @param ProductInterface $product
-     * @param string $subscriptionId
+     * @param int $productId
      *
-     * @return ProductSubscriptionInterface
+     * @return ProductInterface
      */
-    private function findOrCreateSubscription(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ProductSubscriptionInterface {
-        $subscription = $this->productSubscriptionRepository->findOneByProductAndSubscriptionId(
-            $product,
-            $subscriptionId
-        );
-        if (null === $subscription) {
-            $subscription = new ProductSubscription($product, $subscriptionId);
+    private function validateProduct(int $productId): ProductInterface
+    {
+        $product = $this->productRepository->find($productId);
+        if (null === $product) {
+            throw new ProductSubscriptionException(
+                sprintf('Could not find product with id "%d"', $productId)
+            );
+        }
+        if (null === $product->getFamily()) {
+            throw new ProductSubscriptionException(sprintf('Cannot subscribe a product without family'));
         }
 
-        return $subscription;
+        $status = $this->productSubscriptionRepository->getSubscriptionStatusForProductId($productId);
+        if (!empty($status['subscription_id'])) {
+            throw new ProductSubscriptionException(
+                sprintf('The product with id "%d" is already subscribed', $productId)
+            );
+        }
+
+        return $product;
     }
 }

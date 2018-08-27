@@ -16,6 +16,9 @@ pim_enriched_entity:
       label: Etiqueta
     attribute:
       title: Atributs
+    module:
+      delete:
+        button: Suprimir
     index:
       grid:
         count: "{{ count }} resultats"

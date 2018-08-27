@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -28,11 +29,11 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(InvalidMappingException::class);
     }
 
-    function it_is_an_invalid_argument_exception()
+    function it_is_an_exception()
     {
         $this->beConstructedWith('className');
 
-        $this->shouldBeAnInstanceOf(\InvalidArgumentException::class);
+        $this->shouldBeAnInstanceOf(\Exception::class);
     }
 
     function it_returns_the_name_of_the_class_the_exception_was_thrown_from()

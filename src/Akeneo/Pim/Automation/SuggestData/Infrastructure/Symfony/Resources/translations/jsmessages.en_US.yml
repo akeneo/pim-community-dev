@@ -1,7 +1,7 @@
 pim_title:
     akeneo_suggest_data_connection_index: 'PIM.ai connection'
-    akeneo_suggest_data_settings_index: 'PIM.ai settings'
-    akeneo_suggest_data_settings_attributes_index: 'PIM.ai settings'
+    akeneo_suggest_data_identifiers_mapping_edit: 'PIM.ai settings'
+    akeneo_suggest_data_attributes_mapping_index: 'PIM.ai settings'
 
 pim_menu:
     item:
@@ -51,6 +51,7 @@ akeneo_suggest_data:
             flash:
                 success: Successfully asked for suggest data
                 error: Error during suggest data
+            subscription_status_title: 'Franklin Subscription'
 
     pim_ai:
         page_title: 'PIM.ai connection'
@@ -86,7 +87,7 @@ akeneo_suggest_data:
         product:
             operation:
                 suggest_data:
-                    label: Suggest data
-                    label_count: "{1}Suggest data for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Suggest data for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-                    description: 'We will suggest data for the products'
-                    warning: 'The {{ itemsCount }} selected products will be send.'
+                    label: 'Franklin Insights Subscriptions'
+                    label_count: "{1}Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    description: 'The selected products will be subscribed to data enrichment from Franklin'
+                    warning: 'The {{ itemsCount }} selected products will be sent.'

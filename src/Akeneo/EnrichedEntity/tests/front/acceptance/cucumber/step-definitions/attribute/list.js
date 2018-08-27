@@ -30,7 +30,7 @@ module.exports = async function(cucumber) {
   const showAttributesTab = async function (page) {
     const sidebar = await await getElement(page, 'Sidebar');
     await sidebar.clickOnTab('pim-enriched-entity-edit-form-attribute');
-  }
+  };
 
   Given('the following attributes for the enriched entity {string}:',
       async function (enrichedEntityIdentifier, attributes) {
@@ -83,7 +83,7 @@ module.exports = async function(cucumber) {
       }
   );
 
-  Then('the list of attributes should be:', async function (expectedAttributes) {
+  Then('there should be the following attributes:', async function (expectedAttributes) {
     await showAttributesTab(this.page);
 
     const attributes = await await getElement(this.page, 'Attributes');
@@ -97,7 +97,7 @@ module.exports = async function(cucumber) {
     await showAttributesTab(this.page);
 
     const attributes = await await getElement(this.page, 'Attributes');
-    const isEmpty = await attributes.isEmpty()
+    const isEmpty = await attributes.isEmpty();
 
     assert.strictEqual(isEmpty, true);
   });

@@ -18,7 +18,7 @@ class MappingSave extends BaseSave {
     let identifiersMapping = $.extend(true, {}, this.getFormData());
     this.showLoadingMask();
     this.getRoot().trigger('pim_enrich:form:entity:pre_save');
-    this.cleanMapping(identifiersMapping);
+    identifiersMapping = this.cleanMapping(identifiersMapping);
 
     return MappingSaver
       .save(null, identifiersMapping, 'POST')

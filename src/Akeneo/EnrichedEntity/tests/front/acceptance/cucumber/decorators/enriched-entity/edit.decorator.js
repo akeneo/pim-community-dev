@@ -77,6 +77,12 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
+  const hasNoNotification = async () => {
+    await page.waitForSelector('.AknFlash', {hidden: true});
+
+    return true;
+  };
+
   return {
     isLoaded,
     getSidebar,
@@ -87,6 +93,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     save,
     hasSuccessNotification,
     hasErrorNotification,
+    hasNoNotification,
   };
 };
 

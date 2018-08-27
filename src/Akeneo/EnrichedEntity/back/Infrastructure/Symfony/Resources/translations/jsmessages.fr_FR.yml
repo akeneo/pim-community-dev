@@ -13,6 +13,9 @@ pim_enriched_entity:
       label: Libellé
     attribute:
       title: Attributs
+    module:
+      delete:
+        button: Supprimer
     index:
       grid:
         count: "{{ count }} résultats"
@@ -53,6 +56,8 @@ pim_enriched_entity:
         success: Attribut mis à jour avec succès.
       create:
         success: Attribut créé avec succès.
+      delete:
+        success: Attribut supprimé avec succès.
 pim_enrich:
   confirmation:
     discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'

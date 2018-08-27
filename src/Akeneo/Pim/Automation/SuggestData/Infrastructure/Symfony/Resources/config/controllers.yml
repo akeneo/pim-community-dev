@@ -3,6 +3,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\ProductSubscriptionController'
         arguments:
             - '@akeneo.pim.automation.suggest_data.service.subscribe_product'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
     akeneo.pim.automation.suggest_data.controller.pim_ai:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\PimAiConnectionController'
@@ -18,5 +19,5 @@ services:
            - '@akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
            - '@translator'
 
-    akeneo.pim.automation.suggest_data.controller.family_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\FamilyMappingController'
+    akeneo.pim.automation.suggest_data.controller.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeMappingController'
