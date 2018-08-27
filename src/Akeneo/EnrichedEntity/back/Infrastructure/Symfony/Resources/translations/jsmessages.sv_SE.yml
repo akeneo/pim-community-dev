@@ -11,6 +11,9 @@ pim_enriched_entity:
       label: Etikett
     attribute:
       title: Attribut
+    module:
+      delete:
+        button: Ta bort
     create:
       header:
         title: Skapa
