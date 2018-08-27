@@ -8,6 +8,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -17,9 +18,10 @@ class VersionNormalizerSpec extends ObjectBehavior
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
-        PresenterRegistryInterface $presenterRegistry
+        PresenterRegistryInterface $presenterRegistry,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($userManager, $translator, $datetimePresenter, $presenterRegistry);
+        $this->beConstructedWith($userManager, $translator, $datetimePresenter, $presenterRegistry, $attributeRepository);
     }
 
     function it_supports_versions(Version $version)
@@ -36,7 +38,8 @@ class VersionNormalizerSpec extends ObjectBehavior
         User $steve,
         PresenterInterface $numberPresenter,
         PresenterInterface $pricesPresenter,
-        PresenterInterface $metricPresenter
+        PresenterInterface $metricPresenter,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $versionTime = new \DateTime();
 
@@ -72,9 +75,17 @@ class VersionNormalizerSpec extends ObjectBehavior
         $options = ['locale' => 'fr_FR'];
         $translator->getLocale()->willReturn('fr_FR');
 
-        $presenterRegistry->getPresenterByAttributeCode('maximum_frame_rate')->willReturn($numberPresenter);
-        $presenterRegistry->getPresenterByAttributeCode('price')->willReturn($pricesPresenter);
-        $presenterRegistry->getPresenterByAttributeCode('weight')->willReturn($metricPresenter);
+        $attributeRepository
+            ->getAttributeTypeByCodes(['maximum_frame_rate', 'price', 'weight'])
+            ->willReturn([
+                'maximum_frame_rate' => 'pim_catalog_number',
+                'price' => 'pim_catalog_price_collection',
+                'weight' => 'pim_catalog_metric'
+            ]);
+
+        $presenterRegistry->getPresenterByAttributeType('pim_catalog_number')->willReturn($numberPresenter);
+        $presenterRegistry->getPresenterByAttributeType('pim_catalog_price_collection')->willReturn($pricesPresenter);
+        $presenterRegistry->getPresenterByAttributeType('pim_catalog_metric')->willReturn($metricPresenter);
 
         $numberPresenter
             ->present('200.7890', $options + ['versioned_attribute' => 'maximum_frame_rate'])
