@@ -63,10 +63,10 @@ class ProductSubscriptionController
      *
      * @return Response
      */
-    public function isProductSubscribedAction(int $productId): Response
+    public function getProductSubscriptionStatusAction(int $productId): Response
     {
         $result = $this->productSubscriptionRepository->findOneByProductId($productId);
 
-        return new JsonResponse($result instanceof ProductSubscriptionInterface);
+        return new JsonResponse(['is_subscribed' => $result instanceof ProductSubscriptionInterface]);
     }
 }

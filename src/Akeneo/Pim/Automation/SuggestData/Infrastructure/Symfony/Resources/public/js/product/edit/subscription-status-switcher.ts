@@ -1,7 +1,8 @@
 import * as _ from "underscore";
-import {isProductSubscribed} from "../fetcher/subscription-fetcher";
+import {getSubscriptionStatus} from "../fetcher/subscription-fetcher";
 import BaseView = require('pimenrich/js/view/base');
 import {EventsHash} from "backbone";
+import SubscriptionStatusInterface from "./subscription-status-interface";
 
 const __ = require('oro/translator');
 const messenger = require('oro/messenger');
@@ -48,8 +49,8 @@ class SubscriptionStatusSwitcher extends BaseView {
   public render() {
     const productId = this.getFormData().meta.id;
 
-    isProductSubscribed(productId).then((isSubscriptionEnabled: boolean) => {
-      this.currentStatus = isSubscriptionEnabled;
+    getSubscriptionStatus(productId).then((subscriptionStatus: SubscriptionStatusInterface) => {
+      this.currentStatus = subscriptionStatus.is_subscribed;
       this.$el.html(
         this.template({
           subscriptionStatusTitle: __('akeneo_suggest_data.product.edit.subscription_status_title'),
