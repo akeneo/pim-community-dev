@@ -26,12 +26,12 @@ Feature: Edit an attribute of an enriched entity
   Scenario: Updating is required property
     Given an enriched entity with an image attribute 'image' non required
     When the user sets the 'image' attribute required
-    Then then 'image' should be required
+    Then 'image' should be required
 
   @acceptance-back
   Scenario Outline: Invalid is required edit
     Given an enriched entity with an image attribute 'image' non required
-    When the user sets the is required property of 'image' to '<invalid_required>'
+    When the user sets the is_required property of 'image' to '<invalid_required>'
     Then there should be a validation error on the property 'isRequired' with message '<message>'
 
     Examples:
@@ -44,13 +44,13 @@ Feature: Edit an attribute of an enriched entity
   Scenario: Updating max file size
     Given an enriched entity with an image attribute 'image' with max file size '3000'
     When the user changes the max file size of 'image' to '"200"'
-    Then then the max file size of 'image' should be '200'
+    Then the max file size of 'image' should be '200'
 
   @acceptance-back
   Scenario: Updating max file size to no limit
     Given an enriched entity with an image attribute 'name' with max file size '250'
     When the user changes the max file size of 'name' to no limit
-    Then then there should be no limit for the max file size of 'name'
+    Then there should be no limit for the max file size of 'name'
 
   @acceptance-back
   Scenario Outline: Invalid max file size edit
@@ -73,12 +73,13 @@ Feature: Edit an attribute of an enriched entity
   Scenario: Updating allowed extensions
     Given an enriched entity with an image attribute 'image' with allowed extensions: '["png"]'
     When the user changes adds '["png"]' to the allowed extensions of 'image'
-    Then then 'image' should have 'png' as an allowed extension
+    Then the 'image' should have '["png"]' as an allowed extension
 
+  @acceptance-back
   Scenario: Updating allowed extensions to extensions all allowed
     Given an enriched entity with an image attribute 'image' with allowed extensions: '[]'
     When the user changes adds '[]' to the allowed extensions of 'image'
-    Then then 'image' should have '"[]"' as an allowed extension
+    Then the 'image' should have '[]' as an allowed extension
 
   @acceptance-back
   Scenario Outline: Invalid allowed extensions

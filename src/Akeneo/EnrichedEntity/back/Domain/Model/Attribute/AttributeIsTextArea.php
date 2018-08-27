@@ -13,14 +13,14 @@ class AttributeIsTextArea
     /** @var bool */
     private $isTextArea;
 
-    private function __construct(bool $isRichTextEditor)
+    private function __construct(bool $isTextArea)
     {
-        $this->isTextArea = $isRichTextEditor;
+        $this->isTextArea = $isTextArea;
     }
 
-    public static function fromBoolean(bool $isRichTextEditor): self
+    public static function fromBoolean(bool $isTextArea): self
     {
-        return new self($isRichTextEditor);
+        return new self($isTextArea);
     }
 
     public function isYes(): bool

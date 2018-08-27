@@ -172,7 +172,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^then \'([^\']*)\' should be required$/
+     * @Then /^\'([^\']*)\' should be required$/
      */
     public function thenShouldBeRequired(string $attributeCode)
     {
@@ -223,7 +223,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^then \'([^\']*)\' max length should be (\d+)$/
+     * @Then /^\'([^\']*)\' max length should be (\d+)$/
      */
     public function thenMaxLengthShouldBe(string $attributeCode, int $expectedMaxLength)
     {
@@ -292,7 +292,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^then the max file size of \'([^\']*)\' should be \'([^\']*)\'$/
+     * @Then /^the max file size of \'([^\']*)\' should be \'([^\']*)\'$/
      */
     public function thenTheMaxFileSizeOfShouldBe(string $attributeCode, string $expectedMaxFileSize): void
     {
@@ -331,15 +331,16 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^then \'([^\']*)\' should have \'([^\']*)\' as an allowed extension$/
+     * @Then /^the \'([^\']*)\' should have \'([^\']*)\' as an allowed extension$/
      */
     public function thenShouldHaveAsAnAllowedExtension(string $attributeCode, string $expectedAllowedExtension)
     {
+        $expectedAllowedExtension = json_decode($expectedAllowedExtension);
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
         ));
-        Assert::assertContains($expectedAllowedExtension, $attribute->normalize()['allowed_extensions']);
+        Assert::assertEquals($expectedAllowedExtension, $attribute->normalize()['allowed_extensions']);
     }
 
     /**
@@ -398,7 +399,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user sets the is required property of \'([^\']*)\' to \'([^\']*)\'$/
+     * @When /^the user sets the is_required property of \'([^\']*)\' to \'([^\']*)\'$/
      */
     public function theUserSetsTheIsRequiredPropertyOfTo(string $attributeCode, $invalidValue)
     {
@@ -425,7 +426,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^then there should be no limit for the max length of \'([^\']*)\'$/
+     * @Then /^there should be no limit for the max length of \'([^\']*)\'$/
      */
     public function thenThereShouldBeNoLimitForTheMaxLengthOf(string $attributeCode)
     {
@@ -453,7 +454,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Then /^then there should be no limit for the max file size of \'([^\']*)\'$/
+     * @Then /^there should be no limit for the max file size of \'([^\']*)\'$/
      */
     public function thenThereShouldBeNoLimitForTheMaxFileSizeOf(string $attributeCode)
     {
@@ -785,7 +786,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user changes the is rich text editor flag of \'([^\']*)\' to \'([^\']*)\'$/
+     * @When /^the user changes the is_rich_text_editor flag of \'([^\']*)\' to \'([^\']*)\'$/
      */
     public function theUserChangesTheIsRichTextEditorFlagOfTo(string $attributeCode, string $newIsRichTextEditor)
     {
@@ -815,7 +816,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user changes the is text area flag and the is rich text editor of \'([^\']*)\' to \'([^\']*)\'$/
+     * @When /^the user changes the is_text_area flag and the is_rich_text_editor of \'([^\']*)\' to \'([^\']*)\'$/
      */
     public function theUserChangesTheIsTextAreaFlagAndTheIsRichTextEditorOfTo(string $attributeCode, string $newflag)
     {

@@ -15,12 +15,12 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating is required property
     Given an enriched entity with a text attribute 'name' non required
     When the user sets the 'name' attribute required
-    Then then 'name' should be required
+    Then 'name' should be required
 
   @acceptance-back
   Scenario Outline: Updating with an invalid is required edit
     Given an enriched entity with a text attribute 'name' non required
-    When the user sets the is required property of 'name' to '<invalid_required>'
+    When the user sets the is_required property of 'name' to '<invalid_required>'
     Then there should be a validation error on the property 'isRequired' with message '<message>'
 
     Examples:
@@ -33,13 +33,13 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating max length
     Given an enriched entity with a text attribute 'name' and max length 100
     When the user changes the max length of 'name' to '250'
-    Then then 'name' max length should be 250
+    Then 'name' max length should be 250
 
   @acceptance-back
   Scenario: Updating max length to no limit
     Given an enriched entity with a text attribute 'name' and max length 100
     When the user changes the max length of 'name' to no limit
-    Then then there should be no limit for the max length of 'name'
+    Then there should be no limit for the max length of 'name'
 
   @acceptance-back
   Scenario Outline: Updating with an invalid max length
@@ -54,7 +54,6 @@ Feature: Edit a text attribute of an enriched entity
       | 0                  | This value should be greater than 0.              |
       | "not_an_integer"   | This value should be an integer.                  |
       | 254.2              | This value should be an integer.                  |
-
 
   # is text area
   @acceptance-back
@@ -160,22 +159,22 @@ Feature: Edit a text attribute of an enriched entity
     Then there should be a validation error on the property 'regularExpression' with message 'Cannot update the regular expression of attribute "%email%" for enriched entity "%dummy_identifier%" because its validation rule is not set to regular expression'
 
   @acceptance-back
-  Scenario: Updating the regular expression on a text area without updating the validation rule to regular expression and the is text area flag to false will fail
+  Scenario: Updating the regular expression on a text area without updating the validation rule to regular expression and the is_textarea flag to false will fail
     Given an enriched entity with a text area attribute 'description'
     When the user changes the regular expression of 'description' to '"\w+[0-9]*"'
     Then there should be a validation error with message 'Cannot update the regular expression of attribute "%description%" for enriched entity "%dummy_identifier%" because it should be a simple text'
 
   # Rich text editor
   @acceptance-back
-  Scenario: Updating the is rich text editor flag
+  Scenario: Updating the is_rich_text_editor flag
     Given an enriched entity with a text area attribute 'description' with no rich text editor
-    When the user changes the is rich text editor flag of 'description' to 'true'
+    When the user changes the is_rich_text_editor flag of 'description' to 'true'
     Then the attribute 'description' should have a text editor
 
   @acceptance-back
   Scenario Outline: Updating the is rich text editor flag with an invalid value will fail
     Given an enriched entity with a text area attribute 'description'
-    When the user changes the is rich text editor flag of 'description' to '<invalid_is_rich_text_editor>'
+    When the user changes the is_rich_text_editor flag of 'description' to '<invalid_is_rich_text_editor>'
     Then there should be a validation error on the property 'isRichTextEditor' with message '<message>'
 
     Examples:
@@ -186,12 +185,12 @@ Feature: Edit a text attribute of an enriched entity
   @acceptance-back
   Scenario: Updating the is rich text editor flag if the attribute is not a text area fails
     Given an enriched entity with a text attribute 'name'
-    When the user changes the is rich text editor flag of 'name' to 'true'
+    When the user changes the is_rich_text_editor flag of 'name' to 'true'
     Then there should be a validation error with message 'Expected attribute "%name%" of enriched entity "%enriched_entity_identifier% to be a text area to update the is rich text editor flag'
 
   @acceptance-back
-  Scenario: Updating the is text area flag and the is rich text editor flag on a simple text attribute
+  Scenario: Updating the is_text_area flag and the is_rich_text_editor flag on a simple text attribute
     Given an enriched entity with a text attribute 'name'
-    When the user changes the is text area flag and the is rich text editor of 'name' to 'true'
+    When the user changes the is_text_area flag and the is_rich_text_editor of 'name' to 'true'
     Then the 'name' attribute should have a text editor
     And the 'name' attribute should be a text area
