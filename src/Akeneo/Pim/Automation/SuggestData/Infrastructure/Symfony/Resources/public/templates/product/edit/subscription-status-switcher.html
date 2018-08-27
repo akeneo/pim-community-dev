@@ -1,22 +1,24 @@
-<div data-toggle="dropdown">
-    <div class="AknColumn-subtitle"><%- subscriptionStatusTitle %></div>
-    <div class="AknColumn-value ask-franklin-subscription-status" data-status="<%- hasSubscribed ? 'enabled' : 'disabled' %>">
-        <div class="status-switcher">
-            <%- hasSubscribed ? enabledLabel : disabledLabel %>
-            <div class="AknColumn-blockDown"></div>
+<div class="AknColumn-block AknDropdown">
+    <div data-toggle="dropdown">
+        <div class="AknColumn-subtitle"><%- subscriptionStatusTitle %></div>
+        <div class="AknColumn-value ask-franklin-subscription-status" data-status="<%- hasSubscribed ? 'enabled' : 'disabled' %>">
+            <div class="status-switcher">
+                <%- hasSubscribed ? enabledLabel : disabledLabel %>
+                <div class="AknColumn-blockDown"></div>
+            </div>
         </div>
     </div>
+    <ul class="AknDropdown-menu">
+        <li class="AknDropdown-menuTitle"><%- subscriptionStatusTitle %></li>
+        <li>
+            <div class="AknDropdown-menuLink <% hasSubscribed ? '' : 'AknDropdown-menuLink--active' %>" data-status="disabled">
+                <span class="label"><%- disabledLabel %></span>
+            </div>
+        </li>
+        <li>
+            <div class="AknDropdown-menuLink <% hasSubscribed ? 'AknDropdown-menuLink--active' : '' %>" data-status="enabled">
+                <span class="label"><%- enabledLabel %></span>
+            </div>
+        </li>
+    </ul>
 </div>
-<ul class="AknDropdown-menu">
-    <li class="AknDropdown-menuTitle"><%- subscriptionStatusTitle %></li>
-    <li>
-        <div class="AknDropdown-menuLink <% hasSubscribed ? '' : 'AknDropdown-menuLink--active' %>" data-status="disabled">
-            <span class="label"><%- disabledLabel %></span>
-        </div>
-    </li>
-    <li>
-        <div class="AknDropdown-menuLink <% hasSubscribed ? 'AknDropdown-menuLink--active' : '' %>" data-status="enabled">
-            <span class="label"><%- enabledLabel %></span>
-        </div>
-    </li>
-</ul>

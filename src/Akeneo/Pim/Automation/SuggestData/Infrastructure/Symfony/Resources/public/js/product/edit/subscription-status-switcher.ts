@@ -1,12 +1,17 @@
 import * as _ from "underscore";
 import {isProductSubscribed} from "../fetcher/subscription-fetcher";
 import BaseView = require('pimenrich/js/view/base');
+import {EventsHash} from "backbone";
 
 const __ = require('oro/translator');
-const BaseForm = require('pim/form');
 const messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/form/product/subscription-status-switcher');
+
+interface SubscriptionStatusSwitcherConfiguration {
+  default_error_message: string;
+  default_success_message: string;
+}
 
 /**
  * Meta that displays is a product is Subscribed to Franklin or not.
@@ -14,27 +19,24 @@ const template = require('pimee/template/form/product/subscription-status-switch
  * @author Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SubscriptionStatusSwitcher extends BaseForm {
+class SubscriptionStatusSwitcher extends BaseView {
   readonly template: any = _.template(template);
-  readonly config: any;
+  readonly config: SubscriptionStatusSwitcherConfiguration;
   protected currentStatus: boolean;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Object }) {
-    super({
-      ...options,
-      ...{className: 'AknColumn-block AknDropdown'},
-    });
+  constructor(options: { config: SubscriptionStatusSwitcherConfiguration }) {
+    super(options);
 
     this.config = {...this.config, ...options.config};
-  }
+  };
 
   /**
    * {@inheritdoc}
    */
-  public events(): Backbone.EventsHash {
+  public events(): EventsHash {
     return {
       'click .AknDropdown-menuLink': 'updateStatus'
     };
@@ -43,7 +45,7 @@ class SubscriptionStatusSwitcher extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  render() {
+  public render() {
     const productId = this.getFormData().meta.id;
 
     isProductSubscribed(productId).then((isSubscriptionEnabled: boolean) => {
@@ -60,7 +62,7 @@ class SubscriptionStatusSwitcher extends BaseForm {
 
     this.delegateEvents();
 
-    return BaseForm.prototype.render.apply(this, arguments);
+    return BaseView.prototype.render.apply(this, arguments);
   }
 
   /**
@@ -68,10 +70,10 @@ class SubscriptionStatusSwitcher extends BaseForm {
    *
    * @param {Event} event
    */
-  updateStatus(event: any): void {
+  public updateStatus(event: { [key: string]: any }): void {
     let newStatus = event.currentTarget.dataset.status === 'enabled';
 
-    // APAI-142: For now, we don't manage to unsubscribe, only to subscribe.
+    // TODO APAI-142: For now, we don't manage to unsubscribe, only to subscribe.
     if (true === newStatus && false === this.currentStatus) {
       $.ajax({
         method: 'GET',
