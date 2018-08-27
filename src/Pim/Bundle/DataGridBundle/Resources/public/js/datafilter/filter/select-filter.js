@@ -166,7 +166,9 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             );
 
             this._updateDOMValue();
-            this._initializeSelectWidget();
+
+            // move to on click (configurable)
+            // this._initializeSelectWidget();
 
             return this;
         },

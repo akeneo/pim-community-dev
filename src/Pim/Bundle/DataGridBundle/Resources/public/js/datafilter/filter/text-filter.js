@@ -81,6 +81,7 @@ define(
         },
 
         operatorChoices: [],
+        lazyLoaded: true,
 
         /**
          * View events
@@ -200,7 +201,12 @@ define(
                     canDisable: this.canDisable
                 })
             );
-            this._renderCriteria(this.$(this.criteriaSelector));
+
+            if (this.lazyLoaded) {
+                this.$el.on('click', this._renderCriteria(this.$(this.criteriaSelector)).bind(this))
+            } else {
+                this._renderCriteria(this.$(this.criteriaSelector));
+            }
 
             return this;
         },

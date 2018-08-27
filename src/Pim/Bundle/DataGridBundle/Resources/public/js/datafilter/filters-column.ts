@@ -27,7 +27,7 @@ class FiltersColumn extends BaseView {
 
   readonly config: FiltersConfig
   readonly template: string = `
-    <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px">
+    <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px" data-toggle>
         <div>Filters</div>
     </button>
     <div class="filter-selector">
@@ -70,7 +70,7 @@ class FiltersColumn extends BaseView {
       'keyup input[type="search"]': 'searchFilters',
       'change input[type="checkbox"]': 'toggleFilter',
       'scroll .filter-list': 'fetchNextFilters',
-      'click .AknFilterBox-addFilterButton': 'togglePanel'
+      'click [data-toggle]': 'togglePanel'
     }
   }
 
@@ -86,6 +86,8 @@ class FiltersColumn extends BaseView {
     if (filter) {
         filter.enabled = checked
     }
+
+    this.triggerFiltersUpdated()
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
@@ -156,7 +158,6 @@ class FiltersColumn extends BaseView {
     const list = document.createDocumentFragment();
 
     this.$('.filters-column').empty()
-    this.el.appendChild(list);
 
     for (let groupName in groupedFilters) {
         const group: GridFilter[] = groupedFilters[groupName]
@@ -175,16 +176,16 @@ class FiltersColumn extends BaseView {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
-        this.renderSelectedFilters()
+        this.triggerFiltersUpdated()
     })
+  }
+
+  triggerFiltersUpdated() {
+    mediator.trigger('filters-column:updatedFilters', this.loadedFilters.filter(filter => filter.enabled === true))
   }
 
   getSelectedFilters() {
     return this.$('input[checked]').map(((_, el) => $(el).attr('id'))).toArray()
-  }
-
-  renderSelectedFilters() {
-      console.log('render selected filters', this.getSelectedFilters())
   }
 
   renderFilterGroup(filters: GridFilter[], groupName: string) {

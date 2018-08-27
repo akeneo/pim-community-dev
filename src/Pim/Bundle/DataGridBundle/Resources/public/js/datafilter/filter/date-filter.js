@@ -160,6 +160,9 @@ function(
          * @inheritDoc
          */
         _renderCriteria: function(el) {
+            console.log('date-filter render criteria')
+
+            // move to click
             $(el).append(
                 this.popupCriteriaTemplate({
                     label: this.label,
@@ -240,7 +243,9 @@ function(
          * @inheritDoc
          */
         _formatDisplayValue: function(value) {
-            Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
+            // move to on click
+            // Datepicker.init($('<input>'), this.datetimepickerOptions).data('datetimepicker');
+
             _.each(value.value, function(dateValue, name) {
                 if (dateValue) {
                     value.value[name] = DateFormatter.format(
