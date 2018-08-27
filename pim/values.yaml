@@ -2,7 +2,6 @@ nameOverride: ""
 global:
   extraLabels:
     type: srnt
-# REMOVE REMOVE
     pfid: test-pim
   monitoring:
     enabled: false
@@ -43,11 +42,10 @@ common:
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
 
-
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-    tag: v2.3.4-1
+    tag: v2.3.4-2
     pullPolicy: Always
   httpd:
     repository: httpd

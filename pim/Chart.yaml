@@ -1,4 +1,5 @@
 name: pim
 description: Akeneo PIM package
 icon: https://raw.githubusercontent.com/akeneo/pim-community-dev/2.3/web/favicon.ico
-version: 0.1.0
+version: 2.0.0-beta1
+appVersion: 2.3.4
