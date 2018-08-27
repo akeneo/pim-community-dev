@@ -1052,6 +1052,7 @@ pim_enrich:
         add_attribute_value:
           label: Redigere attributter værdier
           label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+          description: Kun fler-værdi attributter, der tilhører produktgruppernes familier, vil blive redigeret med følgende data for {{ locale }} lokale og {{ scope }} -kanalen. Attributternes værdier tilføjes, og de tidligere værdier bibholdesholdes.
         change_family:
           label: Ændre familie
           label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
@@ -1065,9 +1066,11 @@ pim_enrich:
         add_to_category:
           label: Tilføje til kategorier
           label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
+          description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
         move_to_category:
           label: Flyt mellem kategorier
           label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
+          description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
         remove_from_category:
           label: Fjern fra kategorier
           label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
@@ -1076,6 +1079,15 @@ pim_enrich:
           label: Føj til en eksisterende produktmodel
           label_count: "{1}Add <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til en eksisterende produktmodel |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til en eksisterende produktmodel"
           description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
+        associate_to_product_and_product_model:
+          label: Associeret
+          label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til produkter eller produkt modeller |] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til produkter eller produkt modeller"
+          description: De valgte produkter i listen vil blive associeret til de udvalgte produkter og produkt modeller for den valgte associetingstype
+          validate: Vælg venligst associering før du fortsætter til næste trin
+        change_parent_product_model:
+          label: Ændre forældre produkt model
+          label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+          description: Det overordnede tilknytning til variantprodukterne eller underproduktmodellerne, der er valgt i nettet, vil blive ændret til den valgte produktmodel.
     family:
       title: Familier massehandling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
@@ -1105,6 +1117,7 @@ page_title:
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attribut grupper | Oprette
   pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
+  pim_enrich_catalog_volume_index: Katalog volumen overvågning
   pim_enrich_categorytree_index: Kategoritræstrukturen
   pim_enrich_categorytree_create: Kategori træer | Oprette
   pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
@@ -1146,12 +1159,32 @@ batch_jobs:
     label: Opdatere produktets værdi
     perform:
       label: Opdatere produktets værdi
+  add_to_group:
+    label: Tilføj til gruppe
+    perform:
+      label: Tilføj til gruppe
   edit_common_attributes:
     label: Rediger attributter
     perform:
       label: Rediger attributter
     cleaner:
       label: Rens filer til fælles attributter
+  add_to_category:
+    label: Tilføje til kategorier
+    perform:
+      label: Tilføje til kategori
+  move_to_category:
+    label: Flyt til kategori
+    perform:
+      label: Flyt til kategori
+  remove_from_category:
+    label: Fjern fra kategori
+    perform:
+      label: Fjern fra kategori
+  add_association:
+    label: Associeret
+    perform:
+      label: Associeret
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform:
@@ -1235,6 +1268,8 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_root_product_models.label: Beregn rod produkt model data
+    compute_data_related_to_family_sub_product_models.label: Beregn under produkt model data
     compute_data_related_to_family_products.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
@@ -1300,6 +1335,8 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_root_product_models.label: Beregn rod produkt model data
+    compute_data_related_to_family_sub_product_models.label: Beregn under produkt model data
     compute_data_related_to_family_products.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
@@ -1416,6 +1453,7 @@ pim_menu:
     import_history: Import historik
     import_profile: Import profiler
     configuration: Konfiguration
+    catalog_volume: Katalog volumen overvågning
     user_management: Bruger administration
     user: Brugere
     user_group: Grupper

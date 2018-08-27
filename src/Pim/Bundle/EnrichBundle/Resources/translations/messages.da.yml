@@ -799,6 +799,10 @@ batch_jobs:
       label: Rens filer til fælles attributter
     cleaner:
       label: Rens filer til fælles attributter
+  add_association:
+    label: Associeret
+    perform:
+      label: Associeret
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform:
