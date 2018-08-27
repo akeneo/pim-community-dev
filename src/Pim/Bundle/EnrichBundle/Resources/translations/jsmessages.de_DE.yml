@@ -557,6 +557,7 @@ pim_enrich.mass_edit.product:
       label: Verbinden
     change_parent_product_model:
       label: Eltern Produktmodell ändern
+      description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_enrich.mass_edit.family:
   title: Massenbearbeitung Produktfamilien
   step:

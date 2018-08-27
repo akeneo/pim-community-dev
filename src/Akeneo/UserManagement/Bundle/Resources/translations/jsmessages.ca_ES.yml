@@ -1,7 +1,42 @@
-page_title:
+pim_title:
   pim_user_index: Usuaris
   pim_user_role_index: Rols
   pim_user_group_index: Grup d'usuaris
   oro_config_configuration_system: Configuració
+  pim_user_view: 'Usuari {{ username }} | Veure'
+  pim_user_update: 'Usuari {{ username }} | Editar'
+  pim_user_create: 'Usuaris | Crear'
+  pim_user_profile_view: '{{ username }}'
+  pim_user_profile_update: '{{ username }} | Editar'
+  pim_user_role_update: 'Rol {{ role }} | Editar'
+  pim_user_role_create: 'Rol | Crear'
   pim_user_security_login: Iniciar Sessió
+  pim_user_reset_reset: Reiniciar contrasenya
   pim_user_reset_request: He oblidat la contrasenya
+  pim_user_reset_check_email: Reiniciar contrasenya | Revisar el correu electrònic
+  pim_user_group_create: 'Grups | Crear'
+  pim_user_group_update: 'Grup {{ group }} | Editar'
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "]-Inf, 1]{{ count }} usuari|]1, Inf[{{ count }} usuaris"
+      module:
+        create:
+          button: Crear usuari
+        delete:
+          confirm: Esteu segur que voleu eliminar aquest usuari?
+    role:
+      page_title:
+        index: "]Inf, 1]{{ count }} rol|]1, Inf[{{ count }} rols"
+      module:
+        create:
+          button: Crear rol
+        delete:
+          confirm: Estàs segur que vols suprimir aquest rol?
+    group:
+      page_title:
+        index: "]Inf, 1]{{ count }} grup|]1, Inf[{{ count }} grups"
+      module:
+        create:
+          button: Crear grup

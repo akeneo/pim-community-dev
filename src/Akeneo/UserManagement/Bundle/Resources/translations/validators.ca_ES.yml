@@ -1,0 +1,3 @@
+pim_user:
+  min_role: "Heu de seleccionar com a mínim {{ limit }} funció.|Heu de seleccionar com a mínim {{ limit }} funció."
+  password_match: "Les contrasenyes tenen que coincidir."
