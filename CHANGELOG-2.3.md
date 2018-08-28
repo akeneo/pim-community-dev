@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7611: Fix issue with download of assets
+- PIM-7599: Fix an issue preventing the asset datagrid to load when having a huge number of asset categories
 
 # 2.3.5 (2018-08-22)
 

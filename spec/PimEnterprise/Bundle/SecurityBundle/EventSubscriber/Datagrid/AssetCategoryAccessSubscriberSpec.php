@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -9,10 +11,11 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface as PimDatasource;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Model\GroupInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -55,22 +58,48 @@ class AssetCategoryAccessSubscriberSpec extends ObjectBehavior
     public function it_filters_datasource(
         $tokenStorage,
         $accessRepository,
-        $assetRepository,
         BuildAfter $event,
         DatagridInterface $datagrid,
         PimDatasource $datasource,
         QueryBuilder $qb,
         TokenInterface $token,
-        UserInterface $user
+        UserInterface $user,
+        Collection $groupCollection,
+        GroupInterface $group,
+        Expr $expr,
+        Expr\Func $func,
+        Expr\Comparison $comparison,
+        Expr\Andx $andx,
+        Expr\Orx $orx
     ) {
-        $datagrid->getDatasource()->willReturn($datasource);
         $event->getDatagrid()->willReturn($datagrid);
-        $tokenStorage->getToken()->willreturn($token);
-        $token->getUser()->willReturn($user);
-        $accessRepository->getGrantedCategoryCodes($user, Attributes::VIEW_ITEMS)->willReturn(['foo', 'bar']);
+        $datagrid->getDatasource()->willReturn($datasource);
         $datasource->getQueryBuilder()->willReturn($qb);
 
-        $assetRepository->applyCategoriesFilter($qb, Operators::IN_LIST_OR_UNCLASSIFIED, ['foo', 'bar'])->shouldBeCalled();
+        $tokenStorage->getToken()->willreturn($token);
+        $token->getUser()->willReturn($user);
+        $user->getGroups()->willReturn($groupCollection);
+        $groupCollection->toArray()->willReturn([$group]);
+
+        $accessRepository->getClassName()->willReturn(AssetCategoryAccess::class);
+        $qb->getRootAlias()->willReturn('access');
+        $qb->leftJoin('access.categories', 'asset_categories')->willReturn($qb);
+        $qb->leftJoin(
+            AssetCategoryAccess::class,
+            'access',
+            'WITH',
+            'asset_categories.id = access.category'
+        )->willReturn($qb);
+
+        $qb->expr()->willReturn($expr);
+        $expr->in('access.userGroup', ':groups')->willReturn($func);
+        $expr->eq('access.viewItems', true)->willReturn($comparison);
+        $expr->andX($func, $comparison)->willReturn($andx);
+        $expr->isNull('asset_categories.id')->willReturn('asset_categories.id IS NULL');
+        $expr->orX('asset_categories.id IS NULL', $andx)->willReturn($orx);
+
+        $qb->andWhere($orx)->willReturn($qb);
+        $qb->setParameter('groups', [$group])->willReturn($qb);
 
         $this->filter($event);
     }
