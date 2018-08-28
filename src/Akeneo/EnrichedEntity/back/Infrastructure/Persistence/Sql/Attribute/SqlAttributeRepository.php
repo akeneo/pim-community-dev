@@ -36,7 +36,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use PDO;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -56,7 +55,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
     public function create(AbstractAttribute $attribute): void
     {
         $normalizedAttribute = $attribute->normalize();
-        $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
+        $additionalProperties = $this->getAdditionalOptions($normalizedAttribute);
         $insert = <<<SQL
         INSERT INTO akeneo_enriched_entity_attribute (
             identifier,
@@ -81,7 +80,6 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             :additional_properties
         );
 SQL;
-
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
@@ -111,10 +109,9 @@ SQL;
     public function update(AbstractAttribute $attribute): void
     {
         $normalizedAttribute = $attribute->normalize();
-        $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
-        $insert = <<<SQL
-        UPDATE akeneo_enriched_entity_attribute
-        SET
+        $additionalProperties = $this->getAdditionalOptions($normalizedAttribute);
+        $update = <<<SQL
+        UPDATE akeneo_enriched_entity_attribute SET
             labels = :labels,
             attribute_order = :attribute_order,
             is_required = :is_required,
@@ -122,22 +119,23 @@ SQL;
         WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
-            $insert,
+            $update,
             [
                 'identifier'                 => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
-                'labels'                     => json_encode($normalizedAttribute['labels']),
+                'labels'                     => $normalizedAttribute['labels'],
                 'attribute_order'            => $normalizedAttribute['order'],
                 'is_required'                => $normalizedAttribute['is_required'],
                 'additional_properties'      => json_encode($additionalProperties),
             ],
             [
                 'is_required' => Type::getType('boolean'),
+                'labels' => Type::getType('json_array')
             ]
         );
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to edit one attribute, but %d rows were affected', $affectedRows)
+                sprintf('Expected to create one attribute, but %d rows were affected', $affectedRows)
             );
         }
     }
@@ -218,7 +216,7 @@ SQL;
         return $attributes;
     }
 
-    private function getAdditionalProperties(array $normalizedAttribute): array
+    private function getAdditionalOptions(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);
         unset($normalizedAttribute['enriched_entity_identifier']);

@@ -103,7 +103,7 @@ SQL;
             $additionnalProperties = json_decode($result['additional_properties'], true);
 
             if ('text' === $result['attribute_type']) {
-                $maxLength = $additionnalProperties['max_length'];
+                $maxLength = $additionnalProperties['max_length'] ?? (int) $additionnalProperties['max_length'];
                 $isTextArea = (bool) $additionnalProperties['is_text_area'];
                 $isRichTextEditor = (bool) $additionnalProperties['is_rich_text_editor'];
                 $validationRule = $additionnalProperties['validation_rule'];

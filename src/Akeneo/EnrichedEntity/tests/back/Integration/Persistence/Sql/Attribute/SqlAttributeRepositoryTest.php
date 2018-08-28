@@ -152,11 +152,41 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $this->attributeRepository->getByIdentifier($identifier);
     }
 
+    /** @test */
+    public function it_updates_an_attribute()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedAttribute = TextAttribute::createTextArea(
+            $identifier,
+            $enrichedEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        );
+        $this->attributeRepository->create($expectedAttribute);
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnon', 'en_US' => 'Nickname']));
+
+        $this->attributeRepository->update($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
     private function assertAttribute(
         AbstractAttribute $expectedAttribute,
         AbstractAttribute $actualAttribute
     ): void {
-        $this->assertSame($expectedAttribute->normalize(), $actualAttribute->normalize());
+        $expected = $expectedAttribute->normalize();
+        $actual = $actualAttribute->normalize();
+        sort($expected['labels']);
+        sort($actual['labels']);
+        $this->assertSame($expected, $actual);
     }
 
     private function resetDB(): void
