@@ -4,6 +4,7 @@
 
 - PIM-7600: Change the default return value of ResetIndexesCommand to true to allow the --no-interaction parameter.
 - PIM-7572: Cross to remove associations displayed at PV level whereas association is done at PM level
+- PIM-7618: Hide the "Process tracker" link in the Dashboard if the user does not have the permission 
 
 # 2.3.5 (2018-08-22)
 
