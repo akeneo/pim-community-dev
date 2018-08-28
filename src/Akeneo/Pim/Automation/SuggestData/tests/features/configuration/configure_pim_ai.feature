@@ -4,6 +4,7 @@ Feature: PIM.ai configuration
   As a system administrator
   I want to configure PIM.ai
 
+  @end-to-end @javascript
   Scenario: The system administrator successfully configures PIM.ai
     Given PIM.ai has not been configured
     When a system administrator configures PIM.ai using a valid token

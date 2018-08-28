@@ -1,6 +1,7 @@
 imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
+    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/data_providers.yml }
 
 framework:
     test: ~
