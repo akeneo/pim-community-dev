@@ -198,7 +198,7 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating the is rich text editor flag if the attribute is not a text area fails
     Given an enriched entity with a text attribute 'name'
     When the user changes the is_rich_text_editor flag of 'name' to 'true'
-    Then there should be a validation error with message 'A simple text cannot have a rich text editor'
+    Then there should be a validation error with message 'A simple text attribute cannot have a rich text editor'
 
   @acceptance-back
   Scenario: Updating the is_text_area flag and the is_rich_text_editor flag on a simple text attribute
