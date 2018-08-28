@@ -136,9 +136,7 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAtt
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [other_constraints] }
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: ~
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ShouldBeTextAreaToUpdateIsRichTextEditor: { groups: [other_constraints] }
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ShouldBeASimpleTextToUpdateValidationRule: { groups: [other_constraints] }
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRuleShouldBeRegularExpressionToUpdateRegularExpression: { groups: [other_constraints] }
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [other_constraints] }
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
     properties:

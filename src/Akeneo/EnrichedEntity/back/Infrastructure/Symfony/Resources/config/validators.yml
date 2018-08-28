@@ -48,12 +48,12 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.edit_command_validator' }
 
-    akeneo_enrichedentity.infrastructure.validation.attribute.edit_validation_rule_should_be_regular_expression_to_update_regular_expression_validator:
-        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRuleShouldBeRegularExpressionToUpdateRegularExpressionValidator
+    akeneo_enrichedentity.infrastructure.validation.attribute.text_property_updates_should_be_coherent_validator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherentValidator
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.edit_validation_rule_should_be_regular_expression_to_update_regular_expression_validator' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.text_property_updates_should_be_coherent_validator' }
 
     akeneo_enrichedentity.infrastructure.validation.attribute.should_be_a_text_area_to_update_is_rich_text_editor:
         class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ShouldBeTextAreaToUpdateIsRichTextEditorValidator

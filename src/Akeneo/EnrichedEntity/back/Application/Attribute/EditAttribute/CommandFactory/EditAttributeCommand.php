@@ -12,4 +12,15 @@ class EditAttributeCommand extends AbstractEditAttributeCommand
 {
     /** @var AbstractEditAttributeCommand[] */
     public $editCommands;
+
+    public function getCommand(string $className): ?AbstractEditAttributeCommand
+    {
+        foreach ($this->editCommands as $command) {
+            if ($command instanceof $className) {
+                return $command;
+            }
+        }
+
+        return null;
+    }
 }
