@@ -73,6 +73,7 @@ class AssociationsNormalizer implements NormalizerInterface
                 }
             } else {
                 $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
+                    $associationAwareEntity->getId(),
                     $association
                 ));
             }
