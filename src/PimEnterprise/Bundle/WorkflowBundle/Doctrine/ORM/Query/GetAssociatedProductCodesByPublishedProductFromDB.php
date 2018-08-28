@@ -43,7 +43,7 @@ class GetAssociatedProductCodesByPublishedProductFromDB implements GetAssociated
     /**
      * {@inheritdoc}
      */
-    public function getCodes(AssociationInterface $association)
+    public function getCodes(int $publishedProductId, AssociationInterface $association)
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $userGroupsIds = $user->getGroupsIds();
@@ -55,7 +55,7 @@ FROM pimee_workflow_published_product_association a
     INNER JOIN pimee_workflow_published_product p ON p.id = ap.product_id
     LEFT JOIN pim_catalog_category_product cp on p.id = cp.product_id
     LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
-WHERE a.id = :associationId
+WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
     AND (cp.category_id IS NULL OR pca.view_items = 1)
 ORDER BY p.identifier ASC;
 SQL;
@@ -63,11 +63,13 @@ SQL;
         $stmt = $this->connection->executeQuery($sql,
             [
                 'userGroupsIds'     => $userGroupsIds,
-                'associationId'     => $association->getId(),
+                'ownerId'           => $publishedProductId,
+                'associationTypeId' => $association->getAssociationType()->getId()
             ],
             [
                 'userGroupsIds'     => Connection::PARAM_INT_ARRAY,
-                'associationId'           => \PDO:: PARAM_INT,
+                'ownerId'           => \PDO:: PARAM_INT,
+                'associationTypeId' => \PDO:: PARAM_INT
             ]
         );
 
