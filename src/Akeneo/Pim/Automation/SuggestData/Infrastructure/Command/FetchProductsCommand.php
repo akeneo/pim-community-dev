@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand as AppFetchProductsCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,7 +43,7 @@ class FetchProductsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = new \Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand();
+        $command = new AppFetchProductsCommand();
         $this->getFetchProductsHandler()->handle($command);
     }
 
@@ -51,6 +52,8 @@ class FetchProductsCommand extends ContainerAwareCommand
      */
     private function getFetchProductsHandler()
     {
-        return $this->getContainer()->get('akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products');
+        return $this
+            ->getContainer()
+            ->get('akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products');
     }
 }

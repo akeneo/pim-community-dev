@@ -13,13 +13,13 @@ Feature: Fetch products from PIM.ai
     Given PIM.ai is configured with a valid token
     And last fetch of subscribed products has been done yesterday
     When the subscribed products are fetched from PIM.ai
-    #Then suggested data should be processed
+    #Then suggested data should be processed (APAI-156)
 
   Scenario: Successfully fetch no product from PIM.ai
     Given PIM.ai is configured with a valid token
     And last fetch of subscribed products has been done today
     When the subscribed products are fetched from PIM.ai
-    #Then no suggested data should be processed
+    #Then no suggested data should be processed (APAI-156)
 
   #Scenario: Token not configured or invalid
 
@@ -30,6 +30,4 @@ Feature: Fetch products from PIM.ai
   #Scenario: Successfully fetch products from PIM.ai from a specific date
 
   #Scenario: Successfully fetch products from PIM.ai from last launched time
-
-
 

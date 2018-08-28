@@ -12,7 +12,7 @@ use Behat\Behat\Context\Context;
 /**
  * @author    Romain Monceau <romain@akeneo.com>
  */
-final class ProductFetchContext implements Context
+final class ProductFetchingContext implements Context
 {
     /** @var FetchProductsHandler */
     private $fetchProductsHandler;
@@ -47,7 +47,7 @@ final class ProductFetchContext implements Context
      */
     public function lastFetchHaveBeenDone($lastFetchDate)
     {
-        // TODO: Rework with a real date later
+        // TODO: Rework with a real date later (See APAI-170)
         $this->subscriptionFake->defineLastFetchDate($lastFetchDate);
     }
 }

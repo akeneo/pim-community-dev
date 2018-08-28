@@ -13,38 +13,38 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
-
 /**
  * Represents a standard response from a subscription request
- * Holds a subscription id and optional suggested data
+ * Holds a collection of subscription
  *
- * @author Mathias METAYER <mathias.metayer@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductSubscriptionsResponse implements \Countable
 {
-
+    /**
+     * @var ProductSubscriptionResponse
+     */
     private $collection = [];
 
+    /**
+     * @param array $collection
+     */
     public function __construct(array $collection)
     {
         foreach ($collection as $subscription) {
-            /** @var Subscription $subscription */
             $this->collection[] = new ProductSubscriptionResponse(
-                42, // Tmp fake
+                42, // @TODO: Use tracker id (See APAI-153)
                 $subscription->getSubscriptionId(),
                 $subscription->getAttributes()
             );
         }
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->collection);
-    }
-
-    public function getSubscription()
-    {
-
     }
 }

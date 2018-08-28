@@ -89,6 +89,7 @@ class PimAI implements DataProviderInterface
 
     /**
      * @param string $token
+     *
      * @return bool
      */
     public function authenticate(string $token): bool
@@ -97,7 +98,7 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * TODO: Deal with pagination
+     * TODO: Deal with pagination (see APAI-192)
      *
      * @return ProductSubscriptionsResponse
      */

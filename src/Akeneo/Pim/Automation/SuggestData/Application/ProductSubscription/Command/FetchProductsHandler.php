@@ -17,6 +17,9 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFacto
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
+ * Handles a FetchProducts command
+ *
+ * It fetches ProductSubscription from on PIM.ai
  *
  * @author    Romain Monceau <romain@akeneo.com>
  */
@@ -51,7 +54,7 @@ class FetchProductsHandler
         $dataProvider = $this->dataProviderFactory->create();
         $subscribedResponses = $dataProvider->fetch();
 
-        // TODO: Store fetched data in DB
+        // TODO: Store fetched data in DB (APAI-142)
         foreach ($subscribedResponses as $subscriptionResponse) {
             //TODO: Waiting APAI-142 + tracker id
         }

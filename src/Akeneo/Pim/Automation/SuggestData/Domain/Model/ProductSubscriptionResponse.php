@@ -39,7 +39,7 @@ final class ProductSubscriptionResponse
      */
     public function __construct(int $productId, string $subscriptionId, array $suggestedData)
     {
-        $this->validate($productId, $subscriptionId, $suggestedData);
+        $this->validate($subscriptionId, $suggestedData);
 
         $this->productId = $productId;
         $this->subscriptionId = $subscriptionId;
@@ -47,7 +47,7 @@ final class ProductSubscriptionResponse
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getProductId(): int
     {
@@ -71,14 +71,11 @@ final class ProductSubscriptionResponse
     }
 
     /**
-     * @param int $productId
      * @param string $subscriptionId
      * @param array $suggestedData
      */
-    private function validate(int $productId, string $subscriptionId, array $suggestedData): void
+    private function validate(string $subscriptionId, array $suggestedData): void
     {
-        // TODO: Validate $productId
-
         if ('' === $subscriptionId) {
             throw new \InvalidArgumentException('subscription id cannot be empty');
         }

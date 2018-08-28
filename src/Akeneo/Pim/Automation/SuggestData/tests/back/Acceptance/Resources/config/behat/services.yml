@@ -41,8 +41,8 @@ services:
         tags:
             - { name: 'fob.context_service' }
 
-    akeneo_acceptance.context.suggest_data.product_fetch:
-        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductFetchContext'
+    akeneo_acceptance.context.suggest_data.product_fetching:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductFetchingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products'
             - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription_fake'
