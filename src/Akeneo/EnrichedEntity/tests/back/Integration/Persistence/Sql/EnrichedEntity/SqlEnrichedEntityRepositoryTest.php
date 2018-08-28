@@ -23,11 +23,13 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
 class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
@@ -83,6 +85,11 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
         $this->repository->create($enrichedEntity);
         $enrichedEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
+
+        $file = new FileInfo();
+        $file->setKey('/path/image.jpg');
+        $file->setOriginalFilename('image.jpg');
+        $enrichedEntity->updateImage(Image::fromFileInfo($file));
 
         $this->repository->update($enrichedEntity);
 

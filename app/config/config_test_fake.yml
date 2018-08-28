@@ -1,6 +1,7 @@
 imports:
     - { resource: config_behat.yml }
     - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/pim/file_storage.yml }
     - { resource: ../../tests/back/Acceptance/Resources/config/pim/repositories.yml }
     - { resource: ../../vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/pim/queries.yml }
