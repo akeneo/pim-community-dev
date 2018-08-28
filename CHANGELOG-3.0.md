@@ -12,6 +12,8 @@
 
 ## BC breaks
 
+- Move `Pim\Component\ReferenceData\Factory\Value\ReferenceDataValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataValueFactory`
+- Move `Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory`
 - Move `Pim\Component\Catalog\ProductEvents` to `Akeneo\Pim\Enrichment\Component\Product\ProductEvents`
 - Move `Pim\Component\Catalog\FileStorage` to `Akeneo\Pim\Enrichment\Component\FileStorage`
 - Move `Pim\Component\Catalog\AttributeTypes` to `Akeneo\Pim\Structure\Component\AttributeTypes`

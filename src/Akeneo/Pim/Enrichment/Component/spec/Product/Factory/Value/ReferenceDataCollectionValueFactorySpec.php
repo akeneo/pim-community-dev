@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\ReferenceData\Factory\Value;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;

@@ -1,6 +1,6 @@
 parameters:
-    pim_reference_data.factory.value.reference_data.class:            Pim\Component\ReferenceData\Factory\Value\ReferenceDataValueFactory
-    pim_reference_data.factory.value.reference_data_collection.class: Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory
+    pim_reference_data.factory.value.reference_data.class:            Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataValueFactory
+    pim_reference_data.factory.value.reference_data_collection.class: Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory
 
 services:
     pim_reference_data.factory.product_value.reference_data:
