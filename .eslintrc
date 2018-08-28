@@ -28,7 +28,7 @@
     ],
     "indent": [
       1,
-      4,
+      2,
       {
         "ArrayExpression": "first"
       }

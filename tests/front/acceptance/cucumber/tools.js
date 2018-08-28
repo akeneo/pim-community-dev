@@ -1,5 +1,57 @@
 const random = process.env.RANDOM_LATENCY || true;
 const maxRandomLatency = undefined !== process.env.MAX_RANDOM_LATENCY_MS ? process.env.MAX_RANDOM_LATENCY_MS : 1000;
+let pageListenerCollection = null;
+
+class PageListenerCollection {
+  constructor(page) {
+    this.page = page;
+    this.listeners = [];
+  }
+
+  add(url, method, response, status, randomLatency, customMaxRandomLatency) {
+    this.remove(url, method);
+    const listener = {
+      url,
+      method,
+      response,
+      status,
+      randomLatency,
+      customMaxRandomLatency
+    };
+
+    this.listeners.push(listener);
+  }
+
+  find(url, method) {
+    return this.listeners.find((listener) => {
+      return listener.url === url && listener.method === method;
+    });
+  }
+
+  rebindAll() {
+    this.page.removeAllListeners('request');
+
+    const urls = [];
+    this.listeners.forEach((listener) => {
+      urls.push(listener.method + '|' + listener.url);
+      this.page.on('request', request => {
+        if (request.url() === listener.url && request.method() === listener.method) {
+          answerJson(request, listener.response, listener.status);
+        }
+      });
+    });
+
+    this.page.on('request', request => {
+      if (!urls.includes(request.method() + '|' + request.url())) {
+        answerJson(request, {}, 200);
+      }
+    });
+  }
+
+  remove(url, method) {
+    this.listeners = this.listeners.filter(listener => listener.url !== url || listener.method !== method);
+  }
+}
 
 const answer = (methodToDelay, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
   setTimeout(methodToDelay, (randomLatency ? Math.random() : 1) * parseInt(customMaxRandomLatency));
@@ -29,7 +81,7 @@ const convertDataTable = (dataTable) => {
 
     return result;
   }, {});
-}
+};
 
 const convertItemTable = (dataTable) => {
   const [keys, ...items] = dataTable.rawTable;
@@ -45,7 +97,7 @@ const convertItemTable = (dataTable) => {
       return result;
     }, {});
   });
-}
+};
 
 const renderView = async (page, extension, data) => {
   return await page.evaluate((volumes) => {
@@ -60,6 +112,15 @@ const renderView = async (page, extension, data) => {
   }, data);
 };
 
+const addRequestListener = (page, url, method, response, status = 200, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
+  if (null === pageListenerCollection) {
+    pageListenerCollection = new PageListenerCollection(page);
+  }
+
+  pageListenerCollection.add(url, method, response, status, randomLatency, customMaxRandomLatency);
+  pageListenerCollection.rebindAll();
+};
+
 module.exports = {
   answer,
   answerJson,
@@ -67,5 +128,6 @@ module.exports = {
   csvToArray,
   renderView,
   convertDataTable,
-  convertItemTable
+  convertItemTable,
+  addRequestListener
 };
