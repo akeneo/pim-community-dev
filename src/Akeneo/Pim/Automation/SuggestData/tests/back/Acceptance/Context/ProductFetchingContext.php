@@ -44,16 +44,6 @@ final class ProductFetchingContext implements Context
     }
 
     /**
-     *
-     */
-    public function theProductsHaveNotBeenFetchedFromPimAi()
-    {
-        try {
-        } catch (\Exception $e) {
-        }
-    }
-
-    /**
      * @param $lastFetchDate
      *
      * @Given last fetch of subscribed products has been done :lastFetchDate
