@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
@@ -16,12 +25,22 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Concrete implementation of subscription web service
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class SubscriptionWebservice implements SubscriptionApiInterface
 {
+    /** @var UriGenerator */
     private $uriGenerator;
 
+    /** @var Client */
     private $httpClient;
 
+    /**
+     * @param UriGenerator $uriGenerator
+     * @param Client $httpClient
+     */
     public function __construct(UriGenerator $uriGenerator, Client $httpClient)
     {
         $this->uriGenerator = $uriGenerator;
@@ -58,7 +77,9 @@ class SubscriptionWebservice implements SubscriptionApiInterface
         }
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function fetchProducts(): ApiResponse
     {
         $dateParam = 'yesterday';

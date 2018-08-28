@@ -20,19 +20,29 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObj
  */
 class SubscriptionCollection implements \Countable
 {
+    /** @var Subscription[] */
     private $collection;
 
+    /**
+     * @param array $rawApiResponse
+     */
     public function __construct(array $rawApiResponse)
     {
         $this->validateResponseFormat($rawApiResponse);
         $this->collection = $this->buildCollection($rawApiResponse);
     }
 
+    /**
+     * @return iterable
+     */
     public function getSubscriptions(): iterable
     {
         return $this->collection;
     }
 
+    /**
+     * @return Subscription|null
+     */
     public function getFirst(): ?Subscription
     {
         if (! array_key_exists(0, $this->collection)) {
@@ -42,15 +52,21 @@ class SubscriptionCollection implements \Countable
         return $this->collection[0];
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->collection);
     }
 
+    /**
+     * @param array $rawApiResponse
+     * @return array
+     */
     private function buildCollection(array $rawApiResponse): array
     {
         $collection = [];
-
         foreach ($rawApiResponse['_embedded']['subscription'] as $rawSubscription) {
             $collection[] = new Subscription($rawSubscription);
         }
@@ -58,6 +74,11 @@ class SubscriptionCollection implements \Countable
         return $collection;
     }
 
+    /**
+     * @param array $rawApiResponse
+     *
+     * @throws \InvalidArgumentException
+     */
     private function validateResponseFormat(array $rawApiResponse): void
     {
         if (! isset($rawApiResponse['_embedded']['subscription']) || ! is_array($rawApiResponse['_embedded']['subscription'])) {
