@@ -333,8 +333,8 @@ class EditAttributeContext implements Context
     {
         Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected but none were found.');
         $violation = $this->violations->get(0);
-        Assert::assertSame($expectedPropertyPath, $violation->getPropertyPath());
         Assert::assertSame($message, $violation->getMessage());
+        Assert::assertSame($expectedPropertyPath, $violation->getPropertyPath());
     }
 
     /**

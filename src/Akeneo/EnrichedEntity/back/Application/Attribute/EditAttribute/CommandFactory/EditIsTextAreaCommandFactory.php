@@ -12,7 +12,7 @@ class EditIsTextAreaCommandFactory implements EditAttributeCommandFactoryInterfa
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['is_text_area'])
+        return array_key_exists('is_text_area', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

@@ -9,6 +9,9 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Edi
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextAreaCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -34,21 +37,25 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($editAttributeCommand);
 
-        $databaseAttribute = $this->getAttribute($editAttributeCommand);
+        $databaseAttribute = $this->getAttribute($editAttributeCommand->identifier);
         if (!$this->isAttributeTypeText($databaseAttribute)) {
             return;
         }
 
         if ($this->isTextAreaIsSetToTrue($editAttributeCommand, $databaseAttribute)) {
             if ($this->isValidationRuleUpdatedToSomethingElseThanNone($editAttributeCommand)) {
-                $this->buildViolationCannotUpdateValidationRuleToSomethingElseThanNone($editAttributeCommand);
+                $this->buildViolationCannotUpdateValidationRuleToSomethingElseThanNone();
             }
             if ($this->isRegularExpressionNotEmpty($editAttributeCommand)) {
-                $this->buildViolationCannotSetANonEmptyRegularExpression($editAttributeCommand);
+                $this->buildViolationCannotSetANonEmptyRegularExpression();
             }
         } else {
             if ($this->isRichTextEditorSetToTrue($editAttributeCommand)) {
-                $this->buildViolationCannotSetRichTextEditorToTrue($editAttributeCommand);
+                $this->buildViolationCannotSetRichTextEditorToTrue();
+            }
+            if (!$this->isValidationRuleSetToRegularExpression($editAttributeCommand, $databaseAttribute)
+                && $this->isRegularExpressionNotEmpty($editAttributeCommand)) {
+                $this->buildViolationCannotUpdateRegularExpression();
             }
         }
     }
@@ -71,7 +78,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         }
     }
 
-    private function getAttribute(array $identifier): TextAttribute
+    private function getAttribute(array $identifier): AbstractAttribute
     {
         return $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             $identifier['enriched_entity_identifier'],
@@ -120,23 +127,49 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
     {
         $command = $editAttributeCommand->getCommand(EditRegularExpressionCommand::class);
 
-        return null !== $command && null !== $command->validationRule;
+        return null !== $command && null !== $command->regularExpression;
     }
 
-    private function buildViolationCannotUpdateValidationRuleToSomethingElseThanNone($editAttributeCommand): void
+    private function hasValidationRuleSetToRegularExpression(EditAttributeCommand $editAttributeCommand): bool
+    {
+        $command = $editAttributeCommand->getCommand(EditValidationRuleCommand::class);
+
+        return null !== $command
+            && null !== $command->validationRule
+            && AttributeValidationRule::REGULAR_EXPRESSION === $command->validationRule;
+    }
+
+    private function isValidationRuleSetToRegularExpression(
+        EditAttributeCommand $editAttributeCommand,
+        TextAttribute $databaseAttribute
+    ): bool {
+        if ($this->hasValidationRuleSetToRegularExpression($editAttributeCommand)) {
+            return true;
+        }
+
+        return $databaseAttribute->isValidationRuleSetToRegularExpression();
+    }
+
+    private function buildViolationCannotUpdateValidationRuleToSomethingElseThanNone(): void
     {
         $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::SHOULD_BE_A_SIMPLE_TEXT_TO_SET_VALIDATION_RULE_TO_SOMETHING_ELSE_THAN_NONE)
             ->addViolation();
     }
 
-    private function buildViolationCannotSetANonEmptyRegularExpression($editAttributeCommand): void
+    private function buildViolationCannotSetANonEmptyRegularExpression(): void
     {
         $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::CANNOT_SET_A_NON_EMPTY_REGULAR_EXPRESSION)->addViolation();
     }
 
-    private function buildViolationCannotSetRichTextEditorToTrue($editAttributeCommand): void
+    private function buildViolationCannotSetRichTextEditorToTrue(): void
     {
         $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::SHOULD_BE_A_TEXT_AREA_TO_UPDATE_IS_RICH_TEXT_EDITOR)
+            ->addViolation();
+    }
+
+    private function buildViolationCannotUpdateRegularExpression()
+    {
+        $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::CANNOT_UPDATE_REGULAR_EXPRESSION)
             ->addViolation();
     }
 }

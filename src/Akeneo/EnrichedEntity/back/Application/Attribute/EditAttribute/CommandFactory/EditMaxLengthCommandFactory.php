@@ -21,7 +21,7 @@ class EditMaxLengthCommandFactory implements EditAttributeCommandFactoryInterfac
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['max_length'])
+        return array_key_exists('max_length', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

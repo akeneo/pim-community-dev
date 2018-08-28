@@ -12,7 +12,7 @@ class EditAllowedExtensionsCommandFactory implements EditAttributeCommandFactory
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['allowed_extensions'])
+        return array_key_exists('allowed_extensions', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

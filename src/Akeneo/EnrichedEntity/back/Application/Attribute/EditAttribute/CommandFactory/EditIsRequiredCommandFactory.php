@@ -12,7 +12,7 @@ class EditIsRequiredCommandFactory implements EditAttributeCommandFactoryInterfa
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['is_required'])
+        return array_key_exists('is_required', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

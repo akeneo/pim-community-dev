@@ -12,7 +12,7 @@ class EditRegularExpressionCommandFactory implements EditAttributeCommandFactory
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['regular_expression'])
+        return array_key_exists('regular_expression', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

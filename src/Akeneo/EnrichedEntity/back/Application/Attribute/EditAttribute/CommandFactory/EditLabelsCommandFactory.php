@@ -21,7 +21,7 @@ class EditLabelsCommandFactory implements EditAttributeCommandFactoryInterface
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['labels'])
+        return array_key_exists('labels', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

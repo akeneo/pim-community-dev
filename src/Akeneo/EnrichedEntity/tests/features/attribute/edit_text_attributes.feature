@@ -72,8 +72,7 @@ Feature: Edit a text attribute of an enriched entity
   Scenario Outline: Updating with an invalid is text area
     Given an enriched entity with a text attribute 'name'
     When the user changes the is text area flag of 'name' to '<invalid_is_text_area_flag>'
-    Then the 'name' attribute should be a simple text
-    And there should be a validation error on the property 'isTextArea' with message '<message>'
+    Then there should be a validation error on the property 'isTextArea' with message '<message>'
 
     Examples:
       | invalid_is_text_area_flag | message                               |
@@ -119,7 +118,7 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating the validation rule if it's not a simple text fails
     Given an enriched entity with a text area attribute 'description'
     When the user changes the validation rule of 'description' to '"url"'
-    Then there should be a validation error with message 'Expected attribute "%description%" of enriched entity "%enriched_entity_identifier% to be a simple text to update the validation rule'
+    Then there should be a validation error with message 'A text area attribute cannot have a validation rule'
 
   @acceptance-back
   Scenario: Updating the validation rule and text area if it is not a simple text
@@ -150,19 +149,19 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating the regular expression if it's not a simple text fails
     Given an enriched entity with a text area attribute 'description'
     When the user changes the regular expression of 'description' to '"a+"'
-    Then there should be a validation error with message 'Cannot update the regular expression of attribute "%description%" for enriched entity "%dummy_identifier%" because it should be a simple text'
+    Then there should be a validation error with message 'The attribute should not have a regular expression'
 
   @acceptance-back
   Scenario: Updating the regular expression if it's not a validation by regular expression fails
     Given an enriched entity with a text attribute 'email' with no validation rule
-    When the user changes the regular expression of 'email' to '"\w+"'
-    Then there should be a validation error on the property 'regularExpression' with message 'Cannot update the regular expression of attribute "%email%" for enriched entity "%dummy_identifier%" because its validation rule is not set to regular expression'
+    When the user changes the regular expression of 'email' to '"[0-9]+[a-Z]"'
+    Then there should be a validation error with message 'Cannot set a regular expression on the text attribute'
 
   @acceptance-back
   Scenario: Updating the regular expression on a text area without updating the validation rule to regular expression and the is_textarea flag to false will fail
     Given an enriched entity with a text area attribute 'description'
-    When the user changes the regular expression of 'description' to '"\w+[0-9]*"'
-    Then there should be a validation error with message 'Cannot update the regular expression of attribute "%description%" for enriched entity "%dummy_identifier%" because it should be a simple text'
+    When the user changes the regular expression of 'description' to '"[0-9]*"'
+    Then there should be a validation error with message 'The attribute should not have a regular expression'
 
   # Rich text editor
   @acceptance-back
@@ -186,7 +185,7 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating the is rich text editor flag if the attribute is not a text area fails
     Given an enriched entity with a text attribute 'name'
     When the user changes the is_rich_text_editor flag of 'name' to 'true'
-    Then there should be a validation error with message 'Expected attribute "%name%" of enriched entity "%enriched_entity_identifier% to be a text area to update the is rich text editor flag'
+    Then there should be a validation error with message 'A simple text cannot have a rich text editor'
 
   @acceptance-back
   Scenario: Updating the is_text_area flag and the is_rich_text_editor flag on a simple text attribute

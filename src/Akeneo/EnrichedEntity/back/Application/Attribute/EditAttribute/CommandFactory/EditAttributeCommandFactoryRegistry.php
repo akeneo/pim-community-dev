@@ -32,12 +32,6 @@ class EditAttributeCommandFactoryRegistry implements EditAttributeCommandFactory
             }
         }
 
-        if (empty($factories)) {
-            throw new \RuntimeException(
-                sprintf('There was no edit attribute command factory found for attribute type "%s" or there was no updated to perform', $normalizedCommand['type'])
-            );
-        }
-
         return $factories;
     }
 }

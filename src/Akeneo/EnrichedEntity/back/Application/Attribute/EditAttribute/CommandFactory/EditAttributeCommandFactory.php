@@ -32,6 +32,7 @@ class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterfac
 
         $command = new EditAttributeCommand();
         $command->identifier = $normalizedCommand['identifier'];
+        $command->editCommands = [];
         foreach ($this->editAttributeCommandFactoryRegistry->getFactories($normalizedCommand) as $editCommandFactory) {
             $command->editCommands[] = $editCommandFactory->create($normalizedCommand);
         }

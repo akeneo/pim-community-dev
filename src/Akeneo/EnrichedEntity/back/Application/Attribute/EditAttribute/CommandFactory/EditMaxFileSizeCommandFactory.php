@@ -12,7 +12,7 @@ class EditMaxFileSizeCommandFactory implements EditAttributeCommandFactoryInterf
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['max_file_size'])
+        return array_key_exists('max_file_size', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

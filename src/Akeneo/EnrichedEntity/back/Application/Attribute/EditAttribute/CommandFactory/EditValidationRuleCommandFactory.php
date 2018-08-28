@@ -12,7 +12,7 @@ class EditValidationRuleCommandFactory implements EditAttributeCommandFactoryInt
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['validation_rule'])
+        return array_key_exists('validation_rule', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }

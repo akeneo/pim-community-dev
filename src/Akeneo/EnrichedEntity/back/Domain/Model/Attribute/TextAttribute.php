@@ -229,7 +229,7 @@ class TextAttribute extends AbstractAttribute
         return $this->isTextArea->isYes();
     }
 
-    public function isValidationRuleRegularExpression(): bool
+    public function isValidationRuleSetToRegularExpression(): bool
     {
         return $this->validationRule->isRegex();
     }

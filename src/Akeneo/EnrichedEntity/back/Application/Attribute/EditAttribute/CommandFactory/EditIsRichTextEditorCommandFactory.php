@@ -12,7 +12,7 @@ class EditIsRichTextEditorCommandFactory implements EditAttributeCommandFactoryI
 {
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['is_rich_text_editor'])
+        return array_key_exists('is_rich_text_editor', $normalizedCommand)
             && isset($normalizedCommand['identifier']['identifier'])
             && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
     }
