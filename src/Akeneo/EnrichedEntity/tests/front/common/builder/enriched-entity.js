@@ -26,6 +26,12 @@ class EnrichedEntityBuilder {
     return this;
   }
 
+  withImage(image) {
+    this.enrichedEntity.image = image;
+
+    return this;
+  }
+
   build() {
     return this.enrichedEntity;
   }
