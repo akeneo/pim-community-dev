@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
-namespace spec\Akeneo\Test\Acceptance\Attribute;
+namespace spec\Akeneo\Test\Acceptance\FileStorage;
 
-use Akeneo\Test\Acceptance\Tool\FileStorage\InMemoryFileStorer;
+use Akeneo\Test\Acceptance\FileStorage\InMemoryFileStorer;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
 class InMemoryFileStorerSpec extends ObjectBehavior
