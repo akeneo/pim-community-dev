@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientExce
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -154,8 +155,18 @@ class PimAISpec extends ObjectBehavior
         )->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this
-             ->subscribe($productSubscriptionRequest)
+            ->subscribe($productSubscriptionRequest)
             ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
+    }
+
+    /**
+     * @param SubscriptionWebservice $subscriptionApi
+     */
+    function it_fetches_products_from_pim_ai($subscriptionApi)
+    {
+        $subscriptionApi
+            ->fetchProducts()
+            ->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
     }
 
     /**

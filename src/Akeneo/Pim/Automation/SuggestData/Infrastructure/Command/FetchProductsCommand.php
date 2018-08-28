@@ -41,6 +41,6 @@ class FetchProductsCommand extends ContainerAwareCommand
      */
     private function getFetchProductsHandler()
     {
-        return $this->getContainer()->get('akeneo.pim.automation.suggest_data.product_fetch.handler.fetch_products');
+        return $this->getContainer()->get('akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products');
     }
 }
