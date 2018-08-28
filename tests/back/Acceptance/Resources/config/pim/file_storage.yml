@@ -1,0 +1,3 @@
+services:
+    akeneo_file_storage.file_storage.file.file_storer:
+        class: 'Akeneo\Test\Acceptance\FileStorage\InMemoryFileStorer'
