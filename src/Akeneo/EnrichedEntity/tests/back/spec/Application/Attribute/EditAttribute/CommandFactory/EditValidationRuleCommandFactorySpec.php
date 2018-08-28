@@ -2,8 +2,6 @@
 
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommandFactory;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommandFactory;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
@@ -21,6 +19,10 @@ class EditValidationRuleCommandFactorySpec extends ObjectBehavior
         $this->supports([
             'identifier'          => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
             'validation_rule' => AttributeValidationRule::URL,
+        ])->shouldReturn(true);
+        $this->supports([
+            'identifier'      => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'validation_rule' => null,
         ])->shouldReturn(true);
         $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],

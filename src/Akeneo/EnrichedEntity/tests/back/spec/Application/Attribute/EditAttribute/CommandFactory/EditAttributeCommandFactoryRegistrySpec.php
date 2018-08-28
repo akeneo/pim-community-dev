@@ -29,9 +29,4 @@ class EditAttributeCommandFactoryRegistrySpec extends ObjectBehavior
 
         $this->getFactories($normalizedCommand)->shouldReturn([$supportedFactory1, $supportedFactory2]);
     }
-
-    public function it_throws_if_the_corresponding_factory_is_not_found()
-    {
-        $this->shouldThrow(\RuntimeException::class)->during('getFactories', [['type' => 'unsupported_type']]);
-    }
 }

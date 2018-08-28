@@ -20,6 +20,10 @@ class EditLabelsCommandFactorySpec extends ObjectBehavior
             'labels'     => ['fr_FR' => 'Nickname'],
         ])->shouldReturn(true);
         $this->supports([
+            'identifier' => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'labels'     => null
+        ])->shouldReturn(true);
+        $this->supports([
             'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
             'max_file_size' => '172.50',
         ])->shouldReturn(false);

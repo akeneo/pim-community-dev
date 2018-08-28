@@ -20,6 +20,10 @@ class EditIsRequiredCommandFactorySpec extends ObjectBehavior
             'is_required'   => true,
         ])->shouldReturn(true);
         $this->supports([
+            'identifier'  => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'is_required' => null,
+        ])->shouldReturn(true);
+        $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);

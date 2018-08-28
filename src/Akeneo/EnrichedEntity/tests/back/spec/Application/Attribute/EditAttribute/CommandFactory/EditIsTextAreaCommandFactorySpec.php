@@ -16,8 +16,12 @@ class EditIsTextAreaCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_is_text_area_edits()
     {
         $this->supports([
-            'identifier'          => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier'   => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
             'is_text_area' => true,
+        ])->shouldReturn(true);
+        $this->supports([
+            'identifier'   => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'is_text_area' => null,
         ])->shouldReturn(true);
         $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],

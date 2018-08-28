@@ -21,6 +21,10 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
         ])->shouldReturn(true);
         $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'max_length' => null
+        ])->shouldReturn(true);
+        $this->supports([
+            'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);

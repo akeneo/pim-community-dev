@@ -21,6 +21,10 @@ class EditIsRichTextEditorCommandFactorySpec extends ObjectBehavior
             'is_rich_text_editor' => true,
         ])->shouldReturn(true);
         $this->supports([
+            'identifier'          => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'is_rich_text_editor' => null
+        ])->shouldReturn(true);
+        $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);

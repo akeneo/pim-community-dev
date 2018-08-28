@@ -20,6 +20,10 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
             'allowed_extensions' => ['pdf', 'png'],
         ])->shouldReturn(true);
         $this->supports([
+            'identifier'         => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'allowed_extensions' => null,
+        ])->shouldReturn(true);
+        $this->supports([
             'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
             'max_file_size' => '172.50',
         ])->shouldReturn(false);

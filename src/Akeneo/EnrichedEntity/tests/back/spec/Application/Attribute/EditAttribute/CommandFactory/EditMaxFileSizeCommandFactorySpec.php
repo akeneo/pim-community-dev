@@ -20,6 +20,10 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
             'max_file_size' => '172.50',
         ])->shouldReturn(true);
         $this->supports([
+            'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'max_file_size' => null
+        ])->shouldReturn(true);
+        $this->supports([
             'identifier' => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
