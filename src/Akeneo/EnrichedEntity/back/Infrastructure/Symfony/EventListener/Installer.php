@@ -112,6 +112,7 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
     CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
       ON UPDATE CASCADE
+      ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
 

@@ -127,6 +127,25 @@ SQL;
         return $enrichedEntities;
     }
 
+    public function deleteByIdentifier(EnrichedEntityIdentifier $identifier): void
+    {
+        $sql = <<<SQL
+        DELETE FROM akeneo_enriched_entity_enriched_entity
+        WHERE identifier = :identifier;
+SQL;
+
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'identifier' => $identifier
+            ]
+        );
+
+        if (1 !== $affectedRows) {
+            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
+        }
+    }
+
     private function hydrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -152,24 +171,5 @@ SQL;
         }
 
         return json_encode($labels);
-    }
-
-    public function deleteByIdentifier(EnrichedEntityIdentifier $identifier): void
-    {
-        $sql = <<<SQL
-        DELETE FROM akeneo_enriched_entity_enriched_entity
-        WHERE identifier = :identifier;
-SQL;
-
-        $affectedRows = $this->sqlConnection->executeUpdate(
-            $sql,
-            [
-                'identifier' => $identifier
-            ]
-        );
-
-        if (1 !== $affectedRows) {
-            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
-        }
     }
 }

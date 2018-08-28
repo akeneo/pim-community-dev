@@ -37,6 +37,8 @@ class DatabaseHelper
             DELETE FROM akeneo_enriched_entity_attribute;
             DELETE FROM akeneo_enriched_entity_record;
             DELETE FROM akeneo_enriched_entity_enriched_entity;
+            DELETE FROM pim_catalog_attribute_group;
+            DELETE FROM pim_catalog_attribute;
 SQL;
 
         $this->sqlConnection->executeQuery($resetQuery);

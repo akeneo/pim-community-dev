@@ -49,3 +49,8 @@ services:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityHasRecords
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_is_linked_to_at_least_one_product_attribute:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityIsLinkedToProductAttributes
+        arguments:
+            - '@pim_catalog.repository.attribute'

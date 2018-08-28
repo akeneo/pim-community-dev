@@ -19,6 +19,7 @@ $rules = [
     $builder->only([
         'Akeneo\EnrichedEntity\Application',
         'Akeneo\EnrichedEntity\Domain',
+        'Akeneo\Pim\EnrichedEntity\Component',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'PDO',
