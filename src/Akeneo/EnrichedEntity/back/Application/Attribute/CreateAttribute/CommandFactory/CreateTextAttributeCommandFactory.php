@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFac
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,7 +36,7 @@ class CreateTextAttributeCommandFactory extends AbstractCreateAttributeCommandFa
         $command->maxLength = $normalizedCommand['max_length'] ?? AttributeMaxLength::NO_LIMIT;
         $command->isTextArea = $normalizedCommand['is_text_area'] ?? false;
         $command->isRichTextEditor = $normalizedCommand['is_text_area'] ?? false;
-        $command->validationRule = $normalizedCommand['validation_rule'] ?? null;
+        $command->validationRule = $normalizedCommand['validation_rule'] ?? AttributeValidationRule::NONE;
         $command->regularExpression = $normalizedCommand['regular_expression'] ?? null;
 
         return $command;

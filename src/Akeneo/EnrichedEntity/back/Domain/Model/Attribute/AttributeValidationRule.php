@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeValidationRule
 {
-    public const NONE = null;
+    public const NONE = 'none';
     public const EMAIL = 'email';
     public const REGULAR_EXPRESSION = 'regular_expression';
     public const URL = 'url';

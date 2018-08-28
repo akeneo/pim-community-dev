@@ -18,17 +18,9 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
     'type',
   ];
 
-  //To remove when backend answer the good things
-  normalizedAttribute.is_required = false;
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
   //To remove when backend answer the good things
-  normalizedAttribute.allowed_extensions = [];
-  normalizedAttribute.max_length = null;
-  normalizedAttribute.max_file_size = null;
-  normalizedAttribute.is_textarea = false;
-  normalizedAttribute.is_rich_text_editor = false;
-  normalizedAttribute.validation_rule = 'none';
-  normalizedAttribute.regular_expression = null;
+  normalizedAttribute.is_textarea = normalizedAttribute.is_text_area;
 
   return denormalizeAttribute(normalizedAttribute);
 };

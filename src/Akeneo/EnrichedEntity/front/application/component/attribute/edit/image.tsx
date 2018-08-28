@@ -14,10 +14,12 @@ import {MaxFileSize} from 'akeneoenrichedentity/domain/model/attribute/type/imag
 export default ({
   attribute,
   onAdditionalPropertyUpdated,
+  onSubmit,
   errors,
 }: {
   attribute: ImageAttribute;
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+  onSubmit: () => void;
   errors: ValidationError[];
 }) => {
   return (
@@ -34,6 +36,12 @@ export default ({
             className="AknTextField"
             id="pim_enriched_entity.attribute.edit.input.max_file_size"
             name="max_file_size"
+            value={attribute.maxFileSize.stringValue()}
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+              if ('Enter' === event.key) {
+                onSubmit();
+              }
+            }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxFileSize.isValid(event.currentTarget.value)) {
                 event.currentTarget.value = attribute.maxFileSize.stringValue();

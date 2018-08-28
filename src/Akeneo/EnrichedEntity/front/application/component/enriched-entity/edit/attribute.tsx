@@ -9,11 +9,12 @@ import AttributeModel, {
   denormalizeAttribute,
   NormalizedAttribute,
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
 import EnrichedEntity, {
   denormalizeEnrichedEntity,
 } from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {deleteAttribute} from 'akeneoenrichedentity/application/action/attribute/list';
-import {attributeEditionStart} from 'akeneoenrichedentity/domain/event/attribute/edit';
+import {attributeEditionStart} from 'akeneoenrichedentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoenrichedentity/application/component/attribute/edit';
 
 interface StateProps {
@@ -30,7 +31,7 @@ interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
     onAttributeDelete: (attribute: AttributeModel) => void;
-    onAttributeEdit: (attribute: AttributeModel) => void;
+    onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
@@ -66,7 +67,7 @@ const renderAttributesPlaceholder = () => {
 
 interface AttributeViewProps {
   attribute: NormalizedAttribute;
-  onAttributeEdit: (attribute: AttributeModel) => void;
+  onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   onAttributeDelete: (attribute: AttributeModel) => void;
   locale: string;
 }
@@ -124,9 +125,9 @@ class AttributeView extends React.Component<AttributeViewProps> {
           />
           <button
             className="AknIconButton AknIconButton--edit"
-            onClick={() => onAttributeEdit(attribute)}
+            onClick={() => onAttributeEdit(attribute.getIdentifier())}
             onKeyPress={(event: React.KeyboardEvent<HTMLButtonElement>) => {
-              if (' ' === event.key) onAttributeEdit(attribute);
+              if (' ' === event.key) onAttributeEdit(attribute.getIdentifier());
             }}
           />
         </div>
@@ -142,10 +143,6 @@ class AttributesView extends React.Component<CreateProps> {
     if (this.addButton) {
       this.addButton.focus();
     }
-  }
-
-  public shouldComponentUpdate(nextProps: CreateProps) {
-    return !nextProps.createAttribute.active;
   }
 
   render() {
@@ -236,8 +233,8 @@ export default connect(
         onAttributeDelete: (attribute: AttributeModel) => {
           dispatch(deleteAttribute(attribute));
         },
-        onAttributeEdit: (attribute: AttributeModel) => {
-          dispatch(attributeEditionStart(attribute));
+        onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
+          dispatch(attributeEditionStart(attributeIdentifier));
         },
       },
     };

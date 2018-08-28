@@ -10,7 +10,7 @@ export class MaxLength {
     Object.freeze(this);
   }
   public static isValid(value: any): boolean {
-    return !isNaN(parseInt(value)) || '' === value || null === value;
+    return (!isNaN(parseInt(value)) && 0 < parseInt(value)) || '' === value || null === value;
   }
   public static createFromNormalized(normalizedMaxLength: NormalizedMaxLength) {
     return new MaxLength(normalizedMaxLength);

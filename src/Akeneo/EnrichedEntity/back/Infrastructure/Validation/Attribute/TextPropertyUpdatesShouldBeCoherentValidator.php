@@ -113,7 +113,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
     {
         $command = $editAttributeCommand->getCommand(EditValidationRuleCommand::class);
 
-        return null !== $command && null !== $command->validationRule;
+        return null !== $command && AttributeValidationRule::NONE !== $command->validationRule;
     }
 
     private function isRichTextEditorSetToTrue(EditAttributeCommand $editAttributeCommand)

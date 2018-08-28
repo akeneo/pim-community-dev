@@ -103,7 +103,7 @@ SQL;
             $additionnalProperties = json_decode($result['additional_properties'], true);
 
             if ('text' === $result['attribute_type']) {
-                $maxLength = (int) $additionnalProperties['max_length'];
+                $maxLength = $additionnalProperties['max_length'];
                 $isTextArea = (bool) $additionnalProperties['is_text_area'];
                 $isRichTextEditor = (bool) $additionnalProperties['is_rich_text_editor'];
                 $validationRule = $additionnalProperties['validation_rule'];
@@ -118,7 +118,7 @@ SQL;
                 $textAttributeDetails->isRequired = AttributeIsRequired::fromBoolean($isRequired);
                 $textAttributeDetails->valuePerChannel = AttributeValuePerChannel::fromBoolean($valuePerChannel);
                 $textAttributeDetails->valuePerLocale = AttributeValuePerLocale::fromBoolean($valuePerLocale);
-                $textAttributeDetails->maxLength = AttributeMaxLength::fromInteger($maxLength);
+                $textAttributeDetails->maxLength = $maxLength === null ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($maxLength);
                 $textAttributeDetails->isTextArea = AttributeIsTextArea::fromBoolean($isTextArea);
                 $textAttributeDetails->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean($isRichTextEditor);
                 $textAttributeDetails->validationRule = null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule);
@@ -126,7 +126,7 @@ SQL;
 
                 $recordDetails[] = $textAttributeDetails;
             } elseif ('image' === $result['attribute_type']) {
-                $maxFileSize = (string) $additionnalProperties['max_file_size'];
+                $maxFileSize = $additionnalProperties['max_file_size'];
                 $extensions = $additionnalProperties['allowed_extensions'];
 
                 $imageAttributeDetails = new ImageAttributeDetails();
@@ -138,7 +138,7 @@ SQL;
                 $imageAttributeDetails->isRequired = AttributeIsRequired::fromBoolean($isRequired);
                 $imageAttributeDetails->valuePerChannel = AttributeValuePerChannel::fromBoolean($valuePerChannel);
                 $imageAttributeDetails->valuePerLocale = AttributeValuePerLocale::fromBoolean($valuePerLocale);
-                $imageAttributeDetails->maxFileSize = AttributeMaxFileSize::fromString($maxFileSize);
+                $imageAttributeDetails->maxFileSize = null === $maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($maxFileSize);
                 $imageAttributeDetails->allowedExtensions = AttributeAllowedExtensions::fromList($extensions);
 
                 $recordDetails[] = $imageAttributeDetails;

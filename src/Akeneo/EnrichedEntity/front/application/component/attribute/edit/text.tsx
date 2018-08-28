@@ -55,10 +55,12 @@ const getValidationRuleOptions = (): DropdownElement[] => {
 export default ({
   attribute,
   onAdditionalPropertyUpdated,
+  onSubmit,
   errors,
 }: {
   attribute: TextAttribute;
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+  onSubmit: () => void;
   errors: ValidationError[];
 }) => {
   return (
@@ -76,6 +78,11 @@ export default ({
             id="pim_enriched_entity.attribute.edit.input.max_length"
             name="max_length"
             value={attribute.maxLength.stringValue()}
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+              if ('Enter' === event.key) {
+                onSubmit();
+              }
+            }}
             onChange={(event: React.FormEvent<HTMLInputElement>) => {
               if (!MaxLength.isValid(event.currentTarget.value)) {
                 event.currentTarget.value = attribute.maxLength.stringValue();
@@ -170,6 +177,11 @@ export default ({
                 id="pim_enriched_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"
                 value={attribute.regularExpression.stringValue()}
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                  if ('Enter' === event.key) {
+                    onSubmit();
+                  }
+                }}
                 onChange={(event: React.FormEvent<HTMLInputElement>) =>
                   onAdditionalPropertyUpdated(
                     'regular_expression',

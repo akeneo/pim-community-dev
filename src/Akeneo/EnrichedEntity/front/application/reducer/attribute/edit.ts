@@ -21,7 +21,8 @@ import {NormalizedMaxLength} from 'akeneoenrichedentity/domain/model/attribute/t
 
 export interface EditState {
   active: boolean;
-  dirty: boolean;
+  isDirty: boolean;
+  isSaving: boolean;
   originalData: string;
   data: NormalizedAttribute;
   errors: ValidationError[];
@@ -29,7 +30,8 @@ export interface EditState {
 
 const initEditState = (): EditState => ({
   active: false,
-  dirty: false,
+  isDirty: false,
+  isSaving: false,
   originalData: '',
   data: {
     identifier: {
@@ -196,7 +198,7 @@ export default (
       if (undefined === newAttribute) {
         return {
           ...state,
-          dirty: false,
+          isDirty: false,
         };
       }
 
@@ -211,7 +213,7 @@ export default (
         ...state,
         active: true,
         data: attribute,
-        dirty: false,
+        isDirty: false,
         originalData: JSON.stringify(attribute),
       };
       break;
@@ -225,7 +227,7 @@ export default (
       state = {
         ...state,
         data: labelUpdatedAttribute,
-        dirty: isDirty(state, labelUpdatedAttribute),
+        isDirty: isDirty(state, labelUpdatedAttribute),
       };
       break;
     case 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED':
@@ -238,7 +240,7 @@ export default (
       state = {
         ...state,
         data: isRequiredUpdatedAttribute,
-        dirty: isDirty(state, isRequiredUpdatedAttribute),
+        isDirty: isDirty(state, isRequiredUpdatedAttribute),
       };
       break;
     case 'ATTRIBUTE_EDITION_ADDITIONAL_PROPERTY_UPDATED':
@@ -247,7 +249,7 @@ export default (
       if (data !== state.data) {
         state = {
           ...state,
-          dirty: isDirty(state, data),
+          isDirty: isDirty(state, data),
           data,
         };
       }
@@ -259,7 +261,7 @@ export default (
       state = {
         ...state,
         active: false,
-        dirty: false,
+        isDirty: false,
       };
       break;
 
@@ -267,14 +269,15 @@ export default (
       state = {
         ...state,
         errors: [],
+        isSaving: true,
       };
       break;
 
     case 'ATTRIBUTE_EDITION_SUCCEEDED':
       state = {
         ...state,
-        active: false,
-        dirty: false,
+        isDirty: false,
+        isSaving: false,
       };
       break;
 
@@ -282,6 +285,7 @@ export default (
       state = {
         ...state,
         errors: errors,
+        isSaving: false,
       };
       break;
     default:

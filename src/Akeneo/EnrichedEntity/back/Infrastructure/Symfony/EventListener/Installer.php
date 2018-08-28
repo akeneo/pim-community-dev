@@ -271,10 +271,10 @@ INSERT INTO `akeneo_enriched_entity_attribute` (
   `additional_properties`
   )
 VALUES
-  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null}'),
+  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_text_area": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
   ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}'),
-  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null}'),
-  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255}'),
+  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_text_area": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255, "is_text_area": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
   ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}')
 SQL;
 

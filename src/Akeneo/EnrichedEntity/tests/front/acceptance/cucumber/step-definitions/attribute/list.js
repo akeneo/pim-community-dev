@@ -42,13 +42,17 @@ module.exports = async function(cucumber) {
           },
           enriched_entity_identifier: enrichedEntityIdentifier,
           code: normalizedAttribute.code,
-          required: false,
+          is_required: false,
           order: 0,
           value_per_locale: true,
           value_per_channel: false,
           type: 'text',
           labels: JSON.parse(normalizedAttribute.labels),
           max_length: 255,
+          is_text_area: false,
+          is_rich_text_editor: false,
+          validation_rule: 'none',
+          regular_expression: null,
         };
       } else if ('image' === normalizedAttribute.type) {
         return {
@@ -58,7 +62,7 @@ module.exports = async function(cucumber) {
           },
           enriched_entity_identifier: enrichedEntityIdentifier,
           code: normalizedAttribute.code,
-          required: false,
+          is_required: false,
           order: 1,
           value_per_locale: true,
           value_per_channel: false,

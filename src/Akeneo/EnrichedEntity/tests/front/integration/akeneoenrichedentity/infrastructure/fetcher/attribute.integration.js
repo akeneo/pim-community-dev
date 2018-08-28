@@ -31,6 +31,11 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               labels: {
                 en_US: 'Description',
               },
+              max_length: 12,
+              is_text_area: true,
+              is_rich_text_editor: false,
+              validation_rule: 'none',
+              regular_expression: null,
             },
             {
               identifier: {
@@ -47,6 +52,8 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               labels: {
                 en_US: 'Side view',
               },
+              max_file_size: '123.4',
+              allowed_extensions: ['jpg', 'png'],
             },
           ]),
         });
@@ -78,11 +85,11 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           isRichTextEditor: false,
         },
         isTextarea: {
-          isTextarea: false,
+          isTextarea: true,
         },
         labelCollection: {labels: {en_US: 'Description'}},
         maxLength: {
-          maxLength: null,
+          maxLength: 12,
         },
         regularExpression: {
           regularExpression: null,
@@ -91,7 +98,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           validationRule: 'none',
         },
         order: 0,
-        isRequired: false,
+        isRequired: true,
         type: 'text',
         valuePerChannel: false,
         valuePerLocale: true,
@@ -118,10 +125,10 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
         valuePerChannel: false,
         valuePerLocale: true,
         allowedExtensions: {
-          allowedExtensions: [],
+          allowedExtensions: ['jpg', 'png'],
         },
         maxFileSize: {
-          maxFileSize: null,
+          maxFileSize: '123.4',
         },
       },
     ]);

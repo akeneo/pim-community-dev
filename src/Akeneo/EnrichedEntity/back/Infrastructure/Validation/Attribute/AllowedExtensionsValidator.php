@@ -33,7 +33,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
-        if ($this->isArray($allowedExtensions)) {
+        if ($this->isNotArray($allowedExtensions)) {
             return;
         }
 
@@ -41,7 +41,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->isArrayOfStrings($allowedExtensions)) {
+        if ($this->isNotArrayOfStrings($allowedExtensions)) {
             return;
         }
 
@@ -57,7 +57,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
         }
     }
 
-    private function isArray($allowedExtensions): bool
+    private function isNotArray($allowedExtensions): bool
     {
         $validator = Validation::createValidator();
         $violations = $validator->validate($allowedExtensions, [
@@ -72,12 +72,12 @@ class AllowedExtensionsValidator extends ConstraintValidator
         return $notValid;
     }
 
-    private function isArrayOfStrings($allowedExtensions): bool
+    private function isNotArrayOfStrings($allowedExtensions): bool
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($allowedExtensions, [
-            new Assert\Collection([new Assert\Type('string')]),
-        ]);
+        foreach ($allowedExtensions as $allowedExtension) {
+            $violations = $validator->validate($allowedExtension, [new Assert\Type('string')]);
+        }
 
         $notValid = $violations->count() > 0;
         if ($notValid) {

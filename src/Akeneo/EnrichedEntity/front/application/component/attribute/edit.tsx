@@ -17,7 +17,7 @@ import Attribute, {
   denormalizeAttribute,
 } from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
+import {saveAttribute} from 'akeneoenrichedentity/application/action/attribute/edit';
 import TextPropertyView from 'akeneoenrichedentity/application/component/attribute/edit/text';
 import ImagePropertyView from 'akeneoenrichedentity/application/component/attribute/edit/image';
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
@@ -28,6 +28,7 @@ interface StateProps {
   context: {
     locale: string;
   };
+  isSaving: boolean;
   attribute: Attribute;
   errors: ValidationError[];
 }
@@ -49,6 +50,7 @@ class InvalidAttributeTypeError extends Error {}
 const getAdditionalProperty = (
   attribute: Attribute,
   onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void,
+  onSubmit: () => void,
   errors: ValidationError[]
 ): JSX.Element => {
   switch (attribute.type) {
@@ -57,6 +59,7 @@ const getAdditionalProperty = (
         <TextPropertyView
           attribute={attribute as TextAttribute}
           onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+          onSubmit={onSubmit}
           errors={errors}
         />
       );
@@ -65,6 +68,7 @@ const getAdditionalProperty = (
         <ImagePropertyView
           attribute={attribute as ImageAttribute}
           onAdditionalPropertyUpdated={onAdditionalPropertyUpdated}
+          onSubmit={onSubmit}
           errors={errors}
         />
       );
@@ -99,17 +103,18 @@ class Edit extends React.Component<EditProps> {
     return (
       <React.Fragment>
         <div className="AknQuickEdit">
+          {this.props.isSaving ? <div className="AknLoadingMask" /> : null}
           <div className="AknSubsection">
             <header className="AknSubsection-title AknSubsection-title--sticky">
               {__('pim_enriched_entity.attribute.edit.common.title')}
               <span
-                title={__('pim_enriched_entity.attribute.edit.cancel')}
-                className="AknButtonList-item AknButton-squareIcon AknButton-squareIcon--small AknButton-squareIcon--dismiss"
+                title={__('pim_enriched_entity.attribute.edit.save')}
+                className="AknButtonList-item AknButton-squareIcon AknButton-squareIcon--small AknButton-squareIcon--validate"
                 tabIndex={0}
-                onClick={this.props.events.onCancel}
+                onClick={this.props.events.onSubmit}
                 onKeyPress={(event: React.KeyboardEvent<HTMLElement>) => {
                   if (' ' === event.key) {
-                    this.props.events.onCancel();
+                    this.props.events.onSubmit();
                   }
                 }}
               />
@@ -218,6 +223,7 @@ class Edit extends React.Component<EditProps> {
             {getAdditionalProperty(
               this.props.attribute,
               this.props.events.onAdditionalPropertyUpdated,
+              this.props.events.onSubmit,
               this.props.errors
             )}
           </div>
@@ -234,6 +240,7 @@ export default connect(
     return {
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
+      isSaving: state.attribute.isSaving,
       context: {
         locale: locale,
       },
@@ -255,7 +262,7 @@ export default connect(
           dispatch(attributeEditionCancel());
         },
         onSubmit: () => {
-          dispatch(createAttribute());
+          dispatch(saveAttribute());
         },
       },
     } as DispatchProps;

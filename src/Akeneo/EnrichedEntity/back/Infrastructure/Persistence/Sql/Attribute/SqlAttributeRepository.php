@@ -56,7 +56,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
     public function create(AbstractAttribute $attribute): void
     {
         $normalizedAttribute = $attribute->normalize();
-        $additionalProperties = $this->getAdditionalOptions($normalizedAttribute);
+        $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $insert = <<<SQL
         INSERT INTO akeneo_enriched_entity_attribute (
             identifier,
@@ -81,6 +81,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             :additional_properties
         );
 SQL;
+
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
@@ -109,7 +110,36 @@ SQL;
 
     public function update(AbstractAttribute $attribute): void
     {
-        throw new NotImplementedException('not implemented');
+        $normalizedAttribute = $attribute->normalize();
+        $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
+        $insert = <<<SQL
+        UPDATE akeneo_enriched_entity_attribute
+        SET
+            labels = :labels,
+            attribute_order = :attribute_order,
+            is_required = :is_required,
+            additional_properties = :additional_properties
+        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+SQL;
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $insert,
+            [
+                'identifier'                 => $normalizedAttribute['code'],
+                'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
+                'labels'                     => json_encode($normalizedAttribute['labels']),
+                'attribute_order'            => $normalizedAttribute['order'],
+                'is_required'                => $normalizedAttribute['is_required'],
+                'additional_properties'      => json_encode($additionalProperties),
+            ],
+            [
+                'is_required' => Type::getType('boolean'),
+            ]
+        );
+        if ($affectedRows > 1) {
+            throw new \RuntimeException(
+                sprintf('Expected to edit one attribute, but %d rows were affected', $affectedRows)
+            );
+        }
     }
 
     /**
@@ -188,7 +218,7 @@ SQL;
         return $attributes;
     }
 
-    private function getAdditionalOptions(array $normalizedAttribute): array
+    private function getAdditionalProperties(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);
         unset($normalizedAttribute['enriched_entity_identifier']);
@@ -237,7 +267,7 @@ SQL;
                     AttributeIsRequired::fromBoolean($isRequired),
                     AttributeValuePerChannel::fromBoolean($valuePerChannel),
                     AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                    AttributeMaxLength::fromInteger($maxLength),
+                    null === $maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($maxLength),
                     AttributeIsRichTextEditor::fromBoolean($isRichTextEditor)
                 );
             }
@@ -273,7 +303,7 @@ SQL;
                 AttributeIsRequired::fromBoolean($isRequired),
                 AttributeValuePerChannel::fromBoolean($valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                AttributeMaxFileSize::fromString($maxFileSize),
+                null === $maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($maxFileSize),
                 AttributeAllowedExtensions::fromList($extensions)
             );
         }

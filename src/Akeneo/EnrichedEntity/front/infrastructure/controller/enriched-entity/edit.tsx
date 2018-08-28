@@ -56,9 +56,7 @@ class EnrichedEntityEditController extends BaseController {
   }
 
   beforeUnload = () => {
-    const state = this.store.getState();
-
-    if (state.form.state.isDirty) {
+    if (this.isDirty()) {
       return __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
     }
 
@@ -68,10 +66,15 @@ class EnrichedEntityEditController extends BaseController {
   };
 
   canLeave() {
-    const state = this.store.getState();
     const message = __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
 
-    return state.form.state.isDirty ? confirm(message) : true;
+    return this.isDirty() ? confirm(message) : true;
+  }
+
+  isDirty() {
+    const state = this.store.getState();
+
+    return state.form.state.isDirty || state.attribute.isDirty;
   }
 }
 
