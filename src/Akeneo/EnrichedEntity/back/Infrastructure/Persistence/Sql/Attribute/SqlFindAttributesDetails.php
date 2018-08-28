@@ -122,7 +122,7 @@ SQL;
                 $textAttributeDetails->isTextArea = AttributeIsTextArea::fromBoolean($isTextArea);
                 $textAttributeDetails->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean($isRichTextEditor);
                 $textAttributeDetails->validationRule = null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule);
-                $textAttributeDetails->regularExpression = null === $regularExpression ? AttributeRegularExpression::emptyRegularExpression() : AttributeRegularExpression::fromString($regularExpression);
+                $textAttributeDetails->regularExpression = null === $regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($regularExpression);
 
                 $recordDetails[] = $textAttributeDetails;
             } elseif ('image' === $result['attribute_type']) {

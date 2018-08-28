@@ -110,7 +110,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxLength::fromInteger(25),
                 AttributeValidationRule::none(),
-                AttributeRegularExpression::emptyRegularExpression()
+                AttributeRegularExpression::createEmpty()
             )
         );
     }

@@ -19,14 +19,14 @@ class AttributeRegularExpressionSpec extends ObjectBehavior
 
     function it_can_be_created_with_no_regular_expression()
     {
-        $noRegex = $this::emptyRegularExpression();
+        $noRegex = $this::createEmpty();
         $noRegex->normalize()->shouldReturn(null);
     }
 
     function it_says_if_it_holds_no_regularExpression()
     {
         $this->isEmpty()->shouldReturn(false);
-        $this::emptyRegularExpression()->isEmpty()->shouldReturn(true);
+        $this::createEmpty()->isEmpty()->shouldReturn(true);
     }
 
     function it_normalizes_itself()

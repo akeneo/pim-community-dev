@@ -381,7 +381,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(100),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
         $portrait = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'portrait'),

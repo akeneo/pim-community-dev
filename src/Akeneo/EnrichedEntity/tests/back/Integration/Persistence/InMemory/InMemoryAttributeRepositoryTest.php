@@ -59,7 +59,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
 
         $this->attributeRepository->create($textAttribute);
@@ -85,7 +85,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
 
         $this->attributeRepository->create($textAttribute);
@@ -111,7 +111,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
 
         $this->attributeRepository->create($textAttribute);
@@ -140,7 +140,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
 
         $this->expectException(\RuntimeException::class);
@@ -186,7 +186,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
     }
 }

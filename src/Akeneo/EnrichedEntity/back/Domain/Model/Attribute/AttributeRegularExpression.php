@@ -10,7 +10,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
  */
 class AttributeRegularExpression
 {
-    public const EMPTY_REGULAR_EXPRESSION = null;
+    public const EMPTY = null;
 
     /** @var ?string */
     private $regularExpression;
@@ -25,14 +25,14 @@ class AttributeRegularExpression
         return new self($regularExpression);
     }
 
-    public static function emptyRegularExpression(): self
+    public static function createEmpty(): self
     {
-        return new self(self::EMPTY_REGULAR_EXPRESSION);
+        return new self(self::EMPTY);
     }
 
     public function isEmpty(): bool
     {
-        return self::EMPTY_REGULAR_EXPRESSION === $this->regularExpression;
+        return self::EMPTY === $this->regularExpression;
     }
 
     public function normalize(): ?string

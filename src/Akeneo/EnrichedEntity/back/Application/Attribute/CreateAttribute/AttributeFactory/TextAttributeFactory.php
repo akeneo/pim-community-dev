@@ -85,7 +85,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
             AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength),
             AttributeValidationRule::NONE === $command->validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($command->validationRule),
-            AttributeRegularExpression::EMPTY_REGULAR_EXPRESSION === $command->regularExpression ? AttributeRegularExpression::emptyRegularExpression() : AttributeRegularExpression::fromString($command->regularExpression)
+            AttributeRegularExpression::EMPTY === $command->regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($command->regularExpression)
         );
     }
 }

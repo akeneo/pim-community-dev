@@ -286,7 +286,7 @@ SQL;
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
                 AttributeMaxLength::fromInteger($maxLength),
                 null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule),
-                null === $regularExpression ? AttributeRegularExpression::emptyRegularExpression() : AttributeRegularExpression::fromString($regularExpression)
+                null === $regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($regularExpression)
             );
         }
 

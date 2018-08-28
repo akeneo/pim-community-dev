@@ -81,7 +81,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
     }
 
@@ -98,7 +98,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::EMAIL),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         );
     }
 
@@ -115,7 +115,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression(),
+            AttributeRegularExpression::createEmpty(),
         ]);
     }
 
@@ -132,7 +132,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression(),
+            AttributeRegularExpression::createEmpty(),
         ]);
     }
 
@@ -149,7 +149,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::emptyRegularExpression(),
+            AttributeRegularExpression::createEmpty(),
         ]);
     }
 
@@ -375,7 +375,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         ]);
         $this->setValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
         $normalizedAttribute = $this->normalize();
@@ -403,7 +403,7 @@ class TextAttributeSpec extends ObjectBehavior
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::EMAIL);
-        $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeRegularExpression::EMPTY_REGULAR_EXPRESSION);
+        $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeRegularExpression::EMPTY);
     }
 
     function it_does_not_update_the_validation_rule_a_text_area_attribute_if_the_validation_rule_is_not_none()
@@ -455,7 +455,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300),
             AttributeIsRichTextEditor::fromBoolean(false)
         ]);
-        $this->setRegularExpression(AttributeRegularExpression::emptyRegularExpression());
+        $this->setRegularExpression(AttributeRegularExpression::createEmpty());
         $this->normalize()['regular_expression']->shouldBeEqualTo(null);
     }
 
@@ -511,7 +511,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::URL),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         ]);
         $this->shouldThrow(\LogicException::class)->duringSetRegularExpression(AttributeRegularExpression::fromString('/\w+/'));
     }
@@ -566,7 +566,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         ]);
         $this->shouldThrow(\LogicException::class)->duringSetIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
     }
@@ -584,7 +584,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression()
+            AttributeRegularExpression::createEmpty()
         ]);
         $this->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(false));
         $this->normalize()['is_rich_text_editor']->shouldBeEqualTo(false);

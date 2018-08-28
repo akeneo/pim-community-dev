@@ -164,7 +164,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $nameAttribute->isTextArea = AttributeIsTextArea::fromBoolean(true);
         $nameAttribute->isRichTextEditor = AttributeIsTextArea::fromBoolean(true);
         $nameAttribute->validationRule = AttributeValidationRule::none();
-        $nameAttribute->regularExpression = AttributeRegularExpression::emptyRegularExpression();
+        $nameAttribute->regularExpression = AttributeRegularExpression::createEmpty();
 
         return $nameAttribute;
     }
@@ -184,7 +184,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $emailAttribute->isTextArea = AttributeIsTextArea::fromBoolean(false);
         $emailAttribute->isRichTextEditor = AttributeIsTextArea::fromBoolean(false);
         $emailAttribute->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
-        $emailAttribute->regularExpression = AttributeRegularExpression::emptyRegularExpression();
+        $emailAttribute->regularExpression = AttributeRegularExpression::createEmpty();
 
         return $emailAttribute;
     }
