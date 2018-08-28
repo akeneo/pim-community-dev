@@ -18,7 +18,7 @@ final class ProductFetchingContext implements Context
     private $fetchProductsHandler;
 
     /** @var SubscriptionFake */
-    private $subscriptionFake;
+    private $subscriptionApi;
 
     /**
      * @param FetchProductsHandler $fetchProductsHandler
@@ -26,10 +26,10 @@ final class ProductFetchingContext implements Context
      */
     public function __construct(
         FetchProductsHandler $fetchProductsHandler,
-        SubscriptionFake $subscriptionFake
+        SubscriptionFake $subscriptionApi
     ) {
         $this->fetchProductsHandler = $fetchProductsHandler;
-        $this->subscriptionFake = $subscriptionFake;
+        $this->subscriptionApi = $subscriptionApi;
     }
 
     /**
@@ -37,7 +37,23 @@ final class ProductFetchingContext implements Context
      */
     public function theProductsAreFetchedFromPimAi()
     {
-        $this->fetchProductsHandler->handle(new FetchProductsCommand());
+        try {
+            $this->fetchProductsHandler->handle(new FetchProductsCommand());
+        } catch (\Exception $e) {
+
+        }
+    }
+
+    /**
+     *
+     */
+    public function theProductsHaveNotBeenFetchedFromPimAi()
+    {
+        try {
+
+        } catch (\Exception $e) {
+
+        }
     }
 
     /**
@@ -48,6 +64,6 @@ final class ProductFetchingContext implements Context
     public function lastFetchHaveBeenDone($lastFetchDate)
     {
         // TODO: Rework with a real date later (See APAI-170)
-        $this->subscriptionFake->defineLastFetchDate($lastFetchDate);
+        $this->subscriptionApi->defineLastFetchDate($lastFetchDate);
     }
 }

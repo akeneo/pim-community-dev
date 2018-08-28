@@ -73,6 +73,14 @@ final class SubscriptionFake implements SubscriptionApiInterface
      */
     public function fetchProducts(): ApiResponse
     {
+        switch ($this->status) {
+            case self::STATUS_EXPIRED_TOKEN:
+                throw new InvalidTokenException();
+                break;
+            default:
+                break;
+        }
+
         $filename = sprintf('fetch-%s.json', $this->lastFetchDate);
 
         return new ApiResponse(
