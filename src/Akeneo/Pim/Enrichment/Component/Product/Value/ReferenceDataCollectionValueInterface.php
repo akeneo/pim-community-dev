@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -12,10 +12,15 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ReferenceDataValueInterface extends ValueInterface
+interface ReferenceDataCollectionValueInterface extends ValueInterface
 {
     /**
-     * @return ReferenceDataInterface
+     * @return ReferenceDataInterface[]
      */
     public function getData();
+
+    /**
+     * @return array
+     */
+    public function getReferenceDataCodes();
 }

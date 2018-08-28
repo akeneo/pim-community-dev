@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Value\ReferenceDataValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValueInterface;
 use Prophecy\Argument;
 
 class ReferenceDataAttributeCopierSpec extends ObjectBehavior
