@@ -23,7 +23,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         AverageMaxQuery   $categoriesInOneCategoryAverageMax,
         AverageMaxQuery   $categoryLevelsAverageMax,
         CountQuery        $productValueCountQuery,
-        AverageMaxQuery   $productValueAverageMaxQuery
+        AverageMaxQuery   $productValueAverageMaxQuery,
+        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -38,7 +39,8 @@ class DBDataCollectorSpec extends ObjectBehavior
             $categoriesInOneCategoryAverageMax,
             $categoryLevelsAverageMax,
             $productValueCountQuery,
-            $productValueAverageMaxQuery
+            $productValueAverageMaxQuery,
+            $productValuePerFamilyAverageMaxQuery
         );
     }
 
@@ -61,7 +63,8 @@ class DBDataCollectorSpec extends ObjectBehavior
         $categoriesInOneCategoryAverageMax,
         $categoryLevelsAverageMax,
         $productValueCountQuery,
-        $productValueAverageMaxQuery
+        $productValueAverageMaxQuery,
+        $productValuePerFamilyAverageMaxQuery
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
@@ -76,6 +79,7 @@ class DBDataCollectorSpec extends ObjectBehavior
         $categoryLevelsAverageMax->fetch()->willReturn(new AverageMaxVolumes(6, 4, -1, 'average_max_category_levels'));
         $productValueCountQuery->fetch()->willReturn(new CountVolume(254897, -1, 'count_product_values'));
         $productValueAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(8,7, -1, 'average_max_product_values'));
+        $productValuePerFamilyAverageMaxQuery->fetch()->willReturn(new AverageMaxVolumes(12,10, -1, 'average_max_product_values_per_family'));
 
         $this->collect()->shouldReturn(
             [
@@ -91,7 +95,9 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'max_category_in_one_category'   => 25,
                 'max_category_levels'   => 6,
                 'nb_product_values'     => 254897,
-                'avg_product_values_by_product' => 7
+                'avg_product_values_by_product' => 7,
+                'avg_product_values_per_family' => 10,
+                'max_product_values_per_family' => 12
             ]
         );
     }

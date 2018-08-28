@@ -45,6 +45,11 @@
 - PIM-7613: Fix translations of boolean attributes
 - PIM-7609: Handle 'empty' and 'not empty' filter types in string filter
 
+## BC breaks
+
+- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector.php` to add `Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValuesPerFamily` as a new argument
+- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector.php` to add `Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUseableAsGridFilterAttributes`, `Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxLocalizableAttributesPerFamily`, `Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxScopableAttributesPerFamily` and `Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxLocalizableAndScopableAttributesPerFamily` as new arguments
+
 # 2.3.5 (2018-08-22)
 
 ## Bug fixes

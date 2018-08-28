@@ -54,6 +54,7 @@ services:
             - '@pim_volume_monitoring.persistence.query.average_max_category_levels'
             - '@pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values'
             - '@pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values'
+            - '@pim_volume_monitoring.persistence.query.average_max_product_values_per_family'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
@@ -65,6 +66,10 @@ services:
             - '@pim_volume_monitoring.persistence.query.count_localizable_attributes'
             - '@pim_volume_monitoring.persistence.query.count_scopable_attributes'
             - '@pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes'
+            - '@pim_volume_monitoring.persistence.query.count_useable_as_grid_filter_attributes'
+            - '@pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family'
+            - '@pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family'
+            - '@pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family'
         tags:
             - { name: pim_analytics.data_collector, type: system_info_report }
 

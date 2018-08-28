@@ -189,6 +189,30 @@ final class SystemInfoContext implements Context
     }
 
     /**
+     * @Then Akeneo statistics engine stores an average of :avgOfProductValuesByProduct product values per family for this customer
+     *
+     * @param int $avgOfProductValuesByProduct
+     */
+    public function theSystemInformationReturnsThatTheAverageOfProductValuesPerFamilyIs(int $avgOfProductValuesByProduct): void
+    {
+        $collectedInfo = $this->getCollectedInformation();
+
+        Assert::eq($avgOfProductValuesByProduct, $collectedInfo['avg_product_values_per_family']);
+    }
+
+    /**
+     * @Then Akeneo statistics engine stores a maximum of :avgOfProductValuesByProduct product values per family for this customer
+     *
+     * @param int $avgOfProductValuesByProduct
+     */
+    public function theSystemInformationReturnsThatTheMaximumOfProductValuesPerFamilyIs(int $avgOfProductValuesByProduct): void
+    {
+        $collectedInfo = $this->getCollectedInformation();
+
+        Assert::eq($avgOfProductValuesByProduct, $collectedInfo['max_product_values_per_family']);
+    }
+
+    /**
      * @return array
      */
     public function getCollectedInformation(): array

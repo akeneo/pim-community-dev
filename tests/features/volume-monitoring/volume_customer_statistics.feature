@@ -81,3 +81,44 @@ Feature: Volume statistics of the customers
     And a product model with 565 product values
     When statistics of the customer's catalog are collected
     Then Akeneo statistics engine stores an average of 576 product values for this customer
+
+  @acceptance-back
+  Scenario: Gather customers statistics about the average of product values per family
+    Given a family with 25 product values
+    And a family with 45 product values
+    When statistics of the customer's catalog are collected
+    Then Akeneo statistics engine stores an average of 35 product values per family for this customer
+
+  @acceptance-back
+  Scenario: Gather customers statistics about the maximum of product values per family
+    Given a family with 25 product values
+    And a family with 45 product values
+    When statistics of the customer's catalog are collected
+    Then Akeneo statistics engine stores a maximum of 45 product values per family for this customer
+
+  @acceptance-back
+  Scenario: Gather customers statistics about the number of useable as grid filter attribute
+    Given a catalog with 10 useable as grid filter attributes
+    When attribute statistics of the customer's catalog are collected
+    Then Akeneo statistics engine stores a number of 10 useable as grid filter attribute for this customer
+
+  @acceptance-back
+  Scenario: Gather customers statistics about the average of localizable attributes per family
+    Given a family with 10 localizable attributes
+    And a family with 20 localizable attributes
+    When attribute statistics of the customer's catalog are collected
+    Then Akeneo statistics engine stores an average of 15 localizable attributes per family for this customer
+
+  @acceptance-back
+  Scenario: Gather customers statistics about the average of scopable attributes per family
+    Given a family with 10 scopable attributes
+    And a family with 20 scopable attributes
+    When attribute statistics of the customer's catalog are collected
+    Then Akeneo statistics engine stores an average of 15 scopable attributes per family for this customer
+
+  @acceptance-back
+  Scenario: Gather customers statistics about the average of localizable and scopable attributes per family
+    Given a family with 10 localizable and scopable attributes
+    And a family with 20 localizable and scopable attributes
+    When attribute statistics of the customer's catalog are collected
+    Then Akeneo statistics engine stores an average of 15 localizable and scopable attributes per family for this customer
