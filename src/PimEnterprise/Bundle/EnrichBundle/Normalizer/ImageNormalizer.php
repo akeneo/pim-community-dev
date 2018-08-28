@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer as BaseImageNormalizer;
-use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 
 /**
  * Image Normalizer for Enterprise Edition.
