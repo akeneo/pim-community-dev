@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\InvalidAttributeTypeException;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\MissingMandatoryAttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -58,6 +57,8 @@ class UpdateIdentifiersMappingHandler
 
     /**
      * @param UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand
+     *
+     * @throws InvalidMappingException
      */
     public function handle(UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand): void
     {
@@ -114,6 +115,8 @@ class UpdateIdentifiersMappingHandler
 
     /**
      * @param array $identifiers
+     *
+     * @throws InvalidMappingException
      */
     private function validateThatBrandAndMpnAreNotSavedAlone(array $identifiers): void
     {
@@ -121,7 +124,10 @@ class UpdateIdentifiersMappingHandler
         $isMpnDefined = isset($identifiers['mpn']) && $identifiers['mpn'] instanceof AttributeInterface;
 
         if ($isBrandDefined xor $isMpnDefined) {
-            throw new MissingMandatoryAttributeMappingException();
+            throw InvalidMappingException::mandatoryAttributeMapping(
+                static::class,
+                $isBrandDefined ? 'mpn' : 'brand'
+            );
         }
     }
 }
