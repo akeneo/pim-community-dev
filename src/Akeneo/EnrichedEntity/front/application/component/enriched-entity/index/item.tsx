@@ -42,7 +42,7 @@ export default ({
       <span
         className="AknGrid-fullImage"
         style={{
-          backgroundImage: `url("${getImageShowUrl(enrichedEntity.getImage(), 'thumbnail')}")`
+          backgroundImage: `url("${getImageShowUrl(enrichedEntity.getImage(), 'thumbnail')}")`,
         }}
       />
       <span className="AknGrid-title">{enrichedEntity.getLabel(locale)}</span>

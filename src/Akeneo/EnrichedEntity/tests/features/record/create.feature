@@ -5,8 +5,8 @@ Feature: Create a record
 
   Background:
     Given the following enriched entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+      | identifier | labels                                       | image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
   @acceptance-back
   Scenario: Creating a record
