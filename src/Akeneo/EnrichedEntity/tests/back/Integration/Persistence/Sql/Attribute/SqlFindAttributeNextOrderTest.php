@@ -98,7 +98,7 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         );
         $attributesRepository->create($textAttribute);
 

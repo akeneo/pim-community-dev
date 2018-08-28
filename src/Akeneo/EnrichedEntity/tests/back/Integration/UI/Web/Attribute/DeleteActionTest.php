@@ -151,7 +151,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         );
         $attributeRepository->create($attributeItem);
 

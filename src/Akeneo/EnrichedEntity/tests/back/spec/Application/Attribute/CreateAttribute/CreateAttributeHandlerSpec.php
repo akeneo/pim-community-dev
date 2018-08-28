@@ -71,7 +71,7 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         );
     }
 }

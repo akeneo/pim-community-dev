@@ -36,7 +36,7 @@ class RegularExpressionUpdater implements AttributeUpdaterInterface
     private function getRegularExpression(AbstractEditAttributeCommand $command): AttributeRegularExpression
     {
         if (null === $command->regularExpression) {
-            return AttributeRegularExpression::none();
+            return AttributeRegularExpression::emptyRegularExpression();
         }
 
         return AttributeRegularExpression::fromString($command->regularExpression);

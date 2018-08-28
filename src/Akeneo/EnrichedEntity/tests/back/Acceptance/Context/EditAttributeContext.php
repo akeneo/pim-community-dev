@@ -84,7 +84,7 @@ class EditAttributeContext implements Context
                 AttributeValuePerLocale::fromBoolean((bool) $attribute['value_per_locale']),
                 AttributeMaxLength::fromInteger((int) $attribute['max_length']),
                 AttributeValidationRule::none(),
-                AttributeRegularExpression::none()
+                AttributeRegularExpression::emptyRegularExpression()
             ));
         }
     }
@@ -117,7 +117,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(100),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 
@@ -150,7 +150,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(100),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 
@@ -191,7 +191,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger($maxLength),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 
@@ -512,7 +512,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(150),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 
@@ -545,7 +545,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(150),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 
@@ -660,7 +660,7 @@ class EditAttributeContext implements Context
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
-        Assert::assertEquals(AttributeRegularExpression::NONE, $normalizedAttribute['regular_expression']);
+        Assert::assertEquals(AttributeRegularExpression::EMPTY_REGULAR_EXPRESSION, $normalizedAttribute['regular_expression']);
     }
 
     /**
@@ -687,7 +687,7 @@ class EditAttributeContext implements Context
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule']);
-        Assert::assertEquals(AttributeRegularExpression::NONE, $normalizedAttribute['regular_expression']);
+        Assert::assertEquals(AttributeRegularExpression::EMPTY_REGULAR_EXPRESSION, $normalizedAttribute['regular_expression']);
     }
 
     /**
@@ -815,7 +815,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(100),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 
@@ -863,7 +863,7 @@ class EditAttributeContext implements Context
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxLength::fromInteger(100),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         ));
     }
 

@@ -106,7 +106,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         );
         $email = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'email'),
@@ -119,7 +119,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(155),
             AttributeValidationRule::fromString(AttributeValidationRule::EMAIL),
-            AttributeRegularExpression::none()
+            AttributeRegularExpression::emptyRegularExpression()
         );
         $customRegex = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'regex'),
@@ -194,7 +194,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->isTextArea = AttributeIsTextArea::fromBoolean(false);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $expectedName->validationRule = AttributeValidationRule::none();
-        $expectedName->regularExpression = AttributeRegularExpression::none();
+        $expectedName->regularExpression = AttributeRegularExpression::emptyRegularExpression();
         $this->assertAttributeDetails($expectedName, $actualName);
     }
 
@@ -214,7 +214,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->isTextArea = AttributeIsTextArea::fromBoolean(false);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $expectedName->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
-        $expectedName->regularExpression = AttributeRegularExpression::none();
+        $expectedName->regularExpression = AttributeRegularExpression::emptyRegularExpression();
         $this->assertAttributeDetails($expectedName, $actualEmail);
     }
 
@@ -254,7 +254,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->isTextArea = AttributeIsTextArea::fromBoolean(true);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(true);
         $expectedName->validationRule = AttributeValidationRule::none();
-        $expectedName->regularExpression = AttributeRegularExpression::none();
+        $expectedName->regularExpression = AttributeRegularExpression::emptyRegularExpression();
         $this->assertAttributeDetails($expectedName, $actualEmail);
     }
 

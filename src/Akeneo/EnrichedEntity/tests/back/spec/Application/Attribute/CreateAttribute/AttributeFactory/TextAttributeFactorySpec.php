@@ -37,7 +37,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->maxLength = 155;
         $command->isTextArea = false;
         $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegularExpression::NONE;
+        $command->regularExpression = AttributeRegularExpression::EMPTY_REGULAR_EXPRESSION;
 
         $this->create($command)->normalize()->shouldReturn([
             'identifier'                 => [
@@ -74,7 +74,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->maxLength = 155;
         $command->isTextArea = false;
         $command->validationRule = AttributeValidationRule::NONE;
-        $command->regularExpression = AttributeRegularExpression::NONE;
+        $command->regularExpression = AttributeRegularExpression::EMPTY_REGULAR_EXPRESSION;
 
         $this->create($command)->normalize()->shouldReturn([
             'identifier'                 => ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'],

@@ -41,7 +41,7 @@ class RegularExpressionUpdaterSpec extends ObjectBehavior
     {
         $editRequired = new EditRegularExpressionCommand();
         $editRequired->regularExpression = null;
-        $textAttribute->setRegularExpression(AttributeRegularExpression::none())->shouldBeCalled();
+        $textAttribute->setRegularExpression(AttributeRegularExpression::emptyRegularExpression())->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
