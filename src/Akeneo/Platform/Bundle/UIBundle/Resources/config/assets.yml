@@ -94,6 +94,7 @@ css:
         - bundles/pimui/less/components/State.less
         - bundles/pimui/less/components/Steps.less
         - bundles/pimui/less/components/Subsection.less
+        - bundles/pimui/less/components/QuickEdit.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/Thumbnail.less
         - bundles/pimui/less/components/TitleContainer.less

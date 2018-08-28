@@ -228,6 +228,12 @@
     display: flex;
     background-size: 100%;
     margin: 5px auto 10px;
+    cursor: pointer;
+
+    &--small {
+      width: 22px;
+      height: 22px;
+    }
 
     &--id {
       background-image: url("../../../images/attribute/icon-id.svg");
@@ -288,9 +294,17 @@
     &--delete {
       background-image: url("../../../images/icon-delete-white.svg")
     }
+
+    &--dismiss {
+      background-image: url("../../../images/icon-delete-slategrey.svg")
+    }
+
+    &--validate {
+      background-image: url("../../../images/icon-check-green.svg")
+    }
   }
 
-  &-squareIcon&--micro {
+  &-squareIcon--micro {
     background-position: center;
     background-size: 75%;
     width: @AknMicroButtonSize;

@@ -29,6 +29,11 @@ final class InstallerEvents
     const POST_ASSETS_DUMP = 'pim_installer.post_assets_dump';
 
     /**
+     * This event is dispatched after launching all assets dump command
+     */
+    const POST_SYMFONY_ASSETS_DUMP = 'pim_installer.post_symfony_assets_dump';
+
+    /**
      * This event is dispatched before each fixture load.
      *
      * The event listener receives an

@@ -49,4 +49,19 @@
       border-radius: 50%;
     }
   }
+
+  &--disabled {
+
+    .AknSwitch-input {
+      &:checked + .AknSwitch-slider {
+        background-color: lighten(@AknGreen, 20%);
+      }
+    }
+
+
+    .AknSwitch-slider {
+      background-color: lighten(@AknSlateGrey, 40%);
+      cursor: not-allowed;
+    }
+  }
 }
