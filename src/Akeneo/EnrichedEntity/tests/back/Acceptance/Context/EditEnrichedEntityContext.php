@@ -21,6 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -36,14 +37,17 @@ final class EditEnrichedEntityContext implements Context
 
     /**
      * @param EnrichedEntityRepositoryInterface $enrichedEntityRepository
-     * @param EditEnrichedEntityHandler         $editEnrichedEntityHandler
+     * @param EditEnrichedEntityHandler $editEnrichedEntityHandler
+     * @param ValidatorInterface $validator
      */
     public function __construct(
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
-        EditEnrichedEntityHandler $editEnrichedEntityHandler
+        EditEnrichedEntityHandler $editEnrichedEntityHandler,
+        ValidatorInterface $validator
     ) {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
+        $this->validator = $validator;
     }
 
     /**
@@ -125,6 +129,8 @@ final class EditEnrichedEntityContext implements Context
             'filePath' => $filePath,
             'originalFilename' => basename($filePath)
         ];
+        $violations = $this->validator->validate($editImage);
+        Assert::assertEquals($violations->count(), 0);
 
         ($this->editEnrichedEntityHandler)($editImage);
     }
@@ -140,6 +146,6 @@ final class EditEnrichedEntityContext implements Context
         $enrichedEntity = $this->enrichedEntityRepository
             ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
 
-        Assert::assertEquals($enrichedEntity->getImage(), $filePath);
+        Assert::assertEquals($enrichedEntity->getImage()->getKey(), $filePath);
     }
 }

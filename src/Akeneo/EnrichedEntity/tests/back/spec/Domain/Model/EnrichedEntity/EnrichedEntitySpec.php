@@ -28,8 +28,7 @@ class EnrichedEntitySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
-        $this->beConstructedThrough('create', [$identifier, $labelCollection, $image]);
+        $this->beConstructedThrough('create', [$identifier, $labelCollection, null]);
     }
 
     public function it_is_initializable()
@@ -78,11 +77,9 @@ class EnrichedEntitySpec extends ObjectBehavior
         $this->getLabel('fr_FR')->shouldBe('Concepteur');
     }
 
-    public function it_updates_image()
+    public function it_updates_image(Image $image)
     {
-        $image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
-
         $this->updateImage($image);
-        $this->getImage()->shouldBe('/path/image.jpg');
+        $this->getImage()->shouldBe($image);
     }
 }

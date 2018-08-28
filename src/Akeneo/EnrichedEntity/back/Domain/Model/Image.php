@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model;
 
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+
 class Image
 {
     /** @var string */
@@ -21,15 +23,15 @@ class Image
     /** @var string */
     private $originalFilename;
 
-    public function __construct(string $key, string $originalFilename)
+    private function __construct(string $key, string $originalFilename)
     {
         $this->key = $key;
         $this->originalFilename = $originalFilename;
     }
 
-    public static function fromFileInfo(string $key, string $originalFilename): self
+    public static function fromFileInfo(FileInfoInterface $fileInfo): self
     {
-        return new self($key, $originalFilename);
+        return new self($fileInfo->getKey(), $fileInfo->getOriginalFilename());
     }
 
     public function getKey(): string

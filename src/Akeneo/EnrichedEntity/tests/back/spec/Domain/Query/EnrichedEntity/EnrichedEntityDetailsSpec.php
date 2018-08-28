@@ -15,14 +15,19 @@ class EnrichedEntityDetailsSpec extends ObjectBehavior
         $this->shouldHaveType(EnrichedEntityDetails::class);
     }
 
-    function it_normalizes_a_read_model()
+    function it_normalizes_a_read_model(Image $image)
     {
+        $image->normalize()->willReturn([
+            'filePath'         => '/path/image.jpg',
+            'originalFilename' => 'image.jpg'
+        ]);
+
         $this->identifier = EnrichedEntityIdentifier::fromString('starck');
         $this->labels = LabelCollection::fromArray([
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
         ]);
-        $this->image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
+        $this->image = $image;
 
         $this->normalize()->shouldReturn(
             [

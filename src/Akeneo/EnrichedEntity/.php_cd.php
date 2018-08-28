@@ -10,6 +10,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Akeneo\EnrichedEntity',
+        'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert'
     ])->in('Akeneo\EnrichedEntity\Domain'),
     $builder->only([
@@ -20,6 +21,7 @@ $rules = [
     $builder->only([
         'Akeneo\EnrichedEntity\Application',
         'Akeneo\EnrichedEntity\Domain',
+        'Akeneo\Tool\Component',
         'Akeneo\Pim\EnrichedEntity\Component',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',

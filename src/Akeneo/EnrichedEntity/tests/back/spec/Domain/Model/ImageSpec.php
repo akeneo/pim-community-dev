@@ -4,13 +4,18 @@ declare(strict_types=1);
 namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
 use Akeneo\EnrichedEntity\Domain\Model\Image;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
 class ImageSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('fromFileInfo', ['/path/image.jpg', 'image.jpg']);
+        $file = new FileInfo();
+        $file->setKey('/path/image.jpg');
+        $file->setOriginalFilename('image.jpg');
+
+        $this->beConstructedThrough('fromFileInfo', [$file]);
     }
 
     public function it_is_initializable()

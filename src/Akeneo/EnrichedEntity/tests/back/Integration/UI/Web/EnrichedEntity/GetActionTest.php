@@ -20,6 +20,7 @@ use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -86,13 +87,17 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $queryHandler = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
 
+        $file = new FileInfo();
+        $file->setKey('/path/image.jpg');
+        $file->setOriginalFilename('image.jpg');
+
         $entityItem = new EnrichedEntityDetails();
         $entityItem->identifier = (EnrichedEntityIdentifier::fromString('designer'));
         $entityItem->labels = LabelCollection::fromArray([
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
-        $entityItem->image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
+        $entityItem->image = Image::fromFileInfo($file);
         $queryHandler->save($entityItem);
 
         $user = new User();

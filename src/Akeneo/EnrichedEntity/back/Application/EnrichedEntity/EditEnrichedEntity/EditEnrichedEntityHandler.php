@@ -49,8 +49,7 @@ class EditEnrichedEntityHandler
 
         if (null !== $editEnrichedEntityCommand->image) {
             $file = $this->storeFile($editEnrichedEntityCommand->image);
-            $image = Image::fromFileInfo($file->getKey(), $file->getOriginalFilename());
-
+            $image = Image::fromFileInfo($file);
             $enrichedEntity->updateImage($image);
         }
 
@@ -60,7 +59,6 @@ class EditEnrichedEntityHandler
     private function storeFile(array $image): FileInfoInterface
     {
         $rawFile = new \SplFileInfo($image['filePath']);
-
         $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
 
         return $file;

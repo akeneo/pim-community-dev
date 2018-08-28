@@ -78,7 +78,7 @@ SQL;
             [
                 'identifier' => (string) $enrichedEntity->getIdentifier(),
                 'labels' => $serializedLabels,
-                'image' => $enrichedEntity->getImage()
+                'image' => (null !== $enrichedEntity->getImage()) ? $enrichedEntity->getImage()->getKey() : null
             ]
         );
 

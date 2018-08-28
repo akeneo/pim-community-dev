@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -55,8 +56,7 @@ class SqlFindEnrichedEntityDetails implements FindEnrichedEntityDetailsInterface
             $result['identifier'],
             $result['labels'],
             $result['file_path'],
-            $result['original_filename']
-        );
+            $result['original_filename']);
     }
 
     private function fetchResult(EnrichedEntityIdentifier $identifier): array
@@ -78,10 +78,10 @@ SQL;
     }
 
     /**
-     * @param string $identifier
-     * @param string $normalizedLabels
-     * @param string|null $filePath
-     * @param string|null $originalFilename
+     * @param string  $identifier
+     * @param string  $normalizedLabels
+     * @param ?string $filePath
+     * @param ?string $originalFilename
      *
      * @return EnrichedEntityDetails
      *
@@ -97,11 +97,18 @@ SQL;
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
+        $file = null;
+
+        if (null !== $filePath && null !== $originalFilename) {
+            $file = new FileInfo();
+            $file->setKey($filePath);
+            $file->setOriginalFilename($originalFilename);
+        }
 
         $enrichedEntityItem = new EnrichedEntityDetails();
         $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
-        $enrichedEntityItem->image = (null !== $filePath) ? Image::fromFileInfo($filePath, $originalFilename) : null;
+        $enrichedEntityItem->image = (null !== $file) ? Image::fromFileInfo($file) : null;
 
         return $enrichedEntityItem;
     }

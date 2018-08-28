@@ -66,13 +66,9 @@ class EnrichedEntity
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function getImage(): ?string
+    public function getImage(): ?Image
     {
-        if (null === $this->image) {
-            return null;
-        }
-
-        return $this->image->getKey();
+        return ($this->image) ?? null;
     }
 
     public function updateLabels(LabelCollection $labelCollection): void

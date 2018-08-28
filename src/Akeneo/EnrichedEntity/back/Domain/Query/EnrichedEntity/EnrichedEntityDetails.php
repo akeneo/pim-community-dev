@@ -37,7 +37,7 @@ class EnrichedEntityDetails
     /** @var LabelCollection */
     public $labels;
 
-    /** @var Image|null */
+    /** @var ?Image */
     public $image;
 
     public function normalize(): array
