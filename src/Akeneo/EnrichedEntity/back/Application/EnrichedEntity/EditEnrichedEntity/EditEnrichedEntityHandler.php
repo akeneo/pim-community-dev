@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
  */
 class EditEnrichedEntityHandler
 {
-    public const CATALOG_STORAGE_ALIAS = 'catalogStorage';
+    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
     /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
@@ -41,14 +41,18 @@ class EditEnrichedEntityHandler
 
     public function __invoke(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
     {
-        $file = $this->storeFile($editEnrichedEntityCommand->image);
         $identifier = EnrichedEntityIdentifier::fromString($editEnrichedEntityCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editEnrichedEntityCommand->labels);
-        $image = Image::fromString($file->getKey());
 
         $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
         $enrichedEntity->updateLabels($labelCollection);
-        $enrichedEntity->updateImage($image);
+
+        if (null !== $editEnrichedEntityCommand->image) {
+            $file = $this->storeFile($editEnrichedEntityCommand->image);
+            $image = Image::fromFileInfo($file->getKey(), $file->getOriginalFilename());
+
+            $enrichedEntity->updateImage($image);
+        }
 
         $this->enrichedEntityRepository->update($enrichedEntity);
     }

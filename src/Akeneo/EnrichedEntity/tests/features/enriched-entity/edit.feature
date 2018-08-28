@@ -16,6 +16,11 @@ Feature: Edit an enriched entity
       | identifier | labels                                    |
       | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
+  @acceptance-back
+  Scenario: Updating the image
+    When the user updates the '"designer"' enriched entity image with '"/path/image.jpg"'
+    Then the image of the '"designer"' enriched entity should be '"/path/image.jpg"'
+
   @acceptance-front
   Scenario: Updating an enriched entity with unexpected backend answer
     When the user changes the enriched entity "designer" with:

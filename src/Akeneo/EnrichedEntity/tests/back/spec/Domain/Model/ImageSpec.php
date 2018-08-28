@@ -10,7 +10,7 @@ class ImageSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('fromString', ['/path/image.jpg']);
+        $this->beConstructedThrough('fromFileInfo', ['/path/image.jpg', 'image.jpg']);
     }
 
     public function it_is_initializable()

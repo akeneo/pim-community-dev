@@ -35,7 +35,7 @@ class EnrichedEntity
         EnrichedEntityIdentifier $identifier,
         LabelCollection $labelCollection
     ) {
-        $this->identifier      = $identifier;
+        $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
     }
 
@@ -66,8 +66,12 @@ class EnrichedEntity
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function getImage(): string
+    public function getImage(): ?string
     {
+        if (null === $this->image) {
+            return null;
+        }
+
         return $this->image->getKey();
     }
 

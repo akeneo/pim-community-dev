@@ -20,7 +20,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Webmozart\Assert\Assert;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -103,5 +103,43 @@ final class EditEnrichedEntityContext implements Context
             $differences,
             sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
         );
+    }
+
+    /**
+     * @When /^the user updates the \'([^\']*)\' enriched entity image with \'([^\']*)\'$/
+     */
+    public function theUserUpdatesTheEnrichedEntityWithOn(string $identifier, string $filePath): void
+    {
+        $identifier = json_decode($identifier);
+        $filePath = json_decode($filePath);
+
+        $enrichedEntity = $this->enrichedEntityRepository
+            ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
+
+        $editImage = new EditEnrichedEntityCommand();
+        $editImage->identifier = $identifier;
+        foreach ($enrichedEntity->getLabelCodes() as $localCode) {
+            $editImage->labels[$localCode] = $enrichedEntity->getLabel($localCode);
+        }
+        $editImage->image = [
+            'filePath' => $filePath,
+            'originalFilename' => basename($filePath)
+        ];
+
+        ($this->editEnrichedEntityHandler)($editImage);
+    }
+
+    /**
+     * @Then /^the image of the \'([^\']*)\' enriched entity should be \'([^\']*)\'$/
+     */
+    public function theOfTheEnrichedEntityShouldBe(string $identifier, string $filePath)
+    {
+        $identifier = json_decode($identifier);
+        $filePath = json_decode($filePath);
+
+        $enrichedEntity = $this->enrichedEntityRepository
+            ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
+
+        Assert::assertEquals($enrichedEntity->getImage(), $filePath);
     }
 }

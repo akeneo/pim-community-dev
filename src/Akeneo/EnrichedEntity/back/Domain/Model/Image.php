@@ -15,16 +15,21 @@ namespace Akeneo\EnrichedEntity\Domain\Model;
 
 class Image
 {
+    /** @var string */
     private $key;
 
-    public function __construct(string $key)
+    /** @var string */
+    private $originalFilename;
+
+    public function __construct(string $key, string $originalFilename)
     {
         $this->key = $key;
+        $this->originalFilename = $originalFilename;
     }
 
-    public static function fromString(string $key): self
+    public static function fromFileInfo(string $key, string $originalFilename): self
     {
-      return new self($key);
+        return new self($key, $originalFilename);
     }
 
     public function getKey(): string
@@ -36,7 +41,7 @@ class Image
     {
         return [
             'filePath' => $this->key,
-            'originalFilename' => basename($this->key)
+            'originalFilename' => $this->originalFilename
         ];
     }
 }

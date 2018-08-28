@@ -11,6 +11,8 @@
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\EventListener;
 
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,6 +28,8 @@ use Symfony\Component\Finder\Finder;
  */
 class Installer implements EventSubscriberInterface
 {
+    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
+
     /** @var Filesystem */
     private $filesystem;
 
@@ -36,15 +40,22 @@ class Installer implements EventSubscriberInterface
     private $dbal;
 
     /**
-     * @param Filesystem $filesystem
-     * @param string     $projectDir
-     * @param Connection $dbal
+     * @var FileStorerInterface
      */
-    public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal)
+    private $storer;
+
+    /**
+     * @param Filesystem $filesystem
+     * @param string $projectDir
+     * @param Connection $dbal
+     * @param FileStorerInterface $storer
+     */
+    public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal, FileStorerInterface $storer)
     {
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
         $this->dbal = $dbal;
+        $this->storer = $storer;
     }
 
     /**
@@ -122,7 +133,8 @@ SQL;
 
     public function loadFixtures(): void
     {
-        $this->loadEnrichedEntities();
+        $image = $this->uploadEnrichedEntityImage();
+        $this->loadEnrichedEntities($image);
         $this->loadRecords();
         $this->loadAttributes();
     }
@@ -196,15 +208,24 @@ SQL;
         $this->filesystem->mirror($originDir, $targetDir, Finder::create()->ignoreDotFiles(false)->in($originDir));
     }
 
-    private function loadEnrichedEntities(): void
+    private function uploadEnrichedEntityImage(): FileInfoInterface
+    {
+        $rawFile = new \SplFileInfo(__DIR__.'/../Resources/files/akeneo.png');
+
+        return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+    }
+
+    private function loadEnrichedEntities(FileInfoInterface $image): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`)
+INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`, `image`)
 VALUES
-  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}'),
-  ('brand', '{"fr_FR": "Marque"}');
+  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}', :image),
+  ('brand', '{"fr_FR": "Marque"}', :image);
 SQL;
-        $affectedRows = $this->dbal->exec($sql);
+        $affectedRows = $this->dbal->executeUpdate($sql, [
+            'image' => $image->getKey()
+        ]);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the enriched entities.');
         }

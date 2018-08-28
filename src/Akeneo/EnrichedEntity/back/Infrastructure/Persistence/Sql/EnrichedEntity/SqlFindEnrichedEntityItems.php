@@ -51,7 +51,8 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
             $enrichedEntityItems[] = $this->hydrateEnrichedEntityItem(
                 $result['identifier'],
                 $result['labels'],
-                $result['image']
+                $result['file_path'],
+                $result['original_filename']
             );
         }
 
@@ -61,8 +62,9 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
     private function fetchResults(): array
     {
         $query = <<<SQL
-        SELECT identifier, labels, image
-        FROM akeneo_enriched_entity_enriched_entity
+        SELECT ee.identifier, ee.labels, ee.image as file_path, fi.original_filename
+        FROM akeneo_enriched_entity_enriched_entity AS ee
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -74,7 +76,8 @@ SQL;
     private function hydrateEnrichedEntityItem(
         string $identifier,
         string $normalizedLabels,
-        ?string $image = null
+        ?string $filePath,
+        ?string $originalFilename
     ): EnrichedEntityItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -84,7 +87,7 @@ SQL;
         $enrichedEntityItem = new EnrichedEntityItem();
         $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
-        $enrichedEntityItem->image = (null !== $image) ? Image::fromString($image) : null;
+        $enrichedEntityItem->image = (null !== $filePath) ? Image::fromFileInfo($filePath, $originalFilename) : null;
 
         return $enrichedEntityItem;
     }

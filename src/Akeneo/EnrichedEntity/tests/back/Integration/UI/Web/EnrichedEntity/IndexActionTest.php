@@ -95,7 +95,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
             'en_US' => 'Manufacturer',
             'fr_FR' => 'Fabricant',
         ]);
-        $entityItem->image = Image::fromString('/path/image.jpg');
+        $entityItem->image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
         $queryHandler->save($entityItem);
 
         $user = new User();

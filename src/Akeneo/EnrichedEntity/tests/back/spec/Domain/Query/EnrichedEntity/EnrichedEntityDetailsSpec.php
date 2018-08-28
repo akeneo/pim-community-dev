@@ -22,7 +22,7 @@ class EnrichedEntityDetailsSpec extends ObjectBehavior
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
         ]);
-        $this->image = Image::fromString('/path/image.jpg');
+        $this->image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
 
         $this->normalize()->shouldReturn(
             [

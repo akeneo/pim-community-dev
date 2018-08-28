@@ -28,7 +28,7 @@ class EnrichedEntitySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $image = Image::fromString('/path/image.jpg');
+        $image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
         $this->beConstructedThrough('create', [$identifier, $labelCollection, $image]);
     }
 
@@ -80,7 +80,7 @@ class EnrichedEntitySpec extends ObjectBehavior
 
     public function it_updates_image()
     {
-        $image = Image::fromString('/path/image.jpg');
+        $image = Image::fromFileInfo('/path/image.jpg', 'image.jpg');
 
         $this->updateImage($image);
         $this->getImage()->shouldBe('/path/image.jpg');
