@@ -75,7 +75,10 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           fr_FR: 'Canapé'
         }
       },
-      image: null
+      image: {
+        filePath: '/path/sofa.jpg',
+        originalFilename: 'sofa.jpg'
+      },
     });
   });
 });
