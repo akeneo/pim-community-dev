@@ -32,7 +32,7 @@ use PhpSpec\ObjectBehavior;
 
 class PimAISpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
@@ -40,12 +40,12 @@ class PimAISpec extends ObjectBehavior
         $this->beConstructedWith($authenticationApi, $subscriptionApi, $identifiersMappingRepository);
     }
 
-    function it_is_pim_ai_adapter()
+    public function it_is_pim_ai_adapter()
     {
         $this->shouldHaveType(PimAI::class);
     }
 
-    function it_throws_an_exception_if_no_mapping_has_been_defined(
+    public function it_throws_an_exception_if_no_mapping_has_been_defined(
         ProductInterface $product,
         $identifiersMappingRepository
     ) {
@@ -55,7 +55,7 @@ class PimAISpec extends ObjectBehavior
         $this->shouldThrow(ProductSubscriptionException::class)->during('subscribe', [$productSubscriptionRequest]);
     }
 
-    function it_throws_an_exception_if_product_has_no_mapped_value(
+    public function it_throws_an_exception_if_product_has_no_mapped_value(
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
@@ -81,7 +81,7 @@ class PimAISpec extends ObjectBehavior
              ->during('subscribe', [$productSubscriptionRequest]);
     }
 
-    function it_catches_client_exceptions(
+    public function it_catches_client_exceptions(
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
@@ -114,7 +114,7 @@ class PimAISpec extends ObjectBehavior
         );
     }
 
-    function it_subscribes_products_to_pim_ai(
+    public function it_subscribes_products_to_pim_ai(
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
@@ -162,7 +162,7 @@ class PimAISpec extends ObjectBehavior
     /**
      * @param SubscriptionWebservice $subscriptionApi
      */
-    function it_fetches_products_from_pim_ai($subscriptionApi)
+    public function it_fetches_products_from_pim_ai($subscriptionApi)
     {
         $subscriptionApi
             ->fetchProducts()

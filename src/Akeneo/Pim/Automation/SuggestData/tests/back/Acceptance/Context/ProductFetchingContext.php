@@ -40,7 +40,6 @@ final class ProductFetchingContext implements Context
         try {
             $this->fetchProductsHandler->handle(new FetchProductsCommand());
         } catch (\Exception $e) {
-
         }
     }
 
@@ -50,9 +49,7 @@ final class ProductFetchingContext implements Context
     public function theProductsHaveNotBeenFetchedFromPimAi()
     {
         try {
-
         } catch (\Exception $e) {
-
         }
     }
 

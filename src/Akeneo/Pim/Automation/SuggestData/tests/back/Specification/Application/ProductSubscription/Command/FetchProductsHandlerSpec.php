@@ -18,7 +18,7 @@ use PhpSpec\ObjectBehavior;
  */
 class FetchProductsHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         DataProviderFactory $dataProviderFactory,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         PimAI $dataProvider
@@ -30,12 +30,12 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
-    function it_is_a_fetch_products_handler()
+    public function it_is_a_fetch_products_handler()
     {
         $this->shouldHaveType(FetchProductsHandler::class);
     }
 
-    function it_fetches_products_throught_the_data_provider(
+    public function it_fetches_products_throught_the_data_provider(
         $dataProvider,
         FetchProductsCommand $command,
         ProductSubscriptionsResponse $subscribedResponses

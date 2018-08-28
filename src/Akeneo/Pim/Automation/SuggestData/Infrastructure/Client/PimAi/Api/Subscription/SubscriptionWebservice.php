@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Concrete implementation of subscription web service
- * 
+ *
  * @author Romain Monceau <romain@akeneo.com>
  */
 class SubscriptionWebservice implements SubscriptionApiInterface

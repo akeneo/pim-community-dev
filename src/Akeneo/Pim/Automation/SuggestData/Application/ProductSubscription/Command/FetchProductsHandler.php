@@ -58,6 +58,5 @@ class FetchProductsHandler
         foreach ($subscribedResponses as $subscriptionResponse) {
             //TODO: Waiting APAI-142 + tracker id
         }
-
     }
 }
