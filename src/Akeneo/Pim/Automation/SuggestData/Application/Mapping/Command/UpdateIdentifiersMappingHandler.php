@@ -16,6 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -42,16 +43,22 @@ class UpdateIdentifiersMappingHandler
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var IdentifiersMappingInterface */
+    private $identifiersMappingWebService;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param IdentifiersMappingInterface           $identifiersMappingWebService
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        IdentifiersMappingInterface $identifiersMappingWebService
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->identifiersMappingWebService = $identifiersMappingWebService;
     }
 
     /**
@@ -69,6 +76,8 @@ class UpdateIdentifiersMappingHandler
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingRepository->save($identifiersMapping);
+
+        $this->identifiersMappingWebService->update($identifiersMapping);
     }
 
     /**
