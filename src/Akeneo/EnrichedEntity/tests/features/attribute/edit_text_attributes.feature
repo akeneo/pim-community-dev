@@ -3,6 +3,19 @@ Feature: Edit a text attribute of an enriched entity
   As a user
   I want to be able to edit a text attribute
 
+  # Readonly values
+  @acceptance-back
+  Scenario: ValuePerLocale is not editable
+    Given an enriched entity with an attribute 'name' not having one value per locale
+    When the user updates the value_per_locale of 'name' to 'true'
+    Then the value_per_locale of 'name' should be 'false'
+
+  @acceptance-back
+  Scenario: ValuePerChannel is not editable
+    Given an enriched entity with an attribute 'name' not having one value per channel
+    When the user updates the value_per_channel of 'name' to 'true'
+    Then the value_per_locale of 'name' should be 'false'
+
   # labels
   @acceptance-back
   Scenario: Updating the label
@@ -193,3 +206,8 @@ Feature: Edit a text attribute of an enriched entity
     When the user changes the is_text_area flag and the is_rich_text_editor of 'name' to 'true'
     Then the 'name' attribute should have a text editor
     And the 'name' attribute should be a text area
+
+  @acceptance-back
+  Scenario: Cannot update the attribute if it does not exist
+    When the user updates the 'name' attribute label with '"Bio"' on the locale '"en_US"'
+    Then there should be a validation error with message 'The attribute was not found for the enriched entity "dummy_identifier" and the attribute code "name"'

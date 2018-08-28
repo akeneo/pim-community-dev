@@ -798,4 +798,88 @@ class EditAttributeContext implements Context
             ($this->handler)($editAttribute);
         }
     }
+
+    /**
+     * @Given /^an enriched entity with an attribute \'([^\']*)\' not having one value per locale$/
+     */
+    public function anEnrichedEntityWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
+    {
+        $this->attributeRepository->create(TextAttribute::createText(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(100),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
+        ));
+    }
+
+    /**
+     * @When /^the user updates the value_per_locale of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserUpdatesTheValue_per_localeOfTo(string $attributeCode, string $valuePerLocale): void
+    {
+        $valuePerLocale = json_decode($valuePerLocale);
+        $updateValuePerLocale = [
+            'identifier' => [
+                'identifier'                 => $attributeCode,
+                'enriched_entity_identifier' => 'dummy_identifier',
+            ],
+            'value_per_locale'     => $valuePerLocale,
+        ];
+        $this->updateAttribute($updateValuePerLocale);
+    }
+
+    /**
+     * @Then /^the value_per_locale of \'([^\']*)\' should be \'([^\']*)\'$/
+     */
+    public function theValue_per_localeOfShouldBe(string $attributeCode, string $valuePerLocale)
+    {
+        $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
+            'dummy_identifier',
+            $attributeCode
+        ));
+        Assert::assertEquals(json_decode($valuePerLocale), $attribute->normalize()['value_per_locale']);
+    }
+
+    /**
+     * @Given /^an enriched entity with an attribute \'([^\']*)\' not having one value per channel$/
+     */
+    public function anEnrichedEntityWithAnAttributeNotHavingOneValuePerChannel(string $attributeCode)
+    {
+        $this->attributeRepository->create(TextAttribute::createText(
+            AttributeIdentifier::create('dummy_identifier', $attributeCode),
+            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray([]),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(100),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::none()
+        ));
+    }
+
+    /**
+     * @When /^the user updates the value_per_channel of \'([^\']*)\' to \'([^\']*)\'$/
+     */
+    public function theUserUpdatesTheValue_per_channelOfTo(string $attributeCode, string $valuePerChannel)
+    {
+        $valuePerChannel = json_decode($valuePerChannel);
+        $updateValuePerChannel = [
+            'identifier' => [
+                'identifier'                 => $attributeCode,
+                'enriched_entity_identifier' => 'dummy_identifier',
+            ],
+            'value_per_locale'     => $valuePerChannel,
+        ];
+        $this->updateAttribute($updateValuePerChannel);
+    }
 }
