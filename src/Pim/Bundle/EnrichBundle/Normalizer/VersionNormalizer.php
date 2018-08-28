@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Component\Versioning\Model\Version;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -35,23 +36,30 @@ class VersionNormalizer implements NormalizerInterface
 
     /** @var PresenterInterface */
     protected $datetimePresenter;
+    /**
+     * @var UserContext
+     */
+    private $userContext;
 
     /**
-     * @param UserManager                $userManager
-     * @param TranslatorInterface        $translator
-     * @param PresenterInterface         $datetimePresenter
+     * @param UserManager $userManager
+     * @param TranslatorInterface $translator
+     * @param PresenterInterface $datetimePresenter
      * @param PresenterRegistryInterface $presenterRegistry
+     * @param UserContext $userContext
      */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
-        PresenterRegistryInterface $presenterRegistry
+        PresenterRegistryInterface $presenterRegistry,
+        UserContext $userContext
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -59,7 +67,10 @@ class VersionNormalizer implements NormalizerInterface
      */
     public function normalize($version, $format = null, array $context = [])
     {
-        $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
+        $context = array_merge($context, [
+            'locale' => $this->translator->getLocale(),
+            'timezone' => $this->userContext->getUserTimezone()
+        ]);
 
         return [
             'id'           => $version->getId(),
