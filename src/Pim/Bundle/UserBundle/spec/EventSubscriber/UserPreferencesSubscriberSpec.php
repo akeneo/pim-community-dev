@@ -109,7 +109,7 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         $this->onFlush($args)->shouldReturn(null);
     }
 
-    function it_deletes_a_channe_before_flush(
+    function it_deletes_a_channel_before_flush(
         OnFlushEventArgs $args,
         EntityManagerInterface $em,
         UnitOfWork $uow,
