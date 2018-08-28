@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\InvalidAttributeTypeException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -102,13 +101,16 @@ class UpdateIdentifiersMappingHandler
      */
     private function validateAttributeTypes(array $identifiers): void
     {
-        foreach ($identifiers as $attribute) {
+        foreach ($identifiers as $identifier => $attribute) {
             if (empty($attribute)) {
                 continue;
             }
 
-            if (! in_array($attribute->getType(), static::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER)) {
-                throw new InvalidAttributeTypeException();
+            if (!in_array($attribute->getType(), static::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER)) {
+                throw InvalidMappingException::attributeType(
+                    static::class,
+                    $identifier
+                );
             }
         }
     }
