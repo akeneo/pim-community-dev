@@ -21,6 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -34,6 +35,12 @@ final class EditEnrichedEntityContext implements Context
 
     /** @var EditEnrichedEntityHandler */
     private $editEnrichedEntityHandler;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var ConstraintViolationListInterface */
+    private $violations;
 
     /**
      * @param EnrichedEntityRepositoryInterface $enrichedEntityRepository
@@ -110,12 +117,12 @@ final class EditEnrichedEntityContext implements Context
     }
 
     /**
-     * @When /^the user updates the \'([^\']*)\' enriched entity image with \'([^\']*)\'$/
+     * @When /^the user updates the \'([^\']*)\' enriched entity image with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheEnrichedEntityWithOn(string $identifier, string $filePath): void
+    public function theUserUpdatesTheEnrichedEntityImageWithPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
-        $identifier = json_decode($identifier);
         $filePath = json_decode($filePath);
+        $filename = json_decode($filename);
 
         $enrichedEntity = $this->enrichedEntityRepository
             ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
@@ -127,25 +134,38 @@ final class EditEnrichedEntityContext implements Context
         }
         $editImage->image = [
             'filePath' => $filePath,
-            'originalFilename' => basename($filePath)
+            'originalFilename' => $filename
         ];
-        $violations = $this->validator->validate($editImage);
-        Assert::assertEquals($violations->count(), 0);
+        $this->violations = $this->validator->validate($editImage);
 
-        ($this->editEnrichedEntityHandler)($editImage);
+        if ($this->violations->count() === 0) {
+            ($this->editEnrichedEntityHandler)($editImage);
+        }
     }
 
     /**
      * @Then /^the image of the \'([^\']*)\' enriched entity should be \'([^\']*)\'$/
      */
-    public function theOfTheEnrichedEntityShouldBe(string $identifier, string $filePath)
+    public function theImageOfTheEnrichedEntityShouldBe(string $identifier, string $filePath)
     {
-        $identifier = json_decode($identifier);
+        Assert::assertEquals($this->violations->count(), 0);
+
         $filePath = json_decode($filePath);
 
         $enrichedEntity = $this->enrichedEntityRepository
             ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
 
         Assert::assertEquals($enrichedEntity->getImage()->getKey(), $filePath);
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property \'([^\']*)\' with \'([^\']*)\'$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyWith($expectedPropertyPath, $message)
+    {
+        Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected but none were found.');
+        $violation = $this->violations->get(0);
+        Assert::assertSame($message, $violation->getMessage());
+        Assert::assertSame($expectedPropertyPath, $violation->getPropertyPath());
     }
 }

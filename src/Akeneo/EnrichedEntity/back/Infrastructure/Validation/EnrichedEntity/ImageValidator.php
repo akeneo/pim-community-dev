@@ -40,8 +40,8 @@ class ImageValidator extends ConstraintValidator
                 new Constraints\Type(['type' => 'array']),
                 new Constraints\Collection(
                     [
-                        'originalFilename' => new Constraints\NotBlank(),
-                        'filePath' => new Constraints\NotBlank(),
+                        'originalFilename' => [new Constraints\NotBlank(), new Constraints\Type('string')],
+                        'filePath' => [new Constraints\NotBlank(), new Constraints\Type('string')],
                     ]
                 )
             ]

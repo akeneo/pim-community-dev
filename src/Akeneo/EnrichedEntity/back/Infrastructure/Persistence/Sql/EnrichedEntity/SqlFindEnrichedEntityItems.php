@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -51,7 +52,7 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
             $enrichedEntityItems[] = $this->hydrateEnrichedEntityItem(
                 $result['identifier'],
                 $result['labels'],
-                $result['file_path'],
+                $result['file_key'],
                 $result['original_filename']
             );
         }
@@ -62,7 +63,7 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
     private function fetchResults(): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.labels, ee.image as file_path, fi.original_filename
+        SELECT ee.identifier, ee.labels, ee.image as file_key, fi.original_filename
         FROM akeneo_enriched_entity_enriched_entity AS ee
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
 SQL;
@@ -76,7 +77,7 @@ SQL;
     private function hydrateEnrichedEntityItem(
         string $identifier,
         string $normalizedLabels,
-        ?string $filePath,
+        ?string $fileKey,
         ?string $originalFilename
     ): EnrichedEntityItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -85,9 +86,9 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
         $file = null;
 
-        if (null !== $filePath && null !== $originalFilename) {
+        if (null !== $fileKey && null !== $originalFilename) {
             $file = new FileInfo();
-            $file->setKey($filePath);
+            $file->setKey($fileKey);
             $file->setOriginalFilename($originalFilename);
         }
 

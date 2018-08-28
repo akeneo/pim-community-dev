@@ -55,14 +55,14 @@ class SqlFindEnrichedEntityDetails implements FindEnrichedEntityDetailsInterface
         return $this->hydrateEnrichedEntityDetails(
             $result['identifier'],
             $result['labels'],
-            $result['file_path'],
+            $result['file_key'],
             $result['original_filename']);
     }
 
     private function fetchResult(EnrichedEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.labels, ee.image as file_path, fi.original_filename
+        SELECT ee.identifier, ee.labels, ee.image as file_key, fi.original_filename
         FROM akeneo_enriched_entity_enriched_entity as ee
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
         WHERE ee.identifier = :identifier;
@@ -90,7 +90,7 @@ SQL;
     private function hydrateEnrichedEntityDetails(
         string $identifier,
         string $normalizedLabels,
-        ?string $filePath,
+        ?string $fileKey,
         ?string $originalFilename
     ): EnrichedEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -99,9 +99,9 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
         $file = null;
 
-        if (null !== $filePath && null !== $originalFilename) {
+        if (null !== $fileKey && null !== $originalFilename) {
             $file = new FileInfo();
-            $file->setKey($filePath);
+            $file->setKey($fileKey);
             $file->setOriginalFilename($originalFilename);
         }
 

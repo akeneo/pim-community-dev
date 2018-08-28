@@ -133,8 +133,7 @@ SQL;
 
     public function loadFixtures(): void
     {
-        $image = $this->uploadEnrichedEntityImage();
-        $this->loadEnrichedEntities($image);
+        $this->loadEnrichedEntities();
         $this->loadRecords();
         $this->loadAttributes();
     }
@@ -208,23 +207,28 @@ SQL;
         $this->filesystem->mirror($originDir, $targetDir, Finder::create()->ignoreDotFiles(false)->in($originDir));
     }
 
-    private function uploadEnrichedEntityImage(): FileInfoInterface
+    private function uploadEnrichedEntityImage($code): FileInfoInterface
     {
-        $rawFile = new \SplFileInfo(__DIR__.'/../Resources/files/akeneo.png');
+        $path = sprintf('/../Resources/fixtures/files/%s.jpg', $code);
+        $rawFile = new \SplFileInfo(__DIR__.$path);
 
         return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
     }
 
-    private function loadEnrichedEntities(FileInfoInterface $image): void
+    private function loadEnrichedEntities(): void
     {
+        $designer = $this->uploadEnrichedEntityImage('designer');
+        $brand = $this->uploadEnrichedEntityImage('brand');
+
         $sql = <<<SQL
 INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`, `image`)
 VALUES
-  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}', :image),
-  ('brand', '{"fr_FR": "Marque"}', :image);
+  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}', :designer),
+  ('brand', '{"fr_FR": "Marque"}', :brand);
 SQL;
         $affectedRows = $this->dbal->executeUpdate($sql, [
-            'image' => $image->getKey()
+            'designer' => $designer->getKey(),
+            'brand' => $brand->getKey()
         ]);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the enriched entities.');

@@ -18,8 +18,20 @@ Feature: Edit an enriched entity
 
   @acceptance-back
   Scenario: Updating the image
-    When the user updates the '"designer"' enriched entity image with '"/path/image.jpg"'
-    Then the image of the '"designer"' enriched entity should be '"/path/image.jpg"'
+    When the user updates the 'designer' enriched entity image with path '"/path/image.jpg"' and filename '"image.jpg"'
+    Then the image of the 'designer' enriched entity should be '"/path/image.jpg"'
+
+  @acceptance-back
+  Scenario Outline: Updating with an invalid image
+    When the user updates the 'designer' enriched entity image with path '<wrong_path>' and filename '<wrong_filename>'
+    Then there should be a validation error on the property 'image' with '<message>'
+
+    Examples:
+      | wrong_path        | wrong_filename | message                              |
+      | false             | "image.jpg"    | This value should not be blank.      |
+      | 150               | "image.jpg"    | This value should be of type string. |
+      | "/path/image.jpg" | false          | This value should not be blank.      |
+      | "/path/image.jpg" | 150            | This value should be of type string. |
 
   @acceptance-front
   Scenario: Updating an enriched entity with unexpected backend answer
