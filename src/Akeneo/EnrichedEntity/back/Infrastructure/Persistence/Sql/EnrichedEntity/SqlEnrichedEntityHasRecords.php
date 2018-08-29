@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityHasRecordsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityHasRecordsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;

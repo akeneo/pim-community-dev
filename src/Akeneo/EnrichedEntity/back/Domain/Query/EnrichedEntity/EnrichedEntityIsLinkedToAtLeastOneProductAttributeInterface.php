@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 /**
- * Tells if an Enriched Entity has some records
+ * Tells if an Enriched Entity is linked to at least one product attribute
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface EnrichedEntityHasRecordsInterface
+interface EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface
 {
     public function __invoke(EnrichedEntityIdentifier $identifier): bool;
 }

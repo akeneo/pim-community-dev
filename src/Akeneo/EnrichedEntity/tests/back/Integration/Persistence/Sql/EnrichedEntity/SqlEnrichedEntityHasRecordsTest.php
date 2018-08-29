@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql;
+namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityHasRecordsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityHasRecordsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
 /**

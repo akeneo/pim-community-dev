@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,19 +27,19 @@ class ProductSubscriptionController
     /** @var SubscribeProduct */
     private $subscribeProduct;
 
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $productSubscriptionRepository;
+    /** @var GetProductSubscriptionStatusHandler */
+    private $getProductSubscriptionStatusHandler;
 
     /**
      * @param SubscribeProduct $subscribeProduct
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+     * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
     ) {
         $this->subscribeProduct = $subscribeProduct;
-        $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
     }
 
     /**
@@ -63,10 +63,11 @@ class ProductSubscriptionController
      *
      * @return Response
      */
-    public function getSubscriptionStatusAction(int $productId): Response
+    public function getProductSubscriptionStatusAction(int $productId): Response
     {
-        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId($productId);
+        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($productId);
+        $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($getProductSubscriptionStatus);
 
-        return new JsonResponse($subscriptionStatus);
+        return new JsonResponse($productSubscriptionStatus->normalize());
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\EventListener;
 
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,6 +28,8 @@ use Symfony\Component\Finder\Finder;
  */
 class Installer implements EventSubscriberInterface
 {
+    private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
+
     /** @var Filesystem */
     private $filesystem;
 
@@ -36,15 +40,22 @@ class Installer implements EventSubscriberInterface
     private $dbal;
 
     /**
-     * @param Filesystem $filesystem
-     * @param string     $projectDir
-     * @param Connection $dbal
+     * @var FileStorerInterface
      */
-    public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal)
+    private $storer;
+
+    /**
+     * @param Filesystem $filesystem
+     * @param string $projectDir
+     * @param Connection $dbal
+     * @param FileStorerInterface $storer
+     */
+    public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal, FileStorerInterface $storer)
     {
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
         $this->dbal = $dbal;
+        $this->storer = $storer;
     }
 
     /**
@@ -78,6 +89,7 @@ CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
+    `image` VARCHAR(255) NULL,
     PRIMARY KEY (`id`),
     UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -112,6 +124,7 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
     CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
       ON UPDATE CASCADE
+      ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
 
@@ -194,15 +207,29 @@ SQL;
         $this->filesystem->mirror($originDir, $targetDir, Finder::create()->ignoreDotFiles(false)->in($originDir));
     }
 
+    private function uploadEnrichedEntityImage($code): FileInfoInterface
+    {
+        $path = sprintf('/../Resources/fixtures/files/%s.jpg', $code);
+        $rawFile = new \SplFileInfo(__DIR__.$path);
+
+        return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+    }
+
     private function loadEnrichedEntities(): void
     {
+        $designer = $this->uploadEnrichedEntityImage('designer');
+        $brand = $this->uploadEnrichedEntityImage('brand');
+
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`)
+INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`, `image`)
 VALUES
-  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}'),
-  ('brand', '{"fr_FR": "Marque"}');
+  ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}', :designer),
+  ('brand', '{"fr_FR": "Marque"}', :brand);
 SQL;
-        $affectedRows = $this->dbal->exec($sql);
+        $affectedRows = $this->dbal->executeUpdate($sql, [
+            'designer' => $designer->getKey(),
+            'brand' => $brand->getKey()
+        ]);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the enriched entities.');
         }

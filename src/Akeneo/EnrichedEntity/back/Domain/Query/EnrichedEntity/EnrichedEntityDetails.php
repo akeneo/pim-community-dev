@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 
 /**
@@ -28,17 +29,23 @@ class EnrichedEntityDetails
 
     public const LABELS = 'labels';
 
+    public const IMAGE = 'image';
+
     /** @var EnrichedEntityIdentifier */
     public $identifier;
 
     /** @var LabelCollection */
     public $labels;
 
+    /** @var ?Image */
+    public $image;
+
     public function normalize(): array
     {
         return [
             self::IDENTIFIER => (string) $this->identifier,
-            self::LABELS     => $this->labels->normalize()
+            self::LABELS     => $this->labels->normalize(),
+            self::IMAGE      => (null !== $this->image) ? $this->image->normalize() : null
         ];
     }
 }

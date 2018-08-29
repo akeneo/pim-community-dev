@@ -4,6 +4,8 @@ Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnriched
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+        image:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Image: ~
 
 Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand:
     group_sequence:
@@ -26,6 +28,7 @@ Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnri
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldHaveNoRecord: { groups: [other_constraints] }
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:

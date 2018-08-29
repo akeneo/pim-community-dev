@@ -37,5 +37,5 @@ Feature: Check product edit tabs visibility
   @jira https://akeneo.atlassian.net/browse/PIM-4764
   Scenario: Not being able to view status switcher if I am not owner
     Given I am logged in as "Mary"
-    And I edit the "rangers" product
-    Then I should not see the status-switcher button
+    When I edit the "rangers" product
+    Then I should not see the product status switcher

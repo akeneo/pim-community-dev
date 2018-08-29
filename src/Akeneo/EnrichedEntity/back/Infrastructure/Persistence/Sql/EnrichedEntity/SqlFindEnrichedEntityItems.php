@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -49,7 +51,9 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
         foreach ($results as $result) {
             $enrichedEntityItems[] = $this->hydrateEnrichedEntityItem(
                 $result['identifier'],
-                $result['labels']
+                $result['labels'],
+                $result['file_key'],
+                $result['original_filename']
             );
         }
 
@@ -59,8 +63,9 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
     private function fetchResults(): array
     {
         $query = <<<SQL
-        SELECT identifier, labels
-        FROM akeneo_enriched_entity_enriched_entity
+        SELECT ee.identifier, ee.labels, ee.image as file_key, fi.original_filename
+        FROM akeneo_enriched_entity_enriched_entity AS ee
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
 SQL;
         $statement = $this->sqlConnection->executeQuery($query);
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -71,16 +76,26 @@ SQL;
 
     private function hydrateEnrichedEntityItem(
         string $identifier,
-        string $normalizedLabels
+        string $normalizedLabels,
+        ?string $fileKey,
+        ?string $originalFilename
     ): EnrichedEntityItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
+        $file = null;
+
+        if (null !== $fileKey && null !== $originalFilename) {
+            $file = new FileInfo();
+            $file->setKey($fileKey);
+            $file->setOriginalFilename($originalFilename);
+        }
 
         $enrichedEntityItem = new EnrichedEntityItem();
         $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
+        $enrichedEntityItem->image = (null !== $file) ? Image::fromFileInfo($file) : null;
 
         return $enrichedEntityItem;
     }

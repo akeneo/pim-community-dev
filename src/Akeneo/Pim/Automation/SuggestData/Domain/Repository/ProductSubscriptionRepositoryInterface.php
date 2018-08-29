@@ -40,7 +40,7 @@ interface ProductSubscriptionRepositoryInterface
     /**
      * @param int $productId
      *
-     * @return array
+     * @return ProductSubscriptionInterface|null
      */
-    public function getSubscriptionStatusForProductId(int $productId): array;
+    public function findOneByProductId(int $productId): ?ProductSubscriptionInterface;
 }

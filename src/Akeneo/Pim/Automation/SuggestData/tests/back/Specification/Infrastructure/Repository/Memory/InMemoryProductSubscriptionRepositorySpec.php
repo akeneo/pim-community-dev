@@ -78,15 +78,19 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->shouldHaveProductSubscription($subscription);
     }
 
-    function it_returns_a_product_subscription_status_for_a_product_id()
+    function it_finds_a_product_subscription_in_terms_of_a_product_id()
     {
         $product = new Product();
         $product->setId(42);
         $subscription = new ProductSubscription($product, 'a-fake-subscription', []);
         $this->save($subscription);
 
-        $this->getSubscriptionStatusForProductId(42)->shouldReturn(['subscription_id' => 'a-fake-subscription']);
-        $this->getSubscriptionStatusForProductId(43)->shouldReturn(['subscription_id' => '']);
+        $this->findOneByProductId(42)->shouldReturn($subscription);
+    }
+
+    function it_returns_null_if_you_asked_for_a_product_without_subscription()
+    {
+        $this->findOneByProductId(42)->shouldReturn(null);
     }
 
     /**
