@@ -1004,6 +1004,7 @@ config:
         pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
         pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
         pim/template/common/title-with-subtitle:                  pimenrich/templates/common/title-with-subtitle.html
+        pim/template/common/description-header:                   pimenrich/templates/catalog-volume/header.html # TODO Move
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
@@ -1254,7 +1255,6 @@ config:
         pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current
 
         # Catalog volume monitoring
-        pim/template/catalog-volume/header:       pimenrich/templates/catalog-volume/header.html
         pim/template/catalog-volume/section:      pimenrich/templates/catalog-volume/section.html
         pim/template/catalog-volume/number:       pimenrich/templates/catalog-volume/number.html
         pim/template/catalog-volume/average-max:     pimenrich/templates/catalog-volume/average-max.html
