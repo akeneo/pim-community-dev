@@ -199,12 +199,14 @@ export default (
         return {
           ...state,
           isDirty: false,
+          originalData: '',
         };
       }
 
       state = {
         ...state,
         data: newAttribute,
+        isDirty: false,
         originalData: JSON.stringify(newAttribute),
       };
       break;

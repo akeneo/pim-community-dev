@@ -46,7 +46,7 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   if (dismiss) {
     dispatch(attributeEditionCancel());
   }
-  dispatch(updateAttributeList());
+  await dispatch(updateAttributeList());
 
   return;
 };
@@ -71,10 +71,10 @@ export const attributeEditionStart = (attributeIdentifier: AttributeIdentifier) 
   const attributeState = state.attribute;
 
   if (attributeState.isDirty) {
-    await dispatch(saveAttribute());
+    await dispatch(saveAttribute(false));
   }
 
-  if (!attributeState.isDirty) {
+  if (!getState().attribute.isDirty) {
     dispatch(attributeEditionStartEvent(denormalizeAttribute(attributeToEdit)));
   }
 };
