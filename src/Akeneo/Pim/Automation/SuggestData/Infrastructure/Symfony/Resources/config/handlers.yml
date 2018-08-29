@@ -12,6 +12,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping_webservice'
 
     akeneo.pim.automation.suggest_data.handler.subscribe_product:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler'

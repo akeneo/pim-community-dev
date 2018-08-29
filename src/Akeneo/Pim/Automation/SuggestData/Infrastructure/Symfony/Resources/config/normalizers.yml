@@ -1,0 +1,3 @@
+services:
+    akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping:
+        class: Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingNormalizer

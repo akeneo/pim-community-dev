@@ -30,13 +30,15 @@ class IdentifiersMappingNormalizer
         $result = [];
 
         foreach ($mapping->getIdentifiers() as $identifier => $attribute) {
-            $attribute->setLocale('en_US');
-            $result[$identifier] = [
-                'code' => $attribute->getCode(),
-                'label' => [
-                    'en_us' => $attribute->getLabel()
-                ]
-            ];
+            if (null !== $attribute) {
+                $attribute->setLocale('en_US');
+                $result[$identifier] = [
+                    'code' => $attribute->getCode(),
+                    'label' => [
+                        'en_us' => $attribute->getLabel()
+                    ]
+                ];
+            }
         }
 
         return $result;
