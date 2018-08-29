@@ -19,9 +19,9 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -35,6 +35,8 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ImageAttributeFactory implements AttributeFactoryInterface
 {
+    private const NO_LIMIT = null;
+
     public function supports(AbstractCreateAttributeCommand $command): bool
     {
         return $command instanceof CreateImageAttributeCommand;
@@ -42,6 +44,16 @@ class ImageAttributeFactory implements AttributeFactoryInterface
 
     public function create(AbstractCreateAttributeCommand $command): AbstractAttribute
     {
+        if (!$this->supports($command)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Expected command of type "%s", "%s" given',
+                    CreateImageAttributeCommand::class,
+                    ClassUtils::getClass($command)
+                )
+            );
+        }
+
         return ImageAttribute::create(
             AttributeIdentifier::create(
                 $command->identifier['enriched_entity_identifier'],
@@ -51,10 +63,10 @@ class ImageAttributeFactory implements AttributeFactoryInterface
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),
             AttributeOrder::fromInteger($command->order),
-            AttributeRequired::fromBoolean($command->required),
+            AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeMaxFileSize::fromString($command->maxFileSize),
+            self::NO_LIMIT === $command->maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($command->maxFileSize),
             AttributeAllowedExtensions::fromList($command->allowedExtensions)
         );
     }

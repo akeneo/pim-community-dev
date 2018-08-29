@@ -26,6 +26,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class WebClientHelper
 {
+    private const SHARED_RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../../shared/responses/';
+
     /** @var RouterInterface */
     private $router;
 
@@ -88,5 +90,26 @@ HTML;
     public function assert404NotFound(Response $response): void
     {
         Assert::assertSame(404, $response->getStatusCode());
+    }
+
+    public function assertFromFile(Response $response, string $relativeFilePath): void
+    {
+        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        $expectedContent = $this->getContent($expectedResponse);
+        $this->assertResponse($response, $expectedResponse['status'], $expectedContent);
+    }
+
+    /**
+     */
+    private function getContent($expectedResponse): string
+    {
+        if (is_array($expectedResponse['content'])) {
+            return json_encode($expectedResponse['content'], JSON_HEX_QUOT);
+        }
+        if (!$expectedResponse['content'] || empty($expectedResponse['content'])) {
+            return '';
+        }
+
+        return json_encode($expectedResponse['content'], JSON_HEX_QUOT);
     }
 }

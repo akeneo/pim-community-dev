@@ -23,8 +23,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.create_attribute_command_factory';
+    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry';
     private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.create_attribute_command_factory';
+    const DEFAULT_PRIORITY = 50;
 
     /**
      * {@inheritdoc}
@@ -32,10 +33,28 @@ class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $registry = $container->getDefinition(self::ATTRIBUTE_FACTORY_REGISTRY);
-        $attributeFactories = $container->findTaggedServiceIds(self::ATTRIBUTE_FACTORY_TAG);
+        $attributeFactories = $this->findAndSortTaggedServices($container);
 
-        foreach (array_keys($attributeFactories) as $attributeFactoryId) {
+        foreach ($attributeFactories as $attributeFactoryId) {
             $registry->addMethodCall('register', [new Reference($attributeFactoryId)]);
         }
+    }
+
+    private function findAndSortTaggedServices(ContainerBuilder $container): array
+    {
+        $attributeFactories = $container->findTaggedServiceIds(self::ATTRIBUTE_FACTORY_TAG);
+
+        $sortedUpdatersByPriority = [];
+        foreach ($attributeFactories as $serviceId => $tags) {
+            foreach ($tags as $tag) {
+                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                $sortedUpdatersByPriority[$priority][] = new Reference($serviceId);
+            }
+        }
+
+        krsort($sortedUpdatersByPriority);
+        $sortedUpdatersByPriority = call_user_func_array('array_merge', $sortedUpdatersByPriority);
+
+        return $sortedUpdatersByPriority;
     }
 }

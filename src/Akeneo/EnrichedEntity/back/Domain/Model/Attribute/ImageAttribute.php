@@ -29,7 +29,7 @@ class ImageAttribute extends AbstractAttribute
     private $maxFileSize;
 
     /** @var AttributeAllowedExtensions */
-    private $extensions;
+    private $allowedExtensions;
 
     protected function __construct(
         AttributeIdentifier $identifier,
@@ -37,17 +37,17 @@ class ImageAttribute extends AbstractAttribute
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
         AttributeAllowedExtensions $extensions
     ) {
-        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $required,
+        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $isRequired,
             $valuePerChannel, $valuePerLocale);
 
         $this->maxFileSize = $maxFileSize;
-        $this->extensions = $extensions;
+        $this->allowedExtensions = $extensions;
     }
 
     public static function create(
@@ -56,7 +56,7 @@ class ImageAttribute extends AbstractAttribute
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
@@ -68,7 +68,7 @@ class ImageAttribute extends AbstractAttribute
             $code,
             $labelCollection,
             $order,
-            $required,
+            $isRequired,
             $valuePerChannel,
             $valuePerLocale,
             $maxFileSize,
@@ -82,7 +82,7 @@ class ImageAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'max_file_size' => $this->maxFileSize->normalize(),
-                'allowed_extensions' => $this->extensions->normalize()
+                'allowed_extensions' => $this->allowedExtensions->normalize()
             ]
         );
     }
@@ -90,5 +90,15 @@ class ImageAttribute extends AbstractAttribute
     protected function getType(): string
     {
         return self::ATTRIBUTE_TYPE;
+    }
+
+    public function setMaxFileSize(AttributeMaxFileSize $newMaxFileSize): void
+    {
+        $this->maxFileSize = $newMaxFileSize;
+    }
+
+    public function setAllowedExtensions(AttributeAllowedExtensions $newAllowedExtensions): void
+    {
+        $this->allowedExtensions = $newAllowedExtensions;
     }
 }

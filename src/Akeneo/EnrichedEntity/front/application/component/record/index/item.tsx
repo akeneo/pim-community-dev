@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
-import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
+import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
 const router = require('pim/router');
 
 export default ({
   record,
   locale,
   isLoading = false,
-  onRedirectToRecord
+  onRedirectToRecord,
 }: {
   record: Record;
   locale: string;
@@ -20,15 +20,13 @@ export default ({
     '' !== record.getIdentifier().identifier
       ? `#${router.generate('akeneo_enriched_entities_record_edit', {
           enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
-          identifier: record.getIdentifier().identifier
+          identifier: record.getIdentifier().identifier,
         })}`
       : '';
 
   return (
     <tr
-      className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${
-        isLoading ? "AknLoadingPlaceHolder" : ""
-      }`}
+      className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
       tabIndex={0}
       onClick={event => {
         event.preventDefault();
@@ -39,7 +37,7 @@ export default ({
       }}
     >
       <td className="AknGrid-bodyCell">
-        <img className="AknGrid-image" src={getImageShowUrl(null, "thumbnail_small")} title="" />
+        <img className="AknGrid-image" src={getImageShowUrl(null, 'thumbnail_small')} title="" />
       </td>
       <td className="AknGrid-bodyCell">
         <a

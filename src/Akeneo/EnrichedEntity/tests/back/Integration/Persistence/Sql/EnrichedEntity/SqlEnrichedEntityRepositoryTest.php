@@ -15,9 +15,11 @@ namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\EnrichedE
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
@@ -132,16 +134,18 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
 
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::create(
+        $expectedAttribute = TextAttribute::createText(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(255)
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
         );
         $this->attributeRepository->create($expectedAttribute);
 

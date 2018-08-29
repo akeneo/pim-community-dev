@@ -19,7 +19,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $this->supports(['type' => 'image'])->shouldReturn(false);
     }
 
-    function it_creates_a_command__to_create_a_text_attribute()
+    function it_creates_a_command_to_create_a_text_attribute()
     {
         $command = $this->create([
             'identifier'  => [
@@ -30,10 +30,14 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 1,
-            'required' => false,
+            'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_length' => 255,
+            'is_text_area' => true,
+            'is_rich_text_editor' => true,
+            'validation_rule' => 'regular_expression',
+            'regular_expression' => '/\w+/',
         ]);
         $command->shouldBeAnInstanceOf(CreateTextAttributeCommand::class);
         $command->identifier->shouldBeEqualTo([
@@ -44,13 +48,17 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo('name');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
         $command->order->shouldBeEqualTo(1);
-        $command->required->shouldBeEqualTo(false);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
         $command->maxLength->shouldBeEqualTo(255);
+        $command->isTextArea->shouldBeEqualTo(true);
+        $command->isRichTextEditor->shouldBeEqualTo(true);
+        $command->validationRule->shouldBeEqualTo('regular_expression');
+        $command->regularExpression->shouldBeEqualTo('/\w+/');
     }
 
-    function it_creates_a_command_with_a_null_property_if_the_value_is_missing()
+    function it_creates_a_command_with_a_default_property_if_the_none_is_provided()
     {
         $command = $this->create([]);
 
@@ -63,9 +71,13 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);
         $command->order->shouldBeEqualTo(null);
-        $command->required->shouldBeEqualTo(false);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(null);
         $command->valuePerLocale->shouldBeEqualTo(null);
         $command->maxLength->shouldBeEqualTo(null);
+        $command->isTextArea->shouldBeEqualTo(false);
+        $command->isRichTextEditor->shouldBeEqualTo(false);
+        $command->validationRule->shouldBeEqualTo('none');
+        $command->regularExpression->shouldBeEqualTo(null);
     }
 }

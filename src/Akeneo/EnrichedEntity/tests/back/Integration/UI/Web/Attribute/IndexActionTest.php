@@ -16,10 +16,13 @@ namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
@@ -37,6 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
+    private const RESPONSES_DIR = 'Attribute/ListDetails/';
     private const INDEX_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_index_rest';
 
     /** @var Client */
@@ -73,41 +77,10 @@ class IndexActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedContent = [
-            [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'name',
-                ],
-                'enriched_entity_identifier' => 'designer',
-                'code'                       => 'name',
-                'labels'                     => ['en_US' => 'Name'],
-                'required'                   => true,
-                'order'                      => 0,
-                'value_per_locale'           => true,
-                'value_per_channel'          => true,
-                'max_length'                 => 155,
-                'type'                       => 'text',
-            ],
-            [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'image',
-                ],
-                'enriched_entity_identifier' => 'designer',
-                'code'                       => 'name',
-                'labels'                     => ['en_US' => 'Portrait'],
-                'required'                   => true,
-                'order'                      => 1,
-                'value_per_locale'           => true,
-                'value_per_channel'          => true,
-                'max_file_size'              => '1000',
-                'allowed_extensions'         => ['pdf'],
-                'type'                       => 'image',
-            ],
-        ];
-
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_OK, json_encode($expectedContent));
+        $this->webClientHelper->assertFromFile(
+            $this->client->getResponse(),
+            self::RESPONSES_DIR . 'ok.json'
+        );
     }
 
     /**
@@ -130,13 +103,16 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $expectedContent = [];
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_OK, json_encode($expectedContent));
+        $this->webClientHelper->assertFromFile(
+            $this->client->getResponse(),
+            self::RESPONSES_DIR . 'ok_empty.json'
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_an_httpd_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
+    public function it_returns_an_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -150,8 +126,6 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ]
         );
-
-        $expectedContent = [];
 
         $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
@@ -171,6 +145,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
         $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
+        $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
     }
 
@@ -182,12 +157,36 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $nameAttribute->code = AttributeCode::fromString('name');
         $nameAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
         $nameAttribute->order = AttributeOrder::fromInteger(0);
-        $nameAttribute->required = AttributeRequired::fromBoolean(true);
+        $nameAttribute->isRequired = AttributeIsRequired::fromBoolean(true);
         $nameAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $nameAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $nameAttribute->maxLength = AttributeMaxLength::fromInteger(155);
+        $nameAttribute->isTextArea = AttributeIsTextArea::fromBoolean(true);
+        $nameAttribute->isRichTextEditor = AttributeIsTextArea::fromBoolean(true);
+        $nameAttribute->validationRule = AttributeValidationRule::none();
+        $nameAttribute->regularExpression = AttributeRegularExpression::createEmpty();
 
         return $nameAttribute;
+    }
+
+    private function createEmailAttribute()
+    {
+        $emailAttribute = new TextAttributeDetails();
+        $emailAttribute->identifier = AttributeIdentifier::create('designer', 'email');
+        $emailAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $emailAttribute->code = AttributeCode::fromString('email');
+        $emailAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
+        $emailAttribute->order = AttributeOrder::fromInteger(0);
+        $emailAttribute->isRequired = AttributeIsRequired::fromBoolean(true);
+        $emailAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
+        $emailAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
+        $emailAttribute->maxLength = AttributeMaxLength::fromInteger(155);
+        $emailAttribute->isTextArea = AttributeIsTextArea::fromBoolean(false);
+        $emailAttribute->isRichTextEditor = AttributeIsTextArea::fromBoolean(false);
+        $emailAttribute->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
+        $emailAttribute->regularExpression = AttributeRegularExpression::createEmpty();
+
+        return $emailAttribute;
     }
 
     private function createPortraitAttribute(): AbstractAttributeDetails
@@ -198,7 +197,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $imageAttribute->code = AttributeCode::fromString('name');
         $imageAttribute->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
         $imageAttribute->order = AttributeOrder::fromInteger(1);
-        $imageAttribute->required = AttributeRequired::fromBoolean(true);
+        $imageAttribute->isRequired = AttributeIsRequired::fromBoolean(true);
         $imageAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $imageAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $imageAttribute->maxFileSize = AttributeMaxFileSize::fromString('1000');

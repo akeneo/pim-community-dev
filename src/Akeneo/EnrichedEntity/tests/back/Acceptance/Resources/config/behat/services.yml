@@ -4,12 +4,18 @@ services:
         tags:
             - { name: fob.context_service }
 
+    akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context:
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\ConstraintViolationsContext
+        tags:
+            - { name: fob.context_service }
+
     akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditEnrichedEntityContext
         arguments:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
             - '@__symfony__.validator'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
         tags:
             - { name: fob.context_service }
 
@@ -43,6 +49,9 @@ services:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateAttributeContext
         arguments:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@__symfony__.akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry'
+            - '@__symfony__.validator'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
@@ -52,7 +61,10 @@ services:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditAttributeContext
         arguments:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.attribute'
-            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.delete_attribute_handler'
+            - '@__symfony__.akeneo_enrichedentity.application.factory.edit_attribute_command_factory'
+            - '@__symfony__.akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler'
+            - '@__symfony__.validator'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
             - { name: fob.context_service }

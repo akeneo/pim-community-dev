@@ -42,19 +42,25 @@ final class EditEnrichedEntityContext implements Context
     /** @var ConstraintViolationListInterface */
     private $violations;
 
+    /** @var ConstraintViolationsContext */
+    private $constraintViolationsContext;
+
     /**
      * @param EnrichedEntityRepositoryInterface $enrichedEntityRepository
-     * @param EditEnrichedEntityHandler $editEnrichedEntityHandler
-     * @param ValidatorInterface $validator
+     * @param EditEnrichedEntityHandler         $editEnrichedEntityHandler
+     * @param ValidatorInterface                $validator
+     * @param ConstraintViolationsContext       $constraintViolationsContext
      */
     public function __construct(
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
         EditEnrichedEntityHandler $editEnrichedEntityHandler,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ConstraintViolationsContext $constraintViolationsContext
     ) {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
         $this->validator = $validator;
+        $this->constraintViolationsContext = $constraintViolationsContext;
     }
 
     /**
@@ -136,9 +142,9 @@ final class EditEnrichedEntityContext implements Context
             'filePath' => $filePath,
             'originalFilename' => $filename
         ];
-        $this->violations = $this->validator->validate($editImage);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($editImage));
 
-        if ($this->violations->count() === 0) {
+        if (!$this->constraintViolationsContext->hasViolations()) {
             ($this->editEnrichedEntityHandler)($editImage);
         }
     }
@@ -148,7 +154,7 @@ final class EditEnrichedEntityContext implements Context
      */
     public function theImageOfTheEnrichedEntityShouldBe(string $identifier, string $filePath)
     {
-        Assert::assertEquals($this->violations->count(), 0);
+        $this->constraintViolationsContext->assertThereIsNoViolations();
 
         $filePath = json_decode($filePath);
 
@@ -156,16 +162,5 @@ final class EditEnrichedEntityContext implements Context
             ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
 
         Assert::assertEquals($enrichedEntity->getImage()->getKey(), $filePath);
-    }
-
-    /**
-     * @Then /^there should be a validation error on the property \'([^\']*)\' with \'([^\']*)\'$/
-     */
-    public function thereShouldBeAValidationErrorOnThePropertyWith($expectedPropertyPath, $message)
-    {
-        Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected but none were found.');
-        $violation = $this->violations->get(0);
-        Assert::assertSame($message, $violation->getMessage());
-        Assert::assertSame($expectedPropertyPath, $violation->getPropertyPath());
     }
 }

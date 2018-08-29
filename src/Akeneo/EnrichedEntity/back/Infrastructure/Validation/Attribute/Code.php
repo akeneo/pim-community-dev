@@ -20,4 +20,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class Code extends Constraint
 {
+    public const MESSAGE_RESERVED_CODE = 'pim_enriched_entity.attribute.validation.code.reserved_codes';
+    public const MESSAGE_WRONG_PATTERN = 'pim_enriched_entity.attribute.validation.code.pattern';
 }

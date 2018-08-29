@@ -17,10 +17,14 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
@@ -55,16 +59,17 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::create(
+        $expectedAttribute = TextAttribute::createTextArea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            AttributeMaxLength::fromInteger(255)
+            AttributeMaxLength::fromInteger(255),
+            AttributeIsRichTextEditor::fromBoolean(false)
         );
 
         $this->attributeRepository->create($expectedAttribute);
@@ -86,7 +91,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
             AttributeMaxFileSize::fromString('250.12'),
@@ -105,6 +110,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $attribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($attribute);
 
@@ -146,11 +152,41 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $this->attributeRepository->getByIdentifier($identifier);
     }
 
+    /** @test */
+    public function it_updates_an_attribute()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedAttribute = TextAttribute::createTextArea(
+            $identifier,
+            $enrichedEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        );
+        $this->attributeRepository->create($expectedAttribute);
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnom', 'en_US' => 'Nickname']));
+
+        $this->attributeRepository->update($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
     private function assertAttribute(
         AbstractAttribute $expectedAttribute,
         AbstractAttribute $actualAttribute
     ): void {
-        $this->assertSame($expectedAttribute->normalize(), $actualAttribute->normalize());
+        $expected = $expectedAttribute->normalize();
+        $actual = $actualAttribute->normalize();
+        sort($expected['labels']);
+        sort($actual['labels']);
+        $this->assertSame($expected, $actual);
     }
 
     private function resetDB(): void
@@ -181,7 +217,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             labels,
             attribute_type,
             attribute_order,
-            required,
+            is_required,
             value_per_channel,
             value_per_locale,
             additional_properties
@@ -192,7 +228,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             :labels,
             :attribute_type,
             :attribute_order,
-            :required,
+            :is_required,
             :value_per_channel,
             :value_per_locale,
             :additional_properties
@@ -206,7 +242,7 @@ SQL;
                 'labels'                     => '{}',
                 'attribute_type'             => 'UNSUPPORTED_ATTRIBUTE_TYPE',
                 'attribute_order'            => 1,
-                'required'                   => 0,
+                'is_required'                   => 0,
                 'value_per_channel'          => 0,
                 'value_per_locale'           => 0,
                 'additional_properties'      => '{}',
@@ -217,16 +253,18 @@ SQL;
 
     private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
-        return TextAttribute::create(
+        return TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
-            AttributeRequired::fromBoolean(true),
+            AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxLength::fromInteger(155)
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
         );
     }
 }

@@ -2,6 +2,7 @@ import Saver from 'akeneoenrichedentity/domain/saver/saver';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import handleError from 'akeneoenrichedentity/infrastructure/saver/error-handler';
 
 const routing = require('routing');
 
@@ -23,13 +24,7 @@ export class RecordSaverImplementation implements RecordSaver {
         identifier: record.getIdentifier().identifier,
       }),
       normalizedRecord
-    ).catch(error => {
-      if (500 === error.status) {
-        throw new Error('Internal Server error');
-      }
-
-      return error.responseJSON;
-    });
+    ).catch(handleError);
   }
 
   async create(record: Record): Promise<ValidationError[] | null> {
@@ -42,13 +37,7 @@ export class RecordSaverImplementation implements RecordSaver {
         enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
       }),
       normalizedRecord
-    ).catch(error => {
-      if (500 === error.status) {
-        throw new Error('Internal Server error');
-      }
-
-      return error.responseJSON;
-    });
+    ).catch(handleError);
   }
 }
 

@@ -12,7 +12,8 @@ const Flag = ({locale, displayLanguage}: {locale: Locale; displayLanguage: boole
   return (
     <span>
       <i className={iconClass} />
-      &nbsp;{displayLanguage ? <span className="language">{locale.language}</span> : ''}
+      &nbsp;
+      {displayLanguage ? <span className="language">{locale.language}</span> : ''}
     </span>
   );
 };

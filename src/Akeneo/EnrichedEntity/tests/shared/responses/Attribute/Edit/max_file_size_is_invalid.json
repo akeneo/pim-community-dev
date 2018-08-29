@@ -1,0 +1,65 @@
+{
+  "status": 400,
+  "content": [
+    {
+      "messageTemplate": "This value should be greater than 0.",
+      "parameters": {
+        "{{ value }}": "-1",
+        "{{ compared_value }}": "0",
+        "{{ compared_value_type }}": "integer"
+      },
+      "plural": null,
+      "message": "This value should be greater than 0.",
+      "root": {
+        "editCommands": [
+          {
+            "isRequired": false,
+            "identifier": {
+              "enriched_entity_identifier": "designer",
+              "identifier": "portrait"
+            }
+          },
+          {
+            "labels": {
+              "fr_FR": "Uknown"
+            },
+            "identifier": {
+              "enriched_entity_identifier": "designer",
+              "identifier": "portrait"
+            }
+          },
+          {
+            "maxFileSize": "-1",
+            "identifier": {
+              "enriched_entity_identifier": "designer",
+              "identifier": "portrait"
+            }
+          },
+          {
+            "allowedExtensions": [
+              "jpeg"
+            ],
+            "identifier": {
+              "enriched_entity_identifier": "designer",
+              "identifier": "portrait"
+            }
+          }
+        ],
+        "identifier": {
+          "enriched_entity_identifier": "designer",
+          "identifier": "portrait"
+        }
+      },
+      "propertyPath": "maxFileSize",
+      "invalidValue": "-1",
+      "constraint": {
+        "targets": "class",
+        "defaultOption": null,
+        "requiredOptions": [],
+        "payload": null
+      },
+      "cause": null,
+      "code": null
+    }
+  ]
+}

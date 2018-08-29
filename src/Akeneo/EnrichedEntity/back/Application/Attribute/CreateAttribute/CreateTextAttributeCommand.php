@@ -21,4 +21,16 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
 {
     /** @var int */
     public $maxLength;
+
+    /** bool */
+    public $isTextArea;
+
+    /** @var bool */
+    public $isRichTextEditor;
+
+    /** @var ?string */
+    public $validationRule;
+
+    /** @var ?string */
+    public $regularExpression;
 }

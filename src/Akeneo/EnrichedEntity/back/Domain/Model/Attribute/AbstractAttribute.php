@@ -25,28 +25,28 @@ use Webmozart\Assert\Assert;
 abstract class AbstractAttribute
 {
     /** @var AttributeIdentifier */
-    private $identifier;
+    protected $identifier;
 
     /** @var EnrichedEntity */
-    private $enrichedEntityIdentifier;
+    protected $enrichedEntityIdentifier;
 
     /** @var AttributeCode */
-    private $code;
+    protected $code;
 
     /** @var LabelCollection */
-    private $labelCollection;
+    protected $labelCollection;
 
     /** @var AttributeOrder */
-    private $order;
+    protected $order;
 
-    /** @var AttributeRequired */
-    private $required;
+    /** @var AttributeIsRequired */
+    protected $isRequired;
 
     /** @var AttributeValuePerChannel */
-    private $valuePerChannel;
+    protected $valuePerChannel;
 
     /** @var AttributeValuePerLocale */
-    private $valuePerLocale;
+    protected $valuePerLocale;
 
     protected function __construct(
         AttributeIdentifier $identifier,
@@ -54,7 +54,7 @@ abstract class AbstractAttribute
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
-        AttributeRequired $required,
+        AttributeIsRequired $isRequired,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
     ) {
@@ -76,7 +76,7 @@ abstract class AbstractAttribute
         $this->code = $code;
         $this->labelCollection = $labelCollection;
         $this->order = $order;
-        $this->required = $required;
+        $this->isRequired = $isRequired;
         $this->valuePerChannel = $valuePerChannel;
         $this->valuePerLocale = $valuePerLocale;
     }
@@ -107,11 +107,6 @@ abstract class AbstractAttribute
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function updateLabels(LabelCollection $labelCollection): void
-    {
-        $this->labelCollection = $labelCollection;
-    }
-
     public function hasOrder(AttributeOrder $order): bool
     {
         return $this->order->intValue() === $order->intValue();
@@ -122,7 +117,15 @@ abstract class AbstractAttribute
         return $this->order;
     }
 
-    abstract protected function getType(): string;
+    public function updateLabels(LabelCollection $labelCollection): void
+    {
+        $this->labelCollection = $labelCollection;
+    }
+
+    public function setIsRequired(AttributeIsRequired $isRequired): void
+    {
+        $this->isRequired = $isRequired;
+    }
 
     public function normalize(): array
     {
@@ -135,10 +138,12 @@ abstract class AbstractAttribute
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),
-            'required' => $this->required->normalize(),
+            'is_required' => $this->isRequired->normalize(),
             'value_per_channel' => $this->valuePerChannel->normalize(),
             'value_per_locale' => $this->valuePerLocale->normalize(),
             'type' => $this->getType(),
         ];
     }
+
+    abstract protected function getType(): string;
 }

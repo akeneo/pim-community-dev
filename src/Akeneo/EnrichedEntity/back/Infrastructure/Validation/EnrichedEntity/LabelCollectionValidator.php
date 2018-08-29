@@ -27,10 +27,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class LabelCollectionValidator extends ConstraintValidator
 {
     /**
-     * @param mixed      $localeCodes The value that should be validated
-     * @param Constraint $constraint  The constraint for the validation
+     * @param mixed      $labels     The value that should be validated
+     * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($localeCodes, Constraint $constraint)
+    public function validate($labels, Constraint $constraint)
     {
         if (!$constraint instanceof LabelCollection) {
             throw new UnexpectedTypeException($constraint, self::class);
@@ -38,7 +38,7 @@ class LabelCollectionValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
 
-        foreach ($localeCodes as $localeCode => $label) {
+        foreach ($labels as $localeCode => $label) {
             $this->validateLocaleCode($validator, $localeCode);
             $this->validateLabelForLocale($validator, $localeCode, $label);
         }
@@ -50,6 +50,7 @@ class LabelCollectionValidator extends ConstraintValidator
     private function validateLocaleCode(ValidatorInterface $validator, $localeCode): void
     {
         $violations = $validator->validate($localeCode, [
+            new Constraints\NotBlank(),
             new Constraints\Type(['type' => 'string']),
         ]);
 
@@ -69,13 +70,19 @@ class LabelCollectionValidator extends ConstraintValidator
     private function validateLabelForLocale(ValidatorInterface $validator, $localeCode, $label): void
     {
         $violations = $validator->validate($label, [
+            new Constraints\NotNull(),
             new Constraints\Type(['type' => 'string']),
         ]);
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
                 $this->context->addViolation(
-                    sprintf('invalid label for locale code "%s": %s', $localeCode, $violation->getMessage()),
+                    sprintf(
+                        'invalid label for locale code "%s": %s, "%s" given',
+                        $localeCode,
+                        $violation->getMessage(),
+                        $label
+                    ),
                     $violation->getParameters()
                 );
             }

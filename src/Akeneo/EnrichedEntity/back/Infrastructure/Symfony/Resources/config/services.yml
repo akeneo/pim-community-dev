@@ -14,6 +14,54 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.action.record.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\IndexAction'
+        arguments:
+          - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity'
+
+    akeneo_enrichedentity.infrastructure.action.record.get:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\GetAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_details'
+
+    akeneo_enrichedentity.infrastructure.action.record.edit:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\EditAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
+            - '@validator'
+
+    akeneo_enrichedentity.infrastructure.action.record.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_record_handler'
+            - '@enriched_entity_serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.index:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\IndexAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order'
+            - '@akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
+    akeneo_enrichedentity.infrastructure.action.attribute.edit:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\EditAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.factory.edit_attribute_command_factory'
+            - '@akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository'
@@ -116,3 +164,58 @@ services:
         class: 'Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler'
+        arguments:
+            - '@akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+
+    # Attribute updaters
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistry'
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.labels_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\LabelsUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_required_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRequiredUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.max_length_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_text_area:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsTextAreaUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.validation_rule:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.regular_expression:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\RegularExpressionUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 100 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_rich_text_editor:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRichTextEditorUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.max_file_size_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxFileSizeUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.allowed_extensions_updater:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AllowedExtensionsUpdater'
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }

@@ -13,15 +13,15 @@ export const attributeCreationLabelUpdated = (value: string, locale: string) => 
 };
 
 export const attributeCreationTypeUpdated = (attributeType: string) => {
-  return {type: 'ATTRIBUTE_CREATION_TYPE_UPDATED', attributeType};
+  return {type: 'ATTRIBUTE_CREATION_TYPE_UPDATED', attribute_type: attributeType};
 };
 
 export const attributeCreationValuePerLocaleUpdated = (valuePerLocale: boolean) => {
-  return {type: 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED', valuePerLocale};
+  return {type: 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED', value_per_locale: valuePerLocale};
 };
 
 export const attributeCreationValuePerChannelUpdated = (valuePerChannel: boolean) => {
-  return {type: 'ATTRIBUTE_CREATION_VALUE_PER_CHANNEL_UPDATED', valuePerChannel};
+  return {type: 'ATTRIBUTE_CREATION_VALUE_PER_CHANNEL_UPDATED', value_per_channel: valuePerChannel};
 };
 
 export const attributeCreationCancel = () => {

@@ -5,8 +5,8 @@ Feature: Delete an attribute linked to an enriched entity
 
   Background:
     Given the following enriched entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+      | identifier | labels                                       | image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
   @acceptance-back
   Scenario: Delete a text attribute linked to an enriched entity

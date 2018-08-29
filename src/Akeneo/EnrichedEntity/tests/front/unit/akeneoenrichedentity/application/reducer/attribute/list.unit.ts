@@ -1,5 +1,5 @@
 import reducer from 'akeneoenrichedentity/application/reducer/attribute/list';
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {denormalizeMinimalAttribute} from 'akeneoenrichedentity/domain/model/attribute/minimal';
 
 describe('akeneo > enriched entity > application > reducer > attribute --- list', () => {
   test('I ignore other commands', () => {
@@ -16,19 +16,19 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
       type: 'ANOTHER_ACTION',
     });
 
-    expect(newState).toEqual({attributes: [], openedAttribute: null});
+    expect(newState).toEqual({attributes: null});
   });
 
   test('I can receive an attribute list', () => {
     const newState = reducer(
-      {attributes: [], openedAttribute: null},
+      {attributes: []},
       {
         type: 'ATTRIBUTE_LIST_UPDATED',
         attributes: ['description', 'name'],
       }
     );
 
-    expect(newState).toEqual({attributes: ['description', 'name'], openedAttribute: null});
+    expect(newState).toEqual({attributes: ['description', 'name']});
   });
 
   test('I can delete an attribute', () => {
@@ -36,37 +36,37 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
       attributes: [
         {
           type: 'text',
-          identifier: {identifier: 'description', enrichedEntityIdentifier: 'designer'},
-          enrichedEntityIdentifier: 'designer',
+          identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+          enriched_entity_identifier: 'designer',
           code: 'description',
           labels: [],
         },
         {
           type: 'text',
-          identifier: {identifier: 'other', enrichedEntityIdentifier: 'designer'},
-          enrichedEntityIdentifier: 'designer',
+          identifier: {identifier: 'other', enriched_entity_identifier: 'designer'},
+          enriched_entity_identifier: 'designer',
           code: 'other',
           labels: [],
         },
       ],
     };
 
-    const deletedAttribute = denormalizeAttribute({
+    const deletedAttribute = {
       type: 'text',
-      identifier: {identifier: 'description', enrichedEntityIdentifier: 'designer'},
-      enrichedEntityIdentifier: 'designer',
+      identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+      enriched_entity_identifier: 'designer',
       code: 'description',
       labels: [],
-    });
+    };
 
-    const newState = reducer(state, {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute: deletedAttribute});
+    const newState = reducer(state, {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute});
 
     expect(newState).toEqual({
       attributes: [
         {
           type: 'text',
-          identifier: {identifier: 'other', enrichedEntityIdentifier: 'designer'},
-          enrichedEntityIdentifier: 'designer',
+          identifier: {identifier: 'other', enriched_entity_identifier: 'designer'},
+          enriched_entity_identifier: 'designer',
           code: 'other',
           labels: [],
         },
@@ -79,41 +79,63 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
       attributes: [
         {
           type: 'text',
-          identifier: {identifier: 'description', enrichedEntityIdentifier: 'designer'},
-          enrichedEntityIdentifier: 'designer',
+          identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+          enriched_entity_identifier: 'designer',
           code: 'description',
           labels: [],
         },
         {
           type: 'text',
-          identifier: {identifier: 'description', enrichedEntityIdentifier: 'other_entity'},
-          enrichedEntityIdentifier: 'other_entity',
+          identifier: {identifier: 'description', enriched_entity_identifier: 'other_entity'},
+          enriched_entity_identifier: 'other_entity',
           code: 'description',
           labels: [],
         },
       ],
     };
 
-    const deletedAttribute = denormalizeAttribute({
+    const deletedAttribute = {
       type: 'text',
-      identifier: {identifier: 'description', enrichedEntityIdentifier: 'designer'},
-      enrichedEntityIdentifier: 'designer',
+      identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+      enriched_entity_identifier: 'designer',
       code: 'description',
       labels: [],
-    });
+      value_per_locale: false,
+      value_per_channel: true,
+    };
 
-    const newState = reducer(state, {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute: deletedAttribute});
+    const newState = reducer(state, {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute});
 
     expect(newState).toEqual({
       attributes: [
         {
           type: 'text',
-          identifier: {identifier: 'description', enrichedEntityIdentifier: 'other_entity'},
-          enrichedEntityIdentifier: 'other_entity',
+          identifier: {identifier: 'description', enriched_entity_identifier: 'other_entity'},
+          enriched_entity_identifier: 'other_entity',
           code: 'description',
           labels: [],
         },
       ],
+    });
+  });
+
+  test('I can delete an attribute without any effect if no attribute are present', () => {
+    const state = {
+      attributes: null,
+    };
+
+    const deletedAttribute = {
+      type: 'text',
+      identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+      enriched_entity_identifier: 'designer',
+      code: 'description',
+      labels: [],
+    };
+
+    const newState = reducer(state, {type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED', deletedAttribute});
+
+    expect(newState).toEqual({
+      attributes: null,
     });
   });
 });

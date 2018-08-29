@@ -14,7 +14,7 @@ import {
   attributeCreationValuePerLocaleUpdated,
   attributeCreationValuePerChannelUpdated,
 } from 'akeneoenrichedentity/domain/event/attribute/create';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
 import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
 import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
@@ -29,8 +29,8 @@ interface StateProps {
       [localeCode: string]: string;
     };
     type: AttributeType;
-    valuePerLocale: boolean;
-    valuePerChannel: boolean;
+    value_per_locale: boolean;
+    value_per_channel: boolean;
   };
   errors: ValidationError[];
 }
@@ -211,7 +211,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <Switch
                         id="pim_enriched_entity.attribute.create.input.value_per_locale"
-                        value={this.props.data.valuePerLocale}
+                        value={this.props.data.value_per_locale}
                         onChange={this.props.events.onValuePerLocaleUpdated}
                       />
                     </div>
@@ -229,7 +229,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <Switch
                         id="pim_enriched_entity.attribute.create.input.value_per_channel"
-                        value={this.props.data.valuePerChannel}
+                        value={this.props.data.value_per_channel}
                         onChange={this.props.events.onValuePerChannelUpdated}
                       />
                     </div>
@@ -248,7 +248,7 @@ class Create extends React.Component<CreateProps> {
             {__('pim_enriched_entity.attribute.create.confirm')}
           </button>
           <span
-            title="{__('pim_enriched_entity.attribute.create.cancel')}"
+            title={__('pim_enriched_entity.attribute.create.cancel')}
             className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
             onClick={this.props.events.onCancel}
             tabIndex={0}

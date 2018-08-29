@@ -24,23 +24,18 @@ const LocaleItemView = ({
   );
 };
 
-const LocaleButtonView = ({
-  selectedElement,
-  onClick,
-}: {
-  selectedElement: DropdownElement;
-  onClick: () => void;
-}) => (
+const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => (
   <div
     className="AknActionButton AknActionButton--withoutBorder"
     data-identifier={selectedElement.identifier}
     onClick={onClick}
   >
-    {__('Locale')}:&nbsp;
+    {__('Locale')}
+    :&nbsp;
     <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
       <Flag locale={selectedElement.original} displayLanguage />
     </span>
-    <span className="AknActionButton-caret"></span>
+    <span className="AknActionButton-caret" />
   </div>
 );
 

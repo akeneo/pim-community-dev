@@ -17,7 +17,7 @@ use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
 /**
- * A specialized statefull context to deal with exceptions
+ * A specialized stateful context to deal with exceptions
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -46,10 +46,5 @@ final class ExceptionContext implements Context
     public function setException(\Exception $exception): void
     {
         $this->exceptionThrown = $exception;
-    }
-
-    public function resetException(): void
-    {
-        $this->exceptionThrown = null;
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common\Helper;
 
+use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
+use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
@@ -35,7 +37,7 @@ class AuthenticatedClientFactory
     /** @var KernelInterface */
     private $kernel;
 
-    public function __construct(UserRepositoryInterface $userRepository, KernelInterface $kernel)
+    public function __construct(InMemoryUserRepository $userRepository, KernelInterface $kernel)
     {
         $this->userRepository = $userRepository;
         $this->kernel = $kernel;
@@ -43,11 +45,21 @@ class AuthenticatedClientFactory
 
     public function logIn(string $username): Client
     {
+        $user = $this->createUser($username);
         $client = $this->createClient();
-        $token = $this->getUserToken($username);
+        $token = $this->getUserToken($user);
         $this->createSession($client, $token);
 
         return $client;
+    }
+
+    private function createUser(string $username): User
+    {
+        $user = new User();
+        $user->setUsername('julia');
+        $this->userRepository->save($user);
+
+        return $user;
     }
 
     private function createClient(): Client
@@ -59,13 +71,8 @@ class AuthenticatedClientFactory
         return $client;
     }
 
-    private function getUserToken(string $username): UsernamePasswordToken
+    private function getUserToken(User $user): UsernamePasswordToken
     {
-        $user = $this->userRepository->findOneBy(['username' => $username]);
-        if (null === $user) {
-            throw new \LogicException(sprintf('User with username "%s" does not exist.', $username));
-        }
-
         return new UsernamePasswordToken($user, null, 'main', $user->getRoles());
     }
 

@@ -21,4 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class MaxFileSize extends Constraint
 {
+    public const MESSAGE_SHOULD_BE_A_NUMBER = 'pim_enriched_entity.attribute.validation.max_file_size.should_be_a_number';
 }

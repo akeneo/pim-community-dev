@@ -5,8 +5,8 @@ Feature: Edit an enriched entity
 
   Background:
     Given the following enriched entity:
-      | identifier | labels                                       |
-      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+      | identifier | labels                                       | image |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
 #  @acceptance-front
   Scenario: Display confirmation dialog when the user reload the page and accept it

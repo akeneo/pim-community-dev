@@ -35,7 +35,7 @@ abstract class AbstractCreateAttributeCommand
     public $order;
 
     /** @var bool */
-    public $required;
+    public $isRequired;
 
     /** @var bool */
     public $valuePerChannel;

@@ -22,30 +22,36 @@ use Webmozart\Assert\Assert;
  */
 class AttributeMaxLength
 {
-    private const LIMIT = 65535;
+    public const NO_LIMIT = null;
+    private const MAX_LIMIT = 65535;
 
-    /*** @var int */
+    /*** @var ?int */
     private $maxLength;
 
-    public function __construct(?int $maxLength)
+    private function __construct(?int $maxLength)
     {
-        if (null !== $maxLength) {
+        if (self::NO_LIMIT !== $maxLength) {
             Assert::natural($maxLength, sprintf('The maximum length should be positive, %d given', $maxLength));
             Assert::lessThanEq(
                 $maxLength,
-                self::LIMIT,
-                sprintf('The maximum length authorized is %d, %d given', self::LIMIT, $maxLength)
+                self::MAX_LIMIT,
+                sprintf('The maximum length authorized is %d, %d given', self::MAX_LIMIT, $maxLength)
             );
         }
         $this->maxLength = $maxLength;
     }
 
-    public static function fromInteger(?int $maxLength) : self
+    public static function fromInteger(int $maxLength) : self
     {
         return new self($maxLength);
     }
 
-    public function intValue(): ?int
+    public static function noLimit(): self
+    {
+        return new self(self::NO_LIMIT);
+    }
+
+    public function normalize(): ?int
     {
         return $this->maxLength;
     }

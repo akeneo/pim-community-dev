@@ -1,6 +1,6 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import sanitize from 'akeneoenrichedentity/tools/sanitize';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
 
 export interface CreateState {
   active: boolean;
@@ -10,8 +10,8 @@ export interface CreateState {
       [localeCode: string]: string;
     };
     type: AttributeType;
-    valuePerLocale: boolean;
-    valuePerChannel: boolean;
+    value_per_locale: boolean;
+    value_per_channel: boolean;
   };
   errors: ValidationError[];
 }
@@ -21,8 +21,8 @@ const initCreateState = (): CreateState => ({
   data: {
     code: '',
     type: AttributeType.Text,
-    valuePerLocale: false,
-    valuePerChannel: false,
+    value_per_locale: false,
+    value_per_channel: false,
     labels: {},
   },
   errors: [],
@@ -35,9 +35,9 @@ export default (
     locale: string;
     value: string;
     errors: ValidationError[];
-    attributeType: AttributeType;
-    valuePerLocale: boolean;
-    valuePerChannel: boolean;
+    attribute_type: AttributeType;
+    value_per_locale: boolean;
+    value_per_channel: boolean;
   }
 ) => {
   switch (action.type) {
@@ -55,21 +55,21 @@ export default (
     case 'ATTRIBUTE_CREATION_TYPE_UPDATED':
       state = {
         ...state,
-        data: {...state.data, type: action.attributeType},
+        data: {...state.data, type: action.attribute_type},
       };
       break;
 
     case 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED':
       state = {
         ...state,
-        data: {...state.data, valuePerLocale: action.valuePerLocale},
+        data: {...state.data, value_per_locale: action.value_per_locale},
       };
       break;
 
     case 'ATTRIBUTE_CREATION_VALUE_PER_CHANNEL_UPDATED':
       state = {
         ...state,
-        data: {...state.data, valuePerChannel: action.valuePerChannel},
+        data: {...state.data, value_per_channel: action.value_per_channel},
       };
       break;
 

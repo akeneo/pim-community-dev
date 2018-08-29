@@ -64,6 +64,7 @@ class Installer implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            InstallerEvents::POST_SYMFONY_ASSETS_DUMP => ['installAssets'],
             InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
             InstallerEvents::POST_DB_CREATE => ['createSchema'],
             InstallerEvents::POST_LOAD_FIXTURES => ['loadFixtures'],
@@ -115,7 +116,7 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     `labels` JSON NOT NULL,
     `attribute_type` VARCHAR(255) NOT NULL,
     `attribute_order` INT NOT NULL,
-    `required` BOOLEAN NOT NULL,
+    `is_required` BOOLEAN NOT NULL,
     `value_per_channel` BOOLEAN NOT NULL,
     `value_per_locale` BOOLEAN NOT NULL,
     `additional_properties` JSON NOT NULL,
@@ -264,17 +265,17 @@ INSERT INTO `akeneo_enriched_entity_attribute` (
   `labels`,
   `attribute_type`,
   `attribute_order`,
-  `required`,
+  `is_required`,
   `value_per_channel`,
   `value_per_locale`,
   `additional_properties`
   )
 VALUES
-  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null}'),
-  ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}'),
-  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null}'),
-  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255}'),
-  ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": 30.01, "allowed_extensions": ["png", "jpg"]}')
+  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_text_area": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}'),
+  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_text_area": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255, "is_text_area": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}')
 SQL;
 
         $affectedRows = $this->dbal->exec($sql);

@@ -9,10 +9,9 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
 
   it('It lists the attributes of an enriched entity', async () => {
     page.on('request', interceptedRequest => {
-
       if (
-          'http://pim.com/rest/enriched_entity/designer/attribute' === interceptedRequest.url() &&
-          'GET' === interceptedRequest.method()
+        'http://pim.com/rest/enriched_entity/designer/attribute' === interceptedRequest.url() &&
+        'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
           contentType: 'application/json',
@@ -24,7 +23,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               },
               enriched_entity_identifier: 'designer',
               code: 'description',
-              required: true,
+              is_required: true,
               order: 0,
               value_per_locale: true,
               value_per_channel: false,
@@ -32,7 +31,11 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               labels: {
                 en_US: 'Description',
               },
-              max_length: 255,
+              max_length: 12,
+              is_text_area: true,
+              is_rich_text_editor: false,
+              validation_rule: 'none',
+              regular_expression: null,
             },
             {
               identifier: {
@@ -41,7 +44,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               },
               enriched_entity_identifier: 'designer',
               code: 'side_view',
-              required: false,
+              is_required: false,
               order: 1,
               value_per_locale: true,
               value_per_channel: false,
@@ -49,64 +52,85 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               labels: {
                 en_US: 'Side view',
               },
-              max_file_size: '124.12',
-              allowed_extensions: ['png', 'jpg']
+              max_file_size: '123.4',
+              allowed_extensions: ['jpg', 'png'],
             },
-          ])
+          ]),
         });
       }
     });
 
     const response = await page.evaluate(async () => {
       const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/attribute').default;
-      const enrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
-          .createIdentifier('designer');
+      const identifierModule = 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+      const enrichedEntityIdentifier = require(identifierModule).createIdentifier('designer');
 
       return await fetcher.fetchAll(enrichedEntityIdentifier);
     });
 
     // Missing properties such as "maxFileSize" and "AllowedExtensions"
     expect(response).toEqual([
-          {
-            'code': {
-              'code': 'description'
-            },
-            'enrichedEntityIdentifier': {
-              'identifier': 'designer'
-            },
-            'identifier': {
-              'enrichedEntityIdentifier': 'designer', 'identifier': 'description'
-            },
-            'labelCollection': {'labels': {'en_US': 'Description'}},
-            'order': 0,
-            'required': true,
-            'type': 'text',
-            'valuePerChannel': false,
-            'valuePerLocale': true
+      {
+        code: {
+          code: 'description',
+        },
+        enrichedEntityIdentifier: {
+          identifier: 'designer',
+        },
+        identifier: {
+          enrichedEntityIdentifier: 'designer',
+          identifier: 'description',
+        },
+        isRichTextEditor: {
+          isRichTextEditor: false,
+        },
+        isTextarea: {
+          isTextarea: true,
+        },
+        labelCollection: {labels: {en_US: 'Description'}},
+        maxLength: {
+          maxLength: 12,
+        },
+        regularExpression: {
+          regularExpression: null,
+        },
+        validationRule: {
+          validationRule: 'none',
+        },
+        order: 0,
+        isRequired: true,
+        type: 'text',
+        valuePerChannel: false,
+        valuePerLocale: true,
+      },
+      {
+        code: {
+          code: 'side_view',
+        },
+        enrichedEntityIdentifier: {
+          identifier: 'designer',
+        },
+        identifier: {
+          enrichedEntityIdentifier: 'designer',
+          identifier: 'side_view',
+        },
+        labelCollection: {
+          labels: {
+            en_US: 'Side view',
           },
-          {
-            'code': {
-              'code': 'side_view'
-            },
-            'enrichedEntityIdentifier': {
-              'identifier': 'designer'
-            },
-            'identifier': {
-              'enrichedEntityIdentifier': 'designer',
-              'identifier': 'side_view'
-            },
-            'labelCollection': {
-              'labels': {
-                'en_US': 'Side view'
-              }
-            },
-            'order': 1,
-            'required': false,
-            'type': 'image',
-            'valuePerChannel': false,
-            'valuePerLocale': true
-          }
-        ]
-    );
+        },
+        order: 1,
+        isRequired: false,
+        type: 'image',
+        valuePerChannel: false,
+        valuePerLocale: true,
+        allowedExtensions: {
+          allowedExtensions: ['jpg', 'png'],
+        },
+        maxFileSize: {
+          maxFileSize: '123.4',
+        },
+      },
+    ]);
   });
 });

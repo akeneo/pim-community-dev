@@ -4,11 +4,8 @@ const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-  tools: {answerJson}
-} = require(path.resolve(
-  process.cwd(),
-  './tests/front/acceptance/cucumber/test-helpers.js'
-));
+  tools: {answerJson},
+} = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
 module.exports = async function(cucumber) {
   const {Given, Then, When} = cucumber;
@@ -17,8 +14,8 @@ module.exports = async function(cucumber) {
   const config = {
     Grid: {
       selector: '.AknGridContainer',
-      decorator: Grid
-    }
+      decorator: Grid,
+    },
   };
 
   const getElement = createElementDecorator(config);
@@ -32,6 +29,11 @@ module.exports = async function(cucumber) {
       }
       if (undefined !== enrichedEntity.labels) {
         enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
+      }
+      if (undefined !== enrichedEntity.image) {
+        enrichedEntityBuilder.withImage(JSON.parse(enrichedEntity.image));
+      } else {
+        enrichedEntityBuilder.withImage(null);
       }
 
       return enrichedEntityBuilder.build();

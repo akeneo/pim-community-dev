@@ -35,8 +35,8 @@ class MaxLengthValidator extends ConstraintValidator
         $validator = Validation::createValidator();
         $violations = $validator->validate($maxLength, [
                 new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
-                    if (!(null === $value || is_integer($value))) {
-                        $context->buildViolation('This value should be a number')
+                    if (null !== $value && !is_int($value)) {
+                        $context->buildViolation(MaxLength::MESSAGE_SHOULD_BE_AN_INTEGER)
                             ->addViolation();
                     }
                 }),

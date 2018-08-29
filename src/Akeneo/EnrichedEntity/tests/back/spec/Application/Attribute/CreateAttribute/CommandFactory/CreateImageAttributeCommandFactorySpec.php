@@ -30,7 +30,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 1,
-            'required' => false,
+            'is_required' => false,
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_file_size' => '1512.12',
@@ -45,17 +45,16 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo('name');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
         $command->order->shouldBeEqualTo(1);
-        $command->required->shouldBeEqualTo(false);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
         $command->maxFileSize->shouldBeEqualTo('1512.12');
         $command->allowedExtensions->shouldBeEqualTo(['pdf', 'png']);
     }
 
-    function it_creates_a_command_with_a_null_property_if_the_value_is_missing()
+    function it_creates_a_command_with_a_default_properties_if_the_value_is_missing()
     {
         $command = $this->create([]);
-
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => null,
@@ -65,7 +64,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);
         $command->order->shouldBeEqualTo(null);
-        $command->required->shouldBeEqualTo(false);
+        $command->isRequired->shouldBeEqualTo(false);
         $command->valuePerChannel->shouldBeEqualTo(null);
         $command->valuePerLocale->shouldBeEqualTo(null);
         $command->maxFileSize->shouldBeEqualTo(null);

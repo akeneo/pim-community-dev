@@ -79,7 +79,7 @@ pim_enriched_entity:
         type:
             text: Text
             image: Image
-        required: required for completeness
+        is_required: required for completeness
         no_data:
             title: There are no attributes for {{ entityLabel }}
             subtitle: Click on the button "Add an attribute" to configure your first attribute
@@ -97,6 +97,29 @@ pim_enriched_entity:
                 value_per_locale: Value per locale
                 value_per_channel: Value per channel
             confirm: confirm
+        edit:
+            common.title: Common properties
+            additional.title: Additional properties
+            input:
+                code: Code (required)
+                label: Label
+                type: Attribute type
+                value_per_locale: Value per locale
+                value_per_channel: Value per channel
+                is_required: Required for completeness
+                max_length: Max characters
+                text_area: Text Area
+                is_rich_text_editor: Rich Text Editor
+                max_file_size: Max file size (MB)
+                allowed_extensions: Allowed extensions
+                validation_rule: Validation rule
+                regular_expression: Regular expression
+                options:
+                    validation_rule:
+                        none: None
+                        email: E-mail
+                        regular_expression: Regular expression
+                        url: URL
         delete:
             confirm: The attribute will be deleted. Confirm?
         notification:
