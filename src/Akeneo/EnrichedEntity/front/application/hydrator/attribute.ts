@@ -17,10 +17,7 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
     'value_per_channel',
     'type',
   ];
-
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
-  //To remove when backend answer the good things
-  normalizedAttribute.is_textarea = normalizedAttribute.is_textarea;
 
   return denormalizeAttribute(normalizedAttribute);
 };
