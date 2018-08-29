@@ -7,6 +7,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -25,12 +26,20 @@ class RegularExpressionValidator extends ConstraintValidator
         $validator = Validation::createValidator();
         $violations = $validator->validate($regularExpression, [new Assert\Type('string')]);
         if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $this->context->addViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                );
-            }
+            $this->addViolations($violations);
+
+            return;
+        }
+
+        if (null !== $regularExpression && false === @preg_match($regularExpression, '')) {
+            $this->context->buildViolation(RegularExpression::INVALID_REGULAR_EXPRESSION)->addViolation();
+        }
+    }
+
+    private function addViolations(ConstraintViolationListInterface $violations): void
+    {
+        foreach ($violations as $violation) {
+            $this->context->addViolation($violation->getMessage(), $violation->getParameters());
         }
     }
 }

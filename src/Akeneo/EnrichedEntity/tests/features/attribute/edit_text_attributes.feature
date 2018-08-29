@@ -142,38 +142,43 @@ Feature: Edit a text attribute of an enriched entity
   # Regular expression
   @acceptance-back
   Scenario: Updating the regular expression
-    Given an enriched entity with a text attribute 'regex' with a regular expression '"[0-9]+"'
-    When the user changes the regular expression of 'regex' to '"a*"'
-    Then the regular expression of 'regex' should be 'a*'
+    Given an enriched entity with a text attribute 'regex' with a regular expression '"/[0-9]+/"'
+    When the user changes the regular expression of 'regex' to '"/a*/"'
+    Then the regular expression of 'regex' should be '/a*/'
 
   @acceptance-back
   Scenario: Remove a regular expression from a text attribute
-    Given an enriched entity with a text attribute 'regex' with a regular expression '"[0-9]+"'
+    Given an enriched entity with a text attribute 'regex' with a regular expression '"/[0-9]+/"'
     When the user removes the regular expression of 'regex'
     Then there is no regular expression set on 'regex'
 
   @acceptance-back
-  Scenario: Updating with an invalid regular expression
-    Given an enriched entity with a text attribute 'regex' with a regular expression '[0-9]+'
-    When the user changes the regular expression of 'regex' to '154'
-    Then there should be a validation error on the property 'regularExpression' with message 'This value should be of type string.'
+  Scenario Outline: Updating with an invalid regular expression
+    Given an enriched entity with a text attribute 'regex' with a regular expression '/[0-9]+/'
+    When the user changes the regular expression of 'regex' to '<invalid_regular_expression>'
+    Then there should be a validation error on the property 'regularExpression' with message '<message>'
+
+    Examples:
+      | invalid_regular_expression | message                               |
+      | 154                        | This value should be of type string.  |
+      | "a*"                       | This regular expression is not valid. |
 
   @acceptance-back
   Scenario: Updating the regular expression if it's not a simple text fails
     Given an enriched entity with a text area attribute 'description'
-    When the user changes the regular expression of 'description' to '"a+"'
+    When the user changes the regular expression of 'description' to '"/a+/"'
     Then there should be a validation error with message 'The attribute should not have a regular expression'
 
   @acceptance-back
   Scenario: Updating the regular expression if it's not a validation by regular expression fails
     Given an enriched entity with a text attribute 'email' with no validation rule
-    When the user changes the regular expression of 'email' to '"[0-9]+[a-Z]"'
+    When the user changes the regular expression of 'email' to '"/[0-9]+[a-z]/"'
     Then there should be a validation error with message 'Cannot set a regular expression on the text attribute'
 
   @acceptance-back
   Scenario: Updating the regular expression on a text area without updating the validation rule to regular expression and the is_textarea flag to false will fail
     Given an enriched entity with a text area attribute 'description'
-    When the user changes the regular expression of 'description' to '"[0-9]*"'
+    When the user changes the regular expression of 'description' to '"/[0-9]*/"'
     Then there should be a validation error with message 'The attribute should not have a regular expression'
 
   # Rich text editor

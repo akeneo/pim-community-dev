@@ -59,7 +59,13 @@ final class ConstraintViolationsContext implements Context
 
     public function assertThereIsNoViolations(): void
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        if (0 !== $this->violations->count()) {
+            Assert::assertTrue(
+                false,
+                sprintf('There should be no violations, but one was found with message "%s"',
+                $this->violations->get(0)->getMessage())
+            );
+        }
     }
 
     public function assertThereShouldBeViolations(): void
