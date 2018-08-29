@@ -780,7 +780,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an attribute \'([^\']*)\' having a single value per locale$/
+     * @Given /^an enriched entity with an attribute \'([^\']*)\' having a single value for all locales$/
      */
     public function anEnrichedEntityWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
     {

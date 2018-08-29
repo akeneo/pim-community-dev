@@ -6,7 +6,7 @@ Feature: Edit a text attribute of an enriched entity
   # Readonly values
   @acceptance-back
   Scenario: ValuePerLocale is not editable
-    Given an enriched entity with an attribute 'name' having a single value per locale
+    Given an enriched entity with an attribute 'name' having a single value for all locales
     When the user updates the value_per_locale of 'name' to 'true'
     Then the value_per_locale of 'name' should be 'false'
 

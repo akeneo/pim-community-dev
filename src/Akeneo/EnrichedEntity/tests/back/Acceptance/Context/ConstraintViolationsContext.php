@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 /**
  * A specialized stateful context to deal with constraint violations.
  *
- * @author    JM Leroux <jean-marie.leroux@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 final class ConstraintViolationsContext implements Context
@@ -64,7 +64,7 @@ final class ConstraintViolationsContext implements Context
 
     public function assertThereShouldBeViolations(): void
     {
-        Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected.');
+        Assert::assertGreaterThan(0, $this->violations->count(), 'There should be violations.');
     }
 
     public function assertViolationOnPropertyWithMesssage(string $expectedPropertyPath, string $expectedMessage): void
@@ -81,7 +81,7 @@ final class ConstraintViolationsContext implements Context
         Assert::assertTrue(
             $found,
             sprintf(
-                'Expected violation with on property "%s" with message "%s" not found.',
+                'Expected violation with on property "%s" and message "%s" not found.',
                 $expectedPropertyPath,
                 $expectedMessage
             )

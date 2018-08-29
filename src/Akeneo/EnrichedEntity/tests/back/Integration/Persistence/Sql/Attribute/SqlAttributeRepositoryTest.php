@@ -170,7 +170,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeIsRichTextEditor::fromBoolean(false)
         );
         $this->attributeRepository->create($expectedAttribute);
-        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnon', 'en_US' => 'Nickname']));
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnom', 'en_US' => 'Nickname']));
 
         $this->attributeRepository->update($expectedAttribute);
 
