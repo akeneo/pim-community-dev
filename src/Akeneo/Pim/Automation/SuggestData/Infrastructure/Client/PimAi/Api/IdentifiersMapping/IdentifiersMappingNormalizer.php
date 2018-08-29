@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 
 /*
@@ -35,7 +37,7 @@ class IdentifiersMappingNormalizer
                 $result[$identifier] = [
                     'code' => $attribute->getCode(),
                     'label' => [
-                        'en_us' => $attribute->getLabel()
+                        'en_US' => $attribute->getLabel()
                     ]
                 ];
             }

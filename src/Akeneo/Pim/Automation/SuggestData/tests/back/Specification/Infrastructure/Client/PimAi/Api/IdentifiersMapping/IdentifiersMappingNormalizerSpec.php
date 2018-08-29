@@ -34,6 +34,7 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
             [
                 'mpn'   => $attributeSku,
                 'brand' => $attributeBrand,
+                'ean'   => null
             ]
         );
         $attributeSku->setLocale('en_US')->shouldBeCalled();
@@ -47,11 +48,11 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
             [
                 'mpn' => [
                     'code' => 'sku',
-                    'label' => ['en_us' => 'SKU']
+                    'label' => ['en_US' => 'SKU']
                 ],
                 'brand' => [
                     'code' => 'brand_code',
-                    'label' => ['en_us' => 'Brand']
+                    'label' => ['en_US' => 'Brand']
                 ]
             ]
         );

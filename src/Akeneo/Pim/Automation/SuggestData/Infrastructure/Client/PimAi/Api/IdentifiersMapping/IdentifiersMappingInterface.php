@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 
 /*
@@ -12,8 +14,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  */
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 
 /**
  * Interface for the API Service to manage identifiers mapping
