@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use PhpSpec\ObjectBehavior;
 
-class AttributeIsTextAreaSpec extends ObjectBehavior
+class AttributeIsTextareaSpec extends ObjectBehavior
 {
     function let()
     {
@@ -14,7 +14,7 @@ class AttributeIsTextAreaSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AttributeIsTextArea::class);
+        $this->shouldHaveType(AttributeIsTextarea::class);
     }
 
     function it_tells_if_it_is_yes()

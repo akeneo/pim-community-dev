@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
@@ -312,7 +312,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
             AttributeRegularExpression::fromString('/\w+/')
         ]);
-        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(true));
+        $this->setIsTextArea(AttributeIsTextarea::fromBoolean(true));
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
@@ -334,7 +334,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300),
             AttributeIsRichTextEditor::fromBoolean(true)
         ]);
-        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(false));
+        $this->setIsTextArea(AttributeIsTextarea::fromBoolean(false));
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
@@ -356,7 +356,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300),
             AttributeIsRichTextEditor::fromBoolean(true)
         ]);
-        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(true));
+        $this->setIsTextArea(AttributeIsTextarea::fromBoolean(true));
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(true);

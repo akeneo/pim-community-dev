@@ -8,7 +8,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeIsTextArea
+class AttributeIsTextarea
 {
     /** @var bool */
     private $isTextArea;
@@ -33,7 +33,7 @@ class AttributeIsTextArea
         return $this->isTextArea;
     }
 
-    public function equals(AttributeIsTextArea $otherIsTextArea): bool
+    public function equals(AttributeIsTextarea $otherIsTextArea): bool
     {
         return $this->isTextArea === $otherIsTextArea->isTextArea;
     }

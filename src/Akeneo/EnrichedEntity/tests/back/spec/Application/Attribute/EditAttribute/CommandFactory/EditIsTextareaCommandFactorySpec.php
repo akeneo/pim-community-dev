@@ -2,15 +2,15 @@
 
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextAreaCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextAreaCommandFactory;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommandFactory;
 use PhpSpec\ObjectBehavior;
 
-class EditIsTextAreaCommandFactorySpec extends ObjectBehavior
+class EditIsTextareaCommandFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditIsTextAreaCommandFactory::class);
+        $this->shouldHaveType(EditIsTextareaCommandFactory::class);
     }
 
     function it_only_supports_attribute_property_is_text_area_edits()
@@ -39,7 +39,7 @@ class EditIsTextAreaCommandFactorySpec extends ObjectBehavior
             ],
             'is_text_area'   => true,
         ]);
-        $command->shouldBeAnInstanceOf(EditIsTextAreaCommand::class);
+        $command->shouldBeAnInstanceOf(EditIsTextareaCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'name',
             'enriched_entity_identifier' => 'designer',

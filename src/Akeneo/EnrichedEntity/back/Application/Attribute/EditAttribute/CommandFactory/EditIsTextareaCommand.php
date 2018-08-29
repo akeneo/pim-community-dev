@@ -8,7 +8,7 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditIsTextAreaCommand extends AbstractEditAttributeCommand
+class EditIsTextareaCommand extends AbstractEditAttributeCommand
 {
     /** @var bool */
     public $isTextArea;

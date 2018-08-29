@@ -29,7 +29,7 @@ class TextAttribute extends AbstractAttribute
     /** @var AttributeMaxLength */
     private $maxLength;
 
-    /** @var AttributeIsTextArea */
+    /** @var AttributeIsTextarea */
     private $isTextArea;
 
     /** @var AttributeValidationRule */
@@ -53,7 +53,7 @@ class TextAttribute extends AbstractAttribute
      * @param AttributeValuePerChannel   $valuePerChannel
      * @param AttributeValuePerLocale    $valuePerLocale
      * @param AttributeMaxLength         $maxLength
-     * @param AttributeIsTextArea        $isTextArea
+     * @param AttributeIsTextarea        $isTextArea
      * @param AttributeValidationRule    $validationRule
      * @param AttributeRegularExpression $regularExpression
      * @param AttributeIsRichTextEditor  $isRichTextEditor
@@ -68,7 +68,7 @@ class TextAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength,
-        AttributeIsTextArea $isTextArea,
+        AttributeIsTextarea $isTextArea,
         AttributeValidationRule $validationRule,
         AttributeRegularExpression $regularExpression,
         AttributeIsRichTextEditor $isRichTextEditor
@@ -128,7 +128,7 @@ class TextAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale,
             $maxLength,
-            AttributeIsTextArea::fromBoolean(false),
+            AttributeIsTextarea::fromBoolean(false),
             $validationRule,
             $regularExpression,
             AttributeIsRichTextEditor::fromBoolean(false)
@@ -157,7 +157,7 @@ class TextAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale,
             $maxLength,
-            AttributeIsTextArea::fromBoolean(true),
+            AttributeIsTextarea::fromBoolean(true),
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty(),
             $isRichTextEditor
@@ -183,7 +183,7 @@ class TextAttribute extends AbstractAttribute
         );
     }
 
-    public function setIsTextArea(AttributeIsTextArea $isTextArea): void
+    public function setIsTextArea(AttributeIsTextarea $isTextArea): void
     {
         if ($this->isTextArea->equals($isTextArea)) {
             return;

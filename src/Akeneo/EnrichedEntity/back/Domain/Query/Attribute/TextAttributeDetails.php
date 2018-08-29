@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
@@ -35,7 +35,7 @@ class TextAttributeDetails extends AbstractAttributeDetails
     /** @var AttributeMaxLength */
     public $maxLength;
 
-    /** @var AttributeIsTextArea */
+    /** @var AttributeIsTextarea */
     public $isTextArea;
 
     /** @var AttributeIsRichTextEditor */
