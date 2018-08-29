@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -32,25 +33,31 @@ class JobExecutionController
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
-     * @param TranslatorInterface    $translator
-     * @param JobExecutionArchivist  $archivist
-     * @param SerializerInterface    $serializer
-     * @param JobExecutionManager    $jobExecutionManager
+     * @param TranslatorInterface $translator
+     * @param JobExecutionArchivist $archivist
+     * @param SerializerInterface $serializer
+     * @param JobExecutionManager $jobExecutionManager
      * @param JobExecutionRepository $jobExecutionRepo
+     * @param UserContext $userContext
      */
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
-        JobExecutionRepository $jobExecutionRepo
+        JobExecutionRepository $jobExecutionRepo,
+        UserContext $userContext
     ) {
         $this->translator = $translator;
         $this->archivist = $archivist;
         $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -81,7 +88,10 @@ class JobExecutionController
 
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
 
-        $context = ['limit_warnings' => 100];
+        $context = [
+            'limit_warnings' => 100,
+            'timezone'       => $this->userContext->getUserTimezone(),
+        ];
 
         $jobResponse = $this->serializer->normalize($jobExecution, 'standard', $context);
         $jobResponse['meta'] = [

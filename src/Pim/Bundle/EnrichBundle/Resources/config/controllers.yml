@@ -454,6 +454,7 @@ services:
             - '@pim_serializer'
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.api_client:
         class: '%pim_enrich.controller.rest.api_client.class%'
