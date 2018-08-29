@@ -80,7 +80,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertSame($suggestedData, $subscription->getSuggestedData());
     }
 
-    function test_that_it_gets_a_subscription_for_a_subscribed_product_id()
+    public function test_that_it_gets_a_subscription_for_a_subscribed_product_id()
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
@@ -111,7 +111,7 @@ SQL;
         );
     }
 
-    function test_that_it_gets_null_for_a_non_subscribed_product_id()
+    public function test_that_it_gets_null_for_a_non_subscribed_product_id()
     {
         $result = $this->getRepository()->findOneByProductId(42);
 

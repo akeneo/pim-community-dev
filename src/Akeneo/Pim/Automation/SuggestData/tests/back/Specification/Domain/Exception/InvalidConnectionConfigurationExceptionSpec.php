@@ -22,12 +22,12 @@ use PhpSpec\ObjectBehavior;
  */
 class InvalidConnectionConfigurationExceptionSpec extends ObjectBehavior
 {
-    function it_is_an_invalid_connection_configuration_exception()
+    public function it_is_an_invalid_connection_configuration_exception()
     {
         $this->shouldBeAnInstanceOf(InvalidConnectionConfigurationException::class);
     }
 
-    function it_is_an_exception()
+    public function it_is_an_exception()
     {
         $this->shouldBeAnInstanceOf(\Exception::class);
     }

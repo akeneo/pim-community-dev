@@ -13,12 +13,12 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionExceptionSpec extends ObjectBehavior
 {
-    function it_is_a_product_subscription_exception()
+    public function it_is_a_product_subscription_exception()
     {
         $this->shouldBeAnInstanceOf(ProductSubscriptionException::class);
     }
 
-    function it_is_an_exception()
+    public function it_is_an_exception()
     {
         $this->shouldBeAnInstanceOf(\Exception::class);
     }

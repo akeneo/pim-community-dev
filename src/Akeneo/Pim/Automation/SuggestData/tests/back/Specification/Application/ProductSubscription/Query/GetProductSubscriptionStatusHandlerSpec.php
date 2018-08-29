@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -24,17 +24,17 @@ use PhpSpec\ObjectBehavior;
  */
 class GetProductSubscriptionStatusHandlerSpec extends ObjectBehavior
 {
-    function let(ProductSubscriptionRepositoryInterface $productSubscriptionRepository)
+    public function let(ProductSubscriptionRepositoryInterface $productSubscriptionRepository)
     {
         $this->beConstructedWith($productSubscriptionRepository);
     }
 
-    function it_is_a_product_subscription_query_handler()
+    public function it_is_a_product_subscription_query_handler()
     {
         $this->shouldBeAnInstanceOf(GetProductSubscriptionStatusHandler::class);
     }
 
-    function it_returns_a_product_subscription_status_for_a_subscribed_product(
+    public function it_returns_a_product_subscription_status_for_a_subscribed_product(
         $productSubscriptionRepository,
         ProductSubscription $productSubscription
     ) {

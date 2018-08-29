@@ -23,7 +23,7 @@ use Prophecy\Argument;
 
 class SubscribeProductHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory
@@ -35,12 +35,12 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_subscribe_product_handler()
+    public function it_is_a_subscribe_product_handler()
     {
         $this->shouldHaveType(SubscribeProductHandler::class);
     }
 
-    function it_throws_an_exception_if_the_product_does_not_exist($productRepository)
+    public function it_throws_an_exception_if_the_product_does_not_exist($productRepository)
     {
         $productId = 42;
         $productRepository->find($productId)->willReturn(null);
@@ -53,7 +53,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
-    function it_throws_an_exception_if_the_product_has_no_family(
+    public function it_throws_an_exception_if_the_product_has_no_family(
         $productRepository,
         ProductInterface $product
     ) {
@@ -67,7 +67,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
-    function it_throws_an_exception_if_the_product_is_already_subscribed(
+    public function it_throws_an_exception_if_the_product_is_already_subscribed(
         $productRepository,
         $subscriptionRepository,
         ProductInterface $product,
@@ -86,7 +86,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         )->during('handle', [$command]);
     }
 
-    function it_subscribes_a_product_to_the_data_provider(
+    public function it_subscribes_a_product_to_the_data_provider(
         ProductRepositoryInterface $productRepository,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         DataProviderFactory $dataProviderFactory,
