@@ -14,7 +14,6 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class FetchProductsHandlerSpec extends ObjectBehavior
 {

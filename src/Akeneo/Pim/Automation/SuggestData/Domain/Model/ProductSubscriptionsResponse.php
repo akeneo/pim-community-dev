@@ -27,11 +27,11 @@ class ProductSubscriptionsResponse implements \Countable
     private $collection = [];
 
     /**
-     * @param array $collection
+     * @param array $subscriptions
      */
-    public function __construct(array $collection)
+    public function __construct(array $subscriptions)
     {
-        foreach ($collection as $subscription) {
+        foreach ($subscriptions as $subscription) {
             $this->collection[] = new ProductSubscriptionResponse(
                 42, // @TODO: Use tracker id (See APAI-153)
                 $subscription->getSubscriptionId(),
