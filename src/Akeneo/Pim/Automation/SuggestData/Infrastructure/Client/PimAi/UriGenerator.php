@@ -2,17 +2,40 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi;
 
+/**
+ * @author Romain Monceau <romain@akeneo.com>
+ */
 class UriGenerator
 {
+    /** @var string */
     protected $baseUri;
 
+    /**
+     * @param string $baseUri
+     */
     public function __construct(string $baseUri)
     {
         $this->baseUri = rtrim($baseUri, '/');
     }
 
+    /**
+     * @param string $path
+     * @param array $uriParameters
+     * @param array $queryParameters
+     *
+     * @return string
+     */
     public function generate(string $path, array $uriParameters = [], array $queryParameters = []): string
     {
         $uriParameters = $this->encodeUriParameters($uriParameters);
@@ -28,6 +51,10 @@ class UriGenerator
         return $uri;
     }
 
+    /**
+     * @param array $uriParameters
+     * @return array
+     */
     private function encodeUriParameters(array $uriParameters): array
     {
         return array_map(function ($uriParameter) {
@@ -37,6 +64,10 @@ class UriGenerator
         }, $uriParameters);
     }
 
+    /**
+     * @param array $queryParameters
+     * @return array
+     */
     private function booleanQueryParametersAsString(array $queryParameters): array
     {
         return array_map(function ($queryParameters) {

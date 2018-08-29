@@ -20,24 +20,38 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObj
  */
 class Subscription
 {
+    /** @var array */
     private $rawSubscription;
 
+    /**
+     * @param array $rawSubscription
+     */
     public function __construct(array $rawSubscription)
     {
         $this->validateSubscription($rawSubscription);
         $this->rawSubscription = $rawSubscription;
     }
 
+    /**
+     * @return string
+     */
     public function getSubscriptionId()
     {
         return $this->rawSubscription['id'];
     }
 
+    /**
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->rawSubscription['identifiers'] + $this->rawSubscription['attributes'];
     }
 
+    /**
+     * @param array $rawSubscription
+     * @throws \InvalidArgumentException
+     */
     private function validateSubscription(array $rawSubscription)
     {
         $expectedKeys = [

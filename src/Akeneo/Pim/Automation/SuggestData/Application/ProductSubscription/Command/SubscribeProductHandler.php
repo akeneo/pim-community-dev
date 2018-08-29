@@ -56,8 +56,6 @@ class SubscribeProductHandler
 
     /**
      * @param SubscribeProductCommand $command
-     *
-     * @throws ProductSubscriptionException
      */
     public function handle(SubscribeProductCommand $command): void
     {

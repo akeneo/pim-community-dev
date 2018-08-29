@@ -22,18 +22,34 @@ use GuzzleHttp\ClientInterface;
  */
 class Client
 {
+    /** @var ClientInterface */
     private $httpClient;
 
+    /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
+    /** @var string */
     private $token;
 
+    /**
+     * @param ClientInterface $httpClient
+     * @param ConfigurationRepositoryInterface $configurationRepository
+     */
     public function __construct(ClientInterface $httpClient, ConfigurationRepositoryInterface $configurationRepository)
     {
         $this->httpClient = $httpClient;
         $this->configurationRepository = $configurationRepository;
     }
 
+    /**
+     * Send request to PIM.ai
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array $options
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function request(string $method, string $uri, array $options = [])
     {
         $options = $options + [
@@ -43,6 +59,9 @@ class Client
         return $this->httpClient->request($method, $uri, $options);
     }
 
+    /**
+     * @return null|string
+     */
     private function getToken(): ?string
     {
         if (empty($this->token)) {

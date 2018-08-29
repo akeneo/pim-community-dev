@@ -2,19 +2,28 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Fetch\FetchApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exception\DataProviderException;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * PIM.ai implementation to connect to a data provider
@@ -72,49 +81,33 @@ class PimAI implements DataProviderInterface
         $subscriptions = $clientResponse->content();
 
         return new ProductSubscriptionResponse(
-            $request->getProduct(),
+            $request->getProduct()->getId(),
             $subscriptions->getFirst()->getSubscriptionId(),
             $subscriptions->getFirst()->getAttributes()
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $token
+     *
+     * @return bool
      */
-    public function bulkPush(array $products): SuggestedDataCollectionInterface
-    {
-        throw new \LogicException('Not implemented');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function pull(ProductInterface $product)
-    {
-        throw new \LogicException('Not implemented');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function bulkPull(array $products)
-    {
-        throw new \LogicException('Not implemented');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function authenticate(?string $token): bool
+    public function authenticate(string $token): bool
     {
         return $this->authenticationApi->authenticate($token);
     }
 
     /**
-     * {@inheritdoc}
+     * TODO: Deal with pagination (see APAI-192)
+     *
+     * @return ProductSubscriptionsResponse
      */
-    public function configure(array $config)
+    public function fetch(): ProductSubscriptionsResponse
     {
-        throw new \LogicException('Not implemented');
+        $clientResponse = $this->subscriptionApi->fetchProducts();
+
+        return new ProductSubscriptionsResponse(
+            $clientResponse->content()->getSubscriptions()
+        );
     }
 }

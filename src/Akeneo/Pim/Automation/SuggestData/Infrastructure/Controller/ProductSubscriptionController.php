@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -53,7 +53,7 @@ class ProductSubscriptionController
             $this->subscribeProduct->subscribe($productId);
 
             return new JsonResponse();
-        } catch (SuggestDataException $e) {
+        } catch (ProductSubscriptionException $e) {
             return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
