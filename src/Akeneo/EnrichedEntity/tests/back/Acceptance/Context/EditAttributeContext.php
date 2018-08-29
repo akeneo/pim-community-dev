@@ -26,7 +26,6 @@ use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -35,9 +34,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAttributeContext implements Context
 {
-    /** @var ConstraintViolationList */
-    private $violations;
-
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
@@ -53,11 +49,15 @@ class EditAttributeContext implements Context
     /** @var ExceptionContext */
     private $exceptionContext;
 
+    /** @var ConstraintViolationsContext */
+    private $constraintViolationsContext;
+
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         EditAttributeCommandFactoryInterface $editAttributeCommandFactory,
         EditAttributeHandler $handler,
         ValidatorInterface $validator,
+        ConstraintViolationsContext $constraintViolationsContext,
         ExceptionContext $exceptionContext
     ) {
         $this->validator = $validator;
@@ -65,6 +65,7 @@ class EditAttributeContext implements Context
         $this->editAttributeCommandFactory = $editAttributeCommandFactory;
         $this->handler = $handler;
         $this->exceptionContext = $exceptionContext;
+        $this->constraintViolationsContext = $constraintViolationsContext;
     }
 
     /**
@@ -126,7 +127,7 @@ class EditAttributeContext implements Context
      */
     public function theLabelOfTheAttributeShouldBe(string $localeCode, string $attributeCode, $expectedLabel): void
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
@@ -167,7 +168,7 @@ class EditAttributeContext implements Context
      */
     public function thenShouldBeRequired(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
@@ -215,7 +216,7 @@ class EditAttributeContext implements Context
      */
     public function thenMaxLengthShouldBe(string $attributeCode, int $expectedMaxLength)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
@@ -281,7 +282,7 @@ class EditAttributeContext implements Context
      */
     public function thenTheMaxFileSizeOfShouldBe(string $attributeCode, string $expectedMaxFileSize): void
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
@@ -317,24 +318,13 @@ class EditAttributeContext implements Context
      */
     public function thenShouldHaveAsAnAllowedExtension(string $attributeCode, string $expectedAllowedExtension)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
         ));
         $expectedAllowedExtension = json_decode($expectedAllowedExtension);
         Assert::assertEquals($expectedAllowedExtension, $attribute->normalize()['allowed_extensions']);
-    }
-
-    /**
-     * @Then /^there should be a validation error on the property \'([^\']*)\' with message \'([^\']*)\'$/
-     */
-    public function thereShouldBeAValidationErrorOnThePropertyWithMessage(string $expectedPropertyPath, string $message)
-    {
-        Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected but none were found.');
-        $violation = $this->violations->get(0);
-        Assert::assertSame($message, $violation->getMessage());
-        Assert::assertSame($expectedPropertyPath, $violation->getPropertyPath());
     }
 
     /**
@@ -374,7 +364,7 @@ class EditAttributeContext implements Context
      */
     public function thenThereShouldBeNoLimitForTheMaxLengthOf(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
@@ -403,7 +393,7 @@ class EditAttributeContext implements Context
      */
     public function thenThereShouldBeNoLimitForTheMaxFileSizeOf(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
             'dummy_identifier',
             $attributeCode
@@ -489,7 +479,7 @@ class EditAttributeContext implements Context
      */
     public function theAttributeShouldBeASimpleText(string $attributeCode): void
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
@@ -521,7 +511,7 @@ class EditAttributeContext implements Context
      */
     public function theAttributeShouldBeATextArea($attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertTrue($normalizedAttribute['is_text_area'], 'isTextArea should be true');
@@ -569,7 +559,7 @@ class EditAttributeContext implements Context
      */
     public function theValidationRuleOfShouldBe(string $attributeCode, string $validationRule)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertEquals($validationRule, $normalizedAttribute['validation_rule']);
@@ -600,7 +590,7 @@ class EditAttributeContext implements Context
      */
     public function theRegularExpressionOfShouldBeEmpty(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
@@ -628,7 +618,7 @@ class EditAttributeContext implements Context
      */
     public function theRegularExpressionOfShouldBeW09(string $attributeCode, string $regularExpression)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
@@ -656,7 +646,7 @@ class EditAttributeContext implements Context
      */
     public function thereIsNoRegularExpressionSetOn(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
@@ -683,21 +673,11 @@ class EditAttributeContext implements Context
      */
     public function thereIsNoValidationRuleSetOn(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule']);
         Assert::assertEquals(AttributeRegularExpression::EMPTY, $normalizedAttribute['regular_expression']);
-    }
-
-    /**
-     * @Then /^there should be a validation error with message \'([^\']*)\'$/
-     */
-    public function thereShouldBeAValidationErrorWithMessage(string $message)
-    {
-        Assert::assertGreaterThan(0, $this->violations->count(), 'There was some violations expected but none were found.');
-        $violation = $this->violations->get(0);
-        Assert::assertSame($message, $violation->getMessage());
     }
 
     /**
@@ -739,7 +719,7 @@ class EditAttributeContext implements Context
      */
     public function theAttributeShouldHaveATextEditor(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertTrue($normalizedAttribute['is_text_area'], 'isTextArea should be true');
@@ -784,7 +764,7 @@ class EditAttributeContext implements Context
      */
     public function theAttributeShouldHaveATextEditor1(string $attributeCode)
     {
-        Assert::assertEquals(0, $this->violations->count(), 'There should be no violations');
+        $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
         Assert::assertTrue($normalizedAttribute['is_rich_text_editor'], 'Expected is rich text editor to be true, but found false');
@@ -793,8 +773,8 @@ class EditAttributeContext implements Context
     private function updateAttribute(array $updates): void
     {
         $editAttribute = $this->editAttributeCommandFactory->create($updates);
-        $this->violations = $this->validator->validate($editAttribute);
-        if (0 === $this->violations->count()) {
+        $this->constraintViolationsContext->addViolations($this->validator->validate($editAttribute));
+        if (!$this->constraintViolationsContext->hasViolations()) {
             ($this->handler)($editAttribute);
         }
     }

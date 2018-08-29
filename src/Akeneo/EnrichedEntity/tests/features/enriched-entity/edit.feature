@@ -24,7 +24,7 @@ Feature: Edit an enriched entity
   @acceptance-back
   Scenario Outline: Updating with an invalid image
     When the user updates the 'designer' enriched entity image with path '<wrong_path>' and filename '<wrong_filename>'
-    Then there should be a validation error on the property 'image' with '<message>'
+    Then there should be a validation error on the property 'image' with message '<message>'
 
     Examples:
       | wrong_path        | wrong_filename | message                              |

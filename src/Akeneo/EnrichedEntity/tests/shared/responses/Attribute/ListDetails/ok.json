@@ -19,7 +19,7 @@
       "type": "text",
       "is_text_area": true,
       "is_rich_text_editor": true,
-      "validation_rule": null,
+      "validation_rule": "none",
       "regular_expression": null
     },
     {
