@@ -11,7 +11,7 @@ use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueAccessorsCheck
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -66,13 +66,13 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param CheckerInterface       $checker
-     * @param ConfigurationInterface $configuration
-     * @param OutputInterface        $output
+     * @param CheckerInterface                    $checker
+     * @param ReferenceDataConfigurationInterface $configuration
+     * @param OutputInterface                     $output
      */
     protected function checkConfiguration(
         CheckerInterface $checker,
-        ConfigurationInterface $configuration,
+        ReferenceDataConfigurationInterface $configuration,
         OutputInterface $output
     ) {
         if ($checker->check($configuration)) {

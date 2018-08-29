@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Configuration controller
+ * ReferenceDataConfiguration controller
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

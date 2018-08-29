@@ -9,7 +9,7 @@ namespace Pim\Component\ReferenceData\Model;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ConfigurationInterface
+interface ReferenceDataConfigurationInterface
 {
     const TYPE_SIMPLE = 'simple';
     const TYPE_MULTI = 'multi';

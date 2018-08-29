@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Checks if the ReferenceData implements the interface.
@@ -30,7 +30,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function check(ConfigurationInterface $configuration)
+    public function check(ReferenceDataConfigurationInterface $configuration)
     {
         $this->model = $configuration->getClass();
         $reflection = new \ReflectionClass($this->model);

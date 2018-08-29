@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Normalizer;
 
-use Pim\Component\ReferenceData\Model\Configuration;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfiguration;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Configuration normalizer
+ * ReferenceData Configuration normalizer
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -34,6 +34,6 @@ class ConfigurationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Configuration && in_array($format, $this->supportedFormats);
+        return $data instanceof ReferenceDataConfiguration && in_array($format, $this->supportedFormats);
     }
 }

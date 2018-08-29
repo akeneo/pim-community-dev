@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData;
 
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Reference data configuration registry interface
@@ -14,12 +14,12 @@ use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 interface ConfigurationRegistryInterface
 {
     /**
-     * @param ConfigurationInterface $configuration
-     * @param string                 $name
+     * @param ReferenceDataConfigurationInterface $configuration
+     * @param string                              $name
      *
      * @return ConfigurationRegistryInterface
      */
-    public function register(ConfigurationInterface $configuration, $name);
+    public function register(ReferenceDataConfigurationInterface $configuration, $name);
 
     /**
      * @param array  $configuration
@@ -32,7 +32,7 @@ interface ConfigurationRegistryInterface
     /**
      * @param string $name
      *
-     * @return ConfigurationInterface
+     * @return ReferenceDataConfigurationInterface
      */
     public function get($name);
 
@@ -44,7 +44,7 @@ interface ConfigurationRegistryInterface
     public function has($name);
 
     /**
-     * @return ConfigurationInterface[]
+     * @return ReferenceDataConfigurationInterface[]
      */
     public function all();
 

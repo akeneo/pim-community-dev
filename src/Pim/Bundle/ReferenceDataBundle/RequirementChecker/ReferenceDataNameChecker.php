@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Checks if the ReferenceData has a valid name.
@@ -19,7 +19,7 @@ class ReferenceDataNameChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function check(ConfigurationInterface $configuration)
+    public function check(ReferenceDataConfigurationInterface $configuration)
     {
         $name = $configuration->getName();
 

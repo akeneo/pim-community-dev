@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Interface that determines a reference data configuration is valid or not.
@@ -16,11 +16,11 @@ interface CheckerInterface
     /**
      * Checks the reference data configuration
      *
-     * @param ConfigurationInterface $configuration
+     * @param ReferenceDataConfigurationInterface $configuration
      *
      * @return bool
      */
-    public function check(ConfigurationInterface $configuration);
+    public function check(ReferenceDataConfigurationInterface $configuration);
 
     /**
      * Gets the description of the check that is performed

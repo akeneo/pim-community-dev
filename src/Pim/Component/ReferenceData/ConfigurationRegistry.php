@@ -2,8 +2,8 @@
 
 namespace Pim\Component\ReferenceData;
 
-use Pim\Component\ReferenceData\Model\Configuration;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfiguration;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -15,13 +15,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConfigurationRegistry implements ConfigurationRegistryInterface
 {
-    /** @var ConfigurationInterface[] */
+    /** @var ReferenceDataConfigurationInterface[] */
     protected static $configurations = [];
 
     /**
      * {@inheritdoc}
      */
-    public function register(ConfigurationInterface $configuration, $name)
+    public function register(ReferenceDataConfigurationInterface $configuration, $name)
     {
         $configuration->setName($name);
         self::$configurations[$name] = $configuration;
@@ -36,7 +36,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     {
         $this->checkRawConfiguration($rawConfiguration);
 
-        $configuration = new Configuration();
+        $configuration = new ReferenceDataConfiguration();
         $configuration->setType($rawConfiguration['type']);
         $configuration->setClass($rawConfiguration['class']);
 

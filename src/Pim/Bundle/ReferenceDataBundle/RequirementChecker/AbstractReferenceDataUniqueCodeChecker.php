@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Checks if the ReferenceData has a unique code constraint.
@@ -31,7 +31,7 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
     /**
      * {@inheritdoc}
      */
-    public function check(ConfigurationInterface $configuration)
+    public function check(ReferenceDataConfigurationInterface $configuration)
     {
         try {
             $mapping = $this->getCodeFieldMapping($configuration->getClass());

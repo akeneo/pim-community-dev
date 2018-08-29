@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -46,7 +46,7 @@ class AjaxOptionControllerSpec extends ObjectBehavior
     function it_returns_options_with_reference_data_repository(
         $doctrine,
         $registry,
-        ConfigurationInterface $configuration,
+        ReferenceDataConfigurationInterface $configuration,
         Request $request,
         ParameterBag $query,
         ReferenceDataRepositoryInterface $repository

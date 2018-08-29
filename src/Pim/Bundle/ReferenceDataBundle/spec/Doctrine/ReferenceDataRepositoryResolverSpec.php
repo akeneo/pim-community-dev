@@ -7,7 +7,7 @@ use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
     function it_resolves_the_repository_of_a_reference_data(
         $configurationRegistry,
         $doctrine,
-        ConfigurationInterface $configuration,
+        ReferenceDataConfigurationInterface $configuration,
         ObjectRepository $repository
     ) {
         $configuration->getClass()->willReturn(Color::class);

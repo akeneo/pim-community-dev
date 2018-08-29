@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
@@ -13,7 +13,7 @@ class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
         $this->beConstructedWith(ReferenceDataInterface::class);
     }
 
-    function it_checks_a_valid_reference_data(ConfigurationInterface $configuration)
+    function it_checks_a_valid_reference_data(ReferenceDataConfigurationInterface $configuration)
     {
         $configuration->getClass()->willReturn(ReferenceDataColor::class);
 
@@ -21,7 +21,7 @@ class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
         $this->getFailure()->shouldReturn(null);
     }
 
-    function it_checks_an_invalid_reference_data(ConfigurationInterface $configuration)
+    function it_checks_an_invalid_reference_data(ReferenceDataConfigurationInterface $configuration)
     {
         $configuration->getClass()->willReturn('\StdClass');
 

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Prophecy\Argument;
 
 class ReferenceDataUniqueCodeCheckerSpec extends ObjectBehavior
@@ -15,7 +15,7 @@ class ReferenceDataUniqueCodeCheckerSpec extends ObjectBehavior
         $this->beConstructedWith($em);
     }
 
-    function it_checks_a_valid_reference_data($em, ConfigurationInterface $configuration, ClassMetadataInfo $metadata)
+    function it_checks_a_valid_reference_data($em, ReferenceDataConfigurationInterface $configuration, ClassMetadataInfo $metadata)
     {
         $em->getClassMetadata(Argument::any())->willReturn($metadata);
         $metadata->getFieldMapping('code')->willReturn([
@@ -32,7 +32,7 @@ class ReferenceDataUniqueCodeCheckerSpec extends ObjectBehavior
         $this->getFailure()->shouldReturn(null);
     }
 
-    function it_checks_an_invalid_reference_data($em, ConfigurationInterface $configuration, ClassMetadataInfo $metadata)
+    function it_checks_an_invalid_reference_data($em, ReferenceDataConfigurationInterface $configuration, ClassMetadataInfo $metadata)
     {
         $em->getClassMetadata(Argument::any())->willReturn($metadata);
         $metadata->getFieldMapping('code')->willReturn([

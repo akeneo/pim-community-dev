@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 
 class ReferenceDataNameCheckerSpec extends ObjectBehavior
 {
-    function it_checks_a_valid_reference_data(ConfigurationInterface $configuration)
+    function it_checks_a_valid_reference_data(ReferenceDataConfigurationInterface $configuration)
     {
         $configuration->getName()->willReturn('fabrics');
 
@@ -15,7 +15,7 @@ class ReferenceDataNameCheckerSpec extends ObjectBehavior
         $this->getFailure()->shouldReturn(null);
     }
 
-    function it_checks_an_invalid_reference_data(ConfigurationInterface $configuration)
+    function it_checks_an_invalid_reference_data(ReferenceDataConfigurationInterface $configuration)
     {
         $configuration->getName()->willReturn('main-color');
 
