@@ -16,7 +16,6 @@ services:
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
             - '@__symfony__.validator'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
-
         tags:
             - { name: fob.context_service }
 

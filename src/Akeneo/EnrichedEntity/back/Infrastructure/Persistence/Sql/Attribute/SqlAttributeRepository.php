@@ -55,7 +55,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
     public function create(AbstractAttribute $attribute): void
     {
         $normalizedAttribute = $attribute->normalize();
-        $additionalProperties = $this->getAdditionalOptions($normalizedAttribute);
+        $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $insert = <<<SQL
         INSERT INTO akeneo_enriched_entity_attribute (
             identifier,
@@ -109,7 +109,7 @@ SQL;
     public function update(AbstractAttribute $attribute): void
     {
         $normalizedAttribute = $attribute->normalize();
-        $additionalProperties = $this->getAdditionalOptions($normalizedAttribute);
+        $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $update = <<<SQL
         UPDATE akeneo_enriched_entity_attribute SET
             labels = :labels,
@@ -135,7 +135,7 @@ SQL;
         );
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to create one attribute, but %d rows were affected', $affectedRows)
+                sprintf('Expected to edit one attribute, but %d rows were affected', $affectedRows)
             );
         }
     }
@@ -216,7 +216,7 @@ SQL;
         return $attributes;
     }
 
-    private function getAdditionalOptions(array $normalizedAttribute): array
+    private function getAdditionalProperties(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);
         unset($normalizedAttribute['enriched_entity_identifier']);

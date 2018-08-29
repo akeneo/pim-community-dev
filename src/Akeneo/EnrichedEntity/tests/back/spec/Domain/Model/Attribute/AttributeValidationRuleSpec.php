@@ -28,7 +28,7 @@ class AttributeValidationRuleSpec extends ObjectBehavior
     function it_can_be_created_without_any_validation_rule()
     {
         $noValidationRule = $this::none();
-        $noValidationRule->normalize()->shouldReturn(null);
+        $noValidationRule->normalize()->shouldReturn('none');
     }
 
     function it_cannot_be_created_with_an_unspported_validation_rule()

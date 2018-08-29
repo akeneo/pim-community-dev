@@ -53,6 +53,9 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 )
             );
         }
+
+        $maxLength = AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength);
+
         if ($command->isTextArea) {
             return TextAttribute::createTextArea(
                 AttributeIdentifier::create(
@@ -66,7 +69,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
                 AttributeIsRequired::fromBoolean($command->isRequired),
                 AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
                 AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-                AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength),
+                $maxLength,
                 AttributeIsRichTextEditor::fromBoolean($command->isRichTextEditor)
             );
         }
@@ -83,7 +86,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
             AttributeIsRequired::fromBoolean($command->isRequired),
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
-            AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength),
+            $maxLength,
             AttributeValidationRule::NONE === $command->validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($command->validationRule),
             AttributeRegularExpression::EMPTY === $command->regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($command->regularExpression)
         );

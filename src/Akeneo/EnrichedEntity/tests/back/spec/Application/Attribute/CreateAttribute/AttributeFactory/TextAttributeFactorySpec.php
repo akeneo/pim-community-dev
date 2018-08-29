@@ -55,7 +55,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => 155,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'validation_rule'            => null,
+            'validation_rule'            => 'none',
             'regular_expression'         => null,
         ]);
     }
@@ -89,7 +89,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => 155,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'validation_rule'            => null,
+            'validation_rule'            => 'none',
             'regular_expression'         => null,
         ]);
     }
@@ -111,6 +111,8 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = AttributeMaxLength::NO_LIMIT;
+        $command->validationRule = AttributeValidationRule::NONE;
+        $command->regularExpression = AttributeRegularExpression::EMPTY;
 
         $this->create($command)->normalize()->shouldReturn([
             'identifier'                 => [
@@ -128,7 +130,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => null,
             'is_text_area'               => false,
             'is_rich_text_editor'        => false,
-            'validation_rule'            => null,
+            'validation_rule'            => 'none',
             'regular_expression'         => null,
         ]);
     }
@@ -203,7 +205,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'max_length'                 => 155,
             'is_text_area'               => true,
             'is_rich_text_editor'        => true,
-            'validation_rule'            => null,
+            'validation_rule'            => 'none',
             'regular_expression'         => null,
         ]);
     }

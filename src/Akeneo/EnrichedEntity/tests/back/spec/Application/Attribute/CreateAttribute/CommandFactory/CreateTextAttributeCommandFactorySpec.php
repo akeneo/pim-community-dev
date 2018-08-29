@@ -77,7 +77,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->maxLength->shouldBeEqualTo(null);
         $command->isTextArea->shouldBeEqualTo(false);
         $command->isRichTextEditor->shouldBeEqualTo(false);
-        $command->validationRule->shouldBeEqualTo(null);
+        $command->validationRule->shouldBeEqualTo('none');
         $command->regularExpression->shouldBeEqualTo(null);
     }
 }

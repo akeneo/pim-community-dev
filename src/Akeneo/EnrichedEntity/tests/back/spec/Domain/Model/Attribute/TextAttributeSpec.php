@@ -177,7 +177,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'validation_rule'            => null,
+                'validation_rule'            => 'none',
                 'regular_expression'         => null,
             ]
         );
@@ -241,7 +241,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'validation_rule'            => null,
+                'validation_rule'            => 'none',
                 'regular_expression'         => null,
             ]
         );
@@ -266,7 +266,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 100,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'validation_rule'            => null,
+                'validation_rule'            => 'none',
                 'regular_expression'         => null,
             ]
         );
@@ -291,7 +291,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'max_length'                 => 300,
                 'is_text_area'               => true,
                 'is_rich_text_editor'        => false,
-                'validation_rule'            => null,
+                'validation_rule'            => 'none',
                 'regular_expression'         => null,
             ]
         );
@@ -316,7 +316,7 @@ class TextAttributeSpec extends ObjectBehavior
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
-        $normalizedAttribute['validation_rule']->shouldBeNull();
+        $normalizedAttribute['validation_rule']->shouldBeEqualTo('none');
         $normalizedAttribute['regular_expression']->shouldBeNull();
     }
 
@@ -338,7 +338,7 @@ class TextAttributeSpec extends ObjectBehavior
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
-        $normalizedAttribute['validation_rule']->shouldBeNull();
+        $normalizedAttribute['validation_rule']->shouldBeEqualTo('none');
         $normalizedAttribute['regular_expression']->shouldBeNull();
     }
 
@@ -381,7 +381,7 @@ class TextAttributeSpec extends ObjectBehavior
         $normalizedAttribute = $this->normalize();
         $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::EMAIL);
-        $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeValidationRule::NONE);
+        $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeRegularExpression::EMPTY);
     }
 
     function it_sets_the_regular_expression_to_empty_if_the_validation_rule_is_not_regular_expression()
@@ -438,7 +438,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeIsRichTextEditor::fromBoolean(false)
         ]);
         $this->setValidationRule(AttributeValidationRule::none());
-        $this->normalize()['validation_rule']->shouldBeEqualTo(null);
+        $this->normalize()['validation_rule']->shouldBeEqualTo('none');
     }
 
     function it_updates_the_regular_expression_of_a_text_area_attribute_if_the_regular_expression_is_empty()
