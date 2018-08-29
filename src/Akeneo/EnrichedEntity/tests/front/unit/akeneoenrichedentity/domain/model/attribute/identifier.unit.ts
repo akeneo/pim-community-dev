@@ -19,4 +19,8 @@ describe('akeneo > enriched entity > domain > model > attribute --- identifier',
     expect(createIdentifier('michel').equals(createIdentifier('didier'))).toBe(false);
     expect(createIdentifier('didier').equals(createIdentifier('didier'))).toBe(true);
   });
+
+  test('I can stringify an attribute', () => {
+    expect(createIdentifier('michel').stringValue()).toEqual('michel');
+  });
 });

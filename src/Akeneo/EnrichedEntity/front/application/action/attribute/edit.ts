@@ -12,6 +12,7 @@ import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entit
 import {notifyAttributeSaveFailed} from 'akeneoenrichedentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
 import {denormalizeAttribute, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import AttributeCode from 'akeneoenrichedentity/domain/model/code';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,
@@ -51,7 +52,7 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   return;
 };
 
-export const attributeEditionStart = (attributeIdentifier: AttributeIdentifier) => async (
+export const attributeEditionStartByCode = (attributeCode: AttributeCode) => async (
   dispatch: any,
   getState: () => EditState
 ): Promise<void> => {
@@ -61,20 +62,43 @@ export const attributeEditionStart = (attributeIdentifier: AttributeIdentifier) 
   }
 
   const attributeToEdit = state.attributes.attributes.find(
-    (attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier.identifier
+    (attribute: NormalizedAttribute) => attribute.code === attributeCode.stringValue()
   );
 
-  if (undefined === attributeToEdit) {
+  dispatch(attributeEditionStart(attributeToEdit));
+};
+
+export const attributeEditionStartByIdentifier = (attributeIdentifier: AttributeIdentifier) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
+  const state = getState();
+  if (null === state.attributes.attributes) {
     return;
   }
 
-  const attributeState = state.attribute;
+  const attributeToEdit = state.attributes.attributes.find(
+    (attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier.stringValue()
+  );
+
+  dispatch(attributeEditionStart(attributeToEdit));
+};
+
+export const attributeEditionStart = (attribute: NormalizedAttribute | undefined) => async (
+  dispatch: any,
+  getState: () => EditState
+): Promise<void> => {
+  if (undefined === attribute) {
+    return;
+  }
+
+  const attributeState = getState().attribute;
 
   if (attributeState.isDirty) {
     await dispatch(saveAttribute(false));
   }
 
   if (!getState().attribute.isDirty) {
-    dispatch(attributeEditionStartEvent(denormalizeAttribute(attributeToEdit)));
+    dispatch(attributeEditionStartEvent(denormalizeAttribute(attribute)));
   }
 };

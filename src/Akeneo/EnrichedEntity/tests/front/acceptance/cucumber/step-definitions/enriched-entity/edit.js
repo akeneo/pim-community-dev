@@ -14,7 +14,7 @@ module.exports = async function(cucumber) {
   const config = {
     Header: {
       selector: '.AknTitleContainer',
-      decorator: Header
+      decorator: Header,
     },
     Edit: {
       selector: '.AknDefault-contentWithColumn',
@@ -185,20 +185,22 @@ module.exports = async function(cucumber) {
     header.clickOnDeleteButton();
   });
 
-  When('the user fails to delete the enriched entity {string}', async function (identifier) {
+  When('the user fails to delete the enriched entity {string}', async function(identifier) {
     const header = await await getElement(this.page, 'Header');
-    const response = JSON.stringify([{
-      'messageTemplate': 'pim_enriched_entity.enriched_entity.validation.records.should_have_no_record',
-      'parameters': {'%enriched_entity_identifier%': []},
-      'plural': null,
-      'message': 'You cannot delete this entity because records exist for this entity',
-      'root': {'identifier': `${identifier}`},
-      'propertyPath': '',
-      'invalidValue': {'identifier': `${identifier}`},
-      'constraint': {'targets': 'class', 'defaultOption': null, 'requiredOptions': [], 'payload': null},
-      'cause': null,
-      'code': null
-    }]);
+    const response = JSON.stringify([
+      {
+        messageTemplate: 'pim_enriched_entity.enriched_entity.validation.records.should_have_no_record',
+        parameters: {'%enriched_entity_identifier%': []},
+        plural: null,
+        message: 'You cannot delete this entity because records exist for this entity',
+        root: {identifier: `${identifier}`},
+        propertyPath: '',
+        invalidValue: {identifier: `${identifier}`},
+        constraint: {targets: 'class', defaultOption: null, requiredOptions: [], payload: null},
+        cause: null,
+        code: null,
+      },
+    ]);
 
     this.page.once('request', request => {
       if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
@@ -217,7 +219,7 @@ module.exports = async function(cucumber) {
     header.clickOnDeleteButton();
   });
 
-  When('the user refuses to delete the current enriched entity', async function () {
+  When('the user refuses to delete the current enriched entity', async function() {
     const header = await await getElement(this.page, 'Header');
 
     this.page.once('dialog', async dialog => {
@@ -241,14 +243,14 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasErrorNotification, true);
   });
 
-  Then('the user should not be notified that deletion has been made', async function () {
+  Then('the user should not be notified that deletion has been made', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     const hasNoNotification = await editPage.hasNoNotification();
 
     assert.strictEqual(hasNoNotification, true);
   });
 
-  Then('the user should not see the deletion button', async function () {
+  Then('the user should not see the deletion button', async function() {
     const header = await await getElement(this.page, 'Header');
     const isDeleteButtonVisible = await header.isDeleteButtonVisible();
 

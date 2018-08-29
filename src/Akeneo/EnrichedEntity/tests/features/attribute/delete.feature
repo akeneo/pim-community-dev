@@ -62,7 +62,7 @@ Feature: Delete an attribute linked to an enriched entity
       | code     | type  |
       | name     | text  |
       | portrait | image |
-    When the user cancel the deletion of attribute
+    When the user cancel the deletion of attribute "portrait"
     Then the user should not see the delete notification
     And there should be the following attributes:
       | code     | type  |

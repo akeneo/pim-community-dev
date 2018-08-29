@@ -11,6 +11,7 @@ import {
 import {attributeDeleted} from 'akeneoenrichedentity/domain/event/attribute/list';
 import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
+import {attributeEditionCancel} from 'akeneoenrichedentity/domain/event/attribute/edit';
 
 export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = denormalizeEnrichedEntity(getState().form.data);
@@ -45,4 +46,6 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
 
     throw error;
   }
+
+  dispatch(attributeEditionCancel());
 };

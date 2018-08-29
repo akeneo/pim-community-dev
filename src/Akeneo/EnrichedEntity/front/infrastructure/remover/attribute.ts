@@ -3,6 +3,7 @@ import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/ide
 import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import errorHandler from 'akeneoenrichedentity/infrastructure/saver/error-handler';
 
 const routing = require('routing');
 
@@ -20,13 +21,7 @@ export class AttributeRemoverImplementation implements AttributeRemover<Enriched
         enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
         attributeIdentifier: attributeIdentifier.normalize(),
       })
-    ).catch(error => {
-      if (500 === error.status) {
-        throw new Error('Internal Server error');
-      }
-
-      return error.responseJSON;
-    });
+    ).catch(errorHandler);
   }
 }
 

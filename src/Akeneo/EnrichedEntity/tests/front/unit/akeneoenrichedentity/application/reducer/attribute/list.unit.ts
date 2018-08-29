@@ -37,14 +37,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
       attributes: [
         {
           type: 'text',
-          identifier: 'description',
+          identifier: 'description_1234',
           enriched_entity_identifier: 'designer',
           code: 'description',
           labels: {},
         },
         {
           type: 'text',
-          identifier: 'name',
+          identifier: 'name_1234',
           enriched_entity_identifier: 'designer',
           code: 'name',
           labels: {},
@@ -54,14 +54,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
 
     const newState = reducer(state, {
       type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED',
-      deletedAttributeIdentifier: 'description',
+      deletedAttributeIdentifier: 'description_1234',
     });
 
     expect(newState).toEqual({
       attributes: [
         {
           type: 'text',
-          identifier: 'name',
+          identifier: 'name_1234',
           enriched_entity_identifier: 'designer',
           code: 'name',
           labels: {},
@@ -75,14 +75,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
       attributes: [
         {
           type: 'text',
-          identifier: 'description',
+          identifier: 'description_1234',
           enriched_entity_identifier: 'designer',
           code: 'description',
           labels: {},
         },
         {
           type: 'text',
-          identifier: 'name',
+          identifier: 'name_1234',
           enriched_entity_identifier: 'designer',
           code: 'name',
           labels: {},
@@ -92,14 +92,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
 
     const newState = reducer(state, {
       type: 'ATTRIBUTE_LIST_ATTRIBUTE_DELETED',
-      deletedAttributeIdentifier: 'description',
+      deletedAttributeIdentifier: 'description_1234',
     });
 
     expect(newState).toEqual({
       attributes: [
         {
           type: 'text',
-          identifier: 'name',
+          identifier: 'name_1234',
           enriched_entity_identifier: 'designer',
           code: 'name',
           labels: {},
@@ -115,7 +115,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
 
     const deletedAttribute = {
       type: 'text',
-      identifier: 'description',
+      identifier: 'description_1234',
       enriched_entity_identifier: 'designer',
       code: 'description',
       labels: {},

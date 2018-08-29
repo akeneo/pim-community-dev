@@ -96,7 +96,11 @@ class Create extends React.Component<CreateProps> {
                         onChange={this.onLabelUpdate}
                         onKeyPress={this.onKeyPress}
                       />
-                      <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
+                      <Flag
+                        locale={createLocaleFromCode(this.props.context.locale)}
+                        displayLanguage={false}
+                        className="AknFieldContainer-inputSides"
+                      />
                     </div>
                     {getErrorsView(this.props.errors, 'labels')}
                   </div>

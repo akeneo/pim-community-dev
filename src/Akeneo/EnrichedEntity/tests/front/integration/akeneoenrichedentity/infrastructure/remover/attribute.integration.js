@@ -10,7 +10,7 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
   it('It deletes an attribute', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/attribute/name' === interceptedRequest.url() &&
+        'http://pim.com/rest/enriched_entity/designer/attribute/name_1234' === interceptedRequest.url() &&
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -25,7 +25,7 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
         .createIdentifier;
       const remover = require('akeneoenrichedentity/infrastructure/remover/attribute').default;
 
-      const attributeIdentifierToDelete = createIdentifier('name');
+      const attributeIdentifierToDelete = createIdentifier('name_1234');
       const enrichedEntityIdentifierToDelete = createEnrichedEntityIdentifier('designer');
 
       return await remover.remove(enrichedEntityIdentifierToDelete, attributeIdentifierToDelete);

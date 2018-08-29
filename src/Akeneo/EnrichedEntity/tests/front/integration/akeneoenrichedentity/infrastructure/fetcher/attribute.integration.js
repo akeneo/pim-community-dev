@@ -17,7 +17,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           contentType: 'application/json',
           body: JSON.stringify([
             {
-              identifier: 'description',
+              identifier: 'description_1234',
               enriched_entity_identifier: 'designer',
               code: 'description',
               is_required: true,
@@ -35,7 +35,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               regular_expression: null,
             },
             {
-              identifier: 'side_view',
+              identifier: 'side_view_1234',
               enriched_entity_identifier: 'designer',
               code: 'side_view',
               is_required: false,
@@ -72,7 +72,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           identifier: 'designer',
         },
         identifier: {
-          identifier: 'description',
+          identifier: 'description_1234',
         },
         isRichTextEditor: {
           isRichTextEditor: false,
@@ -104,7 +104,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           identifier: 'designer',
         },
         identifier: {
-          identifier: 'side_view',
+          identifier: 'side_view_1234',
         },
         labelCollection: {
           labels: {
