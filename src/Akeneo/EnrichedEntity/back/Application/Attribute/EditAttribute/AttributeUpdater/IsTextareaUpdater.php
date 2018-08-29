@@ -34,7 +34,7 @@ class IsTextareaUpdater implements AttributeUpdaterInterface
             );
         }
 
-        $attribute->setIsTextArea(AttributeIsTextarea::fromBoolean($command->isTextArea));
+        $attribute->setIsTextarea(AttributeIsTextarea::fromBoolean($command->isTextarea));
 
         return $attribute;
     }

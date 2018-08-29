@@ -443,9 +443,9 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text area attribute \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextAreaAttribute(string $attributeCode)
+    public function anEnrichedEntityWithATextareaAttribute(string $attributeCode)
     {
-        $this->attributeRepository->create(TextAttribute::createTextArea(
+        $this->attributeRepository->create(TextAttribute::createTextarea(
             AttributeIdentifier::create('dummy_identifier', $attributeCode),
             EnrichedEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
@@ -462,16 +462,16 @@ class EditAttributeContext implements Context
     /**
      * @When /^the user changes the is text area flag of \'([^\']*)\' to \'([^\']*)\'$/
      */
-    public function theUserChangesTheIsTextAreaFlagTo(string $attributeCode, string $newIsTextArea)
+    public function theUserChangesTheIsTextareaFlagTo(string $attributeCode, string $newIsTextarea)
     {
-        $updateIsTextArea = [
+        $updateIsTextarea = [
             'identifier'                 => [
                 'identifier'                 => $attributeCode,
                 'enriched_entity_identifier' => 'dummy_identifier',
             ],
-            'is_text_area'                => json_decode($newIsTextArea),
+            'is_textarea'                => json_decode($newIsTextarea),
         ];
-        $this->updateAttribute($updateIsTextArea);
+        $this->updateAttribute($updateIsTextarea);
     }
 
     /**
@@ -482,7 +482,7 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertFalse($normalizedAttribute['is_textarea'], 'isTextarea should be false');
         Assert::assertFalse($normalizedAttribute['is_rich_text_editor'], 'isRichTextEditor should be false');
     }
 
@@ -509,12 +509,12 @@ class EditAttributeContext implements Context
     /**
      * @Then /^the \'([^\']*)\' attribute should be a text area$/
      */
-    public function theAttributeShouldBeATextArea($attributeCode)
+    public function theAttributeShouldBeATextarea($attributeCode)
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertTrue($normalizedAttribute['is_text_area'], 'isTextArea should be true');
+        Assert::assertTrue($normalizedAttribute['is_textarea'], 'isTextarea should be true');
         Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule'], 'validationRule should be none');
         Assert::assertNull($normalizedAttribute['regular_expression'], 'regularExpression should be null');
     }
@@ -593,7 +593,7 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertFalse($normalizedAttribute['is_textarea'], 'isTextarea should be false');
         Assert::assertNotNull($normalizedAttribute['validation_rule'], 'validationRule should be not be null');
         Assert::assertNull($normalizedAttribute['regular_expression'], 'regularExpression should be null');
     }
@@ -621,7 +621,7 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertFalse($normalizedAttribute['is_textarea'], 'isTextarea should be false');
         Assert::assertEquals(AttributeValidationRule::REGULAR_EXPRESSION, $normalizedAttribute['validation_rule']);
         Assert::assertEquals($regularExpression, $normalizedAttribute['regular_expression']);
     }
@@ -649,7 +649,7 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertFalse($normalizedAttribute['is_text_area'], 'isTextArea should be false');
+        Assert::assertFalse($normalizedAttribute['is_textarea'], 'isTextarea should be false');
         Assert::assertEquals(AttributeRegularExpression::EMPTY, $normalizedAttribute['regular_expression']);
     }
 
@@ -683,9 +683,9 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text area attribute \'([^\']*)\' with no rich text editor$/
      */
-    public function anEnrichedEntityWithATextAreaAttributeWithNoRichTextEditor(string $attributeCode)
+    public function anEnrichedEntityWithATextareaAttributeWithNoRichTextEditor(string $attributeCode)
     {
-        $this->attributeRepository->create(TextAttribute::createTextArea(
+        $this->attributeRepository->create(TextAttribute::createTextarea(
             AttributeIdentifier::create('dummy_identifier', $attributeCode),
             EnrichedEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
@@ -722,14 +722,14 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('dummy_identifier', $attributeCode));
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertTrue($normalizedAttribute['is_text_area'], 'isTextArea should be true');
+        Assert::assertTrue($normalizedAttribute['is_textarea'], 'isTextarea should be true');
         Assert::assertTrue($normalizedAttribute['is_rich_text_editor'], 'IsRichTextEditor should be true');
     }
 
     /**
-     * @When /^the user changes the is_text_area flag and the is_rich_text_editor of \'([^\']*)\' to \'([^\']*)\'$/
+     * @When /^the user changes the is_textarea flag and the is_rich_text_editor of \'([^\']*)\' to \'([^\']*)\'$/
      */
-    public function theUserChangesTheIsTextAreaFlagAndTheIsRichTextEditorOfTo(string $attributeCode, string $newflag)
+    public function theUserChangesTheIsTextareaFlagAndTheIsRichTextEditorOfTo(string $attributeCode, string $newflag)
     {
         $newflag = json_decode($newflag);
         $updates = [
@@ -738,7 +738,7 @@ class EditAttributeContext implements Context
                 'enriched_entity_identifier' => 'dummy_identifier',
             ],
             'is_rich_text_editor' => $newflag,
-            'is_text_area'        => $newflag,
+            'is_textarea'        => $newflag,
         ];
         $this->updateAttribute($updates);
     }
@@ -746,14 +746,14 @@ class EditAttributeContext implements Context
     /**
      * @When /^the user changes the text area flag to \'([^\']*)\' and the validation rule of \'([^\']*)\' to \'([^\']*)\'$/
      */
-    public function theUserChangesTheTextAreaFlagToAndTheValidationRuleOfTo(string $textAreaFlag, string $attributeCode, string $validationRule)
+    public function theUserChangesTheTextareaFlagToAndTheValidationRuleOfTo(string $textareaFlag, string $attributeCode, string $validationRule)
     {
         $updates = [
             'identifier'      => [
                 'identifier'                 => $attributeCode,
                 'enriched_entity_identifier' => 'dummy_identifier',
             ],
-            'is_text_area'    => json_decode($textAreaFlag),
+            'is_textarea'    => json_decode($textareaFlag),
             'validation_rule' => $validationRule
         ];
         $this->updateAttribute($updates);

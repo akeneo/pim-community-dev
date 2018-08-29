@@ -161,7 +161,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $nameAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $nameAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $nameAttribute->maxLength = AttributeMaxLength::fromInteger(155);
-        $nameAttribute->isTextArea = AttributeIsTextarea::fromBoolean(true);
+        $nameAttribute->isTextarea = AttributeIsTextarea::fromBoolean(true);
         $nameAttribute->isRichTextEditor = AttributeIsTextarea::fromBoolean(true);
         $nameAttribute->validationRule = AttributeValidationRule::none();
         $nameAttribute->regularExpression = AttributeRegularExpression::createEmpty();
@@ -181,7 +181,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $emailAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $emailAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $emailAttribute->maxLength = AttributeMaxLength::fromInteger(155);
-        $emailAttribute->isTextArea = AttributeIsTextarea::fromBoolean(false);
+        $emailAttribute->isTextarea = AttributeIsTextarea::fromBoolean(false);
         $emailAttribute->isRichTextEditor = AttributeIsTextarea::fromBoolean(false);
         $emailAttribute->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
         $emailAttribute->regularExpression = AttributeRegularExpression::createEmpty();

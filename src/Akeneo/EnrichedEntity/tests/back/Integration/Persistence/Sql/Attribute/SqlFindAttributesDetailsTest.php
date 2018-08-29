@@ -134,7 +134,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
             AttributeRegularExpression::fromString('/\w+/')
         );
-        $longDescription = TextAttribute::createTextArea(
+        $longDescription = TextAttribute::createTextarea(
             AttributeIdentifier::create('designer', 'long_description'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('long_description'),
@@ -191,7 +191,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextArea = AttributeIsTextarea::fromBoolean(false);
+        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(false);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $expectedName->validationRule = AttributeValidationRule::none();
         $expectedName->regularExpression = AttributeRegularExpression::createEmpty();
@@ -211,7 +211,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextArea = AttributeIsTextarea::fromBoolean(false);
+        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(false);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $expectedName->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
         $expectedName->regularExpression = AttributeRegularExpression::createEmpty();
@@ -231,7 +231,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextArea = AttributeIsTextarea::fromBoolean(false);
+        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(false);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $expectedName->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION);
         $expectedName->regularExpression = AttributeRegularExpression::fromString('/\w+/');
@@ -251,7 +251,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $expectedName->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $expectedName->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $expectedName->maxLength = AttributeMaxLength::fromInteger(155);
-        $expectedName->isTextArea = AttributeIsTextarea::fromBoolean(true);
+        $expectedName->isTextarea = AttributeIsTextarea::fromBoolean(true);
         $expectedName->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(true);
         $expectedName->validationRule = AttributeValidationRule::none();
         $expectedName->regularExpression = AttributeRegularExpression::createEmpty();
@@ -308,7 +308,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $this->assertEquals($expected->valuePerLocale, $actual->valuePerLocale);
         if ($expected instanceof TextAttributeDetails && $actual instanceof TextAttributeDetails) {
             $this->assertEquals($expected->maxLength, $actual->maxLength);
-            $this->assertEquals($expected->isTextArea, $actual->isTextArea);
+            $this->assertEquals($expected->isTextarea, $actual->isTextarea);
             $this->assertEquals($expected->isRichTextEditor, $actual->isRichTextEditor);
             $this->assertEquals($expected->validationRule, $actual->validationRule);
             $this->assertEquals($expected->regularExpression, $actual->regularExpression);

@@ -47,7 +47,7 @@ services:
         tags:
             - { name: akeneo_enrichedentity.edit_attribute_command_factory, priority: 120 }
 
-    akeneo_enrichedentity.application.factory.edit_is_text_area_command_factory:
+    akeneo_enrichedentity.application.factory.edit_is_textarea_command_factory:
         class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommandFactory
         tags:
             - { name: akeneo_enrichedentity.edit_attribute_command_factory, priority: 120 }

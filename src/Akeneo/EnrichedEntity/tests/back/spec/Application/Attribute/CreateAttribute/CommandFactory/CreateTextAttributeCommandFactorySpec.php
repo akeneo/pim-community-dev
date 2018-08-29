@@ -34,7 +34,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             'value_per_channel' => false,
             'value_per_locale' => false,
             'max_length' => 255,
-            'is_text_area' => true,
+            'is_textarea' => true,
             'is_rich_text_editor' => true,
             'validation_rule' => 'regular_expression',
             'regular_expression' => '/\w+/',
@@ -52,7 +52,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->valuePerChannel->shouldBeEqualTo(false);
         $command->valuePerLocale->shouldBeEqualTo(false);
         $command->maxLength->shouldBeEqualTo(255);
-        $command->isTextArea->shouldBeEqualTo(true);
+        $command->isTextarea->shouldBeEqualTo(true);
         $command->isRichTextEditor->shouldBeEqualTo(true);
         $command->validationRule->shouldBeEqualTo('regular_expression');
         $command->regularExpression->shouldBeEqualTo('/\w+/');
@@ -75,7 +75,7 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command->valuePerChannel->shouldBeEqualTo(null);
         $command->valuePerLocale->shouldBeEqualTo(null);
         $command->maxLength->shouldBeEqualTo(null);
-        $command->isTextArea->shouldBeEqualTo(false);
+        $command->isTextarea->shouldBeEqualTo(false);
         $command->isRichTextEditor->shouldBeEqualTo(false);
         $command->validationRule->shouldBeEqualTo('none');
         $command->regularExpression->shouldBeEqualTo(null);

@@ -59,7 +59,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::createTextArea(
+        $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
@@ -157,7 +157,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::createTextArea(
+        $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),

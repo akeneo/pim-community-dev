@@ -11,30 +11,30 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
 class AttributeIsTextarea
 {
     /** @var bool */
-    private $isTextArea;
+    private $isTextarea;
 
-    private function __construct(bool $isTextArea)
+    private function __construct(bool $isTextarea)
     {
-        $this->isTextArea = $isTextArea;
+        $this->isTextarea = $isTextarea;
     }
 
-    public static function fromBoolean(bool $isTextArea): self
+    public static function fromBoolean(bool $isTextarea): self
     {
-        return new self($isTextArea);
+        return new self($isTextarea);
     }
 
     public function isYes(): bool
     {
-        return $this->isTextArea;
+        return $this->isTextarea;
     }
 
     public function normalize(): bool
     {
-        return $this->isTextArea;
+        return $this->isTextarea;
     }
 
-    public function equals(AttributeIsTextarea $otherIsTextArea): bool
+    public function equals(AttributeIsTextarea $otherIsTextarea): bool
     {
-        return $this->isTextArea === $otherIsTextArea->isTextArea;
+        return $this->isTextarea === $otherIsTextarea->isTextarea;
     }
 }

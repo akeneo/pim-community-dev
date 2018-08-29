@@ -23,7 +23,7 @@ class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
     public $maxLength;
 
     /** bool */
-    public $isTextArea;
+    public $isTextarea;
 
     /** @var bool */
     public $isRichTextEditor;

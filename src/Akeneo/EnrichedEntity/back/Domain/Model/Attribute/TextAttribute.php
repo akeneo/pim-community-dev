@@ -30,7 +30,7 @@ class TextAttribute extends AbstractAttribute
     private $maxLength;
 
     /** @var AttributeIsTextarea */
-    private $isTextArea;
+    private $isTextarea;
 
     /** @var AttributeValidationRule */
     private $validationRule;
@@ -53,7 +53,7 @@ class TextAttribute extends AbstractAttribute
      * @param AttributeValuePerChannel   $valuePerChannel
      * @param AttributeValuePerLocale    $valuePerLocale
      * @param AttributeMaxLength         $maxLength
-     * @param AttributeIsTextarea        $isTextArea
+     * @param AttributeIsTextarea        $isTextarea
      * @param AttributeValidationRule    $validationRule
      * @param AttributeRegularExpression $regularExpression
      * @param AttributeIsRichTextEditor  $isRichTextEditor
@@ -68,12 +68,12 @@ class TextAttribute extends AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxLength $maxLength,
-        AttributeIsTextarea $isTextArea,
+        AttributeIsTextarea $isTextarea,
         AttributeValidationRule $validationRule,
         AttributeRegularExpression $regularExpression,
         AttributeIsRichTextEditor $isRichTextEditor
     ) {
-        if ($isTextArea->isYes()) {
+        if ($isTextarea->isYes()) {
             Assert::true(
                 $validationRule->isNone() && $regularExpression->isEmpty(),
                 'It is not possible to create a text area attribute with a validation rule.'
@@ -99,7 +99,7 @@ class TextAttribute extends AbstractAttribute
         );
 
         $this->maxLength = $maxLength;
-        $this->isTextArea = $isTextArea;
+        $this->isTextarea = $isTextarea;
         $this->validationRule = $validationRule;
         $this->regularExpression = $regularExpression;
         $this->isRichTextEditor = $isRichTextEditor;
@@ -135,7 +135,7 @@ class TextAttribute extends AbstractAttribute
         );
     }
 
-    public static function createTextArea(
+    public static function createTextarea(
         AttributeIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeCode $code,
@@ -175,7 +175,7 @@ class TextAttribute extends AbstractAttribute
             parent::normalize(),
             [
                 'max_length'          => $this->maxLength->normalize(),
-                'is_text_area'        => $this->isTextArea->normalize(),
+                'is_textarea'        => $this->isTextarea->normalize(),
                 'is_rich_text_editor' => $this->isRichTextEditor->normalize(),
                 'validation_rule'     => $this->validationRule->normalize(),
                 'regular_expression'  => $this->regularExpression->normalize(),
@@ -183,12 +183,12 @@ class TextAttribute extends AbstractAttribute
         );
     }
 
-    public function setIsTextArea(AttributeIsTextarea $isTextArea): void
+    public function setIsTextarea(AttributeIsTextarea $isTextarea): void
     {
-        if ($this->isTextArea->equals($isTextArea)) {
+        if ($this->isTextarea->equals($isTextarea)) {
             return;
         }
-        $this->isTextArea = $isTextArea;
+        $this->isTextarea = $isTextarea;
         $this->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $this->validationRule = AttributeValidationRule::none();
         $this->regularExpression = AttributeRegularExpression::createEmpty();
@@ -196,7 +196,7 @@ class TextAttribute extends AbstractAttribute
 
     public function setValidationRule(AttributeValidationRule $validationRule): void
     {
-        if ($this->isTextArea->isYes() && !$validationRule->isNone()) {
+        if ($this->isTextarea->isYes() && !$validationRule->isNone()) {
             throw new \LogicException('Cannot update the validation rule when the text area flag is true');
         }
         $this->validationRule = $validationRule;
@@ -208,7 +208,7 @@ class TextAttribute extends AbstractAttribute
     public function setRegularExpression(AttributeRegularExpression $regularExpression): void
     {
         if (!$regularExpression->isEmpty()) {
-            if ($this->isTextArea->isYes()) {
+            if ($this->isTextarea->isYes()) {
                 throw new \LogicException('Cannot update the regular expression when the text area flag is true');
             }
             if (!$this->validationRule->isRegex()) {
@@ -220,15 +220,15 @@ class TextAttribute extends AbstractAttribute
 
     public function setIsRichTextEditor(AttributeIsRichTextEditor $isRichTextEditor): void
     {
-        if (!$this->isTextArea->isYes() && $isRichTextEditor->isYes()) {
+        if (!$this->isTextarea->isYes() && $isRichTextEditor->isYes()) {
             throw new \LogicException('Cannot update the is rich text editor flag when the text area flag is false');
         }
         $this->isRichTextEditor = $isRichTextEditor;
     }
 
-    public function isTextArea(): bool
+    public function isTextarea(): bool
     {
-        return $this->isTextArea->isYes();
+        return $this->isTextarea->isYes();
     }
 
     public function isValidationRuleSetToRegularExpression(): bool

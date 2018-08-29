@@ -27,7 +27,7 @@ class TextAttributeDetails extends AbstractAttributeDetails
 {
     public const ATTRIBUTE_TYPE = 'text';
     public const MAX_LENGTH = 'max_length';
-    public const IS_TEXT_AREA = 'is_text_area';
+    public const IS_TEXT_AREA = 'is_textarea';
     public const IS_RICH_TEXT_EDITOR = 'is_rich_text_editor';
     public const VALIDATION_RULE = 'validation_rule';
     public const REGULAR_EXPRESSION = 'regular_expression';
@@ -36,7 +36,7 @@ class TextAttributeDetails extends AbstractAttributeDetails
     public $maxLength;
 
     /** @var AttributeIsTextarea */
-    public $isTextArea;
+    public $isTextarea;
 
     /** @var AttributeIsRichTextEditor */
     public $isRichTextEditor;
@@ -54,7 +54,7 @@ class TextAttributeDetails extends AbstractAttributeDetails
             [
                 self::MAX_LENGTH          => $this->maxLength->normalize(),
                 self::TYPE                => self::ATTRIBUTE_TYPE,
-                self::IS_TEXT_AREA        => $this->isTextArea->normalize(),
+                self::IS_TEXT_AREA        => $this->isTextarea->normalize(),
                 self::IS_RICH_TEXT_EDITOR => $this->isRichTextEditor->normalize(),
                 self::VALIDATION_RULE     => $this->validationRule->normalize(),
                 self::REGULAR_EXPRESSION  => $this->regularExpression->normalize(),

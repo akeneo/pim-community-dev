@@ -104,7 +104,7 @@ SQL;
 
             if ('text' === $result['attribute_type']) {
                 $maxLength = $additionnalProperties['max_length'];
-                $isTextArea = (bool) $additionnalProperties['is_text_area'];
+                $isTextarea = (bool) $additionnalProperties['is_textarea'];
                 $isRichTextEditor = (bool) $additionnalProperties['is_rich_text_editor'];
                 $validationRule = $additionnalProperties['validation_rule'];
                 $regularExpression = $additionnalProperties['regular_expression'];
@@ -119,7 +119,7 @@ SQL;
                 $textAttributeDetails->valuePerChannel = AttributeValuePerChannel::fromBoolean($valuePerChannel);
                 $textAttributeDetails->valuePerLocale = AttributeValuePerLocale::fromBoolean($valuePerLocale);
                 $textAttributeDetails->maxLength = $maxLength === null ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($maxLength);
-                $textAttributeDetails->isTextArea = AttributeIsTextarea::fromBoolean($isTextArea);
+                $textAttributeDetails->isTextarea = AttributeIsTextarea::fromBoolean($isTextarea);
                 $textAttributeDetails->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean($isRichTextEditor);
                 $textAttributeDetails->validationRule = null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule);
                 $textAttributeDetails->regularExpression = null === $regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($regularExpression);

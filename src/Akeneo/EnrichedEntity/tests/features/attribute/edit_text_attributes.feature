@@ -84,11 +84,11 @@ Feature: Edit a text attribute of an enriched entity
   @acceptance-back
   Scenario Outline: Updating with an invalid is text area
     Given an enriched entity with a text attribute 'name'
-    When the user changes the is text area flag of 'name' to '<invalid_is_text_area_flag>'
-    Then there should be a validation error on the property 'isTextArea' with message '<message>'
+    When the user changes the is text area flag of 'name' to '<invalid_is_textarea_flag>'
+    Then there should be a validation error on the property 'isTextarea' with message '<message>'
 
     Examples:
-      | invalid_is_text_area_flag | message                               |
+      | invalid_is_textarea_flag | message                               |
       | null                      | This value should not be null.        |
       | "not_a_boolean"           | This value should be of type boolean. |
 
@@ -206,9 +206,9 @@ Feature: Edit a text attribute of an enriched entity
     Then there should be a validation error with message 'A simple text attribute cannot have a rich text editor'
 
   @acceptance-back
-  Scenario: Updating the is_text_area flag and the is_rich_text_editor flag on a simple text attribute
+  Scenario: Updating the is_textarea flag and the is_rich_text_editor flag on a simple text attribute
     Given an enriched entity with a text attribute 'name'
-    When the user changes the is_text_area flag and the is_rich_text_editor of 'name' to 'true'
+    When the user changes the is_textarea flag and the is_rich_text_editor of 'name' to 'true'
     Then the 'name' attribute should have a text editor
     And the 'name' attribute should be a text area
 

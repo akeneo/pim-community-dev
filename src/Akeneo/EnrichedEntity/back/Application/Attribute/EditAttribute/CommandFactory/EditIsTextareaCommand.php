@@ -11,5 +11,5 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
 class EditIsTextareaCommand extends AbstractEditAttributeCommand
 {
     /** @var bool */
-    public $isTextArea;
+    public $isTextarea;
 }

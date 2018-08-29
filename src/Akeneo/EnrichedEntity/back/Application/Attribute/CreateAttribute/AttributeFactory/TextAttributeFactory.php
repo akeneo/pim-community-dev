@@ -56,8 +56,8 @@ class TextAttributeFactory implements AttributeFactoryInterface
 
         $maxLength = AttributeMaxLength::NO_LIMIT === $command->maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($command->maxLength);
 
-        if ($command->isTextArea) {
-            return TextAttribute::createTextArea(
+        if ($command->isTextarea) {
+            return TextAttribute::createTextarea(
                 AttributeIdentifier::create(
                     $command->identifier['enriched_entity_identifier'],
                     $command->identifier['identifier']

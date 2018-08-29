@@ -13,15 +13,15 @@ class EditIsTextareaCommandFactorySpec extends ObjectBehavior
         $this->shouldHaveType(EditIsTextareaCommandFactory::class);
     }
 
-    function it_only_supports_attribute_property_is_text_area_edits()
+    function it_only_supports_attribute_property_is_textarea_edits()
     {
         $this->supports([
             'identifier'   => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
-            'is_text_area' => true,
+            'is_textarea' => true,
         ])->shouldReturn(true);
         $this->supports([
             'identifier'   => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
-            'is_text_area' => null,
+            'is_textarea' => null,
         ])->shouldReturn(true);
         $this->supports([
             'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
@@ -30,21 +30,21 @@ class EditIsTextareaCommandFactorySpec extends ObjectBehavior
         $this->supports(['dummy' => 10])->shouldReturn(false);
     }
 
-    function it_creates_a_command_to_edit_the_is_text_area_flag()
+    function it_creates_a_command_to_edit_the_is_textarea_flag()
     {
         $command = $this->create([
             'identifier' => [
                 'identifier'                 => 'name',
                 'enriched_entity_identifier' => 'designer',
             ],
-            'is_text_area'   => true,
+            'is_textarea'   => true,
         ]);
         $command->shouldBeAnInstanceOf(EditIsTextareaCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'name',
             'enriched_entity_identifier' => 'designer',
         ]);
-        $command->isTextArea->shouldBeEqualTo(true);
+        $command->isTextarea->shouldBeEqualTo(true);
     }
 
     function it_throws_if_it_cannot_create_the_command()

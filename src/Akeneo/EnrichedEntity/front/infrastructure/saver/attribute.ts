@@ -15,8 +15,8 @@ export class AttributeSaverImplementation implements AttributeSaver {
   }
 
   async save(attribute: Attribute): Promise<ValidationError[] | null> {
-    const normalizedAttribute = attribute.normalize() as any; //Todo: remove when backend remove is_text_area
-    normalizedAttribute.is_text_area = normalizedAttribute.is_textarea;
+    const normalizedAttribute = attribute.normalize() as any; //Todo: remove when backend remove is_textarea
+    normalizedAttribute.is_textarea = normalizedAttribute.is_textarea;
     return await postJSON(
       routing.generate('akeneo_enriched_entities_attribute_edit_rest', {
         enrichedEntityIdentifier: attribute.getEnrichedEntityIdentifier().stringValue(),

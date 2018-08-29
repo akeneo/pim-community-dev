@@ -17,7 +17,7 @@ class IsTextareaUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType(IsTextareaUpdater::class);
     }
 
-    function it_only_supports_edit_is_text_area_flag_for_text_attributes(
+    function it_only_supports_edit_is_textarea_flag_for_text_attributes(
         TextAttribute $textAttribute,
         ImageAttribute $imageAttribute
     ) {
@@ -29,11 +29,11 @@ class IsTextareaUpdaterSpec extends ObjectBehavior
         $this->supports($textAttribute, $labelEditCommand)->shouldReturn(false);
     }
 
-    function it_edits_the_is_text_area_flag_of_a_text_attribute(TextAttribute $textAttribute)
+    function it_edits_the_is_textarea_flag_of_a_text_attribute(TextAttribute $textAttribute)
     {
         $editRequired = new EditIsTextareaCommand();
-        $editRequired->isTextArea = false;
-        $textAttribute->setIsTextArea(AttributeIsTextarea::fromBoolean(false))->shouldBeCalled();
+        $editRequired->isTextarea = false;
+        $textAttribute->setIsTextarea(AttributeIsTextarea::fromBoolean(false))->shouldBeCalled();
         $this->__invoke($textAttribute, $editRequired)->shouldReturn($textAttribute);
     }
 
