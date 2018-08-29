@@ -196,7 +196,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('\w+-[0-9]')
+            AttributeRegularExpression::fromString('/\w+-[0-9]/')
         )->normalize()->shouldReturn([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
@@ -214,7 +214,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'is_textarea'               => false,
                 'is_rich_text_editor'        => false,
                 'validation_rule'            => 'regular_expression',
-                'regular_expression'         => '\w+-[0-9]',
+                'regular_expression'         => '/\w+-[0-9]/',
             ]
         );
     }
