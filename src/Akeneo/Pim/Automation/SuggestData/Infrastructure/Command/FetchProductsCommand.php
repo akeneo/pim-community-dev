@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Symfony command that allows to launch data pulling to PIM.ai
- * It can be used automatically with a CRON but also manually from a specific date
+ * It can be used automatically with a CRON but also manually from a specific date (TODO: APAI-170)
  *
  * @author    Romain Monceau <romain@akeneo.com>
  */
