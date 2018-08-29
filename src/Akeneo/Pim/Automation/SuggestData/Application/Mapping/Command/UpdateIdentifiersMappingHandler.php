@@ -76,7 +76,6 @@ class UpdateIdentifiersMappingHandler
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingRepository->save($identifiersMapping);
-
         $this->identifiersMappingWebService->update($identifiersMapping);
     }
 

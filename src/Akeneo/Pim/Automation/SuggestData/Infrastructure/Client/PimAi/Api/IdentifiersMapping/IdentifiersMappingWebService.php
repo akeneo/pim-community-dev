@@ -43,7 +43,7 @@ class IdentifiersMappingWebService implements IdentifiersMappingInterface
     ) {
         $this->uriGenerator = $uriGenerator;
         $this->httpClient = $httpClient;
-        $this->normalize = $normalizer;
+        $this->normalizer = $normalizer;
     }
 
     /**
