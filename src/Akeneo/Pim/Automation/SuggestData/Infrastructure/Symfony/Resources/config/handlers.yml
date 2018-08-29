@@ -1,4 +1,7 @@
 services:
+
+    # Command Handlers
+
     akeneo.pim.automation.suggest_data.handler.save_configuration:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command\SaveConfigurationHandler'
         arguments:
@@ -18,3 +21,10 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+
+    # Query Handlers
+
+    akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'

@@ -61,8 +61,7 @@ config:
         pimee/controller/attributes_mapping/edit: akeneosuggestdata/js/controllers/attributes_mapping/edit.ts
 
         # Forms
-        pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push
-        pimee/form/product/subscription-status: akeneosuggestdata/js/product/edit/subscription-status.ts
+        pimee/form/product/subscription-status-switcher: akeneosuggestdata/js/product/edit/subscription-status-switcher.ts
         pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation.ts
         pimee/pim-ai-connection/edit: akeneosuggestdata/js/pim-ai/form/edit.ts
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
@@ -75,8 +74,7 @@ config:
         pimee/settings/mapping/state: akeneosuggestdata/js/settings/mapping/state.ts
 
         # Templates
-        pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
-        pimee/template/form/product/subscription-status: akeneosuggestdata/templates/product/edit/subscription-status.html
+        pimee/template/form/product/subscription-status-switcher: akeneosuggestdata/templates/product/edit/subscription-status-switcher.html
         pimee/template/product/mass-edit/suggest-data: akeneosuggestdata/templates/product/mass-edit/suggest-data.html
         pimee/template/pim-ai-connection/edit: akeneosuggestdata/templates/pim-ai/form/edit.html
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
