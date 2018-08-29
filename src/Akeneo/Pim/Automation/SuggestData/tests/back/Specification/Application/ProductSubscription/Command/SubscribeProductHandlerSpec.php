@@ -61,7 +61,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $productRepository->find($productId)->willReturn($product);
         $product->getFamily()->willReturn(null);
 
-        $command = new SubscribeProductCommand(42);
+        $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
             new ProductSubscriptionException('Cannot subscribe a product without family')
         )->during('handle', [$command]);
@@ -70,16 +70,15 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_product_is_already_subscribed(
         $productRepository,
         $subscriptionRepository,
-        ProductInterface $product
+        ProductInterface $product,
+        ProductSubscription $productSubscription
     ) {
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
-        $productRepository->find(42)->willReturn($product);
+        $productRepository->find($productId)->willReturn($product);
 
-        $subscriptionRepository->getSubscriptionStatusForProductId(42)->willReturn(
-            ['subscription_id' => 'a-subscription-id']
-        );
+        $subscriptionRepository->findOneByProductId($productId)->willReturn($productSubscription);
 
         $command = new SubscribeProductCommand($productId);
         $this->shouldThrow(
@@ -97,9 +96,9 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         $productId = 42;
         $product->getId()->willReturn($productId);
         $product->getFamily()->willReturn(new Family());
-        $productRepository->find(42)->willReturn($product);
+        $productRepository->find($productId)->willReturn($product);
 
-        $subscriptionRepository->getSubscriptionStatusForProductId(42)->willReturn(['subscription_id' => '']);
+        $subscriptionRepository->findOneByProductId($productId)->willReturn(null);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $response = new ProductSubscriptionResponse($product->getWrappedObject(), 'test-id', []);
