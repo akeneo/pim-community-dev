@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
@@ -35,7 +35,7 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
     function it_presents_reference_data_change_using_the_injected_renderer(
         $repositoryResolver,
         ObjectRepository $repository,
-        ConfigurationInterface $configuration,
+        ReferenceDataConfigurationInterface $configuration,
         RendererInterface $renderer,
         CustomValuePresenter $value,
         AttributeInterface $attribute,
