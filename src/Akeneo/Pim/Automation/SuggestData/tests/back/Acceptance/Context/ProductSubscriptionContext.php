@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -34,8 +32,8 @@ class ProductSubscriptionContext implements Context
     /** @var InMemoryProductRepository */
     private $productRepository;
 
-    /** @var GetProductSubscriptionStatusHandler */
-    private $getProductSubscriptionStatusHandler;
+    /** @var InMemoryProductSubscriptionRepository */
+    private $productSubscriptionRepository;
 
     /** @var SubscribeProduct */
     private $subscribeProduct;
@@ -55,13 +53,13 @@ class ProductSubscriptionContext implements Context
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
-        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
+        InMemoryProductSubscriptionRepository $productSubscriptionRepository,
         SubscribeProduct $subscribeProduct,
         DataFixturesContext $dataFixturesContext,
         SubscriptionFake $subscriptionApi
     ) {
         $this->productRepository = $productRepository;
-        $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscribeProduct = $subscribeProduct;
         $this->dataFixturesContext = $dataFixturesContext;
         $this->subscriptionApi = $subscriptionApi;
@@ -100,17 +98,11 @@ class ProductSubscriptionContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($product->getId());
-        $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle(
-            $getProductSubscriptionStatus
-        );
-
-        Assert::isArray($subscriptionStatus);
-        Assert::keyExists($subscriptionStatus, 'subscription_id');
-        if (true === $not) {
-            Assert::isEmpty($subscriptionStatus['subscription_id']);
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        if ($not) {
+            Assert::null($productSubscription);
         } else {
-            Assert::notEmpty($subscriptionStatus['subscription_id']);
+            Assert::isInstanceOf($productSubscription, ProductSubscription::class);
         }
     }
 
@@ -144,8 +136,6 @@ class ProductSubscriptionContext implements Context
                 throw $e;
             }
         }
-
-        Assert::same($productSubscriptionStatus->normalize(), ['is_subscribed' => true]);
     }
 
     /**
