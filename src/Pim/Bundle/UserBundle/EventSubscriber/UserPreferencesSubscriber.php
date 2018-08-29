@@ -102,7 +102,7 @@ class UserPreferencesSubscriber implements EventSubscriber
         }
 
         if ($entity instanceof CategoryInterface && $entity->isRoot()) {
-            $this->onTreeRemoved($uow, $entity);
+            $this->onTreeRemoved($uow, $manager, $entity);
         }
     }
 
@@ -187,7 +187,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param CategoryInterface $category
      */
-    protected function onTreeRemoved(UnitOfWork $uow, CategoryInterface $category)
+    protected function onTreeRemoved(UnitOfWork $uow, EntityManagerInterface $manager, CategoryInterface $category)
     {
         $users = $this->findUsersBy(['defaultTree' => $category]);
         $trees = $this->container->get('pim_catalog.repository.category')->getTrees();
@@ -203,7 +203,7 @@ class UserPreferencesSubscriber implements EventSubscriber
 
         foreach ($users as $user) {
             $user->setDefaultTree($defaultTree);
-            $this->computeChangeset($uow, $user);
+            $this->computeChangeset($uow, $manager, $user);
         }
     }
 

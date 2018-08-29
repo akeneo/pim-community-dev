@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7605: Fix error when a tree is removed
+
 # 2.0.35 (2018-08-24)
 
 ## Bug fixes

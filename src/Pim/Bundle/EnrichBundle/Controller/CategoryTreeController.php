@@ -372,8 +372,6 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->findCategory($id);
-        $parent = $category->getParent();
-        $params = (null !== $parent) ? ['node' => $parent->getId()] : [];
 
         $this->categoryRemover->remove($category);
 
