@@ -33,7 +33,7 @@ final class SystemInfoAttributeContext implements Context
     }
 
     /**
-     * @Then Akeneo statistics engine stores a number of :numberOfAttribute useable as grid filter attribute for this customer
+     * @Then Akeneo statistics engine stores a number of :numberOfAttribute useable as grid filter for this customer
      *
      * @param int $numberOfAttribute
      */
@@ -44,36 +44,36 @@ final class SystemInfoAttributeContext implements Context
     }
 
     /**
-     * @Then Akeneo statistics engine stores an average of :averageOfAttributes scopable attributes per family for this customer
+     * @Then Akeneo statistics engine stores an average percentage of :averageOfAttributes scopable attributes per family for this customer
      *
      * @param int $averageOfAttributes
      */
     public function theSystemInformationReturnsThatTheAverageOfScopableAttributesPerFamilyIs(int $averageOfAttributes): void
     {
         $collectedInfo = $this->getCollectedInformation();
-        Assert::eq($averageOfAttributes, $collectedInfo['avg_scopable_attributes_per_family']);
+        Assert::eq($averageOfAttributes, $collectedInfo['avg_percentage_scopable_attributes_per_family']);
     }
 
     /**
-     * @Then Akeneo statistics engine stores an average of :averageOfAttributes localizable attributes per family for this customer
+     * @Then Akeneo statistics engine stores an average percentage of :averageOfAttributes localizable attributes per family for this customer
      *
      * @param int $averageOfAttributes
      */
     public function theSystemInformationReturnsThatTheAverageOfLocalizableAttributesPerFamilyIs(int $averageOfAttributes): void
     {
         $collectedInfo = $this->getCollectedInformation();
-        Assert::eq($averageOfAttributes, $collectedInfo['avg_localizable_attributes_per_family']);
+        Assert::eq($averageOfAttributes, $collectedInfo['avg_percentage_localizable_attributes_per_family']);
     }
 
     /**
-     * @Then Akeneo statistics engine stores an average of :averageOfAttributes localizable and scopable attributes per family for this customer
+     * @Then Akeneo statistics engine stores an average percentage of :averageOfAttributes localizable and scopable attributes per family for this customer
      *
      * @param int $averageOfAttributes
      */
     public function theSystemInformationReturnsThatTheAverageOfLocalizableAndScopableAttributesPerFamilyIs(int $averageOfAttributes): void
     {
         $collectedInfo = $this->getCollectedInformation();
-        Assert::eq($averageOfAttributes, $collectedInfo['avg_scopable_localizable_attributes_per_family']);
+        Assert::eq($averageOfAttributes, $collectedInfo['avg_percentage_scopable_localizable_attributes_per_family']);
     }
 
     /**

@@ -96,8 +96,8 @@ class DBDataCollectorSpec extends ObjectBehavior
                 'max_category_levels'   => 6,
                 'nb_product_values'     => 254897,
                 'avg_product_values_by_product' => 7,
-                'avg_product_values_per_family' => 10,
-                'max_product_values_per_family' => 12
+                'avg_product_values_by_family' => 10,
+                'max_product_values_by_family' => 12
             ]
         );
     }

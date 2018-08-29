@@ -17,6 +17,12 @@ final class ProductValuePerFamilyContext implements Context
     /** @var InMemoryAverageMaxQuery */
     private $averageMaxQuery;
 
+    /** @var int */
+    private $nbChannels = 0;
+
+    /** @var int */
+    private $nbLocales = 0;
+
     /**
      * @param ReportContext           $reportContext
      * @param InMemoryAverageMaxQuery $averageMaxQuery
@@ -28,13 +34,36 @@ final class ProductValuePerFamilyContext implements Context
     }
 
     /**
-     * @Given a family with :numberOfProductValues product values
+     * @Given a channel defined with :numberOfLocales activated locales
      *
-     * @param int $numberOfProductValues
+     * @param int $numberOfLocales
      */
-    public function aFamilyWithProductValues(int $numberOfProductValues): void
+    public function aChannelDefinedWithActivatedLocales(int $numberOfLocales): void
     {
-        $this->averageMaxQuery->addValue($numberOfProductValues);
+        $this->nbChannels++;
+        $this->nbLocales = $this->nbLocales + $numberOfLocales;
+    }
+
+    /**
+     * @Given a family with :numberOfAttributes attributes, :numberOfLocAttributes localizable attributes, :numberOfScopAttributes scopable attributes and :numberOfLocScopAttributes scopable and localizable attributes
+     *
+     * @param int $numberOfAttributes
+     * @param int $numberOfLocAttributes
+     * @param int $numberOfScopAttributes
+     * @param int $numberOfLocScopAttributes
+     */
+    public function aFamilyWithAttributes(
+        int $numberOfAttributes,
+        int $numberOfLocAttributes,
+        int $numberOfScopAttributes,
+        int $numberOfLocScopAttributes
+    ): void {
+        $nbPotentialProductValues = $numberOfAttributes
+            + $numberOfLocAttributes * $this->nbLocales
+            + $numberOfScopAttributes * $this->nbChannels
+            + $numberOfLocScopAttributes * $this->nbLocales * $this->nbChannels;
+
+        $this->averageMaxQuery->addValue($nbPotentialProductValues);
     }
 
     /**

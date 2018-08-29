@@ -39,16 +39,15 @@ class AverageMaxScopableAttributesPerFamily implements AverageMaxQuery
     public function fetch(): AverageMaxVolumes
     {
         $sql = <<<SQL
-            SELECT 
-                CEIL(AVG(a.count_attributes_per_family)) average,
-                MAX(a.count_attributes_per_family) max
+            SELECT
+                CEIL(AVG(count_only_scopable_attributes * 100 / count_attributes)) average,
+                CEIL(MAX(count_only_scopable_attributes * 100 / count_attributes)) max
             FROM (
-                SELECT count(fa.attribute_id) count_attributes_per_family 
+                SELECT fa.family_id as family_id, SUM(a.is_localizable = 0 AND a.is_scopable = 1) as count_only_scopable_attributes, COUNT(a.code) as count_attributes
                 FROM pim_catalog_family_attribute as fa
                 INNER JOIN pim_catalog_attribute as a ON fa.attribute_id = a.id
-                WHERE a.is_localizable = 0 AND a.is_scopable = 1
                 GROUP BY fa.family_id
-            ) a
+            ) as attr;
 SQL;
         $result = $this->connection->query($sql)->fetch();
         $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);

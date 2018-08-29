@@ -12,40 +12,56 @@ class AverageMaxLocalizableAttributesPerFamilyIntegration extends QueryTestCase
     public function testGetAverageAndMaximumNumberOfAttributesPerFamily()
     {
         $query = $this->get('pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family');
-        $this->createFamilyWithAttributes(4, true);
-        $this->createFamilyWithAttributes(8, true);
-        $this->createFamilyWithAttributes(2, false);
+        $this->createFamilyWithLocalizableAttributes(10, 30);
+        $this->createFamilyWithLocalizableAttributes(0, 10);
+        $this->createFamilyWithLocalizableAttributes(3, 10);
 
         $volume = $query->fetch();
 
-        Assert::assertEquals(8, $volume->getMaxVolume());
-        Assert::assertEquals(6, $volume->getAverageVolume());
+        Assert::assertEquals(30, $volume->getMaxVolume());
+        Assert::assertEquals(17, $volume->getAverageVolume());
         Assert::assertEquals('average_max_localizable_attributes_per_family', $volume->getVolumeName());
         Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**
-     * @param int $numberOfAttributes
-     * @param bool $localizable
+     * @param int $numberOfLocAttributes
+     * @param int $numberTotalAttribute
      */
-    private function createFamilyWithAttributes(int $numberOfAttributes, bool $localizable): void
+    private function createFamilyWithLocalizableAttributes(int $numberOfLocAttributes, int $numberTotalAttribute): void
     {
         $family = $this->createFamily([
             'code' => 'family_' . rand()
         ]);
 
         $i = 0;
-        while ($i < $numberOfAttributes) {
+        while ($i < $numberOfLocAttributes-1) {
             $attribute = $this->createAttribute([
                 'code'     => 'new_attribute_' . rand(),
                 'type'     => 'pim_catalog_textarea',
                 'group'    => 'other',
-                'localizable' => $localizable
+                'localizable' => true,
+                'scopable' => false
             ]);
 
             $family->addAttribute($attribute);
             $i++;
         }
+
+        //attribute sku is automatically added
+        while ($i < $numberTotalAttribute - 1) {
+            $attribute = $this->createAttribute([
+                'code'     => 'new_attribute_' . rand(),
+                'type'     => 'pim_catalog_textarea',
+                'group'    => 'other',
+                'localizable' => false,
+                'scopable' => false
+            ]);
+
+            $family->addAttribute($attribute);
+            $i++;
+        }
+
         $errors = $this->get('validator')->validate($family);
         Assert::assertCount(0, $errors);
 

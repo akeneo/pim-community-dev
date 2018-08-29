@@ -70,7 +70,7 @@ class DBDataCollector implements DataCollectorInterface
     protected $productValuePerFamilyAverageMaxQuery;
 
     /**
-     * TODO - on master - remove '= null'
+     * @merge TODO - on master - remove '= null'
      * @param CountQuery      $channelCountQuery
      * @param CountQuery      $productCountQuery
      * @param CountQuery      $localeCountQuery
@@ -119,14 +119,14 @@ class DBDataCollector implements DataCollectorInterface
     }
 
     /**
-     * TODO - on master - remove the if statement & move all inside the "if session" inside $data
+     * @merge TODO - on master - remove the if statement & move all inside the "if session" inside $data
      * {@inheritdoc}
      */
     public function collect()
     {
         $averageOfProductValuePerFamily = 0;
         $maxOfProductValuePerFamily = 0;
-        if (!is_null($this->productValuePerFamilyAverageMaxQuery)) {
+        if (null !== $this->productValuePerFamilyAverageMaxQuery) {
             $averageOfProductValuePerFamily = $this->productValuePerFamilyAverageMaxQuery->fetch()->getAverageVolume();
             $maxOfProductValuePerFamily = $this->productValuePerFamilyAverageMaxQuery->fetch()->getMaxVolume();
         }
@@ -144,8 +144,8 @@ class DBDataCollector implements DataCollectorInterface
             'max_category_levels'            => $this->categoryLevelsAverageMax->fetch()->getMaxVolume(),
             'nb_product_values'              => $this->productValueCountQuery->fetch()->getVolume(),
             'avg_product_values_by_product'  => $this->productValueAverageMaxQuery->fetch()->getAverageVolume(),
-            'avg_product_values_per_family'  => $averageOfProductValuePerFamily,
-            'max_product_values_per_family'  => $maxOfProductValuePerFamily,
+            'avg_product_values_by_family'  => $averageOfProductValuePerFamily,
+            'max_product_values_by_family'  => $maxOfProductValuePerFamily,
         ];
     }
 }

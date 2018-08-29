@@ -28,24 +28,33 @@ final class ScopableAttributePerFamilyContext implements Context
     }
 
     /**
-     * @Given a family with :numberOfAttributes scopable attributes
+     * @Given a family with :numberOfScopAttributes scopable attributes, :numberOfLocAttributes localizable attributes, :numberOfLocScopAttributes localizable and scopable attributes and :numberOfAttributes attributes
      *
+     * @param int $numberOfScopAttributes
+     * @param int $numberOfLocAttributes
+     * @param int $numberOfLocScopAttributes
      * @param int $numberOfAttributes
      */
-    public function aFamilyWithScopableAttributes(int $numberOfAttributes): void
-    {
-        $this->averageMaxQuery->addValue($numberOfAttributes);
+    public function aFamilyWithAttributes(
+        int $numberOfScopAttributes,
+        int $numberOfLocAttributes,
+        int $numberOfLocScopAttributes,
+        int $numberOfAttributes
+    ): void {
+        $totalAttributes = ($numberOfAttributes+$numberOfLocAttributes+$numberOfScopAttributes+$numberOfLocScopAttributes);
+
+        $this->averageMaxQuery->addValue(intval(($numberOfScopAttributes*100)/$totalAttributes));
     }
 
     /**
-     * @Then the report returns that the average of scopable attributes per family is :numberOfAttributes
+     * @Then the report returns that the average percentage of scopable attributes per family is :numberOfAttributes
      *
      * @param int $numberOfAttributes
      */
-    public function theReportReturnsThatTheAverageOfScopableAttributesPerFamilyIs(int $numberOfAttributes): void
+    public function theReportReturnsThatTheAveragePercentageOfScopableAttributesPerFamilyIs(int $numberOfAttributes): void
     {
         $volumes = $this->reportContext->getVolumes();
 
-        Assert::eq($numberOfAttributes, $volumes['avg_scopable_attributes_per_family']['value']['average']);
+        Assert::eq($numberOfAttributes, $volumes['avg_percentage_scopable_attributes_per_family']['value']['average']);
     }
 }

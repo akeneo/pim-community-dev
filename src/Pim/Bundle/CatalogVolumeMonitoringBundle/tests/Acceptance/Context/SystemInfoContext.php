@@ -141,7 +141,7 @@ final class SystemInfoContext implements Context
     }
 
     /**
-     * @Then Akeneo statistics engine stores a maximum of :maxCategoryInOneCategory categories in one category for this customer
+     * @Then Akeneo statistics engine stores a maximum number of :maxCategoryInOneCategory categories in one category for this customer
      *
      * @param int $maxCategoryInOneCategory
      */
@@ -153,7 +153,7 @@ final class SystemInfoContext implements Context
     }
 
     /**
-     * @Then Akeneo statistics engine stores a maximum of :maxCategoryLevels category levels for this customer
+     * @Then Akeneo statistics engine stores a maximum number of :maxCategoryLevels category levels for this customer
      *
      * @param int $maxCategoryLevels
      */
@@ -177,7 +177,7 @@ final class SystemInfoContext implements Context
     }
 
     /**
-     * @Then Akeneo statistics engine stores an average of :avgOfProductValuesByProduct product values for this customer
+     * @Then Akeneo statistics engine stores an average number of :avgOfProductValuesByProduct product values for this customer
      *
      * @param int $avgOfProductValuesByProduct
      */
@@ -189,7 +189,7 @@ final class SystemInfoContext implements Context
     }
 
     /**
-     * @Then Akeneo statistics engine stores an average of :avgOfProductValuesByProduct product values per family for this customer
+     * @Then Akeneo statistics engine stores an average number of :avgOfProductValuesByProduct product values per family for this customer
      *
      * @param int $avgOfProductValuesByProduct
      */
@@ -197,11 +197,11 @@ final class SystemInfoContext implements Context
     {
         $collectedInfo = $this->getCollectedInformation();
 
-        Assert::eq($avgOfProductValuesByProduct, $collectedInfo['avg_product_values_per_family']);
+        Assert::eq($avgOfProductValuesByProduct, $collectedInfo['avg_product_values_by_family']);
     }
 
     /**
-     * @Then Akeneo statistics engine stores a maximum of :avgOfProductValuesByProduct product values per family for this customer
+     * @Then Akeneo statistics engine stores a maximum number of :avgOfProductValuesByProduct product values per family for this customer
      *
      * @param int $avgOfProductValuesByProduct
      */
@@ -209,7 +209,7 @@ final class SystemInfoContext implements Context
     {
         $collectedInfo = $this->getCollectedInformation();
 
-        Assert::eq($avgOfProductValuesByProduct, $collectedInfo['max_product_values_per_family']);
+        Assert::eq($avgOfProductValuesByProduct, $collectedInfo['max_product_values_by_family']);
     }
 
     /**

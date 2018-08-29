@@ -74,9 +74,9 @@ class AttributeDataCollectorSpec extends ObjectBehavior
             'nb_localizable_attributes' => 33,
             'nb_scopable_localizable_attributes' => 64,
             'nb_useable_as_grid_filter_attributes' => 12,
-            'avg_scopable_attributes_per_family' => 9,
-            'avg_localizable_attributes_per_family' => 7,
-            'avg_scopable_localizable_attributes_per_family' => 7
+            'avg_percentage_scopable_attributes_per_family' => 9,
+            'avg_percentage_localizable_attributes_per_family' => 7,
+            'avg_percentage_scopable_localizable_attributes_per_family' => 7
         ]);
     }
 }

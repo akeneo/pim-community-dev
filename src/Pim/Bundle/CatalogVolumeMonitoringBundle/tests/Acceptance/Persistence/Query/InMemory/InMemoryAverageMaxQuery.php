@@ -37,7 +37,7 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
      */
     public function fetch(): AverageMaxVolumes
     {
-        $averageVolume = empty($this->values) ? 0 : array_sum($this->values) / count($this->values);
+        $averageVolume = empty($this->values) ? 0 : intval(array_sum($this->values) / count($this->values));
         $maxVolume =  empty($this->values) ? 0 : max($this->values);
 
         return new AverageMaxVolumes($maxVolume, $averageVolume, $this->limit, $this->volumeName);

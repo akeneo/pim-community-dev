@@ -29,9 +29,9 @@ pim_analytics:
         nb_localizable_attributes: Number of localizable attributes
         nb_scopable_localizable_attributes: Number of localizable and scopable attributes
         nb_useable_as_grid_filter_attributes: Number of attributes useable as grid filter
-        avg_scopable_attributes_per_family: Average of scopable attributes per family
-        avg_localizable_attributes_per_family: Average of localizable attributes per family
-        avg_scopable_localizable_attributes_per_family: Average of localizable and scopable attributes per family
+        avg_percentage_scopable_attributes_per_family: Average percentage of scopable attributes per family (%)
+        avg_percentage_localizable_attributes_per_family: Average percentage of localizable attributes per family (%)
+        avg_percentage_scopable_localizable_attributes_per_family: Average percentage of localizable and scopable attributes per family (%)
         nb_locales: Number of locales
         nb_families: Number of families
         nb_users: Number of users
@@ -41,8 +41,8 @@ pim_analytics:
         max_category_levels: Max number of category levels
         nb_product_values: Number of product values
         avg_product_values_by_product: Average number of product values by product
-        avg_product_values_per_family: Average number of product values by family
-        max_product_values_per_family: Max number of product values by family
+        avg_product_values_by_family: Average number of potential product values by family
+        max_product_values_by_family: Max number of potential product values by family
         pim_storage_version: Storage version
         os_version: OS version
         php_version: PHP version

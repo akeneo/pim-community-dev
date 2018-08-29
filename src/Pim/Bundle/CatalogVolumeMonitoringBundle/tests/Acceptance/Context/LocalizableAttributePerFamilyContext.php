@@ -28,24 +28,33 @@ final class LocalizableAttributePerFamilyContext implements Context
     }
 
     /**
-     * @Given a family with :numberOfLocalizableAttributes localizable attributes
+     * @Given a family with :numberOfLocAttributes localizable attributes, :numberOfScopAttributes scopable attributes, :numberOfLocScopAttributes localizable and scopable attributes and :numberOfAttributes attributes
      *
-     * @param int $numberOfLocalizableAttributes
+     * @param int $numberOfLocAttributes
+     * @param int $numberOfScopAttributes
+     * @param int $numberOfLocScopAttributes
+     * @param int $numberOfAttributes
      */
-    public function aFamilyWithLocalizableAttributes(int $numberOfLocalizableAttributes): void
-    {
-        $this->averageMaxQuery->addValue($numberOfLocalizableAttributes);
+    public function aFamilyWithAttributes(
+        int $numberOfLocAttributes,
+        int $numberOfScopAttributes,
+        int $numberOfLocScopAttributes,
+        int $numberOfAttributes
+    ): void {
+        $totalAttributes = ($numberOfAttributes+$numberOfLocAttributes+$numberOfScopAttributes+$numberOfLocScopAttributes);
+
+        $this->averageMaxQuery->addValue(intval(($numberOfLocAttributes*100)/$totalAttributes));
     }
 
     /**
-     * @Then the report returns that the average of localizable attributes per family is :numberOfLocalizableAttributes
+     * @Then the report returns that the average percentage of localizable attributes per family is :numberOfLocalizableAttributes
      *
      * @param int $numberOfLocalizableAttributes
      */
-    public function theReportReturnsThatTheAverageOfLocalizableAttributesPerFamilyIs(int $numberOfLocalizableAttributes): void
+    public function theReportReturnsThatTheAverageOfPercentageLocalizableAttributesPerFamilyIs(int $numberOfLocalizableAttributes): void
     {
         $volumes = $this->reportContext->getVolumes();
 
-        Assert::eq($numberOfLocalizableAttributes, $volumes['avg_localizable_attributes_per_family']['value']['average']);
+        Assert::eq($numberOfLocalizableAttributes, $volumes['avg_percentage_localizable_attributes_per_family']['value']['average']);
     }
 }

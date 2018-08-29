@@ -20,4 +20,24 @@ class CountUseableAsGridFilterAttributesIntegration extends QueryTestCase
         Assert::assertEquals('count_useable_as_grid_filter_attributes', $volume->getVolumeName());
         Assert::assertEquals(false, $volume->hasWarning());
     }
+
+    /**
+     * @param int $numberOfAttributes
+     */
+    protected function createUseableAsGridFilterAttributes(int $numberOfAttributes)
+    {
+        $i = 0;
+        // -1 because sku is automatically added (as filter)
+        while ($i < $numberOfAttributes -1) {
+            $this->createAttribute([
+                'code'     => 'new_attribute_' . rand(),
+                'type'     => 'pim_catalog_text',
+                'group'    => 'other',
+                'localizable' => false,
+                'scopable' => false,
+                'useable_as_grid_filter' => true
+            ]);
+            $i++;
+        }
+    }
 }
