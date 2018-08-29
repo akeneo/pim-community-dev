@@ -6,13 +6,13 @@ Feature: Edit a text attribute of an enriched entity
   # Readonly values
   @acceptance-back
   Scenario: ValuePerLocale is not editable
-    Given an enriched entity with an attribute 'name' not having one value per locale
+    Given an enriched entity with an attribute 'name' having a single value for all locales
     When the user updates the value_per_locale of 'name' to 'true'
     Then the value_per_locale of 'name' should be 'false'
 
   @acceptance-back
   Scenario: ValuePerChannel is not editable
-    Given an enriched entity with an attribute 'name' not having one value per channel
+    Given an enriched entity with an attribute 'name' having a single value for all channels
     When the user updates the value_per_channel of 'name' to 'true'
     Then the value_per_locale of 'name' should be 'false'
 
@@ -198,7 +198,7 @@ Feature: Edit a text attribute of an enriched entity
   Scenario: Updating the is rich text editor flag if the attribute is not a text area fails
     Given an enriched entity with a text attribute 'name'
     When the user changes the is_rich_text_editor flag of 'name' to 'true'
-    Then there should be a validation error with message 'A simple text cannot have a rich text editor'
+    Then there should be a validation error with message 'A simple text attribute cannot have a rich text editor'
 
   @acceptance-back
   Scenario: Updating the is_text_area flag and the is_rich_text_editor flag on a simple text attribute

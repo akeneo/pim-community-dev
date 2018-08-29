@@ -54,7 +54,8 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
                 $this->buildViolationCannotSetRichTextEditorToTrue();
             }
             if (!$this->isValidationRuleSetToRegularExpression($editAttributeCommand, $databaseAttribute)
-                && $this->isRegularExpressionNotEmpty($editAttributeCommand)) {
+                && $this->isRegularExpressionNotEmpty($editAttributeCommand)
+            ) {
                 $this->buildViolationCannotUpdateRegularExpression();
             }
         }
@@ -95,7 +96,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
     private function isTextAreaIsSetToTrue(EditAttributeCommand $editAttributeCommand, TextAttribute $databaseAttribute): bool
     {
         if ($this->hasTextAreaSet($editAttributeCommand)) {
-            $command = $editAttributeCommand->getCommand(EditIsTextAreaCommand::class);
+            $command = $editAttributeCommand->findCommand(EditIsTextAreaCommand::class);
             if (null !== $command) {
                 return $command->isTextArea;
             }
@@ -106,33 +107,33 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
 
     private function hasTextAreaSet(EditAttributeCommand $editAttributeCommand): bool
     {
-        return null !== $editAttributeCommand->getCommand(EditIsTextAreaCommand::class);
+        return null !== $editAttributeCommand->findCommand(EditIsTextAreaCommand::class);
     }
 
     private function isValidationRuleUpdatedToSomethingElseThanNone(EditAttributeCommand $editAttributeCommand): bool
     {
-        $command = $editAttributeCommand->getCommand(EditValidationRuleCommand::class);
+        $command = $editAttributeCommand->findCommand(EditValidationRuleCommand::class);
 
         return null !== $command && AttributeValidationRule::NONE !== $command->validationRule;
     }
 
     private function isRichTextEditorSetToTrue(EditAttributeCommand $editAttributeCommand)
     {
-        $command = $editAttributeCommand->getCommand(EditIsRichTextEditorCommand::class);
+        $command = $editAttributeCommand->findCommand(EditIsRichTextEditorCommand::class);
 
         return null !== $command && true === $command->isRichTextEditor;
     }
 
     private function isRegularExpressionNotEmpty(EditAttributeCommand $editAttributeCommand): bool
     {
-        $command = $editAttributeCommand->getCommand(EditRegularExpressionCommand::class);
+        $command = $editAttributeCommand->findCommand(EditRegularExpressionCommand::class);
 
         return null !== $command && null !== $command->regularExpression;
     }
 
     private function hasValidationRuleSetToRegularExpression(EditAttributeCommand $editAttributeCommand): bool
     {
-        $command = $editAttributeCommand->getCommand(EditValidationRuleCommand::class);
+        $command = $editAttributeCommand->findCommand(EditValidationRuleCommand::class);
 
         return null !== $command
             && null !== $command->validationRule

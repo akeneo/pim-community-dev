@@ -115,6 +115,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
       active: true,
       data: newAttribute,
       originalData: JSON.stringify(newAttribute),
+      isDirty: false,
       errors: [],
     });
   });
@@ -134,8 +135,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     expect(newState).toEqual({
       active: true,
       data: normalizedDescription,
-
       isDirty: false,
+      originalData: '',
       errors: [],
     });
   });

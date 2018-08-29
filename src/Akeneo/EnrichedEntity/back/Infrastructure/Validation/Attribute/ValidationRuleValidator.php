@@ -27,6 +27,7 @@ class ValidationRuleValidator extends ConstraintValidator
         $violations = $validator->validate(
             $validationRule,
             [
+                new Assert\NotNull(),
                 new Assert\Type('string'),
                 new Assert\Choice(AttributeValidationRule::VALIDATION_RULE_TYPES, ['multiple' => false]),
             ]

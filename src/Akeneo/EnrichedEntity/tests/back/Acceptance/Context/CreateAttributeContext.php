@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Acceptance\Context;
 
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,20 +33,35 @@ class CreateAttributeContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var CreateAttributeCommandFactoryRegistryInterface */
+    private $commandFactoryRegistry;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
     /** @var CreateAttributeHandler */
     private $handler;
 
     /** @var ExceptionContext */
     private $exceptionContext;
 
+    /** @var ConstraintViolationsContext */
+    private $constraintViolationsContext;
+
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
+        CreateAttributeCommandFactoryRegistryInterface $commandFactoryRegistry,
+        ValidatorInterface $validator,
+        ConstraintViolationsContext $constraintViolationsContext,
         CreateAttributeHandler $handler,
         ExceptionContext $exceptionContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->handler = $handler;
         $this->exceptionContext = $exceptionContext;
+        $this->commandFactoryRegistry = $commandFactoryRegistry;
+        $this->validator = $validator;
+        $this->constraintViolationsContext = $constraintViolationsContext;
     }
 
     /**
@@ -55,19 +70,20 @@ class CreateAttributeContext implements Context
     public function theUserCreatesATextAttributeLinkedToTheEnrichedEntityWith(string $attributeCode, string $enrichedEntityIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
-        $command = new CreateTextAttributeCommand();
-        $command->identifier = [
-            'identifier' => $attributeCode,
-            'enriched_entity_identifier' => $enrichedEntityIdentifier
-        ];
-        $command->code = $attributeCode;
-        $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $command->labels = json_decode($attributeData['labels'], true);
-        $command->order = (int) $attributeData['order'];
-        $command->isRequired = (bool) $attributeData['is_required'];
-        $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
-        $command->valuePerLocale = (bool) $attributeData['value_per_locale'];
-        $command->maxLength = (int) $attributeData['max_length'];
+
+        $attributeData['type'] = 'text';
+        $attributeData['identifier']['identifier'] = $attributeData['code'];
+        $attributeData['identifier']['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = (bool) $attributeData['is_required'];
+        $attributeData['value_per_channel'] = (bool) $attributeData['value_per_channel'];
+        $attributeData['value_per_locale'] = (bool) $attributeData['value_per_locale'];
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['max_length'] = (int) $attributeData['max_length'];
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
 
         try {
             ($this->handler)($command);
@@ -139,22 +155,26 @@ class CreateAttributeContext implements Context
         TableNode $attributeData
     ) {
         $attributeData = current($attributeData->getHash());
-        $command = new CreateImageAttributeCommand();
-        $command->identifier = [
-            'identifier' => $attributeCode,
-            'enriched_entity_identifier' => $enrichedEntityIdentifier
-        ];
-        $command->code = $attributeCode;
-        $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $command->labels = json_decode($attributeData['labels'], true);
-        $command->order = (int) $attributeData['order'];
-        $command->isRequired = (bool) $attributeData['is_required'];
-        $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
-        $command->valuePerLocale = (bool) $attributeData['value_per_locale'];
-        $command->maxFileSize = $attributeData['max_file_size'];
-        $command->allowedExtensions = json_decode($attributeData['allowed_extensions']);
 
-        ($this->handler)($command);
+        $attributeData['type'] = 'image';
+        $attributeData['identifier']['identifier'] = $attributeData['code'];
+        $attributeData['identifier']['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['order'] = (int) $attributeData['order'];
+        $attributeData['is_required'] = (bool) $attributeData['is_required'];
+        $attributeData['value_per_channel'] = (bool) $attributeData['value_per_channel'];
+        $attributeData['value_per_locale'] = (bool) $attributeData['value_per_locale'];
+        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['allowed_extensions'] = json_decode($attributeData['allowed_extensions']);
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+
+        try {
+            ($this->handler)($command);
+        } catch (\Exception $e) {
+            $this->exceptionContext->setException($e);
+        }
     }
 
     /**
@@ -176,7 +196,6 @@ class CreateAttributeContext implements Context
         $expected['is_required'] = (bool) $expected['is_required'];
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
         $expected['value_per_locale'] = (bool) $expected['value_per_locale'];
-        $expected['max_file_size'] = $expected['max_file_size'];
         $expected['allowed_extensions'] = json_decode($expected['allowed_extensions']);
         ksort($expected);
 

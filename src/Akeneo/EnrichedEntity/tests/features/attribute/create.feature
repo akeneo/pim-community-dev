@@ -24,7 +24,7 @@ Feature: Create an attribute linked to an enriched entity
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
     Then there is a text attribute "name" in the enriched entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_text_area | is_rich_text_editor | validation_rule | regular_expression |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         | text | 0            | 0                   |                 |                    |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         | text | 0            | 0                   | none            |                    |
 
   @acceptance-back
   Scenario: Cannot create an attribute for an enriched entity if it already exists

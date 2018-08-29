@@ -36,7 +36,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use PDO;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -81,7 +80,6 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
             :additional_properties
         );
 SQL;
-
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
@@ -112,9 +110,8 @@ SQL;
     {
         $normalizedAttribute = $attribute->normalize();
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
-        $insert = <<<SQL
-        UPDATE akeneo_enriched_entity_attribute
-        SET
+        $update = <<<SQL
+        UPDATE akeneo_enriched_entity_attribute SET
             labels = :labels,
             attribute_order = :attribute_order,
             is_required = :is_required,
@@ -122,17 +119,18 @@ SQL;
         WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
-            $insert,
+            $update,
             [
                 'identifier'                 => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
-                'labels'                     => json_encode($normalizedAttribute['labels']),
+                'labels'                     => $normalizedAttribute['labels'],
                 'attribute_order'            => $normalizedAttribute['order'],
                 'is_required'                => $normalizedAttribute['is_required'],
                 'additional_properties'      => json_encode($additionalProperties),
             ],
             [
                 'is_required' => Type::getType('boolean'),
+                'labels' => Type::getType('json_array')
             ]
         );
         if ($affectedRows > 1) {
@@ -286,7 +284,7 @@ SQL;
                 AttributeValuePerLocale::fromBoolean($valuePerLocale),
                 AttributeMaxLength::fromInteger($maxLength),
                 null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule),
-                null === $regularExpression ? AttributeRegularExpression::emptyRegularExpression() : AttributeRegularExpression::fromString($regularExpression)
+                null === $regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($regularExpression)
             );
         }
 

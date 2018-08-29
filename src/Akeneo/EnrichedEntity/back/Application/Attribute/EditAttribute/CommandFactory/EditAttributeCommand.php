@@ -11,9 +11,9 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
 class EditAttributeCommand extends AbstractEditAttributeCommand
 {
     /** @var AbstractEditAttributeCommand[] */
-    public $editCommands;
+    public $editCommands = [];
 
-    public function getCommand(string $className): ?AbstractEditAttributeCommand
+    public function findCommand(string $className): ?AbstractEditAttributeCommand
     {
         foreach ($this->editCommands as $command) {
             if ($command instanceof $className) {

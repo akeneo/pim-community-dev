@@ -159,7 +159,7 @@ class TextAttribute extends AbstractAttribute
             $maxLength,
             AttributeIsTextArea::fromBoolean(true),
             AttributeValidationRule::none(),
-            AttributeRegularExpression::emptyRegularExpression(),
+            AttributeRegularExpression::createEmpty(),
             $isRichTextEditor
         );
     }
@@ -191,7 +191,7 @@ class TextAttribute extends AbstractAttribute
         $this->isTextArea = $isTextArea;
         $this->isRichTextEditor = AttributeIsRichTextEditor::fromBoolean(false);
         $this->validationRule = AttributeValidationRule::none();
-        $this->regularExpression = AttributeRegularExpression::emptyRegularExpression();
+        $this->regularExpression = AttributeRegularExpression::createEmpty();
     }
 
     public function setValidationRule(AttributeValidationRule $validationRule): void
@@ -201,7 +201,7 @@ class TextAttribute extends AbstractAttribute
         }
         $this->validationRule = $validationRule;
         if (!$this->validationRule->isRegex()) {
-            $this->regularExpression = AttributeRegularExpression::emptyRegularExpression();
+            $this->regularExpression = AttributeRegularExpression::createEmpty();
         }
     }
 

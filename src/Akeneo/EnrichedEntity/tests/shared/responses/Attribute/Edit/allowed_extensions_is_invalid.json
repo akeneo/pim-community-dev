@@ -4,74 +4,11 @@
     {
       "messageTemplate": "This value should be of type string.",
       "parameters": {
-        "{{ value }}": "150",
+        "{{ value }}": "122",
         "{{ type }}": "string"
       },
       "plural": null,
       "message": "This value should be of type string.",
-      "root": {
-        "editCommands": [
-          {
-            "isRequired": true,
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "portrait"
-            }
-          },
-          {
-            "labels": {
-              "fr_FR": "Image autobiographique",
-              "en_US": "Name"
-            },
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "portrait"
-            }
-          },
-          {
-            "maxFileSize": "200.10",
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "portrait"
-            }
-          },
-          {
-            "allowedExtensions": [
-              150,
-              122
-            ],
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "portrait"
-            }
-          }
-        ],
-        "identifier": {
-          "enriched_entity_identifier": "designer",
-          "identifier": "portrait"
-        }
-      },
-      "propertyPath": "allowedExtensions",
-      "invalidValue": [
-        150,
-        122
-      ],
-      "constraint": {
-        "targets": "class",
-        "defaultOption": null,
-        "requiredOptions": [],
-        "payload": null
-      },
-      "cause": null,
-      "code": null
-    },
-    {
-      "messageTemplate": "This field was not expected.",
-      "parameters": {
-        "{{ field }}": "1"
-      },
-      "plural": null,
-      "message": "This field was not expected.",
       "root": {
         "editCommands": [
           {
