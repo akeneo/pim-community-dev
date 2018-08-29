@@ -2751,11 +2751,11 @@ class WebUser extends PimContext
     }
 
     /**
-     * @Then /^I should (not )?see the status-switcher button$/
+     * @Then /^I should (not )?see the product status switcher$/
      */
     public function iShouldSeeTheStatusSwitcherButton($not)
     {
-        $statusSwitcher = $this->getCurrentPage()->getStatusSwitcher();
+        $statusSwitcher = $this->getCurrentPage()->getProductStatusSwitcher();
 
         if ($not) {
             if ($statusSwitcher && $statusSwitcher->isVisible()) {

@@ -351,12 +351,12 @@ class Edit extends ProductEditForm
     /**
      * @return NodeElement|null
      */
-    public function getStatusSwitcher()
+    public function getProductStatusSwitcher()
     {
         try {
             $switcher = $this->spin(function () {
-                return $this->find('css', '.status-switcher');
-            }, 'Cannot find ".status-switcher" element');
+                return $this->find('css', '.product-status');
+            }, 'Cannot find ".product-status" element');
         } catch (\Exception $e) {
             $switcher = null;
         }
