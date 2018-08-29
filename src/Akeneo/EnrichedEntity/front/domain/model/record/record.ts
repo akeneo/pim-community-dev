@@ -1,10 +1,7 @@
-import Identifier, {
-  NormalizedRecordIdentifier,
-  createIdentifier,
-} from 'akeneoenrichedentity/domain/model/record/identifier';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {NormalizedLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
+import Identifier, {NormalizedRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
 
 interface NormalizedRecord {
   identifier: NormalizedRecordIdentifier;
@@ -43,11 +40,6 @@ class RecordImplementation implements Record {
     }
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Record expect a LabelCollection as fourth argument');
-    }
-    if (!createIdentifier(enrichedEntityIdentifier.stringValue(), code.stringValue()).equals(identifier)) {
-      throw new InvalidArgumentError(
-        'Record expect an identifier complient to the given enrichedEntityIdentifier and code'
-      );
     }
 
     Object.freeze(this);

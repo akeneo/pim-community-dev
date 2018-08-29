@@ -1,15 +1,15 @@
-import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
-import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
+import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
 
-const michelIdentifier = createRecordIdentifier('designer', 'michel');
+const michelIdentifier = createRecordIdentifier('michel');
 const designerIdentifier = createEnrichedEntityIdentifier('designer');
 const michelCode = createCode('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
 const sofaIdentifier = createEnrichedEntityIdentifier('sofa');
-const didierIdentifier = createRecordIdentifier('designer', 'didier');
+const didierIdentifier = createRecordIdentifier('didier');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
@@ -40,9 +40,6 @@ describe('akeneo > record > domain > model --- record', () => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
     }).toThrow('Record expect a LabelCollection as fourth argument');
     expect(() => {
-      createRecord(michelIdentifier, sofaIdentifier, didierCode, michelLabels);
-    }).toThrow('Record expect an identifier complient to the given enrichedEntityIdentifier and code');
-    expect(() => {
       createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels);
     }).toThrow('Record expect a RecordCode as third argument');
   });
@@ -57,12 +54,6 @@ describe('akeneo > record > domain > model --- record', () => {
     expect(
       createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels).equals(
         createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels)
-      )
-    ).toBe(false);
-    const weirdIdentifier = createRecordIdentifier('sofa', 'didier');
-    expect(
-      createRecord(weirdIdentifier, sofaIdentifier, didierCode, didierLabels).equals(
-        createRecord(didierIdentifier, designerIdentifier, didierCode, michelLabels)
       )
     ).toBe(false);
   });
@@ -81,10 +72,7 @@ describe('akeneo > record > domain > model --- record', () => {
     const michelRecord = createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels);
 
     expect(michelRecord.normalize()).toEqual({
-      identifier: {
-        identifier: 'didier',
-        enrichedEntityIdentifier: 'designer',
-      },
+      identifier: 'didier',
       enrichedEntityIdentifier: 'designer',
       code: 'didier',
       labels: {en_US: 'Didier'},
