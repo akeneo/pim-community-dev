@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -34,9 +33,6 @@ class SubscribeProductHandler
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepository;
-
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
 
@@ -45,18 +41,15 @@ class SubscribeProductHandler
 
     /**
      * @param ProductRepositoryInterface $productRepository
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         ProductSubscriptionRepositoryInterface $productSubscriptionRepository,
         DataProviderFactory $dataProviderFactory
     ) {
         $this->productRepository = $productRepository;
-        $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->dataProviderFactory = $dataProviderFactory;
     }
@@ -64,19 +57,11 @@ class SubscribeProductHandler
     /**
      * @param SubscribeProductCommand $command
      *
-     * @throws \Exception
+     * @throws ProductSubscriptionException
      */
     public function handle(SubscribeProductCommand $command): void
     {
-        $identifiersMapping = $this->identifiersMappingRepository->find();
-        if ($identifiersMapping->isEmpty()) {
-            throw new \Exception('Identifiers mapping has not identifier defined');
-        }
-
-        $product = $this->productRepository->find($command->getProductId());
-        if (null === $product) {
-            throw new \Exception(sprintf('Could not find product with id "%s"', $command->getProductId()));
-        }
+        $product = $this->validateProduct($command->getProductId());
 
         $this->subscribe($product);
     }
@@ -90,35 +75,38 @@ class SubscribeProductHandler
     {
         $subscriptionRequest = new ProductSubscriptionRequest($product);
         $dataProvider = $this->dataProviderFactory->create();
-        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
 
-        $subscription = $this->findOrCreateSubscription(
-            $subscriptionResponse->getProduct(),
-            $subscriptionResponse->getSubscriptionId()
-        );
+        $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
+        $subscription = new ProductSubscription($product, $subscriptionResponse->getSubscriptionId());
         $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
 
         $this->productSubscriptionRepository->save($subscription);
     }
 
     /**
-     * @param ProductInterface $product
-     * @param string $subscriptionId
+     * @param int $productId
      *
-     * @return ProductSubscriptionInterface
+     * @return ProductInterface
      */
-    private function findOrCreateSubscription(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ProductSubscriptionInterface {
-        $subscription = $this->productSubscriptionRepository->findOneByProductAndSubscriptionId(
-            $product,
-            $subscriptionId
-        );
-        if (null === $subscription) {
-            $subscription = new ProductSubscription($product, $subscriptionId);
+    private function validateProduct(int $productId): ProductInterface
+    {
+        $product = $this->productRepository->find($productId);
+        if (null === $product) {
+            throw new ProductSubscriptionException(
+                sprintf('Could not find product with id "%d"', $productId)
+            );
+        }
+        if (null === $product->getFamily()) {
+            throw new ProductSubscriptionException(sprintf('Cannot subscribe a product without family'));
         }
 
-        return $subscription;
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($productId);
+        if (null !== $productSubscription) {
+            throw new ProductSubscriptionException(
+                sprintf('The product with id "%d" is already subscribed', $productId)
+            );
+        }
+
+        return $product;
     }
 }

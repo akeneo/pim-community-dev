@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception;
+
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 
 /**
  * Exception thrown when something went wrong on PIM.ai server side.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class PimAiServerException extends \Exception
+class PimAiServerException extends ClientException
 {
 }

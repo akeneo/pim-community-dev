@@ -11,13 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception;
 
 /**
- * Exception thrown when a request to PIM.ai fails because of invalid request parameters.
- *
- * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class BadRequestException extends \Exception
+class ClientException extends \Exception
 {
 }

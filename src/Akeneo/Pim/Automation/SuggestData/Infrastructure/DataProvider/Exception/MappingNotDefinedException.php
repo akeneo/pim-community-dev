@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exception;
 
 class MappingNotDefinedException extends \Exception
 {

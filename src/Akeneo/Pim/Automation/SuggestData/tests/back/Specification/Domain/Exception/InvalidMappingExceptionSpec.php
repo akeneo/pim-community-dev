@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -21,28 +22,28 @@ use PhpSpec\ObjectBehavior;
  */
 class InvalidMappingExceptionSpec extends ObjectBehavior
 {
-    function it_is_an_invalid_mapping_exception()
+    public function it_is_an_invalid_mapping_exception()
     {
         $this->beConstructedWith('className');
 
         $this->shouldBeAnInstanceOf(InvalidMappingException::class);
     }
 
-    function it_is_an_invalid_argument_exception()
+    public function it_is_an_exception()
     {
         $this->beConstructedWith('className');
 
-        $this->shouldBeAnInstanceOf(\InvalidArgumentException::class);
+        $this->shouldBeAnInstanceOf(\Exception::class);
     }
 
-    function it_returns_the_name_of_the_class_the_exception_was_thrown_from()
+    public function it_returns_the_name_of_the_class_the_exception_was_thrown_from()
     {
         $this->beConstructedWith('className');
 
         $this->getClassName()->shouldReturn('className');
     }
 
-    function it_is_thrown_if_an_attribute_is_mapped_several_times()
+    public function it_is_thrown_if_an_attribute_is_mapped_several_times()
     {
         $this->beConstructedThrough('duplicateAttributeCode', [2, 'attribute_code', 'className']);
 
@@ -51,7 +52,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
     }
 
-    function it_is_thrown_if_identifier_mapping_is_missing_or_invalid()
+    public function it_is_thrown_if_identifier_mapping_is_missing_or_invalid()
     {
         $this->beConstructedThrough('missingOrInvalidIdentifiersInMapping', [
             ['expected_attribute_code_1', 'expected_code_attribute_2'],
@@ -64,7 +65,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
     }
 
-    function it_is_thrown_if_a_mapped_attribute_was_not_found()
+    public function it_is_thrown_if_a_mapped_attribute_was_not_found()
     {
         $this->beConstructedThrough('attributeNotFound', ['foobar', 'className']);
 

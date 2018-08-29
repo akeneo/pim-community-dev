@@ -53,7 +53,7 @@ class ProductSubscriptionController
             $this->subscribeProduct->subscribe($productId);
 
             return new JsonResponse();
-        } catch (\Exception $e) {
+        } catch (SuggestDataException $e) {
             return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }

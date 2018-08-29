@@ -34,8 +34,9 @@ services:
         class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductSubscriptionContext'
         arguments:
             - '@__symfony__.pim_catalog.repository.product_without_permission'
-            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_product_subscription_status'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@__symfony__.akeneo.pim.automation.suggest_data.service.subscribe_product'
             - '@akeneo_acceptance.context.suggest_data.data_fixtures'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription_fake'
         tags:
             - { name: 'fob.context_service' }

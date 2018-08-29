@@ -27,7 +27,7 @@ class ProductSubscriptionSpec extends ObjectBehavior
     private $subscriptionId;
     private $suggestedData;
 
-    function let()
+    public function let()
     {
         $this->product = new Product();
         $this->subscriptionId = 'foobar';
@@ -36,23 +36,23 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $this->beConstructedWith($this->product, $this->subscriptionId, $this->suggestedData);
     }
 
-    function it_is_a_product_subscription()
+    public function it_is_a_product_subscription()
     {
         $this->shouldBeAnInstanceOf(ProductSubscription::class);
         $this->shouldImplement(ProductSubscriptionInterface::class);
     }
 
-    function it_gets_the_product_subscription_product()
+    public function it_gets_the_product_subscription_product()
     {
         $this->getProduct()->shouldReturn($this->product);
     }
 
-    function it_gets_the_product_subscription_id()
+    public function it_gets_the_product_subscription_id()
     {
         $this->getSubscriptionId()->shouldReturn($this->subscriptionId);
     }
 
-    function it_gets_the_product_subscription_suggested_data()
+    public function it_gets_the_product_subscription_suggested_data()
     {
         $this->getSuggestedData()->shouldReturn($this->suggestedData);
     }

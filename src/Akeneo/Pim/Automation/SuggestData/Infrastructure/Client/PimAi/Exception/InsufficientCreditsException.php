@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptions;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception;
+
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 
 /**
  * Exception thrown when the user does not have enough credits to subscribe a product to PIM.ai
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class InsufficientCreditsException extends \Exception
+class InsufficientCreditsException extends ClientException
 {
 }
