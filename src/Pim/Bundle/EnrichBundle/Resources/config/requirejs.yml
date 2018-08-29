@@ -1004,7 +1004,7 @@ config:
         pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
         pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
         pim/template/common/title-with-subtitle:                  pimenrich/templates/common/title-with-subtitle.html
-        pim/template/common/description-header:                   pimenrich/templates/catalog-volume/header.html # TODO Move
+        pim/template/common/description-header:                   pimenrich/templates/common/description-header.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
