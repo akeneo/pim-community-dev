@@ -28,6 +28,11 @@ class AttributeMaxFileSizeSpec extends ObjectBehavior
         $this::noLimit()->normalize()->shouldReturn(null);
     }
 
+    function it_cannot_be_created_from_an_empty_string()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', ['']);
+    }
+
     function it_cannot_be_greater_than_the_limit()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', ['10000.0']);

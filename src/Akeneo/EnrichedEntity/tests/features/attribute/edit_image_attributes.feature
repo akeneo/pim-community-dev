@@ -61,9 +61,9 @@ Feature: Edit an attribute of an enriched entity
     Examples:
       | invalid_max_file_size | message                                             |
       | "not_a_boolean"       | This value should be a number.                      |
+      | ""                    | This value should be a number.                      |
       | "-3.4"                | This value should be greater than 0.                |
       | 99999999999           | This value should be less than or equal to 9999.99. |
-
 
   # TODO: imports
   # Scenario: Updating the max file size of an attribute that is not image fails

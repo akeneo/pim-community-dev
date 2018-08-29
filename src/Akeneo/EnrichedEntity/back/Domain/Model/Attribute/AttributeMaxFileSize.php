@@ -30,7 +30,8 @@ class AttributeMaxFileSize
 
     private function __construct(?string $maxFileSize)
     {
-        if (self::NO_LIMIT !== $maxFileSize && '' !== $maxFileSize) {
+        Assert::nullOrStringNotEmpty($maxFileSize, 'The max file size cannot be empty');
+        if (self::NO_LIMIT !== $maxFileSize) {
             Assert::greaterThanEq((float) $maxFileSize, 0, sprintf('The maximum file size should be positive, %d given', $maxFileSize));
             Assert::lessThanEq(
                 (float) $maxFileSize,
