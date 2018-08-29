@@ -80,7 +80,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertSame($suggestedData, $subscription->getSuggestedData());
     }
 
-    public function test_that_it_gets_a_subscription_status_for_a_subscribed_product_id()
+    public function test_that_it_gets_a_subscription_for_a_subscribed_product_id()
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
@@ -98,24 +98,24 @@ SQL;
             'suggestedData'  => json_encode([]),
         ]);
 
-        $subscriptionStatus = $this->getRepository()->getSubscriptionStatusForProductId($product->getId());
+        $subscription = $this->getRepository()->findOneByProductId($product->getId());
 
-        Assert::assertTrue(is_array($subscriptionStatus));
+        Assert::assertTrue($subscription instanceof ProductSubscriptionInterface);
         Assert::assertSame(
-            ['subscription_id' => $subscriptionId],
-            $subscriptionStatus
+            $subscriptionId,
+            $subscription->getSubscriptionId()
+        );
+        Assert::assertSame(
+            [],
+            $subscription->getSuggestedData()
         );
     }
 
-    public function test_that_it_gets_a_subscription_status_for_a_non_subscribed_product_id()
+    public function test_that_it_gets_null_for_a_non_subscribed_product_id()
     {
-        $subscriptionStatus = $this->getRepository()->getSubscriptionStatusForProductId(42);
+        $result = $this->getRepository()->findOneByProductId(42);
 
-        Assert::assertTrue(is_array($subscriptionStatus));
-        Assert::assertSame(
-            ['subscription_id' => ''],
-            $subscriptionStatus
-        );
+        Assert::assertTrue(null === $result);
     }
 
     /**

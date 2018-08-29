@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -50,15 +52,20 @@ class SqlFindEnrichedEntityDetails implements FindEnrichedEntityDetailsInterface
             return null;
         }
 
-        return $this->hydrateEnrichedEntityDetails($result['identifier'], $result['labels']);
+        return $this->hydrateEnrichedEntityDetails(
+            $result['identifier'],
+            $result['labels'],
+            $result['file_key'],
+            $result['original_filename']);
     }
 
     private function fetchResult(EnrichedEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT identifier, labels
-        FROM akeneo_enriched_entity_enriched_entity
-        WHERE identifier = :identifier;
+        SELECT ee.identifier, ee.labels, ee.image as file_key, fi.original_filename
+        FROM akeneo_enriched_entity_enriched_entity as ee
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
+        WHERE ee.identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'identifier' => (string)$identifier,
@@ -71,8 +78,10 @@ SQL;
     }
 
     /**
-     * @param string $identifier
-     * @param string $normalizedLabels
+     * @param string  $identifier
+     * @param string  $normalizedLabels
+     * @param ?string $filePath
+     * @param ?string $originalFilename
      *
      * @return EnrichedEntityDetails
      *
@@ -80,16 +89,26 @@ SQL;
      */
     private function hydrateEnrichedEntityDetails(
         string $identifier,
-        string $normalizedLabels
+        string $normalizedLabels,
+        ?string $fileKey,
+        ?string $originalFilename
     ): EnrichedEntityDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
+        $file = null;
+
+        if (null !== $fileKey && null !== $originalFilename) {
+            $file = new FileInfo();
+            $file->setKey($fileKey);
+            $file->setOriginalFilename($originalFilename);
+        }
 
         $enrichedEntityItem = new EnrichedEntityDetails();
         $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
+        $enrichedEntityItem->image = (null !== $file) ? Image::fromFileInfo($file) : null;
 
         return $enrichedEntityItem;
     }

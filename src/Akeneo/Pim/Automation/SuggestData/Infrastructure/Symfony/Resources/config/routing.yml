@@ -5,7 +5,7 @@ akeneo_suggest_data_push_product:
 
 akeneo_suggest_data_franklin_subscription_status:
     path: /suggest-data/{productId}/subscription-status
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:getSubscriptionStatusAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:getProductSubscriptionStatusAction }
     methods: [GET]
 
 akeneo_suggest_data_connection_index:

@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -96,16 +97,12 @@ class ProductSubscriptionContext implements Context
     public function theProductShouldBeSubscribed(string $identifier, bool $not): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
-        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId(
-            $product->getId()
-        );
 
-        Assert::isArray($subscriptionStatus);
-        Assert::keyExists($subscriptionStatus, 'subscription_id');
-        if (true === $not) {
-            Assert::isEmpty($subscriptionStatus['subscription_id']);
+        $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+        if ($not) {
+            Assert::null($productSubscription);
         } else {
-            Assert::notEmpty($subscriptionStatus['subscription_id']);
+            Assert::isInstanceOf($productSubscription, ProductSubscription::class);
         }
     }
 

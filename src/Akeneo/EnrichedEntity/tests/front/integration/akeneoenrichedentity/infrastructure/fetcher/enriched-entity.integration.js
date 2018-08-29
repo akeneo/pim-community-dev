@@ -46,6 +46,10 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
             en_US: 'Sofa',
             fr_FR: 'Canapé'
           })
+          .withImage({
+            'filePath': '/path/sofa.jpg',
+            'originalFilename': 'sofa.jpg'
+          })
           .build();
 
         interceptedRequest.respond({
@@ -71,7 +75,10 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           fr_FR: 'Canapé'
         }
       },
-      image: null
+      image: {
+        filePath: '/path/sofa.jpg',
+        originalFilename: 'sofa.jpg'
+      },
     });
   });
 });

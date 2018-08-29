@@ -24,17 +24,17 @@ use PhpSpec\ObjectBehavior;
  */
 class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    public function it_is_a_product_subscription_repository()
+    function it_is_a_product_subscription_repository()
     {
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
     }
 
-    public function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
+    function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
     {
         $this->shouldBeAnInstanceOf(InMemoryProductSubscriptionRepository::class);
     }
 
-    public function it_find_a_subscription_by_its_product_and_subscription_id()
+    function it_find_a_subscription_by_its_product_and_subscription_id()
     {
         $product = new Product();
         $product->setId(42);
@@ -46,7 +46,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn($subscription);
     }
 
-    public function it_find_no_subscription_if_subscription_id_does_not_exists()
+    function it_find_no_subscription_if_subscription_id_does_not_exists()
     {
         $product = new Product();
         $product->setId(42);
@@ -58,7 +58,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    public function it_find_no_subscription_if_product_was_not_subscribed()
+    function it_find_no_subscription_if_product_was_not_subscribed()
     {
         $product = new Product();
         $product->setId(42);
@@ -68,7 +68,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    public function it_saves_a_product_subscription()
+    function it_saves_a_product_subscription()
     {
         $product = new Product();
         $product->setId(42);
@@ -78,15 +78,19 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->shouldHaveProductSubscription($subscription);
     }
 
-    public function it_returns_a_product_subscription_status_for_a_product_id()
+    public function it_finds_a_product_subscription_in_terms_of_a_product_id()
     {
         $product = new Product();
         $product->setId(42);
         $subscription = new ProductSubscription($product, 'a-fake-subscription', []);
         $this->save($subscription);
 
-        $this->getSubscriptionStatusForProductId(42)->shouldReturn(['subscription_id' => 'a-fake-subscription']);
-        $this->getSubscriptionStatusForProductId(43)->shouldReturn(['subscription_id' => '']);
+        $this->findOneByProductId(42)->shouldReturn($subscription);
+    }
+
+    public function it_returns_null_if_you_asked_for_a_product_without_subscription()
+    {
+        $this->findOneByProductId(42)->shouldReturn(null);
     }
 
     /**

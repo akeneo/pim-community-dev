@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
 
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 
 /**
@@ -27,11 +28,14 @@ class EnrichedEntity
     /** @var LabelCollection */
     private $labelCollection;
 
+    /** @var Image */
+    private $image;
+
     private function __construct(
         EnrichedEntityIdentifier $identifier,
         LabelCollection $labelCollection
     ) {
-        $this->identifier      = $identifier;
+        $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
     }
 
@@ -62,8 +66,18 @@ class EnrichedEntity
         return $this->labelCollection->getLocaleCodes();
     }
 
+    public function getImage(): ?Image
+    {
+        return ($this->image) ?? null;
+    }
+
     public function updateLabels(LabelCollection $labelCollection): void
     {
         $this->labelCollection = $labelCollection;
+    }
+
+    public function updateImage(Image $image): void
+    {
+        $this->image = $image;
     }
 }

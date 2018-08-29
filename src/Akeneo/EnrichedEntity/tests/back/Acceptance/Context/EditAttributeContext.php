@@ -27,6 +27,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>

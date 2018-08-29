@@ -68,19 +68,8 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function getSubscriptionStatusForProductId(int $productId): array
+    public function findOneByProductId(int $productId): ?ProductSubscriptionInterface
     {
-        $query = <<<SQL
-SELECT subscription_id
-FROM pim_suggest_data_product_subscription
-WHERE product_id = :product_id
-SQL;
-
-        $statement = $this->em->getConnection()->prepare($query);
-        $statement->bindValue('product_id', $productId);
-        $statement->execute();
-        $result = $statement->fetch();
-
-        return !$result ? ['subscription_id' => ''] : $result;
+        return $this->em->getRepository($this->className)->findOneByProduct($productId);
     }
 }

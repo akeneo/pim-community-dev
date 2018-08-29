@@ -27,19 +27,19 @@ class ProductSubscriptionController
     /** @var SubscribeProduct */
     private $subscribeProduct;
 
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $productSubscriptionRepository;
+    /** @var GetProductSubscriptionStatusHandler */
+    private $getProductSubscriptionStatusHandler;
 
     /**
      * @param SubscribeProduct $subscribeProduct
-     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+     * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
-        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
     ) {
         $this->subscribeProduct = $subscribeProduct;
-        $this->productSubscriptionRepository = $productSubscriptionRepository;
+        $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
     }
 
     /**
@@ -63,10 +63,11 @@ class ProductSubscriptionController
      *
      * @return Response
      */
-    public function getSubscriptionStatusAction(int $productId): Response
+    public function getProductSubscriptionStatusAction(int $productId): Response
     {
-        $subscriptionStatus = $this->productSubscriptionRepository->getSubscriptionStatusForProductId($productId);
+        $getProductSubscriptionStatus = new GetProductSubscriptionStatusQuery($productId);
+        $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($getProductSubscriptionStatus);
 
-        return new JsonResponse($subscriptionStatus);
+        return new JsonResponse($productSubscriptionStatus->normalize());
     }
 }
