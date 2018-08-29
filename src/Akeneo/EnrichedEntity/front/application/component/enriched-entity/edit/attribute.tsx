@@ -30,7 +30,7 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
-    onAttributeDelete: (attribute: AttributeModel) => void;
+    onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
   };
 }
@@ -68,7 +68,7 @@ const renderAttributesPlaceholder = () => {
 interface AttributeViewProps {
   attribute: NormalizedAttribute;
   onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
-  onAttributeDelete: (attribute: AttributeModel) => void;
+  onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
   locale: string;
 }
 
@@ -119,7 +119,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             onClick={() => {
               const message = __('pim_enriched_entity.attribute.delete.confirm');
               if (confirm(message)) {
-                onAttributeDelete(attribute);
+                onAttributeDelete(attribute.getIdentifier());
               }
             }}
           />
@@ -160,7 +160,7 @@ class AttributesView extends React.Component<CreateProps> {
                 <React.Fragment>
                   {this.props.attributes.map((attribute: NormalizedAttribute) => (
                     <AttributeView
-                      key={attribute.identifier.identifier}
+                      key={attribute.identifier}
                       attribute={attribute}
                       onAttributeEdit={this.props.events.onAttributeEdit}
                       onAttributeDelete={this.props.events.onAttributeDelete}
@@ -230,8 +230,8 @@ export default connect(
         onAttributeCreationStart: () => {
           dispatch(attributeCreationStart());
         },
-        onAttributeDelete: (attribute: AttributeModel) => {
-          dispatch(deleteAttribute(attribute));
+        onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
+          dispatch(deleteAttribute(attributeIdentifier));
         },
         onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(attributeEditionStart(attributeIdentifier));

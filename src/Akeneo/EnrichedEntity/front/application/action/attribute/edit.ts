@@ -61,7 +61,7 @@ export const attributeEditionStart = (attributeIdentifier: AttributeIdentifier) 
   }
 
   const attributeToEdit = state.attributes.attributes.find(
-    (attribute: NormalizedAttribute) => attribute.identifier.identifier === attributeIdentifier.identifier
+    (attribute: NormalizedAttribute) => attribute.identifier === attributeIdentifier.identifier
   );
 
   if (undefined === attributeToEdit) {

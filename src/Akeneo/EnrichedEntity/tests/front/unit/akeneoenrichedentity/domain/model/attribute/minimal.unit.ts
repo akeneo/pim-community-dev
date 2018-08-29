@@ -8,7 +8,7 @@ import {createCode} from 'akeneoenrichedentity/domain/model/attribute/code';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 
 const description = denormalizeMinimalAttribute({
-  identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+  identifier: 'description',
   enriched_entity_identifier: 'designer',
   code: 'description',
   type: 'text',
@@ -17,7 +17,7 @@ const description = denormalizeMinimalAttribute({
   value_per_channel: false,
 });
 const frontView = denormalizeMinimalAttribute({
-  identifier: {identifier: 'front_fiew', enriched_entity_identifier: 'designer'},
+  identifier: 'front_fiew',
   enriched_entity_identifier: 'designer',
   code: 'front_fiew',
   type: 'image',
@@ -28,7 +28,7 @@ const frontView = denormalizeMinimalAttribute({
 
 describe('akeneo > attribute > domain > model --- minimal attribute', () => {
   test('I can create a new attribute with a identifier and labels', () => {
-    expect(description.getIdentifier()).toEqual(denormalizeAttributeIdentifier('designer', 'description'));
+    expect(description.getIdentifier()).toEqual(denormalizeAttributeIdentifier('description'));
     expect(description.getEnrichedEntityIdentifier()).toEqual(createEnrichedEntityIdentifier('designer'));
     expect(description.getCode()).toEqual(createCode('description'));
     expect(description.getType()).toEqual('text');
@@ -42,18 +42,8 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
-      denormalizeMinimalAttribute({
-        identifier: {identifier: 'name', enriched_entity_identifier: 'designer'},
-        enriched_entity_identifier: 'designer',
-        labels: {en_US: 'My label'},
-        code: 'description',
-        type: 'text',
-      });
-    }).toThrow('Attribute expect an identifier complient to the given enrichedEntityIdentifier and code');
-
-    expect(() => {
       new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
+        denormalizeAttributeIdentifier('front_view'),
         createEnrichedEntityIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
@@ -64,7 +54,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
 
     expect(() => {
       new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
+        denormalizeAttributeIdentifier('front_view'),
         createEnrichedEntityIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'}),
@@ -73,7 +63,7 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     }).toThrow('Attribute expect a boolean as valuePerLocale');
     expect(() => {
       new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
+        denormalizeAttributeIdentifier('front_view'),
         createEnrichedEntityIdentifier('designer'),
         createCode('front_view'),
         createLabelCollection({en_US: 'Front View'})
@@ -81,35 +71,19 @@ describe('akeneo > attribute > domain > model --- minimal attribute', () => {
     }).toThrow('Attribute expect valid attribute type (text, image)');
     expect(() => {
       new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
-        createEnrichedEntityIdentifier('brand'),
-        createCode('front_view'),
-        createLabelCollection({en_US: 'Front View'})
-      );
-    }).toThrow('Attribute expect an identifier complient to the given enrichedEntityIdentifier and code');
-    expect(() => {
-      new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
-        createEnrichedEntityIdentifier('designer'),
-        createCode('description'),
-        createLabelCollection({en_US: 'Front View'})
-      );
-    }).toThrow('Attribute expect an identifier complient to the given enrichedEntityIdentifier and code');
-    expect(() => {
-      new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
+        denormalizeAttributeIdentifier('front_view'),
         createEnrichedEntityIdentifier('designer'),
         createCode('description')
       );
     }).toThrow('Attribute expect a LabelCollection argument');
     expect(() => {
       new MinimalConcreteAttribute(
-        denormalizeAttributeIdentifier('designer', 'front_view'),
+        denormalizeAttributeIdentifier('front_view'),
         createEnrichedEntityIdentifier('designer')
       );
     }).toThrow('Attribute expect a AttributeCode argument');
     expect(() => {
-      new MinimalConcreteAttribute(denormalizeAttributeIdentifier('designer', 'front_view'));
+      new MinimalConcreteAttribute(denormalizeAttributeIdentifier('front_view'));
     }).toThrow('Attribute expect an EnrichedEntityIdentifier argument');
     expect(() => {
       new MinimalConcreteAttribute();

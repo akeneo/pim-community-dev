@@ -14,18 +14,21 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204
+          status: 204,
         });
       }
     });
 
     await page.evaluate(async () => {
       const createIdentifier = require('akeneoenrichedentity/domain/model/attribute/identifier').createIdentifier;
+      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
+        .createIdentifier;
       const remover = require('akeneoenrichedentity/infrastructure/remover/attribute').default;
 
-      const identifierToDelete = createIdentifier('designer', 'name');
+      const attributeIdentifierToDelete = createIdentifier('name');
+      const enrichedEntityIdentifierToDelete = createEnrichedEntityIdentifier('designer');
 
-      return await remover.remove(identifierToDelete);
+      return await remover.remove(enrichedEntityIdentifierToDelete, attributeIdentifierToDelete);
     });
   });
 });

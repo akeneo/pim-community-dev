@@ -68,11 +68,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Attribute expect a LabelCollection argument');
     }
-    if (!createIdentifier(enrichedEntityIdentifier.stringValue(), code.stringValue()).equals(identifier)) {
-      throw new InvalidArgumentError(
-        'Attribute expect an identifier complient to the given enrichedEntityIdentifier and code'
-      );
-    }
     if (typeof type !== 'string' && !Object.values(AttributeType).includes(type)) {
       throw new InvalidArgumentError(
         `Attribute expect valid attribute type (${Object.values(AttributeType).join(', ')})`
@@ -88,10 +83,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalNormalizedAttribute) {
     return new MinimalConcreteAttribute(
-      createIdentifier(
-        minimalNormalizedAttribute.identifier.enriched_entity_identifier,
-        minimalNormalizedAttribute.identifier.identifier
-      ),
+      createIdentifier(minimalNormalizedAttribute.identifier),
       createEnrichedEntityIdentifier(minimalNormalizedAttribute.enriched_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),

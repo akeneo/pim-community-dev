@@ -37,10 +37,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
   expect(newState).toEqual({
     active: false,
     data: {
-      identifier: {
-        identifier: '',
-        enriched_entity_identifier: '',
-      },
+      identifier: '',
       enriched_entity_identifier: '',
       code: '',
       labels: {},
@@ -114,6 +111,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     expect(newState).toEqual({
       active: true,
       data: newAttribute,
+      isDirty: false,
       originalData: JSON.stringify(newAttribute),
       isDirty: false,
       errors: [],
@@ -135,8 +133,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     expect(newState).toEqual({
       active: true,
       data: normalizedDescription,
-      isDirty: false,
       originalData: '',
+      isDirty: false,
       errors: [],
     });
   });

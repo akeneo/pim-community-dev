@@ -13,7 +13,7 @@ import {ValidationRule} from 'akeneoenrichedentity/domain/model/attribute/type/t
 import {RegularExpression} from 'akeneoenrichedentity/domain/model/attribute/type/text/regular-expression';
 
 const normalizedDescription = {
-  identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+  identifier: 'description',
   enriched_entity_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},

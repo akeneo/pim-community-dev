@@ -17,10 +17,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           contentType: 'application/json',
           body: JSON.stringify([
             {
-              identifier: {
-                identifier: 'description',
-                enriched_entity_identifier: 'designer',
-              },
+              identifier: 'description',
               enriched_entity_identifier: 'designer',
               code: 'description',
               is_required: true,
@@ -38,10 +35,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
               regular_expression: null,
             },
             {
-              identifier: {
-                identifier: 'side_view',
-                enriched_entity_identifier: 'designer',
-              },
+              identifier: 'side_view',
               enriched_entity_identifier: 'designer',
               code: 'side_view',
               is_required: false,
@@ -78,7 +72,6 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           identifier: 'designer',
         },
         identifier: {
-          enrichedEntityIdentifier: 'designer',
           identifier: 'description',
         },
         isRichTextEditor: {
@@ -111,7 +104,6 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           identifier: 'designer',
         },
         identifier: {
-          enrichedEntityIdentifier: 'designer',
           identifier: 'side_view',
         },
         labelCollection: {

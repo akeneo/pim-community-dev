@@ -36,10 +36,7 @@ module.exports = async function(cucumber) {
     const attributesSaved = attributes.hashes().map(normalizedAttribute => {
       if ('text' === normalizedAttribute.type) {
         return {
-          identifier: {
-            identifier: normalizedAttribute.code,
-            enriched_entity_identifier: enrichedEntityIdentifier,
-          },
+          identifier: normalizedAttribute.code,
           enriched_entity_identifier: enrichedEntityIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
@@ -56,10 +53,7 @@ module.exports = async function(cucumber) {
         };
       } else if ('image' === normalizedAttribute.type) {
         return {
-          identifier: {
-            identifier: normalizedAttribute.code,
-            enriched_entity_identifier: enrichedEntityIdentifier,
-          },
+          identifier: normalizedAttribute.code,
           enriched_entity_identifier: enrichedEntityIdentifier,
           code: normalizedAttribute.code,
           is_required: false,

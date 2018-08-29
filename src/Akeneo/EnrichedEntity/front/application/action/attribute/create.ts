@@ -12,14 +12,14 @@ import {
 } from 'akeneoenrichedentity/application/action/attribute/notify';
 import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
 import {denormalizeMinimalAttribute} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-// import {attributeEditionStart} from 'akeneoenrichedentity/domain/event/attribute/edit';
+import {attributeEditionStart} from 'akeneoenrichedentity/application/action/attribute/edit';
 
 export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = getState().form.data;
   const formData = getState().createAttribute.data;
   const normalizedAttribute = {
     ...formData,
-    identifier: {identifier: formData.code, enriched_entity_identifier: enrichedEntity.identifier},
+    identifier: formData.code,
     enriched_entity_identifier: enrichedEntity.identifier,
   } as NormalizedAttribute;
   const attribute = denormalizeMinimalAttribute(normalizedAttribute);
@@ -42,8 +42,8 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
   dispatch(attributeCreationSucceeded());
   dispatch(notifyAttributeWellCreated());
-  dispatch(updateAttributeList());
-  // dispatch(attributeEditionStart(attribute));
+  await dispatch(updateAttributeList());
+  dispatch(attributeEditionStart(attribute.identifier));
 
   return;
 };
