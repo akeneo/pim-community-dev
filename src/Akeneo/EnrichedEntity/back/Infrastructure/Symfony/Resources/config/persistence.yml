@@ -1,0 +1,75 @@
+services:
+    # Repositories
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityRepository
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.attribute:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.record:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository
+        arguments:
+            - '@database_connection'
+
+    # Query functions
+    # Enriched entities
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlFindEnrichedEntityItems
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlFindEnrichedEntityDetails
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForEnrichedEntity
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_has_records:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityHasRecords
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_is_linked_to_at_least_one_product_attribute:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityIsLinkedToAtLeastOneProductAttribute
+        arguments:
+            - '@database_connection'
+
+    # Records
+    akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordDetails
+        arguments:
+            - '@database_connection'
+
+    # Attributes
+    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributeNextOrder
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesDetails
+        arguments:
+            - '@database_connection'
