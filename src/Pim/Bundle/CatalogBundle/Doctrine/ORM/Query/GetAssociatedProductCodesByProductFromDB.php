@@ -23,7 +23,7 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
     /**
      * {@inheritdoc}
      */
-    public function getCodes(AssociationInterface $association)
+    public function getCodes(int $productId, AssociationInterface $association)
     {
         $associations = $this->entityManager->createQueryBuilder()
             ->select('p.identifier')
@@ -31,7 +31,8 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
             ->innerJoin('a.products', 'p')
             ->andWhere('a.id = :associationId')
             ->setParameters([
-                'associationId' => $association->getId(),
+                'ownerId' => $productId,
+                'associationTypeId' => $association->getAssociationType()->getId()
             ])
             ->orderBy('p.identifier')
             ->getQuery()
