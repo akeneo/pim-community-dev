@@ -72,9 +72,10 @@ class CreateAttributeContext implements Context
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'text';
-        $attributeData['identifier']['identifier'] = $attributeData['code'];
+        $attributeData['identifier']['identifier'] = $attributeCode;
         $attributeData['identifier']['enriched_entity_identifier'] = $enrichedEntityIdentifier;
         $attributeData['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = (bool) $attributeData['is_required'];
         $attributeData['value_per_channel'] = (bool) $attributeData['value_per_channel'];
