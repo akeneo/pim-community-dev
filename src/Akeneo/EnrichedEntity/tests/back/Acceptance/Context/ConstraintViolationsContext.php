@@ -91,9 +91,7 @@ final class ConstraintViolationsContext implements Context
         );
         if ($this->hasViolations()) {
             $message = sprintf(
-                'Expected violation on property "%s" with message "%s" not found. but one found with "%s"',
-                $expectedPropertyPath,
-                $expectedMessage,
+                'Unexpected violation found with with message "%s"',
                 $this->violations->get(0)->getMessage()
             );
         }
