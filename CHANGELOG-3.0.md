@@ -7,6 +7,7 @@
 - GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
 - PIM-7371: Improve the performance to display the category tree in the product grid
 - PIM-7506: Cache default views and columns on the product grid
+- Centralizes technical requirements checks to reuse them on standard edition
 
 ## Enhancements
 
