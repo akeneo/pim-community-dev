@@ -1,0 +1,15 @@
+<div class="AknDescriptionHeader">
+    <div class="AknDescriptionHeader-icon" style="background-image: url('../bundles/pimui/images/illustrations/<%= illustration %>');"></div>
+    <div class="AknDescriptionHeader-title">
+        <%= __(title) %>
+        <div class="AknDescriptionHeader-description">
+            <% if (Array.isArray(description)) { %>
+                <% description.forEach((line) => { %>
+                    <p><%= __(line) %></p>
+                <% }) %>
+            <% } else { %>
+                <%= __(description) %>
+            <% } %>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+@import '../base/variables';
+
+.AknDescriptionHeader {
+  background: lighten(@AknBlue, 40%);
+  display: flex;
+  padding: 5px;
+  font-size: @AknFontSizeBig;
+  color: @AknSlateGrey;
+  min-height: 80px;
+  align-items: center;
+  margin-bottom: 20px;
+
+  &-icon {
+    min-width: 70px;
+    min-height: 60px;
+    height: auto;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: 50%;
+    width: 95px;
+  }
+
+  &-title {
+    font-size: @AknFontSizeBigger;
+    color: @AknDarkBlue;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    &--highlight {
+      color: @AknLightPurple
+    }
+  }
+
+  &-description {
+    font-size: 13px;
+    color: @AknSlateGrey;
+    margin-top: 10px;
+  }
+}

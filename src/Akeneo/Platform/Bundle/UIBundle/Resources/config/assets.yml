@@ -73,6 +73,7 @@ css:
         - bundles/pimui/less/components/CenteredBox.less
         - bundles/pimui/less/components/Column.less
         - bundles/pimui/less/components/ColumnConfigurator.less
+        - bundles/pimui/less/components/DescriptionHeader.less
         - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
@@ -99,7 +100,6 @@ css:
         - bundles/pimui/less/components/Thumbnail.less
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/Switch.less
-        - bundles/pimui/less/components/SubTitleContainer.less
         - bundles/pimui/less/components/VerticalList.less
         - bundles/pimui/less/components/Widget.less
         - bundles/pimui/less/components/FamilyVariant.less

@@ -2,7 +2,7 @@ import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
-const template = require('pim/template/catalog-volume/header');
+const template = require('pim/template/common/description-header');
 
 interface HeaderConfig {
   title: string;
@@ -46,6 +46,7 @@ class HeaderView extends BaseView {
           .replace('{{values}}', productValues.value.toLocaleString('en', {useGrouping: true}))
           .replace('{{average}}', productValuesAverage.value.average),
         description: __(this.config.description).replace('{{link}}', __('catalog_volume.link')),
+        illustration: 'Product-categories.svg'
       });
 
       this.$el.html(headerContents);
