@@ -176,6 +176,7 @@ export default ({
                 className="AknTextField"
                 id="pim_enriched_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"
+                placeholder="/[a-z]+[0-9]*/"
                 value={attribute.regularExpression.stringValue()}
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
                   if ('Enter' === event.key) {

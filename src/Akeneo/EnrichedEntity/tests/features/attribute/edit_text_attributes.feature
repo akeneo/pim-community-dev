@@ -103,7 +103,7 @@ Feature: Edit a text attribute of an enriched entity
     Then the validation rule of 'email' should be 'url'
 
   @acceptance-back
-  Scenario: Remove a validation rule from an text attribute (also removes the regular expression)
+  Scenario: Remove a validation rule from a text attribute (also removes the regular expression)
     Given an enriched entity with a text attribute 'regex' with a regular expression '"[0-9]+"'
     When the user removes the validation rule of 'regex'
     Then there is no validation rule set on 'regex'
@@ -159,9 +159,10 @@ Feature: Edit a text attribute of an enriched entity
     Then there should be a validation error on the property 'regularExpression' with message '<message>'
 
     Examples:
-      | invalid_regular_expression | message                               |
-      | 154                        | This value should be of type string.  |
-      | "a*"                       | This regular expression is not valid. |
+      | invalid_regular_expression | message                                                                                                  |
+      | 154                        | This value should be of type string.                                                                     |
+      | "a*"                       | This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/" |
+      | ""                         | This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/" |
 
   @acceptance-back
   Scenario: Updating the regular expression if it's not a simple text fails

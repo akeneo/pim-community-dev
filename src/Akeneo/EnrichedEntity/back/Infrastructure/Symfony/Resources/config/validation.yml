@@ -182,9 +182,6 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsT
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
-    group_sequence:
-        - primary_constraints
-        - EditValidationRuleCommand
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
@@ -192,9 +189,6 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditVal
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand:
-    group_sequence:
-        - primary_constraints
-        - EditRegularExpressionCommand
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
@@ -202,9 +196,6 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditReg
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand:
-    group_sequence:
-        - primary_constraints
-        - EditIsRichTextEditorCommand
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~

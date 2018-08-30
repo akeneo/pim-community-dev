@@ -58,6 +58,11 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
             ) {
                 $this->buildViolationCannotUpdateRegularExpression();
             }
+            if ($this->hasValidationRuleSetToRegularExpression($editAttributeCommand)
+                && !$this->isRegularExpressionNotEmpty($editAttributeCommand)
+            ) {
+                $this->buildViolationRegularExpressionShouldNotBeEmpty();
+            }
         }
     }
 
@@ -171,6 +176,13 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
     private function buildViolationCannotUpdateRegularExpression()
     {
         $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::CANNOT_UPDATE_REGULAR_EXPRESSION)
+            ->addViolation();
+    }
+
+    private function buildViolationRegularExpressionShouldNotBeEmpty(): void
+    {
+        $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::REGULAR_EXPRESSION_SHOULD_NOT_BE_EMPTY)
+            ->atPath('regularExpression')
             ->addViolation();
     }
 }
