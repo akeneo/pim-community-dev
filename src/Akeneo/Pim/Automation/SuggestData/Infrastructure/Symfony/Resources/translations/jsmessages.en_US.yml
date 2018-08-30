@@ -13,6 +13,7 @@ akeneo_suggest_data:
             plural_label: Identifiers
             flash:
                 update:
+                    first: 'Thank you for mapping your catalog product identifiers. You can now subscribe products for enrichment with Franklin Insights.'
                     success: 'Identifiers mapping has been successfully saved.'
                     fail: 'Identifiers mapping not saved due to an error.'
             fields:
