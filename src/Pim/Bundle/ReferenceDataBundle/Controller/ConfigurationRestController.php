@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Controller;
 
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

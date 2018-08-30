@@ -2539,7 +2539,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\ReferenceData\ConfigurationRegistryInterface
+     * @return \Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface
      */
     protected function getReferenceDataRegistry()
     {

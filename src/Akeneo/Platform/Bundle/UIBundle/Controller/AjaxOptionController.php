@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
