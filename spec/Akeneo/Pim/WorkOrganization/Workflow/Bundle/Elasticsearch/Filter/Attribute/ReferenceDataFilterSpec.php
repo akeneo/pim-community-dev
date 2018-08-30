@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter;
 

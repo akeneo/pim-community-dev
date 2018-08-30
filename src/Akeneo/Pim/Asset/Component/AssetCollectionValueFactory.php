@@ -19,8 +19,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
  * Copy of the {@see Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory} but without
