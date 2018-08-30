@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\Common\Saver;
 
-use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
