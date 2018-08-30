@@ -158,11 +158,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Component\Api
         spec_path: src/Akeneo/Tool/Component/Api
         src_path: src/Akeneo/Tool/Component/Api
-    ReferenceData:
-        namespace: Pim\Component\ReferenceData
-        psr4_prefix: Pim\Component\ReferenceData
-        spec_path: src/Pim/Component/ReferenceData
-        src_path: src/Pim/Component/ReferenceData
     Enrich:
         namespace: Pim\Component\Enrich
         psr4_prefix: Pim\Component\Enrich

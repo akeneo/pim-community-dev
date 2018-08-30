@@ -152,6 +152,7 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Component/Catalog', Dispatched::mainCommunityBusinessTopics()),
         new ForbiddenDirectory('src/Pim/Component/Connector', Dispatched::mainCommunityBusinessTopics()),
         new ForbiddenDirectory('src/Pim/Component/User', new Moved('src/Akeneo/UserManagement')),
+        new ForbiddenDirectory('src/Pim/Component/ReferenceData', new Dispatched(['src/Akeneo/Pim/Enrichment', 'src/Akeneo/Pim/Structure'])),
 
         // Enterprise Bundles
         new ForbiddenDirectory('src/PimEnterprise/Bundle/ApiBundle', Dispatched::mainEnterpriseBusinessTopics()),
