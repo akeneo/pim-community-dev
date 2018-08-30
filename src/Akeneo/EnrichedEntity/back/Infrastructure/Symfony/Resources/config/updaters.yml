@@ -1,0 +1,49 @@
+services:
+    # Attributes
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.attribute_updater_registry:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AttributeUpdaterRegistry
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.labels_updater:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\LabelsUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_required_updater:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRequiredUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.max_length_updater:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxLengthUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_textarea:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsTextareaUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.validation_rule:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.regular_expression:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\RegularExpressionUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 100 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_rich_text_editor:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsRichTextEditorUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.max_file_size_updater:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\MaxFileSizeUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.allowed_extensions_updater:
+        class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AllowedExtensionsUpdater
+        tags:
+            - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
