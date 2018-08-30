@@ -19,16 +19,12 @@ extensions:
             logout: pim_menu.user.logout
 
     pimee-suggest-data-settings-identifiers-mapping-index-title:
-        module: pim/common/title-with-subtitle
+        module: pim/common/grid-title
         parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: title
         config:
-            main_title: akeneo_suggest_data.settings.page_title
-            sub_title: akeneo_suggest_data.settings.module.title.sub_title
-            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
-            description:
-                - akeneo_suggest_data.settings.module.title.description.first_step
-                - akeneo_suggest_data.settings.module.title.description.second_step
+            countable: false
+            title: akeneo_suggest_data.settings.page_title
 
     pimee-suggest-data-settings-identifiers-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
@@ -49,6 +45,20 @@ extensions:
         position: 900
         config:
             entity: akeneo_suggest_data.entity.identifier_mapping.plural_label
+
+    pimee-suggest-data-settings-identifiers-mapping-index-description-header:
+        module: pim/common/simple-view
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
+        targetZone: content
+        position: 10
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_suggest_data.settings.module.title.sub_title
+                illustration: Helpcenter-settings.svg
+                description:
+                    - akeneo_suggest_data.settings.module.title.description.first_step
+                    - akeneo_suggest_data.settings.module.title.description.second_step
 
     pimee-suggest-data-settings-identifiers-mapping-index-tabs:
         module: pimee/settings/mapping/tabs

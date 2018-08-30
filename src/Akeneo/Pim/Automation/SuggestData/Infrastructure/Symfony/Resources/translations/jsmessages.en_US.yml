@@ -58,7 +58,7 @@ akeneo_suggest_data:
         page_title: 'PIM.ai connection'
         module:
             title:
-                sub_title: 'Welcome to the <span class="AknSubTitleContainer-subTitle--main">Product Information AI assistant!</span>'
+                sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant!</span>'
                 description:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
                     second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'

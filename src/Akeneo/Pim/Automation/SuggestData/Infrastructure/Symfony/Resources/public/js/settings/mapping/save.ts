@@ -50,6 +50,7 @@ class MappingSave extends BaseSave {
       .then((savedMapping: string) => {
         this.postSave();
         this.setData(JSON.parse(savedMapping));
+        this.getRoot().trigger('pim_enrich:form:entity:post_fetch');
         this.updateSuccessMessage = __('akeneo_suggest_data.entity.identifier_mapping.flash.update.success');
         this.isFlash = true;
       })
