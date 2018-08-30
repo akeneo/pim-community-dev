@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Component\Comparator\Attribute;
+namespace Akeneo\Pim\Asset\Component\Comparator\Attribute;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 

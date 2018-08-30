@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Asset\Component\Completeness\Checker;
+namespace spec\Akeneo\Pim\Asset\Component\Completeness\Checker;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use PhpSpec\ObjectBehavior;

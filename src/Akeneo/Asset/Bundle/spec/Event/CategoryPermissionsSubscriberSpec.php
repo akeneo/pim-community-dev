@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Asset\Bundle\Event;
 
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Asset\Bundle\Form\Type\CategoryPermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;

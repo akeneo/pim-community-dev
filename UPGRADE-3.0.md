@@ -1,6 +1,11 @@
 # UPGRADE FROM 2.3 to 3.0
 
 ```bash
+
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\Doctrine\\ORM\\CompletenessRemover/Akeneo\\Pim\\Asset\\Bundle\\Doctrine\\ORM\\CompletenessRemover/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\CompletenessRemoverInterface/Akeneo\\Pim\\Asset\\Component\\Completeness\\CompletenessRemoverInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\Checker\\AssetCollectionCompleteChecker/Akeneo\\Pim\\Asset\\Component\\Completeness\\Checker\\AssetCollectionCompleteChecker/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Comparator\\Attribute\\AssetCollectionComparator/Akeneo\\Pim\\Asset\\Component\\Comparator\\Attribute\\AssetCollectionComparator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ApiBundle\\Security\\AccessDeniedHandler/Akeneo\\Pim\\Permission\\Bundle\\Api\\AccessDeniedHandler/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ApiBundle\\Checker\\QueryParametersChecker/Akeneo\\Pim\\Permission\\Bundle\\Api\\QueryParametersChecker/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Filter\\AbstractAuthorizationFilter\\DatagridViewFilter/Akeneo\\Pim\\Permission\\Bundle\\Filter\\AbstractAuthorizationFilter\\DatagridViewFilter/g'
@@ -61,7 +66,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileMetadata
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileTransformer/Akeneo\\Tool\\Component\\FileTransformer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\RuleEngine/Akeneo\\Tool\\Component\\RuleEngine/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle/Akeneo\\Asset\\Bundle/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset/Akeneo\\Asset\\Component/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Remover\\CategoryAssetRemover/Akeneo\\Asset\\Bundle\\Doctrine\\ORM\\Remover\\CategoryAssetRemover/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Factory\\NotificationFactory/Akeneo\\Asset\\Bundle\\Notification\\NotificationFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\EventSubscriber\\ORM\\AssetEventSubscriber/PimEnterprise\\Bundle\\WorkflowBundle\\EventSubscriber\\Asset\\AssetEventSubscriber/g'
@@ -84,9 +88,10 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\Referenc
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Api\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Normalizer\\ExternalApi\\ProductModelNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle/Akeneo\Asset\Bundle\AkeneoAssetBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\PimEnterpriseTeamworkAssistantBundle/Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle/Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle/Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\Automation\RuleEngine\Bundle\PimEnterpriseCatalogRuleBundle/Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle/Akeneo\Asset\Bundle\AkeneoAssetBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset/Akeneo\\Asset\\Component/g'
 ```

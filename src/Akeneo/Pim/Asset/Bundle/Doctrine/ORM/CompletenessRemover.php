@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Asset\Bundle\Doctrine\ORM;
+namespace Akeneo\Pim\Asset\Bundle\Doctrine\ORM;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeTypes;
-use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover as BaseCompletenessRemover;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;

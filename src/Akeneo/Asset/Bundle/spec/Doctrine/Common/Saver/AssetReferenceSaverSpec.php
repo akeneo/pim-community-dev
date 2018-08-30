@@ -5,7 +5,7 @@ namespace spec\Akeneo\Asset\Bundle\Doctrine\Common\Saver;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Prophecy\Argument;

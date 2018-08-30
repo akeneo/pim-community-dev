@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Component\Completeness;
+namespace Akeneo\Pim\Asset\Component\Completeness;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface as BaseCompletenessRemoverInterface;

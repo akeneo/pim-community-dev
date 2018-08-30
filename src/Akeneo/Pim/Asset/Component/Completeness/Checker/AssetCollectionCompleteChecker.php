@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Component\Completeness\Checker;
+namespace Akeneo\Pim\Asset\Component\Completeness\Checker;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Model\AssetInterface;

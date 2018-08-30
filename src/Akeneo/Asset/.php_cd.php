@@ -51,6 +51,7 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber',
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
+        'Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface',
         'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
@@ -70,8 +71,6 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // Related to the front end (symfony form type)
         'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
-        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
     ])->in('Akeneo\Asset\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -82,21 +81,13 @@ $rules = [
         'Pim\Component\ReferenceData\Model\ReferenceDataInterface',
         'Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface',
         // Todo: Remove pim dependencies
-        'Akeneo\Tool\Component\Connector',
-        'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface', // TODO: AssetCollectionCompleteChecker should extract from this context
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
         'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security
         // TODO: we should not use public constant
         'Akeneo\Asset\Bundle\Event\AssetEvent',
-        'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         // TODO: We should use id instead of reference
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         // TODO: we should not repository from the other BC
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',

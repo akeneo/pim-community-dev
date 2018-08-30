@@ -12,6 +12,10 @@
 
 ## BC breaks
 
+- Move `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
+- Move `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface` to `Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface`
+- Move `PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker` to `Akeneo\Pim\Asset\Component\Completeness\Checker\AssetCollectionCompleteChecker`
+- Move `PimEnterprise\Component\ProductAsset\Comparator\Attribute\AssetCollectionComparator` to `Akeneo\Pim\Asset\Component\Comparator\Attribute\AssetCollectionComparator`
 - Move `PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Permission\Component\Manager\AttributeValuesResolver`
 - Move `PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter` to `Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter`
 - Move `PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder` to `Akeneo\Pim\Asset\Component\Updater\Adder\AssetCollectionAdder`
@@ -80,8 +84,6 @@
 - Move namespace `Akeneo\Bundle\RuleEngineBundle` to `Akeneo\Bundle\Tool\RuleEngineBundle`
 - Move namespace `Akeneo\Component\FileMetadata` to `Akeneo\Tool\Component\FileMetadata`
 - Move namespace `Akeneo\Component\FileTransformer` to `Akeneo\Tool\Component\FileTransformer`
-- Move namespace `PimEnterprise\Bundle\ProductAssetBundle` to `Akeneo\Asset\Bundle`
-- Move namespace `PimEnterprise\Component\ProductAsset` to `Akeneo\Asset\Component`
 - Move class `PimEnterprise\Component\ProductAsset\Remover\CategoryAssetRemover` to `Akeneo\Asset\Bundle\Doctrine\ORM\Remover\CategoryAssetRemover`
 - Move class `PimEnterprise\Component\ProductAsset\Factory\NotificationFactory` to `Akeneo\Asset\Bundle\Notification\NotificationFactory`
 - Move class `PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset\AssetEventSubscriber`
@@ -115,6 +117,9 @@
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier`. Remove arguments `Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface` and `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface`. Add arguments `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` and `integer`.
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder`. Remove argument `Symfony\Component\Validator\Validator\ValidatorInterface`.
 - Change constructor of `Akeneo\Pim\Permission\Bundle\Filter\ProductValueLocaleRightFilter`. Add argument `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- Move namespace `PimEnterprise\Bundle\ProductAssetBundle` to `Akeneo\Asset\Bundle`
+- Move namespace `PimEnterprise\Component\ProductAsset` to `Akeneo\Asset\Component`
+
 
 ## Security
 
