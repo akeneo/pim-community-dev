@@ -6,7 +6,7 @@ use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransforme
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\LabelRenderer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Prophecy\Argument;
 
 class AjaxReferenceDataTransformerSpec extends ObjectBehavior

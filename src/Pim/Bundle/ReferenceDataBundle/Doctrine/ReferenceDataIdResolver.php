@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
  * Transforms reference data codes to IDs.

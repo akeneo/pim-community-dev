@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine;
 
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

@@ -6,8 +6,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
  * Factory that creates simple-select and multi-select product values.

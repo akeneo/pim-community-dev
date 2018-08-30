@@ -6,7 +6,7 @@ use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 
 class ReferenceDataIdResolverSpec extends ObjectBehavior
 {

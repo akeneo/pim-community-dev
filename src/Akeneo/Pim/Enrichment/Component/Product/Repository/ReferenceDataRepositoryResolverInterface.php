@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Repository;
+namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 /**
  * Resolves the repository given a reference data type

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Repository;
+namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
