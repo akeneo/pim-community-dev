@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Classification\TagAwareInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 /**
  * Product asset interface
