@@ -54,7 +54,7 @@ class AssociationsNormalizer implements NormalizerInterface
     /**
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
-     * @return array
+     * @return array|EntityWithFamilyVariantInterface[]
      */
     private function getAncestorProducts(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
     {
@@ -68,7 +68,7 @@ class AssociationsNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param EntityWithAssociationsInterface $associationAwareEntity
+     * @param array $associationAwareEntities
      *
      * @return array
      */

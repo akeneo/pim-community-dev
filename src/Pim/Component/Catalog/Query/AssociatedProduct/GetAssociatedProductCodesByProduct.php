@@ -13,6 +13,7 @@ interface GetAssociatedProductCodesByProduct
     /**
      * Return codes of associated products
      *
+     * @param int $productId
      * @param AssociationInterface $association
      *
      * @return array
