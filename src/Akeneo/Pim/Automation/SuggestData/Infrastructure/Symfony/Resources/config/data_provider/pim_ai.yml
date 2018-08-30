@@ -5,5 +5,6 @@ services:
             - '@akeneo.pim.automation.suggest_data.pimai_client.authentication_webservice'
             - '@akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping_webservice'
         tags:
             - { name: 'akeneo.pim.automation.suggest_data.data_provider', alias: 'pim_ai' }

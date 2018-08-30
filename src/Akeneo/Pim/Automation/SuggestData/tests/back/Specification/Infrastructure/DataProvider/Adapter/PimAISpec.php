@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingReposi
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
@@ -35,9 +36,15 @@ class PimAISpec extends ObjectBehavior
     public function let(
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        IdentifiersMappingInterface $identifiersMappingUpdater
     ) {
-        $this->beConstructedWith($authenticationApi, $subscriptionApi, $identifiersMappingRepository);
+        $this->beConstructedWith(
+            $authenticationApi,
+            $subscriptionApi,
+            $identifiersMappingRepository,
+            $identifiersMappingUpdater
+        );
     }
 
     public function it_is_pim_ai_adapter()
@@ -187,5 +194,14 @@ class PimAISpec extends ObjectBehavior
                 ],
             ]
         );
+    }
+
+    public function it_updates_the_identifiers_mapping(
+        IdentifiersMappingInterface $identifiersMappingUpdater,
+        IdentifiersMapping $mapping
+    ) {
+        $identifiersMappingUpdater->update($mapping)->shouldBeCalled();
+
+        $this->updateIdentifiersMapping($mapping);
     }
 }

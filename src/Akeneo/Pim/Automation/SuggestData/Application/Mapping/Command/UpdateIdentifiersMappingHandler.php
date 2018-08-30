@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -43,22 +44,22 @@ class UpdateIdentifiersMappingHandler
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
-    /** @var IdentifiersMappingInterface */
-    private $identifiersMappingWebService;
+    /** @var DataProviderInterface */
+    private $dataProvider;
 
     /**
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param IdentifiersMappingInterface           $identifiersMappingWebService
+     * @param DataProviderFactory                   $dataProviderFactory
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        IdentifiersMappingInterface $identifiersMappingWebService
+        DataProviderFactory $dataProviderFactory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
-        $this->identifiersMappingWebService = $identifiersMappingWebService;
+        $this->dataProvider = $dataProviderFactory->create();
     }
 
     /**
@@ -76,7 +77,7 @@ class UpdateIdentifiersMappingHandler
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingRepository->save($identifiersMapping);
-        $this->identifiersMappingWebService->update($identifiersMapping);
+        $this->dataProvider->updateIdentifiersMapping($identifiersMapping);
     }
 
     /**
