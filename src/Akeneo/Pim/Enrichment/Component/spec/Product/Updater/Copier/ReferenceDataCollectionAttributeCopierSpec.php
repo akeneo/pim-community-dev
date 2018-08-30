@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\ReferenceData\Updater\Copier;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;

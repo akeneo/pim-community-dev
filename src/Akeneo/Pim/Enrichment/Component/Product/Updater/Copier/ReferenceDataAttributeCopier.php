@@ -1,22 +1,21 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Updater\Copier;
+namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
- * Copy a reference data collection value attribute in other reference data collection value attribute
+ * Copy a reference data value attribute in other reference data value attribute
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
+class ReferenceDataAttributeCopier extends AbstractAttributeCopier
 {
     /**
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
@@ -74,22 +73,21 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     {
         $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
+
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
     }
 
     /**
-     * Copy single value
-     *
      * @param EntityWithValuesInterface $fromEntityWithValues
      * @param EntityWithValuesInterface $toEntityWithValues
      * @param AttributeInterface        $fromAttribute
      * @param AttributeInterface        $toAttribute
-     * @param string                    $fromLocale
-     * @param string                    $toLocale
-     * @param string                    $fromScope
-     * @param string                    $toScope
+     * @param string|null               $fromLocale
+     * @param string|null               $toLocale
+     * @param string|null               $fromScope
+     * @param string|null               $toScope
      */
     protected function copySingleValue(
         EntityWithValuesInterface $fromEntityWithValues,
@@ -102,31 +100,14 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         $toScope
     ) {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue) {
+        if (null !== $fromValue && null !== $fromValue->getData()) {
             $this->entityWithValuesBuilder->addOrReplaceValue(
                 $toEntityWithValues,
                 $toAttribute,
                 $toLocale,
                 $toScope,
-                $this->getReferenceDataCodes($fromValue)
+                $fromValue->getData()->getCode()
             );
         }
-    }
-
-    /**
-     * Gets the list of reference data codes contained in a product value collection.
-     *
-     * @param ValueInterface $fromValue
-     *
-     * @return string[]
-     */
-    protected function getReferenceDataCodes(ValueInterface $fromValue)
-    {
-        $referenceDataCodes = [];
-        foreach ($fromValue->getData() as $referenceData) {
-            $referenceDataCodes[] = $referenceData->getCode();
-        }
-
-        return $referenceDataCodes;
     }
 }

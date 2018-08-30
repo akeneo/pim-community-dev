@@ -1,6 +1,6 @@
 parameters:
-    pim_reference_data.updater.copier.reference_data_value.class: Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier
-    pim_reference_data.updater.copier.reference_data_collection_value.class: Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier
+    pim_reference_data.updater.copier.reference_data_value.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier
+    pim_reference_data.updater.copier.reference_data_collection_value.class: Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier
 
 services:
     pim_reference_data.updater.setter.reference_data_value:
