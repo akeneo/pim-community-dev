@@ -253,10 +253,10 @@ SQL;
         if ('text' === $result['attribute_type']) {
             $maxLength = (int) $additionnalProperties['max_length'];
 
-            if (true === $additionnalProperties['is_text_area']) {
+            if (true === $additionnalProperties['is_textarea']) {
                 $isRichTextEditor = $additionnalProperties['is_rich_text_editor'];
 
-                return TextAttribute::createTextArea(
+                return TextAttribute::createTextarea(
                     AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
                     EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
                     AttributeCode::fromString($code),

@@ -6,7 +6,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextAreaCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
@@ -42,7 +42,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
             return;
         }
 
-        if ($this->isTextAreaIsSetToTrue($editAttributeCommand, $databaseAttribute)) {
+        if ($this->isTextareaIsSetToTrue($editAttributeCommand, $databaseAttribute)) {
             if ($this->isValidationRuleUpdatedToSomethingElseThanNone($editAttributeCommand)) {
                 $this->buildViolationCannotUpdateValidationRuleToSomethingElseThanNone();
             }
@@ -93,21 +93,21 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         return $databaseAttribute instanceof TextAttribute;
     }
 
-    private function isTextAreaIsSetToTrue(EditAttributeCommand $editAttributeCommand, TextAttribute $databaseAttribute): bool
+    private function isTextareaIsSetToTrue(EditAttributeCommand $editAttributeCommand, TextAttribute $databaseAttribute): bool
     {
-        if ($this->hasTextAreaSet($editAttributeCommand)) {
-            $command = $editAttributeCommand->findCommand(EditIsTextAreaCommand::class);
+        if ($this->hasTextareaSet($editAttributeCommand)) {
+            $command = $editAttributeCommand->findCommand(EditIsTextareaCommand::class);
             if (null !== $command) {
-                return $command->isTextArea;
+                return $command->isTextarea;
             }
         }
 
-        return $databaseAttribute->isTextArea();
+        return $databaseAttribute->isTextarea();
     }
 
-    private function hasTextAreaSet(EditAttributeCommand $editAttributeCommand): bool
+    private function hasTextareaSet(EditAttributeCommand $editAttributeCommand): bool
     {
-        return null !== $editAttributeCommand->findCommand(EditIsTextAreaCommand::class);
+        return null !== $editAttributeCommand->findCommand(EditIsTextareaCommand::class);
     }
 
     private function isValidationRuleUpdatedToSomethingElseThanNone(EditAttributeCommand $editAttributeCommand): bool

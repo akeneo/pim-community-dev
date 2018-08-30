@@ -190,8 +190,8 @@ services:
         tags:
             - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
 
-    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_text_area:
-        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsTextAreaUpdater'
+    akeneo_enrichedentity.application.edit_attribute.attribute_updater.is_textarea:
+        class: 'Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\IsTextareaUpdater'
         tags:
             - { name: akeneo_enrichedentity.attribute_updater, priority: 120 }
 

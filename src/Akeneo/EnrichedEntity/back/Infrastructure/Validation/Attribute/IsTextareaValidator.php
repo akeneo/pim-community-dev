@@ -14,16 +14,16 @@ use Symfony\Component\Validator\Validation;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IsTextAreaValidator extends ConstraintValidator
+class IsTextareaValidator extends ConstraintValidator
 {
-    public function validate($isTextArea, Constraint $constraint)
+    public function validate($isTextarea, Constraint $constraint)
     {
-        if (!$constraint instanceof IsTextArea) {
+        if (!$constraint instanceof IsTextarea) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($isTextArea, [
+        $violations = $validator->validate($isTextarea, [
             new Assert\NotNull(),
             new Assert\Type('boolean'),
         ]);

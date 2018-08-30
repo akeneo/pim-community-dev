@@ -27,7 +27,7 @@ pim_enriched_entity:
                 should_exist: 'The attribute was not found for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
             regular_expression:
                 invalid_regular_expression: 'This regular expression is not valid.'
-            should_be_a_text_area_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
+            should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
             should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
             cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'

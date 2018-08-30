@@ -98,13 +98,13 @@ export default ({
       </div>
       <div className="AknFieldContainer" data-code="isTextarea">
         <div className="AknFieldContainer-header">
-          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.text_area">
-            {__('pim_enriched_entity.attribute.edit.input.text_area')}
+          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.textarea">
+            {__('pim_enriched_entity.attribute.edit.input.textarea')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Switch
-            id="pim_enriched_entity.attribute.edit.input.text_area"
+            id="pim_enriched_entity.attribute.edit.input.textarea"
             value={attribute.isTextarea.booleanValue()}
             onChange={(isTextarea: boolean) =>
               onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))

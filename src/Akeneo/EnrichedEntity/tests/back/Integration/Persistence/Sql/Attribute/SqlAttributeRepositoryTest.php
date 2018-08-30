@@ -19,7 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
@@ -59,7 +59,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::createTextArea(
+        $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
@@ -157,7 +157,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::createTextArea(
+        $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),

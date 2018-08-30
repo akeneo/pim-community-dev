@@ -87,8 +87,8 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxLength:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
-        isTextArea:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextArea: ~
+        isTextarea:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
         isRichTextEditor:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
         validationRule:
@@ -174,12 +174,12 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAll
         allowedExtensions:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextAreaCommand:
+Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand:
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
-        isTextArea:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextArea: ~
+        isTextarea:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
     group_sequence:

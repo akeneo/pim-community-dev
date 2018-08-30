@@ -17,6 +17,13 @@ class AttributeRegularExpression
 
     private function __construct(?string $regularExpression)
     {
+        if (null !== $regularExpression) {
+            if (false === @preg_match($regularExpression, '')) {
+                throw new \InvalidArgumentException(
+                    sprintf('Expect a valid regular expression, "%s" given', $regularExpression)
+                );
+            }
+        }
         $this->regularExpression = $regularExpression;
     }
 

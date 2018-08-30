@@ -49,7 +49,7 @@ module.exports = async function(cucumber) {
           type: 'text',
           labels: JSON.parse(normalizedAttribute.labels),
           max_length: 255,
-          is_text_area: false,
+          is_textarea: false,
           is_rich_text_editor: false,
           validation_rule: 'none',
           regular_expression: null,

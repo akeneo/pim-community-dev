@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
@@ -33,7 +33,7 @@ class TextAttributeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -52,9 +52,9 @@ class TextAttributeSpec extends ObjectBehavior
         $this->shouldHaveType(TextAttribute::class);
     }
 
-    function it_can_create_a_text_area_with_rich_text_editor()
+    function it_can_create_a_textarea_with_rich_text_editor()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -159,7 +159,7 @@ class TextAttributeSpec extends ObjectBehavior
         $this->hasOrder(AttributeOrder::fromInteger(1))->shouldReturn(false);
     }
 
-    function it_normalizes_a_text_area()
+    function it_normalizes_a_textarea()
     {
         $this->normalize()->shouldReturn([
                 'identifier'                 => [
@@ -175,7 +175,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
-                'is_text_area'               => true,
+                'is_textarea'               => true,
                 'is_rich_text_editor'        => false,
                 'validation_rule'            => 'none',
                 'regular_expression'         => null,
@@ -196,7 +196,7 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValuePerLocale::fromBoolean(true),
             AttributeMaxLength::fromInteger(300),
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
-            AttributeRegularExpression::fromString('\w+-[0-9]')
+            AttributeRegularExpression::fromString('/\w+-[0-9]/')
         )->normalize()->shouldReturn([
                 'identifier'                 => [
                     'enriched_entity_identifier' => 'designer',
@@ -211,10 +211,10 @@ class TextAttributeSpec extends ObjectBehavior
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
-                'is_text_area'               => false,
+                'is_textarea'               => false,
                 'is_rich_text_editor'        => false,
                 'validation_rule'            => 'regular_expression',
-                'regular_expression'         => '\w+-[0-9]',
+                'regular_expression'         => '/\w+-[0-9]/',
             ]
         );
     }
@@ -239,7 +239,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
-                'is_text_area'               => true,
+                'is_textarea'               => true,
                 'is_rich_text_editor'        => false,
                 'validation_rule'            => 'none',
                 'regular_expression'         => null,
@@ -264,7 +264,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 100,
-                'is_text_area'               => true,
+                'is_textarea'               => true,
                 'is_rich_text_editor'        => false,
                 'validation_rule'            => 'none',
                 'regular_expression'         => null,
@@ -289,7 +289,7 @@ class TextAttributeSpec extends ObjectBehavior
                 'value_per_locale'           => true,
                 'type'                       => 'text',
                 'max_length'                 => 300,
-                'is_text_area'               => true,
+                'is_textarea'               => true,
                 'is_rich_text_editor'        => false,
                 'validation_rule'            => 'none',
                 'regular_expression'         => null,
@@ -297,7 +297,7 @@ class TextAttributeSpec extends ObjectBehavior
         );
     }
 
-    function it_updates_the_validation_rule_of_a_simple_text_when_setting_the_is_text_area_flag_to_true()
+    function it_updates_the_validation_rule_of_a_simple_text_when_setting_the_is_textarea_flag_to_true()
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name'),
@@ -312,17 +312,17 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
             AttributeRegularExpression::fromString('/\w+/')
         ]);
-        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(true));
+        $this->setIsTextarea(AttributeIsTextarea::fromBoolean(true));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo('none');
         $normalizedAttribute['regular_expression']->shouldBeNull();
     }
 
-    function it_updates_the_optional_options_to_default_values_when_changing_the_is_text_area_flag()
+    function it_updates_the_optional_options_to_default_values_when_changing_the_is_textarea_flag()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -334,17 +334,17 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300),
             AttributeIsRichTextEditor::fromBoolean(true)
         ]);
-        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(false));
+        $this->setIsTextarea(AttributeIsTextarea::fromBoolean(false));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(false);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo('none');
         $normalizedAttribute['regular_expression']->shouldBeNull();
     }
 
-    function it_does_not_update_optional_options_if_it_updates_the_is_text_area_flag_to_the_same_value()
+    function it_does_not_update_optional_options_if_it_updates_the_is_textarea_flag_to_the_same_value()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -356,9 +356,9 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300),
             AttributeIsRichTextEditor::fromBoolean(true)
         ]);
-        $this->setIsTextArea(AttributeIsTextArea::fromBoolean(true));
+        $this->setIsTextarea(AttributeIsTextarea::fromBoolean(true));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(true);
     }
 
@@ -379,7 +379,7 @@ class TextAttributeSpec extends ObjectBehavior
         ]);
         $this->setValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::EMAIL);
         $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeRegularExpression::EMPTY);
     }
@@ -401,14 +401,14 @@ class TextAttributeSpec extends ObjectBehavior
         ]);
         $this->setValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::EMAIL);
         $normalizedAttribute['regular_expression']->shouldBeEqualTo(AttributeRegularExpression::EMPTY);
     }
 
-    function it_does_not_update_the_validation_rule_a_text_area_attribute_if_the_validation_rule_is_not_none()
+    function it_does_not_update_the_validation_rule_a_textarea_attribute_if_the_validation_rule_is_not_none()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -423,9 +423,9 @@ class TextAttributeSpec extends ObjectBehavior
         $this->shouldThrow(\LogicException::class)->duringSetValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::EMAIL));
     }
 
-    function it_updates_the_validation_rule_of_a_text_area_attribute_if_the_validation_rule_is_none()
+    function it_updates_the_validation_rule_of_a_textarea_attribute_if_the_validation_rule_is_none()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -441,9 +441,9 @@ class TextAttributeSpec extends ObjectBehavior
         $this->normalize()['validation_rule']->shouldBeEqualTo('none');
     }
 
-    function it_updates_the_regular_expression_of_a_text_area_attribute_if_the_regular_expression_is_empty()
+    function it_updates_the_regular_expression_of_a_textarea_attribute_if_the_regular_expression_is_empty()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -476,14 +476,14 @@ class TextAttributeSpec extends ObjectBehavior
         ]);
         $this->setRegularExpression(AttributeRegularExpression::fromString('/\w+/'));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(false);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(false);
         $normalizedAttribute['validation_rule']->shouldBeEqualTo(AttributeValidationRule::REGULAR_EXPRESSION);
         $normalizedAttribute['regular_expression']->shouldBeEqualTo('/\w+/');
     }
 
-    function it_does_not_update_the_regular_expression_if_the_is_text_area_flag_is_true()
+    function it_does_not_update_the_regular_expression_if_the_is_textarea_flag_is_true()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -516,9 +516,9 @@ class TextAttributeSpec extends ObjectBehavior
         $this->shouldThrow(\LogicException::class)->duringSetRegularExpression(AttributeRegularExpression::fromString('/\w+/'));
     }
 
-    function it_tells_if_it_is_a_text_area()
+    function it_tells_if_it_is_a_textarea()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -530,12 +530,12 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300),
             AttributeIsRichTextEditor::fromBoolean(true)
         ]);
-        $this->isTextArea()->shouldBeEqualTo(true);
+        $this->isTextarea()->shouldBeEqualTo(true);
     }
 
-    function it_updates_the_is_rich_text_editor_flag_of_a_text_area_attribute()
+    function it_updates_the_is_rich_text_editor_flag_of_a_textarea_attribute()
     {
-        $this->beConstructedThrough('createTextArea', [
+        $this->beConstructedThrough('createTextarea', [
             AttributeIdentifier::create('designer', 'name'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
@@ -549,11 +549,11 @@ class TextAttributeSpec extends ObjectBehavior
         ]);
         $this->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
         $normalizedAttribute = $this->normalize();
-        $normalizedAttribute['is_text_area']->shouldBeEqualTo(true);
+        $normalizedAttribute['is_textarea']->shouldBeEqualTo(true);
         $normalizedAttribute['is_rich_text_editor']->shouldBeEqualTo(true);
     }
 
-    function it_does_not_update_the_is_rich_text_editor_flag_if_the_text_area_flag_is_false()
+    function it_does_not_update_the_is_rich_text_editor_flag_if_the_textarea_flag_is_false()
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name'),
@@ -571,7 +571,7 @@ class TextAttributeSpec extends ObjectBehavior
         $this->shouldThrow(\LogicException::class)->duringSetIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
     }
 
-    function it_does_updates_the_is_rich_text_editor_flag_if_the_text_area_flag_is_false()
+    function it_does_updates_the_is_rich_text_editor_flag_if_the_textarea_flag_is_false()
     {
         $this->beConstructedThrough('createText', [
             AttributeIdentifier::create('designer', 'name'),

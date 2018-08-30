@@ -32,7 +32,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
                 en_US: 'Description',
               },
               max_length: 12,
-              is_text_area: true,
+              is_textarea: true,
               is_rich_text_editor: false,
               validation_rule: 'none',
               regular_expression: null,

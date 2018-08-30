@@ -35,7 +35,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = 155;
-        $command->isTextArea = false;
+        $command->isTextarea = false;
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
@@ -53,7 +53,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'value_per_locale'           => false,
             'type'                       => 'text',
             'max_length'                 => 155,
-            'is_text_area'               => false,
+            'is_textarea'               => false,
             'is_rich_text_editor'        => false,
             'validation_rule'            => 'none',
             'regular_expression'         => null,
@@ -72,7 +72,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = 155;
-        $command->isTextArea = false;
+        $command->isTextarea = false;
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
@@ -87,7 +87,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'value_per_locale'           => false,
             'type'                       => 'text',
             'max_length'                 => 155,
-            'is_text_area'               => false,
+            'is_textarea'               => false,
             'is_rich_text_editor'        => false,
             'validation_rule'            => 'none',
             'regular_expression'         => null,
@@ -128,7 +128,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'value_per_locale'           => false,
             'type'                       => 'text',
             'max_length'                 => null,
-            'is_text_area'               => false,
+            'is_textarea'               => false,
             'is_rich_text_editor'        => false,
             'validation_rule'            => 'none',
             'regular_expression'         => null,
@@ -152,7 +152,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = AttributeMaxLength::NO_LIMIT;
-        $command->isTextArea = false;
+        $command->isTextarea = false;
         $command->validationRule = AttributeValidationRule::REGULAR_EXPRESSION;
         $command->regularExpression = '/\w+/';
 
@@ -170,14 +170,14 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'value_per_locale'           => false,
             'type'                       => 'text',
             'max_length'                 => null,
-            'is_text_area'               => false,
+            'is_textarea'               => false,
             'is_rich_text_editor'        => false,
             'validation_rule'            => 'regular_expression',
             'regular_expression'         => '/\w+/',
         ]);
     }
 
-    function it_creates_a_text_area_with_rich_editor()
+    function it_creates_a_textarea_with_rich_editor()
     {
         $command = new CreateTextAttributeCommand();
         $command->identifier = ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'];
@@ -189,7 +189,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->valuePerChannel = false;
         $command->valuePerLocale = false;
         $command->maxLength = 155;
-        $command->isTextArea = true;
+        $command->isTextarea = true;
         $command->isRichTextEditor = true;
 
         $this->create($command)->normalize()->shouldReturn([
@@ -203,7 +203,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
             'value_per_locale'           => false,
             'type'                       => 'text',
             'max_length'                 => 155,
-            'is_text_area'               => true,
+            'is_textarea'               => true,
             'is_rich_text_editor'        => true,
             'validation_rule'            => 'none',
             'regular_expression'         => null,

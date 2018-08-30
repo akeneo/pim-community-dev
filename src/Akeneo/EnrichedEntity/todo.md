@@ -28,10 +28,8 @@
 - open quick edit after attribute create
 - split create and edit model in files
 - add acceptance test for attribute edit validation (front)
-
-Specific back-end:
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
-  (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint)
+  (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
 
 
 DONE:

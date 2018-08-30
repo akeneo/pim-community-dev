@@ -10,6 +10,6 @@ use Symfony\Component\Validator\Constraint;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IsTextArea extends Constraint
+class IsTextarea extends Constraint
 {
 }

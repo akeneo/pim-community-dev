@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextArea;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
@@ -161,8 +161,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $nameAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $nameAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $nameAttribute->maxLength = AttributeMaxLength::fromInteger(155);
-        $nameAttribute->isTextArea = AttributeIsTextArea::fromBoolean(true);
-        $nameAttribute->isRichTextEditor = AttributeIsTextArea::fromBoolean(true);
+        $nameAttribute->isTextarea = AttributeIsTextarea::fromBoolean(true);
+        $nameAttribute->isRichTextEditor = AttributeIsTextarea::fromBoolean(true);
         $nameAttribute->validationRule = AttributeValidationRule::none();
         $nameAttribute->regularExpression = AttributeRegularExpression::createEmpty();
 
@@ -181,8 +181,8 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $emailAttribute->valuePerChannel = AttributeValuePerChannel::fromBoolean(true);
         $emailAttribute->valuePerLocale = AttributeValuePerLocale::fromBoolean(true);
         $emailAttribute->maxLength = AttributeMaxLength::fromInteger(155);
-        $emailAttribute->isTextArea = AttributeIsTextArea::fromBoolean(false);
-        $emailAttribute->isRichTextEditor = AttributeIsTextArea::fromBoolean(false);
+        $emailAttribute->isTextarea = AttributeIsTextarea::fromBoolean(false);
+        $emailAttribute->isRichTextEditor = AttributeIsTextarea::fromBoolean(false);
         $emailAttribute->validationRule = AttributeValidationRule::fromString(AttributeValidationRule::EMAIL);
         $emailAttribute->regularExpression = AttributeRegularExpression::createEmpty();
 

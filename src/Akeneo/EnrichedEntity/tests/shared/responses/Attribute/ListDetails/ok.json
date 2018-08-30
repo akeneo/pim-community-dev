@@ -17,7 +17,7 @@
       "value_per_channel": true,
       "max_length": 155,
       "type": "text",
-      "is_text_area": true,
+      "is_textarea": true,
       "is_rich_text_editor": true,
       "validation_rule": "none",
       "regular_expression": null
@@ -38,7 +38,7 @@
       "value_per_channel": true,
       "max_length": 155,
       "type": "text",
-      "is_text_area": false,
+      "is_textarea": false,
       "is_rich_text_editor": false,
       "validation_rule": "email",
       "regular_expression": null
