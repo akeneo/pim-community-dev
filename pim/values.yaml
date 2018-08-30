@@ -7,6 +7,7 @@ global:
     enabled: false
 common:
   extraLabels: []
+  gcpProjectID: default
   pimMasterUrl: nil
   retailerUrl: nil
   mailgunPassword: generateme
