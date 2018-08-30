@@ -2,8 +2,8 @@
 
 namespace Pim\Component\ReferenceData;
 
-use Pim\Component\ReferenceData\Model\ReferenceDataConfiguration;
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfiguration;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

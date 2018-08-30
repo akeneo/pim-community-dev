@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 
 class ReferenceDataFilterSpec extends ObjectBehavior

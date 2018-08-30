@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Model;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 /**
  * Reference data configuration interface

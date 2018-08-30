@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Prophecy\Argument;
 
 class ReferenceDataUniqueCodeCheckerSpec extends ObjectBehavior

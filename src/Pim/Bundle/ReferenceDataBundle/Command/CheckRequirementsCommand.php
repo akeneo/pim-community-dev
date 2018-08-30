@@ -11,7 +11,7 @@ use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueAccessorsCheck
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

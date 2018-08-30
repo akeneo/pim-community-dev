@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Checks if the ReferenceData has a valid name.

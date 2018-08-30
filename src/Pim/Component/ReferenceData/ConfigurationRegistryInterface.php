@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData;
 
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Reference data configuration registry interface

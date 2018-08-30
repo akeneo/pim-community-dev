@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior

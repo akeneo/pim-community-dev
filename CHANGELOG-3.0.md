@@ -12,6 +12,8 @@
 
 ## BC breaks
 
+- Move `Pim\Component\ReferenceData\Model\Configuration` to `Akeneo\Pim\Structure\Component\Model\ReferenceDataConfiguration`
+- Move `Pim\Component\ReferenceData\Model\ConfigurationInterface` to `Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface`
 - Move `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue`
 - Move `Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface`
 - Move `Pim\Component\ReferenceData\Value\ReferenceDataValue` to `Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue`

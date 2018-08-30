@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\ReferenceData\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 
 /**
  * Checks if the ReferenceData has a unique code constraint.
