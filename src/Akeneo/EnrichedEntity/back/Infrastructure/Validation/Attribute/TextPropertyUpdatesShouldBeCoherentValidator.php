@@ -43,20 +43,25 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         }
 
         if ($this->isTextareaIsSetToTrue($editAttributeCommand, $databaseAttribute)) {
-            if ($this->isValidationRuleUpdatedToSomethingElseThanNone($editAttributeCommand)) {
+            if ($this->willHaveValidationRuleUpdatedToSomethingElseThanNone($editAttributeCommand)) {
                 $this->buildViolationCannotUpdateValidationRuleToSomethingElseThanNone();
             }
-            if ($this->isRegularExpressionNotEmpty($editAttributeCommand)) {
+            if ($this->willBeRegularExpressionNotEmpty($editAttributeCommand)) {
                 $this->buildViolationCannotSetANonEmptyRegularExpression();
             }
         } else {
-            if ($this->isRichTextEditorSetToTrue($editAttributeCommand)) {
+            if ($this->willHaveRichTextEditorSetToTrue($editAttributeCommand)) {
                 $this->buildViolationCannotSetRichTextEditorToTrue();
             }
             if (!$this->isValidationRuleSetToRegularExpression($editAttributeCommand, $databaseAttribute)
-                && $this->isRegularExpressionNotEmpty($editAttributeCommand)
+                && $this->willBeRegularExpressionNotEmpty($editAttributeCommand)
             ) {
                 $this->buildViolationCannotUpdateRegularExpression();
+            }
+            if ($this->willHaveValidationRuleSetToRegularExpression($editAttributeCommand)
+                && !$this->willBeRegularExpressionNotEmpty($editAttributeCommand)
+            ) {
+                $this->buildViolationRegularExpressionShouldNotBeEmpty();
             }
         }
     }
@@ -95,7 +100,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
 
     private function isTextareaIsSetToTrue(EditAttributeCommand $editAttributeCommand, TextAttribute $databaseAttribute): bool
     {
-        if ($this->hasTextareaSet($editAttributeCommand)) {
+        if ($this->willHaveTextareaUpdate($editAttributeCommand)) {
             $command = $editAttributeCommand->findCommand(EditIsTextareaCommand::class);
             if (null !== $command) {
                 return $command->isTextarea;
@@ -105,33 +110,33 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         return $databaseAttribute->isTextarea();
     }
 
-    private function hasTextareaSet(EditAttributeCommand $editAttributeCommand): bool
+    private function willHaveTextareaUpdate(EditAttributeCommand $editAttributeCommand): bool
     {
         return null !== $editAttributeCommand->findCommand(EditIsTextareaCommand::class);
     }
 
-    private function isValidationRuleUpdatedToSomethingElseThanNone(EditAttributeCommand $editAttributeCommand): bool
+    private function willHaveValidationRuleUpdatedToSomethingElseThanNone(EditAttributeCommand $editAttributeCommand): bool
     {
         $command = $editAttributeCommand->findCommand(EditValidationRuleCommand::class);
 
         return null !== $command && AttributeValidationRule::NONE !== $command->validationRule;
     }
 
-    private function isRichTextEditorSetToTrue(EditAttributeCommand $editAttributeCommand)
+    private function willHaveRichTextEditorSetToTrue(EditAttributeCommand $editAttributeCommand)
     {
         $command = $editAttributeCommand->findCommand(EditIsRichTextEditorCommand::class);
 
         return null !== $command && true === $command->isRichTextEditor;
     }
 
-    private function isRegularExpressionNotEmpty(EditAttributeCommand $editAttributeCommand): bool
+    private function willBeRegularExpressionNotEmpty(EditAttributeCommand $editAttributeCommand): bool
     {
         $command = $editAttributeCommand->findCommand(EditRegularExpressionCommand::class);
 
         return null !== $command && null !== $command->regularExpression;
     }
 
-    private function hasValidationRuleSetToRegularExpression(EditAttributeCommand $editAttributeCommand): bool
+    private function willHaveValidationRuleSetToRegularExpression(EditAttributeCommand $editAttributeCommand): bool
     {
         $command = $editAttributeCommand->findCommand(EditValidationRuleCommand::class);
 
@@ -144,7 +149,7 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         EditAttributeCommand $editAttributeCommand,
         TextAttribute $databaseAttribute
     ): bool {
-        if ($this->hasValidationRuleSetToRegularExpression($editAttributeCommand)) {
+        if ($this->willHaveValidationRuleSetToRegularExpression($editAttributeCommand)) {
             return true;
         }
 
@@ -171,6 +176,13 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
     private function buildViolationCannotUpdateRegularExpression()
     {
         $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::CANNOT_UPDATE_REGULAR_EXPRESSION)
+            ->addViolation();
+    }
+
+    private function buildViolationRegularExpressionShouldNotBeEmpty(): void
+    {
+        $this->context->buildViolation(TextPropertyUpdatesShouldBeCoherent::REGULAR_EXPRESSION_SHOULD_NOT_BE_EMPTY)
+            ->atPath('regularExpression')
             ->addViolation();
     }
 }

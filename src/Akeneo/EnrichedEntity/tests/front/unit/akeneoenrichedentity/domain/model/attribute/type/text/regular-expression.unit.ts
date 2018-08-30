@@ -16,14 +16,14 @@ describe('akeneo > attribute > domain > model > attribute > type > text --- Regu
   });
   test('I can create a RegularExpression from string', () => {
     expect(RegularExpression.createFromString('12').normalize()).toEqual('12');
-    expect(RegularExpression.createFromString('').normalize()).toEqual('');
+    expect(RegularExpression.createFromString('').normalize()).toEqual(null);
     expect(RegularExpression.createFromString('').stringValue()).toEqual('');
     expect(RegularExpression.createFromString('12').stringValue()).toEqual('12');
     expect(() => RegularExpression.createFromString({my: 'object'})).toThrow();
   });
   test('I can know if the RegularExpression is null', () => {
     expect(RegularExpression.createFromString('12').isNull()).toEqual(false);
-    expect(RegularExpression.createFromString('').isNull()).toEqual(false);
+    expect(RegularExpression.createFromString('').isNull()).toEqual(true);
     expect(RegularExpression.createFromNormalized(null).isNull()).toEqual(true);
   });
 });

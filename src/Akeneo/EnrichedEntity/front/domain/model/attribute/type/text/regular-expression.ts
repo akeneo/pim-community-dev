@@ -8,7 +8,7 @@ export class RegularExpression implements NormalizableAdditionalProperty {
     Object.freeze(this);
   }
   public static isValid(value: any): boolean {
-    return null === value || typeof value === 'string';
+    return null === value || (typeof value === 'string' && value.length > 0);
   }
   public static createFromNormalized(normalizedRegularExpression: NormalizedRegularExpression) {
     return new RegularExpression(normalizedRegularExpression);
@@ -17,7 +17,7 @@ export class RegularExpression implements NormalizableAdditionalProperty {
     return this.regularExpression;
   }
   public static createFromString(regularExpression: string) {
-    return new RegularExpression(regularExpression);
+    return new RegularExpression('' === regularExpression ? null : regularExpression);
   }
   public stringValue(): string {
     return null === this.regularExpression ? '' : this.regularExpression.toString();

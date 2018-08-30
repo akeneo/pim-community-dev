@@ -88,19 +88,11 @@ const textAttributeReducer = (
         return normalizedAttribute;
       }
 
-      let regularExpression = null;
-      if (ValidationRuleOption.RegularExpression === validation_rule) {
-        if (null === normalizedAttribute.regular_expression) {
-          regularExpression = '';
-        } else {
-          regularExpression = normalizedAttribute.regular_expression;
-        }
-      }
-
       return {
         ...normalizedAttribute,
         validation_rule,
-        regular_expression: regularExpression,
+        regular_expression:
+          ValidationRuleOption.RegularExpression !== validation_rule ? null : normalizedAttribute.regular_expression,
       };
     case 'regular_expression':
       const regular_expression = propertyValue as NormalizedRegularExpression;

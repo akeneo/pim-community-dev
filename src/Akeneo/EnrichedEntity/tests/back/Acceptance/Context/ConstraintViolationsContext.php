@@ -84,13 +84,23 @@ final class ConstraintViolationsContext implements Context
             }
         }
 
+        $message = sprintf(
+            'Expected violation on property "%s" with message "%s" not found.',
+            $expectedPropertyPath,
+            $expectedMessage
+        );
+        if ($this->hasViolations()) {
+            $message = sprintf(
+                'Expected violation on property "%s" with message "%s" not found. but one found with "%s"',
+                $expectedPropertyPath,
+                $expectedMessage,
+                $this->violations->get(0)->getMessage()
+            );
+        }
+
         Assert::assertTrue(
             $found,
-            sprintf(
-                'Expected violation on property "%s" with message "%s" not found.',
-                $expectedPropertyPath,
-                $expectedMessage
-            )
+            $message
         );
     }
 
