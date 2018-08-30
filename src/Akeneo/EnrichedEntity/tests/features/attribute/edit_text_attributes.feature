@@ -162,6 +162,7 @@ Feature: Edit a text attribute of an enriched entity
       | invalid_regular_expression | message                               |
       | 154                        | This value should be of type string.  |
       | "a*"                       | This regular expression is not valid. |
+      | ""                         | This regular expression is not valid. |
 
   @acceptance-back
   Scenario: Updating the regular expression if it's not a simple text fails

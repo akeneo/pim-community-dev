@@ -33,4 +33,10 @@ class AttributeRegularExpressionSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn('/\w+/');
     }
+
+    function it_cannot_be_created_with_an_invalid_regular_expression()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('fromString', ['invalid_regular_expression']);
+    }
 }

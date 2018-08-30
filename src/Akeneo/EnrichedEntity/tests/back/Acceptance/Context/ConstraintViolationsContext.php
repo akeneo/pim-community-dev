@@ -87,7 +87,7 @@ final class ConstraintViolationsContext implements Context
         Assert::assertTrue(
             $found,
             sprintf(
-                'Expected violation with on property "%s" and message "%s" not found.',
+                'Expected violation on property "%s" with message "%s" not found.',
                 $expectedPropertyPath,
                 $expectedMessage
             )
