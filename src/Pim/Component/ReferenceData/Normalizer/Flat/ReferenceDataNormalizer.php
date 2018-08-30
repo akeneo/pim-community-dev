@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData\Normalizer\Flat;
 
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

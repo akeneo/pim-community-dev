@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 class ReferenceDataIdResolverSpec extends ObjectBehavior

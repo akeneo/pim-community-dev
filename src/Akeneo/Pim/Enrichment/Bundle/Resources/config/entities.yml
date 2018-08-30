@@ -13,3 +13,4 @@ parameters:
     pim_catalog.entity.metric.class:                       Akeneo\Pim\Enrichment\Component\Product\Model\Metric
     pim_catalog.entity.product_price.class:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice
     pim_comment.entity.comment.class: Akeneo\Pim\Enrichment\Component\Comment\Model\Comment
+    pim_reference_data.model.abstract_reference_data.class: Akeneo\Pim\Enrichment\Component\Product\Model\AbstractReferenceData

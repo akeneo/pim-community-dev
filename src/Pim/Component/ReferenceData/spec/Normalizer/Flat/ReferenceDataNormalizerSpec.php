@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\ReferenceData\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior
 {

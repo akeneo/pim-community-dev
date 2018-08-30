@@ -3,7 +3,7 @@
 namespace Pim\Component\ReferenceData\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 /**
  * Reference data repository interface

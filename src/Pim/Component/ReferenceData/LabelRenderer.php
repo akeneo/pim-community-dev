@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData;
 
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 /**
  * Renders a reference data label: displays either the label or the [code] of the reference data.

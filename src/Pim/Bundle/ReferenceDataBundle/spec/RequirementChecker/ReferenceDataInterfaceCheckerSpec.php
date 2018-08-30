@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
 {
@@ -27,7 +27,7 @@ class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please implement "Pim\Component\ReferenceData\Model\ReferenceDataInterface" for your Reference Data model "\StdClass".'
+            'Please implement "Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface" for your Reference Data model "\StdClass".'
         );
     }
 }

@@ -5,7 +5,7 @@ namespace spec\Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\LabelRenderer;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Prophecy\Argument;
 
