@@ -31,9 +31,9 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
         $upsell = $associationTypeRepository->findOneByIdentifier('UPSELL');
 
         $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
-        $this->assertSame(['productB'], $query->getCodes($productA->getAssociationForType($xsell)));
-        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getAssociationForType($pack)));
-        $this->assertSame([], $query->getCodes($productA->getAssociationForType($upsell)));
+        $this->assertSame(['productB'], $query->getCodes($productA->getId(), $productA->getAssociationForType($xsell)));
+        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getId(), $productA->getAssociationForType($pack)));
+        $this->assertSame([], $query->getCodes($productA->getId(), $productA->getAssociationForType($upsell)));
     }
 
     /**
