@@ -26,6 +26,7 @@ define(
             loadingMask: null,
             updateFailureMessage: __('pim_enrich.entity.fallback.flash.update.fail'),
             updateSuccessMessage: __('pim_enrich.entity.fallback.flash.update.success'),
+            isFlash: true,
             label: __('pim_common.save'),
 
             /**
@@ -90,7 +91,8 @@ define(
 
                 messenger.notify(
                     'success',
-                    this.updateSuccessMessage
+                    this.updateSuccessMessage,
+                    {flash: this.isFlash}
                 );
             },
 
