@@ -13,6 +13,7 @@
 - PIM-7631: Fix API filter product and product model on date with between operator
 - PIM-7613: Fix translations of boolean attributes
 - PIM-7609: Handle 'empty' and 'not empty' filter types in string filter
+- PIM-7484: Search families and family variants regardless of the current locale
 
 # 2.3.5 (2018-08-22)
 

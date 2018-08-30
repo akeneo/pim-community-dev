@@ -37,13 +37,9 @@ class FamilyVariantSearchableRepository implements SearchableRepositoryInterface
         $qb = $this->entityManager->createQueryBuilder()->select('fv')->from($this->entityName, 'fv');
 
         if (null !== $search && '' !== $search) {
-            $qb->where('fv.code like :search')->setParameter('search', '%' . $search . '%');
-            if (isset($options['catalogLocale'])) {
-                $qb->leftJoin('fv.translations', 'fvt');
-                $qb->orWhere('fvt.label like :search AND fvt.locale = :locale');
-                $qb->setParameter('search', '%' . $search . '%');
-                $qb->setParameter('locale', $options['catalogLocale']);
-            }
+            $qb->leftJoin('fv.translations', 'fvt');
+            $qb->andWhere('fv.code like :search OR fvt.label like :search');
+            $qb->setParameter('search', '%' . $search . '%');
         }
 
         $qb = $this->applyQueryOptions($qb, $options);

@@ -42,14 +42,9 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
         $qb = $this->entityManager->createQueryBuilder()->select('f')->from($this->entityName, 'f');
 
         if (null !== $search && '' !== $search) {
-            $qb->where('f.code like :search')->setParameter('search', '%' . $search . '%');
-            if (isset($options['locale'])) {
-                $qb->leftJoin('f.translations', 'ft');
-                $qb->orWhere('ft.label like :search AND ft.locale = :locale');
-                $qb->groupBy('f.code');
-                $qb->setParameter('search', '%' . $search . '%');
-                $qb->setParameter('locale', $options['locale']);
-            }
+            $qb->leftJoin('f.translations', 'ft');
+            $qb->andWhere('f.code like :search OR ft.label like :search');
+            $qb->setParameter('search', '%' . $search . '%');
         }
 
         $qb = $this->applyQueryOptions($qb, $options);
