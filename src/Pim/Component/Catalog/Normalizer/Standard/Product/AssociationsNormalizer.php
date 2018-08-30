@@ -51,6 +51,11 @@ class AssociationsNormalizer implements NormalizerInterface
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
     }
 
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return array
+     */
     private function getAncestorProducts(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
     {
         $parent = $entityWithFamilyVariant->getParent();
