@@ -11,8 +11,6 @@
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-
 /**
  * Fake identifiers mapping updater
  *
@@ -23,7 +21,7 @@ class IdentifiersMappingFake implements IdentifiersMappingInterface
     /**
      * {@inheritdoc}
      */
-    public function update(IdentifiersMapping $mapping): void
+    public function update(array $mapping): void
     {
     }
 }

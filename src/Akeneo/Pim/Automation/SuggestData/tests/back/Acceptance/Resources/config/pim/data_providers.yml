@@ -6,6 +6,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.pimai_client.subscription_fake'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping_fake'
+            - '@akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping'
         tags:
             - { name: 'akeneo.pim.automation.suggest_data.data_provider', alias: 'pim_ai' }
 

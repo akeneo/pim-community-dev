@@ -13,7 +13,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  * file that was distributed with this source code.
  */
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 
@@ -30,33 +29,27 @@ class IdentifiersMappingWebService implements IdentifiersMappingInterface
     /** @var Client */
     private $httpClient;
 
-    /** @var IdentifiersMappingNormalizer */
-    private $normalizer;
-
     /**
-     * @param UriGenerator                 $uriGenerator
-     * @param Client                       $httpClient
-     * @param IdentifiersMappingNormalizer $normalizer
+     * @param UriGenerator $uriGenerator
+     * @param Client       $httpClient
      */
     public function __construct(
         UriGenerator $uriGenerator,
-        Client $httpClient,
-        IdentifiersMappingNormalizer $normalizer
+        Client $httpClient
     ) {
         $this->uriGenerator = $uriGenerator;
         $this->httpClient = $httpClient;
-        $this->normalizer = $normalizer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function update(IdentifiersMapping $mapping): void
+    public function update(array $mapping): void
     {
         $route = $this->uriGenerator->generate('/mapping/identifiers');
 
         $this->httpClient->request('PUT', $route, [
-            'form_params' => $this->normalizer->normalize($mapping),
+            'form_params' => $mapping,
         ]);
     }
 }

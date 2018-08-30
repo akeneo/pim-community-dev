@@ -22,6 +22,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientExce
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
@@ -37,13 +38,15 @@ class PimAISpec extends ObjectBehavior
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        IdentifiersMappingInterface $identifiersMappingUpdater
+        IdentifiersMappingInterface $identifiersMappingUpdater,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
         $this->beConstructedWith(
             $authenticationApi,
             $subscriptionApi,
             $identifiersMappingRepository,
-            $identifiersMappingUpdater
+            $identifiersMappingUpdater,
+            $identifiersMappingNormalizer
         );
     }
 
@@ -166,14 +169,24 @@ class PimAISpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
     }
 
-    /**
-     * @param SubscriptionWebservice $subscriptionApi
-     */
     public function it_fetches_products_from_pim_ai($subscriptionApi)
     {
         $subscriptionApi
             ->fetchProducts()
             ->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
+    }
+
+    public function it_updates_the_identifiers_mapping(
+        IdentifiersMappingInterface $identifiersMappingUpdater,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
+        IdentifiersMapping $mapping
+    ) {
+        $normalizedMapping = ['foo' => 'bar'];
+
+        $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
+        $identifiersMappingUpdater->update($normalizedMapping)->shouldBeCalled();
+
+        $this->updateIdentifiersMapping($mapping);
     }
 
     /**
@@ -194,14 +207,5 @@ class PimAISpec extends ObjectBehavior
                 ],
             ]
         );
-    }
-
-    public function it_updates_the_identifiers_mapping(
-        IdentifiersMappingInterface $identifiersMappingUpdater,
-        IdentifiersMapping $mapping
-    ) {
-        $identifiersMappingUpdater->update($mapping)->shouldBeCalled();
-
-        $this->updateIdentifiersMapping($mapping);
     }
 }

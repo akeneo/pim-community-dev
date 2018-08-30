@@ -23,6 +23,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingReposi
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 
 /**
@@ -42,7 +43,10 @@ class PimAI implements DataProviderInterface
     private $identifiersMappingRepository;
 
     /** @var IdentifiersMappingInterface */
-    private $identifierMappingUpdater;
+    private $identifiersMappingUpdater;
+
+    /** @var IdentifiersMappingNormalizer */
+    private $identifiersMappingNormalizer;
 
     /**
      * @param AuthenticationApiInterface $authenticationApi
@@ -53,12 +57,14 @@ class PimAI implements DataProviderInterface
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        IdentifiersMappingInterface $identifierMappingUpdater
+        IdentifiersMappingInterface $identifierMappingUpdater,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
-        $this->identifierMappingUpdater = $identifierMappingUpdater;
+        $this->identifiersMappingUpdater = $identifierMappingUpdater;
+        $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
     }
 
     /**
@@ -121,6 +127,6 @@ class PimAI implements DataProviderInterface
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
-        $this->identifierMappingUpdater->update($identifiersMapping);
+        $this->identifiersMappingUpdater->update($this->identifiersMappingNormalizer->normalize($identifiersMapping));
     }
 }

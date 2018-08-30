@@ -13,8 +13,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  * file that was distributed with this source code.
  */
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-
 /**
  * Interface for the API Service to manage identifiers mapping
  *
@@ -24,8 +22,9 @@ interface IdentifiersMappingInterface
 {
     /**
      * Call the API to update the identifiers mapping
+     * @see Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingNormalizer
      *
      * @param array $mapping
      */
-    public function update(IdentifiersMapping $mapping): void;
+    public function update(array $mapping): void;
 }

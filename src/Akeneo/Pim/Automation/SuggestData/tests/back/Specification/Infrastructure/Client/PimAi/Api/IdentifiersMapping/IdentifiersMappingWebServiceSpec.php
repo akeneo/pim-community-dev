@@ -24,10 +24,9 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
 {
     public function let(
         UriGenerator $uriGenerator,
-        Client $httpClient,
-        IdentifiersMappingNormalizer $normalizer
+        Client $httpClient
     ) {
-        $this->beConstructedWith($uriGenerator, $httpClient, $normalizer);
+        $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
     public function it_is_subscription_collection()
@@ -38,7 +37,6 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
     public function it_should_update_mapping(
         UriGenerator $uriGenerator,
         Client $httpClient,
-        IdentifiersMappingNormalizer $normalizer,
         IdentifiersMapping $mapping
     ) {
         $normalizedMapping = ['foo' => 'bar'];
@@ -47,13 +45,10 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
         $uriGenerator->generate('/mapping/identifiers')
             ->shouldBeCalled()
             ->willReturn($generatedRoute);
-        $normalizer->normalize($mapping)
-            ->shouldBeCalled()
-            ->willReturn($normalizedMapping);
         $httpClient->request('PUT', $generatedRoute, [
             'form_params' => $normalizedMapping
         ])->shouldBeCalled();
 
-        $this->update($mapping);
+        $this->update($normalizedMapping);
     }
 }
