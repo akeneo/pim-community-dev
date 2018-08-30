@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.

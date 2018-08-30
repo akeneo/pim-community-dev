@@ -22,7 +22,7 @@ interface IdentifiersMappingInterface
 {
     /**
      * Call the API to update the identifiers mapping
-     * @see Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingNormalizer
+     * @see Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer
      *
      * @param array $mapping
      */
