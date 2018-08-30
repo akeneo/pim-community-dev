@@ -21,7 +21,7 @@ pim_enriched_entity:
                 should_be_a_number: 'This value should be a number.'
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
-                reserved_codes: 'This field cannot contain has any of the following value "%comma_separated_reserved_keywords%"'
+                reserved_codes: 'The code cannot be any of those values: "%comma_separated_reserved_keywords%"'
             identifier:
                 should_not_exist: 'The attribute already exists for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
                 should_exist: 'The attribute was not found for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'

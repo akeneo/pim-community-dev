@@ -36,8 +36,9 @@ class IdentifierValidator extends ConstraintValidator
         $violations = $validator->validate($identifier,
             new Assert\Collection(
                 [
-                    'identifier' => new Code(),
-                    'enriched_entity_identifier' => new EnrichedEntityIdentifier()
+                    // To remove
+//                    'identifier' => new Code(),
+//                    'enriched_entity_identifier' => new EnrichedEntityIdentifier()
                 ]
             )
         );

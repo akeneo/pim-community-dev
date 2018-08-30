@@ -33,11 +33,14 @@ class AkeneoEnrichedEntityExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_factories.yml');
         $loader->load('command_factories.yml');
-        $loader->load('product_value.yml');
-        $loader->load('validators.yml');
         $loader->load('controllers.yml');
+        $loader->load('handlers.yml');
+        $loader->load('product_value.yml');
+        $loader->load('persistence.yml');
+        $loader->load('validators.yml');
         $loader->load('services.yml');
         $loader->load('serializer.yml');
+        $loader->load('updaters.yml');
         $loader->load('validators.yml');
     }
 }

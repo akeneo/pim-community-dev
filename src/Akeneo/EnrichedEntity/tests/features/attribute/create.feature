@@ -24,7 +24,7 @@ Feature: Create an attribute linked to an enriched entity
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
     Then there is a text attribute "name" in the enriched entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length | type | is_textarea | is_rich_text_editor | validation_rule | regular_expression |
-      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         | text | 0            | 0                   | none            |                    |
+      | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         | text | 0           | 0                   | none            |                    |
 
   @acceptance-back
   Scenario: Cannot create an attribute for an enriched entity if it already exists
@@ -46,3 +46,15 @@ Feature: Create an attribute linked to an enriched entity
       | bio  | {"en_US": "Bio", "fr_FR": "Biographie"} | true        | 0     | true              | false            | 44         |
     Then an exception is thrown
 
+  @acceptance-back
+  Scenario Outline: Cannot create an attribute with a reserverd word as code
+    When the user creates a text attribute "code" linked to the enriched entity "designer" with:
+      | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
+    Then there should be a validation error on the property 'code' with message '<message>'
+    And there is no exception thrown
+
+    Examples:
+      | invalid_attribute_code | message                                                  |
+      | labels                 | The code cannot be any of those values: "%code, labels%" |
+      | code                   | The code cannot be any of those values: "%code, labels%" |
