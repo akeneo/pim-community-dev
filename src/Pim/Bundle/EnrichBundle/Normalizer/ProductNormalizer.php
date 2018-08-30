@@ -234,7 +234,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'required_missing_attributes' => $incompleteValues,
-            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
+            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext ? $this->catalogContext->getLocaleCode() : null),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
