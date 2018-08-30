@@ -22,7 +22,7 @@ Feature: Export variant products through CSV export
     Then exported file of "csv_summer_2016_shoes_products_export" should contain:
     """
     sku;categories;enabled;family;parent;groups;brand;collection;color;composition;description-en_US-ecommerce;ean;erp_name-en_US;eu_shoes_size;image;keywords-en_US;material;meta_description-en_US;meta_title-en_US;name-en_US;notice;PACK-groups;PACK-products;PACK-product_models;price-EUR;price-USD;size;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;sole_composition;supplier;top_composition;UPSELL-groups;UPSELL-products;UPSELL-product_models;variation_image;variation_name-en_US;weight;weight-unit;X_SELL-groups;X_SELL-products;X_SELL-product_models
-    1111111173;master_men_shoes,supplier_abibas;1;shoes;brogueshoe;;;summer_2016;;;;;"Brogue shoe";410;;;;;;brogueshoe;;267.00;;;;abibas;;;1111111176,1111111175;;;;900.0000;GRAM;;1111111177
+    1111111173;master_men_shoes,supplier_abibas;1;shoes;brogueshoe;;;summer_2016;;;;;"Brogue shoe";410;;;;;;brogueshoe;;267.00;;;;abibas;;;1111111175,1111111176;;;;900.0000;GRAM;;1111111177
     1111111174;master_men_shoes,supplier_abibas;1;shoes;brogueshoe;;;summer_2016;;;;;"Brogue shoe";400;;;;;;brogueshoe;;267.00;;;;abibas;;;;;;;900.0000;GRAM
     1111111175;master_men_shoes,supplier_abibas;1;shoes;brogueshoe;;;summer_2016;;;;;"Brogue shoe";390;;;;;;brogueshoe;;267.00;;;;abibas;;;;;;;800.0000;GRAM
     1111111176;master_men_shoes,supplier_abibas;1;shoes;brogueshoe;;;summer_2016;;;;;"Brogue shoe";380;;;;;;brogueshoe;;267.00;;;;abibas;;;;;;;800.0000;GRAM

@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,7 +34,8 @@ class AssociationsNormalizer implements NormalizerInterface
     public function normalize($associationAwareEntity, $format = null, array $context = [])
     {
         if (null !== $this->getAssociatedProductCodeByProduct) {
-            $data = $this->normalizeAssociations($associationAwareEntity);
+            $ancestorProducts = $this->getAncestorProducts($associationAwareEntity);
+            $data = $this->normalizeAssociations($ancestorProducts);
         } else { // TODO: remove it on master
             $data = $this->legacyNormalizeAssociations($associationAwareEntity);
         }
@@ -49,38 +51,51 @@ class AssociationsNormalizer implements NormalizerInterface
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
     }
 
+    private function getAncestorProducts(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
+    {
+        $parent = $entityWithFamilyVariant->getParent();
+
+        if (null === $parent) {
+            return [$entityWithFamilyVariant];
+        }
+
+        return array_merge($this->getAncestorProducts($parent), [$entityWithFamilyVariant]);
+    }
+
     /**
      * @param EntityWithAssociationsInterface $associationAwareEntity
      *
      * @return array
      */
-    private function normalizeAssociations(EntityWithAssociationsInterface $associationAwareEntity)
+    private function normalizeAssociations(array $associationAwareEntities)
     {
         $data = [];
 
-        foreach ($associationAwareEntity->getAllAssociations() as $association) {
-            $code = $association->getAssociationType()->getCode();
+        foreach ($associationAwareEntities as $associationAwareEntity) {
+            foreach ($associationAwareEntity->getAssociations() as $association) {
+                $code = $association->getAssociationType()->getCode();
 
-            $data[$code]['groups'] = $data[$code]['groups'] ?? [];
-            foreach ($association->getGroups() as $group) {
-                $data[$code]['groups'][] = $group->getCode();
-            }
-
-            $data[$code]['products'] = $data[$code]['products'] ?? [];
-            if ($associationAwareEntity instanceof ProductModelInterface) {
-                foreach ($association->getProducts() as $product) {
-                    $data[$code]['products'][] = $product->getReference();
+                $data[$code]['groups'] = $data[$code]['groups'] ?? [];
+                foreach ($association->getGroups() as $group) {
+                    $data[$code]['groups'][] = $group->getCode();
                 }
-            } else {
-                $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
-                    $associationAwareEntity->getId(),
-                    $association
-                ));
-            }
 
-            $data[$code]['product_models'] = $data[$code]['product_models'] ?? [];
-            foreach ($association->getProductModels() as $productModel) {
-                $data[$code]['product_models'][] = $productModel->getCode();
+                $data[$code]['products'] = $data[$code]['products'] ?? [];
+                if ($associationAwareEntity instanceof ProductModelInterface) {
+                    foreach ($association->getProducts() as $product) {
+                        $data[$code]['products'][] = $product->getReference();
+                    }
+                } else {
+                    $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
+                        $associationAwareEntity->getId(),
+                        $association
+                    ));
+                }
+
+                $data[$code]['product_models'] = $data[$code]['product_models'] ?? [];
+                foreach ($association->getProductModels() as $productModel) {
+                    $data[$code]['product_models'][] = $productModel->getCode();
+                }
             }
         }
 
