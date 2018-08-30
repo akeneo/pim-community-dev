@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Normalizer\Flat;
+namespace Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -1,11 +1,10 @@
 <?php
 
-namespace Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue;
+namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

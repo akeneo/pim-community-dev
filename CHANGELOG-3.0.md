@@ -12,6 +12,9 @@
 
 ## BC breaks
 
+- Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer`
+- Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer`
+- Move `Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer` to `Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\ReferenceDataNormalizer`
 - Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier`
 - Move `Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier` to `Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier`
 - Move `Pim\Component\ReferenceData\Model\ReferenceDataInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface`

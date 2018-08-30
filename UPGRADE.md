@@ -6,6 +6,9 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Indexing\\ProductValue\\ReferenceDataNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Indexing\\Value\\ReferenceDataNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Indexing\\ProductValue\\ReferenceDataCollectionNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Indexing\\Value\\ReferenceDataCollectionNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Flat\\ReferenceDataNormalizer/Akeneo\\Tool\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ReferenceDataNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Updater\\Copier\\ReferenceDataAttributeCopier/Akeneo\\Pim\\Enrichment\\Component\\Product\\Updater\\Copier\\ReferenceDataAttributeCopier/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Updater\\Copier\\ReferenceDataCollectionAttributeCopier/Akeneo\\Pim\\Enrichment\\Component\\Product\\Updater\\Copier\\ReferenceDataCollectionAttributeCopier/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Model\\ReferenceDataInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ReferenceDataInterface/g'
@@ -525,7 +528,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\FamilyVariant/Akeneo\\Pim\\Structure\\Component\\Model\\FamilyVariant/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\FamilyVariantTranslation/Akeneo\\Pim\\Structure\\Component\\Model\\FamilyVariant/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\FamilyVariantTranslationInterface/Akeneo\\Pim\\Structure\\Component\\Model\\FamilyVariant/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement/Akeneo\\\Pim\\Structure\\Component\\Model\\AttributeRequirement/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement/Akeneo/Pim\\Structure\\Component\\Model\\AttributeRequirement/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeRequirementInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeRequirementInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeTranslation/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeTranslationInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeTranslationInterface/g'

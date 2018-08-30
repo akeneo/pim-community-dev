@@ -1,6 +1,6 @@
 parameters:
     pim_reference_data.normalizer.configuration.class:       Pim\Bundle\ReferenceDataBundle\Normalizer\ConfigurationNormalizer
-    pim_reference_data.normalizer.flat.reference_data.class: Pim\Component\ReferenceData\Normalizer\Flat\ReferenceDataNormalizer
+    pim_reference_data.normalizer.flat.reference_data.class: Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\ReferenceDataNormalizer
 
 services:
     pim_reference_data.normalizer.configuration:

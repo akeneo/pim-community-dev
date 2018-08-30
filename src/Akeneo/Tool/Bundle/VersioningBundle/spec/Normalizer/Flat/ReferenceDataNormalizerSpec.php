@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\ReferenceData\Normalizer\Flat;
+namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;

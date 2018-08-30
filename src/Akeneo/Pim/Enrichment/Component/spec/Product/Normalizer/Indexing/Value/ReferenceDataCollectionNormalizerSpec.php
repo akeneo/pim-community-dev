@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataCollectionNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
