@@ -26,22 +26,23 @@ class ProductSubscription implements ProductSubscriptionInterface
     /** @var string */
     private $subscriptionId;
 
-    /** @var array */
-    private $suggestedData;
+    /** @var SuggestedData */
+    private $suggestedData = [];
 
     /** @var ProductInterface */
     private $product;
 
+    /** @var array */
+    private $rawSuggestedData = [];
+
     /**
      * @param ProductInterface $product
      * @param string $subscriptionId
-     * @param array|null $suggestedData
      */
-    public function __construct(ProductInterface $product, string $subscriptionId, array $suggestedData = [])
+    public function __construct(ProductInterface $product, string $subscriptionId)
     {
         $this->subscriptionId = $subscriptionId;
         $this->product = $product;
-        $this->suggestedData = $suggestedData;
     }
 
     /**
@@ -61,21 +62,28 @@ class ProductSubscription implements ProductSubscriptionInterface
     }
 
     /**
-     * @return array
+     * Loads SuggestData entity from raw data if not already done
+     *
+     * @return SuggestedData
      */
-    public function getSuggestedData(): array
+    public function getSuggestedData(): SuggestedData
     {
+        if (null === $this->suggestedData && null !== $this->rawSuggestedData) {
+            $this->suggestedData = new SuggestedData($this->rawSuggestedData);
+        }
+
         return $this->suggestedData;
     }
 
     /**
-     * @param array $suggestedData
+     * @param SuggestedData $suggestedData
      *
      * @return ProductSubscription
      */
-    public function setSuggestedData(array $suggestedData): ProductSubscriptionInterface
+    public function setSuggestedData(SuggestedData $suggestedData): ProductSubscriptionInterface
     {
         $this->suggestedData = $suggestedData;
+        $this->rawSuggestedData = $suggestedData->getValues();
 
         return $this;
     }

@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\FetchProductsCommand;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\FindCommand;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\SaveCommand;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterDataProviderPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\Console\Application;

@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFacto
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -76,7 +77,8 @@ class SubscribeProductHandler
 
         $subscriptionResponse = $dataProvider->subscribe($subscriptionRequest);
         $subscription = new ProductSubscription($product, $subscriptionResponse->getSubscriptionId());
-        $subscription->setSuggestedData($subscriptionResponse->getSuggestedData());
+        $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
+        $subscription->setSuggestedData($suggestedData);
 
         $this->productSubscriptionRepository->save($subscription);
     }
