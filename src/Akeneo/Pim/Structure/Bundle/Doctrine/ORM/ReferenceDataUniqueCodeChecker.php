@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
+namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM;
 
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\AbstractReferenceDataUniqueCodeChecker;
 

@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Doctrine\\ORM\\RequirementChecker\\ReferenceDataUniqueCodeChecker/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\ReferenceDataUniqueCodeChecker/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Doctrine\\ORM\\Repository\\ReferenceDataRepository/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ORM\\Repository\\ReferenceDataRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Elasticsearch\\Filter\\Attribute\\ReferenceDataFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch\\Filter\\Attribute\\ReferenceDataFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Controller\\ConfigurationRestController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\ReferenceDataConfigurationRestController/g'

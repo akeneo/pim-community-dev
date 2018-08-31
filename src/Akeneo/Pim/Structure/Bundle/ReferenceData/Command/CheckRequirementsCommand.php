@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\ReferenceDataUniqueCodeChecker;
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\CheckerInterface;
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataInterfaceChecker;
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNameChecker;
