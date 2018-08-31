@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Bundle\DataGridBundle\Normalizer\Product\OptionsNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
@@ -11,7 +12,7 @@ class OptionsNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\OptionsNormalizer');
+        $this->shouldHaveType(OptionsNormalizer::class);
     }
 
     function it_is_a_normalizer()

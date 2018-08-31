@@ -2,9 +2,10 @@
 
 namespace spec\Akeneo\Channel\Bundle\Doctrine\Remover;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -22,13 +23,13 @@ class ChannelRemoverSpec extends ObjectBehavior
             $eventDispatcher,
             $channelRepository,
             $translator,
-            'Akeneo\Channel\Component\Model\Channel'
+            Channel::class
         );
     }
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface');
+        $this->shouldImplement(RemoverInterface::class);
     }
 
     function it_removes_the_channel_and_flushes_the_unit_of_work(

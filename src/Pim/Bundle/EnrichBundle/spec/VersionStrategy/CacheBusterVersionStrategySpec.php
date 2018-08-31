@@ -16,7 +16,7 @@ class CacheBusterVersionStrategySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\VersionStrategy\CacheBusterVersionStrategy');
+        $this->shouldHaveType(CacheBusterVersionStrategy::class);
     }
 
     public function it_returns_the_pim_patch_version($versionProvider)

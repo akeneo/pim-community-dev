@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -157,7 +156,7 @@ class GroupType implements GroupTypeInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation';
+        return GroupTypeTranslation::class;
     }
 
     /**

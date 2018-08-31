@@ -3,13 +3,15 @@
 namespace Oro\Bundle\SecurityBundle\Annotation\Loader;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 use Symfony\Component\Finder\Finder;
 
 class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
-    const ANNOTATION_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\Acl';
-    const ANCESTOR_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\AclAncestor';
+    const ANNOTATION_CLASS = Acl::class;
+    const ANCESTOR_CLASS = AclAncestor::class;
 
     /**
      * @var AnnotationReader

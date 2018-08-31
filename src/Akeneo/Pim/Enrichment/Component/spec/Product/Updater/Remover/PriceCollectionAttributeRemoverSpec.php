@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\AttributeRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -104,7 +105,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover',
+                PriceCollectionAttributeRemover::class,
                 $data
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -121,7 +122,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayOfArraysExpected(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover',
+                PriceCollectionAttributeRemover::class,
                 $data
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -139,7 +140,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
             InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'amount',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover',
+                PriceCollectionAttributeRemover::class,
                 $data
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -157,7 +158,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
             InvalidPropertyTypeException::arrayKeyExpected(
                 'attributeCode',
                 'currency',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover',
+                PriceCollectionAttributeRemover::class,
                 $data
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
@@ -179,7 +180,7 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'attributeCode',
                 'currency code',
                 'The currency does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\PriceCollectionAttributeRemover',
+                PriceCollectionAttributeRemover::class,
                 'invalid currency'
             )
         )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);

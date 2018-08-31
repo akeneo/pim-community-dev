@@ -2,9 +2,13 @@
 
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider;
+use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
 
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,13 +36,13 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->builder = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Builder')
+        $this->builder = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()->getMock();
 
-        $this->resolver = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver')
+        $this->resolver = $this->getMockBuilder(SystemAwareResolver::class)
             ->disableOriginalConstructor()->getMock();
 
-        $this->requestParams = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\RequestParameters')
+        $this->requestParams = $this->getMockBuilder(RequestParameters::class)
             ->disableOriginalConstructor()->getMock();
 
         $configProvider = new ConfigurationProvider($this->testConfiguration, $this->resolver);
@@ -65,7 +69,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->resolver->expects($this->once())->method('resolve')->will($this->returnArgument(1));
 
-            $configurationClass = 'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration';
+            $configurationClass = DatagridConfiguration::class;
             $this->builder->expects($this->once())->method('build')
                 ->with($this->isInstanceOf($configurationClass));
             $this->requestParams->expects($this->once())->method('setRootParameter')->with($this->equalTo($name));
@@ -103,7 +107,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
         foreach ($names as $name) {
             $result = $this->manager->getConfigurationForGrid($name);
-            $this->assertInstanceOf('Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration', $result);
+            $this->assertInstanceOf(DatagridConfiguration::class, $result);
             $this->assertEquals($name, $result->getName());
         }
     }

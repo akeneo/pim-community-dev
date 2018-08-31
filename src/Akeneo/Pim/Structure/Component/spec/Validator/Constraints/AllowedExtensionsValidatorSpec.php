@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\AllowedExtensionsValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ImageAllowedExtensions;
 use Prophecy\Argument;
@@ -18,7 +19,7 @@ class AllowedExtensionsValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\AllowedExtensionsValidator');
+        $this->shouldHaveType(AllowedExtensionsValidator::class);
     }
 
     function it_validates_supported_extensions(

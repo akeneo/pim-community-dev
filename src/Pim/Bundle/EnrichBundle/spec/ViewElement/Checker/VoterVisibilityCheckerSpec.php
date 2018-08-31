@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityChecker;
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 
@@ -17,12 +19,12 @@ class VoterVisibilityCheckerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityChecker');
+        $this->shouldHaveType(VoterVisibilityChecker::class);
     }
 
     function it_is_a_visibility_checker()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface');
+        $this->shouldImplement(VisibilityCheckerInterface::class);
     }
 
     function it_requires_the_attribute_and_object_in_the_configuration()

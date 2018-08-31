@@ -3,7 +3,7 @@
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\SystemConfigurationPass;
-use Oro\Bundle\ConfigBundle\Provider\FormProvider;
+use Oro\Bundle\ConfigBundle\Tests\Unit\Fixtures\TestBundle;
 
 class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
 {
@@ -62,7 +62,7 @@ class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
                 'should set data' => false
             ],
             'one bundle specified config'    => [
-                'bundles'         => ['Oro\Bundle\ConfigBundle\Tests\Unit\Fixtures\TestBundle'],
+                'bundles'         => [TestBundle::class],
                 'should set data' => true
             ]
         ];

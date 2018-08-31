@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\Controller;
 
+use Pim\Bundle\AnalyticsBundle\Controller\DataController;
 use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use PhpSpec\ObjectBehavior;
 
@@ -14,7 +15,7 @@ class DataControllerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\Controller\DataController');
+        $this->shouldHaveType(DataController::class);
     }
 
     function it_collects_data($dataCollector)

@@ -42,7 +42,7 @@ class GroupUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface'
+                GroupInterface::class
             )
         )->during(
             'update',
@@ -109,7 +109,7 @@ class GroupUpdaterSpec extends ObjectBehavior
                 'type',
                 'group type',
                 'The group type does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater',
+                GroupUpdater::class,
                 'UNKNOWN'
             )
         )->during('update', [$group, $values, []]);

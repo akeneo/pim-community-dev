@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Channel\Component\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Locale;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
@@ -15,7 +16,7 @@ class LocaleSpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Locale'
+            Locale::class
         );
     }
 

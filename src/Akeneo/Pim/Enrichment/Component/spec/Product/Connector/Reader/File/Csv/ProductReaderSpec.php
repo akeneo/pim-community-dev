@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader;
+use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -24,12 +26,12 @@ class ProductReaderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\File\Csv\ProductReader');
+        $this->shouldHaveType(ProductReader::class);
     }
 
     function it_is_a_csv_reader()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader');
+        $this->shouldHaveType(Reader::class);
     }
 
     function it_transforms_media_paths_to_absolute_paths(

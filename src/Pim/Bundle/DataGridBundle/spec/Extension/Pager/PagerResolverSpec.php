@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Pager;
 
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerResolver;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -9,7 +10,7 @@ class PagerResolverSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Extension\Pager\PagerResolver');
+        $this->shouldHaveType(PagerResolver::class);
     }
 
     function let(PagerInterface $orm, PagerInterface $dummy)

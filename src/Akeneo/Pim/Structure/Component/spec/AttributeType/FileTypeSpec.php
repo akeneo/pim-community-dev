@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\AttributeType;
 
+use Akeneo\Pim\Structure\Component\AttributeTypeInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
@@ -19,6 +20,6 @@ class FileTypeSpec extends ObjectBehavior
 
     function it_is_an_attribute_type()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\AttributeTypeInterface');
+        $this->shouldHaveType(AttributeTypeInterface::class);
     }
 }

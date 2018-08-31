@@ -2,14 +2,16 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Factory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
 use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 
 class AttributeFactorySpec extends ObjectBehavior
 {
-    const ATTRIBUTE_CLASS = 'Akeneo\Pim\Structure\Component\Model\Attribute';
-    const PRODUCT_CLASS = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
+    const ATTRIBUTE_CLASS = Attribute::class;
+    const PRODUCT_CLASS = Product::class;
 
     function let(AttributeTypeRegistry $registry)
     {

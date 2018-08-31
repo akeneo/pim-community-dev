@@ -5,6 +5,7 @@ namespace Pim\Behat\Decorator\Export\Filter;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 class StringDecorator extends ElementDecorator
 {
@@ -24,7 +25,7 @@ class StringDecorator extends ElementDecorator
 
         $operatorField = $this->decorate(
             $operatorField,
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
         $operatorField->setValue($operator);
 

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -11,7 +12,7 @@ class ExportMassActionSpec extends ObjectBehavior
     function it_is_an_export_mass_action()
     {
         $this->shouldImplement(
-            'Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionInterface'
+            ExportMassActionInterface::class
         );
     }
 

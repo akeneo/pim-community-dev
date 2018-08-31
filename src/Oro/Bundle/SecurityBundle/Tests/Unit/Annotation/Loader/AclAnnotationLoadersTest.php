@@ -6,6 +6,8 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader;
 use Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\Classes\ConfigController;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle;
 
 class AclAnnotationLoadersTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,13 +22,13 @@ class AclAnnotationLoadersTest extends \PHPUnit_Framework_TestCase
     {
         $storage = new AclAnnotationStorage();
         $annotationLoader = new AclAnnotationLoader(
-            ['TestBundle' => 'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle'],
+            ['TestBundle' => TestBundle::class],
             [],
             new AnnotationReader()
         );
         $annotationLoader->load($storage);
         $yamlConfigLoader = new AclYamlConfigLoader(
-            ['TestBundle' => 'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle']
+            ['TestBundle' => TestBundle::class]
         );
         $yamlConfigLoader->load($storage);
 
@@ -84,7 +86,7 @@ class AclAnnotationLoadersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Test Group', $a->getGroup());
         $this->assertEquals('Test controller', $a->getLabel());
         $a = $storage->find(
-            'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\Classes\ConfigController',
+            ConfigController::class,
             'testAction'
         );
         $this->assertNotNull($a);

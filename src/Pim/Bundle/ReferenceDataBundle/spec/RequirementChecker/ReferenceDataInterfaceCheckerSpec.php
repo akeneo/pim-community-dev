@@ -10,12 +10,12 @@ class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Component\ReferenceData\Model\ReferenceDataInterface');
+        $this->beConstructedWith(ReferenceDataInterface::class);
     }
 
     function it_checks_a_valid_reference_data(ConfigurationInterface $configuration)
     {
-        $configuration->getClass()->willReturn('spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataColor');
+        $configuration->getClass()->willReturn(ReferenceDataColor::class);
 
         $this->check($configuration)->shouldReturn(true);
         $this->getFailure()->shouldReturn(null);

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
@@ -303,7 +304,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier',
+                AttributeCopier::class,
                 $e
             )
         )->during('copyAttributeData', [$product, $product, $fromAttribute, $toAttribute, []]);
@@ -322,7 +323,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier',
+                AttributeCopier::class,
                 $e
             )
         )->during(
@@ -344,7 +345,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier',
+                AttributeCopier::class,
                 $e
             )
         )->during(
@@ -368,7 +369,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier',
+                AttributeCopier::class,
                 $e
             )
         )->during(
@@ -392,7 +393,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier',
+                AttributeCopier::class,
                 $e
             )
         )->during(
@@ -416,7 +417,7 @@ class AttributeCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyException::expectedFromPreviousException(
                 'attributeCode',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AttributeCopier',
+                AttributeCopier::class,
                 $e
             )
         )->during(

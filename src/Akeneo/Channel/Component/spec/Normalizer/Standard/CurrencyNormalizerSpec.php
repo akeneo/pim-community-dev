@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Channel\Component\Normalizer\Standard;
 
+use Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 
@@ -9,7 +10,7 @@ class CurrencyNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer');
+        $this->shouldHaveType(CurrencyNormalizer::class);
     }
 
     function it_is_a_normalizer()

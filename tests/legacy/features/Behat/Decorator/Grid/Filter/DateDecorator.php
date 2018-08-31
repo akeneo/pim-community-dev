@@ -19,7 +19,7 @@ class DateDecorator extends ElementDecorator
     {
         $operatorDropdown = $this->decorate(
             $this->find('css', '*[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            [OperatorDecorator::class]
         );
         $operatorDropdown->setValue($operator);
 

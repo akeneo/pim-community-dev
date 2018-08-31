@@ -2,13 +2,14 @@
 
 namespace spec\Akeneo\Channel\Component\Validator\Constraint;
 
+use Akeneo\Channel\Component\Validator\Constraint\Locale;
 use PhpSpec\ObjectBehavior;
 
 class LocaleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Channel\Component\Validator\Constraint\Locale');
+        $this->shouldHaveType(Locale::class);
     }
 
     function it_has_message()

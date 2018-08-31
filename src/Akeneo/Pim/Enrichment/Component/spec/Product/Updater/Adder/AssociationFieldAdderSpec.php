@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -42,7 +43,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'associations',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 'not an array'
             )
         )->during('addFieldData', [$product, 'associations', 'not an array']);
@@ -51,7 +52,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "0".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 [0 => []]
             )
         )->during('addFieldData', [$product, 'associations', [0 => []]]);
@@ -60,7 +61,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 ['assoc_type_code' => []]
             )
         )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => []]]);
@@ -69,7 +70,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 ['assoc_type_code' => ['products' => []]]
             )
         )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => ['products' => []]]]);
@@ -78,7 +79,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 ['assoc_type_code' => ['groups' => []]]
             )
         )->during('addFieldData', [$product, 'associations', ['assoc_type_code' => ['groups' => []]]]);
@@ -87,7 +88,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]
             )
         )->during(
@@ -99,7 +100,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 ['assoc_type_code' => ['products' => [], 'groups' => [2], 'product_models' => [],]]
             )
         )->during(
@@ -111,7 +112,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             new InvalidPropertyTypeException(
                 'products',
                 'string',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 'Property "products" in association "assoc_type_code" expects an array as data, "string" given.',
                 200
             )
@@ -232,7 +233,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'association type code',
                 'The association type does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 'non valid association type code'
             )
         )->during(
@@ -262,7 +263,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'product identifier',
                 'The product does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 'not existing product'
             )
         )->during(
@@ -292,7 +293,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'group code',
                 'The group does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder',
+                AssociationFieldAdder::class,
                 'not existing group'
             )
         )->during(

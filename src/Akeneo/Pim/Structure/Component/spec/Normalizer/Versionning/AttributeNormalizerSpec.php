@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer;
 use Prophecy\Argument;
 
 class AttributeNormalizerSpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer');
+        $this->shouldHaveType(AttributeNormalizer::class);
     }
 
     function it_is_a_normalizer()

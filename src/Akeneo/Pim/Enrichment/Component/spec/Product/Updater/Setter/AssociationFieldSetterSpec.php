@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -44,7 +45,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected(
                 'associations',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 'not an array'
             )
         )->during('setFieldData', [$product, 'associations', 'not an array']);
@@ -53,7 +54,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "0".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 [0 => []]
             )
         )->during('setFieldData', [$product, 'associations', [0 => []]]);
@@ -62,7 +63,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 ['assoc_type_code' => []]
             )
         )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => []]]);
@@ -71,7 +72,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]
             )
         )->during(
@@ -83,7 +84,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             InvalidPropertyTypeException::validArrayStructureExpected(
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 ['assoc_type_code' => ['products' => [], 'groups' => [2]]]
             )
         )->during(
@@ -95,7 +96,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             new InvalidPropertyTypeException(
                 'products',
                 'string',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 'Property "products" in association "assoc_type_code" expects an array as data, "string" given.',
                 200
             )
@@ -193,7 +194,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'associations',
                 'association type code',
                 'The association type does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 'non valid association type code'
             )
         )->during(
@@ -229,7 +230,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'associations',
                 'product identifier',
                 'The product does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 'not existing product'
             )
         )->during(
@@ -263,7 +264,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'associations',
                 'group code',
                 'The group does not exist',
-                'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter',
+                AssociationFieldSetter::class,
                 'not existing group'
             )
         )->during(

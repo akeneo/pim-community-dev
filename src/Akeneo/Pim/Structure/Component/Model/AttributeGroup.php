@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -290,7 +288,7 @@ class AttributeGroup implements AttributeGroupInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation';
+        return AttributeGroupTranslation::class;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 
@@ -9,7 +10,7 @@ class ProductMassActionRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em)
     {
-        $name = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
+        $name = Product::class;
         $this->beConstructedWith($em, $name);
     }
 

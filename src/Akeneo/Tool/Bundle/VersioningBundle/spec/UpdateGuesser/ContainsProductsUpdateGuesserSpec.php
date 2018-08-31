@@ -13,7 +13,7 @@ class ContainsProductsUpdateGuesserSpec extends ObjectBehavior
 {
     function it_is_an_update_guesser()
     {
-        $this->shouldImplement('Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface');
+        $this->shouldImplement(UpdateGuesserInterface::class);
     }
 
     function it_supports_entity_updates_and_deletion()

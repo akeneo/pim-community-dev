@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use PhpSpec\ObjectBehavior;
@@ -17,7 +18,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
+        $this->shouldImplement(ConfiguratorInterface::class);
     }
 
     function it_configures_datagrid_filters(DatagridConfiguration $configuration, $registry)

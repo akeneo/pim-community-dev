@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Twig;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension;
 
 class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
@@ -18,7 +19,7 @@ class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+        $this->securityFacade = $this->getMockBuilder(SecurityFacade::class)
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -3,6 +3,7 @@
 namespace Context\Page\Batch;
 
 use Context\Page\Base\Wizard;
+use Pim\Behat\Decorator\Tree\JsTreeDecorator;
 
 /**
  * Batch Classify page
@@ -27,7 +28,7 @@ class Classify extends Wizard
                 'Category tree' => [
                     'css'        => '#trees',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
+                        JsTreeDecorator::class
                     ]
                 ],
             ]

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
@@ -9,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 
 class GroupFactorySpec extends ObjectBehavior
 {
-    const GROUP_CLASS = 'Akeneo\Pim\Enrichment\Component\Product\Model\Group';
+    const GROUP_CLASS = Group::class;
 
     function let(GroupTypeRepositoryInterface $groupTypeRepository)
     {

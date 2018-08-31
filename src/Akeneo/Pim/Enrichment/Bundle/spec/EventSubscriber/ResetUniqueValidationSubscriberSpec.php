@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
@@ -15,7 +16,7 @@ class ResetUniqueValidationSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber');
+        $this->shouldHaveType(ResetUniqueValidationSubscriber::class);
     }
 
     function it_should_reset_unique_value_set($uniqueValueSet, $uniqueAxesCombinationSet)

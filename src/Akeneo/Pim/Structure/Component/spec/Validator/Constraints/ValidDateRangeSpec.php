@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 
@@ -9,7 +10,7 @@ class ValidDateRangeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\ValidDateRange');
+        $this->shouldHaveType(ValidDateRange::class);
     }
 
     function it_is_a_validator_constraint()

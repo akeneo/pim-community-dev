@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement;
 
+use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 
@@ -9,7 +10,7 @@ class ViewElementRegistrySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry');
+        $this->shouldHaveType(ViewElementRegistry::class);
     }
 
     function it_registers_and_exposes_view_elements(ViewElementInterface $button, ViewElementInterface $input)

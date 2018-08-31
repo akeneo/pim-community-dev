@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -39,7 +40,7 @@ class EntityWithValuesDelocalizedSpec extends ObjectBehavior
         $delocalizer->getViolations()->willReturn($violations);
         $violations->count()->willReturn(3);
 
-        $this->shouldThrow('Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException')
+        $this->shouldThrow(DataArrayConversionException::class)
             ->during('convert', [['the item'], ['the options']]);
     }
 }

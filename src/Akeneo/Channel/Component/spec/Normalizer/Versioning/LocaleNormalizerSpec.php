@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Channel\Component\Normalizer\Versioning;
 
+use Akeneo\Channel\Component\Normalizer\Versioning\LocaleNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer as LocaleNormalizerStandard;
@@ -15,7 +16,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Channel\Component\Normalizer\Versioning\LocaleNormalizer');
+        $this->shouldHaveType(LocaleNormalizer::class);
     }
 
     function it_is_a_normalizer()

@@ -3,6 +3,7 @@
 namespace Context\Page\Role;
 
 use Context\Page\Base\Form;
+use Pim\Behat\Decorator\Permission\PermissionDecorator;
 
 /**
  * User group creation page
@@ -28,13 +29,13 @@ class Creation extends Form
                 'Permission' => [
                     'css'        => '#pim_user-roles-tab-action',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                        PermissionDecorator::class
                     ]
                 ],
                 'API permission' => [
                     'css'        => '#pim_user-roles-tab-api',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                        PermissionDecorator::class
                     ]
                 ],
             ],

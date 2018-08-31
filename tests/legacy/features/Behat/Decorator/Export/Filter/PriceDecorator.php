@@ -4,6 +4,7 @@ namespace Pim\Behat\Decorator\Export\Filter;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 /**
  * Decorator dedicated to price collection attribute type.
@@ -26,7 +27,7 @@ class PriceDecorator extends ElementDecorator
 
         $operatorField = $this->decorate(
             $operatorField,
-            ['Pim\Behat\Decorator\Field\Select2Decorator']
+            [Select2Decorator::class]
         );
         $operatorField->setValue($operator);
 
@@ -52,7 +53,7 @@ class PriceDecorator extends ElementDecorator
 
             $currencyField = $this->decorate(
                 $currencyField,
-                ['Pim\Behat\Decorator\Field\Select2Decorator']
+                [Select2Decorator::class]
             );
 
             $currencyField->setValue($currency);

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 
@@ -9,7 +10,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer');
+        $this->shouldHaveType(JobInstanceNormalizer::class);
     }
 
     function it_is_a_normalizer()

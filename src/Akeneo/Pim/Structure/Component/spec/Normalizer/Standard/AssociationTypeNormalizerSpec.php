@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
@@ -15,7 +16,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer');
+        $this->shouldHaveType(AssociationTypeNormalizer::class);
     }
 
     function it_is_a_normalizer()

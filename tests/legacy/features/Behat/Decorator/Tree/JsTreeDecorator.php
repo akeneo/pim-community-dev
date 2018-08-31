@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Decorator\Tree;
 
-use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
@@ -24,7 +23,7 @@ class JsTreeDecorator extends ElementDecorator
             return $this->find('css', sprintf('li[data-code="%s"]', $nodeName));
         }, sprintf('Cannot find the node "%s"', $nodeName));
 
-        return $this->decorate($node, ['Pim\Behat\Decorator\Tree\JsNodeDecorator']);
+        return $this->decorate($node, [JsNodeDecorator::class]);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Reader\Database;
 
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -16,8 +18,8 @@ class ReaderSpec extends ObjectBehavior
 
     function it_is_a_reader()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemReaderInterface');
-        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement(ItemReaderInterface::class);
+        $this->shouldImplement(StepExecutionAwareInterface::class);
     }
 
     function it_returns_a_variation(

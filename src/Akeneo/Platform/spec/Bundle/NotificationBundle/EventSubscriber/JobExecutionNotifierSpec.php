@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Platform\Bundle\NotificationBundle\EventSubscriber;
 
+use Akeneo\Platform\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -48,7 +49,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Platform\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier');
+        $this->shouldHaveType(JobExecutionNotifier::class);
     }
 
     function it_gives_the_subscribed_events()

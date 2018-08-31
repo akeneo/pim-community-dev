@@ -977,7 +977,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Akeneo\Pim\Structure\Component\Model\AttributeTranslation';
+        return AttributeTranslation::class;
     }
 
     /**

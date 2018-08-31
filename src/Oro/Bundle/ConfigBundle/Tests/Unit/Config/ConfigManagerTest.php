@@ -6,7 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
+use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
+use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository;
+use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Yaml\Yaml;
@@ -74,7 +78,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
     {
         $loadedSettings = $this->loadedSettings;
 
-        $repository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository')
+        $repository = $this->getMockBuilder(ConfigRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->once())
@@ -102,7 +106,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetDefaultSettings()
     {
         $object = $this->createMock(
-            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            ConfigManager::class,
             ['loadStoredSettings'],
             [$this->om, $this->settings]
         );
@@ -121,7 +125,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetSettingsByForm()
     {
         $object = $this->createMock(
-            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            ConfigManager::class,
             ['get'],
             [$this->om, $this->settings]
         );
@@ -162,7 +166,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         ];
 
         $object = $this->createMock(
-            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            ConfigManager::class,
             ['getChanged'],
             [$this->om, $this->settings]
         );
@@ -176,7 +180,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($settings))
             ->will($this->returnValue($changes));
 
-        $configMock = $this->createMock('Oro\Bundle\ConfigBundle\Entity\Config');
+        $configMock = $this->createMock(Config::class);
         $configMock->expects($this->once())
             ->method('getOrCreateValue')
             ->will($this->returnValue(new ConfigValue()));
@@ -184,11 +188,11 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getValues')
             ->will($this->returnValue(new ArrayCollection()));
 
-        $valueRepository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository')
+        $valueRepository = $this->getMockBuilder(ConfigValueRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $repository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository')
+        $repository = $this->getMockBuilder(ConfigRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -229,7 +233,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         ];
 
         $object = $this->createMock(
-            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            ConfigManager::class,
             ['get'],
             [$this->om, $this->settings]
         );
@@ -279,7 +283,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->addExtensions($extensions)
             ->getFormFactory();
 
-        $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+        $securityFacade = $this->getMockBuilder(SecurityFacade::class)
                     ->disableOriginalConstructor()->getMock();
 
         $provider = new SystemConfigurationFormProvider($config, $factory, $securityFacade);

@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard;
 
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
@@ -15,7 +16,7 @@ class AttributeGroupSpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface'
+            ArrayConverterInterface::class
         );
     }
 

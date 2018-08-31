@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Tests\Unit\Form\Transformer;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +23,7 @@ class AjaxEntityTransformerTest extends TestCase
     protected function setUp()
     {
         $this->repository = $this->createMock(
-            'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository'
+            AttributeOptionRepository::class
         );
 
         $this->repository->expects($this->any())

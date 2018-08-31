@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -24,7 +25,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer');
+        $this->shouldHaveType(FamilyNormalizer::class);
     }
 
     function it_is_a_normalizer()

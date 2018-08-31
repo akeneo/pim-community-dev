@@ -4,6 +4,7 @@ namespace Pim\Behat\Decorator;
 
 use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 /**
  * Decorator for the Variant Navigation bar, displayed on Product Edit Form, which allows user
@@ -92,6 +93,6 @@ class VariantNavigationDecorator extends ElementDecorator
         // So if we want the selector for level 1, it's on index 0, etc.
         $selectorIndex = $level - 1;
 
-        return $this->decorate($childrenSelectors[$selectorIndex], ['Pim\Behat\Decorator\Field\Select2Decorator']);
+        return $this->decorate($childrenSelectors[$selectorIndex], [Select2Decorator::class]);
     }
 }

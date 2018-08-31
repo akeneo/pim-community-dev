@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Tests\Unit\Form\Transformer;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +19,7 @@ class AjaxEntityTransformerFactoryTest extends TestCase
     public function testCreate()
     {
         $doctrine = $this->createMock('Symfony\Bridge\Doctrine\RegistryInterface');
-        $transformerClass = 'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer';
+        $transformerClass = AjaxEntityTransformer::class;
         $options = [
             'class' => 'class'
         ];
@@ -26,7 +28,7 @@ class AjaxEntityTransformerFactoryTest extends TestCase
             ->with($this->equalTo('class'))
             ->will(
                 $this->returnValue($this->createMock(
-                    'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository'
+                    AttributeOptionRepository::class
                 ))
             );
 

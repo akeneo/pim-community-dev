@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\NullPropertiesValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties;
@@ -18,7 +19,7 @@ class NullPropertiesValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\NullPropertiesValidator');
+        $this->shouldHaveType(NullPropertiesValidator::class);
     }
 
     function it_validates_null_property_value(

@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Factory;
 
+use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -22,7 +24,7 @@ class FamilyFactorySpec extends ObjectBehavior
             $channelRepository,
             $factory,
             $attributeRepository,
-            'Akeneo\Pim\Structure\Component\Model\Family'
+            Family::class
         );
     }
 
@@ -67,7 +69,7 @@ class FamilyFactorySpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $family = $this->create();
-        $family->shouldBeAnInstanceOf('Akeneo\Pim\Structure\Component\Model\FamilyInterface');
+        $family->shouldBeAnInstanceOf(FamilyInterface::class);
         $family->getAttributes()->shouldHaveCount(1);
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
         $family->getAttributeRequirements()->shouldHaveCount(2);

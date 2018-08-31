@@ -2,8 +2,10 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\EventListener;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\EventListener\ControllerListener;
+use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +15,7 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $className = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject';
+    protected $className = TestDomainObject::class;
     protected $methodName = 'getId';
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -38,11 +40,11 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $logger = $this->createMock('Psr\Log\LoggerInterface');
         $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
-        $this->annotationProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
+        $this->annotationProvider = $this->getMockBuilder(AclAnnotationProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->objectIdentityFactory =
-            $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+            $this->getMockBuilder(ObjectIdentityFactory::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->request = new Request();

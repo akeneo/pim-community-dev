@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
+use Pim\Bundle\EnrichBundle\Twig\ViewElementExtension;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
 use Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry;
@@ -40,7 +41,7 @@ class ViewElementExtensionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Twig\ViewElementExtension');
+        $this->shouldHaveType(ViewElementExtension::class);
     }
 
     function it_is_a_twig_extension()

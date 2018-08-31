@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 
 class AclPrivilegeIdentityTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +39,7 @@ class AclPrivilegeIdentityTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
                 [
-                    'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity'
+                    'data_class' => AclPrivilegeIdentity::class
                 ]
             );
         $this->formType->configureOptions($resolver);

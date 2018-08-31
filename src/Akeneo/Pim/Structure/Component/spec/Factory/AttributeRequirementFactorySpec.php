@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Factory;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
+use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -10,12 +12,12 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Akeneo\Pim\Structure\Component\Model\AttributeRequirement');
+        $this->beConstructedWith(AttributeRequirement::class);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory');
+        $this->shouldHaveType(AttributeRequirementFactory::class);
     }
 
     function it_creates_a_required_attribute_requirement(
@@ -23,7 +25,7 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
         ChannelInterface $channel
     ) {
         $attributeRequirement = $this->createAttributeRequirement($attribute, $channel, true);
-        $attributeRequirement->shouldBeAnInstanceOf('Akeneo\Pim\Structure\Component\Model\AttributeRequirement');
+        $attributeRequirement->shouldBeAnInstanceOf(AttributeRequirement::class);
         $attributeRequirement->getAttribute()->shouldBeEqualTo($attribute);
         $attributeRequirement->getChannel()->shouldBeEqualTo($channel);
         $attributeRequirement->isRequired()->shouldReturn(true);
@@ -34,7 +36,7 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
         ChannelInterface $channel
     ) {
         $attributeRequirement = $this->createAttributeRequirement($attribute, $channel, false);
-        $attributeRequirement->shouldBeAnInstanceOf('Akeneo\Pim\Structure\Component\Model\AttributeRequirement');
+        $attributeRequirement->shouldBeAnInstanceOf(AttributeRequirement::class);
         $attributeRequirement->getAttribute()->shouldBeEqualTo($attribute);
         $attributeRequirement->getChannel()->shouldBeEqualTo($channel);
         $attributeRequirement->isRequired()->shouldReturn(false);

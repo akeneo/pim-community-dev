@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -21,7 +22,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator');
+        $this->shouldHaveType(SingleIdentifierAttributeValidator::class);
     }
 
     function it_does_nothing_if_attribute_type_is_not_identifier(

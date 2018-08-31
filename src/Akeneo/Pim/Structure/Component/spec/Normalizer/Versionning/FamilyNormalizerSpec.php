@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer;
 use Prophecy\Argument;
 
 class FamilyNormalizerSpec extends ObjectBehavior
@@ -19,7 +19,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer');
+        $this->shouldHaveType(FamilyNormalizer::class);
     }
 
     function it_is_a_normalizer()

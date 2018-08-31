@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
+use Akeneo\Tool\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
@@ -9,7 +10,7 @@ class BaseRemovingOptionsResolverSpec extends ObjectBehavior
 {
     function it_a_removing_options_resolver()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Remover\RemovingOptionsResolverInterface');
+        $this->shouldHaveType(RemovingOptionsResolverInterface::class);
     }
 
     function it_resolves_single_remove_options()

@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -28,11 +31,11 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     {
         $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->annotationProvider =
-            $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
+            $this->getMockBuilder(AclAnnotationProvider::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->objectIdentityFactory =
-            $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+            $this->getMockBuilder(ObjectIdentityFactory::class)
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->logger = $this->createMock('Psr\Log\LoggerInterface');
@@ -48,7 +51,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     public function testIsClassMethodGrantedDenyingByMethodAcl()
     {
         $oid = new ObjectIdentity('1', 'TestType');
-        $annotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $annotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $annotation->expects($this->once())
@@ -80,7 +83,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     public function testIsClassMethodGrantedGrantingByMethodAclNoClassAcl()
     {
         $oid = new ObjectIdentity('1', 'TestType');
-        $annotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $annotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $annotation->expects($this->once())
@@ -119,7 +122,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     public function testIsClassMethodGrantedGrantingByMethodAclWithIgnoreClassAcl()
     {
         $oid = new ObjectIdentity('1', 'TestType');
-        $annotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $annotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $annotation->expects($this->once())
@@ -154,7 +157,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     public function testIsClassMethodGrantedDenyingByClassAcl()
     {
         $oid = new ObjectIdentity('1', 'TestType');
-        $annotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $annotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $annotation->expects($this->once())
@@ -168,7 +171,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $classOid = new ObjectIdentity('2', 'TestType');
-        $classAnnotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $classAnnotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $classAnnotation->expects($this->once())
@@ -212,7 +215,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     public function testIsClassMethodGrantedGrantingByMethodAndClassAcls()
     {
         $oid = new ObjectIdentity('1', 'TestType');
-        $annotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $annotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $annotation->expects($this->once())
@@ -226,7 +229,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $classOid = new ObjectIdentity('2', 'TestType');
-        $classAnnotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $classAnnotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $classAnnotation->expects($this->once())
@@ -270,7 +273,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     public function testIsGrantedWithAclAnnotationId()
     {
         $oid = new ObjectIdentity('1', 'TestType');
-        $annotation = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Annotation\Acl')
+        $annotation = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
             ->getMock();
         $annotation->expects($this->once())

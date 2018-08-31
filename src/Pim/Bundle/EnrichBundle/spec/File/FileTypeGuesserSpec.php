@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\File;
 
+use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\File\FileTypes;
 
@@ -9,7 +10,7 @@ class FileTypeGuesserSpec extends ObjectBehavior
 {
     function it_implements_file_type_guesser_interface()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface');
+        $this->shouldImplement(FileTypeGuesserInterface::class);
     }
 
     function it_guesses_file_types_from_mime_types()

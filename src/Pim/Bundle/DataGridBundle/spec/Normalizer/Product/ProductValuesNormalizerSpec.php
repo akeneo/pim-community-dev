@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -27,7 +28,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer');
+        $this->shouldHaveType(ProductValuesNormalizer::class);
     }
 
     function it_is_a_normalizer()

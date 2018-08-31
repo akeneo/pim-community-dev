@@ -2,18 +2,20 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker;
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use PhpSpec\ObjectBehavior;
 
 class NonEmptyPropertyVisibilityCheckerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker');
+        $this->shouldHaveType(NonEmptyPropertyVisibilityChecker::class);
     }
 
     function it_is_a_visibility_checker()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface');
+        $this->shouldImplement(VisibilityCheckerInterface::class);
     }
 
     function it_requires_the_property_in_the_configuration()

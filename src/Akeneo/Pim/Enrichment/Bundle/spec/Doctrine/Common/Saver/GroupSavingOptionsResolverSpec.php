@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
@@ -10,7 +11,7 @@ class GroupSavingOptionsResolverSpec extends ObjectBehavior
 {
     function it_a_saving_options_resolver()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface');
+        $this->shouldHaveType(SavingOptionsResolverInterface::class);
     }
 
     function it_resolves_single_save_options(GroupInterface $added, GroupInterface $removed)

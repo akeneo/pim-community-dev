@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Metadata;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
+use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\Metadata\ActionMetadata;
 use Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider;
 
@@ -29,7 +30,7 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
             ['fetch', 'save', 'delete', 'deleteAll']
         );
 
-        $this->annotationProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
+        $this->annotationProvider = $this->getMockBuilder(AclAnnotationProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 

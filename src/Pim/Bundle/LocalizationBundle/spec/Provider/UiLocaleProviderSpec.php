@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\LocalizationBundle\Provider;
 
+use Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\MessageCatalogueInterface;
@@ -42,7 +43,7 @@ class UiLocaleProviderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider');
+        $this->shouldHaveType(UiLocaleProvider::class);
     }
 
     function it_should_return_default_locale()

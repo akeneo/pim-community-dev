@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
@@ -17,12 +18,12 @@ class VersionableUpdateGuesserSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser');
+        $this->shouldHaveType(VersionableUpdateGuesser::class);
     }
 
     function it_is_an_update_guesser()
     {
-        $this->shouldImplement('Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface');
+        $this->shouldImplement(UpdateGuesserInterface::class);
     }
 
     function it_supports_update_action()

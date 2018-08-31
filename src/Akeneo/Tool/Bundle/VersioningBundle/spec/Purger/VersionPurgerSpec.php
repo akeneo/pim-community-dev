@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurger;
+use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -31,12 +33,12 @@ class VersionPurgerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurger');
+        $this->shouldHaveType(VersionPurger::class);
     }
 
     function it_implements_purger_interface()
     {
-        $this->shouldImplement('Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface');
+        $this->shouldImplement(VersionPurgerInterface::class);
     }
 
     function it_returns_the_number_of_versions_to_be_purged(

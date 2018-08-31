@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
+use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
@@ -27,7 +28,7 @@ class LastOperationsWidgetSpec extends ObjectBehavior
 
     function it_is_a_widget()
     {
-        $this->shouldImplement('Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface');
+        $this->shouldImplement(WidgetInterface::class);
     }
 
     function it_has_an_alias()

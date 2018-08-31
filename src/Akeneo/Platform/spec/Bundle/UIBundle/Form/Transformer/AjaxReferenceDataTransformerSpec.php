@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\LabelRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -12,7 +13,7 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer');
+        $this->shouldHaveType(AjaxReferenceDataTransformer::class);
     }
 
     function let(ReferenceDataRepositoryInterface $repository, LabelRenderer $renderer)

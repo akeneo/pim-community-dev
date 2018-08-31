@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
@@ -22,7 +23,7 @@ class InGroupFilterSpec extends ObjectBehavior
 
     function it_is_an_oro_choice_filter()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\BooleanFilter');
+        $this->shouldBeAnInstanceOf(BooleanFilter::class);
     }
 
     function it_applies_a_filter_on_product_when_its_in_an_expected_group(

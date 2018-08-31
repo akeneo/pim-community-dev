@@ -6,6 +6,7 @@ use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Decorator\Page\GridCapableDecorator;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
@@ -63,7 +64,7 @@ class NavigationContext extends PimContext implements PageObjectAware
 
     /** @var array */
     protected $pageDecorators = [
-        'Pim\Behat\Decorator\Page\GridCapableDecorator',
+        GridCapableDecorator::class,
     ];
 
     protected $elements = [

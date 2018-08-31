@@ -9,7 +9,7 @@ class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFilename($id, $expectedFileName)
     {
-        $cache = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache')
+        $cache = $this->getMockBuilder(FilesystemCache::class)
             ->disableOriginalConstructor()
             ->setMethods(['fetch'])
             ->getMock();

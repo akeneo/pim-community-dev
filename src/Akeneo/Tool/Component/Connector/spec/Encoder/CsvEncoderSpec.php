@@ -2,13 +2,14 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Encoder;
 
+use Akeneo\Tool\Component\Connector\Encoder\CsvEncoder;
 use PhpSpec\ObjectBehavior;
 
 class CsvEncoderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Component\Connector\Encoder\CsvEncoder');
+        $this->shouldHaveType(CsvEncoder::class);
     }
 
     function it_is_a_encoder()

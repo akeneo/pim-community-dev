@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard;
 
+use Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
@@ -18,7 +19,7 @@ class CommentNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer');
+        $this->shouldHaveType(CommentNormalizer::class);
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 

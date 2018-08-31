@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRangeValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRange;
@@ -19,7 +20,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\ValidNumberRangeValidator');
+        $this->shouldHaveType(ValidNumberRangeValidator::class);
     }
 
     function it_does_nothing_when_number_range_is_valid(

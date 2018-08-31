@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository;
 
+use Acme\Bundle\AppBundle\Entity\Color;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
@@ -14,14 +16,14 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository');
+        $this->shouldHaveType(ReferenceDataRepository::class);
     }
 
     function let(
         EntityManager $em,
         Connection $connection
     ) {
-        $classMetadata = new ClassMetadata('Acme\Bundle\AppBundle\Entity\Color');
+        $classMetadata = new ClassMetadata(Color::class);
         $classMetadata->mapField([
             'fieldName' => 'sortOrder',
             'type' => 'integer',
@@ -95,7 +97,7 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
 
     function it_finds_and_sort_the_reference_data_by_code_only($em, QueryBuilder $qb, AbstractQuery $query)
     {
-        $classMetadata = new ClassMetadata('Acme\Bundle\AppBundle\Entity\Color');
+        $classMetadata = new ClassMetadata(Color::class);
         $this->beConstructedWith($em, $classMetadata);
 
         $select = 'rd.id as id, ' .

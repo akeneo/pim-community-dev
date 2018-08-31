@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement\Checker;
 
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\AclVisibilityChecker;
+use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 
@@ -14,12 +16,12 @@ class AclVisibilityCheckerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\ViewElement\Checker\AclVisibilityChecker');
+        $this->shouldHaveType(AclVisibilityChecker::class);
     }
 
     function it_is_a_visibility_checker()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface');
+        $this->shouldImplement(VisibilityCheckerInterface::class);
     }
 
     function it_requires_acl_in_the_configuration()

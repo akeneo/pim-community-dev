@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullPropertiesValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -20,7 +21,7 @@ class NotNullPropertiesValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullPropertiesValidator');
+        $this->shouldHaveType(NotNullPropertiesValidator::class);
     }
 
     function it_validates_not_blank_property_value(

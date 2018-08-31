@@ -2,6 +2,10 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -11,10 +15,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 
 class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 {
-    const ASSOC_TYPE_CLASS = 'Akeneo\Pim\Structure\Component\Model\AssociationType';
-    const ATTRIBUTE_CLASS = 'Akeneo\Pim\Structure\Component\Model\Attribute';
-    const CHANNEL_CLASS = 'Akeneo\Channel\Component\Model\Channel';
-    const LOCALE_CLASS = 'Akeneo\Channel\Component\Model\Locale';
+    const ASSOC_TYPE_CLASS = AssociationType::class;
+    const ATTRIBUTE_CLASS = Attribute::class;
+    const CHANNEL_CLASS = Channel::class;
+    const LOCALE_CLASS = Locale::class;
 
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,

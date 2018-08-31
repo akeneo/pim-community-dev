@@ -2,7 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Tests\Unit\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -62,11 +65,11 @@ class AjaxEntityTypeTest extends TestCase
                 )
             );
         $this->transformerFactory = $this->getMockBuilder(
-            'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory'
+            AjaxEntityTransformerFactory::class
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->transformer = $this->getMockBuilder('Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer')
+        $this->transformer = $this->getMockBuilder(AjaxEntityTransformer::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformerFactory->expects($this->any())
@@ -80,7 +83,7 @@ class AjaxEntityTypeTest extends TestCase
                     }
                 )
             );
-        $this->userContext = $this->getMockBuilder('Akeneo\UserManagement\Bundle\Context\UserContext')
+        $this->userContext = $this->getMockBuilder(UserContext::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->userContext->expects($this->any())

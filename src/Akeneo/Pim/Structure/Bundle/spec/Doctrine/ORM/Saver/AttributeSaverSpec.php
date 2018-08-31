@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver;
 
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -20,12 +22,12 @@ class AttributeSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldImplement(SaverInterface::class);
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface');
+        $this->shouldImplement(BulkSaverInterface::class);
     }
 
     function it_saves_an_attribute_and_flushes_by_default(

@@ -9,7 +9,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Testing class name
      */
-    const TESTING_CLASS = 'Oro\Bundle\FilterBundle\Twig\AbstractExtension';
+    const TESTING_CLASS = AbstractExtension::class;
 
     /**#@+
      * Test parameters

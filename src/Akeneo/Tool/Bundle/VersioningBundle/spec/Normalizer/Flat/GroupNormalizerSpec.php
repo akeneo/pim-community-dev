@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\GroupNormalizer;
 use Prophecy\Argument;
 
 class GroupNormalizerSpec extends ObjectBehavior
@@ -19,7 +19,7 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer');
+        $this->shouldHaveType(GroupNormalizer::class);
     }
 
     function it_is_a_normalizer()

@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\GroupTypeRepository;
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -23,12 +25,12 @@ class GroupTypeRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\GroupTypeRepository');
+        $this->shouldHaveType(GroupTypeRepository::class);
     }
 
     function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
+        $this->shouldImplement(TranslatedLabelsProviderInterface::class);
     }
 
     function it_is_a_doctrine_repository()

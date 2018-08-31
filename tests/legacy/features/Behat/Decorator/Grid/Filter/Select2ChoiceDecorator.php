@@ -4,6 +4,7 @@ namespace Pim\Behat\Decorator\Grid\Filter;
 
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Field\Select2Decorator;
 
 class Select2ChoiceDecorator extends ElementDecorator
 {
@@ -21,7 +22,7 @@ class Select2ChoiceDecorator extends ElementDecorator
             return $this->find('css', '.select-field');
         }, sprintf('Cannot find the value field for the filter "%s"', $this->getAttribute('data-name')));
 
-        $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\Select2Decorator']);
+        $field = $this->decorate($field, [Select2Decorator::class]);
         $field->close();
 
         if (!in_array($operator, ['is empty', 'is not empty'])) {
@@ -32,7 +33,7 @@ class Select2ChoiceDecorator extends ElementDecorator
         if (null !== $operatorDropdown) {
             $operatorDropdown = $this->decorate(
                 $operatorDropdown,
-                ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+                [OperatorDecorator::class]
             );
             $operatorDropdown->setValue($operator);
         }

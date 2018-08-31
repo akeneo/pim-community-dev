@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
@@ -10,7 +11,7 @@ class ObjectIdentityRetrievalStrategyTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetObjectIdentityWithString()
     {
-        $factory = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+        $factory = $this->getMockBuilder(ObjectIdentityFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
         $strategy = new ObjectIdentityRetrievalStrategy($factory);
@@ -26,7 +27,7 @@ class ObjectIdentityRetrievalStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetObjectIdentityWithObject()
     {
-        $factory = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+        $factory = $this->getMockBuilder(ObjectIdentityFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
         $strategy = new ObjectIdentityRetrievalStrategy($factory);
@@ -43,7 +44,7 @@ class ObjectIdentityRetrievalStrategyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetObjectIdentityShouldCatchInvalidDomainObjectException()
     {
-        $factory = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+        $factory = $this->getMockBuilder(ObjectIdentityFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
         $strategy = new ObjectIdentityRetrievalStrategy($factory);

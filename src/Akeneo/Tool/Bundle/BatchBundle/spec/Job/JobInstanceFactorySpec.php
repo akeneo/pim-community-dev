@@ -2,11 +2,12 @@
 
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\Job;
 
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 
 class JobInstanceFactorySpec extends ObjectBehavior
 {
-    const TESTED_CLASS = 'Akeneo\Tool\Component\Batch\Model\JobInstance';
+    const TESTED_CLASS = JobInstance::class;
 
     function let()
     {

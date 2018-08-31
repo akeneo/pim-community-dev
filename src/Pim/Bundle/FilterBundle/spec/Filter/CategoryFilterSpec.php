@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter;
 
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -21,7 +22,7 @@ class CategoryFilterSpec extends ObjectBehavior
 
     function it_is_an_oro_number_filter()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\NumberFilter');
+        $this->shouldBeAnInstanceOf(NumberFilter::class);
     }
 
     function it_applies_a_filter_on_all_products(FilterDatasourceAdapterInterface $datasource)

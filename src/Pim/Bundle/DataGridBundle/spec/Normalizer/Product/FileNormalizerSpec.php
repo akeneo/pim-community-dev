@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Bundle\DataGridBundle\Normalizer\Product\FileNormalizer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
@@ -10,7 +11,7 @@ class FileNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\FileNormalizer');
+        $this->shouldHaveType(FileNormalizer::class);
     }
 
     function it_is_a_normalizer()
