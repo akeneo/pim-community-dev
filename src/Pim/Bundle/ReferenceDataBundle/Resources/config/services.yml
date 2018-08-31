@@ -1,9 +1,9 @@
 parameters:
     pim_reference_data.registry.class: Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry
-    pim_reference_data.method_guesser.class: Pim\Component\ReferenceData\MethodNameGuesser
+    pim_reference_data.method_guesser.class: Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser
     pim_reference_data.repository_resolver.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver
     pim_reference_data.id_resolver.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver
-    pim_reference_data.label_renderer.class: Pim\Component\ReferenceData\LabelRenderer
+    pim_reference_data.label_renderer.class: Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer
 
 services:
     pim_reference_data.registry:

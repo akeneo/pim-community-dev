@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\ReferenceData;
+namespace Akeneo\Pim\Enrichment\Component\Product\ReferenceData;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
