@@ -27,6 +27,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'PDO',
         'Pim\Bundle\InstallerBundle',
+        'Ramsey\Uuid\Uuid',
         'Symfony\Component',
     ])->in('Akeneo\EnrichedEntity\Infrastructure'),
 ];

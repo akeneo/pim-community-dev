@@ -49,8 +49,8 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_true_if_the_attribute_exists_for_the_given_identifier()
     {
-        $this->loadAttribute('designer', 'name');
-        $isExisting = $this->attributeExists->withIdentifier(AttributeIdentifier::create('designer', 'name'));
+        $identifier = $this->loadAttribute('designer', 'name');
+        $isExisting = $this->attributeExists->withIdentifier($identifier);
         Assert::assertTrue($isExisting);
     }
 
@@ -59,7 +59,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
      */
     public function it_returns_false_if_the_attribute_does_not_exist_for_the_given_identifier()
     {
-        $isExisting = $this->attributeExists->withIdentifier(AttributeIdentifier::create('designer', 'name'));
+        $isExisting = $this->attributeExists->withIdentifier(AttributeIdentifier::create('designer', 'name', 'none'));
         Assert::assertFalse($isExisting);
     }
 
@@ -95,14 +95,19 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
         $enrichedEntityRepository->create($enrichedEntity);
     }
 
-    private function loadAttribute(string $enrichedEntityIdentifier, string $identifier, int $order = 0)
+    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, int $order = 0): AttributeIdentifier
     {
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $identifier = $attributeRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+
         $attributeRepository->create(
             TextAttribute::createText(
-                AttributeIdentifier::create($enrichedEntityIdentifier, $identifier),
+                $identifier,
                 EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                AttributeCode::fromString($identifier),
+                AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray(['fr_FR' => 'dummy label']),
                 AttributeOrder::fromInteger($order),
                 AttributeIsRequired::fromBoolean(false),
@@ -113,5 +118,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
                 AttributeRegularExpression::createEmpty()
             )
         );
+
+        return $identifier;
     }
 }

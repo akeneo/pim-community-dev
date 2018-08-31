@@ -33,7 +33,7 @@ function openFileFromRoot($fileName): string {
     return file_get_contents($ROOT . $fileName);
 }
 
-$REFERENCE_FILE = 'src/Akeneo/EnrichedEntity/back/Infrastructure/Symfony/Resources/config/services.yml';
+$REFERENCE_FILE = 'src/Akeneo/EnrichedEntity/back/Infrastructure/Symfony/Resources/config/persistence.yml';
 
 $FILES_TO_CHECK = [
     'src/Akeneo/EnrichedEntity/tests/back/Common/Resources/fake_services.yml',

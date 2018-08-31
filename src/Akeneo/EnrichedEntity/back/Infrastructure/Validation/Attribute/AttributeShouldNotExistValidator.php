@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Checks the attribute identifier given does not already exists
+ * Checks the attribute code given does not already exists
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -41,20 +42,18 @@ class AttributeShouldNotExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $enrichedEntityIdentifier = $command->identifier['enriched_entity_identifier'];
-        $identifier = $command->identifier['identifier'];
-        $alreadyExists = $this->attributeExists->withIdentifier(
-            AttributeIdentifier::create(
-                $enrichedEntityIdentifier,
-                $identifier
-            )
+        $enrichedEntityIdentifier = $command->enrichedEntityIdentifier;
+        $code = $command->code;
+        $alreadyExists = $this->attributeExists->withEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            AttributeCode::fromString($code)
         );
 
         if ($alreadyExists) {
             $this->context->buildViolation(AttributeShouldNotExist::ERROR_MESSAGE)
                 ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
-                ->setParameter('%code%', $identifier)
-                ->atPath('identifier')
+                ->setParameter('%code%', $code)
+                ->atPath('code')
                 ->addViolation();
         }
     }

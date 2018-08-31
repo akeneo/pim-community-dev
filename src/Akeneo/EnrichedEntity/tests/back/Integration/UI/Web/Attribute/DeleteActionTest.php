@@ -66,7 +66,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::DELETE_ATTRIBUTE_ROUTE,
             [
-                'attributeIdentifier' => 'name',
+                'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
                 'enrichedEntityIdentifier' => 'designer',
             ],
             'DELETE',
@@ -86,7 +86,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::DELETE_ATTRIBUTE_ROUTE,
             [
-                'attributeIdentifier' => 'name',
+                'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
                 'enrichedEntityIdentifier' => 'designer',
             ],
             'DELETE',
@@ -105,7 +105,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::DELETE_ATTRIBUTE_ROUTE,
             [
-                'attributeIdentifier' => 'foo',
+                'attributeIdentifier' => 'unknown',
                 'enrichedEntityIdentifier' => 'designer',
             ],
             'DELETE',
@@ -141,7 +141,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $attributeRepository = $this->getAttributeRepository();
 
         $attributeItem = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),

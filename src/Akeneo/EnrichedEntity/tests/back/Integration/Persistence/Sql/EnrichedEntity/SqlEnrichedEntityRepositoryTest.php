@@ -132,9 +132,9 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntity = EnrichedEntity::create($enrichedEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
         $this->repository->create($enrichedEntity);
 
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $expectedAttribute = TextAttribute::createText(
+        $attribute = TextAttribute::createText(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
@@ -147,7 +147,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-        $this->attributeRepository->create($expectedAttribute);
+        $this->attributeRepository->create($attribute);
 
         $this->repository->deleteByIdentifier($enrichedEntityIdentifier);
 

@@ -105,13 +105,12 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     PRIMARY KEY (`id`),
     UNIQUE `akeneoenriched_entity_record_identifier_index` (`identifier`, `enriched_entity_identifier`),
     CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
-      ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
 CREATE TABLE `akeneo_enriched_entity_attribute` (
-    `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
+    `code` VARCHAR(255) NOT NULL,
     `enriched_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `attribute_type` VARCHAR(255) NOT NULL,
@@ -120,11 +119,10 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     `value_per_channel` BOOLEAN NOT NULL,
     `value_per_locale` BOOLEAN NOT NULL,
     `additional_properties` JSON NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE `attribute_identifier_index` (`identifier`, `enriched_entity_identifier`),
+    PRIMARY KEY (`identifier`),
+    UNIQUE `attribute_identifier_index` (`code`, `enriched_entity_identifier`),
     UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
     CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
-      ON UPDATE CASCADE
       ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
@@ -261,6 +259,7 @@ SQL;
         $sql = <<<SQL
 INSERT INTO `akeneo_enriched_entity_attribute` (
   `identifier`,
+  `code`,
   `enriched_entity_identifier`,
   `labels`,
   `attribute_type`,
@@ -271,11 +270,11 @@ INSERT INTO `akeneo_enriched_entity_attribute` (
   `additional_properties`
   )
 VALUES
-  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}'),
-  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255, "is_textarea": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}')
+  ('name_designer_16f624b3-0855-4e12-80b6-da077252a194',      'name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('portrait_designer_1781b92b-6785-4bdf-9837-9f0db68902d4',  'portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}'),
+  ('name_brand_90440ddf-109d-4114-8668-e6a1da98dc38',         'name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('description_brand_befbca68-b613-4839-a1aa-5f74f98c438a',  'description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255, "is_textarea": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('image_designer_d00e1ee1-6c3d-4280-ae45-b124994491f2',     'image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}')
 SQL;
 
         $affectedRows = $this->dbal->exec($sql);

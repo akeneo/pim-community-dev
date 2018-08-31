@@ -69,8 +69,6 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
         - CreateTextAttributeCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         enrichedEntityIdentifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         code:
@@ -103,8 +101,6 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttribute
         - CreateImageAttributeCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         enrichedEntityIdentifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         code:
@@ -138,6 +134,11 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAtt
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [primary_constraints] }
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: { groups: [primary_constraints] }
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [secondary_constraints] }
+
+Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand:
+    properties:
+        attributeIdentifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
     properties:

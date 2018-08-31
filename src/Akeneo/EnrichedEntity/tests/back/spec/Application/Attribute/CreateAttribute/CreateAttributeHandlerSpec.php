@@ -8,9 +8,9 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeH
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
@@ -18,7 +18,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -41,18 +40,21 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
         AttributeFactoryRegistryInterface $registry,
         AttributeRepositoryInterface $repository,
         AttributeFactoryInterface $factory,
-        AttributeExistsInterface $existsAttribute
+        AttributeIdentifier $identifier
     ) {
+        $repository->nextIdentifier(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(AttributeCode::class)
+        )->willReturn($identifier);
+
         $textAttribute = $this->getAttribute();
         $textCommand = new CreateTextAttributeCommand();
-        $textCommand->identifier['enriched_entity_identifier'] = 'designer';
-        $textCommand->identifier['identifier'] = 'name';
+        $textCommand->enrichedEntityIdentifier = 'designer';
+        $textCommand->code = 'name';
         $textCommand->order = 3;
 
-        $existsAttribute->withIdentifier(Argument::cetera())->willReturn(false);
-        $existsAttribute->withEnrichedEntityIdentifierAndOrder(Argument::cetera())->willReturn(false);
         $registry->getFactory($textCommand)->willReturn($factory);
-        $factory->create($textCommand)->willReturn($textAttribute);
+        $factory->create($textCommand, $identifier)->willReturn($textAttribute);
         $repository->create($textAttribute)->shouldBeCalled();
 
         $this->__invoke($textCommand);
@@ -61,7 +63,7 @@ class CreateAttributeHandlerSpec extends ObjectBehavior
     private function getAttribute(): TextAttribute
     {
         return TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'name', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),

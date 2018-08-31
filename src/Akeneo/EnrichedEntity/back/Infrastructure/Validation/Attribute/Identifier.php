@@ -21,4 +21,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class Identifier extends Constraint
 {
+    public const MESSAGE_WRONG_PATTERN = 'pim_enriched_entity.attribute.validation.identifier.pattern';
 }

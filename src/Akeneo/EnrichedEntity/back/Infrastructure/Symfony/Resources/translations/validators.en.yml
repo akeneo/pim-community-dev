@@ -23,15 +23,12 @@ pim_enriched_entity:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 reserved_codes: 'The code cannot be any of those values: "%comma_separated_reserved_keywords%"'
             identifier:
+                pattern: 'This field may only contain letters, numbers, underscores and dashes.'
                 should_not_exist: 'The attribute already exists for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
-                should_exist: 'The attribute was not found for the enriched entity "%enriched_entity_identifier%" and the attribute code "%code%"'
+                should_exist: 'The attribute was not found'
             regular_expression:
                 invalid_regular_expression: 'This regular expression is not valid. Here is an example of a valid regular expression: "/[a-z]+[0-9]*/"'
             should_be_a_textarea_to_update_is_rich_text_editor: 'A simple text attribute cannot have a rich text editor'
             should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'A text area attribute cannot have a validation rule'
             cannot_set_a_non_empty_regular_expression: 'The attribute should not have a regular expression'
             cannot_update_the_regular_expression: 'Cannot set a regular expression on the text attribute'
-    enriched_entity:
-        validation:
-            identifier:
-                should_be_unique: 'An enriched entity already exists with identifier "%enriched_entity_identifier%"'

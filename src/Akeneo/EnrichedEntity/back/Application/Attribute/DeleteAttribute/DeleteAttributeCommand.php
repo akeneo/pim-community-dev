@@ -18,11 +18,6 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute;
  */
 class DeleteAttributeCommand
 {
-    /**
-     * Composite identifier:
-     * ['identifier' => $identifier, 'enrichedEntityIdentifier' => enrichedEntityIdentifier]
-     *
-     * @var string[]
-     */
-    public $identifier;
+    /** @var string */
+    public $attributeIdentifier;
 }

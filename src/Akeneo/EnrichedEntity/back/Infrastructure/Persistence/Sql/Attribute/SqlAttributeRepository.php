@@ -36,6 +36,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use PDO;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -59,6 +60,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         $insert = <<<SQL
         INSERT INTO akeneo_enriched_entity_attribute (
             identifier,
+            code,
             enriched_entity_identifier,
             labels,
             attribute_type,
@@ -70,6 +72,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         )
         VALUES (
             :identifier,
+            :code,
             :enriched_entity_identifier,
             :labels,
             :attribute_type,
@@ -83,7 +86,8 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier'                 => $normalizedAttribute['code'],
+                'identifier'                 => $normalizedAttribute['identifier'],
+                'code'                       => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
                 'labels'                     => json_encode($normalizedAttribute['labels']),
                 'attribute_type'             => $normalizedAttribute['type'],
@@ -149,6 +153,7 @@ SQL;
         $fetch = <<<SQL
         SELECT
             identifier,
+            code,
             enriched_entity_identifier,
             labels,
             attribute_type,
@@ -158,13 +163,12 @@ SQL;
             value_per_locale,
             additional_properties
         FROM akeneo_enriched_entity_attribute
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'identifier' => $identifier->getIdentifier(),
-                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
+                'identifier' => $identifier,
             ]
         );
         $result = $statement->fetch();
@@ -241,7 +245,8 @@ SQL;
      */
     private function hydrateAttribute(array $result): AbstractAttribute
     {
-        $code = $result['identifier'];
+        $identifier = $result['identifier'];
+        $code = $result['code'];
         $enrichedEntityIdentifier = $result['enriched_entity_identifier'];
         $labels = json_decode($result['labels'], true);
         $order = (int) $result['attribute_order'];
@@ -257,7 +262,7 @@ SQL;
                 $isRichTextEditor = $additionnalProperties['is_rich_text_editor'];
 
                 return TextAttribute::createTextarea(
-                    AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
+                    AttributeIdentifier::fromString($identifier),
                     EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
                     AttributeCode::fromString($code),
                     LabelCollection::fromArray($labels),
@@ -274,7 +279,7 @@ SQL;
             $regularExpression = $additionnalProperties['regular_expression'];
 
             return TextAttribute::createText(
-                AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
+                AttributeIdentifier::fromString($identifier),
                 EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
                 AttributeCode::fromString($code),
                 LabelCollection::fromArray($labels),
@@ -293,7 +298,7 @@ SQL;
             $extensions = $additionnalProperties['allowed_extensions'];
 
             return ImageAttribute::create(
-                AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
+                AttributeIdentifier::fromString($identifier),
                 EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
                 AttributeCode::fromString($code),
                 LabelCollection::fromArray($labels),
@@ -320,17 +325,27 @@ SQL;
     {
         $sql = <<<SQL
         DELETE FROM akeneo_enriched_entity_attribute
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $sql,
             [
-                'identifier' => $identifier->getIdentifier(),
-                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
+                'identifier' => $identifier,
             ]
         );
         if (1 !== $affectedRows) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
+    }
+
+    public function nextIdentifier(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        AttributeCode $attributeCode
+    ): AttributeIdentifier {
+        return AttributeIdentifier::create(
+            (string) $enrichedEntityIdentifier,
+            (string) $attributeCode,
+            Uuid::uuid4()->toString()
+        );
     }
 }

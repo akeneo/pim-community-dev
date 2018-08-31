@@ -24,11 +24,7 @@ class AttributeNotFoundException extends \RuntimeException
 {
     public static function withIdentifier(AttributeIdentifier $identifier): self
     {
-        $message = sprintf(
-            'Could not find attribute with enriched entity "%s" and identifier "%s"',
-            $identifier->getEnrichedEntityIdentifier(),
-            $identifier->getIdentifier()
-        );
+        $message = sprintf('Could not find attribute with identifier "%s"', $identifier);
 
         return new self($message);
     }

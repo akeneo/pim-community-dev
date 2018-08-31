@@ -40,10 +40,7 @@ class EditAttributeHandler
 
     private function getAttribute(EditAttributeCommand $command): AbstractAttribute
     {
-        $attributeIdentifier = AttributeIdentifier::create(
-            $command->identifier['enriched_entity_identifier'],
-            $command->identifier['identifier']
-        );
+        $attributeIdentifier = AttributeIdentifier::fromString($command->identifier);
 
         return $this->attributeRepository->getByIdentifier($attributeIdentifier);
     }

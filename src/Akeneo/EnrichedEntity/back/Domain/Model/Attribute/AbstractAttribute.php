@@ -16,7 +16,6 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -58,19 +57,6 @@ abstract class AbstractAttribute
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale
     ) {
-        Assert::eq($identifier->getIdentifier(), (string) $code, sprintf(
-                'The identifier and attribute code should be the same, "%s" and "%s" given.',
-                $identifier->getIdentifier(),
-                (string) $code
-            )
-        );
-        Assert::eq($identifier->getEnrichedEntityIdentifier(), (string) $enrichedEntityIdentifier, sprintf(
-                'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
-                $identifier->getEnrichedEntityIdentifier(),
-                (string) $enrichedEntityIdentifier
-            )
-        );
-
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->code = $code;
@@ -89,6 +75,11 @@ abstract class AbstractAttribute
     public function getEnrichedEntityIdentifier(): EnrichedEntityIdentifier
     {
         return $this->enrichedEntityIdentifier;
+    }
+
+    public function getCode(): AttributeCode
+    {
+        return $this->code;
     }
 
     public function equals(AbstractAttribute $attribute): bool
@@ -130,10 +121,7 @@ abstract class AbstractAttribute
     public function normalize(): array
     {
         return [
-            'identifier' => [
-                'enriched_entity_identifier' => $this->identifier->getEnrichedEntityIdentifier(),
-                'identifier' => $this->identifier->getIdentifier()
-            ],
+            'identifier' => (string) $this->identifier,
             'enriched_entity_identifier' => (string) $this->enrichedEntityIdentifier,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),

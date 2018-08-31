@@ -23,15 +23,9 @@ class DeleteAttributeHandlerSpec extends ObjectBehavior
     function it_deletes_an_attribute_by_its_identifier(AttributeRepositoryInterface $repository)
     {
         $command = new DeleteAttributeCommand();
-        $command->identifier = [
-            'enrichedEntityIdentifier' => 'designer',
-            'identifier' => 'name',
-        ];
+        $command->attributeIdentifier = 'name_designer_test';
 
-        $identifier = AttributeIdentifier::create(
-            $command->identifier['enrichedEntityIdentifier'],
-            $command->identifier['identifier']
-        );
+        $identifier = AttributeIdentifier::fromString('name_designer_test');
 
         $repository->deleteByIdentifier($identifier)->shouldBeCalled();
 

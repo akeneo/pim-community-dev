@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
@@ -35,7 +37,12 @@ class CreateAttributeHandler
 
     public function __invoke(AbstractCreateAttributeCommand $command): void
     {
-        $attribute = $this->attributeFactoryRegistry->getFactory($command)->create($command);
+        $identifier = $this->attributeRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
+            AttributeCode::fromString($command->code)
+        );
+
+        $attribute = $this->attributeFactoryRegistry->getFactory($command)->create($command, $identifier);
         $this->attributeRepository->create($attribute);
     }
 }

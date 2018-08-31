@@ -42,7 +42,7 @@ class ImageAttributeFactory implements AttributeFactoryInterface
         return $command instanceof CreateImageAttributeCommand;
     }
 
-    public function create(AbstractCreateAttributeCommand $command): AbstractAttribute
+    public function create(AbstractCreateAttributeCommand $command, AttributeIdentifier $identifier): AbstractAttribute
     {
         if (!$this->supports($command)) {
             throw new \RuntimeException(
@@ -55,10 +55,7 @@ class ImageAttributeFactory implements AttributeFactoryInterface
         }
 
         return ImageAttribute::create(
-            AttributeIdentifier::create(
-                $command->identifier['enriched_entity_identifier'],
-                $command->identifier['identifier']
-            ),
+            $identifier,
             EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),

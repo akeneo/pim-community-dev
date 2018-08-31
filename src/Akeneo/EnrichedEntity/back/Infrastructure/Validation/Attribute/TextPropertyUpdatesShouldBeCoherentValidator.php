@@ -84,12 +84,9 @@ class TextPropertyUpdatesShouldBeCoherentValidator extends ConstraintValidator
         }
     }
 
-    private function getAttribute(array $identifier): AbstractAttribute
+    private function getAttribute(string $identifier): AbstractAttribute
     {
-        return $this->attributeRepository->getByIdentifier(AttributeIdentifier::create(
-            $identifier['enriched_entity_identifier'],
-            $identifier['identifier'])
-        );
+        return $this->attributeRepository->getByIdentifier(AttributeIdentifier::fromString($identifier));
     }
 
 

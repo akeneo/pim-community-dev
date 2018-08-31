@@ -19,7 +19,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
@@ -36,7 +35,6 @@ use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;
-use PHPUnit\Framework\Assert;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 {
@@ -57,12 +55,15 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_text_and_returns_it()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('name');
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+            ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+
         $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
             $enrichedEntityIdentifier,
-            AttributeCode::fromString('name'),
+            $attributeCode,
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
@@ -83,13 +84,16 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_an_attribute_of_type_image_and_returns_it()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('picture');
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+            ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+
         $expectedAttribute = ImageAttribute::create(
             $identifier,
             $enrichedEntityIdentifier,
-            AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeCode::fromString('picture'),
+            LabelCollection::fromArray(['en_US' => 'Picture', 'fr_FR' => 'Image']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
@@ -109,8 +113,11 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('name');
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+            ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+
         $attribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($attribute);
 
@@ -123,8 +130,11 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+            ->nextIdentifier(EnrichedEntityIdentifier::fromString('designer'), AttributeCode::fromString('bio'));
+
         $this->expectException(AttributeNotFoundException::class);
-        $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'bio'));
+        $this->attributeRepository->getByIdentifier($identifier);
     }
 
     /**
@@ -132,9 +142,9 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_attribute_type_is_not_known()
     {
-        $this->insertRowWithUnsupportedType();
+        $identifier = $this->insertRowWithUnsupportedType();
         $this->expectException(\LogicException::class);
-        $this->attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'age'));
+        $this->attributeRepository->getByIdentifier($identifier);
     }
 
     /**
@@ -142,7 +152,11 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_deletes_an_attribute_by_its_identifier()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('name');
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+            ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+
         $textAttribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($textAttribute);
 
@@ -155,13 +169,13 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     /** @test */
     public function it_updates_an_attribute()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedAttribute = TextAttribute::createTextarea(
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            LabelCollection::fromArray(['en_US' => 'Nickname', 'fr_FR' => 'Surnom']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
@@ -207,12 +221,18 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         $repository->create($enrichedEntity);
     }
 
-    private function insertRowWithUnsupportedType()
+    private function insertRowWithUnsupportedType(): AttributeIdentifier
     {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $attributeCode = AttributeCode::fromString('age');
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+            ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+
         $sqlConnection = $this->get('database_connection');
         $query = <<<SQL
         INSERT INTO akeneo_enriched_entity_attribute (
             identifier,
+            code,
             enriched_entity_identifier,
             labels,
             attribute_type,
@@ -224,6 +244,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
         )
         VALUES (
             :identifier,
+            :code,
             :enriched_entity_identifier,
             :labels,
             :attribute_type,
@@ -234,11 +255,12 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             :additional_properties
         );
 SQL;
-        $assertRows =$sqlConnection->executeUpdate(
+        $assertRows = $sqlConnection->executeUpdate(
             $query,
             [
-                'identifier'                 => 'age',
-                'enriched_entity_identifier' => 'designer',
+                'identifier'                 => (string) $identifier,
+                'code'                       => (string) $attributeCode,
+                'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
                 'labels'                     => '{}',
                 'attribute_type'             => 'UNSUPPORTED_ATTRIBUTE_TYPE',
                 'attribute_order'            => 1,
@@ -248,7 +270,10 @@ SQL;
                 'additional_properties'      => '{}',
             ]
         );
+
         $this->assertEquals(1, $assertRows);
+
+        return $identifier;
     }
 
     private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute

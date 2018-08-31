@@ -96,7 +96,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $enrichedEntityRepository->create($enrichedEntityFull);
 
         $name = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'name', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
@@ -109,7 +109,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
         $email = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'email'),
+            AttributeIdentifier::create('designer', 'email', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
@@ -122,7 +122,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
         $customRegex = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'regex'),
+            AttributeIdentifier::create('designer', 'regex', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('regex'),
             LabelCollection::fromArray(['en_US' => 'Regex']),
@@ -135,7 +135,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeRegularExpression::fromString('/\w+/')
         );
         $longDescription = TextAttribute::createTextarea(
-            AttributeIdentifier::create('designer', 'long_description'),
+            AttributeIdentifier::create('designer', 'long_description', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('long_description'),
             LabelCollection::fromArray(['en_US' => 'Long description']),
@@ -147,7 +147,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             AttributeIsRichTextEditor::fromBoolean(true)
         );
         $imageAttribute = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'image'),
+            AttributeIdentifier::create('designer', 'image', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
@@ -182,7 +182,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $actualName = $this->getAttributeWithCode($attributeDetails, 'name');
         $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'name');
+        $expectedName->identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('name');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Name']);
@@ -202,7 +202,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'email');
         $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'email');
+        $expectedName->identifier = AttributeIdentifier::create('designer', 'email', 'test');
         $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('email');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Email']);
@@ -222,7 +222,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'regex');
         $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'regex');
+        $expectedName->identifier = AttributeIdentifier::create('designer', 'regex', 'test');
         $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('regex');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Regex']);
@@ -242,7 +242,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'long_description');
         $expectedName = new TextAttributeDetails();
-        $expectedName->identifier = AttributeIdentifier::create('designer', 'long_description');
+        $expectedName->identifier = AttributeIdentifier::create('designer', 'long_description', 'test');
         $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('long_description');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Long description']);
@@ -266,7 +266,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         $actualImage = $this->getAttributeWithCode($attributeDetails, 'image');
         $expectedImage = new ImageAttributeDetails();
-        $expectedImage->identifier = AttributeIdentifier::create('designer', 'image');
+        $expectedImage->identifier = AttributeIdentifier::create('designer', 'image', 'test');
         $expectedImage->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedImage->code = AttributeCode::fromString('name');
         $expectedImage->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);

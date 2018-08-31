@@ -86,7 +86,11 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
         );
         $enrichedEntityRepository->create($enrichedEntityFull);
 
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = $attributesRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
+        );
+
         $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),

@@ -75,12 +75,6 @@ class CreateAction
         if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_create')) {
             throw new AccessDeniedException();
         }
-        if ($this->hasDesynchronizedIdentifier($request)) {
-            return new JsonResponse(
-                'The enriched entity identifier provided in the route and the one given in the body of your request are different',
-                Response::HTTP_BAD_REQUEST
-            );
-        }
         if (!$this->isAttributeTypeProvided($request)) {
             return new JsonResponse(
                 'There was no valid attribute type provided in the request',
@@ -101,16 +95,6 @@ class CreateAction
         ($this->createAttributeHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * Checks whether the identifier given in the url parameter and in the body are the same or not.
-     */
-    private function hasDesynchronizedIdentifier(Request $request): bool
-    {
-        $normalizedCommand = json_decode($request->getContent(), true);
-
-        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier');
     }
 
     private function getCreateCommand(Request $request): AbstractCreateAttributeCommand

@@ -20,7 +20,7 @@ class ImageAttributeSpec extends ObjectBehavior
     function let()
     {
         $this->beConstructedThrough('create', [
-            AttributeIdentifier::create('designer', 'image'),
+            AttributeIdentifier::create('designer', 'image', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
@@ -38,38 +38,6 @@ class ImageAttributeSpec extends ObjectBehavior
         $this->shouldHaveType(ImageAttribute::class);
     }
 
-    function it_cannot_have_an_enriched_entity_identifier_different_from_the_composite_key()
-    {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
-            AttributeIdentifier::create('designer', 'image'),
-            EnrichedEntityIdentifier::fromString('manufacturer'),
-            AttributeCode::fromString('image'),
-            LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString('300.0'),
-            AttributeAllowedExtensions::fromList(['pdf'])
-        ]);
-    }
-
-    function it_cannot_have_a_code_different_from_the_composite_key()
-    {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('create', [
-            AttributeIdentifier::create('designer', 'image'),
-            EnrichedEntityIdentifier::fromString('designer'),
-            AttributeCode::fromString('birth_date'),
-            LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
-            AttributeOrder::fromInteger(0),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromString('300'),
-            AttributeAllowedExtensions::fromList(['pdf'])
-        ]);
-    }
-
     function it_determines_if_it_has_a_given_order()
     {
         $this->hasOrder(AttributeOrder::fromInteger(0))->shouldReturn(true);
@@ -79,10 +47,7 @@ class ImageAttributeSpec extends ObjectBehavior
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'image',
-                ],
+                'identifier'                 => 'image_designer_test',
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
@@ -101,10 +66,7 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Portrait', 'de_DE' => 'Porträt']));
         $this->normalize()->shouldBe([
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'image',
-                ],
+                'identifier'                 => 'image_designer_test',
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'de_DE' => 'Porträt'],
@@ -123,10 +85,7 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->setAllowedExtensions(AttributeAllowedExtensions::fromList(['jpeg']));
         $this->normalize()->shouldBe([
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'image',
-                ],
+                'identifier'                 => 'image_designer_test',
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
@@ -145,10 +104,7 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->setMaxFileSize(AttributeMaxFileSize::fromString('1000'));
         $this->normalize()->shouldBe([
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'image',
-                ],
+                'identifier'                 => 'image_designer_test',
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
@@ -167,10 +123,7 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->setIsRequired(AttributeIsRequired::fromBoolean(false));
         $this->normalize()->shouldBe([
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'image',
-                ],
+                'identifier'                 => 'image_designer_test',
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],

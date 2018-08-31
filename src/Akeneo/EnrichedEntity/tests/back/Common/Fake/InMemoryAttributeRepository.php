@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
@@ -30,8 +31,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
 
     public function create(AbstractAttribute $attribute): void
     {
-        $key = $this->getKey($attribute->getIdentifier());
-        if (isset($this->attributes[$key])) {
+        if (isset($this->attributes[(string) $attribute->getIdentifier()])) {
             throw new \RuntimeException('Attribute already exists');
         }
 
@@ -42,16 +42,15 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
             }
         }
 
-        $this->attributes[$key] = $attribute;
+        $this->attributes[(string) $attribute->getIdentifier()] = $attribute;
     }
 
     public function update(AbstractAttribute $attribute): void
     {
-        $key = $this->getKey($attribute->getIdentifier());
-        if (!isset($this->attributes[$key])) {
+        if (!isset($this->attributes[(string) $attribute->getIdentifier()])) {
             throw new \RuntimeException('Expected to update one attribute, but none was updated');
         }
-        $this->attributes[$key] = $attribute;
+        $this->attributes[(string) $attribute->getIdentifier()] = $attribute;
     }
 
     /**
@@ -59,8 +58,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
      */
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
-        $key = $this->getKey($identifier);
-        $attribute = $this->attributes[$key] ?? null;
+        $attribute = $this->attributes[(string) $identifier] ?? null;
         if (null === $attribute) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
@@ -83,11 +81,6 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return $attributes;
     }
 
-    public function getKey(AttributeIdentifier $identifier): string
-    {
-        return sprintf('%s_%s', $identifier->getEnrichedEntityIdentifier(), $identifier->getIdentifier());
-    }
-
     /**
      * @return AbstractAttribute[]
      */
@@ -98,12 +91,22 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
 
     public function deleteByIdentifier(AttributeIdentifier $identifier): void
     {
-        $key = $this->getKey($identifier);
-        $attribute = $this->attributes[$key] ?? null;
+        $attribute = $this->attributes[(string) $identifier] ?? null;
         if (null === $attribute) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        unset($this->attributes[$key]);
+        unset($this->attributes[(string) $identifier]);
+    }
+
+    public function nextIdentifier(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        AttributeCode $attributeCode
+    ): AttributeIdentifier {
+        return AttributeIdentifier::create(
+            (string) $enrichedEntityIdentifier,
+            (string) $attributeCode,
+            md5(sprintf('%s_%s', $enrichedEntityIdentifier, $attributeCode))
+        );
     }
 }
