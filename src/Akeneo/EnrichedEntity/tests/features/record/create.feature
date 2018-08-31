@@ -14,8 +14,8 @@ Feature: Create a record
       | labels                                            |
       | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
     Then there is a record with:
-      | identifier | entity_identifier | labels                                            |
-      | stark      | designer          | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
+      | code  | entity_identifier | labels                                            |
+      | stark | designer          | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
 
   @acceptance-back
   Scenario: Creating a record with no labels
@@ -23,15 +23,15 @@ Feature: Create a record
       | labels |
       | {}     |
     Then there is a record with:
-      | identifier | entity_identifier | labels |
-      | stark      | designer          | {}     |
+      | code  | entity_identifier | labels |
+      | stark | designer          | {}     |
 
   @acceptance-back
   Scenario: Cannot create a record with invalid identifier
     When the user creates a record "invalid/identifier" for entity "designer" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Record identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
+    Then an exception is thrown with message "Record code may contain only letters, numbers and underscores. "invalid/identifier" given"
     And there should be no record
 
   @acceptance-front
@@ -40,13 +40,13 @@ Feature: Create a record
     Given the user has the following rights:
       | akeneo_enrichedentity_record_create | true |
     And the user creates a record of "designer" with:
-      | identifier | labels             |
-      | stark      | {"en_US": "Stark"} |
+      | code  | labels             |
+      | stark | {"en_US": "Stark"} |
     Then the record will be saved
     And the user saves the record
     And there is a record of "designer" with:
-      | identifier | labels             |
-      | stark      | {"en_US": "Stark"} |
+      | code  | labels             |
+      | stark | {"en_US": "Stark"} |
 
   @acceptance-front
   Scenario: Cannot create a record with invalid identifier
@@ -54,7 +54,7 @@ Feature: Create a record
     Given the user has the following rights:
       | akeneo_enrichedentity_record_create | true |
     And the user creates a record of "designer" with:
-      | identifier         | labels |
+      | code               | labels |
       | invalid/identifier | {}     |
     Then the record validation error will be "This field may only contain letters, numbers and underscores."
     And the user saves the record

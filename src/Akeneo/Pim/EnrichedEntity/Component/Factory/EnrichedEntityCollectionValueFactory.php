@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\EnrichedEntity\Component\Factory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
@@ -113,10 +114,11 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
     {
         $collection = [];
 
-        foreach ($recordCodes as $recordCode) {
+        foreach ($recordCodes as $code) {
             $enrichedEntityCode = $attribute->getReferenceDataName();
             $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityCode);
-            $recordIdentifier = RecordIdentifier::create($enrichedEntityCode, $recordCode);
+            $recordCode = RecordCode::fromString($code);
+            $recordIdentifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
 
             $record = $this->recordRepository->getByIdentifier($recordIdentifier);
 

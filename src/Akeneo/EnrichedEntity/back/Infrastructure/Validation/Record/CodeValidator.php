@@ -26,14 +26,14 @@ class CodeValidator extends ConstraintValidator
 {
     private const MAX_IDENTIFIER_LENGTH = 255;
 
-    public function validate($identifier, Constraint $constraint)
+    public function validate($code, Constraint $constraint)
     {
         if (!$constraint instanceof Code) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($identifier, [
+        $violations = $validator->validate($code, [
                 new Constraints\NotBlank(),
                 new Constraints\NotNull(),
                 new Constraints\Type(['type' => 'string']),

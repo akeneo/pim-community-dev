@@ -68,7 +68,7 @@ export default ({
             return false;
           }}
         >
-          {record.getIdentifier().identifier}
+          {record.getCode().stringValue()}
         </a>
       </td>
       <td className="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">

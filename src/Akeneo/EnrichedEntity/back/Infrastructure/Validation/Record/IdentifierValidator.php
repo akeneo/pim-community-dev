@@ -12,9 +12,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
-use Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier as EnrichedEntityIdentifier;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -25,6 +24,8 @@ use Symfony\Component\Validator\Validation;
  */
 class IdentifierValidator extends ConstraintValidator
 {
+    private const MAX_IDENTIFIER_LENGTH = 255;
+
     public function validate($identifier, Constraint $constraint)
     {
         if (!$constraint instanceof Identifier) {
@@ -32,13 +33,17 @@ class IdentifierValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($identifier,
-            new Assert\Collection(
-                [
-                    'identifier' => new Code(),
-                    'enriched_entity_identifier' => new EnrichedEntityIdentifier()
-                ]
-            )
+        $violations = $validator->validate($identifier, [
+                new Constraints\NotBlank(),
+                new Constraints\NotNull(),
+                new Constraints\Type(['type' => 'string']),
+                new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
+                new Constraints\Regex([
+                        'pattern' => '/^[a-zA-Z0-9_-]+$/',
+                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern',
+                    ]
+                ),
+            ]
         );
 
         if ($violations->count() > 0) {

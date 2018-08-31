@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
@@ -30,30 +31,28 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
 
     public function create(Record $record): void
     {
-        $key = $this->getKey($record->getIdentifier());
-        if (isset($this->records[$key])) {
+        if (isset($this->records[$record->getIdentifier()->__toString()])) {
             throw new \RuntimeException('Record already exists');
         }
-        $this->records[$key] = $record;
+        $this->records[$record->getIdentifier()->__toString()] = $record;
     }
 
     public function update(Record $record): void
     {
-        $key = $this->getKey($record->getIdentifier());
-        if (!isset($this->records[$key])) {
+        if (!isset($this->records[$record->getIdentifier()->__toString()])) {
             throw new \RuntimeException('Expected to update one record, but none was saved');
         }
-        $this->records[$key] = $record;
+
+        $this->records[$record->getIdentifier()->__toString()] = $record;
     }
 
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
-        $key = $this->getKey($identifier);
-        if (!isset($this->records[$key])) {
+        if (!isset($this->records[$identifier->__toString()])) {
             throw RecordNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->records[$key];
+        return $this->records[$identifier->__toString()];
     }
 
     public function count(): int
@@ -69,9 +68,7 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
 
     public function hasRecord(RecordIdentifier $identifier)
     {
-        $key = $this->getKey($identifier);
-
-        return isset($this->records[$key]);
+        return isset($this->records[$identifier->__toString()]);
     }
 
     public function enrichedEntityHasRecords(EnrichedEntityIdentifier $enrichedEntityIdentifier)
@@ -85,8 +82,12 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return false;
     }
 
-    private function getKey(RecordIdentifier $recordIdentifier): string
+    public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): RecordIdentifier
     {
-        return sprintf('%s_%s', $recordIdentifier->getEnrichedEntityIdentifier(), $recordIdentifier->getIdentifier());
+        return RecordIdentifier::create(
+            $enrichedEntityIdentifier->__toString(),
+            $code->__toString(),
+            md5('fingerprint')
+        );
     }
 }

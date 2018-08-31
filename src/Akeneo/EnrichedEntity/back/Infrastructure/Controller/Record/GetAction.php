@@ -38,9 +38,8 @@ class GetAction
 
     public function __invoke(string $enrichedEntityIdentifier, string $recordIdentifier): JsonResponse
     {
-        $recordIdentifier = $this->getRecordIdentifierOr404($enrichedEntityIdentifier, $recordIdentifier);
-        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
-        $recordDetails = $this->findRecordDetailsOr404($recordIdentifier, $enrichedEntityIdentifier);
+        $recordIdentifier = $this->getRecordIdentifierOr404($recordIdentifier);
+        $recordDetails = $this->findRecordDetailsOr404($recordIdentifier);
 
         return new JsonResponse($recordDetails->normalize());
     }
@@ -48,22 +47,10 @@ class GetAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getEnrichedEntityIdentifierOr404(string $identifier): EnrichedEntityIdentifier
+    private function getRecordIdentifierOr404(string $recordIdentifier): RecordIdentifier
     {
         try {
-            return EnrichedEntityIdentifier::fromString($identifier);
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException($e->getMessage());
-        }
-    }
-
-    /**
-     * @throws NotFoundHttpException
-     */
-    private function getRecordIdentifierOr404(string $enrichedEntityIdentifier, string $recordIdentifier): RecordIdentifier
-    {
-        try {
-            return RecordIdentifier::create($enrichedEntityIdentifier, $recordIdentifier);
+            return RecordIdentifier::fromString($recordIdentifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
@@ -73,10 +60,9 @@ class GetAction
      * @throws NotFoundHttpException
      */
     private function findRecordDetailsOr404(
-        RecordIdentifier $recordIdentifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
+        RecordIdentifier $recordIdentifier
     ): RecordDetails {
-        $result = ($this->findRecordDetailsQuery)($recordIdentifier, $enrichedEntityIdentifier);
+        $result = ($this->findRecordDetailsQuery)($recordIdentifier);
 
         if (null === $result) {
             throw new NotFoundHttpException();

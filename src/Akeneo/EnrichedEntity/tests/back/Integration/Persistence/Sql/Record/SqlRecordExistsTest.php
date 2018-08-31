@@ -30,6 +30,9 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
     /** @var RecordExistsInterface */
     private $recordExists;
 
+    /** @var RecordIdentifier */
+    private $recordIdentifier;
+
     public function setUp()
     {
         parent::setUp();
@@ -45,8 +48,13 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_is_a_corresponding_record_identifier()
     {
-        $this->assertTrue($this->recordExists->withIdentifier(RecordIdentifier::create('designer', 'starck')));
-        $this->assertFalse($this->recordExists->withIdentifier(RecordIdentifier::create('designer', 'Coco')));
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('Coco');
+        $recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
+        $this->assertTrue($this->recordExists->withIdentifier($this->recordIdentifier));
+        $this->assertFalse($this->recordExists->withIdentifier($recordIdentifier));
     }
 
     private function resetDB(): void
@@ -70,10 +78,16 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
     public function loadRecordStarck(): void
     {
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $this->recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
         $recordRepository->create(
             Record::create(
-                RecordIdentifier::create('designer', 'starck'), EnrichedEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('starck'), ['fr_FR' => 'Philippe Starck']
+                $this->recordIdentifier,
+                $enrichedEntityIdentifier,
+                $recordCode,
+                ['fr_FR' => 'Philippe Starck']
             )
         );
     }

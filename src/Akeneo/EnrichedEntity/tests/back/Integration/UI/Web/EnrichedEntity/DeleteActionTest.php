@@ -185,10 +185,12 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         ]);
         $enrichedEntityRepository->create($entityItem);
 
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');
+        $recordCode = RecordCode::fromString('asus');
         $recordItem = Record::create(
-            RecordIdentifier::create('brand', 'asus'),
-            EnrichedEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('asus'),
+            $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode),
+            $enrichedEntityIdentifier,
+            $recordCode,
             [
                 'en_US' => 'ASUS',
                 'fr_FR' => 'ASUS',

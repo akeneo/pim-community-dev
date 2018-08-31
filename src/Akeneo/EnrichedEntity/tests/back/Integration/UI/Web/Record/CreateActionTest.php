@@ -57,10 +57,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => 'intel',
-                    'enriched_entity_identifier' => 'brand'
-                ],
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
                 'enriched_entity_identifier' => 'brand',
                 'code' => 'intel',
                 'labels' => [
@@ -90,10 +87,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => 'intel',
-                    'enriched_entity_identifier' => 'brand'
-                ],
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
                 'code' => 'intel',
                 'enriched_entity_identifier' => 'brand',
             ]
@@ -128,10 +122,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => $recordCode,
-                    'enriched_entity_identifier' => $enrichedEntityIdentifier
-                ],
+                'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
                 'enriched_entity_identifier' => $enrichedEntityIdentifier,
                 'code' => $recordCode,
                 'labels' => []
@@ -153,10 +144,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
         $content = [
-            'identifier'                 => [
-                'identifier'                 => 'starck',
-                'enriched_entity_identifier' => 'designer',
-            ],
+            'identifier'                 => 'designer_starck_1',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'starck',
             'labels'                     => ['fr_FR' => 'Philippe Starck'],
@@ -170,8 +158,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer","%code%":"starck"},"plural":null,"message":"The record identifier already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"identifier":{"identifier":"starck","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"identifier","invalidValue":{"identifier":{"identifier":"starck","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
-        );
+            '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record identifier already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
     }
 
     /** @test */
@@ -190,10 +177,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => 'sardoux',
-                    'enriched_entity_identifier' => 'michel'
-                ],
+                'identifier' => 'michel_sardoux_a1677570-a278-444b-ab46-baa1db199392',
                 'enriched_entity_identifier' => 'michel',
                 'labels'     => [
                     'fr_FR' => 'Starck',
@@ -230,26 +214,24 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 null,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":null,"enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":null,"enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Record Identifier is an integer'                                                            => [
                 1234123,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"identifier":{"identifier":1234123,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":1234123,"enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"identifier":{"identifier":1234123,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
+                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier has a dash character'                                                     => [
                 'invalid-identifier',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":{"identifier":"invalid-identifier","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":"invalid-identifier","enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":{"identifier":"invalid-identifier","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[]},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
+                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[]},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',
                 'brand',
                 sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":{"identifier":"%s","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":"%s","enriched_entity_identifier":"brand"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":{"identifier":"%s","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
                     $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],
@@ -257,14 +239,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'intel',
                 'invalid-identifier',
                 'invalid-identifier',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":{"identifier":"intel","enriched_entity_identifier":"invalid-identifier"},"enrichedEntityIdentifier":"invalid-identifier","code":"intel","labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":"intel","enriched_entity_identifier":"invalid-identifier"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":{"identifier":"intel","enriched_entity_identifier":"invalid-identifier"},"enrichedEntityIdentifier":"invalid-identifier","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
+                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"invalid-identifier","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Enriched Entity Identifier is 256 characters long'                                          => [
                 'intel',
                 $longIdentifier,
                 $longIdentifier,
                 sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":{"identifier":"intel","enriched_entity_identifier":"%s"},"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"identifier","invalidValue":{"identifier":"intel","enriched_entity_identifier":"%s"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":{"identifier":"intel","enriched_entity_identifier":"%s"},"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
                     $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],

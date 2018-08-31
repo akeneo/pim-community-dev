@@ -21,35 +21,11 @@ use Webmozart\Assert\Assert;
  */
 class RecordIdentifier
 {
-    private const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
-    private const IDENTIFIER = 'identifier';
-
-    /** @var string */
-    private $enrichedEntityIdentifier;
-
     /** @var string */
     private $identifier;
 
-    private function __construct(string $enrichedEntityIdentifier, string $identifier)
+    private function __construct(string $identifier)
     {
-        Assert::stringNotEmpty($enrichedEntityIdentifier, 'Enriched entity identifier cannot be empty');
-        Assert::maxLength(
-            $enrichedEntityIdentifier,
-            255,
-            sprintf(
-                'Enriched entity identifier cannot be longer than 255 characters, %d string long given',
-                strlen($enrichedEntityIdentifier)
-            )
-        );
-        Assert::regex(
-            $enrichedEntityIdentifier,
-            '/^[a-zA-Z0-9_]+$/',
-            sprintf(
-                'Enriched entity identifier may contain only letters, numbers and underscores. "%s" given',
-                $enrichedEntityIdentifier
-            )
-        );
-
         Assert::stringNotEmpty($identifier, 'Record identifier cannot be empty');
         Assert::maxLength(
             $identifier,
@@ -61,42 +37,71 @@ class RecordIdentifier
         );
         Assert::regex(
             $identifier,
-            '/^[a-zA-Z0-9_]+$/',
+            '/^[a-zA-Z0-9_-]+$/',
             sprintf(
-                'Record identifier may contain only letters, numbers and underscores. "%s" given',
+                'Record identifier may contain only letters, numbers, underscores and dashes. "%s" given',
                 $identifier
             )
         );
 
-        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->identifier = $identifier;
     }
 
-    public static function create(string $enrichedEntityIdentifier, string $identifier): self
+    public static function create(string $enrichedEntityIdentifier, string $code, string $fingerprint): self
     {
-        return new self($enrichedEntityIdentifier, $identifier);
+        Assert::stringNotEmpty($enrichedEntityIdentifier, 'Enriched entity identifier cannot be empty');
+        Assert::regex(
+            $enrichedEntityIdentifier,
+            '/^[a-zA-Z0-9_]+$/',
+            sprintf(
+                'Enriched entity identifier may contain only letters, numbers and underscores. "%s" given',
+                $enrichedEntityIdentifier
+            )
+        );
+        Assert::stringNotEmpty($code, 'Record code cannot be empty');
+        Assert::regex(
+            $code,
+            '/^[a-zA-Z0-9_]+$/',
+            sprintf(
+                'Record code may contain only letters, numbers and underscores. "%s" given',
+                $code
+            )
+        );
+        Assert::stringNotEmpty($fingerprint, 'Fingerprint cannot be empty');
+        Assert::regex(
+            $fingerprint,
+            '/^[a-zA-Z0-9_-]+$/',
+            sprintf(
+                'Fingerprint may contain only letters, numbers, underscores and dashes. "%s" given',
+                $fingerprint
+            )
+        );
+
+
+        return new self(sprintf(
+            '%s_%s_%s',
+            substr($enrichedEntityIdentifier, 0, 20),
+            substr($code, 0, 20),
+            $fingerprint
+        ));
+    }
+
+    public static function fromString(string $identifier)
+    {
+        return new self($identifier);
     }
 
     public function equals(RecordIdentifier $identifier): bool
     {
-        return $this->enrichedEntityIdentifier === $identifier->enrichedEntityIdentifier &&
-            $this->identifier === $identifier->identifier;
+        return $this->identifier === $identifier->identifier;
     }
 
-    public function normalize(): array
+    public function normalize(): string
     {
-        return [
-            self::ENRICHED_ENTITY_IDENTIFIER => $this->enrichedEntityIdentifier,
-            self::IDENTIFIER                 => $this->identifier
-        ];
+        return $this->identifier;
     }
 
-    public function getEnrichedEntityIdentifier(): string
-    {
-        return $this->enrichedEntityIdentifier;
-    }
-
-    public function getIdentifier(): string
+    public function __toString(): string
     {
         return $this->identifier;
     }

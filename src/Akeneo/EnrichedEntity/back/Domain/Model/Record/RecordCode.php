@@ -24,26 +24,26 @@ class RecordCode
     /** @var string */
     private $code;
 
-    private function __construct(string $identifier)
+    private function __construct(string $code)
     {
-        Assert::stringNotEmpty($identifier, 'Record code cannot be empty');
+        Assert::stringNotEmpty($code, 'Record code cannot be empty');
         Assert::maxLength(
-            $identifier,
+            $code,
             255,
-            sprintf('Record code cannot be longer than 255 characters, %d string long given', strlen($identifier))
+            sprintf('Record code cannot be longer than 255 characters, %d string long given', strlen($code))
         );
         Assert::regex(
-            $identifier,
+            $code,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf('Record code may contain only letters, numbers and underscores. "%s" given', $identifier)
+            sprintf('Record code may contain only letters, numbers and underscores. "%s" given', $code)
         );
 
-        $this->code = $identifier;
+        $this->code = $code;
     }
 
-    public static function fromString(string $identifier): self
+    public static function fromString(string $code): self
     {
-        return new self($identifier);
+        return new self($code);
     }
 
     public function __toString(): string

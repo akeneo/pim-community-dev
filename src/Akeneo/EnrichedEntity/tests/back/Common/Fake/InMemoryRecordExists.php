@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
 
@@ -32,6 +34,13 @@ class InMemoryRecordExists implements RecordExistsInterface
 
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool
     {
+        return $this->recordRepository->hasRecord($recordIdentifier);
+    }
+
+    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): bool
+    {
+        $recordIdentifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $code);
+
         return $this->recordRepository->hasRecord($recordIdentifier);
     }
 }

@@ -26,7 +26,7 @@ class RecordNormalizer implements NormalizerInterface
      */
     public function normalize($record, $format = null, array $context = []): string
     {
-        return $record->getIdentifier()->getIdentifier();
+        return $record->getIdentifier()->__toString();
     }
 
     /**

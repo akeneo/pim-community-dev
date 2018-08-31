@@ -24,9 +24,8 @@ class RecordNotFoundException extends \RuntimeException
     public static function withIdentifier(RecordIdentifier $identifier): self
     {
         $message = sprintf(
-            'Could not find record with enriched entity "%s" and identifier "%s"',
-            $identifier->getEnrichedEntityIdentifier(),
-            $identifier->getIdentifier()
+            'Could not find record with identifier "%s"',
+            (string) $identifier
         );
 
         return new self($message);

@@ -35,12 +35,12 @@ class EnrichedEntityCollectionValueSpec extends ObjectBehavior {
         $this->getData()->shouldReturn([$starck, $dyson]);
     }
 
-    function it_is_castable_into_a_string($starck, $dyson, RecordIdentifier $starckIdentifier, RecordIdentifier $dysonIdentifier)
+    function it_is_castable_into_a_string(Record $starck, Record $dyson, RecordIdentifier $starckIdentifier, RecordIdentifier $dysonIdentifier)
     {
         $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->getIdentifier()->willReturn('starck');
+        $starckIdentifier->__toString()->willReturn('starck');
         $dyson->getIdentifier()->willReturn($dysonIdentifier);
-        $dysonIdentifier->getIdentifier()->willReturn('dyson');
+        $dysonIdentifier->__toString()->willReturn('dyson');
         $this->__toString()->shouldReturn('starck, dyson');
     }
 }

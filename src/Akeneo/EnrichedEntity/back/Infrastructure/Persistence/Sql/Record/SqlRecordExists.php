@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
 use Doctrine\DBAL\Connection;
@@ -36,26 +38,36 @@ class SqlRecordExists implements RecordExistsInterface
 
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool
     {
-        $statement = $this->executeQuery($recordIdentifier);
+        $query = <<<SQL
+        SELECT EXISTS (
+            SELECT 1
+            FROM akeneo_enriched_entity_record
+            WHERE identifier = :identifier
+        ) as is_existing
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query, [
+            'identifier' => (string) $recordIdentifier
+        ]);
 
         return $this->isIdentifierExisting($statement);
     }
 
-    private function executeQuery(RecordIdentifier $recordIdentifier): Statement
+    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
             FROM akeneo_enriched_entity_record
-            WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier
+            WHERE enriched_entity_identifier = :enrichedEntityIdentifier
+            AND code = :code
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier'                 => $recordIdentifier->getIdentifier(),
-            'enriched_entity_identifier' => $recordIdentifier->getEnrichedEntityIdentifier(),
+            'enrichedEntityIdentifier' => (string) $enrichedEntityIdentifier,
+            'code' => (string) $code
         ]);
 
-        return $statement;
+        return $this->isIdentifierExisting($statement);
     }
 
     private function isIdentifierExisting(Statement $statement): bool
