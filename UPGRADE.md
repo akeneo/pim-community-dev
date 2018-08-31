@@ -6,6 +6,10 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\RequirementChecker\\AbstractReferenceDataUniqueCodeChecker/Akeneo\\Pim\\Structure\\Bundle\\ReferenceData\\RequirementChecker\\AbstractReferenceDataUniqueCodeChecker/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\RequirementChecker\\CheckerInterface/Akeneo\\Pim\\Structure\\Bundle\\ReferenceData\\RequirementChecker\\CheckerInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\RequirementChecker\\ReferenceDataInterfaceChecker/Akeneo\\Pim\\Structure\\Bundle\\ReferenceData\\RequirementChecker\\ReferenceDataInterfaceChecker/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\RequirementChecker\\ReferenceDataNameChecker/Akeneo\\Pim\\Structure\\Bundle\\ReferenceData\\RequirementChecker\\ReferenceDataNameChecker/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Normalizer\\ReferenceDataConfigurationNormalizer/Akeneo\\Pim\\Structure\\Component\\Normalizer\\InternalApi\\ReferenceDataConfigurationNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\AttributeType\\ReferenceDataSimpleSelectType/Akeneo\\Pim\\Structure\\Component\\AttributeType\\ReferenceDataSimpleSelectType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\AttributeType\\ReferenceDataMultiSelectType/Akeneo\\Pim\\Structure\\Component\\AttributeType\\ReferenceDataMultiSelectType/g'

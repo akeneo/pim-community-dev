@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
 
-use Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractReferenceDataUniqueCodeChecker;
+use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\AbstractReferenceDataUniqueCodeChecker;
 
 /**
  * Checks if the ReferenceData has a unique code constraint.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
+namespace Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker;
 
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Doctrine\Common\Persistence\ObjectManager;

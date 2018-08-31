@@ -13,6 +13,10 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\AbstractReferenceDataUniqueCodeChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\CheckerInterface`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataInterfaceChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNameChecker`
 - Move `Pim\Bundle\ReferenceDataBundle\Normalizer\ReferenceDataConfigurationNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\ReferenceDataConfigurationNormalizer`
 - Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataSimpleSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataSimpleSelectType`
 - Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataMultiSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataMultiSelectType`

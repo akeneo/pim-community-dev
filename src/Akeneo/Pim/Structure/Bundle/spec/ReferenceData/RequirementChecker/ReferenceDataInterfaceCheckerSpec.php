@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
+namespace spec\Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
