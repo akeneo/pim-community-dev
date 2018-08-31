@@ -133,10 +133,10 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)
             ->convertToPHPValue($identifier, $platform);
-        $code = Type::getType(Type::STRING)
-            ->convertToPHPValue($code, $platform);
         $enrichedEntityIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
+        $code = Type::getType(Type::STRING)
+            ->convertToPHPValue($code, $platform);
 
         $record = Record::create(
             RecordIdentifier::fromString($identifier),

@@ -76,8 +76,7 @@ class Record
 
     public function equals(Record $record): bool
     {
-        return $this->identifier->equals($record->identifier) &&
-            $this->enrichedEntityIdentifier->equals($record->enrichedEntityIdentifier);
+        return $this->identifier->equals($record->identifier);
     }
 
     public function getLabel(string $localeCode): ?string

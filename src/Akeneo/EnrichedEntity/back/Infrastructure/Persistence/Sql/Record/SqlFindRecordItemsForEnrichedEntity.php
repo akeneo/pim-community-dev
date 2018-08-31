@@ -85,6 +85,7 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
         $enrichedEntityIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
+        $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
 
         $recordItem = new RecordItem();
         $recordItem->identifier = RecordIdentifier::fromString($identifier);
