@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -52,17 +53,13 @@ final class CreateRecordContext implements Context
      * @When /^the user creates a record "([^"]+)" for entity "([^"]+)" with:$/
      */
     public function theUserCreatesARecordWith(
-        string $recordIdentifier,
+        string $code,
         string $enrichedEntityIdentifier,
         TableNode $updateTable
     ) {
         $updates = current($updateTable->getHash());
         $command = new CreateRecordCommand();
-        $command->identifier = [
-            'identifier'                  => $recordIdentifier,
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
-        ];
-        $command->code = $recordIdentifier;
+        $command->code = $code;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $command->labels = json_decode($updates['labels'], true);
         try {
@@ -78,10 +75,9 @@ final class CreateRecordContext implements Context
     public function thereIsARecordWith(TableNode $enrichedEntityTable)
     {
         $expectedInformation = current($enrichedEntityTable->getHash());
-        $expectedIdentifier = RecordIdentifier::create(
-            $expectedInformation['entity_identifier'],
-            $expectedInformation['identifier']
-
+        $expectedIdentifier = $this->recordRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString($expectedInformation['entity_identifier']),
+            RecordCode::fromString($expectedInformation['code'])
         );
         $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(

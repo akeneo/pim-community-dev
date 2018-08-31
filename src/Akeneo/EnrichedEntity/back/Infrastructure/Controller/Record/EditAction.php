@@ -81,8 +81,8 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
-            $normalizedCommand['identifier']['identifier'] !== $request->get('recordIdentifier');
+        return $normalizedCommand['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
+            $normalizedCommand['identifier'] !== $request->get('recordIdentifier');
     }
 
     private function getEditCommand(Request $request): EditRecordCommand
@@ -90,10 +90,7 @@ class EditAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = new EditRecordCommand();
-        $command->identifier = [
-            'identifier'                 => $normalizedCommand['identifier']['identifier'] ?? null,
-            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null,
-        ];
+        $command->identifier = $normalizedCommand['identifier'] ?? null;
         $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];

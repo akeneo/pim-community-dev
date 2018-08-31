@@ -15,6 +15,7 @@ $rules = [
     ])->in('Akeneo\EnrichedEntity\Domain'),
     $builder->only([
         'Akeneo\EnrichedEntity\Domain',
+        'Akeneo\EnrichedEntity\Infrastructure',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
     ])->in('Akeneo\EnrichedEntity\Application'),
@@ -27,6 +28,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'PDO',
         'Pim\Bundle\InstallerBundle',
+        'Ramsey\Uuid\Uuid',
         'Symfony\Component',
     ])->in('Akeneo\EnrichedEntity\Infrastructure'),
 ];

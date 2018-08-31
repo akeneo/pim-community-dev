@@ -19,6 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -31,8 +32,12 @@ class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedE
     /** @var Connection */
     private $sqlConnection;
 
+    /** @var RecordRepositoryInterface  */
+    private $recordRepository;
+
     /**
      * @param Connection $sqlConnection
+     * @param RecordRepositoryInterface $recordRepository
      */
     public function __construct(Connection $sqlConnection)
     {
@@ -45,7 +50,7 @@ class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedE
     public function __invoke(EnrichedEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT identifier, enriched_entity_identifier, labels
+        SELECT identifier, enriched_entity_identifier, code, labels
         FROM akeneo_enriched_entity_record
         WHERE enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
@@ -60,6 +65,7 @@ SQL;
             $recordItems[] = $this->hydrateRecordItem(
                 $result['identifier'],
                 $result['enriched_entity_identifier'],
+                $result['code'],
                 $result['labels']
             );
         }
@@ -70,6 +76,7 @@ SQL;
     private function hydrateRecordItem(
         string $identifier,
         string $enrichedEntityIdentifier,
+        string $code,
         string $normalizedLabels
     ): RecordItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -80,9 +87,9 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $recordItem = new RecordItem();
-        $recordItem->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $identifier);
+        $recordItem->identifier = RecordIdentifier::fromString($identifier);
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
-        $recordItem->code = RecordCode::fromString($identifier);
+        $recordItem->code = RecordCode::fromString($code);
         $recordItem->labels = LabelCollection::fromArray($labels);
 
         return $recordItem;

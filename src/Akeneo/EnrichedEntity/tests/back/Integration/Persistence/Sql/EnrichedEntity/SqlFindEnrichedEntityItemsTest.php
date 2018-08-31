@@ -28,6 +28,12 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
     /** @var FindEnrichedEntityItemsInterface */
     private $findEnrichedEntityItems;
 
+    /** @var RecordIdentifier */
+    private $starckIdentifier;
+
+    /** @var RecordIdentifier */
+    private $cocoIdentifier;
+
     public function setUp()
     {
         parent::setUp();
@@ -53,13 +59,15 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
         $recordItems = ($this->findEnrichedEntityItems)(EnrichedEntityIdentifier::fromString('designer'));
 
         $starck = new RecordItem();
-        $starck->identifier = RecordIdentifier::create('designer', 'starck');
+        $starck->identifier = $this->starckIdentifier;
         $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $starck->code = RecordCode::fromString('starck');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
         $coco = new RecordItem();
-        $coco->identifier = RecordIdentifier::create('designer', 'coco');
+        $coco->identifier = $this->cocoIdentifier;
         $coco->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $coco->code = RecordCode::fromString('coco');
         $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
 
         $this->assertRecordItem($starck, $recordItems[0]);
@@ -74,8 +82,9 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
     private function loadEnrichedEntityAndRecords(): void
     {
         $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+            $enrichedEntityIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
@@ -84,19 +93,23 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
         $enrichedEntityRepository->create($enrichedEntity);
 
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $starkCode = RecordCode::fromString('starck');
+        $this->starckIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $starkCode);
         $recordRepository->create(
             Record::create(
-                RecordIdentifier::create('designer', 'starck'),
-                EnrichedEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('starck'),
+                $this->starckIdentifier,
+                $enrichedEntityIdentifier,
+                $starkCode,
                 ['fr_Fr' => 'Philippe Starck']
             )
         );
+        $cocoCode = RecordCode::fromString('coco');
+        $this->cocoIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $cocoCode);
         $recordRepository->create(
             Record::create(
-                RecordIdentifier::create('designer', 'coco'),
-                EnrichedEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('coco'),
+                $this->cocoIdentifier,
+                $enrichedEntityIdentifier,
+                $cocoCode,
                 ['fr_Fr' => 'Coco Chanel']
             )
         );

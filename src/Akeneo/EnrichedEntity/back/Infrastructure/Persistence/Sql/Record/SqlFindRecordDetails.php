@@ -53,6 +53,7 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         $recordDetails = $this->hydrateRecordDetails(
             $result['identifier'],
             $result['enriched_entity_identifier'],
+            $result['code'],
             $result['labels']
         );
 
@@ -62,13 +63,12 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     private function fetchResult(RecordIdentifier $recordIdentifier): array
     {
         $query = <<<SQL
-        SELECT identifier, enriched_entity_identifier, labels
+        SELECT identifier, code, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record
-        WHERE enriched_entity_identifier = :enriched_entity_identifier AND identifier = :record_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => $recordIdentifier->getEnrichedEntityIdentifier(),
-            'record_identifier'          => $recordIdentifier->getIdentifier()
+            'identifier' => $recordIdentifier->__toString()
         ]);
         $result = $statement->fetch();
         $statement->closeCursor();
@@ -79,6 +79,7 @@ SQL;
     private function hydrateRecordDetails(
         string $identifier,
         string $enrichedEntityIdentifier,
+        string $code,
         string $normalizedLabels
     ): RecordDetails {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -87,11 +88,12 @@ SQL;
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
         $enrichedEntityIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
+        $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
 
         $recordDetails = new RecordDetails();
-        $recordDetails->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $identifier);
+        $recordDetails->identifier = RecordIdentifier::fromString($identifier);
         $recordDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
-        $recordDetails->code = RecordCode::fromString($identifier);
+        $recordDetails->code = RecordCode::fromString($code);
         $recordDetails->labels = LabelCollection::fromArray($labels);
 
         return $recordDetails;

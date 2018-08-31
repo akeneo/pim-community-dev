@@ -41,8 +41,6 @@ Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
         - CreateRecordCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Identifier: ~
         enrichedEntityIdentifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         code:

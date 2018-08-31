@@ -42,19 +42,6 @@ class Record
         RecordCode $code,
         LabelCollection $labelCollection
     ) {
-        Assert::eq($identifier->getIdentifier(), (string) $code, sprintf(
-                'The identifier and code should be the same, "%s" and "%s" given.',
-                $identifier->getIdentifier(),
-                (string) $code
-            )
-        );
-        Assert::eq($identifier->getEnrichedEntityIdentifier(), (string) $enrichedEntityIdentifier, sprintf(
-                'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
-                $identifier->getEnrichedEntityIdentifier(),
-                (string) $enrichedEntityIdentifier
-            )
-        );
-
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->labelCollection = $labelCollection;
@@ -75,6 +62,11 @@ class Record
     public function getIdentifier(): RecordIdentifier
     {
         return $this->identifier;
+    }
+
+    public function getCode(): RecordCode
+    {
+        return $this->code;
     }
 
     public function getEnrichedEntityIdentifier(): EnrichedEntityIdentifier

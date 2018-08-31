@@ -99,6 +99,7 @@ DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 CREATE TABLE `akeneo_enriched_entity_record` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
+    `code` VARCHAR(255) NOT NULL,
     `enriched_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `data` JSON NOT NULL,
@@ -239,16 +240,16 @@ SQL;
     private function loadRecords(): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `labels`, `data`)
+INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `data`)
 VALUES
-  ('starck',   'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
-  ('dyson',    'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
-  ('newson',   'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
-  ('vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
-  ('arad',     'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
-  ('cogip',    'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
-  ('sbep',     'brand',    '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
-  ('scep',     'brand',    '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
+  ('designer_starck_1', 'starck', 'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
+  ('designer_dyson_2',  'dyson', 'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
+  ('designer_newson_3', 'newson', 'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
+  ('designer_vignelli_4', 'vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
+  ('designer_arad_5', 'arad', 'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
+  ('brand_cogip_6', 'cogip', 'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
+  ('brand_sbep_7', 'sbep', 'brand', '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
+  ('brand_scep_8', 'scep', 'brand', '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
 SQL;
         $affectedRows = $this->dbal->exec($sql);
         if (0 === $affectedRows) {

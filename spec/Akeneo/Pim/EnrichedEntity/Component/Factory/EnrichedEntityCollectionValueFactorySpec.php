@@ -4,6 +4,7 @@ namespace spec\Akeneo\Pim\EnrichedEntity\Component\Factory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\Factory\EnrichedEntityCollectionValueFactory;
@@ -100,9 +101,17 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $starckIdentifier = RecordIdentifier::create('designer', 'starck');
+        $starckIdentifier = RecordIdentifier::fromString('designer_starck_fingerprint');
+        $recordRepository->nextIdentifier(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($starckIdentifier);
         $recordRepository->getByIdentifier($starckIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::create('designer', 'dyson');
+        $dysonIdentifier = RecordIdentifier::fromString('designer_dyson_fingreprint');
+        $recordRepository->nextIdentifier(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($dysonIdentifier);
         $recordRepository->getByIdentifier($dysonIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(
@@ -133,9 +142,17 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $starckIdentifier = RecordIdentifier::create('designer', 'starck');
+        $starckIdentifier = RecordIdentifier::fromString('designer_starck_fingerprint');
+        $recordRepository->nextIdentifier(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($starckIdentifier);
         $recordRepository->getByIdentifier($starckIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::create('designer', 'dyson');
+        $dysonIdentifier = RecordIdentifier::fromString('designer_dyson_fingerprint');
+        $recordRepository->nextIdentifier(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($dysonIdentifier);
         $recordRepository->getByIdentifier($dysonIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(
