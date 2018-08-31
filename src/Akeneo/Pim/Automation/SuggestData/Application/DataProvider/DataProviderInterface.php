@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
@@ -39,4 +40,13 @@ interface DataProviderInterface
      * @return ProductSubscriptionsResponse
      */
     public function fetch(): ProductSubscriptionsResponse;
+
+    /**
+     * Updates the identifiers mapping
+     *
+     * @param IdentifiersMapping $identifiersMapping
+     *
+     * @return void
+     */
+    public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
 }

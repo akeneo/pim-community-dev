@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\InvalidAttributeTypeException;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\MissingMandatoryAttributeMappingException;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
@@ -44,20 +44,28 @@ class UpdateIdentifiersMappingHandler
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var DataProviderInterface */
+    private $dataProvider;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param DataProviderFactory                   $dataProviderFactory
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        DataProviderFactory $dataProviderFactory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->dataProvider = $dataProviderFactory->create();
     }
 
     /**
      * @param UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand
+     *
+     * @throws InvalidMappingException
      */
     public function handle(UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand): void
     {
@@ -69,6 +77,7 @@ class UpdateIdentifiersMappingHandler
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
         $this->identifiersMappingRepository->save($identifiersMapping);
+        $this->dataProvider->updateIdentifiersMapping($identifiersMapping);
     }
 
     /**
@@ -101,19 +110,24 @@ class UpdateIdentifiersMappingHandler
      */
     private function validateAttributeTypes(array $identifiers): void
     {
-        foreach ($identifiers as $attribute) {
+        foreach ($identifiers as $identifier => $attribute) {
             if (empty($attribute)) {
                 continue;
             }
 
-            if (! in_array($attribute->getType(), static::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER)) {
-                throw new InvalidAttributeTypeException();
+            if (!in_array($attribute->getType(), static::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER)) {
+                throw InvalidMappingException::attributeType(
+                    static::class,
+                    $identifier
+                );
             }
         }
     }
 
     /**
      * @param array $identifiers
+     *
+     * @throws InvalidMappingException
      */
     private function validateThatBrandAndMpnAreNotSavedAlone(array $identifiers): void
     {
@@ -121,7 +135,10 @@ class UpdateIdentifiersMappingHandler
         $isMpnDefined = isset($identifiers['mpn']) && $identifiers['mpn'] instanceof AttributeInterface;
 
         if ($isBrandDefined xor $isMpnDefined) {
-            throw new MissingMandatoryAttributeMappingException();
+            throw InvalidMappingException::mandatoryAttributeMapping(
+                static::class,
+                $isBrandDefined ? 'mpn' : 'brand'
+            );
         }
     }
 }
