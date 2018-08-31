@@ -6,8 +6,10 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Component\\Product\\ReferenceData\\LabelRenderer/Akeneo\\Pim\\Enrichment\\Component\\Product\\ReferenceData\\LabelRenderer/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\Enrichment\\Component\\Product\\ReferenceData\\MethodNameGuesser/Akeneo\\Pim\\Enrichment\\Component\\Product\\ReferenceData\\MethodNameGuesser/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\AttributeType\\ReferenceDataSimpleSelectType/Akeneo\\Pim\\Structure\\Component\\AttributeType\\ReferenceDataSimpleSelectType/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\AttributeType\\ReferenceDataMultiSelectType/Akeneo\\Pim\\Structure\\Component\\AttributeType\\ReferenceDataMultiSelectType/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\LabelRenderer/Akeneo\\Pim\\Enrichment\\Component\\Product\\ReferenceData\\LabelRenderer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\MethodNameGuesser/Akeneo\\Pim\\Enrichment\\Component\\Product\\ReferenceData\\MethodNameGuesser/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ConfigurationRegistry/Akeneo\\Pim\\Structure\\Component\\ReferenceData\\ConfigurationRegistry/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\ConfigurationRegistryInterface/Akeneo\\Pim\\Structure\\Component\\ReferenceData\\ConfigurationRegistryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\ReferenceData\\Normalizer\\Indexing\\ProductValue\\ReferenceDataNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Indexing\\Value\\ReferenceDataNormalizer/g'

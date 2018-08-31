@@ -13,8 +13,10 @@
 
 ## BC breaks
 
-- Move `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer`
-- Move `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser`
+- Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataSimpleSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataSimpleSelectType`
+- Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataMultiSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataMultiSelectType`
+- Move `Pim\Component\ReferenceData\LabelRenderer` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer`
+- Move `Pim\Component\ReferenceData\MethodNameGuesser` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser`
 - Move `Pim\Component\ReferenceData\ConfigurationRegistry` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry`
 - Move `Pim\Component\ReferenceData\ConfigurationRegistryInterface` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface`
 - Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer`
