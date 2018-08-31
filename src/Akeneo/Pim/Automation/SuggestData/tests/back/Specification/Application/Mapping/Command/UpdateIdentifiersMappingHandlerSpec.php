@@ -20,7 +20,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifi
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -165,7 +165,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_mpn_is_saved_without_brand(
         AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingInterface $identifiersMappingWebService,
+        IdentifiersMappingApiInterface $identifiersMappingWebService,
         AttributeInterface $model,
         AttributeInterface $ean,
         $identifiersMappingRepository

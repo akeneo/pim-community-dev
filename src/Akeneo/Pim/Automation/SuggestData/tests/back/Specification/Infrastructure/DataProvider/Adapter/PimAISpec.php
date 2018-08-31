@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingReposi
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
@@ -37,14 +37,14 @@ class PimAISpec extends ObjectBehavior
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        IdentifiersMappingInterface $identifiersMappingUpdater,
+        IdentifiersMappingApiInterface $identifiersMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
         $this->beConstructedWith(
             $authenticationApi,
             $subscriptionApi,
             $identifiersMappingRepository,
-            $identifiersMappingUpdater,
+            $identifiersMappingApi,
             $identifiersMappingNormalizer
         );
     }
@@ -176,14 +176,14 @@ class PimAISpec extends ObjectBehavior
     }
 
     public function it_updates_the_identifiers_mapping(
-        IdentifiersMappingInterface $identifiersMappingUpdater,
+        IdentifiersMappingApiInterface $identifiersMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         IdentifiersMapping $mapping
     ) {
         $normalizedMapping = ['foo' => 'bar'];
 
         $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
-        $identifiersMappingUpdater->update($normalizedMapping)->shouldBeCalled();
+        $identifiersMappingApi->update($normalizedMapping)->shouldBeCalled();
 
         $this->updateIdentifiersMapping($mapping);
     }

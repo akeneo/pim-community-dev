@@ -12,11 +12,11 @@
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 
 /**
- * Fake identifiers mapping updater
+ * Fake identifiers mapping API
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-class IdentifiersMappingFake implements IdentifiersMappingInterface
+class IdentifiersMappingApiFake implements IdentifiersMappingApiInterface
 {
     /**
      * {@inheritdoc}

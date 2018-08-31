@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingWebService;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiWebService;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use PhpSpec\ObjectBehavior;
 
-class IdentifiersMappingWebServiceSpec extends ObjectBehavior
+class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
 {
     public function let(
         UriGenerator $uriGenerator,
@@ -31,7 +30,7 @@ class IdentifiersMappingWebServiceSpec extends ObjectBehavior
 
     public function it_is_subscription_collection()
     {
-        $this->shouldHaveType(IdentifiersMappingWebService::class);
+        $this->shouldHaveType(IdentifiersMappingApiWebService::class);
     }
 
     public function it_should_update_mapping(

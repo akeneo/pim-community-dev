@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
-interface IdentifiersMappingInterface
+interface IdentifiersMappingApiInterface
 {
     /**
      * Call the API to update the identifiers mapping

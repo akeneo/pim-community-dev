@@ -28,8 +28,8 @@ services:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
 
-    akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping_webservice:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingWebService'
+    akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping_api_webservice:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiWebService'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
