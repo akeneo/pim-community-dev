@@ -12,11 +12,11 @@ namespace Akeneo\Asset\Component\Model;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Classification\TagAwareInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 /**
  * Product asset interface

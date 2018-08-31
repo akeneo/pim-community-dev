@@ -15,12 +15,12 @@ namespace Akeneo\Pim\Asset\Component;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * Copy of the {@see Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ReferenceDataCollectionValueFactory} but without

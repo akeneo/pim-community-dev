@@ -18,9 +18,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
  * Proposal reference data filter for an Elasticsearch query
