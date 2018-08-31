@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
 use Acme\Bundle\AppBundle\Entity\Color;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
