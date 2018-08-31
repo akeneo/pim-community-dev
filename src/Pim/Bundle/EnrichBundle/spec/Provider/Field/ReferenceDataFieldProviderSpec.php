@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field;
+namespace spec\Pim\Bundle\EnrichBundle\Provider\Field;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

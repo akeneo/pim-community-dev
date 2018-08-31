@@ -1,7 +1,7 @@
 parameters:
-    pim_reference_data.enrich.provider.field.reference_data.class:       Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field\ReferenceDataFieldProvider
-    pim_reference_data.enrich.provider.filter.reference_data.class:      Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter\ReferenceDataFilterProvider
-    pim_reference_data.enrich.provider.empty_value.reference_data.class: Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue\ReferenceDataEmptyValueProvider
+    pim_reference_data.enrich.provider.field.reference_data.class:       Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider
+    pim_reference_data.enrich.provider.filter.reference_data.class:      Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider
+    pim_reference_data.enrich.provider.empty_value.reference_data.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider
 
 services:
     pim_reference_data.enrich.provider.field.reference_data:

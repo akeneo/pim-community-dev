@@ -6,6 +6,9 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Enrich\\Provider\\EmptyValue\\ReferenceDataEmptyValueProvider/Pim\\Bundle\\EnrichBundle\\Provider\\EmptyValue\\ReferenceDataEmptyValueProvider/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Enrich\\Provider\\Field\\ReferenceDataFieldProvider/Pim\\Bundle\\EnrichBundle\\Provider\\Field\\ReferenceDataFieldProvider/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Enrich\\Provider\\Filter\\ReferenceDataFilterProvider/Pim\\Bundle\\EnrichBundle\\Provider\\Filter\\ReferenceDataFilterProvider/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Doctrine\\ReferenceDataRepositoryResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ReferenceDataRepositoryResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Doctrine\\ORM\\RequirementChecker\\ReferenceDataUniqueCodeChecker/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\ReferenceDataUniqueCodeChecker/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Doctrine\\ORM\\Repository\\ReferenceDataRepository/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\ORM\\Repository\\ReferenceDataRepository/g'

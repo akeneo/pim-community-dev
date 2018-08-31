@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter;
+namespace Pim\Bundle\EnrichBundle\Provider\Filter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue;
+namespace Pim\Bundle\EnrichBundle\Provider\EmptyValue;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;

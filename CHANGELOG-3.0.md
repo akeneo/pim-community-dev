@@ -13,6 +13,9 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue\ReferenceDataEmptyValueProvider` to `Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field\ReferenceDataFieldProvider` to `Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter\ReferenceDataFilterProvider` to `Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider`
 - Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver`
 - Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\ReferenceDataUniqueCodeChecker`
 - Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository`
