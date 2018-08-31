@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine;
 
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

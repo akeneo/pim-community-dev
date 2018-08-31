@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Command;
 
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,8 +12,6 @@ use Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueAccessorsChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker;
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
