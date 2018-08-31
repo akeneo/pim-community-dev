@@ -15,6 +15,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\ProductModelAssociationInterface;
 use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -43,31 +44,35 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
     /**
      * {@inheritdoc}
      */
-    public function getCodes(AssociationInterface $association)
+    public function getCodes(int $productId, AssociationInterface $association)
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $userGroupsIds = $user->getGroupsIds();
 
+        $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
+        $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';
+
         $sql = <<<SQL
 SELECT DISTINCT(p.identifier) as code
-FROM pim_catalog_association a
-    INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
+FROM $associationTable a
+    INNER JOIN $associationProductTable ap ON a.id = ap.association_id
     INNER JOIN pim_catalog_product p ON p.id = ap.product_id
     LEFT JOIN pim_catalog_category_product cp on p.id = cp.product_id
     LEFT JOIN pimee_security_product_category_access pca ON pca.category_id = cp.category_id AND pca.user_group_id IN (:userGroupsIds)
-WHERE a.id = :associationId
+WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
     AND (cp.category_id IS NULL OR pca.view_items = 1)
 ORDER BY p.identifier ASC;
 SQL;
-
         $stmt = $this->connection->executeQuery($sql,
             [
                 'userGroupsIds'     => $userGroupsIds,
-                'associationId'     => $association->getId(),
+                'ownerId'           => $productId,
+                'associationTypeId' => $association->getAssociationType()->getId()
             ],
             [
                 'userGroupsIds'     => Connection::PARAM_INT_ARRAY,
-                'associationId'     => \PDO:: PARAM_INT,
+                'ownerId'           => \PDO:: PARAM_INT,
+                'associationTypeId' => \PDO:: PARAM_INT
             ]
         );
 

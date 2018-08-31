@@ -42,9 +42,9 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
         $this->generateToken('mary');
 
         $query = $this->get('pimee_workflow.query.get_associated_product_codes_by_published_product');
-        $this->assertSame(['productView'], $query->getCodes($mainProduct->getAssociationForType($xsell)));
-        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getAssociationForType($pack)));
-        $this->assertSame([], $query->getCodes($mainProduct->getAssociationForType($upsell)));
+        $this->assertSame(['productView'], $query->getCodes($mainProduct->getId(), $mainProduct->getAssociationForType($xsell)));
+        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getId(), $mainProduct->getAssociationForType($pack)));
+        $this->assertSame([], $query->getCodes($mainProduct->getId(), $mainProduct->getAssociationForType($upsell)));
     }
 
     /**
