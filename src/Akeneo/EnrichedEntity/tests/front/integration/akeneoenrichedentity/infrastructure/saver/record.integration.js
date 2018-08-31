@@ -12,7 +12,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
       if (
         'http://pim.com/rest/enriched_entity/designer/record' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
-        'starck' === JSON.parse(interceptedRequest.postData()).identifier
+        'designer_starck_1' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
         interceptedRequest.respond({
           status: 204
@@ -31,7 +31,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
       const saver = require('akeneoenrichedentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(
-        createIdentifier('starck'),
+        createIdentifier('designer_starck_1'),
         createEnrichedEntityIdentifier('designer'),
         createRecordCode('starck'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'})

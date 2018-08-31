@@ -22,6 +22,7 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
   };
 
   const getValidationMessageForCode = async () => {
+    debugger;
     await page.waitForSelector('.error-message');
     const error = await nodeElement.$('.error-message');
     const property = await error.getProperty('textContent');

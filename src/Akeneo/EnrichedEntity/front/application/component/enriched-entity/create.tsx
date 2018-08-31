@@ -1,18 +1,17 @@
+import {createEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/create';
+import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
+import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import {
-    createEnrichedEntity
-} from 'akeneoenrichedentity/application/action/enriched-entity/create';
-import { getErrorsView } from 'akeneoenrichedentity/application/component/app/validation-error';
-import { IndexState } from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import {
-    enrichedEntityCreationCancel, enrichedEntityCreationCodeUpdated,
-    enrichedEntityCreationLabelUpdated
+  enrichedEntityCreationCancel,
+  enrichedEntityCreationCodeUpdated,
+  enrichedEntityCreationLabelUpdated,
 } from 'akeneoenrichedentity/domain/event/enriched-entity/create';
-import { createLocaleFromCode } from 'akeneoenrichedentity/domain/model/locale';
+import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import __ from 'akeneoenrichedentity/tools/translator';
 import * as React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 interface StateProps {
   context: {

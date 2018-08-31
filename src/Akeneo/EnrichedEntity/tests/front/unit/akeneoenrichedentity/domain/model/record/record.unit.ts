@@ -9,7 +9,7 @@ const designerIdentifier = createEnrichedEntityIdentifier('designer');
 const michelCode = createCode('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
 const sofaIdentifier = createEnrichedEntityIdentifier('sofa');
-const didierIdentifier = createRecordIdentifier('didier');
+const didierIdentifier = createRecordIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
@@ -72,7 +72,7 @@ describe('akeneo > record > domain > model --- record', () => {
     const michelRecord = createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels);
 
     expect(michelRecord.normalize()).toEqual({
-      identifier: 'didier',
+      identifier: 'designer_didier_1',
       enrichedEntityIdentifier: 'designer',
       code: 'didier',
       labels: {en_US: 'Didier'},
