@@ -9,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\EventListener;
+namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -22,12 +25,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
+ * This commands reset the database fixtures for the enriched entity.
+ * It also is an event listener used during the PIM isntallation.
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Installer implements EventSubscriberInterface
+class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implements EventSubscriberInterface
 {
+    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:enriched-entity:reset-fixtures';
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
     /** @var Filesystem */
@@ -39,23 +45,39 @@ class Installer implements EventSubscriberInterface
     /** @var Connection */
     private $dbal;
 
-    /**
-     * @var FileStorerInterface
-     */
+    /** @var FileStorerInterface */
     private $storer;
 
-    /**
-     * @param Filesystem $filesystem
-     * @param string $projectDir
-     * @param Connection $dbal
-     * @param FileStorerInterface $storer
-     */
     public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal, FileStorerInterface $storer)
     {
+        parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
+
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
         $this->dbal = $dbal;
         $this->storer = $storer;
+
+        parent::__construct();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName(self::RESET_FIXTURES_COMMAND_NAME)
+            ->setDescription('Resets the fixtures of the enriched entity bounded context.')
+            ->setHidden(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->createSchema();
+        $this->loadFixtures();
     }
 
     /**
@@ -85,7 +107,10 @@ class Installer implements EventSubscriberInterface
     public function createSchema(): void
     {
         $sql = <<<SQL
+DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
+DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 DROP TABLE IF EXISTS `akeneo_enriched_entity_enriched_entity`;
+
 CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
@@ -95,7 +120,6 @@ CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 CREATE TABLE `akeneo_enriched_entity_record` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
@@ -108,7 +132,6 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
 CREATE TABLE `akeneo_enriched_entity_attribute` (
     `identifier` VARCHAR(255) NOT NULL,
     `code` VARCHAR(255) NOT NULL,

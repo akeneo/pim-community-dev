@@ -28,7 +28,7 @@ $rules = [
         'PDO',
         'Pim\Bundle\InstallerBundle',
         'Ramsey\Uuid\Uuid',
-        'Symfony\Component',
+        'Symfony',
     ])->in('Akeneo\EnrichedEntity\Infrastructure'),
 ];
 
