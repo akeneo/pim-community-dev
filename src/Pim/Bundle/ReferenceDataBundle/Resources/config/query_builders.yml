@@ -1,5 +1,5 @@
 parameters:
-    pim_reference_data.query.elasticsearch.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
+    pim_reference_data.query.elasticsearch.filter.reference_data.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
 
 services:
     pim.reference_data.query.filter.reference_data:

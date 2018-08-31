@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\AbstractAttributeFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
