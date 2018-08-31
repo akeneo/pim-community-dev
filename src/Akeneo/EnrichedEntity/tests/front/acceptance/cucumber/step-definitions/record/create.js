@@ -45,16 +45,17 @@ module.exports = async function(cucumber) {
     })
   };
 
-  const listRecordUpdated = async function (page, enrichedEntityIdentifier, identifier, labels) {
+  const listRecordUpdated = async function (page, enrichedEntityIdentifier, identifier, code, labels) {
     page.on('request', request => {
       if ('http://pim.com/rest/enriched_entity/designer/record' === request.url() && 'GET' === request.method()) {
         answerJson(request, {
           items: [{
-            identifier: {identifier, enriched_entity_identifier: enrichedEntityIdentifier},
+            identifier: identifier,
             enriched_entity_identifier: enrichedEntityIdentifier,
-            code: identifier,
+            code: code,
             labels: labels
-          }], total: 1000
+          }],
+          total: 1000
         });
       }
     });
@@ -69,7 +70,7 @@ module.exports = async function(cucumber) {
           'plural': null,
           'message': message,
           'root': {'identifier': 'invalid\/identifier', 'labels': []},
-          'propertyPath': 'identifier',
+          'propertyPath': 'code',
           'invalidValue': 'invalid\/identifier',
           'constraint': {'defaultOption': null, 'requiredOptions': [], 'targets': 'property', 'payload': null},
           'cause': null,
@@ -89,7 +90,7 @@ module.exports = async function(cucumber) {
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_enriched_entity.record.create.input.code', record.identifier);
+    await modal.fillField('pim_enriched_entity.record.create.input.code', record.code);
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
       await modal.fillField('pim_enriched_entity.record.create.input.label', record.labels.en_US);
     }
@@ -103,7 +104,7 @@ module.exports = async function(cucumber) {
   Then('there is a record of {string} with:', async function (identifier, updates) {
     const record = convertItemTable(updates)[0];
 
-    await listRecordUpdated(this.page, identifier, record.identifier, record.labels);
+    await listRecordUpdated(this.page, identifier, record.identifier, record.code, record.labels);
 
     const records = await await getElement(this.page, 'Records');
     await records.hasRecord(record.identifier);

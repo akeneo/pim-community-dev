@@ -14,7 +14,7 @@ export const hydrator = (
     code: RecordCode,
     labelCollection: LabelCollection
   ) => EnrichedEntity,
-  createIdentifier: (enrichedEntityIdentifier: string, identifier: string) => Identifier,
+  createIdentifier: (identifier: string) => Identifier,
   createEnrichedEntityIdentifier: (identifier: string) => EnrichedEntityIdentifier,
   createRecordCode: (code: string) => RecordCode,
   createLabelCollection: (labelCollection: any) => LabelCollection
@@ -23,10 +23,7 @@ export const hydrator = (
 
   validateKeys(backendRecord, expectedKeys, 'The provided raw record seems to be malformed.');
 
-  const identifier = createIdentifier(
-    backendRecord.identifier.enriched_entity_identifier,
-    backendRecord.identifier.identifier
-  );
+  const identifier = createIdentifier(backendRecord.identifier);
   const enrichedEntityIdentifier = createEnrichedEntityIdentifier(backendRecord.enriched_entity_identifier);
   const code = createRecordCode(backendRecord.code);
   const labelCollection = createLabelCollection(backendRecord.labels);

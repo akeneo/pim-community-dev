@@ -1,11 +1,9 @@
 import ItemView from 'akeneoenrichedentity/application/component/record/index/item';
-import {
-    createIdentifier as createEnrichedEntityIdentifier
-} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import { createLabelCollection } from 'akeneoenrichedentity/domain/model/label-collection';
-import { createCode } from 'akeneoenrichedentity/domain/model/record/code';
-import { createIdentifier } from 'akeneoenrichedentity/domain/model/record/identifier';
-import Record, { createRecord } from 'akeneoenrichedentity/domain/model/record/record';
+import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
+import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import * as React from 'react';
 
 interface TableState {

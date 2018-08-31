@@ -35,10 +35,7 @@ module.exports = async function(cucumber) {
   Given('the following records for the enriched entity {string}:', async function (enrichedEntityIdentifier, records) {
     const recordsSaved = records.hashes().map((normalizedRecord) => {
       return {
-        identifier: {
-          identifier: normalizedRecord.code,
-          enriched_entity_identifier: enrichedEntityIdentifier,
-        },
+        identifier: normalizedRecord.identifier,
         enriched_entity_identifier: enrichedEntityIdentifier,
         code: normalizedRecord.code,
         labels: JSON.parse(normalizedRecord.labels),
@@ -59,7 +56,7 @@ module.exports = async function(cucumber) {
 
     const recordList = await await getElement(this.page, 'Records');
     const isValid = await expectedRecords.hashes().reduce(async (isValid, expectedRecord) => {
-      return await isValid && await recordList.hasRecord(expectedRecord.code);
+      return await isValid && await recordList.hasRecord(expectedRecord.identifier);
     }, true);
     assert.strictEqual(isValid, true);
   });
