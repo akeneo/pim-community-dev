@@ -14,31 +14,43 @@ class GetAssociatedProductCodesByProductFromDB implements GetAssociatedProductCo
     /** @var string */
     private $associationClass;
 
-    public function __construct(EntityManagerInterface $entityManager, $associationClass)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->associationClass = $associationClass;
+        $this->connection = $entityManager->getConnection();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCodes(AssociationInterface $association)
+    public function getCodes(int $productId, AssociationInterface $association)
     {
-        $associations = $this->entityManager->createQueryBuilder()
-            ->select('p.identifier')
-            ->from(get_class($association), 'a')
-            ->innerJoin('a.products', 'p')
-            ->andWhere('a.id = :associationId')
-            ->setParameters([
-                'associationId' => $association->getId(),
-            ])
-            ->orderBy('p.identifier')
-            ->getQuery()
-            ->getResult();
+        $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
+        $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';
 
-        return array_map(function (array $association) {
-            return $association['identifier'];
-        }, $associations);
+        $sql = <<<SQL
+SELECT DISTINCT(p.identifier) as code
+FROM $associationTable a
+    INNER JOIN $associationProductTable ap ON a.id = ap.association_id
+    INNER JOIN pim_catalog_product p ON p.id = ap.product_id
+WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
+ORDER BY p.identifier ASC;
+SQL;
+        $stmt = $this->connection->executeQuery($sql,
+            [
+                'ownerId'           => $productId,
+                'associationTypeId' => $association->getAssociationType()->getId()
+            ],
+            [
+                'ownerId'           => \PDO:: PARAM_INT,
+                'associationTypeId' => \PDO:: PARAM_INT
+            ]
+        );
+
+        $codes = array_map(function ($row) {
+            return $row['code'];
+        }, $stmt->fetchAll(\PDO::FETCH_ASSOC));
+
+        return $codes;
     }
 }
