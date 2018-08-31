@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine;
 
 use Acme\Bundle\AppBundle\Entity\Color;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

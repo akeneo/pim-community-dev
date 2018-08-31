@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver`
 - Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\ReferenceDataUniqueCodeChecker`
 - Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository`
 - Move `Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter`
