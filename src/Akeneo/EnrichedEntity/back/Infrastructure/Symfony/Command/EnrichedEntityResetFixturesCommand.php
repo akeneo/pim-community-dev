@@ -56,6 +56,28 @@ class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implement
         $this->projectDir = $projectDir;
         $this->dbal = $dbal;
         $this->storer = $storer;
+
+        parent::__construct();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName(self::RESET_FIXTURES_COMMAND_NAME)
+            ->setDescription('Resets the fixtures of the enriched entity bounded context.')
+            ->setHidden(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->createSchema();
+        $this->loadFixtures();
     }
 
     /**
@@ -104,7 +126,10 @@ class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implement
     public function createSchema(): void
     {
         $sql = <<<SQL
+DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
+DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 DROP TABLE IF EXISTS `akeneo_enriched_entity_enriched_entity`;
+
 CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
@@ -114,7 +139,6 @@ CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 CREATE TABLE `akeneo_enriched_entity_record` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
@@ -127,7 +151,6 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
 CREATE TABLE `akeneo_enriched_entity_attribute` (
     `identifier` VARCHAR(255) NOT NULL,
     `code` VARCHAR(255) NOT NULL,
