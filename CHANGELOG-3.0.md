@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\Normalizer\ReferenceDataConfigurationNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\ReferenceDataConfigurationNormalizer`
 - Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataSimpleSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataSimpleSelectType`
 - Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataMultiSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataMultiSelectType`
 - Move `Pim\Component\ReferenceData\LabelRenderer` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer`
