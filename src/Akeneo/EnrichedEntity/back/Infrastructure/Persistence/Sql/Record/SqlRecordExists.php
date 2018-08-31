@@ -46,7 +46,7 @@ class SqlRecordExists implements RecordExistsInterface
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => $recordIdentifier->__toString()
+            'identifier' => (string) $recordIdentifier
         ]);
 
         return $this->isIdentifierExisting($statement);
@@ -63,8 +63,8 @@ SQL;
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enrichedEntityIdentifier' => $enrichedEntityIdentifier->__toString(),
-            'code' => $code->__toString()
+            'enrichedEntityIdentifier' => (string) $enrichedEntityIdentifier,
+            'code' => (string) $code
         ]);
 
         return $this->isIdentifierExisting($statement);

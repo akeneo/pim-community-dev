@@ -68,7 +68,7 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => $recordIdentifier->__toString()
+            'identifier' => (string) $recordIdentifier
         ]);
         $result = $statement->fetch();
         $statement->closeCursor();

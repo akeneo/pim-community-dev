@@ -59,9 +59,9 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => $record->getIdentifier()->__toString(),
-                'code' => $record->getCode()->__toString(),
-                'enriched_entity_identifier' => $record->getEnrichedEntityIdentifier()->__toString(),
+                'identifier' => (string) $record->getIdentifier(),
+                'code' => (string) $record->getCode(),
+                'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
                 'labels' => $serializedLabels,
                 'data' => '{}'
             ]
@@ -109,7 +109,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'identifier' => $identifier->__toString(),
+                'identifier' => (string) $identifier,
             ]
         );
         $result = $statement->fetch();
@@ -161,8 +161,8 @@ SQL;
     public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): RecordIdentifier
     {
         return RecordIdentifier::create(
-            $enrichedEntityIdentifier->__toString(),
-            $code->__toString(),
+            (string) $enrichedEntityIdentifier,
+            (string) $code,
             Uuid::uuid4()->toString()
         );
     }

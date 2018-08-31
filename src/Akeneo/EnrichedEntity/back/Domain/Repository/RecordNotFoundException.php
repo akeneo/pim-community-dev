@@ -25,7 +25,7 @@ class RecordNotFoundException extends \RuntimeException
     {
         $message = sprintf(
             'Could not find record with identifier "%s"',
-            $identifier->__toString()
+            (string) $identifier
         );
 
         return new self($message);

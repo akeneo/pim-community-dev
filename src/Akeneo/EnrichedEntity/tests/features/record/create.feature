@@ -45,8 +45,8 @@ Feature: Create a record
     Then the record will be saved
     And the user saves the record
     And there is a record of "designer" with:
-      | identifier       | code  | labels             |
-      | designer_stark_1 | stark | {"en_US": "Stark"} |
+      | code  | labels             |
+      | stark | {"en_US": "Stark"} |
 
   @acceptance-front
   Scenario: Cannot create a record with invalid identifier

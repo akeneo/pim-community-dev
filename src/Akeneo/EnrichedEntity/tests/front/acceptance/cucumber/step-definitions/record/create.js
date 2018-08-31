@@ -80,6 +80,10 @@ module.exports = async function(cucumber) {
     });
   };
 
+  const getRecordIdentifier = function(enrichedEntityIdentifier, code) {
+    return `${enrichedEntityIdentifier}_${code}_123456`;
+  }
+
   When('the user creates a record of {string} with:', async function (enrichedEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
 
@@ -101,16 +105,17 @@ module.exports = async function(cucumber) {
     await modal.save();
   });
 
-  Then('there is a record of {string} with:', async function (identifier, updates) {
+  Then('there is a record of {string} with:', async function (enrichedEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
+    const recordIdentifier = getRecordIdentifier(enrichedEntityIdentifier, record.code);
 
-    await listRecordUpdated(this.page, identifier, record.identifier, record.code, record.labels);
+    await listRecordUpdated(this.page, enrichedEntityIdentifier, recordIdentifier, record.code, record.labels);
 
     const records = await await getElement(this.page, 'Records');
-    await records.hasRecord(record.identifier);
+    await records.hasRecord(recordIdentifier);
 
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
-      const label = await records.getRecordLabel(record.identifier);
+      const label = await records.getRecordLabel(recordIdentifier);
       assert.strictEqual(label, record.labels.en_US);
     }
   });
