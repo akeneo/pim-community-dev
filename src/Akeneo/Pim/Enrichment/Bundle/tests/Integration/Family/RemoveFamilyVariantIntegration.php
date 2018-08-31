@@ -33,13 +33,6 @@ class RemoveFamilyVariantIntegration extends TestCase
         $this->assertCount(0, $attributeSetRepo->findBy(['id' => $variantAttributeSetIds]));
     }
 
-    public function testTheFamilyVariantRemovalIsPrevented()
-    {
-        $this->expectException(\LogicException::class);
-        $familyVariant = $this->getFamilyVariant('shoes_size');
-        $this->get('pim_catalog.remover.family_variant')->remove($familyVariant);
-    }
-
     /**
      * {@inheritdoc}
      */
