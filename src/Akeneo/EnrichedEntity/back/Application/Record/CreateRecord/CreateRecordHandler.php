@@ -15,9 +15,7 @@ namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

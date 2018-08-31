@@ -15,7 +15,6 @@ $rules = [
     ])->in('Akeneo\EnrichedEntity\Domain'),
     $builder->only([
         'Akeneo\EnrichedEntity\Domain',
-        'Akeneo\EnrichedEntity\Infrastructure',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
     ])->in('Akeneo\EnrichedEntity\Application'),
