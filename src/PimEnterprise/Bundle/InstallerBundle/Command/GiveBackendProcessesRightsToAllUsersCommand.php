@@ -104,8 +104,7 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'delete_products_and_product_models',
             'add_attribute_value',
             'add_to_group',
-            'change_parent_product',
-            'suggest_data_push_products'
+            'change_parent_product'
         ];
     }
 

@@ -107,8 +107,3 @@ jobs:
         alias:     add_tags_to_assets
         label:     Add tags to assets
         type:      mass_edit
-    suggest_data_push_products:
-        connector: suggest_data
-        alias:     suggest_data_push_products
-        label:     Suggest data push products
-        type:      mass_edit
