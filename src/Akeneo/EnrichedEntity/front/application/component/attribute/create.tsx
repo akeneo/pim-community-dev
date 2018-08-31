@@ -125,7 +125,7 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage AknFullPage--modal">
             <div className="AknFullPage-content">
               <div className="AknFullPage-left">
-                <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image" />
+                <img src="bundles/pimui/images/illustrations/Attribute.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
                 <div className="AknFullPage-subTitle">{__('pim_enriched_entity.attribute.create.subtitle')}</div>
@@ -153,7 +153,11 @@ class Create extends React.Component<CreateProps> {
                         onChange={this.onLabelUpdate}
                         onKeyPress={this.onKeyPress}
                       />
-                      <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
+                      <Flag
+                        locale={createLocaleFromCode(this.props.context.locale)}
+                        displayLanguage={false}
+                        className="AknFieldContainer-inputSides"
+                      />
                     </div>
                     {getErrorsView(this.props.errors, 'labels')}
                   </div>
@@ -177,7 +181,7 @@ class Create extends React.Component<CreateProps> {
                         onKeyPress={this.onKeyPress}
                       />
                     </div>
-                    {getErrorsView(this.props.errors, 'identifier')}
+                    {getErrorsView(this.props.errors, 'code')}
                   </div>
                   <div className="AknFieldContainer" data-code="type">
                     <div className="AknFieldContainer-header">

@@ -15,6 +15,13 @@ export class AttributeSaverImplementation implements AttributeSaver {
   }
 
   async save(attribute: Attribute): Promise<ValidationError[] | null> {
+    const normalizedAttribute = attribute.normalize() as any; //Todo: remove when backend remove is_text_area
+    normalizedAttribute.is_text_area = normalizedAttribute.is_textarea;
+    normalizedAttribute.identifier = {
+      identifier: normalizedAttribute.identifier,
+      enriched_entity_identifier: normalizedAttribute.enriched_entity_identifier,
+    };
+
     return await postJSON(
       routing.generate('akeneo_enriched_entities_attribute_edit_rest', {
         enrichedEntityIdentifier: attribute.getEnrichedEntityIdentifier().stringValue(),
@@ -25,7 +32,12 @@ export class AttributeSaverImplementation implements AttributeSaver {
   }
 
   async create(attribute: MinimalAttribute): Promise<ValidationError[] | null> {
-    const normalizedAttribute = attribute.normalize();
+    const normalizedAttribute = attribute.normalize() as any;
+    //Todo: remove
+    normalizedAttribute.identifier = {
+      identifier: normalizedAttribute.identifier,
+      enriched_entity_identifier: normalizedAttribute.enriched_entity_identifier,
+    };
 
     return await postJSON(
       routing.generate('akeneo_enriched_entities_attribute_create_rest', {

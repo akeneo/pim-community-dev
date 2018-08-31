@@ -9,7 +9,7 @@ import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal
 import {MaxFileSize} from 'akeneoenrichedentity/domain/model/attribute/type/image/max-file-size';
 
 const normalizedFrontView = {
-  identifier: {identifier: 'front_view', enriched_entity_identifier: 'designer'},
+  identifier: 'front_view',
   enriched_entity_identifier: 'designer',
   code: 'front_view',
   labels: {en_US: 'Front view'},

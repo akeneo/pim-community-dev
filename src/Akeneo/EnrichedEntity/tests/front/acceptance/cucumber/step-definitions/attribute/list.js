@@ -6,6 +6,7 @@ const {
   decorators: {createElementDecorator},
   tools: {answerJson},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
+const attributeIdentifierSuffix = '123456';
 
 module.exports = async function(cucumber) {
   const {Given, Then, When} = cucumber;
@@ -36,10 +37,7 @@ module.exports = async function(cucumber) {
     const attributesSaved = attributes.hashes().map(normalizedAttribute => {
       if ('text' === normalizedAttribute.type) {
         return {
-          identifier: {
-            identifier: normalizedAttribute.code,
-            enriched_entity_identifier: enrichedEntityIdentifier,
-          },
+          identifier: `${enrichedEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
           enriched_entity_identifier: enrichedEntityIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
@@ -56,10 +54,7 @@ module.exports = async function(cucumber) {
         };
       } else if ('image' === normalizedAttribute.type) {
         return {
-          identifier: {
-            identifier: normalizedAttribute.code,
-            enriched_entity_identifier: enrichedEntityIdentifier,
-          },
+          identifier: `${enrichedEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
           enriched_entity_identifier: enrichedEntityIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
@@ -96,12 +91,16 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isValid, true);
   });
 
-  Then('the user edit the attribute {string}', async function(attributeIdentifier) {
-    await showAttributesTab(this.page);
+  const editAttribute = async function(page, attributeIdentifier) {
+    await showAttributesTab(page);
 
-    const attributes = await await getElement(this.page, 'Attributes');
+    const attributes = await await getElement(page, 'Attributes');
 
     await attributes.edit(attributeIdentifier);
+  };
+
+  Then('the user edit the attribute {string}', async function(attributeIdentifier) {
+    await editAttribute(this.page, attributeIdentifier);
   });
 
   Then('the list of attributes should be empty', async function() {
@@ -120,9 +119,11 @@ module.exports = async function(cucumber) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
-    this.page.once('request', request => {
+    await editAttribute(this.page, attributeIdentifier);
+    this.page.on('request', request => {
       const baseUrl = 'http://pim.com/rest/enriched_entity';
-      const deleteUrl = `${baseUrl}/${enrichedEntityIdentifier}/attribute/${attributeIdentifier}`;
+      const identifier = `${enrichedEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+      const deleteUrl = `${baseUrl}/${enrichedEntityIdentifier}/attribute/${identifier}`;
       if (deleteUrl === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 204);
       }
@@ -133,9 +134,11 @@ module.exports = async function(cucumber) {
     await attributes.remove(attributeIdentifier);
   });
 
-  When('the user cancel the deletion of attribute', async function() {
+  When('the user cancel the deletion of attribute {string}', async function(attributeIdentifier) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
+    await editAttribute(this.page, attributeIdentifier);
+
     await attributes.cancelDeletion();
   });
 
@@ -146,9 +149,12 @@ module.exports = async function(cucumber) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
-    this.page.once('request', request => {
+    await editAttribute(this.page, attributeIdentifier);
+
+    this.page.on('request', request => {
       const baseUrl = 'http://pim.com/rest/enriched_entity';
-      const deleteUrl = `${baseUrl}/${enrichedEntityIdentifier}/attribute/${attributeIdentifier}`;
+      const identifier = `${enrichedEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+      const deleteUrl = `${baseUrl}/${enrichedEntityIdentifier}/attribute/${identifier}`;
       if (deleteUrl === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 404);
       }

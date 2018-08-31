@@ -23,6 +23,8 @@ import ImagePropertyView from 'akeneoenrichedentity/application/component/attrib
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 import {TextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
 import {ImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/image';
+import {deleteAttribute} from 'akeneoenrichedentity/application/action/attribute/list';
+import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
 
 interface StateProps {
   context: {
@@ -38,6 +40,7 @@ interface DispatchProps {
     onLabelUpdated: (value: string, locale: string) => void;
     onIsRequiredUpdated: (isRequired: boolean) => void;
     onAdditionalPropertyUpdated: (property: string, value: AdditionalProperty) => void;
+    onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => void;
     onCancel: () => void;
     onSubmit: () => void;
   };
@@ -82,11 +85,25 @@ const getAdditionalProperty = (
 class Edit extends React.Component<EditProps> {
   private labelInput: HTMLInputElement;
   public props: EditProps;
+  public state: {previousAttribute: string | null; currentAttribute: string | null} = {
+    previousAttribute: null,
+    currentAttribute: null,
+  };
 
   componentDidMount() {
     if (this.labelInput) {
       this.labelInput.focus();
     }
+  }
+
+  componentDidUpdate() {
+    if (this.labelInput && this.state.currentAttribute !== this.state.previousAttribute) {
+      this.labelInput.focus();
+    }
+  }
+
+  static getDerivedStateFromProps(newProps: EditProps, state: {previousAttribute: string; currentAttribute: string}) {
+    return {previousAttribute: state.currentAttribute, currentAttribute: newProps.attribute.identifier.normalize()};
   }
 
   private onLabelUpdate = (event: React.FormEvent<HTMLInputElement>) => {
@@ -98,6 +115,13 @@ class Edit extends React.Component<EditProps> {
       this.props.events.onSubmit();
     }
   };
+
+  private onAttributeDelete() {
+    const message = __('pim_enriched_entity.attribute.delete.confirm');
+    if (confirm(message)) {
+      this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
+    }
+  }
 
   render(): JSX.Element | JSX.Element[] | null {
     return (
@@ -139,7 +163,11 @@ class Edit extends React.Component<EditProps> {
                     onChange={this.onLabelUpdate}
                     onKeyPress={this.onKeyPress}
                   />
-                  <Flag locale={createLocaleFromCode(this.props.context.locale)} displayLanguage={false} />
+                  <Flag
+                    locale={createLocaleFromCode(this.props.context.locale)}
+                    displayLanguage={false}
+                    className="AknFieldContainer-inputSides"
+                  />
                 </div>
                 {getErrorsView(this.props.errors, 'labels')}
               </div>
@@ -227,6 +255,20 @@ class Edit extends React.Component<EditProps> {
               this.props.errors
             )}
           </div>
+          <div
+            className="AknButton AknButton--delete"
+            tabIndex={0}
+            onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
+              if (' ' === event.key) {
+                this.onAttributeDelete();
+              }
+            }}
+            onClick={() => {
+              this.onAttributeDelete();
+            }}
+          >
+            {__('pim_enriched_entity.attribute.edit.delete')}
+          </div>
         </div>
       </React.Fragment>
     );
@@ -263,6 +305,9 @@ export default connect(
         },
         onSubmit: () => {
           dispatch(saveAttribute());
+        },
+        onAttributeDelete: (attributeIdentifier: AttributeIdentifier) => {
+          dispatch(deleteAttribute(attributeIdentifier));
         },
       },
     } as DispatchProps;

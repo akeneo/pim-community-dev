@@ -34,10 +34,7 @@ const initEditState = (): EditState => ({
   isSaving: false,
   originalData: '',
   data: {
-    identifier: {
-      identifier: '',
-      enriched_entity_identifier: '',
-    },
+    identifier: '',
     enriched_entity_identifier: '',
     code: '',
     labels: {},
@@ -191,8 +188,7 @@ export default (
         return state;
       }
       const newAttribute = attributes.find(
-        (currentAttribute: NormalizedAttribute) =>
-          state.data.identifier.identifier === currentAttribute.identifier.identifier
+        (currentAttribute: NormalizedAttribute) => state.data.identifier === currentAttribute.identifier
       );
 
       if (undefined === newAttribute) {

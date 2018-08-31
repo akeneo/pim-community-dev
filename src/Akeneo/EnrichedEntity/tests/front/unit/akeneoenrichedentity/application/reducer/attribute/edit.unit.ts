@@ -4,7 +4,7 @@ import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/
 import {ValidationRuleOption} from 'akeneoenrichedentity/domain/model/attribute/type/text/validation-rule';
 
 const normalizedDescription = {
-  identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+  identifier: 'description_1234',
   enriched_entity_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
@@ -37,10 +37,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
   expect(newState).toEqual({
     active: false,
     data: {
-      identifier: {
-        identifier: '',
-        enriched_entity_identifier: '',
-      },
+      identifier: '',
       enriched_entity_identifier: '',
       code: '',
       labels: {},
@@ -114,14 +111,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     expect(newState).toEqual({
       active: true,
       data: newAttribute,
-      originalData: JSON.stringify(newAttribute),
       isDirty: false,
+      originalData: JSON.stringify(newAttribute),
       errors: [],
     });
   });
 
   test('the list of attributes does not have any effect', () => {
-    const newAttribute = {...normalizedDescription, identifier: {identifier: 'new_description'}};
+    const newAttribute = {...normalizedDescription, identifier: 'new_description_1234'};
     const state = {
       active: true,
       data: normalizedDescription,
@@ -135,8 +132,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     expect(newState).toEqual({
       active: true,
       data: normalizedDescription,
-      isDirty: false,
       originalData: '',
+      isDirty: false,
       errors: [],
     });
   });

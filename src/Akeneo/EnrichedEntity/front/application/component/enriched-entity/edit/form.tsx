@@ -83,7 +83,11 @@ export default class EditForm extends React.Component<FormProps> {
                 this.labelInput = input;
               }}
             />
-            <Flag locale={createLocaleFromCode(this.props.locale)} displayLanguage={false} />
+            <Flag
+              locale={createLocaleFromCode(this.props.locale)}
+              displayLanguage={false}
+              className="AknFieldContainer-inputSides"
+            />
           </div>
           {getErrorsView(this.props.errors, 'labels')}
         </div>

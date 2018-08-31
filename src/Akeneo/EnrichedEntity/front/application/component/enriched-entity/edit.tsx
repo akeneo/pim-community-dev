@@ -21,6 +21,7 @@ import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
+import {attributeCreationStart} from 'akeneoenrichedentity/domain/event/attribute/create';
 
 interface StateProps {
   sidebar: {
@@ -50,6 +51,7 @@ interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onRecordCreationStart: () => void;
+    onAttributeCreationStart: () => void;
     onLocaleChanged: (locale: Locale) => void;
     onImageUpdated: (image: ImageModel | null) => void;
     onDelete: (enrichedEntity: EnrichedEntity) => void;
@@ -93,6 +95,14 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
           {__('pim_enriched_entity.record.button.create')}
+        </button>
+      );
+    }
+
+    if (currentTab === 'pim-enriched-entity-edit-form-attribute') {
+      return (
+        <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
+          {__('pim_enriched_entity.attribute.button.add')}
         </button>
       );
     }
@@ -241,6 +251,9 @@ export default connect(
         },
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
+        },
+        onAttributeCreationStart: () => {
+          dispatch(attributeCreationStart());
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));

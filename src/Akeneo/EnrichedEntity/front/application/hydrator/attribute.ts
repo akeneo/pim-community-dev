@@ -19,6 +19,11 @@ export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedA
   ];
   validateKeys(normalizedAttribute, expectedKeys, 'The provided raw attribute seems to be malformed.');
 
+  //To remove when backend answer the good things
+  if (typeof normalizedAttribute.identifier !== 'string') {
+    normalizedAttribute.identifier = normalizedAttribute.identifier.identifier;
+  }
+
   return denormalizeAttribute(normalizedAttribute);
 };
 

@@ -10,22 +10,25 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
   it('It deletes an attribute', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/attribute/name' === interceptedRequest.url() &&
+        'http://pim.com/rest/enriched_entity/designer/attribute/name_1234' === interceptedRequest.url() &&
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204
+          status: 204,
         });
       }
     });
 
     await page.evaluate(async () => {
       const createIdentifier = require('akeneoenrichedentity/domain/model/attribute/identifier').createIdentifier;
+      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
+        .createIdentifier;
       const remover = require('akeneoenrichedentity/infrastructure/remover/attribute').default;
 
-      const identifierToDelete = createIdentifier('designer', 'name');
+      const attributeIdentifierToDelete = createIdentifier('name_1234');
+      const enrichedEntityIdentifierToDelete = createEnrichedEntityIdentifier('designer');
 
-      return await remover.remove(identifierToDelete);
+      return await remover.remove(enrichedEntityIdentifierToDelete, attributeIdentifierToDelete);
     });
   });
 });

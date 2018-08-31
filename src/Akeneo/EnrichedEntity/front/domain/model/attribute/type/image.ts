@@ -69,10 +69,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
 
   public static createFromNormalized(normalizedImageAttribute: NormalizedImageAttribute) {
     return new ConcreteImageAttribute(
-      createIdentifier(
-        normalizedImageAttribute.identifier.enriched_entity_identifier,
-        normalizedImageAttribute.identifier.identifier
-      ),
+      createIdentifier(normalizedImageAttribute.identifier),
       createEnrichedEntityIdentifier(normalizedImageAttribute.enriched_entity_identifier),
       createCode(normalizedImageAttribute.code),
       createLabelCollection(normalizedImageAttribute.labels),
