@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\Controller\ConfigurationRestController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\ReferenceDataConfigurationRestController`
 - Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\AbstractReferenceDataUniqueCodeChecker`
 - Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\CheckerInterface`
 - Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataInterfaceChecker`
