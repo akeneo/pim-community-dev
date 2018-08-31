@@ -36,6 +36,7 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordItemsForEnrichedEntity
         arguments:
             - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'
 
     akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_has_records:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityHasRecords
