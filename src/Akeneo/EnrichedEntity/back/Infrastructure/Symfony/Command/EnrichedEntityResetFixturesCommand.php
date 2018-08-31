@@ -83,25 +83,6 @@ class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implement
     /**
      * {@inheritdoc}
      */
-    protected function configure()
-    {
-        $this
-            ->setName(self::RESET_FIXTURES_COMMAND_NAME)
-            ->setDescription('Resets the fixtures of the enriched entity bounded context.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->createSchema();
-        $this->loadFixtures();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
