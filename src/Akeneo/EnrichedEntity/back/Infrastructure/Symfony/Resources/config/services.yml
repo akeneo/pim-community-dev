@@ -1,6 +1,6 @@
 services:
     akeneo_enrichedentity.event_subscriber.installer:
-        class: Akeneo\EnrichedEntity\Infrastructure\Symfony\EventListener\Installer
+        class: Akeneo\EnrichedEntity\Infrastructure\Symfony\Command\EnrichedEntityResetFixturesCommand
         arguments:
             - '@filesystem'
             - '%kernel.project_dir%'
@@ -8,4 +8,3 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
         tags:
             - { name: kernel.event_subscriber }
-
