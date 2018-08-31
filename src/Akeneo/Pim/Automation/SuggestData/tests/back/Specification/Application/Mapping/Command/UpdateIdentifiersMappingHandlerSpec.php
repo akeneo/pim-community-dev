@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\InvalidAttributeTypeException;
-use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Exception\MissingMandatoryAttributeMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -32,9 +33,12 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 {
     public function let(
         AttributeRepositoryInterface $attributeRepository,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        DataProviderFactory $dataProviderFactory,
+        DataProviderInterface $dataProvider
     ) {
-        $this->beConstructedWith($attributeRepository, $identifiersMappingRepository);
+        $this->beConstructedWith($attributeRepository, $identifiersMappingRepository, $dataProviderFactory);
+        $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
     public function it_is_an_update_identifiers_mapping_handler()
@@ -45,6 +49,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_if_an_attribute_does_not_exist(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        DataProviderInterface $dataProvider,
         AttributeInterface $model
     ) {
         $command = new UpdateIdentifiersMappingCommand(
@@ -61,6 +66,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier(null)->shouldNotBeCalled();
 
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $dataProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(
             InvalidMappingException::attributeNotFound('attributeNotFound', UpdateIdentifiersMappingHandler::class)
@@ -70,6 +76,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     public function it_saves_the_identifiers_mapping(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        DataProviderInterface $dataProvider,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
@@ -104,6 +111,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
             ]
         );
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
+        $dataProvider->updateIdentifiersMapping($identifiersMapping)->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -111,7 +119,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     public function it_throws_an_exception_with_invalid_attribute_type(
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $model,
-        $identifiersMappingRepository
+        DataProviderInterface $dataProvider
     ) {
         $command = new UpdateIdentifiersMappingCommand(
             [
@@ -124,14 +132,15 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('model')->willReturn($model);
         $model->getType()->willReturn('unknown_attribute_type');
-        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $dataProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(InvalidAttributeTypeException::class)->during('handle', [$command]);
+        $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }
 
     public function it_throws_an_exception_when_brand_is_saved_without_mpn(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        DataProviderInterface $dataProvider,
         AttributeInterface $manufacturer,
         AttributeInterface $ean
     ) {
@@ -149,12 +158,14 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
         $ean->getType()->willReturn('pim_catalog_text');
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $dataProvider->updateIdentifiersMapping(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(MissingMandatoryAttributeMappingException::class)->during('handle', [$command]);
+        $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }
 
     public function it_throws_an_exception_when_mpn_is_saved_without_brand(
         AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingApiInterface $identifiersMappingWebService,
         AttributeInterface $model,
         AttributeInterface $ean,
         $identifiersMappingRepository
@@ -173,7 +184,8 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
         $ean->getType()->willReturn('pim_catalog_text');
         $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+        $identifiersMappingWebService->update(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow(MissingMandatoryAttributeMappingException::class)->during('handle', [$command]);
+        $this->shouldThrow(InvalidMappingException::class)->during('handle', [$command]);
     }
 }

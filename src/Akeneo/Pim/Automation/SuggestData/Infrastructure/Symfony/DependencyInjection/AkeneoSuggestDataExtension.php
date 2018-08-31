@@ -31,16 +31,14 @@ class AkeneoSuggestDataExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('data_providers.yml');
-        $loader->load('handlers.yml');
-        $loader->load('services.yml');
-
         $loader->load('controllers.yml');
-        $loader->load('repositories.yml');
-
-        $loader->load('data_provider/pim_ai.yml');
         $loader->load('client/pim_ai.yml');
-
+        $loader->load('data_providers.yml');
+        $loader->load('data_provider/pim_ai.yml');
+        $loader->load('handlers.yml');
         $loader->load('jobs.yml');
+        $loader->load('normalizers.yml');
+        $loader->load('repositories.yml');
+        $loader->load('services.yml');
     }
 }

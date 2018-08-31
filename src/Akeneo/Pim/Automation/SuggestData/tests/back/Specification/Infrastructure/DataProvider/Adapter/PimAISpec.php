@@ -21,10 +21,11 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingReposi
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -35,9 +36,17 @@ class PimAISpec extends ObjectBehavior
     public function let(
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        IdentifiersMappingApiInterface $identifiersMappingApi,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
-        $this->beConstructedWith($authenticationApi, $subscriptionApi, $identifiersMappingRepository);
+        $this->beConstructedWith(
+            $authenticationApi,
+            $subscriptionApi,
+            $identifiersMappingRepository,
+            $identifiersMappingApi,
+            $identifiersMappingNormalizer
+        );
     }
 
     public function it_is_pim_ai_adapter()
@@ -159,14 +168,24 @@ class PimAISpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
     }
 
-    /**
-     * @param SubscriptionWebservice $subscriptionApi
-     */
     public function it_fetches_products_from_pim_ai($subscriptionApi)
     {
         $subscriptionApi
             ->fetchProducts()
             ->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
+    }
+
+    public function it_updates_the_identifiers_mapping(
+        IdentifiersMappingApiInterface $identifiersMappingApi,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
+        IdentifiersMapping $mapping
+    ) {
+        $normalizedMapping = ['foo' => 'bar'];
+
+        $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
+        $identifiersMappingApi->update($normalizedMapping)->shouldBeCalled();
+
+        $this->updateIdentifiersMapping($mapping);
     }
 
     /**

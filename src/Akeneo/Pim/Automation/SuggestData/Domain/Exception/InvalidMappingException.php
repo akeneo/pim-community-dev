@@ -122,6 +122,32 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
+     * @param string $className
+     * @param string $missingAttributeCode
+     *
+     * @return static
+     */
+    public static function mandatoryAttributeMapping(string $className, string $missingAttributeCode)
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'mandatory_attribute_mapping');
+
+        return new static($className, $message, [], $missingAttributeCode);
+    }
+
+    /**
+     * @param string $className
+     * @param string $attributeCode
+     *
+     * @return static
+     */
+    public static function attributeType(string $className, string $attributeCode)
+    {
+        $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'attribute_type');
+
+        return new static($className, $message, [], $attributeCode);
+    }
+
+    /**
      * @return string
      */
     public function getClassName(): string
