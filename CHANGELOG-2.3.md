@@ -12,6 +12,7 @@
 - PIM-7626: Fix attribute groups order in the product grid's column configurator
 - PIM-7631: Fix API filter product and product model on date with between operator
 - PIM-7613: Fix translations of boolean attributes
+- PIM-7609: Handle 'empty' and 'not empty' filter types in string filter
 
 # 2.3.5 (2018-08-22)
 
