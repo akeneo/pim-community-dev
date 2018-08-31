@@ -22,6 +22,10 @@ export default class Identifier {
   public normalize(): NormalizedRecordIdentifier {
     return this.identifier;
   }
+
+  public stringValue(): string {
+    return this.identifier;
+  }
 }
 
 export const createIdentifier = Identifier.create;

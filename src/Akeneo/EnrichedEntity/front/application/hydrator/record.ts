@@ -6,13 +6,15 @@ import EnrichedEntityIdentifier, {
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
 import RecordCode, {createCode} from 'akeneoenrichedentity/domain/model/record/code';
+import Image from 'akeneoenrichedentity/domain/model/image';
 
 export const hydrator = (
   createRecord: (
     identifier: Identifier,
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
     code: RecordCode,
-    labelCollection: LabelCollection
+    labelCollection: LabelCollection,
+    image: Image | null
   ) => EnrichedEntity,
   createIdentifier: (identifier: string) => Identifier,
   createEnrichedEntityIdentifier: (identifier: string) => EnrichedEntityIdentifier,
@@ -27,8 +29,9 @@ export const hydrator = (
   const enrichedEntityIdentifier = createEnrichedEntityIdentifier(backendRecord.enriched_entity_identifier);
   const code = createRecordCode(backendRecord.code);
   const labelCollection = createLabelCollection(backendRecord.labels);
+  const image = backendRecord.image;
 
-  return createRecord(identifier, enrichedEntityIdentifier, code, labelCollection);
+  return createRecord(identifier, enrichedEntityIdentifier, code, labelCollection, image);
 };
 
 export default hydrator(

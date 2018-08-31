@@ -6,6 +6,7 @@ import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import RecordIdentifier from 'akeneoenrichedentity/domain/model/record/identifier';
+import attributeFetcher from 'akeneoenrichedentity/infrastructure/fetcher/attribute';
 
 const routing = require('routing');
 
@@ -14,12 +15,36 @@ export class RecordFetcherImplementation implements RecordFetcher {
     Object.freeze(this);
   }
 
-  async fetch(identifier: RecordIdentifier, enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Record> {
-    const backendRecord = await getJSON(
-      routing.generate('akeneo_enriched_entities_record_index_rest', {enrichedEntityIdentifier, identifier})
+  async fetch(enrichedEntityIdentifier: EnrichedEntityIdentifier, identifier: RecordIdentifier): Promise<Record> {
+    console.log(identifier);
+    const backendRecords = await getJSON(
+      routing.generate('akeneo_enriched_entities_record_index_rest', {
+        enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+      })
     );
 
-    return this.hydrator(backendRecord);
+    const attributes = await attributeFetcher.fetchAll(enrichedEntityIdentifier);
+
+    const record = {
+      ...backendRecords.items[0],
+      image: {
+        filePath: '4/b/2/3/4b23afc720c1698357eb6dce11b0e2a85af7b1be_tom_dixon.jpeg',
+        originalFilename: 'tom_dixon.jpeg',
+      },
+      values: {
+        description_1234567890: [
+          {
+            identifier: 'description_1234567890',
+            data: 'a nice description',
+            locale: 'en_US',
+            channel: null,
+          },
+        ],
+      },
+      attributes,
+    };
+
+    return this.hydrator(record);
   }
 
   async fetchAll(enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Record[]> {
@@ -27,7 +52,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
       routing.generate('akeneo_enriched_entities_record_index_rest', {enrichedEntityIdentifier})
     );
 
-    return hydrateAll<Record>(this.hydrator)(backendRecords);
+    return hydrateAll<Record>(this.hydrator)(backendRecords.items);
   }
 
   async search(query: Query): Promise<{items: Record[]; total: number}> {

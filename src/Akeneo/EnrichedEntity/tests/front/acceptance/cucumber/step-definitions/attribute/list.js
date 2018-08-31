@@ -27,7 +27,7 @@ module.exports = async function(cucumber) {
 
   const showAttributesTab = async function(page) {
     const sidebar = await await getElement(page, 'Sidebar');
-    await sidebar.clickOnTab('pim-enriched-entity-edit-form-attribute');
+    await sidebar.clickOnTab('attribute');
   };
 
   Given('the following attributes for the enriched entity {string}:', async function(

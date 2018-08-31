@@ -4,7 +4,7 @@ import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched
 import RecordIdentifier from 'akeneoenrichedentity/domain/model/record/identifier';
 
 export default interface Fetcher {
-  fetch: (identifier: RecordIdentifier, enrichedEntityIdentifier: EnrichedEntityIdentifier) => Promise<Record>;
+  fetch: (enrichedEntityIdentifier: EnrichedEntityIdentifier, identifier: RecordIdentifier) => Promise<Record>;
   fetchAll: (enrichedEntityIdentifier: EnrichedEntityIdentifier) => Promise<Record[]>;
   search: (query: Query) => Promise<{items: Record[]; total: number}>;
 }

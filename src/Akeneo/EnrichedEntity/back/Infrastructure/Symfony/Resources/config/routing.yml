@@ -2,10 +2,10 @@ akeneo_enriched_entities_enriched_entity_index:
     path: '/enriched_entity'
 
 akeneo_enriched_entities_enriched_entity_edit:
-    path: '/enriched_entity/{identifier}'
+    path: '/enriched_entity/{identifier}/{tab}'
 
 akeneo_enriched_entities_record_edit:
-    path: '/enriched_entity/{enrichedEntityIdentifier}/record/{identifier}'
+    path: '/enriched_entity/{enrichedEntityIdentifier}/record/{identifier}/{tab}'
 
 akeneo_enriched_entities_enriched_entity_index_rest:
     path: '/rest/enriched_entity'

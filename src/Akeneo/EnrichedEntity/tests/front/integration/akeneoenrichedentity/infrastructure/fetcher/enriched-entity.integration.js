@@ -16,8 +16,8 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           contentType: 'application/json',
           body: JSON.stringify({
             items: [],
-            total: 0
-          })
+            total: 0,
+          }),
         });
       }
     });
@@ -30,7 +30,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
     expect(response).toEqual({
       items: [],
-      total: 0
+      total: 0,
     });
   });
 
@@ -44,40 +44,42 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           .withIdentifier('sofa')
           .withLabels({
             en_US: 'Sofa',
-            fr_FR: 'Canapé'
+            fr_FR: 'Canapé',
           })
           .withImage({
-            'filePath': '/path/sofa.jpg',
-            'originalFilename': 'sofa.jpg'
+            filePath: '/path/sofa.jpg',
+            originalFilename: 'sofa.jpg',
           })
           .build();
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify(enrichedEntity)
+          body: JSON.stringify(enrichedEntity),
         });
       }
     });
 
     const response = await page.evaluate(async () => {
       const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/enriched-entity').default;
+      const identifierModule = 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+      const enrichedEntityIdentifier = require(identifierModule).createIdentifier('sofa');
 
-      return await fetcher.fetch('sofa');
+      return await fetcher.fetch(enrichedEntityIdentifier);
     });
 
     expect(response).toEqual({
       identifier: {
-        identifier: 'sofa'
+        identifier: 'sofa',
       },
       labelCollection: {
         labels: {
           en_US: 'Sofa',
-          fr_FR: 'Canapé'
-        }
+          fr_FR: 'Canapé',
+        },
       },
       image: {
         filePath: '/path/sofa.jpg',
-        originalFilename: 'sofa.jpg'
+        originalFilename: 'sofa.jpg',
       },
     });
   });

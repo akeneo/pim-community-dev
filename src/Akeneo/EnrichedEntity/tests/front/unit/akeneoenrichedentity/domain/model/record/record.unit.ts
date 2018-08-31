@@ -23,25 +23,25 @@ describe('akeneo > record > domain > model --- record', () => {
   test('I cannot create a malformed record', () => {
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier);
-    }).toThrow('Record expect an EnrichedEntityIdentifier as second argument');
+    }).toThrow('Record expect an EnrichedEntityIdentifier as argument');
     expect(() => {
       createRecord();
-    }).toThrow('Record expect a RecordIdentifier as first argument');
+    }).toThrow('Record expect a RecordIdentifier as argument');
     expect(() => {
       createRecord(12);
-    }).toThrow('Record expect a RecordIdentifier as first argument');
+    }).toThrow('Record expect a RecordIdentifier as argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels);
-    }).toThrow('Record expect a RecordCode as third argument');
+    }).toThrow('Record expect a RecordCode as argument');
   });
 
   test('I can compare two record', () => {

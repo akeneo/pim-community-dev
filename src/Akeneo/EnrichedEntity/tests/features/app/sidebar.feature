@@ -8,10 +8,10 @@ Feature: Display the sidebar
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
     And the following configured tabs:
-      | code                                     |
-      | pim-enriched-entity-edit-form-records    |
-      | pim-enriched-entity-edit-form-attribute |
-      | pim-enriched-entity-edit-form-properties |
+      | code      |
+      | record    |
+      | attribute |
+      | property  |
 
   @acceptance-front
   Scenario: Display the sidebar with the tabs configured

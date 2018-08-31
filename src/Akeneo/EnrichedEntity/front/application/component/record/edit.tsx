@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState as State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {EditState as State} from 'akeneoenrichedentity/application/reducer/record/edit';
 import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 import sidebarProvider from 'akeneoenrichedentity/application/configuration/sidebar';
@@ -8,20 +8,15 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import EnrichedEntity, {
-  denormalizeEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {saveEnrichedEntity, deleteEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import {saveRecord, deleteRecord, recordImageUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
-import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 const securityContext = require('pim/security-context');
 import ImageModel from 'akeneoenrichedentity/domain/model/image';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
-import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
-import {attributeCreationStart} from 'akeneoenrichedentity/domain/event/attribute/create';
 
 interface StateProps {
   sidebar: {
@@ -34,14 +29,11 @@ interface StateProps {
   context: {
     locale: string;
   };
-  createRecord: {
-    active: boolean;
-  };
   acls: {
     create: boolean;
     delete: boolean;
   };
-  enrichedEntity: EnrichedEntity;
+  record: Record;
   structure: {
     locales: Locale[];
   };
@@ -51,16 +43,15 @@ interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onRecordCreationStart: () => void;
-    onAttributeCreationStart: () => void;
     onLocaleChanged: (locale: Locale) => void;
     onImageUpdated: (image: ImageModel | null) => void;
-    onDelete: (enrichedEntity: EnrichedEntity) => void;
+    onDelete: (record: Record) => void;
   };
 }
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class EnrichedEntityEditView extends React.Component<EditProps> {
+class RecordEditView extends React.Component<EditProps> {
   private tabView: JSX.Element;
 
   public props: EditProps;
@@ -78,20 +69,20 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   }
 
   private updateTabView = async (currentTab: string): Promise<void> => {
-    const TabView = await sidebarProvider.getView('akeneo_enriched_entities_enriched_entity_edit', currentTab);
+    const TabView = await sidebarProvider.getView('akeneo_enriched_entities_record_edit', currentTab);
 
     this.tabView = <TabView code={currentTab} />;
     this.forceUpdate();
   };
 
   private onClickDelete = () => {
-    if (confirm(__('pim_enriched_entity.enriched_entity.module.delete.confirm'))) {
-      this.props.events.onDelete(this.props.enrichedEntity);
+    if (confirm(__('pim_enriched_entity.record.module.delete.confirm'))) {
+      this.props.events.onDelete(this.props.record);
     }
   };
 
   private getPrimaryAction = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
-    if (currentTab === 'record' && canCreate) {
+    if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
           {__('pim_enriched_entity.record.button.create')}
@@ -99,17 +90,9 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
       );
     }
 
-    if (currentTab === 'attribute') {
-      return (
-        <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
-          {__('pim_enriched_entity.attribute.button.add')}
-        </button>
-      );
-    }
-
     return (
       <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
-        {__('pim_enriched_entity.enriched_entity.button.save')}
+        {__('pim_enriched_entity.record.button.save')}
       </button>
     );
   };
@@ -123,7 +106,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
               <button className="AknDropdown-menuLink" onClick={this.onClickDelete}>
-                {__('pim_enriched_entity.enriched_entity.module.delete.button')}
+                {__('pim_enriched_entity.record.module.delete.button')}
               </button>
             </div>
           </div>
@@ -136,7 +119,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-    const label = this.props.enrichedEntity.getLabel(this.props.context.locale);
+    const label = this.props.record.getLabel(this.props.context.locale);
 
     return (
       <div className="AknDefault-contentWithColumn">
@@ -148,8 +131,8 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
             <header className="AknTitleContainer">
               <div className="AknTitleContainer-line">
                 <Image
-                  alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})}
-                  image={this.props.enrichedEntity.getImage()}
+                  alt={__('pim_enriched_entity.record.img', {'{{ label }}': label})}
+                  image={this.props.record.getImage()}
                   onImageChange={this.props.events.onImageUpdated}
                 />
                 <div className="AknTitleContainer-mainContainer">
@@ -161,9 +144,20 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                             {
                               action: {
                                 type: 'redirect',
-                                route: 'akeneo_enriched_entities_enriched_entity_edit',
+                                route: 'akeneo_enriched_entities_enriched_entity_index',
                               },
                               label: __('pim_enriched_entity.enriched_entity.title'),
+                            },
+                            {
+                              action: {
+                                type: 'redirect',
+                                route: 'akeneo_enriched_entities_enriched_entity_edit',
+                                parameters: {
+                                  identifier: this.props.record.getEnrichedEntityIdentifier().stringValue(),
+                                  tab: 'record',
+                                },
+                              },
+                              label: __('pim_enriched_entity.record.title'),
                             },
                           ]}
                         />
@@ -206,7 +200,6 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar />
-        {this.props.createRecord.active ? <CreateRecordModal /> : null}
       </div>
     );
   }
@@ -214,7 +207,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
 
 export default connect(
   (state: State): StateProps => {
-    const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
+    const record = denormalizeRecord(state.form.data);
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
@@ -230,16 +223,13 @@ export default connect(
       context: {
         locale,
       },
-      enrichedEntity,
+      record,
       structure: {
         locales: state.structure.locales,
       },
-      createRecord: {
-        active: state.createRecord.active,
-      },
       acls: {
         create: securityContext.isGranted('akeneo_enrichedentity_record_create'),
-        delete: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_delete'),
+        delete: securityContext.isGranted('akeneo_enrichedentity_record_delete'),
       },
     };
   },
@@ -247,24 +237,21 @@ export default connect(
     return {
       events: {
         onSaveEditForm: () => {
-          dispatch(saveEnrichedEntity());
+          dispatch(saveRecord());
         },
         onRecordCreationStart: () => {
           dispatch(recordCreationStart());
-        },
-        onAttributeCreationStart: () => {
-          dispatch(attributeCreationStart());
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
         },
         onImageUpdated: (image: ImageModel | null) => {
-          dispatch(enrichedEntityImageUpdated(image));
+          dispatch(recordImageUpdated(image));
         },
-        onDelete: (enrichedEntity: EnrichedEntity) => {
-          dispatch(deleteEnrichedEntity(enrichedEntity));
+        onDelete: (record: Record) => {
+          dispatch(deleteRecord(record));
         },
       },
     };
   }
-)(EnrichedEntityEditView);
+)(RecordEditView);

@@ -19,8 +19,10 @@ export default class PimView extends React.Component<PimViewProps, {}> {
 
   componentDidMount() {
     this.el = ReactDOM.findDOMNode(this);
-    viewBuilder.build(this.props.viewName).then((view: any) => {
-      view.setElement(this.el).render();
+    setTimeout(() => {
+      viewBuilder.build(this.props.viewName).then((view: any) => {
+        view.setElement(this.el).render();
+      });
     });
   }
 

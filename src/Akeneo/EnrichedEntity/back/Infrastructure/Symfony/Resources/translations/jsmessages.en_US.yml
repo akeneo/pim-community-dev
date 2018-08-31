@@ -1,6 +1,7 @@
 pim_title:
     akeneo_enriched_entities_enriched_entity_index: Create a new entity
     akeneo_enriched_entities_enriched_entity_edit: Edit an enriched entity
+    akeneo_enriched_entities_record_edit: Edit a record
 
 pim_enriched_entity:
     enriched_entity:
@@ -59,6 +60,11 @@ pim_enriched_entity:
         button:
             save: Save
             create: Add new
+        enrich:
+            title: Record attributes
+            identifier: Code
+            label: Label
+        title: Records
         create:
             header:
                 title: Create
@@ -68,6 +74,8 @@ pim_enriched_entity:
                 label: Label
                 code: Code (required)
             confirm: confirm
+        tab:
+            enrich: Enrich
         notification:
             save:
                 success: Record successfully updated.

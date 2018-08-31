@@ -28,11 +28,12 @@ module.exports = async function(cucumber) {
     await this.page.evaluate(async identifier => {
       const Controller = require('pim/controller/enriched-entity/edit');
       const controller = new Controller();
-      controller.renderRoute({params: {identifier}});
+      controller.renderRoute({params: {identifier, tab: 'attribute'}});
+
       await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
-    await this.page.waitFor('.AknDefault-mainContent[data-tab="pim-enriched-entity-edit-form-attribute"] .content');
+    await this.page.waitFor('.AknDefault-mainContent[data-tab="attribute"] .content');
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const isLoaded = await properties.isLoaded();
