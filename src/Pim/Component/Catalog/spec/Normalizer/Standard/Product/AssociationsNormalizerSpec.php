@@ -102,8 +102,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association1->getProducts()->willReturn(new ArrayCollection());
         $association1->getProductModels()->willReturn(new ArrayCollection());
         $product->getId()->willReturn(1);
-
-        $getAssociatedProductCodesByProduct->getCodes($product->getId(), $association1)->willReturn([]);
+        $getAssociatedProductCodesByProduct->getCodes(1, $association1)->willReturn([]);
 
         $productAssociated->getReference()->willReturn('product_code');
         $productModel->getCode()->willReturn('product_model_code');
@@ -113,10 +112,12 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association2->getGroups()->willReturn(new ArrayCollection());
         $association2->getProducts()->willReturn([$productAssociated->getWrappedObject()]);
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
-        $productModel->getId()->willReturn(2);
 
-        $getAssociatedProductCodesByProduct->getCodes($productModel->getId(), $association2)->willReturn(['product_code']);
+        $product->getId()->willReturn(1);
+        $getAssociatedProductCodesByProduct->getCodes(1, $association2)->willReturn(['product_code']);
 
+        $product->getParent()->willReturn(null);
+        $product->getAssociations()->willReturn([$association1, $association2]);
         $product->getAllAssociations()->willReturn([$association1, $association2]);
 
         $this->normalize($product, 'standard')->shouldReturn(
