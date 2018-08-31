@@ -15,15 +15,16 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Fetch\FetchApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Exception\DataProviderException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
  * PIM.ai implementation to connect to a data provider
@@ -41,19 +42,31 @@ class PimAI implements DataProviderInterface
     /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
+    /** @var IdentifiersMappingApiInterface */
+    private $identifiersMappingApi;
+
+    /** @var IdentifiersMappingNormalizer */
+    private $identifiersMappingNormalizer;
+
     /**
-     * @param AuthenticationApiInterface $authenticationApi
-     * @param SubscriptionApiInterface $subscriptionApi
+     * @param AuthenticationApiInterface            $authenticationApi
+     * @param SubscriptionApiInterface              $subscriptionApi
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param IdentifiersMappingApiInterface        $identifiersMappingApi
+     * @param IdentifiersMappingNormalizer          $identifiersMappingNormalizer
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,
         SubscriptionApiInterface $subscriptionApi,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
+        IdentifiersMappingApiInterface $identifiersMappingApi,
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
+        $this->identifiersMappingApi = $identifiersMappingApi;
+        $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
     }
 
     /**
@@ -109,5 +122,13 @@ class PimAI implements DataProviderInterface
         return new ProductSubscriptionsResponse(
             $clientResponse->content()->getSubscriptions()
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
+    {
+        $this->identifiersMappingApi->update($this->identifiersMappingNormalizer->normalize($identifiersMapping));
     }
 }

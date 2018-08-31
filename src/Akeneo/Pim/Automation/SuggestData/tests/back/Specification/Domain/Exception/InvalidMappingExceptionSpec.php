@@ -73,4 +73,24 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
             'akeneo_suggest_data.entity.identifier_mapping.constraint.attribute_not_found'
         );
     }
+
+    function it_is_thrown_if_it_miss_a_mandatory_attribute()
+    {
+        $this->beConstructedThrough('mandatoryAttributeMapping', ['foo', 'brand']);
+
+        $this->getMessage()->shouldReturn(
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.mandatory_attribute_mapping'
+        );
+        $this->getPath()->shouldReturn('brand');
+    }
+
+    function it_is_thrown_in_case_of_wrong_attribute_type()
+    {
+        $this->beConstructedThrough('attributeType', ['foo', 'brand']);
+
+        $this->getMessage()->shouldReturn(
+            'akeneo_suggest_data.entity.identifier_mapping.constraint.attribute_type'
+        );
+        $this->getPath()->shouldReturn('brand');
+    }
 }

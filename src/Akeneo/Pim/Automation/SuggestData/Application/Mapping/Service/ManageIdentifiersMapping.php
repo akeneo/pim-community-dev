@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
@@ -44,6 +45,8 @@ class ManageIdentifiersMapping
 
     /**
      * @param array $identifiers
+     *
+     * @throws InvalidMappingException
      */
     public function updateIdentifierMapping(array $identifiers): void
     {
