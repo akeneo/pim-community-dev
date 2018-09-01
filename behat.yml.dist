@@ -110,7 +110,6 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
     extensions:
-        Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
             default_session: symfony2
             javascript_session: selenium2
