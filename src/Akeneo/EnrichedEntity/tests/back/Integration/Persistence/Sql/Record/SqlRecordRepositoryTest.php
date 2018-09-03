@@ -94,7 +94,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             ['en_US' => 'Starck', 'fr_FR' => 'Starck']
         );
         $this->repository->create($record);
-        $record->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
+        $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
 
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);

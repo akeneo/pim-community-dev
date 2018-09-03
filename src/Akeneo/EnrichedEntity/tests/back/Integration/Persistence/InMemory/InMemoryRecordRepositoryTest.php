@@ -73,7 +73,7 @@ class InMemoryRecordRepositoryTest extends TestCase
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, []);
         $this->recordRepository->create($record);
-        $record->updateLabels(LabelCollection::fromArray(['fr_FR' => 'stylist']));
+        $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'stylist']));
 
         $this->recordRepository->update($record);
         $recordFound = $this->recordRepository->getByIdentifier($identifier);

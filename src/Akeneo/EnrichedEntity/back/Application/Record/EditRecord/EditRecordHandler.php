@@ -38,7 +38,7 @@ class EditRecordHandler
         $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
 
         $record = $this->recordRepository->getByIdentifier($identifier);
-        $record->updateLabels($labelCollection);
+        $record->setLabels($labelCollection);
         $this->recordRepository->update($record);
     }
 }
