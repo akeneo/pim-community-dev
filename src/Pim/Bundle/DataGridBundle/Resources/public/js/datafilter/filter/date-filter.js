@@ -160,8 +160,6 @@ function(
          * @inheritDoc
          */
         _renderCriteria: function(el) {
-            console.log('date-filter render criteria')
-
             // move to click
             $(el).append(
                 this.popupCriteriaTemplate({

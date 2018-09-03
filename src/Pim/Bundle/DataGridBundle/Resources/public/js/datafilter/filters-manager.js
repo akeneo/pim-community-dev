@@ -456,7 +456,6 @@ define(
          */
         _processFilterStatus: function () {
             const activeFilters = this.$(this.filterSelector).val();
-            console.log(activeFilters)
 
             _.each(this.filters, function (filter, name) {
                 if (!filter.enabled && _.indexOf(activeFilters, name) !== -1) {

@@ -23,6 +23,7 @@ class FiltersColumn extends BaseView {
   public timer: any = null
   public defaultFilters: GridFilter[] = []
   public loadedFilters: GridFilter[] = []
+  public gridCollection: any
   public page: number = 1
 
   readonly config: FiltersConfig
@@ -30,9 +31,7 @@ class FiltersColumn extends BaseView {
     <button type="button" class="AknFilterBox-addFilterButton" aria-haspopup="true" style="width: 280px" data-toggle>
         <div>Filters</div>
     </button>
-    <div class="filter-selector">
-        Enabled filters
-    <div>
+    <div class="filter-selector"><div>
     <div
         class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton filter-list select-filter-widget pimmultiselect"
         style="width: 230px;display: block;top: -191px;left: 360px;position:fixed;overflow: scroll"
@@ -63,6 +62,7 @@ class FiltersColumn extends BaseView {
     this.config = {...this.config, ...options.config}
     this.defaultFilters = []
     this.loadedFilters = []
+    this.gridCollection = {}
   }
 
   public events(): Backbone.EventsHash {
@@ -168,10 +168,11 @@ class FiltersColumn extends BaseView {
     this.$('.filters-column').append(list)
   }
 
-  loadFilterList(_: any, gridElement: any) {
+  loadFilterList(gridCollection: any, gridElement: any) {
     const metadata = gridElement.data('metadata') || {}
 
     this.defaultFilters = metadata.filters
+    this.gridCollection = gridCollection
     this.fetchFilters().then((loadedFilters: GridFilter[]) => {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
@@ -181,7 +182,7 @@ class FiltersColumn extends BaseView {
   }
 
   triggerFiltersUpdated() {
-    mediator.trigger('filters-column:updatedFilters', this.loadedFilters.filter(filter => filter.enabled === true))
+    mediator.trigger('filters-column:updatedFilters', this.loadedFilters.filter(filter => filter.enabled === true), this.gridCollection)
   }
 
   getSelectedFilters() {
