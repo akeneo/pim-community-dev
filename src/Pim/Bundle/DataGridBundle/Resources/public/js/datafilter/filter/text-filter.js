@@ -83,7 +83,6 @@ define(
         },
 
         operatorChoices: [],
-        lazyLoaded: true,
 
         /**
          * View events
@@ -204,16 +203,9 @@ define(
                 })
             );
 
-            if (false === this.lazyLoaded) {
-                this._renderCriteria(this.$(this.criteriaSelector));
-            }
+            this._renderCriteria(this.$(this.criteriaSelector));
 
             return this;
-        },
-
-        renderOnClick() {
-            this._renderCriteria(this.$(this.criteriaSelector))
-            this.$el.off()
         },
 
         /**

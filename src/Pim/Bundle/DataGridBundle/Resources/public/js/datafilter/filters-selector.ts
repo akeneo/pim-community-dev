@@ -1,4 +1,5 @@
 import BaseView = require('pimenrich/js/view/base')
+import * as _ from 'underscore'
 
 const mediator = require('oro/mediator')
 const requireContext = require('require-context')
@@ -31,35 +32,58 @@ class FiltersColumn extends BaseView {
     return BaseView.prototype.configure.apply(this, arguments)
   }
 
-  getFilterModules(filters: any) {
-    filters.forEach((filter: any) => {
-      const types: any = this.config.filterTypes
-      const filterType = types[filter.type] || filter.type
+  getFilterModule(filter: any) {
+    const types: any = this.config.filterTypes
+    const filterType = types[filter.type] || filter.type
+    let cachedFilter = this.modules[filter.name]
 
-      if (!this.modules[filter.name]) {
-        const filterModule = requireContext(`oro/datafilter/${filterType}-filter`)
-        this.modules[filter.name] = new (filterModule.extend(filter))(filter);
-      }
-    })
+    if (!cachedFilter) {
+      const filterModule = requireContext(`oro/datafilter/${filterType}-filter`)
+      return new (filterModule.extend(filter))(filter);
+    }
+
+    return cachedFilter
   }
 
   renderFilters(filters: any, datagridCollection: any) {
-    this.getFilterModules(filters)
     this.datagridCollection = datagridCollection
-
     const list = document.createDocumentFragment();
+    const state = datagridCollection.state.filters
 
-    for (let moduleName in this.modules) {
-      const filterModule = this.modules[moduleName]
-      filterModule.render()
-      filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
-      filterModule.on('disable', this.updateDatagridStateWithFilters.bind(this))
-      list.appendChild(filterModule.el)
-    }
+    filters.forEach((filter) => {
+      const filterModule =  this.getFilterModule(filter)
+      this.modules[filter.name] = filterModule
+
+      if (filterModule.enabled) {
+        filterModule.render()
+        filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
+        filterModule.on('disable', this.updateDatagridStateWithFilters.bind(this))
+        list.appendChild(filterModule.el)
+      }
+    })
 
     this.el.appendChild(list)
+    this.restoreFilterState(state, filters)
+    this.hideDisabledFilters(filters)
+  }
 
-    mediator.trigger('datagrid_filters:rendered', datagridCollection, filters);
+  hideDisabledFilters(filters) {
+    filters.forEach(filter => {
+      const filterModule = this.modules[filter.name];
+      (false === filter.enabled) ? filterModule.disable() : filterModule.enable()
+    })
+  }
+
+  restoreFilterState(state: any, filters: any) {
+    filters.forEach((filter) => {
+      const filterName = filter.name
+      const filterModule = this.modules[filterName]
+      const filterState = state[filterName]
+
+      if (filterState) {
+        filterModule.setValue(state[filterName])
+      }
+    })
   }
 
   updateDatagridStateWithFilters() {
@@ -80,9 +104,15 @@ class FiltersColumn extends BaseView {
       }
     }
 
-    this.datagridCollection.state.filters = filterState;
-    this.datagridCollection.state.currentPage = 1;
-    this.datagridCollection.fetch();
+    // Update state if changed
+    const currentState = _.omit(this.datagridCollection.state.filters, 'scope');
+    const updatedState = _.omit(filterState, 'scope')
+
+    if (!_.isEqual(currentState, updatedState)) {
+      this.datagridCollection.state.filters = filterState;
+      this.datagridCollection.state.currentPage = 1;
+      this.datagridCollection.fetch();
+    }
   }
 }
 

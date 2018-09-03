@@ -182,7 +182,7 @@ class FiltersColumn extends BaseView {
   }
 
   triggerFiltersUpdated() {
-    mediator.trigger('filters-column:updatedFilters', this.loadedFilters.filter(filter => filter.enabled === true), this.gridCollection)
+    mediator.trigger('filters-column:updatedFilters', this.loadedFilters, this.gridCollection)
   }
 
   getSelectedFilters() {
