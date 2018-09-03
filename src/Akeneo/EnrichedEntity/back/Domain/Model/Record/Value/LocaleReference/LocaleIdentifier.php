@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Model;
+namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 
 use Webmozart\Assert\Assert;
 
-class LocaleIdentifier
+class LocaleIdentifier implements LocaleReferenceInterface
 {
     private $localeCode;
 
@@ -25,5 +25,11 @@ class LocaleIdentifier
     public function normalize(): string
     {
         return $this->localeCode;
+    }
+
+    public function equals(LocaleReferenceInterface $localeReference): bool
+    {
+        return $localeReference instanceof LocaleIdentifier &&
+            $localeReference->localeCode === $this->localeCode;
     }
 }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\ChannelIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LocaleIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\ChannelReferenceInterface;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\NoChannel;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\LocaleReferenceInterface;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\NoLocale;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -17,25 +19,34 @@ class Value
     /** @var AttributeIdentifier */
     private $attributeIdentifier;
 
-    /** @var ChannelIdentifier|null */
-    private $channelIdentifier;
+    /** @var ChannelReferenceInterface */
+    private $channelReference;
 
-    /** @var LocaleIdentifier|null */
-    private $localeIdentifier;
+    /** @var LocaleReferenceInterface */
+    private $localeReference;
 
     /** @var ValueDataInterface */
     private $data;
 
     private function __construct(
         AttributeIdentifier $attributeIdentifier,
-        ?ChannelIdentifier $channelIdentifier,
-        ?LocaleIdentifier $localeIdentifier,
+        ChannelReferenceInterface $channelReference,
+        LocaleReferenceInterface $localeReference,
         ValueDataInterface $data
     ) {
         $this->attributeIdentifier = $attributeIdentifier;
-        $this->channelIdentifier = $channelIdentifier;
-        $this->localeIdentifier = $localeIdentifier;
+        $this->channelReference = $channelReference;
+        $this->localeReference = $localeReference;
         $this->data = $data;
+    }
+
+    public static function create(
+        AttributeIdentifier $attributeIdentifier,
+        ChannelReferenceInterface $channelReference,
+        LocaleReferenceInterface $localeReference,
+        ValueDataInterface $data
+    ): Value {
+        return new self($attributeIdentifier, $channelReference, $localeReference, $data);
     }
 
     public function isEmpty(): bool
@@ -45,30 +56,36 @@ class Value
 
     public function hasChannel(): bool
     {
-        return null !== $this->channelIdentifier;
+        return !$this->channelReference instanceof NoChannel;
     }
 
     public function hasLocale(): bool
     {
-        return null !== $this->localeIdentifier;
+        return !$this->localeReference instanceof NoLocale;
+    }
+
+    public function sameAttribute(Value $otherValue)
+    {
+        return $otherValue->attributeIdentifier->equals($this->attributeIdentifier);
+    }
+
+    public function sameChannel(Value $otherValue): bool
+    {
+        return $otherValue->channelReference->equals($this->channelReference);
+    }
+
+    public function sameLocale(Value $otherValue): bool
+    {
+        return $otherValue->localeReference->equals($this->localeReference);
     }
 
     public function normalize(): array
     {
         return [
             'attribute' => $this->attributeIdentifier->normalize(),
-            'channel' => $this->channelIdentifier->normalize(),
-            'locale' => $this->localeIdentifier->normalize(),
-            'data' => $this->data->normalize()
+            'channel'   => $this->channelReference->normalize(),
+            'locale'    => $this->localeReference->normalize(),
+            'data'      => $this->data->normalize(),
         ];
-    }
-
-    public static function create(
-        AttributeIdentifier $attributeIdentifier,
-        ?ChannelIdentifier $channelIdentifier,
-        ?LocaleIdentifier $localeIdentifier,
-        ValueDataInterface $data
-    ): Value {
-        return new self($attributeIdentifier, $channelIdentifier, $localeIdentifier, $data);
     }
 }

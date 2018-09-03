@@ -6,9 +6,9 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Webmozart\Assert\Assert;
 
-class ValueCollection implements \IteratorAggregate
+class ValueCollection
 {
-    /** @var Value[] */
+    /** @var array */
     private $values;
 
     private function __construct(array $values)
@@ -22,11 +22,6 @@ class ValueCollection implements \IteratorAggregate
         $this->values = $values;
     }
 
-    public function getIterator(): \Traversable
-    {
-        return new \ArrayIterator($this->values);
-    }
-
     public function normalize(): array
     {
         $valuesNormalized = [];
@@ -37,10 +32,13 @@ class ValueCollection implements \IteratorAggregate
         return $valuesNormalized;
     }
 
-    public function add(Value $value): ValueCollection
+    public function setValue(Value $newValue): ValueCollection
     {
-        $values = $this->values;
-        $values[] = $value;
+        $values = array_filter($this->values, function (Value $value) use ($newValue) {
+            return !($newValue->sameChannel($value) && $newValue->sameLocale($value) && $newValue->sameAttribute($value));
+        });
+
+        $values[] = $newValue;
 
         return new self($values);
     }

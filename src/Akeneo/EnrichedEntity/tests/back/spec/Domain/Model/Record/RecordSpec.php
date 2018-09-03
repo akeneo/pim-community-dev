@@ -31,7 +31,7 @@ class RecordSpec extends ObjectBehavior
             'fr_FR' => 'Stark'
         ];
 
-        $this->beConstructedThrough('create', [$identifier, $enrichedEntityIdentifier, $recordCode, $labelCollection]);
+        $this->beConstructedThrough('create', [$identifier, $enrichedEntityIdentifier, $recordCode, $labelCollectio]);
     }
 
     public function it_is_initializable()
