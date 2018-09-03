@@ -20,16 +20,26 @@ extensions:
             logout: pim_menu.user.logout
 
     pimee-pim-ai-connection-index-title:
-        module: pim/common/title-with-subtitle
+        module: pim/common/grid-title
         parent: pim-pim-ai-connection-index
         targetZone: title
         config:
-            main_title: akeneo_suggest_data.pim_ai.page_title
-            sub_title: akeneo_suggest_data.pim_ai.module.title.sub_title
-            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
-            description:
-                - akeneo_suggest_data.pim_ai.module.title.description.first_step
-                - akeneo_suggest_data.pim_ai.module.title.description.second_step
+            countable: false
+            title: akeneo_suggest_data.pim_ai.page_title
+
+    pimee-pim-ai-connection-index-description-header:
+        module: pim/common/simple-view
+        parent: pim-pim-ai-connection-index
+        targetZone: content
+        position: 10
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_suggest_data.pim_ai.module.title.sub_title
+                illustration: Helpcenter-settings.svg
+                description:
+                    - akeneo_suggest_data.pim_ai.module.title.description.first_step
+                    - akeneo_suggest_data.pim_ai.module.title.description.second_step
 
     pimee-pim-ai-connection-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -44,7 +54,7 @@ extensions:
         parent: pim-pim-ai-connection-index
         template: pimee/template/pim-ai-connection/edit
         targetZone: content
-        position: 10
+        position: 90
         config:
             token_label_title: pim_common.label
             token_label_content: akeneo_suggest_data.pim_ai.module.activation.label
