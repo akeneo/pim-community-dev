@@ -55,4 +55,9 @@ class RecordCode
     {
         return $this->code === $code->code;
     }
+
+    public function normalize(): string
+    {
+        return $this->code;
+    }
 }
