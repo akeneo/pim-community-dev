@@ -26,7 +26,7 @@ $rules = [
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'PDO',
-        'Pim\Bundle\InstallerBundle',
+        'Akeneo\Platform\Bundle\InstallerBundle',
         'Ramsey\Uuid\Uuid',
         'Symfony',
     ])->in('Akeneo\EnrichedEntity\Infrastructure'),

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\InstallerBundle\Command;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Pim\Bundle\InstallerBundle\Command\DatabaseCommand as BaseDatabaseCommand;
+use Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class DatabaseCommand extends BaseDatabaseCommand
+class EnterpriseDatabaseCommand extends DatabaseCommand
 {
     /**
      * {@inheritdoc}

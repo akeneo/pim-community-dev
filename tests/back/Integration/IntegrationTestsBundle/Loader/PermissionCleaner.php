@@ -2,8 +2,8 @@
 
 namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Loader;
 
-use PimEnterprise\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
-use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
+use Akeneo\Platform\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
+use Akeneo\Platform\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;

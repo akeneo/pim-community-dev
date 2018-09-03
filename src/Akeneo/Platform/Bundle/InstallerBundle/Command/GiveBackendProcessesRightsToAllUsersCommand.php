@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\InstallerBundle\Command;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
