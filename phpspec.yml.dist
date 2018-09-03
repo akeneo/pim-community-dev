@@ -211,8 +211,8 @@ suites:
         spec_path: src/Pim/Bundle/FilterBundle
         src_path: src/Pim/Bundle/FilterBundle
     ImportExportBundle:
-        namespace: Pim\Bundle\ImportExportBundle
-        psr4_prefix: Pim\Bundle\ImportExportBundle
+        namespace: Akeneo\Platform\Bundle\ImportExportBundle
+        psr4_prefix: Akeneo\Platform\Bundle\ImportExportBundle
         spec_path: src/Pim/Bundle/ImportExportBundle
         src_path: src/Pim/Bundle/ImportExportBundle
     InstallerBundle:

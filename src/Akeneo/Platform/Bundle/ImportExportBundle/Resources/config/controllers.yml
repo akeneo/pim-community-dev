@@ -1,0 +1,56 @@
+parameters:
+    pim_import_export.controller.import_profile.class:   Akeneo\Platform\Bundle\ImportExportBundle\Controller\ImportProfileController
+    pim_import_export.controller.export_profile.class:   Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportProfileController
+    pim_import_export.controller.import_execution.class: Akeneo\Platform\Bundle\ImportExportBundle\Controller\ImportExecutionController
+    pim_import_export.controller.export_execution.class: Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportExecutionController
+
+services:
+    pim_import_export.controller.export_profile:
+        class: '%pim_import_export.controller.export_profile.class%'
+        arguments:
+            - '@templating'
+            - '@router'
+            - '@form.factory'
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_import_export.form.type.job_instance'
+            - '@akeneo_batch.job_instance_factory'
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_batch.job_parameters_factory'
+            - export
+
+    pim_import_export.controller.import_profile:
+        class: '%pim_import_export.controller.import_profile.class%'
+        arguments:
+            - '@templating'
+            - '@router'
+            - '@form.factory'
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_import_export.form.type.job_instance'
+            - '@akeneo_batch.job_instance_factory'
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_batch.job_parameters_factory'
+            - import
+
+    pim_import_export.controller.export_execution:
+        class: '%pim_import_export.controller.export_execution.class%'
+        arguments:
+            - '@templating'
+            - '@translator'
+            - '@event_dispatcher'
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@pim_connector.event_listener.archivist'
+            - '@akeneo_batch.manager.job_execution'
+            - '@pim_enrich.repository.job_execution'
+            - export
+
+    pim_import_export.controller.import_execution:
+        class: '%pim_import_export.controller.import_execution.class%'
+        arguments:
+            - '@templating'
+            - '@translator'
+            - '@event_dispatcher'
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@pim_connector.event_listener.archivist'
+            - '@akeneo_batch.manager.job_execution'
+            - '@pim_enrich.repository.job_execution'
+            - import

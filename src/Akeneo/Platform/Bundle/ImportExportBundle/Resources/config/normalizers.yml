@@ -1,0 +1,24 @@
+parameters:
+    pim_import_export.normalizer.job_execution.class:  Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer
+    pim_import_export.normalizer.step_execution.class: Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer
+
+services:
+    pim_import_export.normalizer.job_execution:
+        class: '%pim_import_export.normalizer.job_execution.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.normalizer.standard.job_instance'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_import_export.normalizer.step_execution:
+        class: '%pim_import_export.normalizer.step_execution.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.localization.presenter.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
