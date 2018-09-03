@@ -172,6 +172,22 @@ abstract class AbstractItemCategoryRepository implements
         $qb->setParameter($filterCatIds, $categoryIds);
     }
 
+    public function applyFilterByCategoryCodesOrUnclassified($qb, array $categoryCodes)
+    {
+        $filterCatCodes = uniqid('filterCatCodesOrUnclassified');
+
+        $this->joinQueryBuilderOnCategories($qb);
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in(CategoryFilterableRepositoryInterface::JOIN_ALIAS . '.code', ':' . $filterCatCodes),
+                $qb->expr()->isNull(CategoryFilterableRepositoryInterface::JOIN_ALIAS . '.code')
+            )
+        );
+
+        $qb->setParameter($filterCatCodes, $categoryCodes);
+    }
+
     /**
      * Build array of item with item count by category and category entity
      *
