@@ -69,13 +69,6 @@
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
-    "repositories": {
-        "pim-community-dev": {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/pim-community-dev.git",
-            "branch": "master"
-        }
-    },
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
