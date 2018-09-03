@@ -90,7 +90,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
+            new Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
             new Akeneo\Platform\Bundle\NotificationBundle\PimNotificationBundle(),
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),

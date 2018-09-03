@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\EventListener;
 
 use Doctrine\DBAL\Connection;
-use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
