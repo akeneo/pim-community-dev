@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -92,8 +93,9 @@ SQL;
     public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $fetch = <<<SQL
-        SELECT identifier, labels
-        FROM akeneo_enriched_entity_enriched_entity
+        SELECT ee.identifier, ee.labels, fi.file_key, fi.original_filename
+        FROM akeneo_enriched_entity_enriched_entity ee
+        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -107,7 +109,12 @@ SQL;
             throw EnrichedEntityNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
+        return $this->hydrateEnrichedEntity(
+            $result['identifier'],
+            $result['labels'],
+            $result['file_key'],
+            $result['original_filename']
+        );
     }
 
     public function all(): array
@@ -147,19 +154,37 @@ SQL;
         }
     }
 
-    private function hydrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
-    {
+    private function hydrateEnrichedEntity(
+        string $identifier,
+        string $normalizedLabels,
+        ?string $fileKey,
+        ?string $originalFilename
+    ): EnrichedEntity {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString(
-                $identifier
-            ),
-            $labels
-        );
+        if (null !== $fileKey && null !== $originalFilename) {
+            $file = new FileInfo();
+            $file->setKey($fileKey);
+            $file->setOriginalFilename($originalFilename);
+
+            $enrichedEntity = EnrichedEntity::createWithImage(
+                EnrichedEntityIdentifier::fromString(
+                    $identifier
+                ),
+                $labels,
+                Image::fromFileInfo($file)
+            );
+        } else {
+            $enrichedEntity = EnrichedEntity::create(
+                EnrichedEntityIdentifier::fromString(
+                    $identifier
+                ),
+                $labels
+            );
+        }
 
         return $enrichedEntity;
     }

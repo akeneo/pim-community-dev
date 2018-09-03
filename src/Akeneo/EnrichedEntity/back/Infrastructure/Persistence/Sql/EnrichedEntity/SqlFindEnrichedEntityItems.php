@@ -63,7 +63,7 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
     private function fetchResults(): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.labels, ee.image as file_key, fi.original_filename
+        SELECT ee.identifier, ee.labels, fi.file_key, fi.original_filename
         FROM akeneo_enriched_entity_enriched_entity AS ee
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
 SQL;
