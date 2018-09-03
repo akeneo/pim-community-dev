@@ -14,7 +14,7 @@ namespace Akeneo\Pim\Permission\Bundle\Manager;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
+use Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
 use PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
