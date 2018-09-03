@@ -860,3 +860,4 @@
 - Move `Pim\Bundle\DashboardBundle\Widget\WidgetInterface` to `Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface`
 - Move `Pim\Bundle\UIBundle` to `Akeneo\Platform\Bundle\UIBundle`
 - Remove class `Pim\Bundle\NavigationBundle\PimNavigationBundle`
+- Move `Pim\Bundle\ImportExportBundle` to `Akeneo\Platform\Bundle\ImportExportBundle`
