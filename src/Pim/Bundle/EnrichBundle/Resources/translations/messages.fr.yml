@@ -182,6 +182,7 @@ pim_enrich:
       create: Créer une famille
       edit_properties: Modifier les propriétés d'une famille
       edit_attributes: Modifier les attributs d'une famille
+      edit_variants: Editer une variante de famille
       remove: Supprimer une famille
       history: Afficher l'historique de la famille
     attribute_group:
