@@ -44,7 +44,8 @@ spec:
         - name: pim-install
           image:  "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console pim:install"']
+          # We call pim:installer:dump-require-paths after install for onboarder dynamic configuration
+          command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console pim:install" ;  su -m -l www-data -s /bin/bash -c "php bin/console pim:installer:dump-require-paths"']
           env:
             - name: SYMFONY_ENV
               value: prod
@@ -72,13 +73,13 @@ spec:
             {{- if .Values.onboarder.enabled }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
-            - name: AOB_MIDDLEWARE_URL
+            - name: ONBOARDER_RETAILER_URL
               value: {{ .Values.common.retailerUrl | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_PUB
+            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
               value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_CON
+            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
               value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
+            - name: ONBOARDER_QUEUE_NAME
               value:  {{ .Values.onboarder.pubsub.queueName | quote }}
             {{- end }}
 {{- if .Values.common.phpConfCLI }}

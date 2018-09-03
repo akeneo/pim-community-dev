@@ -94,17 +94,17 @@ spec:
               value: {{ .Values.common.gcpProjectID | quote }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
-            - name: AOB_MIDDLEWARE_URL
+            - name: ONBOARDER_RETAILER_URL
               value: {{ .Values.common.retailerUrl | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_PUB
+            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
               value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_CON
+            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
               value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
+            - name: ONBOARDER_QUEUE_NAME
               value:  {{ .Values.onboarder.pubsub.queueName | quote }}
             {{- end }}
-{{- if .Values.common.phpConf }}
-{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- if .Values.common.phpConfFPM }}
+{{ toYaml .Values.common.phpConfFPM  | indent 12 }}
 {{- end }}
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"

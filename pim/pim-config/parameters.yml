@@ -6,18 +6,12 @@ parameters:
     env(PIM_DATABASE_PORT):     "3306"
     env(PIM_DATABASE_NAME):     "akeneo_pim"
     env(PIM_DATABASE_USER):     "akeneo_pim"
-    env(PIM_DATABASE_PASSWORD): "changeme"
+    env(PIM_DATABASE_PASSWORD): "generateme"
 
     env(PIM_LOCALE):          "en"
     env(PIM_SECRET):          "ThisTokenIsNotSoSecretChangeIt"
     env(PIM_INSTALLER_DATA): "PimEnterpriseInstallerBundle:icecat_demo_dev"
 
-{{- if .Values.onboarder.enabled }}
-    env(AOB_PIMMASTER_ONBOARDER_TOPIC_PUB):  "onboarder"
-    env(AOB_PIMMASTER_ONBOARDER_TOPIC_CON):  "pimmaster"
-    env(AOB_PIMMASTER_ONBOARDER_QUEUE_NAME): "pimmaster"
-
-{{- end }}
     database_driver:      pdo_mysql
     database_host:        "%env(PIM_DATABASE_HOST)%"
     database_port:        "%env(PIM_DATABASE_PORT)%"
@@ -44,16 +38,3 @@ parameters:
     asset_storage_dir:                    '%env(PIM_SHARED_STORAGE)%/file_storage/assets'
     tmp_storage_dir:                      '%env(PIM_SHARED_STORAGE)%/file_storage/tmp'
     upload_tmp_dir:                       '%env(PIM_SHARED_STORAGE)%/file_storage/upload_tmp_dir'
-{{- if .Values.onboarder.enabled }}
-
-    ## Need ot be removed
-    onboarder_synchronize_api_client_id: THE_PREVIOUSLY_GENERATED_CLIENT_ID_HASH
-    onboarder_synchronize_api_secret: THE_PREVIOUSLY_GENERATED_SECRET_HASH
-    onboarder_synchronize_api_target_url: 'http://localhost/'
-
-pim_onboarder:
-    topic_name_for_publication:   '%env(AOB_PIMMASTER_ONBOARDER_TOPIC_PUB)%'
-    topic_name_for_consumption:   '%env(AOB_PIMMASTER_ONBOARDER_TOPIC_CON)%'
-    queue_name:                   '%env(AOB_PIMMASTER_ONBOARDER_QUEUE_NAME)%'
-    middleware_url:               '%env(AOB_MIDDLEWARE_URL)%'
-{{- end }}
