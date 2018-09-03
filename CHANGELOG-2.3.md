@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Enhancements
+
+- PIM-7610: Add a command to create users
+
 ## Bug fixes
 
 - PIM-7600: Change the default return value of ResetIndexesCommand to true to allow the --no-interaction parameter.
