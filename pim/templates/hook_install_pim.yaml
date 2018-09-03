@@ -103,12 +103,6 @@ spec:
               readOnly: true
             {{- end }}
       volumes:
-        - name: fpm-conf
-          configMap:
-            name: pim-config
-            items:
-              - key: fpm.conf
-                path: fpm.conf
         - name: pim-parameter
           configMap:
             name: pim-config

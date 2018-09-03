@@ -46,19 +46,11 @@ common:
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-    tag: v2.3.4-2
+    tag: v2.3.5
     pullPolicy: Always
   httpd:
     repository: httpd
     tag: 2.4.33
-    pullPolicy: IfNotPresent
-  httpdExporter:
-    repository: eu.gcr.io/akeneo-cloud/httpd-exporter
-    tag: 0.0.1
-    pullPolicy: IfNotPresent
-  fpmExporter:
-    repository: oxalide/phpfpm-prometheus-exporter
-    tag: latest
     pullPolicy: IfNotPresent
 
 pim:

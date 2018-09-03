@@ -53,9 +53,6 @@ spec:
             - name: fpm-data
               mountPath: /data
               readOnly: false
-            - name: fpm-conf
-              mountPath: /usr/local/etc/php-fpm.d/
-              readOnly: true
             - name: pim-parameter
               mountPath: /var/www/html/app/config/parameters.yml
               subPath: parameters.yml
@@ -134,12 +131,6 @@ spec:
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
-        - name: fpm-conf
-          configMap:
-            name: pim-config
-            items:
-              - key: fpm.conf
-                path: fpm.conf
         - name: conf-httpd
           configMap:
             name: pim-config
