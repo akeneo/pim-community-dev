@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Query;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\Query;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 class GetAssociatedProductCodesByProductIntegration extends TestCase

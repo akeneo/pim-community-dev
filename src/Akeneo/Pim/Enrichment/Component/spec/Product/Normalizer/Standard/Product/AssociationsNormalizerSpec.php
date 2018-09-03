@@ -2,19 +2,24 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\AssociationsNormalizer;
-use Doctrine\Common\Collections\ArrayCollection;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\AssociationsNormalizer;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {
+    function let(GetAssociatedProductCodesByProduct $getAssociatedProductCodesByProduct)
+    {
+        $this->beConstructedWith($getAssociatedProductCodesByProduct);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(AssociationsNormalizer::class);
@@ -35,6 +40,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_associations_in_standard_format_only(
+        GetAssociatedProductCodesByProduct $getAssociatedProductCodesByProduct,
         ProductInterface $product,
         AssociationInterface $association1,
         AssociationInterface $association2,
@@ -60,7 +66,12 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $productModelAssociated->getCode()->willReturn('product_model_code');
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModelAssociated->getWrappedObject()]));
 
-        $product->getAllAssociations()->willReturn([$association1, $association2]);
+        $product->getId()->willReturn(1);
+        $product->getParent()->willReturn(null);
+        $product->getAssociations()->willReturn([$association1, $association2]);
+
+        $getAssociatedProductCodesByProduct->getCodes(1, $association1)->willReturn([]);
+        $getAssociatedProductCodesByProduct->getCodes(1, $association2)->willReturn(['product_code']);
 
         $this->normalize($product, 'standard')->shouldReturn(
             [
@@ -73,14 +84,15 @@ class AssociationsNormalizerSpec extends ObjectBehavior
                     'groups' => ['group_code'],
                     'products' => [],
                     'product_models' => [],
-                ]
+                ],
             ]
         );
     }
 
     function it_normalizes_a_product_with_no_associations(ProductInterface $product)
     {
-        $product->getAllAssociations()->willReturn([]);
+        $product->getParent()->willReturn(null);
+        $product->getAssociations()->willReturn([]);
         $this->normalize($product, 'standard')->shouldReturn([]);
     }
 
@@ -95,8 +107,6 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         GroupInterface $group1,
         ProductInterface $productAssociated
     ) {
-        $this->beConstructedWith($getAssociatedProductCodesByProduct);
-
         $group1->getCode()->willReturn('group_code');
         $associationType1->getCode()->willReturn('XSELL');
         $association1->getAssociationType()->willReturn($associationType1);
@@ -115,9 +125,9 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association2->getProducts()->willReturn([$productAssociated->getWrappedObject()]);
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
 
-        $product->getId()->willReturn(1);
         $getAssociatedProductCodesByProduct->getCodes(1, $association2)->willReturn(['product_code']);
 
+        $product->getId()->willReturn(1);
         $product->getParent()->willReturn(null);
         $product->getAssociations()->willReturn([$association1, $association2]);
         $product->getAllAssociations()->willReturn([$association1, $association2]);
@@ -133,7 +143,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
                     'groups' => ['group_code'],
                     'products' => [],
                     'product_models' => [],
-                ]
+                ],
             ]
         );
     }

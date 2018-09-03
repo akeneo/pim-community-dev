@@ -42,7 +42,7 @@ services:
             - '@doctrine.orm.entity_manager'
 
     pim_catalog.query.get_associated_product_codes_by_product:
-        class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByProductFromDB'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.association.class%'

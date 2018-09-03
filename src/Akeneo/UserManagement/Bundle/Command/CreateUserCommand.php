@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\UserBundle\Command;
+namespace Akeneo\UserManagement\Bundle\Command;
 
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,8 +29,7 @@ class CreateUserCommand extends ContainerAwareCommand
     {
         $this
             ->setName(static::COMMAND_NAME)
-            ->setDescription('Creates a PIM user.')
-        ;
+            ->setDescription('Creates a PIM user.');
     }
 
     /**
@@ -55,15 +54,15 @@ class CreateUserCommand extends ContainerAwareCommand
         $this->getContainer()->get('pim_user.updater.user')->update(
             $user,
             [
-                'username'               => $username,
-                'password'               => $password,
-                'first_name'             => $firstName,
-                'last_name'              => $lastName,
-                'email'                  => $email,
-                'user_default_locale'    => $userDefaultLocaleCode,
+                'username' => $username,
+                'password' => $password,
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'email' => $email,
+                'user_default_locale' => $userDefaultLocaleCode,
                 'catalog_default_locale' => $catalogDefaultLocaleCode,
-                'catalog_default_scope'  => $catalogDefaultScopeCode,
-                'default_category_tree'  => $defaultTreeCode,
+                'catalog_default_scope' => $catalogDefaultScopeCode,
+                'default_category_tree' => $defaultTreeCode,
             ]
         );
 
@@ -111,8 +110,7 @@ class CreateUserCommand extends ContainerAwareCommand
                 }
 
                 return $answer;
-            })
-        ;
+            });
 
         return $this->getHelper('question')->ask($input, $output, $question);
     }
@@ -129,8 +127,7 @@ class CreateUserCommand extends ContainerAwareCommand
                 }
 
                 return $answer;
-            })
-        ;
+            });
 
         $this->getHelper('question')->ask($input, $output, $question);
     }

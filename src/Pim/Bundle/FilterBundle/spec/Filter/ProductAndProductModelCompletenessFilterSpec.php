@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class ProductAndProductModelCompletenessFilterSpec extends ObjectBehavior

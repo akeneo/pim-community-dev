@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog\Query\AssociatedProduct;
+namespace Akeneo\Pim\Enrichment\Component\Product\Association\Query;
 
-use Pim\Component\Catalog\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

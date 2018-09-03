@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
+namespace Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * This class will guess if there are changes into the 'availableLocales' attribute field.
