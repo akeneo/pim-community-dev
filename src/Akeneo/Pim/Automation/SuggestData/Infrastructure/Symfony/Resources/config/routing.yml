@@ -51,6 +51,11 @@ akeneo_suggest_data_attributes_mapping_index:
     path: /suggest-data/mapping/attributes/index
     methods: [GET]
 
+akeneo_sugggest_data_attributes_mapping_list:
+    path: /suggest-data/mapping/attributes/
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.attributes_mapping:listAction }
+    methods: [GET]
+
 akeneo_sugggest_data_attributes_mapping_get:
     path: /suggest-data/mapping/attributes/{identifier}
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.attributes_mapping:getAction }

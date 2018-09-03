@@ -57,9 +57,9 @@ class FamilySelector extends BaseSelect {
   /**
    * {@inheritdoc}
    */
-  convertBackendItem(item: { enabled: boolean }) {
+  convertBackendItem(item: { has_mapping: boolean }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
-    result.enabled = item.enabled;
+    result.has_mapping = item.has_mapping;
     return result;
   }
 }

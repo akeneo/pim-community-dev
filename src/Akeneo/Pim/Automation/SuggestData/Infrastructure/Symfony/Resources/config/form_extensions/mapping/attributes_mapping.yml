@@ -87,7 +87,7 @@ extensions:
         config:
             fieldName: code
             label: pim_enrich.entity.family.uppercase_label
-            choiceRoute: pim_enrich_family_rest_index
+            choiceRoute: akeneo_sugggest_data_attributes_mapping_list
 
     pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping

@@ -28,6 +28,62 @@ class AttributeMappingController
     private const INACTIVE = 2;
 
     /**
+     * Mocked return
+     * TODO Make it for real:
+     * Should return all the families of the PIM, with enabled at false for non existing familyMapping entities
+     *
+     * @return Response
+     */
+    public function listAction(Request $request): JsonResponse
+    {
+        $RESPONSE = [
+            [
+                'code' => 'clothing',
+                'has_mapping' => true,
+                'labels' => [
+                    'en_US' => 'clothing',
+                    'fr_FR' => 'vetements',
+                    'de_DE' => 'Kartoffeln'
+                ]
+            ], [
+                'code' => 'accessories',
+                'has_mapping' => false,
+                'labels' => [
+                    'en_US' => 'accessories',
+                    'fr_FR' => 'accessoires',
+                    'de_DE' => 'Shön'
+                ]
+            ], [
+                'code' => 'camcorders',
+                'has_mapping' => true,
+                'labels' => [
+                    'en_US' => 'camcorders',
+                    'fr_FR' => 'caméras',
+                    'de_DE' => 'Mein Fuss tut weh'
+                ]
+            ]
+        ];
+
+        /** non treated arguments:
+         * options[limit]: 20
+         * options[page]: 1
+         * options[catalogLocale]: en_US (useless, comes from select2)
+         */
+        if (null !== $request->get('search') && '' !== $request->get('search')) {
+            return new JsonResponse(array_filter($RESPONSE, function ($family) use ($request) {
+                return strpos($family['code'], $request->get('search')) !== false;
+            }));
+        }
+        if (null !== $request->get('options') && isset($request->get('options')['identifiers'])) {
+            return new JsonResponse(array_filter($RESPONSE, function ($family) use ($request) {
+                return in_array($family['code'], $request->get('options')['identifiers']);
+            }));
+        }
+
+        return new JsonResponse($RESPONSE);
+    }
+
+    /**
      * @param string   $identifier
      * @param Response $response
      *
