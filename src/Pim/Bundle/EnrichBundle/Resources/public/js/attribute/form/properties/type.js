@@ -33,7 +33,7 @@ function (
         renderInput: function (templateContext) {
             var value = this.getFormData()[this.fieldName];
             var choices = {};
-            choices[value] = __('pim_enrich.entity.attribute.type.' + value);
+            choices[value] = __('pim_enrich.entity.attribute.property.type.' + value);
 
             return this.template(_.extend(templateContext, {
                 value: value,

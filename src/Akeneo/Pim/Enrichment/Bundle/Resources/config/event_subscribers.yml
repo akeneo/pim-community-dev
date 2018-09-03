@@ -1,0 +1,129 @@
+parameters:
+    pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
+    pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
+    pim_catalog.event_subscriber.localizable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber
+    pim_catalog.event_subscriber.scopable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ScopableSubscriber
+    pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
+    pim_catalog.event_subscriber.category.check_channels.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
+    pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
+    pim_catalog.event_subscriber.compute_product_raw_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber
+    pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
+    pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
+    pim_catalog.event_subscriber.index_product_models.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber
+    pim_catalog.event_subscriber.compute_product_model_descendants.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
+    pim_catalog.event_subscriber.index_product_model_complete.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelCompleteDataSubscriber
+    pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
+    pim_catalog.event_subscriber.add_boolean_values_to_new_product.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AddBooleanValuesToNewProductSubscriber
+
+services:
+    # Subscribers
+    pim_catalog.event_subscriber.create_attribute_requirement:
+        class: '%pim_catalog.event_subscriber.create_attribute_requirement.class%'
+        arguments:
+            - '@pim_catalog.factory.attribute_requirement'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.localizable:
+        class: '%pim_catalog.event_subscriber.localizable.class%'
+        arguments:
+            - '@pim_catalog.context.catalog'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.scopable:
+        class: '%pim_catalog.event_subscriber.scopable.class%'
+        arguments:
+            - '@pim_catalog.context.catalog'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.timestampable:
+        class: '%pim_catalog.event_subscriber.timestampable.class%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_subscriber.category.check_channels:
+        class: '%pim_catalog.event_subscriber.category.check_channels.class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.reset_unique_validation:
+        class: '%pim_catalog.event_subscriber.reset_unique_validation.class%'
+        arguments:
+            - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.validator.unique_axes_combination_set'
+        tags:
+           - { name: kernel.event_listener, event: akeneo_batch.item_step_after_batch }
+
+    pim_catalog.event_subscriber.add_boolean_values_to_new_product:
+        class: '%pim_catalog.event_subscriber.add_boolean_values_to_new_product.class%'
+        arguments:
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.factory.value'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pim_catalog.event_subscriber.compute_product_raw_values:
+        class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
+        arguments:
+            - '@pim_storage_serializer'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.load_product_values:
+        class: '%pim_catalog.event_subscriber.load_product_values.class%'
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 50 }
+
+    pim_catalog.event_subscriber.index_products:
+        class: '%pim_catalog.event_subscriber.index_products.class%'
+        arguments:
+              - '@pim_catalog.elasticsearch.indexer.product'
+              - '@pim_catalog.elasticsearch.indexer.product'
+              - '@pim_catalog.elasticsearch.indexer.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.index_product_models:
+        class: '%pim_catalog.event_subscriber.index_product_models.class%'
+        arguments:
+              - '@pim_catalog.elasticsearch.indexer.product_model'
+              - '@pim_catalog.elasticsearch.indexer.product_model'
+              - '@pim_catalog.elasticsearch.indexer.product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.compute_product_model_descendants:
+        class: '%pim_catalog.event_subscriber.compute_product_model_descendants.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.compute_product_models_descendants.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.index_product_model_completedata:
+        class: '%pim_catalog.event_subscriber.index_product_model_complete.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.compute_completeness_on_family_update_subscriber:
+        class: '%pim_catalog.event_subscriber.compute_completeness_on_family_update.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@pim_catalog.repository.attribute_requirement'
+            - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+            - '@pim_catalog.doctrine.query.find_attributes_for_family'
+        tags:
+            - { name: kernel.event_subscriber }

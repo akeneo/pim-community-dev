@@ -1,0 +1,82 @@
+Akeneo\Tool\Component\Batch\Model\JobExecution:
+    type: entity
+    table: akeneo_batch_job_execution
+    # TODO: should be like other entities
+    #changeTrackingPolicy: DEFERRED_EXPLICIT
+    entityListeners:
+        \Akeneo\Tool\Bundle\BatchBundle\EventListener\LoadJobParametersListener: ~
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        pid:
+            type: integer
+            column: pid
+            nullable: true
+        user:
+            type: string
+            column: user
+            nullable: true
+        status:
+            type: integer
+            column: status
+        startTime:
+            type: datetime
+            column: start_time
+            nullable: true
+        endTime:
+            type: datetime
+            column: end_time
+            nullable: true
+        createTime:
+            type: datetime
+            column: create_time
+            nullable: true
+        updatedTime:
+            type: datetime
+            column: updated_time
+            nullable: true
+        healthCheckTime:
+            type: datetime
+            column: health_check_time
+            nullable: true
+        exitCode:
+            type: string
+            length: 255
+            column: exit_code
+            nullable: true
+        exitDescription:
+            type: text
+            column: exit_description
+            nullable: true
+        failureExceptions:
+            type: array
+            column: failure_exceptions
+            nullable: true
+        logFile:
+            type: string
+            length: 255
+            column: log_file
+            nullable: true
+        rawParameters:
+            type: json_array
+            column: raw_parameters
+    oneToMany:
+        stepExecutions:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution
+            mappedBy: jobExecution
+            cascade:
+                - persist
+                - remove
+            orphanRemoval: true
+    manyToOne:
+        jobInstance:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobInstance
+            inversedBy: jobExecutions
+            joinColumn:
+                name: job_instance_id
+                referencedColumnName: id
+                onDelete: 'CASCADE'
+                nullable: false

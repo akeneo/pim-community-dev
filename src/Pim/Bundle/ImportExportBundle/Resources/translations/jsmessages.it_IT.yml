@@ -1,0 +1,142 @@
+job_execution:
+  summary:
+    display_item: Visualizza articoli
+    hide_item: Nascondi articoli
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selezione categorie
+        title: Seleziona categorie
+    locales:
+      validation:
+        not_blank: Una impostazione internazionale deve essere selezionata, si prega di scegliere una impostazione internazionale per l'esportazione.
+pim_import_export:
+  entity:
+    job_instance:
+      label: profilo del job
+      flash:
+        update:
+          success: Il profilo del job è stato aggiornato con successo.
+          fail: Il profilo del job non può essere aggiornato.
+        delete:
+          success: Istanza di lavoro rimossa correttamente
+    import_profile:
+      uppercase_label: Profilo di importazione
+      flash:
+        create:
+          success: Profilo di importazione creato correttamente
+      module:
+        create:
+          button: Crea un profilo di importazione
+    export_profile:
+      uppercase_label: Profilo di esportazione
+      flash:
+        create:
+          success: Profilo di esportazione creato correttamente
+      module:
+        create:
+          button: Crea un profilo di esportazione
+  form:
+    job_execution:
+      title.details: Dettagli esecuzione
+      refreshBtn.title: Aggiorna
+      button:
+        show_profile.title: Visualizza profilo
+        download_log.title: Scarica il log
+        download_file.title: Scarica file generati
+        download_archive.title: Scarica archivi generati
+      summary:
+        fetching: Raccolta di dati sull'esecuzione del lavoro...
+        warning: Attenzione
+        header.step: Passo
+        header.warnings: Avvisi
+        header.summary: Riepilogo
+        header.start: Inizio
+        header.end: Fine
+    job_instance:
+      fail:
+        launch: Impossibile avviare il profilo di lavoro. Assicurarsi che sia valido e che si abbia il permesso per lanciarlo.
+        save: Impossibile salvare il profilo di lavoro. Assicurarsi che si abbia il permesso per modificarlo.
+      button:
+        export.title: Esporta ora
+        import.launch: Importa ora
+        import.upload: Carica e importa ora
+        import.upload_file: Carica un file
+      meta:
+        job: Lavoro
+        connector: Connettore
+      subsection:
+        last_executions: Ultime esecuzioni
+      tab:
+        content:
+          title: Contenuto
+        properties:
+          decimal_separator:
+            title: Separatore decimale
+            help: Determina il separatore decimale
+          date_format:
+            title: Formato della data
+            help: Determina il formato dei campi data
+          file_path:
+            title: Percorso del file
+            help: Dove scrivere il file generato nel file System
+          delimiter:
+            title: Delimitatore
+            help: Un carattere utilizzato per impostare il delimitatore di campo
+          enclosure:
+            title: Contenitore
+            help: Un carattere utilizzato per impostare il contenitore del campo
+          with_header:
+            title: Con intestazione
+            help: Stampare o no la l'intestazione della colonna
+          with_media:
+            title: Esporta file e immagini
+            help: Esportare o meno i file e le immagini del prodotto
+          lines_per_file:
+            title: Numero di linee per file
+            help: Definire il numero limite di righe per file
+          upload_allowed:
+            title: Consentire il caricamento di file
+            help: Consentire o no il caricamento diretto di file
+          categories_column:
+            title: Colonna categorie
+            help: Nome della colonna categorie
+          escape:
+            title: Escape
+            help: Un carattere di escape utilizzato
+          family_column:
+            title: Colonna famiglia
+            help: Nome della colonna famiglia
+          groups_column:
+            title: Colonna gruppi
+            help: Nome della colonna gruppi
+          enabled:
+            title: Attivare il prodotto
+            help: Attivare o no i prodotti importati
+          enabled_comparison:
+            title: Confronta i valori
+            help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
+          real_time_versioning:
+            title: Aggiornamento cronologia in tempo reale
+            help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+          family_variant_column:
+            title: Colonna famiglia variante
+      file_path: Percorso del file
+confirmation:
+  remove:
+    import_profile: Sei sicuro di voler eliminare questo profilo di importazione?
+    export_profile: Sei sicuro di voler eliminare questo profilo di esportazione?
+    job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
+pim_title:
+  pim_importexport_export_profile_index: Gestione profili di esportazione
+  pim_importexport_export_profile_edit: Profilo di esportazione {{ job.label }} | Modifica
+  pim_importexport_export_profile_show: Profilo di esportazione {{ job.label }} | Visualizza
+  pim_importexport_export_execution_index: Esportare la cronologia delle esecuzioni
+  pim_importexport_export_execution_show: Esecuzioni di esportazione | Dettagli
+  pim_importexport_import_profile_index: Gestione profili di importazione
+  pim_importexport_import_profile_edit: Profilo di importazione {{ job.label }} | Modifica
+  pim_importexport_import_profile_show: Profilo di importazione {{ job.label }} | Visualizza
+  pim_importexport_import_execution_index: Importare la cronologia delle esecuzioni
+  pim_importexport_import_execution_show: Importare le esecuzioni | Dettagli

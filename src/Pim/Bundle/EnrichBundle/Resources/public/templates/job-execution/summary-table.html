@@ -1,23 +1,23 @@
 <div class="AknGridContainer grid-container">
     <table class="AknGrid AknGrid--unclickable grid job-execution" id="job-execution">
         <thead>
-        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.step')%></th>
-        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.status')%></th>
-        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.summary')%></th>
-        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.start')%></th>
-        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.end')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_import_export.form.job_execution.summary.header.step')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_common.status')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_import_export.form.job_execution.summary.header.summary')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_import_export.form.job_execution.summary.header.start')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_import_export.form.job_execution.summary.header.end')%></th>
         </thead>
         <tbody>
         <% if (!stepExecutions) { %>
         <tr class="AknGrid-bodyRow">
             <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
-                <%- __('pim_enrich.form.job_execution.summary.fetching')%>
+                <%- __('pim_import_export.form.job_execution.summary.fetching')%>
             </td>
         </tr>
         <% } else { %>
             <% _.each(stepExecutions, function (stepExecution, stepIndex) { %>
                 <tr class="AknGrid-bodyRow">
-                    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight"><%- __(stepExecution.label) %></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight"><%- translateStepExecutionLabel(stepExecution) %></td>
                     <td class="AknGrid-bodyCell"><%- stepExecution.status %></td>
                     <td class="AknGrid-bodyCell">
                         <% if (_.size(stepExecution.summary) > 0) { %>
@@ -40,7 +40,7 @@
                 <tr class="AknGrid-bodyRow warning">
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
                         <div class="AknMessageBox AknMessageBox--warning">
-                            <span class="AknMessageBox-title title"><%- __('pim_enrich.form.job_execution.summary.warning')%></span>
+                            <span class="AknMessageBox-title title"><%- __('pim_import_export.form.job_execution.summary.warning')%></span>
                             <ul class="AknMessageBox-list">
                                 <% _.each(warning.reason.split("\n"), function(warningItem) { %>
                                     <% if (warningItem) { %>

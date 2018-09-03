@@ -1,2 +1,0 @@
-parameters:
-    akeneo_classification.updater.category.class: Akeneo\Component\Classification\Updater\CategoryUpdater

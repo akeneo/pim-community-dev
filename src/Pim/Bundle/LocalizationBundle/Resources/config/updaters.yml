@@ -1,5 +1,5 @@
 parameters:
-    pim_localization.updater.translatable.class: Akeneo\Component\Localization\TranslatableUpdater
+    pim_localization.updater.translatable.class: Akeneo\Tool\Component\Localization\TranslatableUpdater
 
 services:
     pim_localization.updater.translatable:

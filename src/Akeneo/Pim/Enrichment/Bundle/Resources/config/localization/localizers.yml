@@ -1,0 +1,53 @@
+parameters:
+    pim_catalog.localization.localizer.registry.class:  Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\LocalizerRegistry
+    pim_catalog.localization.localizer.number.class:    Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer
+    pim_catalog.localization.localizer.date.class:      Akeneo\Tool\Component\Localization\Localizer\DateLocalizer
+    pim_catalog.localization.localizer.price.class:     Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\PriceLocalizer
+    pim_catalog.localization.localizer.metric.class:    Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\MetricLocalizer
+    pim_catalog.localization.localizer.converter.class: Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverter
+
+services:
+    pim_catalog.localization.localizer.registry:
+        class: '%pim_catalog.localization.localizer.registry.class%'
+
+    pim_catalog.localization.localizer.converter:
+        class: '%pim_catalog.localization.localizer.converter.class%'
+        arguments:
+            - '@pim_catalog.localization.localizer.registry'
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.localization.localizer.number:
+        class: '%pim_catalog.localization.localizer.number.class%'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.localization.factory.number'
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_catalog.localization.localizer }
+
+    pim_catalog.localization.localizer.price:
+        class: '%pim_catalog.localization.localizer.price.class%'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.localization.factory.number'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_catalog.localization.localizer }
+
+    pim_catalog.localization.localizer.metric:
+        class: '%pim_catalog.localization.localizer.metric.class%'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.localization.factory.number'
+            - ['pim_catalog_metric']
+        tags:
+            - { name: pim_catalog.localization.localizer }
+
+    pim_catalog.localization.localizer.date:
+        class: '%pim_catalog.localization.localizer.date.class%'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.localization.factory.date'
+            - ['pim_catalog_date']
+        tags:
+            - { name: pim_catalog.localization.localizer }

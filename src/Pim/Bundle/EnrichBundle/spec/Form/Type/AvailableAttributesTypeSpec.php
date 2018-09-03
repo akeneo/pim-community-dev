@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Model\AvailableAttributes;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;

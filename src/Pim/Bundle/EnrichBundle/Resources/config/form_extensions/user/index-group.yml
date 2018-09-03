@@ -24,7 +24,7 @@ extensions:
         parent: pim-user-group-index
         targetZone: title
         config:
-            title: pim_enrich.index.user_group.title
+            title: pim_user_management.entity.group.page_title.index
 
     pim-user-group-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -65,6 +65,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_group_create
         config:
-            label: pim_enrich.index.user_group.create_btn
-            route: oro_user_group_create
+            label: pim_user_management.entity.group.module.create.button
+            route: pim_user_group_create
             buttonClass: AknButton AknButton--apply

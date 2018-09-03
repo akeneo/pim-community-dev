@@ -1,0 +1,54 @@
+services:
+    ### Locale
+    #TODO: fix the dependency to the processor class
+    pim_connector.processor.normalization.locale:
+        class: 'Akeneo\Tool\Component\Connector\Processor\Normalization\Processor'
+        arguments:
+            - '@pim_catalog.normalizer.standard.locale'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    #TODO: fix the dependency to the processor class
+    pim_connector.processor.denormalization.locale:
+        class: 'Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    ### Channel
+    #TODO: fix the dependency to the processor class
+    pim_connector.processor.denormalization.channel:
+        class: 'Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    #TODO: fix the dependency to the processor class
+    pim_connector.processor.normalization.channel:
+        class: 'Akeneo\Tool\Component\Connector\Processor\Normalization\Processor'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    ### Currency
+    #TODO: fix the dependency to the processor class
+    pim_connector.processor.denormalization.currency:
+        class: 'Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor'
+        arguments:
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.factory.currency'
+            - '@pim_catalog.updater.currency'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    #TODO: fix the dependency to the processor class
+    pim_connector.processor.normalization.currency:
+        class: 'Akeneo\Tool\Component\Connector\Processor\Normalization\Processor'
+        arguments:
+            - '@pim_catalog.normalizer.standard.currency'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

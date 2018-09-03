@@ -35,10 +35,10 @@ define(
         router
     ) {
         return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.channel.info.update_successful'),
-            updateFailureMessage: __('pim_enrich.entity.channel.info.update_failed'),
-            createSuccessMessage: __('pim_enrich.entity.channel.info.create_successful'),
-            createFailureMessage: __('pim_enrich.entity.channel.info.create_failed'),
+            updateSuccessMessage: __('pim_enrich.entity.channel.flash.update.success'),
+            updateFailureMessage: __('pim_enrich.entity.channel.flash.update.fail'),
+            createSuccessMessage: __('pim_enrich.entity.channel.flash.create.success'),
+            createFailureMessage: __('pim_enrich.entity.channel.flash.create.fail'),
 
             /**
              * {@inheritdoc}

@@ -1,0 +1,17 @@
+parameters:
+    pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class: Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation
+    pim_catalog.entity_with_family_variant.check_attribute_editable.class: Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\CheckAttributeEditable
+    pim_catalog.entity_with_family_variant.add_parent_to_product.class: Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent
+
+services:
+    pim_catalog.entity_with_family_variant.keep_only_values_for_variation:
+        class: '%pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class%'
+
+    pim_catalog.entity_with_family_variant.check_attribute_editable:
+        class: '%pim_catalog.entity_with_family_variant.check_attribute_editable.class%'
+
+    pim_catalog.entity_with_family_variant.add_parent_to_product:
+        class: '%pim_catalog.entity_with_family_variant.add_parent_to_product.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@event_dispatcher'

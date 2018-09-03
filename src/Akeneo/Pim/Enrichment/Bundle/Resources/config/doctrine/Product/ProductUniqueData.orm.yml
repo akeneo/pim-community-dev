@@ -1,0 +1,34 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData:
+    type: entity
+    table: pim_catalog_product_unique_data
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        rawData:
+            type: string
+            column: raw_data
+    uniqueConstraints:
+        unique_value_idx:
+            columns:
+                - attribute_id
+                - raw_data
+    manyToOne:
+        product:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            inversedBy: uniqueData
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        attribute:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinColumns:
+                attribute_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

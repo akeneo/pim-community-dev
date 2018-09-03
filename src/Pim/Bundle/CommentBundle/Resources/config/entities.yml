@@ -1,2 +1,0 @@
-parameters:
-    pim_comment.entity.comment.class: Pim\Bundle\CommentBundle\Entity\Comment

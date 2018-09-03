@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: ダッシュ ボード
+  version: バージョン
+  widget:
+    completeness:
+      title: チャンネルとロケールについての完全性
+    last_operations:
+      title: 最後の操作
+      status: ステータス
+      type: タイプ

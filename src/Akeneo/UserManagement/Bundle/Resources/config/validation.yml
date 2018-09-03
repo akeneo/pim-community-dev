@@ -1,0 +1,71 @@
+Akeneo\UserManagement\Component\Model\User:
+    constraints:
+        - Akeneo\UserManagement\Bundle\Validator\Constraints\UserPreferences:
+            groups: [User]
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+    properties:
+        username:
+            - NotBlank:     ~
+            - Length:
+                min:        3
+                max:        255
+        email:
+            - NotBlank:     ~
+            - Length:
+                min:        6
+                max:        255
+            - Email:        ~
+        plainPassword:
+            - NotBlank:
+                groups:     [Registration]
+            - Length:
+                min:        2
+        enabled:
+            - NotNull:      ~
+        roles:
+            - Count:
+                min:        1
+                minMessage: 'pim_user.min_role'
+                groups:     [User]
+        firstName:
+            - NotBlank:     ~
+            - Length:
+                max:        100
+        lastName:
+            - NotBlank:     ~
+            - Length:
+                max:        100
+        birthday:
+            - Date:         ~
+        imageFile:
+            - Image:        ~
+        uiLocale:
+            - NotBlank: ~
+        catalogLocale:
+            - NotBlank: ~
+            - Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale: ~
+        phone:
+            - Regex:
+                pattern: '/^\+[0-9]+$/'
+                message: "The phone has to respect the international format (eg: +33755667788)."
+            - Length:
+                max: 20
+
+Akeneo\UserManagement\Component\Model\Role:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
+    properties:
+        label:
+            - NotBlank:     ~
+            - Length:
+                max:        25
+
+Akeneo\UserManagement\Component\Model\Group:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank:     ~
+            - Length:
+                max:        30

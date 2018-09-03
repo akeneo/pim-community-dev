@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType;
+use Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;

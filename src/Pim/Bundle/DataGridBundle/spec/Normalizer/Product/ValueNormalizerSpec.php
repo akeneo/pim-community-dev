@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 use Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ValueNormalizerSpec extends ObjectBehavior
 {

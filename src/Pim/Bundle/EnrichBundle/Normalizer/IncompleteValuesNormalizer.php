@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,26 +22,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class IncompleteValuesNormalizer implements NormalizerInterface
 {
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory */
+    /** @var RequiredValueCollectionFactory */
     private $requiredValueCollectionFactory;
 
     /** @var IncompleteValueCollectionFactory */
     private $incompleteValueCollectionFactory;
 
     /**
-     * @param NormalizerInterface              $normalizer
      * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
      * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
      */
     public function __construct(
-        NormalizerInterface $normalizer,
         RequiredValueCollectionFactory $requiredValueCollectionFactory,
         IncompleteValueCollectionFactory $incompleteValueCollectionFactory
     ) {
-        $this->normalizer = $normalizer;
         $this->requiredValueCollectionFactory = $requiredValueCollectionFactory;
         $this->incompleteValueCollectionFactory = $incompleteValueCollectionFactory;
     }
@@ -165,7 +159,7 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return string[]
      */
@@ -180,7 +174,7 @@ class IncompleteValuesNormalizer implements NormalizerInterface
 
     /**
      * @param AttributeInterface $attribute
-     * @param LocaleInterface[]  $locales
+     * @param LocaleInterface[]                                        $locales
      *
      * @return array
      */

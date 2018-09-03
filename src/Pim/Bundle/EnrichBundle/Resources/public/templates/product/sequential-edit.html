@@ -8,7 +8,7 @@
 <span class="AknSequentialEdit-progress AknProgress--info AknProgress progress progress-bar">
     <div class="AknProgress-bar bar" style="width: <%- ratio %>%;">
     <% if (ratio < 30) { %></div>&nbsp;&nbsp;<% } %>
-    <%- currentIndex %> / <%- objectCount %> <%- _.__('pim_enrich.form.product.sequential_edit.info.products') %>
+    <%- currentIndex %> / <%- objectCount %> <%- _.__('pim_enrich.entity.product.plural_label') %>
     <% if (ratio >= 30) { %></div><% } %>
 </span>
 <% if (nextObject) { %>

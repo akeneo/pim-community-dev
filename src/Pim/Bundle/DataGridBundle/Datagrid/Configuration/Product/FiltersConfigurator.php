@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Filters configurator for product grid

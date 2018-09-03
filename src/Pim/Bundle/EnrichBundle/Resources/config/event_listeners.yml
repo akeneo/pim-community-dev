@@ -3,7 +3,6 @@ parameters:
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
-    pim_enrich.event_subscriber.storage.channel_locale.class:   Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber
     pim_enrich.event_listener.add_locale.class:                 Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener
 
     security.exception_listener.class: Pim\Bundle\EnrichBundle\Security\Firewall\ExceptionListener
@@ -34,18 +33,6 @@ services:
         class: '%pim_enrich.event_subscriber.translate_flash_messages.class%'
         arguments:
             - '@translator'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    # Storage event listeners
-    pim_enrich.event_subscriber.storage.channel_locale:
-        class: '%pim_enrich.event_subscriber.storage.channel_locale.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.saver.locale'
-            - '@pim_catalog.remover.completeness'
-            - '@pim_catalog.command_launcher'
-            - '@security.token_storage'
         tags:
             - { name: kernel.event_subscriber }
 

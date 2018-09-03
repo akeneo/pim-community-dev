@@ -1,9 +1,0 @@
-parameters:
-    pim_datagrid.twig.image_extension.class: Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension
-
-services:
-    # Twig extensions
-    pim_datagrid.twig.image_extension:
-        class: '%pim_datagrid.twig.image_extension.class%'
-        tags:
-            - { name: twig.extension }

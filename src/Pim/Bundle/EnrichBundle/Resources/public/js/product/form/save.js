@@ -31,8 +31,8 @@ define(
         UserContext
     ) {
         return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.product.info.update_successful'),
-            updateFailureMessage: __('pim_enrich.entity.product.info.update_failed'),
+            updateSuccessMessage: __('pim_enrich.entity.product.flash.update.success'),
+            updateFailureMessage: __('pim_enrich.entity.product.flash.update.fail'),
 
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
@@ -63,7 +63,9 @@ define(
 
                     messenger.notify(
                         'error',
-                        __('pim_enrich.entity.product.info.field_not_ready', {'fields': fieldLabels.join(', ')})
+                        __('pim_enrich.entity.product.flash.update.fields_not_ready', {
+                            'fields': fieldLabels.join(', ')
+                        })
                     );
 
                     return;

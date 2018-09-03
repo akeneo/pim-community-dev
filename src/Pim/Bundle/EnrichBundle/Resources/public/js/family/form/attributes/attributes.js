@@ -40,8 +40,8 @@ define([
             attributeRequiredIconClass: 'AknAcl-icon AknAcl-icon--granted icon-ok required',
             attributeNotRequiredIconClass: 'AknAcl-icon icon-circle non-required',
             collapsedClass: 'AknGrid-bodyContainer--collapsed',
-            requiredLabel: __('pim_enrich.form.family.tab.attributes.required_label'),
-            notRequiredLabel: __('pim_enrich.form.family.tab.attributes.not_required_label'),
+            requiredLabel: __('pim_enrich.entity.family.module.attributes.required_label'),
+            notRequiredLabel: __('pim_enrich.entity.family.module.attributes.not_required_label'),
             identifierAttributeType: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
@@ -265,7 +265,7 @@ define([
                 if (attributeAsLabel === attributeToRemove) {
                     Messenger.notify(
                         'error',
-                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
+                        __('pim_enrich.entity.family.flash.update.can_remove_attribute_as_label')
                     );
 
                     return false;
@@ -273,14 +273,14 @@ define([
                 } else if (attributeAsImage === attributeToRemove) {
                     Messenger.notify(
                         'error',
-                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_image')
+                        __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_image')
                     );
 
                     return false;
                 } else if (_.contains(attributesUsedAsAxis, attributeToRemove)) {
                     Messenger.notify(
                         'error',
-                        __('pim_enrich.entity.family.info.cant_remove_attribute_used_as_axis')
+                        __('pim_enrich.entity.family.flash.update.cant_remove_attribute_used_as_axis')
                     );
 
                     return false;

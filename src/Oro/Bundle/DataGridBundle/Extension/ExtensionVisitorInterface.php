@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 interface ExtensionVisitorInterface
@@ -42,21 +42,21 @@ interface ExtensionVisitorInterface
      * Apply changes provided by applied extensions on result data
      *
      * @param DatagridConfiguration $config
-     * @param ResultsObject         $result
+     * @param ResultsIterableObject         $result
      *
      * @return mixed
      */
-    public function visitResult(DatagridConfiguration $config, ResultsObject $result);
+    public function visitResult(DatagridConfiguration $config, ResultsIterableObject $result);
 
     /**
      * Apply changes provided by applied extensions on metadata
      *
      * @param DatagridConfiguration $config
-     * @param MetadataObject        $data
+     * @param MetadataIterableObject        $data
      *
      * @return mixed
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data);
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data);
 
     /**
      * Returns priority needed for applying

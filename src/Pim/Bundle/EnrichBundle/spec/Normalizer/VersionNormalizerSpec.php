@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\Component\Versioning\Model\Version;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -121,7 +121,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getAuthor()->willReturn('steve');
         $userManager->findUserByUsername('steve')->willReturn(null);
 
-        $translator->trans('Removed user')->willReturn('Utilisateur supprimé');
+        $translator->trans('pim_user.user.removed_user')->willReturn('Utilisateur supprimé');
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,

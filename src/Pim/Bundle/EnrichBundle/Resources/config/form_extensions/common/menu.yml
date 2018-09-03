@@ -84,7 +84,7 @@ extensions:
         targetZone: mainMenu
         aclResourceId: pim_enrich_product_index
         config:
-            title: pim_menu.tab.products
+            title: pim_enrich.entity.product.plural_label
             iconModifier: iconProduct
             to: pim_enrich_product_index
 
@@ -133,7 +133,7 @@ extensions:
         aclResourceId: pim_enrich_attributegroup_index
         position: 100
         config:
-            title: pim_menu.item.attribute_group
+            title: pim_enrich.entity.attribute_group.plural_label
             to: pim_enrich_attributegroup_index
 
     pim-menu-settings-attribute:
@@ -144,7 +144,7 @@ extensions:
         # position: 110
         position: 0
         config:
-            title: pim_menu.item.attribute
+            title: pim_enrich.entity.attribute.plural_label
             to: pim_enrich_attribute_index
 
     pim-menu-settings-product-category:
@@ -153,7 +153,7 @@ extensions:
         aclResourceId: pim_enrich_product_category_list
         position: 120
         config:
-            title: pim_menu.item.category
+            title: pim_enrich.entity.category.plural_label
             to: pim_enrich_categorytree_index
 
     pim-menu-settings-family:
@@ -207,7 +207,7 @@ extensions:
         aclResourceId: pim_enrich_locale_index
         position: 190
         config:
-            title: pim_menu.item.locale
+            title: pim_enrich.entity.locale.plural_label
             to: pim_enrich_locale_index
 
     pim-menu-settings-channel:
@@ -289,7 +289,7 @@ extensions:
         position: 130
         config:
             title: pim_menu.item.user
-            to: oro_user_index
+            to: pim_user_index
 
     pim-menu-system-user-group:
         module: pim/menu/item
@@ -298,7 +298,7 @@ extensions:
         position: 140
         config:
             title: pim_menu.item.user_group
-            to: oro_user_group_index
+            to: pim_user_group_index
 
     pim-menu-system-user-role:
         module: pim/menu/item
@@ -307,7 +307,7 @@ extensions:
         position: 150
         config:
             title: pim_menu.item.user_role
-            to: oro_user_role_index
+            to: pim_user_role_index
 
     pim-menu-help:
         module: pim/menu/help

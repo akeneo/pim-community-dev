@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry;
-use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class MassActionDispatcherSpec extends ObjectBehavior

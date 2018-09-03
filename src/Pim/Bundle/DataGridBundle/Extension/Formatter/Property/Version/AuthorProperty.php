@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -47,8 +47,8 @@ class AuthorProperty extends FieldProperty
         }
 
         return [
-            'author'  => $author,
-            'context' => $context
+            'author' => $author,
+            'context' => $context,
         ];
     }
 
@@ -61,7 +61,7 @@ class AuthorProperty extends FieldProperty
             $user = $this->userManager->findUserByUsername($value['author']);
 
             if (null === $user) {
-                $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));
+                $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('pim_user.user.removed_user'));
             } else {
                 $userName = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
             }

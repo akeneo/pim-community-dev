@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\Twig;
 
+use Pim\Bundle\AnalyticsBundle\Twig\UpdateExtension;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use PhpSpec\ObjectBehavior;
 
@@ -14,7 +15,7 @@ class UpdateExtensionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\Twig\UpdateExtension');
+        $this->shouldHaveType(UpdateExtension::class);
     }
 
     function it_indicates_if_last_patch_should_be_fetched($configManager)

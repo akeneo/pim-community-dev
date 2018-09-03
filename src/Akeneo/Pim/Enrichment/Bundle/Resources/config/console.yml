@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.command_launcher.class: Akeneo\Tool\Component\Console\CommandLauncher
+
+services:
+    pim_catalog.command_launcher:
+        class: '%pim_catalog.command_launcher.class%'
+        arguments:
+          - '%kernel.root_dir%'
+          - '%kernel.environment%'
+          - '%kernel.logs_dir%'

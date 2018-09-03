@@ -1,0 +1,37 @@
+@import '../base/variables';
+
+@keyframes loading-breath {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.AknLoadingPlaceHolder {
+  position: relative;
+  border: none;
+
+  &:after {
+    animation: loading-breath 2s infinite;
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(270deg, #fdfdfd, #eee);
+    background-size: 400% 400%;
+    border-radius: 5px;
+  }
+}
+
+.AknLoadingMask {
+  background: rgba(255,255,255,0.8) url("../../images/loader-V2.svg") no-repeat center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 950;
+  background-size: 60px;
+}

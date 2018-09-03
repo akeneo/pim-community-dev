@@ -81,7 +81,7 @@ define([
             this.$el.html(this.template({
                 label: __(this.options.config.label),
                 jobs: this.jobs,
-                required: __('pim_enrich.form.required'),
+                required: __('pim_common.required_label'),
                 selectedJobType: this.getFormData().alias,
                 errors: errors.filter(error => error.path === identifier),
                 __

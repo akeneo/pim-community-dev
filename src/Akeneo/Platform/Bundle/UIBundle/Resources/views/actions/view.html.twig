@@ -1,0 +1,73 @@
+{% import 'PimUIBundle::macros.html.twig' as UI %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% block content %}
+<div class="AknDefault-mainContent layout-content">
+
+    {% block pageHeader %}
+        {% set buttons %}
+            {% block navButtons %}{% endblock navButtons %}
+            {% block titleButtons %}{% endblock titleButtons %}
+        {% endset %}
+
+        {% set meta %}
+            {% block stats %}
+                {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
+                    <span class="AknTitleContainer-metaItem">{{ 'pim_common.created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</span>
+                    <span class="AknTitleContainer-metaItem">{{ 'pim_common.updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</span>
+                {% endif %}
+            {% endblock stats %}
+        {% endset %}
+
+        {% set title %}
+            {% block breadcrumbs %}
+                {% if breadcrumbs.indexLabel is defined %}
+                    {% if breadcrumbs.indexPath is defined %}
+                        <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
+                    {% else %}
+                        {{ breadcrumbs.indexLabel|trans }}
+                    {% endif %}
+                    <span class="separator">/</span>
+                {% endif %}
+                {% if breadcrumbs.additional is defined %}
+                    {% for breadcrumb in breadcrumbs.additional %}
+                        <a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a>
+                        <span class="separator">/</span>
+                    {% endfor %}
+                {% endif %}
+                {{ breadcrumbs.entityTitle }}
+            {% endblock breadcrumbs %}
+        {% endset %}
+
+        {% set image %}
+            {% if breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar %}
+                <img class="AknTitleContainer-image" src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+            {% endif %}
+        {% endset %}
+
+        {% set titleButtons %}
+        {% endset %}
+
+        {% set context %}
+            {% block context %}
+            {% endblock context %}
+        {% endset %}
+
+        {{ elements.page_header(
+            {
+                title: title,
+                buttons: buttons,
+                meta: meta,
+                image: image,
+                context: context
+            }
+        ) }}
+
+    {% endblock pageHeader %}
+
+    {% block content_data %}
+        {{ UI.scrollData(id, data) }}
+    {% endblock content_data %}
+</div>
+
+{% endblock content %}

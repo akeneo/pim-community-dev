@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\User;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -33,7 +33,7 @@ class AuthorPropertySpec extends ObjectBehavior
         $record->getValue('author')->willReturn('julia');
         $record->getValue('context')->willReturn(null);
         $userManager->findUserByUsername(Argument::any())->shouldBeCalled()->willReturn(null);
-        $translator->trans('Removed user')->willReturn('Removed user');
+        $translator->trans('pim_user.user.removed_user')->willReturn('Removed user');
 
         $this->getValue($record)->shouldReturn(' - Removed user');
     }

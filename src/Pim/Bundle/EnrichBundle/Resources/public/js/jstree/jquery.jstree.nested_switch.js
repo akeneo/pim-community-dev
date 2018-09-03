@@ -39,8 +39,8 @@
                     var switch_wrapper = $('<div>', {
                         'class': 'switch switch-small pull-right',
                         'attr': {
-                            'data-on-label': __('switch_on'),
-                            'data-off-label': __('switch_off'),
+                            'data-on-label': __('pim_common.yes'),
+                            'data-off-label': __('pim_common.no'),
                             'data-animated': false
                         }
                     }).html(nested_switch);

@@ -1,0 +1,28 @@
+pim_notification:
+  types:
+    settings: Inställningar
+flash:
+  comment:
+    create:
+      success: Din kommentar har lagts till.
+      error: Ett fel uppstod under skapandet av din kommentar.
+    delete:
+      success: Din kommentar har tagits bort.
+      error: Ett fel uppstod under raderande av din kommentar.
+    reply:
+      success: Ditt svar har skapats.
+      error: Ett fel uppstod under skapandet av ditt svar.
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Lägg till ny kommentar
+        reply: Svara
+        title: Kommentarer
+  index:
+    empty: Inga kommentarer hittades
+    header_comment: '{{ user }} kommentarer produkt'
+    header_reply: '{{ user }} svar till kommentar'
+  placeholder:
+    new: Skriv en ny kommentar...
+    reply: Svara på denna kommentar...

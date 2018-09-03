@@ -33,11 +33,11 @@ define(
             lineView: LineView,
             defaultConfig: {
                 select2: {
-                    placeholder: 'pim_enrich.form.common.tab.attributes.btn.add_attributes',
-                    title: 'pim_enrich.form.common.tab.attributes.info.search_attributes',
-                    buttonTitle: 'pim_enrich.form.common.tab.attributes.btn.add',
-                    countTitle: 'pim_enrich.form.product.tab.attributes.info.attributes_selected',
-                    emptyText: 'pim_enrich.form.common.tab.attributes.info.no_available_attributes',
+                    placeholder: 'pim_common.add_attributes',
+                    title: 'pim_common.select2.search',
+                    buttonTitle: 'pim_common.add',
+                    countTitle: 'pim_enrich.entity.attribute.module.add_attribute.attributes_selected',
+                    emptyText: 'pim_enrich.entity.attribute.module.add_attribute.no_available_attributes',
                     classes: 'pim-add-attributes-multiselect',
                     minimumInputLength: 0,
                     dropdownCssClass: 'add-attribute',

@@ -1,0 +1,26 @@
+pim_title:
+  pim_user_index: Benutzer
+  pim_user_role_index: Rollen
+  pim_user_group_index: Benutzergruppen
+  oro_config_configuration_system: Konfiguration
+  pim_user_profile_view: '{{ username }}'
+  pim_user_security_login: Anmelden
+  pim_user_reset_request: Passwort vergessen
+pim_user_management:
+  entity:
+    user:
+      module:
+        create:
+          button: Benutzer anlegen
+        delete:
+          confirm: Möchten Sie diesen Benutzer wirklich löschen?
+    role:
+      module:
+        create:
+          button: Rolle anlegen
+        delete:
+          confirm: Möchten Sie diese Rolle wirklich löschen?
+    group:
+      module:
+        create:
+          button: Gruppe anlegen

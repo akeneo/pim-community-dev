@@ -1,0 +1,11 @@
+parameters:
+    pim_api.event_subscriber.check_headers_request.class: Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\CheckHeadersRequestSubscriber
+
+services:
+    pim_api.event_subscriber.check_headers_request:
+        class: '%pim_api.event_subscriber.check_headers_request.class%'
+        arguments:
+            - '@fos_rest.format_negotiator'
+            - '@pim_api.negotiator.content_type_negotiator'
+        tags:
+            - { name: kernel.event_subscriber, event: kernel.request, method: onKernelRequest }

@@ -1,0 +1,8 @@
+parameters:
+    pim_catalog.resolver.fqcn.class: Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver
+
+services:
+    pim_catalog.resolver.fqcn:
+        class: '%pim_catalog.resolver.fqcn.class%'
+        arguments:
+            - '@service_container'

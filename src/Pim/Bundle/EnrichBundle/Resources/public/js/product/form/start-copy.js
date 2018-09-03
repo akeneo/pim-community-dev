@@ -45,7 +45,7 @@ define(
                 this.$el.html('');
                 if (!this.isCopying) {
                     this.$el.html(this.template({
-                        label: __('pim_enrich.entity.product.btn.compare_translate')
+                        label: __('pim_enrich.entity.product.module.copy.label')
                     }));
                 }
             },

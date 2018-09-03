@@ -31,9 +31,9 @@ extensions:
         targetZone: buttons
         position: 0
         config:
-            updateSuccessMessage: pim_enrich.entity.attribute_group.info.update_successful
-            updateFailureMessage: pim_enrich.entity.attribute_group.info.update_failed
-            notReadyMessage: pim_enrich.entity.attribute_group.info.field_not_ready
+            updateSuccessMessage: pim_enrich.entity.attribute_group.flash.update.success
+            updateFailureMessage: pim_enrich.entity.attribute_group.flash.update.fail
+            notReadyMessage: pim_enrich.entity.attribute_group.flash.update.fields_not_ready
             url: pim_enrich_attributegroup_rest_create
             method: PUT
             redirectAfter: pim_enrich_attributegroup_edit
@@ -44,7 +44,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.attribute_group.title
+            entity: pim_enrich.entity.attribute_group.label
 
     pim-attribute-group-create-form-properties-tab:
         module: pim/common/tab
@@ -52,7 +52,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.attribute_group.tab.properties.title
+            label: pim_common.properties
 
     pim-attribute-group-create-form-properties:
         module: pim/common/simple-view
@@ -67,8 +67,8 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-            sectionTitle: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.code
+            sectionTitle: pim_common.general_properties
+            codeLabel: pim_common.code
 
     pim-attribute-group-create-form-properties-translation-section:
         module: pim/common/simple-view
@@ -78,7 +78,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute_group.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-attribute-group-create-form-properties-translation:

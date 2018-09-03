@@ -1,0 +1,70 @@
+pim_datagrid:
+  no_results_subtitle: "Wiederholen Sie Ihre Suche mit anderen Suchkriterien."
+  select:
+    title: Auswählen
+    all_visible: Alle sichtbaren
+  delete_error:
+    title: Fehler beim Löschen
+  reset_confirmation:
+    title: Reset-Bestätigung
+  refresh_confirmation:
+    title: Aktualisierungsbestätigung
+  column_configurator:
+    label: Spalten
+    title: Spaltenauswahl anpassen
+    all_groups: Alle Gruppen
+    search: Suche
+    clear: Zurücksetzen
+    displayed_columns: Ausgewählte Spalten
+    remove_column: Entfernen
+    description: Wählen Sie die Information, die Sie als Spalte anzeigen möchten
+    min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
+    system_group: System
+  view_selector:
+    create_view: Ansicht erstellen
+    placeholder: Name der neuen Ansicht
+    choose_label: Wählen Sie eine Bezeichnung für die Ansicht
+    remove: Diese Ansicht löschen
+    save_changes: Diese Ansicht speichern
+    default_view: Standardansicht
+    select: Bitte Ansicht auswählen
+    confirmation:
+      remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
+  display_selector:
+    label: Anzeige
+  mass_action:
+    delete:
+      empty_selection: Kein Produkt ausgewählt
+      success_message: "{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt"
+    default:
+      confirmation:
+        content: Sind Sie sicher, dass Sie das tun möchten?
+      no_items: Wählen Sie die Elemente zum Ausführen der Massenaktion.
+    quick_export:
+      title: Schnell-Export
+      success: Der Schnellexport wurde gestartet
+  action:
+    default:
+      confirmation:
+        content: Sind Sie sicher, dass Sie das tun möchten?
+      no_items: Bitte Element zum Ausführen der Aktion wählen.
+    show:
+      title: Anzeigen
+  filters:
+    common:
+      empty: ist leer
+      not_empty: ist nicht leer
+      in_list: in Liste
+      contains: enthält
+      does_not_contain: enthält nicht
+      equal: ist gleich
+      start_with: beginnt mit
+      operator: Operator
+    price_filter:
+      label: Währung
+    metric_filter:
+      label: Einheit
+  cells:
+    credientials:
+      client_id: Client-ID
+      secret: Secret

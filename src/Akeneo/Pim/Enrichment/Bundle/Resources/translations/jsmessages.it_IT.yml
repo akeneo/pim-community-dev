@@ -1,0 +1,28 @@
+pim_notification:
+  types:
+    settings: Impostazioni
+flash:
+  comment:
+    create:
+      success: Commento creato con successo.
+      error: Si è verificato un errore durante la creazione del tuo commento.
+    delete:
+      success: Commento eliminato con successo.
+      error: Si è verificato un errore durante la creazione del tuo commento.
+    reply:
+      success: Risposta creata con successo.
+      error: Si è verificato un errore durante la creazione della risposta.
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Aggiugni un nuovo commento
+        reply: Rispondi
+        title: Commenti
+  index:
+    empty: Non ci sono ancora commenti
+    header_comment: '{{ user }} commenta il prodotto'
+    header_reply: '{{ user }} risponde al commento'
+  placeholder:
+    new: Scrivi un nuovo commento...
+    reply: Rispondi a questo commento...

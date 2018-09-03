@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine;
 
+use Acme\Bundle\AppBundle\Entity\Color;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
@@ -17,7 +19,7 @@ class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver');
+        $this->shouldHaveType(ReferenceDataRepositoryResolver::class);
     }
 
     function it_resolves_the_repository_of_a_reference_data(
@@ -26,9 +28,9 @@ class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
         ConfigurationInterface $configuration,
         ObjectRepository $repository
     ) {
-        $configuration->getClass()->willReturn('Acme\Bundle\AppBundle\Entity\Color');
+        $configuration->getClass()->willReturn(Color::class);
         $configurationRegistry->get('colors')->willReturn($configuration);
-        $doctrine->getRepository('Acme\Bundle\AppBundle\Entity\Color')->willReturn($repository);
+        $doctrine->getRepository(Color::class)->willReturn($repository);
 
         $this->resolve('colors')->shouldReturn($repository);
     }

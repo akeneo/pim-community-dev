@@ -1,0 +1,31 @@
+Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation:
+    type: entity
+    table: pim_catalog_family_variant_translation
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - locale
+                - foreign_key
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type: string
+            length: 100
+            nullable: true
+        locale:
+            type: string
+            length: 20
+
+    manyToOne:
+        foreignKey:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
+            inversedBy: translations
+            joinColumns:
+                foreign_key:
+                    referencedColumnName: id
+                    onDelete: CASCADE

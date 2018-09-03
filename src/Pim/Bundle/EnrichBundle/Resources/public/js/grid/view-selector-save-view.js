@@ -67,7 +67,7 @@ define(
 
                 this.$el.html(this.template({
                     dirty: this.dirty,
-                    label: __('grid.view_selector.save_changes')
+                    label: __('pim_datagrid.view_selector.save_changes')
                 }));
 
                 this.$('[data-toggle="tooltip"]').tooltip();

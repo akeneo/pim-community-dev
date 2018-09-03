@@ -1,0 +1,147 @@
+job_execution:
+  summary:
+    display_item: Afficher l'élément
+    hide_item: Masquer l'élément
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Sélection des catégories
+        label: "{0}Tous les produits|{1}Une catégorie sélectionnée|]1,Inf[{{ count }} catégories sélectionnées"
+        title: Sélectionner la/les catégorie(s)
+    locales:
+      validation:
+        not_blank: Une locale doit être sélectionnée, veuillez choisir une locale à exporter.
+pim_import_export:
+  entity:
+    job_instance:
+      label: profil
+      flash:
+        update:
+          success: Le profil a été mis à jour avec succès.
+          fail: Le profil n'a pas pu être mis à jour.
+        delete:
+          success: La tâche a bien été supprimée
+    import_profile:
+      uppercase_label: Profil d'import
+      flash:
+        create:
+          success: Le profil d'export a bien été créé
+      page_title:
+        index: "]-Inf, 1]{{ count }} profil d'import|]1, Inf[{{ count }} profils d'import"
+      module:
+        create:
+          button: Créer un profil d'import
+    export_profile:
+      uppercase_label: Profil d'export
+      flash:
+        create:
+          success: Le profil d'exportation a bien été créé
+      page_title:
+        index: "]-Inf, 1]{{ count }} profil d'export|]1, Inf[{{ count }} profils d'export"
+      module:
+        create:
+          button: Créer un profil d'export
+  form:
+    job_execution:
+      title.details: Détails d'exécution
+      refreshBtn.title: Mettre à jour
+      button:
+        show_profile.title: Afficher le profil
+        download_log.title: Télécharger l'historique
+        download_file.title: Télécharger le fichier généré
+        download_archive.title: Télécharger l'archive générée
+      summary:
+        fetching: Collecte de données de l'exécution...
+        warning: Attention
+        header.step: Étape
+        header.warnings: Avertissements
+        header.summary: Résumé
+        header.start: Début
+        header.end: Fin
+    job_instance:
+      fail:
+        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
+        save: Impossible de sauvegarder le profil. Assurez-vous que vous disposez des droits pour l'éditer.
+      button:
+        export.title: Exporter maintenant
+        import.launch: Importer maintenant
+        import.upload: Télécharger et importer maintenant
+        import.upload_file: Déposer un fichier
+      meta:
+        job: Tâche
+        connector: Connecteur
+      subsection:
+        last_executions: Dernières exécutions
+      tab:
+        content:
+          title: Contenu
+        properties:
+          decimal_separator:
+            title: Séparateur de décimales
+            help: Détermine le séparateur de décimale
+          date_format:
+            title: Format de date
+            help: Déterminer le format des champs de type date
+          file_path:
+            title: Chemin du fichier
+            help: Emplacement du fichier généré sur le serveur
+          delimiter:
+            title: Délimiteur
+            help: Caractère unique utilisé pour délimiter les valeurs
+          enclosure:
+            title: Caractère d'encadrement
+            help: Caractère unique utilisé pour encadrer les champs
+          with_header:
+            title: Avec en-tête
+            help: Définit si la première ligne du fichier contient les libellés des colonnes
+          with_media:
+            title: Exporter les fichiers et les images
+            help: Exporter ou non les fichiers produits et les images
+          lines_per_file:
+            title: Nombre de lignes par fichier
+            help: Définit la limite de nombre de lignes par fichier
+          upload_allowed:
+            title: Autoriser l'envoi de fichiers sur le serveur
+            help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
+          categories_column:
+            title: Colonne des catégories
+            help: Nom de la colonne qui contient les catégories
+          escape:
+            title: Échappement
+            help: Le caractère utilisé pour échapper les champs
+          family_column:
+            title: Colonne de la famille
+            help: Nom de la colonne qui contient la famille du produit
+          groups_column:
+            title: Colonne des groupes
+            help: Intitulé de la colonne contenant les groupes de produits
+          enabled:
+            title: Activer le produit
+            help: Activer automatiquement les produits importés
+          enabled_comparison:
+            title: Comparer les valeurs
+            help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les imports si les valeurs importées sont très similaires aux valeurs d'origine
+          real_time_versioning:
+            title: Mise à jour de l'historique en temps réel
+            help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
+          family_variant_column:
+            title: Colonne variante de famille
+      file_path: Chemin du fichier
+confirmation:
+  remove:
+    import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
+    export_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
+    job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
+pim_title:
+  pim_importexport_export_profile_index: Gestion des profils d'export
+  pim_importexport_export_profile_edit: Profil d'export {{ job.label }} | Édition
+  pim_importexport_export_profile_show: Profil d'export {{ job.label }} | Visualisation
+  pim_importexport_export_execution_index: Exporter l'historique des exécutions
+  pim_importexport_export_execution_show: Executions d'exports | Détails
+  pim_importexport_import_profile_index: Gestion des profils d’import
+  pim_importexport_import_profile_edit: Profil d'import {{ job.label }} | Édition
+  pim_importexport_import_profile_show: Profil d'import {{ job.label }} | Visualisation
+  pim_importexport_import_execution_index: Historique d'exécution des imports
+  pim_importexport_import_execution_show: Executions d'imports | Détails

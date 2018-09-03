@@ -47,6 +47,8 @@ services:
 
     pim_enrich.twig.version_extension:
         class: '%pim_enrich.twig.version_extension.class%'
+        arguments:
+            - '@pim_catalog.version_provider'
         tags:
             - { name: twig.extension }
 

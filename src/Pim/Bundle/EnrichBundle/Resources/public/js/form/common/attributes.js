@@ -224,9 +224,10 @@ define(
                             const objectValuesDom = this.$('.object-values').empty();
                             if (_.isEmpty(fields)) {
                                 objectValuesDom.append(this.noDataTemplate({
-                                    hint: __('oro.datagrid.noresults'),
-                                    subHint: __('oro.datagrid.noresults_subTitle'),
-                                    imageClass: ''
+                                    hint: 'pim_datagrid.no_results',
+                                    subHint: 'pim_datagrid.no_results_subtitle',
+                                    imageClass: '',
+                                    __
                                 }));
                             } else {
                                 objectValuesDom.append(fieldsView);
@@ -299,8 +300,8 @@ define(
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
-                    __('pim_enrich.confirmation.delete.attribute'),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_enrich.entity.attribute.module.delete.confirm_from_product'),
+                    __('pim_common.confirm_deletion'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({

@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
@@ -42,7 +43,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
+        $this->shouldImplement(ConfiguratorInterface::class);
     }
 
     function it_configures_datagrid_sorters($configuration, $registry)

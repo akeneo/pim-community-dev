@@ -3,12 +3,9 @@
 
 String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
-String launchFrontUnitTests = "yes"
-String launchBackUnitTests = "yes"
-String launchFrontIntegrationTests = "yes"
-String launchBackIntegrationTests = "yes"
-String launchFrontAcceptanceTests = "yes"
-String launchBackAcceptanceTests = "yes"
+String launchUnitTests = "yes"
+String launchAcceptanceTests = "yes"
+String launchIntegrationTests = "yes"
 String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
@@ -20,27 +17,21 @@ stage("Build") {
     if (env.BRANCH_NAME =~ /^PR-/) {
         timeout(time:5, unit:'DAYS') {
             userInput = input(message: 'Launch tests?', parameters: [
-                choice(choices: 'yes\nno', description: 'Run front unit tests and code style checks', name: 'launchFrontUnitTests'),
-                choice(choices: 'yes\nno', description: 'Run back unit tests and code style checks', name: 'launchBackUnitTests'),
-                choice(choices: 'yes\nno', description: 'Run front integration tests', name: 'launchFrontIntegrationTests'),
-                choice(choices: 'yes\nno', description: 'Run back integration tests', name: 'launchBackIntegrationTests'),
-                choice(choices: 'yes\nno', description: 'Run front acceptance tests', name: 'launchFrontAcceptanceTests'),
-                choice(choices: 'yes\nno', description: 'Run back acceptance tests', name: 'launchBackAcceptanceTests'),
-                choice(choices: 'yes\nno', description: 'Run end to end tests (Behat)', name: 'launchEndToEndTests'),
-                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'End to end tests to run', name: 'legacyFeatures'),
+                choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
+                choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
+                choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
-                string(defaultValue: 'ee,ce', description: 'PIM edition the End to end tests should run on (comma separated values)', name: 'editions'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
+                string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
             ])
 
             editions = userInput['editions'].tokenize(',')
             legacyFeatures = userInput['legacyFeatures'].tokenize(',')
-            launchFrontUnitTests = userInput['launchFrontUnitTests']
-            launchBackUnitTests = userInput['launchBackUnitTests']
-            launchFrontIntegrationTests = userInput['launchFrontIntegrationTests']
-            launchBackIntegrationTests = userInput['launchBackIntegrationTests']
-            launchFrontAcceptanceTests = userInput['launchFrontAcceptanceTests']
-            launchBackAcceptanceTests = userInput['launchBackAcceptanceTests']
+            launchUnitTests = userInput['launchUnitTests']
+            launchAcceptanceTests = userInput['launchAcceptanceTests']
+            launchIntegrationTests = userInput['launchIntegrationTests']
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
@@ -66,7 +57,7 @@ stage("Build") {
                     pod {
                         container('docker') {
                             checkout([$class: 'GitSCM',
-                                branches: [[name: '2.3']],
+                                branches: [[name: 'master']],
                                 userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
                             ])
 
@@ -91,82 +82,87 @@ stage("Test") {
         parallel(
             // UNIT TESTS & MISC
             "back-php-coupling-detector": {testif(
-                condition: launchBackUnitTests.equals("yes"),
+                condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel"
             )},
             "back-phpunit": {testif(
-                condition: launchBackUnitTests.equals("yes"),
+                condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "back-phpspec": {testif(
-                condition: launchBackUnitTests.equals("yes"),
+                condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "back-php-cs-fixer": {testif(
-                condition: launchBackUnitTests.equals("yes"),
+                condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
+            "back-check-pullup": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && bin/check-pullup"
+            )},
             "front-lint": {testif(
-                condition: launchFrontUnitTests.equals("yes"),
+                condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
             )},
             "front-unit": {testif(
-                condition: launchFrontUnitTests.equals("yes"),
+                condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run unit"
             )},
 
             // ACCEPTANCE TESTS
             "front-acceptance-ce": {testif(
-                condition: launchFrontAcceptanceTests.equals("yes"),
+                condition: launchAcceptanceTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/tests/features"
+                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
             )},
             "front-acceptance-ee": {testif(
-                condition: launchFrontAcceptanceTests.equals("yes") && editions.contains("ee"),
+                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
             "back-acceptance-ce": {testif(
-                condition: launchBackAcceptanceTests.equals("yes"),
+                condition: launchAcceptanceTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
             "back-acceptance-ee": {testif(
-                condition: launchBackAcceptanceTests.equals("yes") && editions.contains("ee"),
+                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
 
             // INTEGRATION TESTS
             "front-integration-ce": {testif(
-                condition: launchFrontIntegrationTests.equals("yes"),
+                condition: launchIntegrationTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "front-integration-ee": {testif(
-                condition: launchFrontIntegrationTests.equals("yes") && editions.contains("ee"),
-                container: "${tag}-ee",,
+                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
+                container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
-            "back-integration-ce": {queue(
-                condition: launchBackIntegrationTests.equals("yes") && editions.contains("ce"),
+            "back-legacy-phpunit-integration-ce": {queue(
+                condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
                 fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/tests"])},
                 parallelism: 50
             )},
-            "back-integration-ee": {queue(
-                condition: launchBackIntegrationTests.equals("yes") && editions.contains("ee"),
+            "back-legacy-phpunit-integration-ee": {queue(
+                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee", selenium: false),

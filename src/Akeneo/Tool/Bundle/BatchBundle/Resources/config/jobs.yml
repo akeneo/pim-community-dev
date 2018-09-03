@@ -1,0 +1,47 @@
+parameters:
+    akeneo_batch.job_parameters_factory.class:              Akeneo\Tool\Component\Batch\Job\JobParametersFactory
+    akeneo_batch.job_repository.class:                      Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository
+    akeneo_batch.job.job_instance_repository.class:         Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository
+    akeneo_batch.job.job_registry.class:                                           Akeneo\Tool\Component\Batch\Job\JobRegistry
+    akeneo_batch.job.job_parameters.default_values_provider_registry.class:        Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry
+    akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class: Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderRegistry
+    akeneo_batch.job.job_parameters.empty_values_provider.class:                   Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+    akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class:    Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+    akeneo_batch.job.job_parameters_validator.class:                               Akeneo\Tool\Component\Batch\Job\JobParametersValidator
+
+services:
+    akeneo_batch.job_repository:
+        class: '%akeneo_batch.job_repository.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_batch.entity.job_execution.class%'
+            - '%akeneo_batch.entity.job_instance.class%'
+            - '%akeneo_batch.job.job_instance_repository.class%'
+
+    akeneo_batch.job.job_instance_repository:
+        class: '%akeneo_batch.job.job_instance_repository.class%'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%akeneo_batch.entity.job_instance.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    akeneo_batch.job_parameters_factory:
+        class: '%akeneo_batch.job_parameters_factory.class%'
+        arguments:
+            - '@akeneo_batch.job.job_parameters.default_values_provider_registry'
+            - '%akeneo_batch.job.job_parameters.class%'
+
+    akeneo_batch.job.job_parameters.default_values_provider_registry:
+        class: '%akeneo_batch.job.job_parameters.default_values_provider_registry.class%'
+
+    akeneo_batch.job.job_parameters.constraint_collection_provider_registry:
+        class: '%akeneo_batch.job.job_parameters.constraint_collection_provider_registry.class%'
+
+    akeneo_batch.job.job_parameters_validator:
+        class: '%akeneo_batch.job.job_parameters_validator.class%'
+        arguments:
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters.constraint_collection_provider_registry'
+
+    akeneo_batch.job.job_registry:
+        class: '%akeneo_batch.job.job_registry.class%'

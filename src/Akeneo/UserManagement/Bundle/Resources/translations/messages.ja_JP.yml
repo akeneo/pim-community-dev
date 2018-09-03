@@ -1,0 +1,129 @@
+pim_user:
+  user:
+    title: ユーザー
+    fields:
+      name_prefix: 尊称
+      email: 電子メール
+      username: ユーザー名
+      first_name: 名
+      middle_name: ミドルネーム
+      last_name: 姓
+      name_suffix: 尊称
+      date_of_birth: 生年月日
+      avatar: アバター
+      timezone: タイムゾーン
+      roles: 権限
+      groups: グループ
+      password: パスワード
+      password_again: パスワード再入力
+      product_grid_filters: 製品グリッドフィルター
+      catalog_locale: カタログのロケール
+      catalog_scope: カタログのスコープ
+      default_tree: 既定のツリー
+      current_password: 現在のパスワード
+      new_password: 新しいパスワード
+      new_password_again: 新しいパスワード (再入力)
+      default_grid_view:
+        none: なし
+      default_product_grid_view:
+        label: デフォルト製品のグリッドビュー
+      ui_locale: UI ロケール
+      last_logged_in: 最終ログイン
+      login_count: ログイン回数
+      user_salt: ユーザソルト
+      created: 作成日時
+      updated: 更新日時
+      status: ステータス
+      capabilities: 機能
+      has_role: ロールあり
+      has_group: グループあり
+      active: アクティブ
+      inactive: 非アクティブ
+    tabs:
+      general:
+        title: 全般
+        contact_information: 連絡先情報
+      additional:
+        title: 追加
+      interfaces:
+        title: インタフェース
+      group_and_role.title: グループとロール
+      password.title: パスワード
+      business_unit.title: 部署
+      email_synchronization.title: メール同期設定
+    removed_user: 削除されたユーザ
+    login:
+      username_or_email: ユーザー名またはメールアドレス
+      remember_me: ログイン状態を維持する
+      password_forgotten: パスワードをお忘れですか?
+      log_in: ログイン
+      forgot_password: パスワードを忘れた
+      request: リクエスト
+      reset: リセット
+      homepage: ホームページに移動
+  group:
+    tab:
+      general.title: 全般
+      users.title: ユーザー
+  roles:
+    title: ロール
+    tab:
+      general: 全般
+      action: パーミッション
+      users: ユーザー
+  controller:
+    group:
+      message:
+        saved: "グループが保存されました"
+    role:
+      message:
+        saved: "ロールを保存しました"
+    user:
+      message:
+        saved: "ユーザーを保存しました"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "作成日"
+      updatedAt: "更新日"
+    roles:
+      label: "ラベル"
+    groups:
+      name: "名前"
+confirmation:
+  remove:
+    role: このロールを削除してもよろしいですか？
+    user: このユーザーを削除してもよろしいですか?
+flash:
+  role:
+    removed: ロールを削除しました
+  user:
+    removed: ユーザーを削除しました
+oro_security:
+  acl_group:
+    user: ユーザー
+    role: 権限
+    group: ユーザーグループ
+  acl:
+    user:
+      view: ユーザー一覧
+      create: ユーザーを作成
+      edit: ユーザーを編集
+      delete: ユーザーを削除
+    role:
+      view: 権限一覧
+      create: 権限を作成
+      edit: 権限を編集
+      delete: 権限を削除
+    group:
+      view: ユーザーグループ一覧
+      create: ユーザーグループを作成
+      edit: ユーザーグループを編集
+      delete: ユーザーグループを削除
+(default): エンティティの既定のアクセス許可
+VIEW: ビュー
+CREATE: 作成
+EDIT: 編集
+DELETE: 削除
+ASSIGN: 割り当て
+SHARE: 共有

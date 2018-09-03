@@ -1,0 +1,56 @@
+services:
+    akeneo_pim_structure.job.job_parameters.default_values_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_attribute_export'
+                - 'csv_family_export'
+                - 'csv_family_variant_export'
+                - 'csv_association_type_export'
+                - 'csv_attribute_option_export'
+                - 'csv_attribute_group_export'
+                - 'csv_group_type_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_structure.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_attribute_export'
+                - 'xlsx_family_export'
+                - 'xlsx_family_variant_export'
+                - 'xlsx_association_type_export'
+                - 'xlsx_attribute_option_export'
+                - 'xlsx_attribute_group_export'
+                - 'xlsx_group_type_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_structure.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_attribute_import'
+                - 'csv_family_import'
+                - 'csv_family_variant_import'
+                - 'csv_association_type_import'
+                - 'csv_attribute_option_import'
+                - 'csv_attribute_group_import'
+                - 'csv_group_type_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_pim_structure.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_attribute_import'
+                - 'xlsx_family_import'
+                - 'xlsx_family_variant_import'
+                - 'xlsx_association_type_import'
+                - 'xlsx_attribute_option_import'
+                - 'xlsx_attribute_group_import'
+                - 'xlsx_group_type_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

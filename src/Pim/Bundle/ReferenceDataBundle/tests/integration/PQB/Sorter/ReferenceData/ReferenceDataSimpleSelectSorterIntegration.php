@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\tests\integration\PQB\Sorter\ReferenceData;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
  * Sorter for reference data simple select attributes.
@@ -60,7 +59,7 @@ class ReferenceDataSimpleSelectSorterIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\InvalidDirectionException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
      * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
      */
     public function testErrorOperatorNotSupported()

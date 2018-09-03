@@ -1,0 +1,102 @@
+parameters:
+    pim_catalog.comparator.registry.class:          Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry
+    pim_catalog.comparator.attribute.file.class:    Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\FileComparator
+    pim_catalog.comparator.attribute.prices.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\PricesComparator
+    pim_catalog.comparator.attribute.metric.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\MetricComparator
+    pim_catalog.comparator.attribute.option.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\OptionComparator
+    pim_catalog.comparator.attribute.options.class: Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\OptionsComparator
+    pim_catalog.comparator.attribute.scalar.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\ScalarComparator
+    pim_catalog.comparator.attribute.boolean.class: Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\BooleanComparator
+    pim_catalog.comparator.attribute.number.class:  Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute\NumberComparator
+    pim_catalog.comparator.field.boolean.class:     Akeneo\Pim\Enrichment\Component\Product\Comparator\Field\BooleanComparator
+    pim_catalog.comparator.field.scalar.class:      Akeneo\Pim\Enrichment\Component\Product\Comparator\Field\ScalarComparator
+    pim_catalog.comparator.field.array.class:       Akeneo\Pim\Enrichment\Component\Product\Comparator\Field\ArrayComparator
+
+services:
+    pim_catalog.comparator.registry:
+        public: false
+        class: '%pim_catalog.comparator.registry.class%'
+
+    ##
+    # Comparators of product values
+    ##
+    pim_catalog.comparator.attribute.file:
+        class: '%pim_catalog.comparator.attribute.file.class%'
+        arguments:
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - '@akeneo_file_storage.repository.file_info'
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    pim_catalog.comparator.attribute.prices:
+        class: '%pim_catalog.comparator.attribute.prices.class%'
+        arguments:
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    pim_catalog.comparator.attribute.metric:
+        class: '%pim_catalog.comparator.attribute.metric.class%'
+        arguments:
+            - ['pim_catalog_metric']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    pim_catalog.comparator.attribute.option:
+        class: '%pim_catalog.comparator.attribute.option.class%'
+        arguments:
+            - ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    pim_catalog.comparator.attribute.options:
+        class: '%pim_catalog.comparator.attribute.options.class%'
+        arguments:
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    pim_catalog.comparator.attribute.number:
+        class: '%pim_catalog.comparator.attribute.number.class%'
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
+    pim_catalog.comparator.attribute.boolean:
+        class: '%pim_catalog.comparator.attribute.boolean.class%'
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: pim_catalog.attribute.comparator, priority: -100 }
+
+    pim_catalog.comparator.attribute.scalar:
+        class: '%pim_catalog.comparator.attribute.scalar.class%'
+        arguments:
+            - [ 'pim_catalog_date', 'pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
+        tags:
+            - { name: pim_catalog.attribute.comparator, priority: -128 }
+
+    ##
+    # Comparators of product fields
+    ##
+    pim_catalog.comparator.field.boolean:
+        class: '%pim_catalog.comparator.field.boolean.class%'
+        arguments:
+            - ['enabled']
+        tags:
+            - { name: pim_catalog.field.comparator }
+
+    pim_catalog.comparator.field.array:
+        class: '%pim_catalog.comparator.field.array.class%'
+        arguments:
+            - ['categories', 'groups', 'associations']
+        tags:
+            - { name: pim_catalog.field.comparator }
+
+    pim_catalog.comparator.field.scalar:
+        class: '%pim_catalog.comparator.field.scalar.class%'
+        arguments:
+            - ['family', 'family_variant', 'parent']
+        tags:
+            - { name: pim_catalog.field.comparator, priority: -128 }

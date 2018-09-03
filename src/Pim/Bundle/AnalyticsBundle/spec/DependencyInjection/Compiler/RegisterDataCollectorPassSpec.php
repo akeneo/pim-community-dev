@@ -18,7 +18,7 @@ class RegisterDataCollectorPassSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DependencyInjection\Compiler\RegisterDataCollectorPass');
+        $this->shouldHaveType(RegisterDataCollectorPass::class);
     }
 
     function it_is_a_compiler_pass()

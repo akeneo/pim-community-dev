@@ -23,7 +23,7 @@ define(
         return BaseForm.extend({
             config: {
                 alias: 'product-grid',
-                categoryTreeName: 'pim_enrich_categorytree'
+                categoryTreeName: 'pim_enrich_product_grid_category_tree'
             },
             id: 'tree',
             className: 'filter-item',

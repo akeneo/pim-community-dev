@@ -4,7 +4,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use Pim\Bundle\UserBundle\Entity\User;
+use Akeneo\UserManagement\Bundle\Entity\User;
 
 /**
  * Auto-generated Migration: Please modify to your needs!

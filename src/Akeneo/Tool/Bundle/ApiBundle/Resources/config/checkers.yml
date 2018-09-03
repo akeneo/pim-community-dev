@@ -1,0 +1,35 @@
+parameters:
+    pim_api.checker.query_parameters.class: Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersChecker
+
+services:
+    pim_api.checker.query_parameters:
+        class: '%pim_api.checker.query_parameters.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
+            - ['family', 'enabled', 'groups', 'categories', 'completeness', 'identifier', 'created', 'updated']
+
+    pim_api.checker.query_parameters_locale:
+        class: '%pim_api.checker.query_parameters.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
+            - ['enabled', 'code']
+
+    pim_api.checker.query_parameters_product:
+        class: '%pim_api.checker.query_parameters.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
+            - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated', 'enabled', 'groups']
+
+    pim_api.checker.query_parameters_product_model:
+        class: '%pim_api.checker.query_parameters.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
+            - ['family', 'categories', 'completeness', 'identifier', 'created', 'updated']

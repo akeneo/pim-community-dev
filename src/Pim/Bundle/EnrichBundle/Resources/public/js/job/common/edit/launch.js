@@ -66,7 +66,7 @@ define(
                         router.redirect(response.redirectUrl);
                     })
                     .fail(function () {
-                        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
+                        messenger.notify('error', __('pim_import_export.form.job_instance.fail.launch'));
                     })
                     .always(function () {
                         loadingMask.hide().$el.remove();

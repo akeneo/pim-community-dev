@@ -109,8 +109,8 @@ define(
                 if (!this.model.id || this.dirty) {
                     if (this.dirty) {
                         Dialog.confirm(
-                            __('confirm.attribute_option.cancel_edition_on_new_option_text'),
-                            __('confirm.attribute_option.cancel_edition_on_new_option_title'),
+                            __('pim_enrich.entity.attribute_option.module.edit.cancel_description'),
+                            __('pim_enrich.entity.attribute_option.module.edit.cancel_title'),
                             function () {
                                 this.showReadableItem(this);
                                 if (!this.model.id) {
@@ -132,12 +132,12 @@ define(
                 var itemCode = this.el.firstChild.innerText;
 
                 Dialog.confirmDelete(
-                    __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
-                    __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
+                    __('pim_enrich.entity.fallback.module.delete.item_placeholder', {'itemName': itemCode}),
+                    __('pim_enrich.entity.fallback.module.delete.title', {'itemName': itemCode}),
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this),
-                    __('pim_menu.item.attribute')
+                    __('pim_enrich.entity.attribute.plural_label')
                 );
             },
             updateItem: function () {
@@ -178,7 +178,7 @@ define(
                 } else {
                     Dialog.alert(
                         __('alert.attribute_option.error_occured_during_submission'),
-                        __('error.saving.attribute_option')
+                        __('pim_enrich.entity.attribute_option.flash.update.fail')
                     );
                 }
             },
@@ -261,8 +261,8 @@ define(
 
                 this.$el.html(this.template({
                     locales: this.locales,
-                    add_option_label: __('label.attribute_option.add_option'),
-                    code_label: __('Code')
+                    add_option_label: __('pim_enrich.form.product.module.attribute.add_option'),
+                    code_label: __('pim_common.code')
                 }));
 
                 _.each(_.sortBy(this.collection.models, function (attributeOptionItem) {
@@ -413,7 +413,7 @@ define(
                             message = response.responseText;
                         }
 
-                        Dialog.alert(message, __('error.removing.attribute_option'));
+                        Dialog.alert(message, __('pim_enrich.entity.attribute_option.flash.delete.fail'));
                     }.bind(this)
                 });
             },

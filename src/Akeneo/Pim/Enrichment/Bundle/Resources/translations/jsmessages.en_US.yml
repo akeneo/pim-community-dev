@@ -1,0 +1,29 @@
+pim_notification:
+    types:
+        settings: Settings
+flash:
+    comment:
+        create:
+            success: Your comment has been created successfully.
+            error: An error occured during the creation of your comment.
+        delete:
+            success: Your comment has been deleted successfully.
+            error: An error occured during the deletion of your comment.
+        reply:
+            success: Your reply has been created successfully.
+            error: An error occured during the creation of your reply.
+
+pim_comment:
+    product:
+        panel:
+            comment:
+                post: Add a new comment
+                reply: Reply
+                title: Comments
+    index:
+        empty: No comment for now
+        header_comment: '{{ user }} comments the product'
+        header_reply: '{{ user }} replies to the comment'
+    placeholder:
+        new: Write a new comment...
+        reply: Reply to this comment...

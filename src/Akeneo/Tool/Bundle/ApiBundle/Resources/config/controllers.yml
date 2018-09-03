@@ -1,0 +1,47 @@
+parameters:
+    pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
+    pim_api.controller.root_endpoint.class: Akeneo\Tool\Bundle\ApiBundle\Controller\RootEndpointController
+    pim_api.controller.media_file.class: Akeneo\Tool\Bundle\ApiBundle\Controller\MediaFileController
+    pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\ApiBundle\Controller\MeasureFamilyController
+
+services:
+    pim_api.controller.token:
+        class: '%pim_api.controller.token.class%'
+        arguments:
+            - '@fos_oauth_server.server'
+
+    pim_api.controller.root_endpoint:
+        class: '%pim_api.controller.root_endpoint.class%'
+        arguments:
+            - '@router'
+
+    pim_api.controller.media_file:
+        class: '%pim_api.controller.media_file.class%'
+        arguments:
+            - '@pim_api.repository.media_file'
+            - '@pim_external_api_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_api.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.remover.file'
+            - '@router'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_api.updater.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.measure_family:
+        class: '%pim_api.controller.measure_family.class%'
+        arguments:
+            - '@pim_api.converter.measure_family'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '%akeneo_measure.measures_config%'
+            - '%pim_api.configuration%'

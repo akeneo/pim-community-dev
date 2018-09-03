@@ -46,9 +46,9 @@ define(
 
                 this.$el.html(this.template({
                     status: status,
-                    label: __('pim_enrich.entity.product.meta.status'),
-                    enabledLabel: __('pim_enrich.entity.product.btn.enabled'),
-                    disabledLabel: __('pim_enrich.entity.product.btn.disabled')
+                    label: __('pim_common.status'),
+                    enabledLabel: __('pim_enrich.entity.product.module.status.enabled'),
+                    disabledLabel: __('pim_enrich.entity.product.module.status.disabled')
                 }));
 
                 this.delegateEvents();

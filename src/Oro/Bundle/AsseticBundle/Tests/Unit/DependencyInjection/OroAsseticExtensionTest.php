@@ -2,6 +2,7 @@
 namespace Oro\Bundle\AsseticBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\AsseticBundle\DependencyInjection\OroAsseticExtension;
+use Oro\Bundle\AsseticBundle\Tests\Unit\Fixtures\TestBundle;
 
 class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,7 +39,7 @@ class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnValue(
                     [
-                        'Oro\Bundle\AsseticBundle\Tests\Unit\Fixtures\TestBundle'
+                        TestBundle::class
                     ]
                 )
             );

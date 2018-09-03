@@ -2,17 +2,18 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
-use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductValuesNormalizerSpec extends ObjectBehavior
@@ -27,7 +28,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer');
+        $this->shouldHaveType(ProductValuesNormalizer::class);
     }
 
     function it_is_a_normalizer()

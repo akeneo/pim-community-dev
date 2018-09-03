@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 
+use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 
 class AclManagerSidTest extends \PHPUnit_Framework_TestCase
@@ -14,7 +15,7 @@ class AclManagerSidTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->aclProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider')
+        $this->aclProvider = $this->getMockBuilder(MutableAclProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -27,7 +28,7 @@ class AclManagerSidTest extends \PHPUnit_Framework_TestCase
     {
         $manager = new AclSidManager();
         $this->assertFalse($manager->isAclEnabled());
-        $aclProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider')
+        $aclProvider = $this->getMockBuilder(MutableAclProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager = new AclSidManager($aclProvider);

@@ -328,7 +328,7 @@ define(
             let groups = [];
             let unsortedGroups = [];
             Object.values(this.filters).forEach((filter) => {
-                if (filter.group !== __('system_filter_group')) {
+                if (filter.group !== __('pim_datagrid.column_configurator.system_group')) {
                     if (filter.groupOrder !== null) {
                         if (groups.filter((group) => {
                             return group.label === filter.group;
@@ -427,7 +427,7 @@ define(
 
             this.$('.filter-list span:first').replaceWith(
                 this.addFilterButtonTemplate({
-                    label: __('pim_enrich.entity.product.filters')
+                    label: __('pim_datagrid.filters.label')
                 })
             );
 
@@ -439,7 +439,7 @@ define(
         _addDoneButton() {
             if (!this.selectWidget.getWidget().find('.close').length) {
                 const button = $(this.doneButtonTemplate({
-                    label: __('pim.grid.category_filter.done')
+                    label: __('pim_common.done')
                 }));
                 button.on('click', () => this._onClose());
                 const container = $(this.doneContainerTemplate());

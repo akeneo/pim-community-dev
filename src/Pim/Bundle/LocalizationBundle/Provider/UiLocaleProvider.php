@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Provider;
 
-use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class UiLocaleProvider implements LocaleProviderInterface
 {
-    const MAIN_LOCALE = 'en';
+    const MAIN_LOCALE = 'en_US';
 
     /** @var TranslatorInterface */
     protected $translator;
@@ -24,14 +24,19 @@ class UiLocaleProvider implements LocaleProviderInterface
     /** @var float */
     protected $minPercentage;
 
+    /** @var string[] */
+    protected $localeCodes;
+
     /**
      * @param TranslatorInterface $translator
      * @param float               $minPercentage
+     * @param string[]            $localeCodes
      */
-    public function __construct(TranslatorInterface $translator, $minPercentage)
+    public function __construct(TranslatorInterface $translator, $minPercentage, array $localeCodes)
     {
         $this->translator = $translator;
         $this->minPercentage = (float) $minPercentage;
+        $this->localeCodes = $localeCodes;
     }
 
     /**
@@ -47,9 +52,9 @@ class UiLocaleProvider implements LocaleProviderInterface
         $localeNames = Intl::getLocaleBundle()->getLocaleNames(self::MAIN_LOCALE);
         $mainProgress = $this->getProgress(self::MAIN_LOCALE);
 
-        foreach ($localeNames as $code => $locale) {
-            if ($this->isAvailableLocale($fallbackLocales, $locales, $code, $mainProgress)) {
-                $locales[$code] = $locale;
+        foreach ($this->localeCodes as $code) {
+            if ($this->isAvailableLocale($fallbackLocales, $code, $mainProgress)) {
+                $locales[$code] = $localeNames[$code];
             }
         }
 
@@ -75,21 +80,22 @@ class UiLocaleProvider implements LocaleProviderInterface
      * translated to more than the percentage of the main locale.
      *
      * @param array  $fallbackLocales
-     * @param array  $locales
      * @param string $code
      * @param int    $mainProgress
      *
      * @return bool
      */
-    protected function isAvailableLocale(array $fallbackLocales, array $locales, $code, $mainProgress)
+    protected function isAvailableLocale(array $fallbackLocales, $code, $mainProgress)
     {
         if (in_array($code, $fallbackLocales)) {
             return true;
         }
 
-        if (strlen($code) > 2 && isset($locales[substr($code, 0, 2)])) {
-            return true;
+        if (strpos($code, '_') === false) {
+            // Remove locales without region
+            return false;
         }
+
         $progress = $this->getProgress($code);
 
         return ($progress >= $mainProgress * $this->minPercentage);

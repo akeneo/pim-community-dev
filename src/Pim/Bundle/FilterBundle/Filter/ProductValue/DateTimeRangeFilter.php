@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

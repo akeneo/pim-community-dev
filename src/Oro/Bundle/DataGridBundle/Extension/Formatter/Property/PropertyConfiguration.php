@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\DataGridBundle\Common\Object;
+use Oro\Bundle\DataGridBundle\Common\IterableObject;
 
-class PropertyConfiguration extends Object
+class PropertyConfiguration extends IterableObject
 {
 }

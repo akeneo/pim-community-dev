@@ -1,0 +1,32 @@
+Akeneo\Pim\Structure\Component\Model\AttributeOptionValue:
+    type: entity
+    table: pim_catalog_attribute_option_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - locale_code
+                - option_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        locale:
+            length: 20
+            nullable: true
+            column: locale_code
+        value:
+            type: string
+            nullable: true
+            length: 255
+    manyToOne:
+        option:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
+            inversedBy: optionValues
+            joinColumns:
+                option_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE

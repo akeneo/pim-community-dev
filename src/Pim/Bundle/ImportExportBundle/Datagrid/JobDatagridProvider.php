@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 
 /**
  * Provider for job datagrid choice lists
@@ -21,17 +20,12 @@ class JobDatagridProvider
      */
     protected $registry;
 
-    /** @var TranslatedLabelProvider */
-    protected $labelProvider;
-
     /**
-     * @param JobRegistry              $registry
-     * @param TranslatedLabelProvider  $labelProvider
+     * @param JobRegistry $registry
      */
-    public function __construct(JobRegistry $registry, TranslatedLabelProvider $labelProvider)
+    public function __construct(JobRegistry $registry)
     {
         $this->registry = $registry;
-        $this->labelProvider = $labelProvider;
     }
 
     /**
@@ -87,7 +81,7 @@ class JobDatagridProvider
         $jobs = $this->registry->allByType($type);
 
         foreach ($jobs as $job) {
-            $choices[$job->getName()] = $this->labelProvider->getJobLabel($job->getName());
+            $choices[$job->getName()] = sprintf('batch_jobs.%s.label', $job->getName());
         }
         asort($choices);
 

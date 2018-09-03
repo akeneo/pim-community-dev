@@ -1,0 +1,83 @@
+services:
+    pim_connector.array_converter.flat_to_standard.attribute:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\Attribute'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+            -
+                - 'localizable'
+                - 'useable_as_grid_filter'
+                - 'unique'
+                - 'required'
+                - 'scopable'
+                - 'wysiwyg_enabled'
+                - 'decimals_allowed'
+                - 'negative_allowed'
+                - 'auto_option_sorting'
+                - 'is_read_only'
+
+    pim_connector.array_converter.flat_to_standard.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeGroup'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat_to_standard.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeOption'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat_to_standard.family:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\Family'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.flat_to_standard.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\FamilyVariant'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.attribute:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Attribute'
+        arguments:
+            -
+                - 'localizable'
+                - 'useable_as_grid_filter'
+                - 'unique'
+                - 'required'
+                - 'scopable'
+                - 'wysiwyg_enabled'
+                - 'decimals_allowed'
+                - 'negative_allowed'
+                - 'auto_option_sorting'
+                - 'is_read_only'
+
+    pim_connector.array_converter.standard_to_flat.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeGroup'
+
+    pim_connector.array_converter.standard_to_flat.family:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Family'
+
+    pim_connector.array_converter.standard_to_flat.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeOption'
+
+    pim_connector.array_converter.standard_to_flat.family_variant.field_splitter:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant\FieldSplitter'
+
+    pim_connector.array_converter.standard_to_flat.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant\FamilyVariant'
+
+    pim_connector.array_converter.flat_to_standard.association_type:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AssociationType'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.association_type:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AssociationType'
+
+    pim_connector.array_converter.flat_to_standard.group_type:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\GroupType'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.group_type:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\GroupType'

@@ -73,6 +73,7 @@ COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 RUN composer $COMPOSER_COMMAND --no-ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest \
     && bin/console pim:installer:assets --env=prod \
+    && bin/console pim:installer:dump-extensions --env=prod \
     && bin/console pim:installer:dump-require-paths --env=prod \
     && yarn install \
     && yarn run webpack \

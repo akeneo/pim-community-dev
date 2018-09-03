@@ -43,7 +43,7 @@ extensions:
         position: 50
         config:
             buttonClass: AknDropdown-menuLink
-            label: pim_enrich.form.job_execution.button.show_profile.title
+            label: pim_import_export.form.job_execution.button.show_profile.title
             route: pim_importexport_import_profile_edit
 
     pim-job-execution-form-download-log:
@@ -52,7 +52,7 @@ extensions:
         targetZone: secondary-actions
         position: 90
         config:
-            label: pim_enrich.form.job_execution.button.download_log.title
+            label: pim_import_export.form.job_execution.button.download_log.title
             iconName: download-alt
             isVisiblePath: meta.logExists
             url: pim_importexport_export_execution_download_log
@@ -66,7 +66,7 @@ extensions:
         targetZone: meta
         position: 90
         config:
-            label: pim_enrich.form.job_execution.meta.status.title
+            label: pim_common.status
             valuePath: status
 
     pim-job-execution-form-label:

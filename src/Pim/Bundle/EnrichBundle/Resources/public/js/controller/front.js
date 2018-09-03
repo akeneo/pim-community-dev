@@ -13,7 +13,7 @@ define(['oro/translator', 'pim/controller/base', 'pim/error'], function (__, Bas
                     const message = response &&
                         response.responseJSON ?
                         response.responseJSON.message :
-                        __('error.common');
+                        __('pim_enrich.entity.fallback.generic_error');
                     const status = response && response.status ? response.status : 500;
 
                     const errorView = new Error(message, status);

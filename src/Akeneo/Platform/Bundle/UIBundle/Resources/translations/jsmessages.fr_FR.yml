@@ -1,0 +1,115 @@
+"Yes, Delete": "Oui, supprimer"
+"Yes, I Agree": "Oui, je suis d'accord"
+"Yes, do it": "Oui, j'en suis sûr(e)"
+"Ok, got it.": "OK, compris."
+"Delete Confirmation": "Confirmation de la suppression"
+"Edit": "Modifier"
+"Unexpected error occured. Please contact system administrator.": "Une erreur s'est produite. Contactez l'administrateur système."
+"Yes, revoke": "Oui, révoquer"
+"Revoke Confirmation": "Confirmation de révocation"
+Prev: Préc
+Today: Aujourd'hui
+Wk: Semaine
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Choisir l'heure"
+Time: Temps
+Hour: Heure
+Minute: Minute
+Second: Seconde
+Millisecond: Milliseconde
+Microsecond: Microseconde
+"Time Zone": "Fuseau horaire"
+Localized value: Valeur localisée
+Columns: Colonnes
+Datagrid Configuration: Configuration du tableau
+Action: Action
+Unit: Unité
+Currency: Devise
+jstree:
+  all: Tous les produits
+  unclassified: Produits non classifiés
+  product:
+    all: Tous les produits
+    unclassified: Produits non classifiés
+  no_tree: Pas d'arborescence disponible
+  include_sub: Inc. les sous-catégories
+datetimepicker:
+  days:
+    Sunday: Dimanche
+    Monday: Lundi
+    Tuesday: Mardi
+    Wednesday: Mercredi
+    Thursday: Jeudi
+    Friday: Vendredi
+    Saturday: Samedi
+  daysShort:
+    Sun: Dim
+    Mon: Lun
+    Tue: Mar
+    Wed: Mer
+    Thu: Jeu
+    Fri: Ven
+    Sat: Sam
+  daysMin:
+    Su: Di
+    Mo: Lu
+    Tu: Ma
+    We: Me
+    Th: Je
+    Fr: Ve
+    Sa: Sa
+  months:
+    January: Janvier
+    February: Février
+    March: Mars
+    April: Avril
+    May: Mai
+    June: Juin
+    July: Juillet
+    August: Août
+    September: Septembre
+    October: Octobre
+    November: Novembre
+    December: Décembre
+  monthsShort:
+    Jan: Janv.
+    Feb: Févr.
+    Mar: Mars
+    Apr: Avr.
+    May: Mai
+    Jun: Juin
+    Jul: Juil.
+    Aug: Août
+    Sep: Sept.
+    Oct: Oct.
+    Nov: Nov.
+    Dec: Déc.
+oro_config:
+  form:
+    config:
+      title: Configuration du système
+      tab:
+        system:
+          title: Système
+      group:
+        localization:
+          title: Localisation
+          system_locale: Langue
+        notification:
+          title: Notifications
+          system_notification: Notifications de nouvelles versions
+        loading_message:
+          title: Messages de chargement
+          label: Activer les messages au chargement
+        loading_messages:
+          label: Messages de chargement disponibles
+pim_ui:
+  flash:
+    unsaved_changes: 'Vous avez des modifications non enregistrées, êtes-vous sûr de vouloir quitter ?'
+"Sorry, page was not loaded correctly": "Désolé, la page n'a pas été chargée correctement"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Vos modifications courantes seront perdues. Êtes-vous certain(e) de vouloir actualiser la page ?"
+"navigation.message.content.outdated": "Le contenu de la page {{ title }} est dépassé, veuillez <a href='#' data-action='page-refresh'>actualiser la page</a>"
+"Content of pinned page is outdated": "Le contenu de la page épinglée est dépassé"

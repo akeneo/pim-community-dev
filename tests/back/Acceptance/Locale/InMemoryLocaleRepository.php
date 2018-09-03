@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Locale;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 final class InMemoryLocaleRepository implements LocaleRepositoryInterface, SaverInterface
 {
@@ -73,7 +73,7 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
      */
     public function getActivatedLocales()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->locales->getValues();
     }
 
     /**

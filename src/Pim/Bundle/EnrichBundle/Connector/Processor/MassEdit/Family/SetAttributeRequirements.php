@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -36,11 +36,11 @@ class SetAttributeRequirements extends AbstractProcessor
     protected $detacher;
 
     /**
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param ChannelRepositoryInterface          $channelRepository
-     * @param AttributeRequirementFactory         $factory
-     * @param ValidatorInterface                  $validator
-     * @param ObjectDetacherInterface             $detacher
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRequirementFactory  $factory
+     * @param ValidatorInterface           $validator
+     * @param ObjectDetacherInterface      $detacher
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

@@ -11,7 +11,7 @@ extensions:
         position: 70
         config:
             fieldName: useable_as_grid_filter
-            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
 
     pim-attribute-edit-form-date-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
@@ -20,7 +20,7 @@ extensions:
         position: 80
         config:
             fieldName: is_locale_specific
-            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
 
     pim-attribute-edit-form-date-available-locales:
         module: pim/attribute-edit-form/properties/available-locales
@@ -29,7 +29,7 @@ extensions:
         position: 90
         config:
             fieldName: available_locales
-            label: pim_enrich.form.attribute.tab.properties.label.available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
 
     pim-attribute-form-date-validation-params:
         module: pim/common/simple-view
@@ -39,7 +39,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.section.validation
+                sectionTitle: pim_enrich.entity.attribute.module.edit.validation
                 dropZone: content
 
     pim-attribute-form-date-validation-params-date-min:
@@ -49,7 +49,7 @@ extensions:
         position: 100
         config:
             fieldName: date_min
-            label: pim_enrich.form.attribute.tab.properties.label.date_min
+            label: pim_enrich.entity.attribute.property.date_min
 
     pim-attribute-form-date-validation-params-date-max:
         module: pim/form/common/fields/date
@@ -58,4 +58,4 @@ extensions:
         position: 110
         config:
             fieldName: date_max
-            label: pim_enrich.form.attribute.tab.properties.label.date_max
+            label: pim_enrich.entity.attribute.property.date_max

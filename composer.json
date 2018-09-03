@@ -22,7 +22,8 @@
             "Context": "tests/legacy/features/"
         },
         "psr-4": {
-            "Pim\\Behat\\": "tests/legacy/features/Pim/Behat",
+            "Pim\\Behat\\": "tests/legacy/features/Behat",
+            "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/",
@@ -42,7 +43,7 @@
         "doctrine/doctrine-migrations-bundle": "1.2.1",
         "doctrine/migrations": "1.5.0",
         "doctrine/orm": "2.5.6",
-        "dompdf/dompdf" : "0.6.2",
+        "dompdf/dompdf" : "0.6.2@dev",
         "elasticsearch/elasticsearch": "^5.1",
         "escapestudios/wsse-authentication-bundle": "2.2.2",
         "friendsofsymfony/jsrouting-bundle": "1.6.0",
@@ -79,7 +80,7 @@
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
-        "akeneo/php-coupling-detector": "0.2.0",
+        "akeneo/php-coupling-detector": "0.3.*",
         "behat/behat": "3.4.3",
         "behat/gherkin":"4.5.1",
         "behat/mink":"1.7.1",

@@ -3,10 +3,10 @@ extensions:
         module: pim/form/common/creation/modal
         config:
             labels:
-                title: pim_enrich.index.export_profiles.create_popin.title
+                title: pim_common.create
                 subTitle: pim_menu.item.export_profile
             picture: illustration-attribute.svg
-            successMessage: pim_enrich.index.export_profiles.message.created
+            successMessage: pim_import_export.entity.export_profile.flash.create.success
             editRoute: pim_importexport_export_profile_edit
             postUrl: pim_enrich_job_instance_rest_export_create
             routerKey: code
@@ -18,7 +18,7 @@ extensions:
         position: 10
         config:
             identifier: code
-            label: pim_enrich.entity.create_popin.code
+            label: pim_common.code
 
     pim-export-profile-create-label:
         module: pim/form/common/creation/field
@@ -27,7 +27,7 @@ extensions:
         position: 20
         config:
             identifier: label
-            label: pim_enrich.entity.create_popin.label
+            label: pim_common.label
 
     pim-export-profile-create-job:
         module: pim/form/common/creation/job
@@ -37,5 +37,5 @@ extensions:
         config:
           type: export
           identifier: job_name
-          label: pim_enrich.form.job_instance.meta.job
+          label: pim_import_export.form.job_instance.meta.job
           url: pim_enrich_job_instance_rest_jobs_get

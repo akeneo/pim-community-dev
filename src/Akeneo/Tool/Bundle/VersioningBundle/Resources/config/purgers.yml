@@ -1,0 +1,26 @@
+parameters:
+    pim_versioning.purger.version.class:                    Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurger
+    pim_versioning.purger.advisor.skip_first_version.class: Akeneo\Tool\Bundle\VersioningBundle\Purger\SkipFirstVersionPurgerAdvisor
+    pim_versioning.purger.advisor.skip_last_version.class:  Akeneo\Tool\Bundle\VersioningBundle\Purger\SkipLastVersionPurgerAdvisor
+
+services:
+    # Purger
+    pim_versioning.purger.version:
+        class: '%pim_versioning.purger.version.class%'
+        arguments:
+            - '@pim_versioning.repository.version'
+            - '@pim_versioning.remover.version'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@event_dispatcher'
+
+   # advisors
+    pim_versioning.purger.advisor.skip_first_version:
+        class: '%pim_versioning.purger.advisor.skip_first_version.class%'
+        tags:
+            - { name: pim_versioning.purger.advisor, priority: 80 }
+
+    pim_versioning.purger.advisor.skip_last_version:
+        class: '%pim_versioning.purger.advisor.skip_last_version.class%'
+        arguments: ['@pim_versioning.repository.version']
+        tags:
+            - { name: pim_versioning.purger.advisor, priority: 90 }

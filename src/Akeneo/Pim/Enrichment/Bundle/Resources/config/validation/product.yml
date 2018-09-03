@@ -1,0 +1,32 @@
+Akeneo\Pim\Enrichment\Component\Product\Model\Product:
+    group_sequence:
+        - Product
+        - VariantProduct
+        - UniqueAxis
+        - api
+    constraints:
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity:
+            message: pim_catalog.constraint.pim_immutable_product_validator
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyFamily:
+            groups:
+              - api
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\SameFamilyThanParent: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\VariantProductParent: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues: ~
+        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
+
+    properties:
+        identifier:
+            - NotBlank: ~
+            - Regex:
+                pattern: '/^[^,;]+$/'
+                message: 'regex.comma_or_semicolon.message'
+            - Length:
+                max: 255
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true

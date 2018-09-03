@@ -9,11 +9,9 @@
     "rootDir": "web/bundles",
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "*",
-        "web/bundles/*"
-      ]
+      "*": ["*", "web/bundles/*"]
     },
+    "jsx": "react",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,

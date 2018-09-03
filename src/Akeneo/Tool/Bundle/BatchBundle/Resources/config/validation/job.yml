@@ -1,0 +1,4 @@
+Akeneo\Tool\Component\Batch\Job\Job:
+    properties:
+        steps:
+            - Valid: ~

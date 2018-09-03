@@ -28,7 +28,7 @@ define(
             template: _.template(template),
             className: 'AknDropdown AknButtonList-item locale-switcher',
             events: {
-                'click li a': 'changeLocale'
+                'click li span[data-locale]': 'changeLocale'
             },
             displayInline: false,
             displayLabel: true,
@@ -80,7 +80,7 @@ define(
                                 i18n: i18n,
                                 displayInline: this.displayInline,
                                 displayLabel: this.displayLabel,
-                                label: __('pim_enrich.entity.product.meta.locale')
+                                label: __('pim_enrich.entity.locale.uppercase_label')
                             })
                         );
                         this.delegateEvents();

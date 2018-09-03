@@ -1,16 +1,16 @@
 <p class="AknMessageBox AknMessageBox--centered">
-    <%- _.__('pim_enrich.form.product.change_family.modal.merge_attributes')%><br />
-    <%- _.__('pim_enrich.form.product.change_family.modal.keep_attributes')%>
+    <%- _.__('pim_enrich.entity.product.module.change_family.merge_attributes')%><br />
+    <%- _.__('pim_enrich.entity.product.module.change_family.keep_attributes')%>
 </p>
 <form class="AknFieldContainer form-horizontal">
     <div class="AknFieldContainer-header">
-        <label class="AknFieldContainer-label control-label"><%- _.__('pim_enrich.form.product.change_family.modal.change_family_to')%>&nbsp;:</label>
+        <label class="AknFieldContainer-label control-label"><%- _.__('pim_enrich.entity.product.module.change_family.change_family_to')%>&nbsp;:</label>
     </div>
     <div class="AknFieldContainer-inputContainer">
         <input type="hidden" class="input-large family-select2 select-field"
                value="<%- product.family !== null ? product.family.code : '' %>"
                <%- product.family ? ' selected' : '' %>
-               data-placeholder="<%- _.__('pim_enrich.form.product.change_family.modal.empty_selection') %>"
+               data-placeholder="<%- _.__('pim_enrich.entity.product.module.change_family.empty_selection') %>"
         />
     </div>
 </form>

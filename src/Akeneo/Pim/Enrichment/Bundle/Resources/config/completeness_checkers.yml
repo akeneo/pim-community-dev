@@ -1,0 +1,34 @@
+parameters:
+    pim_catalog.completeness.checker.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteChecker
+    pim_catalog.completeness.checker.media.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MediaCompleteChecker
+    pim_catalog.completeness.checker.metric.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MetricCompleteChecker
+    pim_catalog.completeness.checker.price.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\PriceCompleteChecker
+    pim_catalog.completeness.checker.simple.class: Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\SimpleCompleteChecker
+
+services:
+    pim_catalog.completeness.checker:
+        class: '%pim_catalog.completeness.checker.class%'
+
+    pim_catalog.completeness.checker.media:
+        class: '%pim_catalog.completeness.checker.media.class%'
+        public: false
+        tags:
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
+
+    pim_catalog.completeness.checker.metric:
+        class: '%pim_catalog.completeness.checker.metric.class%'
+        public: false
+        tags:
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
+
+    pim_catalog.completeness.checker.price:
+        class: '%pim_catalog.completeness.checker.price.class%'
+        public: false
+        tags:
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
+
+    pim_catalog.completeness.checker.simple:
+        class: '%pim_catalog.completeness.checker.simple.class%'
+        public: false
+        tags:
+            - { name: pim_catalog.completeness.checker.product_value, priority: 150 }

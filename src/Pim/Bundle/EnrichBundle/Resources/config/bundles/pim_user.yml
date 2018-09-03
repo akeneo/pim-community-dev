@@ -1,0 +1,19 @@
+pim_user:
+    email:
+        address: '%mailer_from_address%'
+        name:    '%mailer_from_name%'
+    privileges:
+        action:
+            label: rights.action
+            view_type: groups
+            types: [action]
+            field_type: 'Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType'
+            default_value: 5
+            show_default: true
+        api:
+            label: pim_api.acl.rights
+            view_type: groups
+            types: [action]
+            field_type: 'Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType'
+            default_value: 5
+            show_default: true

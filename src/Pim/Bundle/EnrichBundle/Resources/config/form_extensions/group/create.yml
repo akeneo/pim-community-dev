@@ -3,10 +3,10 @@ extensions:
         module: pim/form/common/creation/modal
         config:
             labels:
-                title: pim_enrich.entity.group.create_popin.title
+                title: pim_common.create
                 subTitle: pim_menu.item.group
             picture: illustrations/Groups.svg
-            successMessage: pim_enrich.entity.group.message.created
+            successMessage: pim_enrich.entity.group.flash.create.success
             editRoute: pim_enrich_group_edit
             postUrl: pim_enrich_group_rest_create
             routerKey: code
@@ -18,7 +18,7 @@ extensions:
         position: 10
         config:
            identifier: code
-           label: pim_enrich.entity.create_popin.code
+           label: pim_common.code
 
     pim-group-create-type:
         module: pim/form/common/creation/type

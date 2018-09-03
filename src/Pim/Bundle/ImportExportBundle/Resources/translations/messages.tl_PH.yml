@@ -1,0 +1,48 @@
+Job: Trabaho
+Connector: Taga-konekta
+pim_import_export:
+  job: Trabaho
+  connector: Taga-konekta
+  status:
+    - Handa
+  download_archive:
+    archive: i-download ang nabuong archive|i-download ang mga nabuong archive
+    output: i-download ang nabuong file|i-download ang mga nabuong file
+    input: i-download ang basahing file|i-download ang mga basahing file
+    invalid_xlsx: i-download ang imbalidong data
+    invalid_csv: i-download ang imbalidong data
+  notification:
+    export:
+      error: Pagluwas<strong>%label%</strong>bigo
+      warning: Pagluwas<strong>%label%</strong>natapos ng may mga babala
+      success: Pagluwas<strong>%label%</strong>tapos
+    import:
+      error: Pag-angkat<strong>%label%</strong>bigo
+      warning: Pag-angkat<strong>%label%</strong>natapos na may mga babala
+      success: Pag-angkat <strong>%label%</strong> tapos
+  list: Pumili ng trabaho
+  job_profile:
+    tab:
+      job_content.title: Laman
+pim_title.export_profile.index: Pagluwas ng pamamahalang anyo
+pim_title.export_execution.index: Iluwas ang kasaysayan sa pagsasakatuparan
+pim_title.export_execution.show: Iluwas ang pagsasakatuparan | Mga Detalye
+pim_title.import_profile.index: Pamamahala sa pag-angkat ng mga profile
+pim_title.import_execution.index: I-angkat ang kasaysayan sa pagsasakatuparan
+pim_title.import_execution.show: I-angkat ang mga pagsasakatuparan
+export profile:
+  title: iluwas ang profile
+  edit: baguhin ang profile na pangluwas
+import profile:
+  title: i-angkat ang profile
+  edit: baguhin ang pangkalahatang ideya ng profile
+pim_importexport:
+  acl:
+    export_profile:
+      index: Tingnan ang listahan ng mga profile ng pagluwas
+      create: Gumawa ng profile ng pagluwas
+btn:
+  create:
+    export profile: gumawa ng profile pangluwas
+    import profile: gumawa ng pangkalahatang ideya ng profile
+Status: Estado

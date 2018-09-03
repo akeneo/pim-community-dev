@@ -1,0 +1,20 @@
+parameters:
+    pim_api.filter.product_attribute_filter.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter
+    pim_api.filter.product_model_attribute_filter.class: Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter
+
+services:
+    pim_api.filter.product_attribute_filter:
+        class: '%pim_api.filter.product_attribute_filter.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.cached_family'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.cached_attribute'
+
+    pim_api.filter.product_model_attribute_filter:
+        class: '%pim_api.filter.product_model_attribute_filter.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.cached_attribute'
+

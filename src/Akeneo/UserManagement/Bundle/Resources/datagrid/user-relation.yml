@@ -1,0 +1,33 @@
+datagrid:
+    user-relation-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                from:
+                    - { table: Akeneo\UserManagement\Component\Model\User, alias: u }
+
+        columns: []
+
+        properties:
+            id: ~
+
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+            default:
+                id: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+
+        filters: []

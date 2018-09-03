@@ -9,10 +9,10 @@
                 <thead>
                     <tr>
                         <th class="AknGrid-headerCell">&nbsp;</th>
-                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.name') %></th>
-                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.type') %></th>
-                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.scopable') %></th>
-                        <th class="AknGrid-headerCell"><%- __('pim_enrich.form.attribute_group.tab.attribute.table.localizable') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.entity.attribute.property.name') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_common.type') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.entity.attribute.property.scopable') %></th>
+                        <th class="AknGrid-headerCell"><%- __('pim_enrich.entity.attribute.property.localizable') %></th>
                         <% if (hasRightToRemove) { %>
                         <th class="AknGrid-headerCell">&nbsp;</th>
                         <% } %>
@@ -27,7 +27,7 @@
                                 </span>
                             </td>
                             <td class="AknGrid-bodyCell"><%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %></td>
-                            <td class="AknGrid-bodyCell"><%- __('pim_enrich.entity.attribute.type.' + attribute.type) %></td>
+                            <td class="AknGrid-bodyCell"><%- __('pim_enrich.entity.attribute.property.type.' + attribute.type) %></td>
                             <td class="AknGrid-bodyCell">
                                 <input type="checkbox" disabled="disabled"<%- attribute.scopable ? ' checked="checked"' : '' %>>
                             </td>

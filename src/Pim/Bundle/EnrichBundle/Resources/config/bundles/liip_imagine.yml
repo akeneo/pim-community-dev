@@ -18,13 +18,13 @@ liip_imagine:
             quality:          95
             format:           png
             filters:
-                thumbnail:    { size: [320, 240], mode: outbound }
+                thumbnail:    { size: [320, 320], mode: outbound }
                 strip:        ~
         thumbnail_small:
             quality:          95
             format:           png
             filters:
-                thumbnail:    { size: [140, 140], mode: outbound }
+                thumbnail:    { size: [280, 280], mode: outbound }
                 strip:        ~
         pdf_thumbnail:
             quality:          95

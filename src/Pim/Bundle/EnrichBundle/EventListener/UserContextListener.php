@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
+use Akeneo\UserManagement\Bundle\Form\Event\UserFormBuilderEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Bundle\DataGridBundle\DataTransformer\DefaultViewDataTransformer;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -77,7 +77,7 @@ class DefaultViewSubscriber implements EventSubscriberInterface
                 [
                     'class'         => 'PimDataGridBundle:DatagridView',
                     'choice_label'  => 'label',
-                    'label'         => 'user.default_' . str_replace('-', '_', $alias) . '_view.label',
+                    'label'         => 'pim_user.user.fields.default_' . str_replace('-', '_', $alias) . '_view.label',
                     'query_builder' => function (DatagridViewRepositoryInterface $gridViewRepository) use ($alias) {
                         return $gridViewRepository->findDatagridViewByAlias($alias);
                     },

@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
-use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -38,9 +37,6 @@ class JobInstanceFormType extends AbstractType
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var TranslatedLabelProvider */
-    protected $jobLabelProvider;
-
     /** @var JobParametersFactory */
     protected $jobParametersFactory;
 
@@ -50,20 +46,17 @@ class JobInstanceFormType extends AbstractType
     /**
      * @param JobRegistry             $jobRegistry
      * @param TranslatorInterface     $translator
-     * @param TranslatedLabelProvider $jobLabelProvider
      * @param JobParametersFactory    $jobParametersFactory
      * @param SecurityFacade          $securityFacade
      */
     public function __construct(
         JobRegistry $jobRegistry,
         TranslatorInterface $translator,
-        TranslatedLabelProvider $jobLabelProvider,
         JobParametersFactory $jobParametersFactory,
         SecurityFacade $securityFacade
     ) {
         $this->jobRegistry = $jobRegistry;
         $this->translator = $translator;
-        $this->jobLabelProvider = $jobLabelProvider;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->securityFacade = $securityFacade;
     }
@@ -203,7 +196,7 @@ class JobInstanceFormType extends AbstractType
         $choices = [];
         foreach ($this->jobRegistry->allByTypeGroupByConnector($this->jobType) as $connector => $jobs) {
             foreach ($jobs as $key => $job) {
-                $choices[$connector][$this->jobLabelProvider->getJobLabel($job->getName())] = $key;
+                $choices[$connector][$job->getName()] = $key;
             }
         }
 

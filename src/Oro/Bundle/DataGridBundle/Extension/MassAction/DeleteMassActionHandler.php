@@ -26,7 +26,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * @var string
      */
-    protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
+    protected $responseMessage = 'pim_datagrid.mass_action.delete.success_message';
 
     /**
      * @param EntityManager       $entityManager

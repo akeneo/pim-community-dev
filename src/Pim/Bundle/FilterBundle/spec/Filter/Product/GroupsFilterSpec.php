@@ -6,7 +6,7 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class GroupsFilterSpec extends ObjectBehavior

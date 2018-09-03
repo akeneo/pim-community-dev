@@ -1,0 +1,7 @@
+parameters:
+    akeneo_classification.repository.abstract_item_category.class: Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository
+
+services:
+    akeneo_classification.repository.abstract_item_category:
+        class:    '%akeneo_classification.repository.abstract_item_category.class%'
+        abstract: true

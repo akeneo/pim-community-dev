@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 /**
  * Configure the job instances that are used to install the PIM by setting the relevant file path for each job.

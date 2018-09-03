@@ -120,6 +120,8 @@ define([
                 this.renderExtensions();
                 this.delegateEvents();
             }.bind(this));
+
+            return this;
         },
 
         /**
@@ -168,7 +170,7 @@ define([
          */
         getRequiredLabel() {
             return undefined === this.config.requiredLabel
-                ? __('pim_enrich.form.required')
+                ? __('pim_common.required_label')
                 : __(this.config.requiredLabel);
         },
 

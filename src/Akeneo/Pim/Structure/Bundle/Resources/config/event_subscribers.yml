@@ -1,0 +1,32 @@
+services:
+    pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber'
+        arguments:
+            - '@pim_catalog.family_variant.add_unique_attributes'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.compute_family_variant_structure_changes:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.save_family_variants_on_family_update:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        tags:
+            - { name: kernel.event_subscriber }

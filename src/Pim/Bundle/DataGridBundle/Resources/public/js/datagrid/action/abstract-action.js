@@ -52,12 +52,12 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog
 
         /** @property {Object} */
         defaultMessages: {
-            confirm_title: __('Execution Confirmation'),
-            confirm_content: __('Are you sure you want to do this?'),
-            confirm_ok: __('Yes, do it'),
-            success: __('Action performed.'),
-            error: __('Action is not performed.'),
-            empty_selection: __('Please, select item to perform action.')
+            confirm_title: __('pim_datagrid.action.default.confirmation.title'),
+            confirm_content: __('pim_datagrid.action.default.confirmation.content'),
+            confirm_ok: __('pim_common.yes'),
+            success: __('pim_datagrid.action.default.success'),
+            error: __('pim_datagrid.action.default.error'),
+            empty_selection: __('pim_datagrid.action.default.no_items')
         },
 
         /**

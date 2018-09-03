@@ -39,7 +39,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.channel.title
+            entity: pim_enrich.entity.channel.uppercase_label
 
     pim-channel-create-form-properties-tab:
         module: pim/common/tab
@@ -47,7 +47,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.channel.tab.properties.title'
+            label: 'pim_common.properties'
 
     pim-channel-create-form-properties:
         module: pim/common/simple-view
@@ -62,8 +62,8 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-            title: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.code
+            title: pim_common.general_properties
+            codeLabel: pim_common.code
 
     pim-channel-create-form-properties-general-currencies:
         module: pim/channel-edit-form/properties/general/currencies
@@ -91,7 +91,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.channel.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-channel-create-form-properties-translation:
@@ -108,5 +108,5 @@ extensions:
         targetZone: accordion
         position: 150
         config:
-            label: 'pim_enrich.form.channel.tab.properties.label_conversion_units'
+            label: 'pim_enrich.entity.channel.property.label_conversion_units'
             fieldBaseId: 'pim_enrich_channel_form_conversion_unit_'

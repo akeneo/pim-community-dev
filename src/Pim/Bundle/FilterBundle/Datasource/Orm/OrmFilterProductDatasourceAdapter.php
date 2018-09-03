@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Datasource\Orm;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
 /**
  * Customize the OroPlatform datasource adapter

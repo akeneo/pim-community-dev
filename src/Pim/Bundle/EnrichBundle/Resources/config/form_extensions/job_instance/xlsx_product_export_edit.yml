@@ -42,7 +42,7 @@ extensions:
         targetZone: container
         position: 120
         config:
-            tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
     pim-job-instance-xlsx-product-export-edit-global:
@@ -62,7 +62,7 @@ extensions:
         targetZone: container
         position: 140
         config:
-            tabTitle: pim_enrich.form.job_instance.tab.content.title
+            tabTitle: pim_import_export.form.job_instance.tab.content.title
             tabCode: pim-job-instance-content
 
     pim-job-instance-xlsx-product-export-edit-history:
@@ -72,8 +72,8 @@ extensions:
         aclResourceId: pim_importexport_export_profile_history
         position: 150
         config:
-            class: Akeneo\Component\Batch\Model\JobInstance
-            title: pim_enrich.form.job_instance.tab.history.title
+            class: Akeneo\Tool\Component\Batch\Model\JobInstance
+            title: pim_common.history
             tabCode: pim-job-instance-history
 
     pim-job-instance-xlsx-product-export-edit-properties-code:
@@ -83,7 +83,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: code
-            label: pim_enrich.form.job_instance.tab.properties.code.title
+            label: pim_common.code
             readOnly: true
 
     pim-job-instance-xlsx-product-export-edit-properties-label:
@@ -93,7 +93,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: label
-            label: pim_enrich.form.job_instance.tab.properties.label.title
+            label: pim_common.label
             readOnly: false
 
     pim-job-instance-xlsx-product-export-edit-properties-file-path:
@@ -104,8 +104,8 @@ extensions:
         config:
             fieldCode: configuration.filePath
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+            label: pim_import_export.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-xlsx-product-export-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator
@@ -115,8 +115,8 @@ extensions:
         config:
             fieldCode: configuration.decimalSeparator
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+            label: pim_import_export.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.decimal_separator.help
 
     pim-job-instance-xlsx-product-export-edit-properties-date-format:
         module: pim/job/product/edit/field/date-format
@@ -126,8 +126,8 @@ extensions:
         config:
             fieldCode: configuration.dateFormat
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.date_format.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
+            label: pim_import_export.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.date_format.help
 
     pim-job-instance-xlsx-product-export-edit-properties-lines-per-file:
         module: pim/job/common/edit/field/text
@@ -137,8 +137,8 @@ extensions:
         config:
             fieldCode: configuration.linesPerFile
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.lines_per_file.help
+            label: pim_import_export.form.job_instance.tab.properties.lines_per_file.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.lines_per_file.help
 
     pim-job-instance-xlsx-product-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -148,8 +148,8 @@ extensions:
         config:
             fieldCode: configuration.withHeader
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+            label: pim_import_export.form.job_instance.tab.properties.with_header.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-xlsx-product-export-edit-properties-with-media:
         module: pim/job/common/edit/field/switch
@@ -159,8 +159,8 @@ extensions:
         config:
             fieldCode: configuration.with_media
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.with_media.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_media.help
+            label: pim_import_export.form.job_instance.tab.properties.with_media.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_media.help
 
     pim-job-instance-xlsx-product-export-edit-content-structure:
         module: pim/job/product/edit/content/structure
@@ -196,8 +196,8 @@ extensions:
             trans:
                 title: confirmation.remove.export_profile
                 subTitle: pim_menu.item.export_profile
-                content: pim_enrich.confirmation.delete_item
-                success: flash.job_instance.removed
+                content: pim_common.confirm_deletion
+                success: pim_import_export.entity.job_instance.flash.delete.success
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
 
@@ -221,7 +221,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.job_instance.title
+            entity: pim_import_export.entity.job_instance.label
 
     pim-job-instance-xlsx-product-export-edit-content-structure-scope:
         module: pim/job/product/edit/content/structure/scope

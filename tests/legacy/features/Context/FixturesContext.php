@@ -4,47 +4,48 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvImport;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductModelCsvImport;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
+use Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
-use Oro\Bundle\UserBundle\Entity\Role;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CommentBundle\Entity\Comment;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductAssociation;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelAssociation;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
-use Pim\Component\Catalog\Value\OptionValueInterface;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
-use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -90,7 +91,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
      *
      * @Given /^a "([^"]*)" product$/
      */
@@ -144,7 +145,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^a "([^"]*)" user/
      */
@@ -281,7 +282,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $status
      * @param string $sku
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
@@ -1677,7 +1678,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userGroupName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Group
+     * @return Group
      *
      * @Then /^there should be a "([^"]+)" user group$/
      */
@@ -1691,7 +1692,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userRoleName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return Role
      *
      * @Then /^there should be a "([^"]+)" user role$/
      */
@@ -1703,7 +1704,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $roleLabel
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return Role
      */
     public function getRole($roleLabel)
     {
@@ -1984,7 +1985,7 @@ class FixturesContext extends BaseFixturesContext
     protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {
         $em   = $this->getEntityManager();
-        $repo = $em->getRepository('PimCatalogBundle:AttributeRequirement');
+        $repo = $em->getRepository(AttributeRequirement::class);
 
         $attribute = $this->getAttribute($attributeCode);
         $family    = $this->getFamily($familyCode);
@@ -2206,7 +2207,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $code
      * @param string $label
      *
-     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label)
     {
@@ -2243,7 +2244,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function createCategory($data)
     {
@@ -2374,7 +2375,7 @@ class FixturesContext extends BaseFixturesContext
      * @param array              $data
      * @param CommentInterface[] $comments
      *
-     * @return \Pim\Bundle\CommentBundle\Model\CommentInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
      */
     protected function createComment(array $data, array $comments)
     {
@@ -2440,7 +2441,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
@@ -2448,7 +2449,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface
      */
     protected function getProductModelRepository()
     {
@@ -2520,7 +2521,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\VersioningBundle\Manager\VersionManager
+     * @return \Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager
      */
     protected function getVersionManager()
     {
@@ -2528,7 +2529,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor
      */
     protected function getFieldExtractor()
     {

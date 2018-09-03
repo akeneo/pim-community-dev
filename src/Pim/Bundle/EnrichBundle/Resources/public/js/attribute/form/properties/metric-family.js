@@ -54,7 +54,7 @@ function (
                 choices: this.formatChoices(this.measures),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.metric_family')
+                    defaultLabel: __('pim_enrich.entity.attribute.property.metric_family.choose')
                 }
             }));
         },
@@ -86,11 +86,13 @@ function (
          * @param {Object} measures
          */
         formatChoices: function (measures) {
-            var metricFamilyCodes = _.keys(measures);
+            const metricFamilyCodes = Object.keys(measures);
 
             return _.object(
                 metricFamilyCodes,
-                _.map(metricFamilyCodes, __)
+                metricFamilyCodes.map((metricFamilyCode) => {
+                    return __(`pim_measure.families.${metricFamilyCode}`);
+                })
             );
         },
 

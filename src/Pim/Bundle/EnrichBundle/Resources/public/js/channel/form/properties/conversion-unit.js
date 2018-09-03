@@ -63,8 +63,9 @@ define([
                         catalogLocale: this.catalogLocale,
                         label: __(this.config.label),
                         fieldBaseId: this.config.fieldBaseId,
-                        doNotConvertLabel: __('pim_enrich.form.channel.tab.properties.conversion_unit.do_not_convert'),
-                        i18n: i18n
+                        doNotConvertLabel: __('pim_enrich.entity.channel.property.do_not_convert'),
+                        i18n: i18n,
+                        __, __
                     }));
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));

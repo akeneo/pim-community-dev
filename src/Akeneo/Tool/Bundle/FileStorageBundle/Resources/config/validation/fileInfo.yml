@@ -1,0 +1,34 @@
+Akeneo\Tool\Component\FileStorage\Model\FileInfo:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: key
+    properties:
+        key:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+        originalFilename:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+        mimeType:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+        size:
+            - Type:
+                type: int
+        extension:
+            - Type:
+                type: string
+            - Length:
+                max: 10
+        storage:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+        uploadedFile:
+            - File: { groups: [upload, Default] }

@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountLocalizableAttribute;

@@ -3,6 +3,7 @@
 namespace Context\Page\Role;
 
 use Context\Page\Base\Form;
+use Pim\Behat\Decorator\Permission\PermissionDecorator;
 
 /**
  * User role edit page
@@ -26,15 +27,15 @@ class Edit extends Form
         $this->elements = array_merge(
             [
                 'Permission' => [
-                    'css'        => '#rights-action',
+                    'css'        => '#pim_user-roles-tab-action',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                        PermissionDecorator::class
                     ]
                 ],
                 'API permission' => [
-                    'css'        => '#rights-api',
+                    'css'        => '#pim_user-roles-tab-api',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                        PermissionDecorator::class
                     ]
                 ],
             ],

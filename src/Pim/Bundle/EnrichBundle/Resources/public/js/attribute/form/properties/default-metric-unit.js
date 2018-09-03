@@ -56,7 +56,7 @@ function (
                 choices: this.formatChoices(this.measures[metricFamily].units),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.default_metric_unit')
+                    defaultLabel: __('pim_enrich.entity.attribute.property.default_metric_unit.choose')
                 }
             }));
         },
@@ -97,11 +97,13 @@ function (
          * @param {Object} units
          */
         formatChoices: function (units) {
-            var unitCodes = _.keys(units);
+            const unitCodes = Object.keys(units);
 
             return _.object(
                 unitCodes,
-                _.map(unitCodes, __)
+                unitCodes.map((unitCode) => {
+                    return __(`pim_measure.units.${unitCode}`);
+                })
             );
         },
 

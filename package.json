@@ -1,6 +1,5 @@
 {
   "name": "pim-community-dev",
-  "version": "2.0.0",
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "scripts": {
@@ -9,7 +8,7 @@
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint && yarn test",
-    "test": "yarn unit && yarn webpack-test && yarn integration && yarn acceptance tests/features",
+    "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
     "webpack-test": "webpack --config webpack-test.config.js",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
@@ -27,12 +26,15 @@
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.12",
     "@types/jest": "^22.2.3",
     "colors": "1.1.2",
     "cucumber": "4.0.0",
     "cucumber-html-reporter": "4.0.1",
     "cucumber-junit": "^1.7.1",
     "dep-diff": "1.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "glob": "7.1.2",
     "html-webpack-inline-source-plugin": "0.0.9",
     "html-webpack-plugin": "2.30.1",
@@ -66,6 +68,8 @@
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",
     "raw-loader": "0.5.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "regexp-replace-loader": "1.0.0",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",

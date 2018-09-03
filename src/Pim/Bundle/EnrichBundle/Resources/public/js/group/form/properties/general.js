@@ -32,9 +32,9 @@ define([
             render: function () {
                 this.$el.html(this.template({
                     model: this.getFormData(),
-                    sectionTitle: __('pim_enrich.form.group.tab.properties.general'),
-                    codeLabel: __('pim_enrich.form.group.tab.properties.code'),
-                    typeLabel: __('pim_enrich.form.group.tab.properties.type'),
+                    sectionTitle: __('pim_common.general_properties'),
+                    codeLabel: __('pim_common.code'),
+                    typeLabel: __('pim_common.type'),
                     __: __
                 }));
 

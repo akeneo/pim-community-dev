@@ -71,7 +71,7 @@ define([
                         this.getErrorDialog(message).open();
                     }.bind(this),
                     success: function() {
-                        var messageText = __('flash.' + this.getEntityCode() + '.removed');
+                        var messageText = __('pim_enrich.entity.' + this.getEntityCode() + '.flash.delete.success');
                         messenger.notify('success', messageText);
                         userContext.initialize();
 
@@ -90,7 +90,7 @@ define([
 
                 this.confirmModal = Dialog.confirmDelete(
                     __(`confirmation.remove.${entityCode}`),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     this.doDelete.bind(this),
                     this.getEntityHint(true)
                 );
@@ -105,16 +105,19 @@ define([
              */
             getErrorDialog: function(response) {
                 if (!this.errorModal) {
+                    let message = '';
                     try {
-                        var response = JSON.parse(response);
-                        var message = response.message;
+                        message = JSON.parse(response).message;
                     } catch(e) {
-                        var message = __('error.removing.' + this.getEntityHint());
+                        message = __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail');
                     }
 
                     this.errorModal = new Modal({
-                        title: __('Delete Error'),
-                        content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
+                        title: __('pim_datagrid.delete_error.title'),
+                        content:
+                            '' === message ?
+                            __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail'):
+                            message,
                         cancelText: false
                     });
                 }

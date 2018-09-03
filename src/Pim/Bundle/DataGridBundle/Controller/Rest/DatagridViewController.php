@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller\Rest;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
@@ -210,7 +210,7 @@ class DatagridViewController
 
         if ($creation) {
             $request->getSession()->getFlashBag()
-                ->add('success', new Message('grid.view_selector.flash.created'));
+                ->add('success', new Message('pim_datagrid.view_selector.flash.created'));
         }
 
         return new JsonResponse(['id' => $datagridView->getId()]);
@@ -237,12 +237,12 @@ class DatagridViewController
         $view = $this->datagridViewRepo->findOneBy(['owner' => $user, 'id' => $identifier]);
 
         if (null === $view) {
-            return new JsonResponse($this->translator->trans('grid.view_selector.flash.not_removable'), 404);
+            return new JsonResponse($this->translator->trans('pim_datagrid.view_selector.flash.not_removable'), 404);
         }
 
         $this->remover->remove($view);
         $request->getSession()->getFlashBag()
-            ->add('success', new Message('grid.view_selector.flash.removed'));
+            ->add('success', new Message('pim_datagrid.view_selector.flash.removed'));
 
         return new JsonResponse(null, 204);
     }

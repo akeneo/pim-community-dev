@@ -65,7 +65,7 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (context, field) {
-                var message = _.__('pim_enrich.entity.product.localizable.channel_locale_unavailable', {
+                var message = _.__('pim_enrich.entity.product.module.attribute.locale_unavailable', {
                     channel: context.scope,
                     locale: context.locale
                 });

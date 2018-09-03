@@ -1,5 +1,5 @@
 parameters:
-    pim_analytics.data_collector.chained.class:          Akeneo\Component\Analytics\ChainedDataCollector
+    pim_analytics.data_collector.chained.class:          Akeneo\Tool\Component\Analytics\ChainedDataCollector
     pim_analytics.data_collector.request.class:          Pim\Bundle\AnalyticsBundle\DataCollector\RequestDataCollector
     pim_analytics.data_collector.token_storage.class:    Pim\Bundle\AnalyticsBundle\DataCollector\TokenStorageDataCollector
     pim_analytics.data_collector.operating_system.class: Pim\Bundle\AnalyticsBundle\DataCollector\OSDataCollector

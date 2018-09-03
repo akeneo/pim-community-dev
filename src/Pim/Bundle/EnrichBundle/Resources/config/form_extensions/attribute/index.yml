@@ -24,7 +24,7 @@ extensions:
         parent: pim-attribute-index
         targetZone: title
         config:
-            title: pim_enrich.index.attribute.title
+            title: pim_enrich.entity.attribute.page_title.index
 
     pim-attribute-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -65,5 +65,5 @@ extensions:
         position: 100
         aclResourceId: pim_enrich_attribute_create
         config:
-            buttonTitle: pim_enrich.index.attribute.create_btn
-            modalTitle: pim_enrich.index.attribute.modal_title
+            buttonTitle: pim_enrich.entity.attribute.module.create.button
+            modalTitle: pim_enrich.entity.attribute.property.type.choose

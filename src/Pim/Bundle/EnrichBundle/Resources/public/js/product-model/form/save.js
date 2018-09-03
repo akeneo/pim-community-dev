@@ -29,8 +29,8 @@ define(
         UserContext
     ) {
         return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.product_model.info.update_successful'),
-            updateFailureMessage: __('pim_enrich.entity.product_model.info.update_failed'),
+            updateSuccessMessage: __('pim_enrich.entity.product_model.flash.update.success'),
+            updateFailureMessage: __('pim_enrich.entity.product_model.flash.update.fail'),
 
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:update-association', this.save);
@@ -61,7 +61,9 @@ define(
 
                     messenger.notify(
                         'error',
-                        __('pim_enrich.entity.product_model.info.field_not_ready', {'fields': fieldLabels.join(', ')})
+                        __('pim_enrich.entity.product_model.flash.update.fields_not_ready', {
+                            'fields': fieldLabels.join(', ')
+                        })
                     );
 
                     return;

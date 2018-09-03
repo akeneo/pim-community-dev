@@ -1,0 +1,97 @@
+config:
+    shim:
+        jquery-ui:
+            deps:
+                - jquery
+        jquery.numeric:
+            deps:
+                - jquery
+        jquery.select2:
+            deps:
+                - jquery
+        jquery.jstree:
+            deps:
+                - jquery
+        jstree/jquery.hotkeys:
+            deps:
+                - jquery.jstree
+        bootstrap:
+            deps:
+                - jquery
+        underscore:
+            exports: _
+        backbone:
+            deps:
+                - jquery
+                - underscore
+            exports: Backbone
+        backbone/bootstrap-modal:
+            deps:
+                - jquery
+                - underscore
+                - backbone
+        jquery.slimbox:
+            deps:
+                - jquery
+        bootstrap.bootstrapswitch:
+            deps:
+                - jquery
+        bootstrap.datetimepicker:
+            deps:
+                - jquery
+        jquery.sidebarize:
+            deps:
+                - jquery
+        jquery.form:
+            deps:
+                - jquery
+        url:
+            exports: Url
+
+    paths:
+        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
+        jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
+        jquery.select2:                pimui/lib/select2/select2
+        jquery.jstree:                 pimui/lib/jstree/jquery.jstree
+        jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
+        bootstrap:                     pimui/lib/bootstrap/js/bootstrap
+        backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
+        oro/app:                       pimui/js/app
+        oro/error:                     pimui/js/error
+        oro/init-layout:               pimui/js/init-layout
+        oro/jquery-setup:              pimui/js/jquery-setup
+        oro/layout:                    pimui/js/layout
+        oro/mediator:                  pimui/js/mediator
+        oro/messenger:                 pimui/js/messenger
+        oro/modal:                     pimui/js/modal
+        oro/delete-confirmation:       pimui/js/delete-confirmation
+        oro/tools:                     pimui/js/tools
+
+        oro/form/state:                pimui/js/form/state.js
+
+        jquery.slimbox:            pimui/lib/slimbox2/slimbox2
+        bootstrap.bootstrapswitch: pimui/lib/bootstrap-switch/bootstrap.switch
+        bootstrap.datetimepicker:  pimui/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker
+        wysiwyg:                   pimui/js/pim-wysiwyg
+        datepicker:                pimui/js/pim-datepicker
+        jquery.sidebarize:         pimui/js/jquery.sidebarize
+        pim/ui:                    pimui/js/pim-ui
+        pim/initselect2:           pimui/js/pim-initselect2
+        pim/dialog:                pimui/js/pim-dialog
+        pim/formupdatelistener:    pimui/js/pim-formupdatelistener
+        pim/saveformstate:         pimui/js/pim-saveformstate
+        pim/fileinput:             pimui/js/pim-fileinput
+        pim/dialogform:            pimui/js/pim-dialogform
+        oro/error:                 pimui/js/pim-error
+        pim/dropzonejs:            pimui/lib/dropzonejs/dist/dropzone-amd-module.js
+
+        pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
+
+        # Templates
+        pim/template/flash-message:              pimui/js/templates/flash-message.html
+        pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
+
+        # Navigation
+        jquery.form:                      pimui/lib/jquery-form/jquery.form
+        oro/navigation/collection:        pimui/js/navigation/collection
+        oro/navigation/model:             pimui/js/navigation/model

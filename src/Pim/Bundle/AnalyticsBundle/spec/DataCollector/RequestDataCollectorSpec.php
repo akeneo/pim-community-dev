@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\AnalyticsBundle\DataCollector\RequestDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -15,8 +17,8 @@ class RequestDataCollectorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\RequestDataCollector');
-        $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
+        $this->shouldHaveType(RequestDataCollector::class);
+        $this->shouldHaveType(DataCollectorInterface::class);
     }
 
     function it_collects_data_from_request($stack, Request $request)

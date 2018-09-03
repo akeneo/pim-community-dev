@@ -1,0 +1,39 @@
+Akeneo\Pim\Structure\Component\Model\VariantAttributeSet:
+    type: entity
+    table: pim_catalog_family_variant_attribute_set
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        level:
+            type: integer
+            column: level
+
+    manyToMany:
+        attributes:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinTable:
+                name: pim_catalog_variant_attribute_set_has_attributes
+                joinColumns:
+                    variant_attribute_set_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    attributes_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        axes:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinTable:
+                name: pim_catalog_variant_attribute_set_has_axes
+                joinColumns:
+                    variant_attribute_set_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    axes_id:
+                        referencedColumnName: id

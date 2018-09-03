@@ -1,0 +1,174 @@
+Akeneo\Pim\Structure\Component\Model\Attribute:
+    type: entity
+    table: pim_catalog_attribute
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        searchcode_idx:
+            columns:
+                - code
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - code
+                - entity_type
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        sortOrder:
+            type: integer
+            column: sort_order
+        useableAsGridFilter:
+            type: boolean
+            options:
+                default: false
+            column: useable_as_grid_filter
+        maxCharacters:
+            type: smallint
+            nullable: true
+            column: max_characters
+        validationRule:
+            type: string
+            length: 10
+            nullable: true
+            column: validation_rule
+        validationRegexp:
+            type: string
+            length: 500
+            nullable: true
+            column: validation_regexp
+        wysiwygEnabled:
+            type: boolean
+            nullable: true
+            column: wysiwyg_enabled
+        numberMin:
+            type: decimal
+            scale: 4
+            nullable: true
+            precision: 14
+            column: number_min
+        numberMax:
+            type: decimal
+            scale: 4
+            nullable: true
+            precision: 14
+            column: number_max
+        decimalsAllowed:
+            type: boolean
+            nullable: true
+            column: decimals_allowed
+        negativeAllowed:
+            type: boolean
+            nullable: true
+            column: negative_allowed
+        dateMin:
+            type: datetime
+            nullable: true
+            column: date_min
+        dateMax:
+            type: datetime
+            nullable: true
+            column: date_max
+        metricFamily:
+            type: string
+            length: 30
+            nullable: true
+            column: metric_family
+        defaultMetricUnit:
+            type: string
+            length: 30
+            nullable: true
+            column: default_metric_unit
+        maxFileSize:
+            type: decimal
+            scale: 2
+            nullable: true
+            precision: 6
+            column: max_file_size
+        allowedExtensions:
+            type: string
+            length: 255
+            nullable: true
+            column: allowed_extensions
+        minimumInputLength:
+            type: smallint
+            nullable: true
+        required:
+            type: boolean
+            column: is_required
+        unique:
+            type: boolean
+            column: is_unique
+        localizable:
+            type: boolean
+            column: is_localizable
+        scopable:
+            type: boolean
+            column: is_scopable
+        code:
+            type: string
+            length: 100
+        entityType:
+            type: string
+            length: 255
+            column: entity_type
+        type:
+            type: string
+            length: 255
+            column: attribute_type
+        backendType:
+            type: string
+            scale: 0
+            length: 255
+            column: backend_type
+        properties:
+            type: array
+            nullable: true
+        created:
+            type: datetime
+        updated:
+            type: datetime
+    oneToMany:
+        options:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
+            mappedBy: attribute
+            cascade:
+                - persist
+                - detach
+            orderBy:
+                sortOrder: ASC
+                code: ASC
+        translations:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+            orphanRemoval: true
+    manyToOne:
+        group:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
+            inversedBy: attributes
+            joinColumns:
+                group_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+    manyToMany:
+        availableLocales:
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            joinTable:
+                name: pim_catalog_attribute_locale
+                joinColumns:
+                    attribute_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    locale_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        families:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
+            mappedBy: attributes

@@ -1,0 +1,40 @@
+services:
+    akeneo_channel.job.job_parameters.constraint_collection_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_channel_export'
+                - 'csv_locale_export'
+                - 'csv_currency_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_channel.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_channel_export'
+                - 'xlsx_locale_export'
+                - 'xlsx_currency_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_channel.job.job_parameters.constraint_collection_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_channel_import'
+                - 'csv_locale_import'
+                - 'csv_currency_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_channel.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_channel_import'
+                - 'xlsx_locale_import'
+                - 'xlsx_currency_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

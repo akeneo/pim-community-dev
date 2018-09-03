@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,7 +19,7 @@ class BaseHandlerSpec extends ObjectBehavior
 
     function it_is_a_handler()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface');
+        $this->shouldImplement(HandlerInterface::class);
     }
 
     function it_saves_an_entity_when_form_is_valid(

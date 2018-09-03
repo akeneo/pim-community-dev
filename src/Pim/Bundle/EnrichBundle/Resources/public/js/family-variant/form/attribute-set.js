@@ -297,8 +297,8 @@ define([
              */
             handleAttributesRemoval(level, removedAttributes) {
                 Dialog.confirm(
-                    __('pim_enrich.entity.family.variant.confirm_attribute_removal.message'),
-                    __('pim_enrich.entity.family.variant.confirm_attribute_removal.title'),
+                    __('pim_enrich.entity.family_variant.module.edit.confirm_attribute_removal_message'),
+                    __('pim_enrich.entity.family_variant.module.edit.confirm_attribute_removal_title'),
                     () => {
                         var data = this.getFormData();
                         data.variant_attribute_sets.forEach((attributeSet) => {

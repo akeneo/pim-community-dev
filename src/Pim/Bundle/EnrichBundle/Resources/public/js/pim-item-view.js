@@ -33,8 +33,8 @@ define(
             },
             deleteItem: function () {
                 Dialog.confirm(
-                    __('pim_enrich.item.delete.confirm.content', {'itemName': this.itemName}),
-                    __('pim_enrich.item.delete.confirm.title', {'itemName': this.itemName}),
+                    __('pim_enrich.entity.fallback.module.delete.item_placeholder', {'itemName': this.itemName}),
+                    __('pim_enrich.entity.fallback.module.delete.title', {'itemName': this.itemName}),
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this)

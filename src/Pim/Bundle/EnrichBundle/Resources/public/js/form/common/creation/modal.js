@@ -72,8 +72,8 @@ define(
                 const modal = new Backbone.BootstrapModal({
                     title: __(this.config.labels.title),
                     content: '',
-                    cancelText: __('pim_enrich.entity.create_popin.labels.cancel'),
-                    okText: __('pim_enrich.entity.create_popin.labels.save'),
+                    cancelText: __('pim_common.cancel'),
+                    okText: __('pim_common.save'),
                     okCloses: false
                 });
 
@@ -173,7 +173,9 @@ define(
                     }
 
                     this.validationErrors = response.responseJSON ?
-                        this.normalize(response.responseJSON) : [{message: __('error.common')}];
+                        this.normalize(response.responseJSON) : [{
+                            message: __('pim_enrich.entity.fallback.generic_error')
+                        }];
                     this.render();
                 }.bind(this))
                 .always(() => loadingMask.remove());

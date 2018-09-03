@@ -49,11 +49,11 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.group
+                title: pim_enrich.entity.group.module.delete.confirm
                 subTitle: pim_menu.item.group
-                content: pim_enrich.confirmation.delete_item
-                success: flash.group.removed
-                fail: error.removing.group
+                content: pim_common.confirm_deletion
+                success: pim_enrich.entity.group.flash.delete.success
+                fail: pim_enrich.entity.group.flash.delete.fail
             redirect: pim_enrich_group_index
 
     pim-group-edit-form-save-buttons:
@@ -74,7 +74,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.group.title
+            entity: pim_enrich.entity.group.label
 
     pim-group-edit-form-product-count:
         module: pim/group-edit-form/meta/product-count
@@ -82,7 +82,7 @@ extensions:
         targetZone: meta
         position: 110
         config:
-            productCountLabel: pim_enrich.entity.group.meta.product_count
+            productCountLabel: pim_enrich.entity.product.plural_label
 
     pim-group-edit-form-properties-tab:
         module: pim/common/tab
@@ -90,7 +90,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.group.tab.properties.title'
+            label: 'pim_common.properties'
 
     pim-group-edit-form-properties:
         module: pim/common/simple-view
@@ -113,7 +113,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.group.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-group-edit-form-properties-translation:
@@ -132,7 +132,7 @@ extensions:
         position: 110
         config:
             class: 'group'
-            title: 'pim_enrich.form.group.tab.history.title'
+            title: 'pim_common.history'
 
     pim-group-edit-form-products:
         module: pim/group-edit-form/products
@@ -140,5 +140,5 @@ extensions:
         targetZone: container
         position: 80
         config:
-            label: 'pim_enrich.form.group.tab.products.title'
+            label: 'pim_enrich.entity.product.plural_label'
             gridId: 'product-group-grid'

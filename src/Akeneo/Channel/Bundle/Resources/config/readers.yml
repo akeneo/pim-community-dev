@@ -1,0 +1,63 @@
+services:
+    ### Locale
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.database.locale:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_catalog.repository.locale'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.csv_locale:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.xlsx_locale:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'
+
+    ### Channel
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.database.channel:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.csv_channel:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.xlsx_channel:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
+
+    ### Currency
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.database.currency:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_catalog.repository.currency'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.csv_currency:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.currency'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.xlsx_currency:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.currency'

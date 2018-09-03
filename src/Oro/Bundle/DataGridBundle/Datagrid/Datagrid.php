@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 
@@ -40,7 +40,7 @@ class Datagrid implements DatagridInterface
         /** @var array $rows */
         $rows = $this->getAcceptedDatasource()->getResults();
 
-        $result = ResultsObject::create(['data' => $rows]);
+        $result = ResultsIterableObject::create(['data' => $rows]);
         $this->acceptor->acceptResult($result);
 
         return $result;
@@ -51,7 +51,7 @@ class Datagrid implements DatagridInterface
      */
     public function getMetadata()
     {
-        $data = MetadataObject::createNamed($this->getName(), []);
+        $data = MetadataIterableObject::createNamed($this->getName(), []);
         $this->acceptor->acceptMetadata($data);
 
         return $data;

@@ -27,7 +27,7 @@ extensions:
                 - 'pim_catalog_multiselect'
                 - 'pim_reference_data_multiselect'
             select2:
-                placeholder: 'pim_enrich.form.product.mass_edit.select_attributes'
+                placeholder: 'pim_enrich.mass_edit.product.operation.common.select_attributes'
             events:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'

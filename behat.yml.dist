@@ -4,7 +4,7 @@ legacy:
             paths:
                 - tests/legacy/features
             filters:
-                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated'
             contexts:
                 - Context\FeatureContext:
                     -
@@ -143,17 +143,26 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        pim:
             paths:
-                - 'tests/features/pim'
+                - '%paths.base%/tests/features/pim'
+            contexts_services:
+                - test.catalog.product_creation.context
+                - test.catalog.product_validation.context
+                - test.enrichment.enrichment_follow_up_context
+            filters:
+                tags: '@acceptance-back'
+        channel:
+            paths:
+                - '%paths.base%/tests/features/channel'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
             filters:
                 tags: '@acceptance-back'
-        volume-monitoring:
+        platform:
             paths:
-                - 'tests/features/volume-monitoring'
+                - '%paths.base%/tests/features/platform'
             contexts_services:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.system_info_context
@@ -172,8 +181,6 @@ acceptance:
                 - test.catalog_volume_limits.variant_product_context
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
-                - test.catalog.product_creation.context
-                - test.catalog.product_validation.context
                 - test.catalog_volume_limits.user_context
                 - test.catalog_volume_limits.category_in_one_category_context
                 - test.catalog_volume_limits.category_level_context
@@ -184,9 +191,15 @@ acceptance:
            imports:
                - 'tests/back/Acceptance/Resources/config/behat/services.yml'
                - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/Pim/Enrichment/Bundle/tests/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
-                env: acceptance
+                env: test_fake
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+
+    formatters:
+        pretty: true
+        pim:
+            output_path: /tmp/pod/

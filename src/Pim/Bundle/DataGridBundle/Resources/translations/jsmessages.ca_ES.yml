@@ -1,0 +1,84 @@
+pim_datagrid:
+  entity_hint: entitat
+  no_entities: "No {{ entityHint }} trobat"
+  no_results: "Ho sentim, no hi ha cap {{ entityHint }} per a la cerca."
+  no_results_subtitle: "Provi amb nous criteris de cerca."
+  search: "Cercar a {{ label }}"
+  select:
+    title: Seleccionar
+    all_visible: Tot visible
+  delete_error:
+    title: Error a l'esborrar
+  reset_confirmation:
+    title: Reiniciar la confirmació
+    content: Es perdran els canvis locals. Esteu segur que voleu reiniciar la graella?
+  refresh_confirmation:
+    title: Refresqui la confirmació
+    content: Es perdran els canvis locals. Esteu segur que voleu actualitzar la graella?
+  column_configurator:
+    label: Columnes
+    title: Configurar columnes
+    all_groups: Tots els grups
+    search: Cercar
+    clear: Restablir
+    displayed_columns: Columnes seleccionades
+    remove_column: Eliminar
+    description: Seleccionar la informació que voleu mostrar com columna
+    min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
+    system_group: Sistema
+  view_selector:
+    create_view: Crear vista
+    placeholder: Nom de la nova vista
+    choose_label: Trieu una etiqueta per a la vista
+    remove: Eliminar aquesta vista
+    save_changes: Desa aquesta vista
+    default_view: Vista per defecte
+    select: Si us plau, seleccioneu la visualització
+    confirmation:
+      remove: Està segur que vol suprimir aquesta vista?
+  display_selector:
+    label: Mostra
+    gallery: Galeria
+    list: Llista
+  mass_action:
+    delete:
+      empty_selection: No hi ha productes seleccionats
+      success_message: "{0} no s'ha eliminat cap entitat|{1} s'ha eliminat una entitat|] 1, Inf [s'han eliminat %count% entitats"
+    default:
+      confirmation:
+        title: Confirmació d'accions masives
+        content: Esteu segur que voleu fer-ho?
+      success: Acció massiva realitzada
+      error: Acció massiva no realitzada
+      no_items: Si us plau, seleccioneu elements per dur a terme l'acció massiva.
+    quick_export:
+      title: Exportació ràpida
+      success: S'ha executat la exportació ràpida
+  action:
+    default:
+      confirmation:
+        title: Confirmació d'execució
+        content: Esteu segur que voleu fer-ho?
+      success: Acció realitzada
+      error: L'acció no s'ha relitzat
+      no_items: Si us plau, seleccioneu l'element per realitzar l'acció.
+    show:
+      title: Mostrar
+  filters:
+    common:
+      empty: està buit
+      not_empty: no és buit
+      in_list: a la llista
+      contains: conté
+      does_not_contain: no conté
+      equal: és igual a
+      start_with: s'inicia amb
+      operator: Operador
+    price_filter:
+      label: Moneda
+    metric_filter:
+      label: Unitat
+  cells:
+    credientials:
+      client_id: Identificador del client
+      secret: Secret

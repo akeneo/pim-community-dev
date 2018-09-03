@@ -2,14 +2,14 @@
 
 namespace spec\Akeneo\Test\Acceptance\ProductModel;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\FamilyVariant;
-use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryProductModelRepositorySpec extends ObjectBehavior

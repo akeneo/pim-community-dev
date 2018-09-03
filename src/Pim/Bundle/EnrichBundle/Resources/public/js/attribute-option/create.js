@@ -36,10 +36,10 @@ define(
                         },
                         allowCancel: true,
                         okCloses: false,
-                        title: _.__('pim_enrich.form.attribute_option.add_option_modal.title'),
+                        title: _.__('pim_enrich.form.product.module.attribute.add_attribute_option'),
                         content: '',
-                        cancelText: _.__('pim_enrich.form.attribute_option.add_option_modal.cancel'),
-                        okText: _.__('pim_enrich.form.attribute_option.add_option_modal.confirm')
+                        cancelText: _.__('pim_common.cancel'),
+                        okText: _.__('pim_common.add')
                     });
                     modal.open();
 
@@ -59,7 +59,7 @@ define(
                             modal.close();
                             messenger.notify(
                                 'success',
-                                _.__('pim_enrich.form.attribute_option.flash.option_created')
+                                _.__('pim_enrich.entity.attribute_option.flash.create.success')
                             );
                             deferred.resolve(option);
                         }).fail(function (xhr) {
@@ -74,7 +74,7 @@ define(
                             } else {
                                 messenger.notify(
                                     'error',
-                                    _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
+                                    _.__('pim_enrich.entity.attribute_option.flash.create.fail')
                                 );
                             }
                         }.bind(this));

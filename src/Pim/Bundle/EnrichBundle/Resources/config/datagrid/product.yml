@@ -5,9 +5,9 @@ datagrid:
             filtersAsColumn: true
             displayTypes:
                 default:
-                    label: grid.display_selector.list
+                    label: pim_datagrid.display_selector.list
                 gallery:
-                    label: grid.display_selector.gallery
+                    label: pim_datagrid.display_selector.gallery
                     rowView: oro/datagrid/product-row
                     manageColumns: false
         source:
@@ -83,7 +83,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate-product-and-product-model
-                label:     Edit attributes of the product
+                label:     pim_datagrid.actions.edit_product_attributes
                 tabRedirects:
                     product: pim-product-edit-form-attributes
                     product_model: pim-product-model-edit-form-attributes
@@ -91,7 +91,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--folder
                 type:  navigate-product-and-product-model
-                label: Classify the product
+                label: pim_datagrid.actions.classify_product
                 tabRedirects:
                     product: pim-product-edit-form-categories
                     product_model: pim-product-edit-form-categories
@@ -99,14 +99,14 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete-product
-                label: Delete the product
+                label: pim_datagrid.actions.delete_product
                 link:  delete_link
                 acl_resource: pim_enrich_product_remove
             toggle_status:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--switch
                 type:  toggle-product
-                label: Toggle status
+                label: pim_datagrid.actions.toggle_status
                 link:  toggle_status_link
                 acl_resource: pim_enrich_product_change_state
         mass_actions_groups:
@@ -118,7 +118,7 @@ datagrid:
             product_edit:
                 type: edit
                 acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.mass_edit
+                label: pim_datagrid.mass_action.mass_edit
                 handler: product_mass_edit
                 route: pim_enrich_mass_edit_action
                 className: 'AknButton AknButton--action AknButtonList-item'
@@ -127,25 +127,25 @@ datagrid:
             sequential_edit:
                 type: sequential_edit
                 acl_resource: pim_enrich_product_edit_attributes
-                label: pim.grid.mass_action.sequential_edit
+                label: pim_datagrid.mass_action.sequential_edit
                 className: 'AknButton AknButton--action AknButtonList-item'
             delete_products_and_product_models:
                 type: mass_delete
-                label: pim.grid.mass_action.delete
+                label: pim_common.delete
                 entity_name: product
                 acl_resource: pim_enrich_product_remove
                 handler: product_mass_delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
-                    confirm_title: pim_datagrid.mass_action.delete.confirm_title
+                    confirm_title: pim_common.confirm_deletion
                     confirm_content: pim_datagrid.mass_action.delete.confirm_content
-                    confirm_ok: pim_datagrid.mass_action.delete.confirm_ok
+                    confirm_ok: pim_common.ok
                     success: pim_datagrid.mass_action.delete.success
                     error: pim_datagrid.mass_action.delete.error
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
             quick_export_grid_context_xlsx:
                 type: export
-                label: pim.grid.mass_action.quick_export.xlsx_grid_context
+                label: pim_datagrid.mass_action.quick_export.xlsx_grid_context
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -161,7 +161,7 @@ datagrid:
                     group: quick_export
             quick_export_xlsx:
                 type: export
-                label: pim.grid.mass_action.quick_export.xlsx_all
+                label: pim_datagrid.mass_action.quick_export.xlsx_all
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -177,7 +177,7 @@ datagrid:
                     group: quick_export
             quick_export_grid_context_csv:
                 type: export
-                label: pim.grid.mass_action.quick_export.csv_grid_context
+                label: pim_datagrid.mass_action.quick_export.csv_grid_context
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -193,7 +193,7 @@ datagrid:
                     group: quick_export
             quick_export_csv:
                 type: export
-                label: pim.grid.mass_action.quick_export.csv_all
+                label: pim_datagrid.mass_action.quick_export.csv_all
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:

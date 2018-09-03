@@ -1,5 +1,7 @@
 <?php
 
+use Akeneo\Test\Common\Path;
+
 /**
  * App kernel for the integration tests.
  *
@@ -25,17 +27,7 @@ class AppKernelTest extends AppKernel
      */
     public function getCacheDir(): string
     {
-        return dirname(__DIR__)
-            . DIRECTORY_SEPARATOR
-            . '..'
-            . DIRECTORY_SEPARATOR
-            . '..'
-            . DIRECTORY_SEPARATOR
-            . 'var'
-            . DIRECTORY_SEPARATOR
-            . 'cache'
-            . DIRECTORY_SEPARATOR
-            . 'test_kernel';
+        return new Path('var', 'cache', 'test_kernel');
     }
 
     /**
@@ -43,7 +35,7 @@ class AppKernelTest extends AppKernel
      */
     public function getLogDir(): string
     {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'logs';
+        return new Path('var', 'logs');
     }
 
     /**

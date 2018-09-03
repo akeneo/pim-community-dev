@@ -1,0 +1,38 @@
+parameters:
+    akeneo_batch_queue.job_parameters.constraints.empty_constraint_collection_provider.class: \Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+    akeneo_batch_queue.job_parameters.provider.empty_default_values_provider.class: \Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+    akeneo_batch_queue.step.infinite_loop_step.class: \Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command\InfiniteLoopStep
+    akeneo_batch_queue.job_name.infinite_loop_job: 'infinite_loop_job'
+    akeneo_batch_queue.job.test_type: 'integration_test_type'
+    akeneo_batch_queue.job.connector_name: 'Integration Test Connector'
+
+services:
+    akeneo_batch_queue.job_parameters.constraints.empty_constraint_collection_provider:
+        class: '%akeneo_batch_queue.job_parameters.constraints.empty_constraint_collection_provider.class%'
+        arguments:
+            -
+                - '%akeneo_batch_queue.job_name.infinite_loop_job%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_batch_queue.job_parameters.provider.empty_default_values_provider:
+        class: '%akeneo_batch_queue.job_parameters.provider.empty_default_values_provider.class%'
+        arguments:
+            -
+                - '%akeneo_batch_queue.job_name.infinite_loop_job%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_batch_queue.step.infinite_loop_step:
+        class: '%akeneo_batch_queue.step.infinite_loop_step.class%'
+
+    akeneo_batch_queue.job.infinite_loop_job:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo_batch_queue.job_name.infinite_loop_job%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo_batch_queue.step.infinite_loop_step'
+        tags:
+            - { name: akeneo_batch.job, connector: '%akeneo_batch_queue.job.connector_name%', type: '%akeneo_batch_queue.job.test_type%' }

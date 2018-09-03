@@ -1,0 +1,7 @@
+parameters:
+    pim_connector.connector_name.csv: 'Akeneo CSV Connector'
+    pim_connector.connector_name.xlsx: 'Akeneo XLSX Connector'
+    pim_connector.job.simple_job.class: Akeneo\Tool\Component\Batch\Job\Job
+    pim_connector.step.item_step.class: Akeneo\Tool\Component\Batch\Step\ItemStep
+    pim_connector.job.import_type: import
+    pim_connector.job.export_type: export

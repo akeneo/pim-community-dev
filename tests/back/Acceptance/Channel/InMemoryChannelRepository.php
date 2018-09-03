@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Channel;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 final class InMemoryChannelRepository implements ChannelRepositoryInterface, SaverInterface
 {
     /** @var Collection */
     private $channels;
 
-    public function __construct()
+    public function __construct(array $channels = [])
     {
-        $this->channels = new ArrayCollection();
+        $this->channels = new ArrayCollection($channels);
     }
 
     /**
@@ -121,7 +121,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_values($this->channels->toArray());
     }
 
     /**

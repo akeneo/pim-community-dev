@@ -1,0 +1,21 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Toimintoja ei löytynyt
+      date: Päivämäärä
+      profile_name: Profiilinimi
+      details: Lisätiedot
+      warning_count: Varoitus
+      job_type:
+        import: Tuonti
+        export: Vienti
+        mass_edit: Massamuokkaus
+        quick_export: Nopea vienti
+        compute_product_models_descendants: Lasketaan tuotemallin rakenne
+        mass_delete: Massapoista tuotteet
+    completeness:
+      load_more: 'Lataa lisää...'
+    header:
+      view_all: Näytä kaikki
+pim_title:
+  pim_dashboard_index: Ohjauspaneeli

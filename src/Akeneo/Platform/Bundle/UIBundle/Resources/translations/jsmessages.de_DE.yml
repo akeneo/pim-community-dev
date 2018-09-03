@@ -1,0 +1,112 @@
+"Yes, Delete": "Ja, löschen"
+"Yes, I Agree": "Ja, ich stimme zu"
+"Yes, do it": "Ja, ausführen"
+"Ok, got it.": "Ja, verstanden."
+"Delete Confirmation": "Löschbestätigung"
+"Edit": "Bearbeiten"
+"Unexpected error occured. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
+"Yes, revoke": "Ja, widerrufen"
+"Revoke Confirmation": "Bestätigung widerrufen"
+Prev: Zurück
+Today: Heute
+Wk: KW
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Zeit wählen"
+Time: Zeit
+Hour: Stunde
+Minute: Minute
+Second: Sekunde
+Millisecond: Millisekunde
+Microsecond: Mikrosekunde
+"Time Zone": "Zeitzone"
+Localized value: Vom Gebietsschema abhängiger Wert
+Columns: Spalten
+Datagrid Configuration: Konfiguration Tabellenansicht
+Action: Aktion
+Unit: Einheit
+Currency: Währung
+jstree:
+  all: Alle Produkte
+  unclassified: Nicht klassifizierte Produkte
+  product:
+    all: Alle Produkte
+    unclassified: Nicht klassifizierte Produkte
+  no_tree: Kein Strukturbaum verfügbar
+  include_sub: Unterkategorien einschließen
+datetimepicker:
+  days:
+    Sunday: Sonntag
+    Monday: Montag
+    Tuesday: Dienstag
+    Wednesday: Mittwoch
+    Thursday: Donnerstag
+    Friday: Freitag
+    Saturday: Samstag
+  daysShort:
+    Sun: So
+    Mon: Mo
+    Tue: Di
+    Wed: Mi
+    Thu: Do
+    Fri: Fr
+    Sat: Sa
+  daysMin:
+    Su: So
+    Mo: Mo
+    Tu: Di
+    We: Mi
+    Th: Do
+    Fr: Fr
+    Sa: Sa
+  months:
+    January: Januar
+    February: Februar
+    March: März
+    April: April
+    May: Mai
+    June: Juni
+    July: Juli
+    August: August
+    September: September
+    October: Oktober
+    November: November
+    December: Dezember
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mrz
+    Apr: Apr
+    May: Mai
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dez
+oro_config:
+  form:
+    config:
+      title: Systemkonfiguration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Lokalisierung
+          system_locale: Sprache
+        notification:
+          title: Benachrichtigungen
+          system_notification: Benachrichtigungen über neue Versionen
+        loading_message:
+          title: Nachrichten werden geladen
+          label: Nachrichten laden aktivieren
+        loading_messages:
+          label: Nachrichten laden aktivieren
+"Sorry, page was not loaded correctly": "Entschuldigung, die Seite wurde nicht richtig geladen"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Seite aktualisieren möchten?"
+"navigation.message.content.outdated": "Der Inhalt der Seite {{ title }} ist veraltet, bitte <a href='#' data-action='page-refresh'>aktualisieren Sie die Seite</a>"
+"Content of pinned page is outdated": "Inhalt der fixierten Seite ist veraltet"

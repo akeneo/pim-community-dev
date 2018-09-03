@@ -2,22 +2,19 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
-use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-use Akeneo\Component\FileStorage\StreamedFileResponse;
-use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -37,9 +34,6 @@ class JobExecutionController
 
     /** @var string */
     protected $jobType;
-
-    /** @var SerializerInterface */
-    protected $serializer;
 
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
@@ -62,7 +56,6 @@ class JobExecutionController
      * @param EventDispatcherInterface $eventDispatcher
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
-     * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param JobExecutionRepository   $jobExecutionRepo
      * @param string                   $jobType
@@ -73,7 +66,6 @@ class JobExecutionController
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
-        SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
         $jobType
@@ -83,7 +75,6 @@ class JobExecutionController
         $this->eventDispatcher = $eventDispatcher;
         $this->batchLogHandler = $batchLogHandler;
         $this->archivist = $archivist;
-        $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->jobType = $jobType;
@@ -101,7 +92,7 @@ class JobExecutionController
         $jobExecution = $this->jobExecutionRepo->find($id);
 
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
@@ -126,7 +117,7 @@ class JobExecutionController
         $jobExecution = $this->jobExecutionRepo->find($id);
 
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));

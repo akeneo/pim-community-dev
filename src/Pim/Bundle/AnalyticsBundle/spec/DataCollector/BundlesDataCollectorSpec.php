@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector;
 
 class BundlesDataCollectorSpec extends ObjectBehavior
 {
@@ -19,8 +21,8 @@ class BundlesDataCollectorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector');
-        $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
+        $this->shouldHaveType(BundlesDataCollector::class);
+        $this->shouldHaveType(DataCollectorInterface::class);
     }
 
     function it_collects_registered_bundles()

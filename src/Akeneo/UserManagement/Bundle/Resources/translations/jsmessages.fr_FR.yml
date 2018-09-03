@@ -1,0 +1,42 @@
+pim_title:
+  pim_user_index: Utilisateurs
+  pim_user_role_index: Rôles
+  pim_user_group_index: Groupes d'utilisateurs
+  oro_config_configuration_system: Configuration
+  pim_user_view: 'Utilisateur {{ username }} | Visualisation'
+  pim_user_update: 'Utilisateur {{ username }} | Édition'
+  pim_user_create: 'Utilisateurs | Création'
+  pim_user_profile_view: '{{ username }}'
+  pim_user_profile_update: '{{ username }} | Édition'
+  pim_user_role_update: 'Rôle {{ role }} | Édition'
+  pim_user_role_create: 'Rôles | Création'
+  pim_user_security_login: Connexion
+  pim_user_reset_reset: Réinitialisation de mot de passe
+  pim_user_reset_request: Mot de passe oublié
+  pim_user_reset_check_email: Réinitialisation de mot de passe | Email de vérification
+  pim_user_group_create: 'Groupes | Création'
+  pim_user_group_update: 'Groupes {{ group }} | Édition'
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "]-Inf, 1]{{ count }} utilisateur|]1, Inf[{{ count }} utilisateurs"
+      module:
+        create:
+          button: Créer un utilisateur
+        delete:
+          confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
+    role:
+      page_title:
+        index: "]-Inf, 1]{{ count }} rôle|]1, Inf[{{ count }} rôles"
+      module:
+        create:
+          button: Créer un rôle
+        delete:
+          confirm: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
+    group:
+      page_title:
+        index: "]-Inf, 1]{{ count }} groupe|]1, Inf[{{ count }} groupes"
+      module:
+        create:
+          button: Créer un groupe

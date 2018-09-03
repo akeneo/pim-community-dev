@@ -1,0 +1,129 @@
+pim_user:
+  user:
+    title: Käyttäjä
+    fields:
+      name_prefix: Nimen etuliite
+      email: Sähköposti
+      username: Käyttäjänimi
+      first_name: Etunimi
+      middle_name: Toinen nimi
+      last_name: Sukunimi
+      name_suffix: Nimen liite
+      date_of_birth: Syntymäaika
+      avatar: Avatar
+      timezone: Aikavyöhyke
+      roles: Roolit
+      groups: Ryhmät
+      password: Salasana
+      password_again: Syötä salasana uudelleen
+      product_grid_filters: Tuoteruudukon suodattimet
+      catalog_locale: Katalogin lokaatio
+      catalog_scope: Katalogin laajuus
+      default_tree: Oletusarvoinen puu
+      current_password: Nykyinen salasana
+      new_password: Uusi salasana
+      new_password_again: Uusi salasana (toista)
+      default_grid_view:
+        none: Ei yhtään
+      default_product_grid_view:
+        label: Tuoteruudukon oletusnäkymä
+      ui_locale: Käyttöliittymän kieli
+      last_logged_in: Viimeksi kirjautunut
+      login_count: Kirjautumisien määrä
+      user_salt: Käyttäjän suola
+      created: Luotu
+      updated: Päivitetty
+      status: Status
+      capabilities: Ominaisuudet
+      has_role: On rooli
+      has_group: Ryhmä on olemassa
+      active: Aktiivinen
+      inactive: Ei aktiivinen
+    tabs:
+      general:
+        title: Yleinen
+        contact_information: Yhteystiedot
+      additional:
+        title: Lisää
+      interfaces:
+        title: Rajapinnat
+      group_and_role.title: Ryhmät ja roolit
+      password.title: Salasana
+      business_unit.title: Liiketoimintayksiköt
+      email_synchronization.title: Sähköpostin synkronoinnin asetukset
+    removed_user: Poistettu käyttäjä
+    login:
+      username_or_email: Käyttäjänimi tai sähköpostiosoite
+      remember_me: Muista minut tässä tietokoneessa
+      password_forgotten: Unohditko salasanasi?
+      log_in: Kirjaudu
+      forgot_password: Unohdin salasanani
+      request: Pyyntö
+      reset: Nollaa muutokset
+      homepage: Siirry etusivulle
+  group:
+    tab:
+      general.title: Yleinen
+      users.title: Käyttäjät
+  roles:
+    title: Rooli
+    tab:
+      general: Yleinen
+      action: Käyttöoikeudet
+      users: Käyttäjät
+  controller:
+    group:
+      message:
+        saved: "Ryhmä tallennettu"
+    role:
+      message:
+        saved: "Rooli tallennettu"
+    user:
+      message:
+        saved: "Käyttäjän tallennettu"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Luotu"
+      updatedAt: "Päivitetty"
+    roles:
+      label: "Nimike"
+    groups:
+      name: "Nimi"
+confirmation:
+  remove:
+    role: Oletko varma, että haluat poistaa tämän roolin?
+    user: Haluatko varmasti poistaa tämän käyttäjän?
+flash:
+  role:
+    removed: Roolin poistaminen onnistui
+  user:
+    removed: Käyttäjä poistettu onnistuneesti
+oro_security:
+  acl_group:
+    user: Käyttäjät
+    role: Roolit
+    group: Käyttäjäryhmät
+  acl:
+    user:
+      view: Listaa käyttäjät
+      create: Luo käyttäjä
+      edit: Muokkaa käyttäjiä
+      delete: Poista käyttäjä
+    role:
+      view: Listaa roolit
+      create: Luo rooli
+      edit: Muokkaa rooleja
+      delete: Poista rooli
+    group:
+      view: Listaa käyttäjäryhmät
+      create: Luo käyttäjäryhmä
+      edit: Muokkaa käyttäjäryhmiä
+      delete: Poista käyttäjäryhmä
+(default): Entiteettien oletusoikeudet
+VIEW: Näytä
+CREATE: Luo
+EDIT: Muokkaa
+DELETE: Poista
+ASSIGN: Määritä
+SHARE: Jaa

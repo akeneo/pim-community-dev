@@ -1,0 +1,10 @@
+.gcloudignore
+.git
+.gitignore
+.github
+
+node_modules
+vendor
+upgrades
+
+*.md

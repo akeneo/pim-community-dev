@@ -355,18 +355,25 @@ define(
                 this.loadingMask.hide();
             },
 
+            /**
+             * Returns the messages to display when there is no results.
+             *
+             * @returns {{hint, subHint: *, imageClass: string}}
+             */
             getDefaultNoDataOptions() {
-                const entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
-                let key = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
+                const entityHint = (this.entityHint || __('pim_datagrid.entity_hint')).toLowerCase();
+                let key = _.isEmpty(this.collection.state.filters) ?
+                    'pim_datagrid.no_entities' :
+                    'pim_datagrid.no_results';
 
                 if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
                     key += '.' + entityHint;
                 }
 
                 const hint = __(key, {entityHint: entityHint}).replace('\n', '<br />');
-                const subHint = __('oro.datagrid.noresults_subTitle');
+                const subHint = 'pim_datagrid.no_results_subtitle';
 
-                return { hint, subHint, imageClass: '' };
+                return { hint, subHint, imageClass: '', __ };
             },
 
             /**
@@ -378,8 +385,7 @@ define(
 
                 if (null !== customOptions && undefined !== customOptions) {
                     options = customOptions;
-                    options.hint = __(options.hint);
-                    options.subHint = __(options.subHint);
+                    options.__ = __;
                 }
 
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate(options))).hide();

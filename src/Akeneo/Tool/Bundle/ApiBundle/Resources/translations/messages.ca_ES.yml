@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Permisos web API
+    attribute:
+      edit: Crear i actualitzar els atributs
+      list: Llistar atributs
+    attribute_option:
+      edit: Crear i actualitzar opcions d'atributs
+      list: Llistar opcions d'atributs
+    attribute_group:
+      edit: Crear i actualitzar grups d'atributs
+      list: Llistar grups d'atribut
+    category:
+      edit: Crear i actualitzar les categories
+      list: Llistar categories
+    family:
+      edit: Crear i actualitzar les famílies
+      list: Llistar famílies
+    family_variant:
+      edit: Crear i actualitzar les variants familiars
+      list: Llista de variants familiars
+    channel:
+      edit: Crear i actualitzar canals
+      list: Llistar canals
+    locale.list: Llistar configuracions regionals
+    currency.list: Llistar monedes
+    association_type:
+      edit: Crear i actualitzar els tipus d'associació
+      list: Llistar tipus d'associació
+  acl_group:
+    overall_access: Accés general Web API
+    attribute: Atributs
+    attribute_option: Opcions d'atribut
+    attribute_group: Grups d'atribut
+    category: Categories
+    family: Famílies
+    family_variant: Variants familiars
+    channel: Canals
+    locale: Configuracions regionals
+    currency: Monedes
+    association_type: Tipus d'associació
+pim_user:
+  roles:
+    tab:
+      api: Permisos web API

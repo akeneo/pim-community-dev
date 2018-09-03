@@ -1,0 +1,17 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Du skal vælge mindst én datagrid kolonne der skal vises
+  label:
+    unique_message: Etiketten skal være unik
+    not_blank_message: Etiketten må ikke være tom
+  view_selector:
+    flash:
+      created: DataGrid visningen er oprettet
+      removed: DataGrid visningen er fjernet
+  cells:
+    type:
+      quick_export: Hurtig eksport
+      import: Import
+      export: Eksport
+      mass_edit: Masse Rediger
+      mass_delete: Masse slet

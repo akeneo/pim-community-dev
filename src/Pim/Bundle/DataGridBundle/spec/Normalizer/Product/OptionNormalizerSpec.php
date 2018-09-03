@@ -2,17 +2,18 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Bundle\DataGridBundle\Normalizer\Product\OptionNormalizer;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
-use Pim\Component\Catalog\Value\OptionValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Prophecy\Argument;
 
 class OptionNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\Product\OptionNormalizer');
+        $this->shouldHaveType(OptionNormalizer::class);
     }
 
     function it_is_a_normalizer()

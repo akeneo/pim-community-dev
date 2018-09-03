@@ -2,11 +2,12 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter;
 
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class CompletenessFilterSpec extends ObjectBehavior
@@ -18,7 +19,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_is_an_oro_choice_filter()
     {
-        $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\ChoiceFilter');
+        $this->shouldBeAnInstanceOf(ChoiceFilter::class);
     }
 
     function it_applies_a_filter_on_complete_products(

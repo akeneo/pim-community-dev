@@ -30,14 +30,14 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
-                label:     Edit
+                label:     pim_common.edit
                 link:      edit_link
                 rowAction: true
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
-                label: Delete
+                label: pim_common.delete
                 link:  delete_link
         sorters:
             columns:
@@ -64,7 +64,7 @@ datagrid:
         mass_actions:
             family_edit:
                 type: edit
-                label: pim.grid.mass_action.mass_edit
+                label: pim_datagrid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_action
                 route_parameters:
                     actionName: family-edit

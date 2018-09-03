@@ -2,7 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -10,7 +11,7 @@ class FileNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer');
+        $this->shouldHaveType(FileNormalizer::class);
     }
 
     function it_normalizes_a_file(FileInfoInterface $fileInfo)

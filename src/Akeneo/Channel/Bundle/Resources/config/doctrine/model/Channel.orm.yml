@@ -1,0 +1,65 @@
+Akeneo\Channel\Component\Model\Channel:
+    type: entity
+    table: pim_catalog_channel
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        conversionUnits:
+            type: array
+            nullable: false
+    manyToOne:
+        category:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            inversedBy: channels
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+    manyToMany:
+        currencies:
+            targetEntity: Akeneo\Channel\Component\Model\CurrencyInterface
+            joinTable:
+                name: pim_catalog_channel_currency
+                schema: null
+                joinColumns:
+                    channel_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    currency_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        locales:
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            inversedBy: channels
+            cascade:
+                - persist
+                - detach
+            joinTable:
+                name: pim_catalog_channel_locale
+                schema: null
+                joinColumns:
+                    channel_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    locale_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        translations:
+            targetEntity: Akeneo\Channel\Component\Model\ChannelTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+                - remove
+            orphanRemoval: true

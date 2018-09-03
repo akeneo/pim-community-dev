@@ -314,7 +314,7 @@ define(
             getDefaultView: function () {
                 return {
                     id: 0,
-                    text: __('grid.view_selector.default_view'),
+                    text: __('pim_datagrid.view_selector.default_view'),
                     columns: this.defaultColumns,
                     type: 'view',
                     filters: ''

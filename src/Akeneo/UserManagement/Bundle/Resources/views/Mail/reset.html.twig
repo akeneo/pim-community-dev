@@ -1,0 +1,9 @@
+{% extends 'PimUserBundle:Mail:layout.html.twig' %}
+
+{% block content %}
+<h1>Hello, {{ user.username }}!</h1>
+
+{% set url = url('pim_user_reset_reset', { token: user.confirmationToken }) %}
+
+<p>To reset your password - please visit <a href="{{ url }}">{{ url }}</a></p>
+{% endblock %}

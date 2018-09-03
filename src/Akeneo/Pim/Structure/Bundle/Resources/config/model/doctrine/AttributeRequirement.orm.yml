@@ -1,0 +1,41 @@
+Akeneo\Pim\Structure\Component\Model\AttributeRequirement:
+    type: entity
+    table: pim_catalog_attribute_requirement
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - channel_id
+                - family_id
+                - attribute_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        required:
+            type: boolean
+    manyToOne:
+        family:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
+            inversedBy: requirements
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        attribute:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            joinColumns:
+                attribute_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        channel:
+            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            joinColumns:
+                channel_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

@@ -24,7 +24,7 @@ extensions:
         parent: pim-channel-index
         targetZone: title
         config:
-            title: pim_enrich.index.channel.title
+            title: pim_enrich.entity.channel.page_title.index
 
     pim-channel-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -65,6 +65,6 @@ extensions:
         position: 100
         aclResourceId: pim_enrich_channel_create
         config:
-            label: pim_enrich.index.channel.create_btn
+            label: pim_enrich.entity.channel.module.create.button
             route: pim_enrich_channel_create
             buttonClass: AknButton AknButton--apply

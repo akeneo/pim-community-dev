@@ -1,0 +1,10 @@
+parameters:
+    akeneo_file_storage.saver.file.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+
+services:
+    akeneo_file_storage.saver.file:
+        class: '%akeneo_file_storage.saver.file.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%akeneo_file_storage.model.file_info.interface%'

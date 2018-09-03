@@ -1,0 +1,388 @@
+pim_common:
+  cancel: Peruuta
+  save: Tallenna
+  delete: Poista
+  update: Päivitä
+  view: Näytä
+  edit: Muokkaa
+  created: Luotu
+  updated: Päivitetty
+  create: Luo
+  permissions: Käyttöoikeudet
+  properties: Ominaisuudet
+pim_enrich:
+  create:
+    attribute: luo attribuutti
+    attribute group: luo attribuuttiryhmä
+    category: luo kategoria
+    tree: luo tuotepuu
+    channel: luo kanava
+    currency: luo valuutta
+    family: luo tuoteperhe
+    locale: luo lokaatio
+    product: luo tuote
+    group: luo ryhmä
+    association type: luo sidostyyppi
+    group type: luo ryhmätyyppi
+    drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+category:
+  overview: Kategoriat
+confirmation:
+  delete: Vahvista poisto
+  leave: Oletko varma että haluat poistua sivulta?
+  discard changes: Menetät muutokset kohteeseen %entity% jos poistut sivulta.
+  remove:
+    category: Oletko varma että haluat poistaa kategoian %name%?
+    user: Oletko varma, että haluat poistaa käyttäjän %name%?
+flash:
+  entity:
+    removed: Kohde poistettiin
+  attribute:
+    identifier_not_removable: Attribuutin identifioijaa ei voi poistaa
+  category:
+    removed: Kategoria poistettu
+  tree:
+    removed: Tuotehierarkia poistettu
+    not removable: Tuotehierarkioita jotka liittyvät kanaviin ei voida poistaa.
+  currency:
+    updated: Valuutta päivitetty
+    error.linked_to_channel: Et voi poistaa kanavaan liitettyä valuuttaa.
+  product:
+    enabled: Tuote on otettu käyttöön
+    disabled: Tuote on poistettu käytöstä
+  group type:
+    created: Ryhmätyyppi lisätty onnistuneesti
+  user:
+    removed: Käyttäjä poistettu onnistuneesti
+  error ocurred: Toiminto epäonnistui. Yritä uudelleen.
+info:
+  updated: Tallentamattomia muutoksia löytyy.
+  category:
+    remove children: Alakategoriat poistetaan.
+    keep products: Näihin kategorioihin kuuluvia tuotteita ei poisteta.
+    products limit exceeded: Tämä kategoria sisältää enemmän tuotteita kuin tälle toiminnolle on sallittu (%limit% tuotteiden maksimi)
+  product:
+    no available attributes: Ei ole enää attribuutteja lisättäväksi
+    no family defined: Ei perhettä määritetty
+    change family: Vaihda tuoteperhettä
+    change family to: Vaihda perhe olemaan
+    merge attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
+    keep attributes: Mitään attribuutteja ei poisteta.
+    number of associations: '%productCount% tuotetta ja %groupCount% ryhmää'
+    enable: Ota käyttöön
+    enabled: Käytössä
+    disable: Poista käytöstä
+    disabled: Poistettu käytöstä
+  group:
+    axis: 'Variaatioakseli: %attributes%'
+    select products: Valitse tuotteet joiden tulisi kuulua tähän ryhmään.
+    selectable products: Seuraavilla valittavilla tuotteilla on määritelty arvo jokaiselle akselille.
+    no group types: Mitään ryhmätyyppekä ei ole, aloita luomalla sellainen
+    more products: '%count% lisää tuotetta...'
+  association type:
+    show products: Näytä tuotteet
+    show groups: Näytä ryhmät
+    remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
+    none exist: Assosiaatiotyyppiä ei ole olemassa.
+    create one: Klikkaa tästä luodaksesi sellainen
+  attribute:
+    auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
+  completeness:
+    not calculated: Ei vielä laskettu
+Created: Luotu
+Updated: Päivitetty
+Last update: Viimeisin päivitys
+by: Luoja
+N/A: Ei mitään
+Manage products: Tuotteiden hallinta
+Manage groups: Ryhmien hallinta
+Code: Koodi
+Name: Nimi
+Type: Tyyppi
+Scope: Kanava
+Required: Vaadittu
+Unique: Ainutlaatuinen
+Not required: Ei vaadittu
+Translatable: Käännettävissä
+Scopable: Kanavakohtainen
+Localizable: Lokalisoitavissa
+Unique value: Yksilöllinen arvo
+Attribute group: Attribuuttiryhmä
+Other: Muu
+Variants behavior when edited: Tuotevariaatioiden käytös kun niitä muokataan
+Edit: Muokkaa
+Remove: Poista
+Delete: Poista
+Parameters: Parametrit
+System: Järjestelmä
+Values: Arvot
+General parameters: Yleiset parametrit
+Backend parameters: Backend parametrit
+Label: Nimike
+Default label: Oletusnimike
+Default value: Oletusarvo
+Attributetype: Attribuuttityyppi
+Attribute type: Attribuuttityyppi
+Defaultvalue: Oletusarvo
+Variant: Tuotevariaatio
+Smart: Älykäs
+Useable as grid column: Käytettävissä ruudukko-sarakkeena
+Useable as grid filter: Käytettävissä ruudukossa
+Family: Perhe
+Image: Kuva
+Available locales: Saatavilla olevat alueet
+Locale specific: Aluespesifi
+default: Oletusarvo
+Axis: Akseli
+Add attributes: Lisää attribuutteja
+Translate from: Käännä kielestä
+switch_on: "Kyllä"
+switch_off: "Ei"
+Close: Sulje
+Search: Etsi
+Choose the attribute type: Valitse attribuutin tyyppi
+Choose the attribute group: Valitse attribuuttiryhmä
+Drag and drop a file or click here: Vedä ja tiputa tiedosto tai klikkaa tästä
+Drop an image or click here: Pudota kuva tai klikkaa tästä
+Automatic option sorting: Automaattinen vaihtoehtojen lajittelu
+save_attribute_before_manage_option: Hallinnoidaksesi vaihtoehtoja, ole hyvä ja tallenna ensin attribuutti
+Please select: Valitse
+Active: Aktiivinen
+Inactive: Ei aktiivinen
+Do not convert: Älä muunna
+Create: Luo
+Choose a family: Valitse perhe
+Choose a unit: Valitse yksikkö
+No matches found: Vastaavuuksia ei löydy
+Category tree: Kategoriahierarkia
+Completeness: Valmistumisaste
+Attribute used as label: Otsikkona käytettävä attribuutti
+Credentials: Tunnistetiedot
+Global: Globaali
+Channel: Kanava
+Expand all channels: Laajenna kaikki kanavat
+Collapse all channels: Paina kokoon kaikki kanavat
+Always override: Ohita aina
+Ask: Kysy
+General Properties: Yleiset ominaisuudet
+Group values: Ryhmän arvot
+New group: Uusi ryhmä
+Groups overview: Yleistä ryhmistä
+'Y-m-d h:i:s': 'V-k-p t:m:s'
+Max characters: Maksimimerkkimäärä
+Validation rule: Kelpoisuussääntö
+Validation regexp: Kelpoisuuden regexp
+Wysiwyg enabled: WYSIWYG käytössä
+Number min: Min numero
+Number max: Max numero
+Decimals allowed: Salli desimaalit
+Negative allowed: Salli negatiiviset arvot
+Date min: Min päivämäärä
+Date max: Max päivämäärä
+Metric family: Metrinen perhe
+Default metric unit: Metrinen oletusyksikkö
+Max file size: Suurin tiedostokoko (Mt)
+Allowed extensions: Sallitut laajennukset
+None: Ei yhtään
+E-mail: Sähköposti
+URL: URL-osoite
+Regular expression: Tavallinen virke
+Minimum input length: Syötteen vähimmäispituus
+Default: Oletusarvo
+Attributes: Attribuutit
+Title: Nimike
+pim_catalog_identifier: Tunniste
+pim_catalog_text: Teksti
+pim_catalog_textarea: Tekstialue
+pim_catalog_number: Numero
+pim_catalog_price_collection: Hinta
+pim_catalog_multiselect: Monivalinta
+pim_catalog_simpleselect: Yksinkertainen valinta
+pim_catalog_file: Tiedosto
+pim_catalog_image: Kuva
+pim_catalog_boolean: "Kyllä/ei"
+pim_catalog_date: Päivämäärä
+pim_catalog_metric: Metriikka
+pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
+pim_reference_data_multiselect: Viitetiedot monivalinta
+Activated: Aktivoitu
+Disable: Poista käytöstä
+pim_enrich.mass_edit_action:
+  limit_exceeded: Ole hyvä ja valitse alle %limit% kohdetta muokattavaksi
+  product:
+    page_title: Tuotteet
+    page_subtitle: Massamuokkaa (1 tuote) | Massamuokkaa (%count% tuotetta)
+    title: Valitse toiminto
+    subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuotteelle| Valitse toiminto, jota haluat suorittaa valituille %count% tuotteille
+    confirm: Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuotteita %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
+    steps:
+      first: Valitse tuotteet
+      second: Valitse toiminto
+      third: Konfiguroi
+      fourth: Vahvista
+  family:
+    page_title: Perheet
+    page_subtitle: Massamuokkaa (1 tuoteperhe) | Massamuokkaa (%count% tuoteperheet)
+    title: Valitse toiminto
+    subtitle: Valitse toiminto, jonka haluat suorittaa valitulle tuoteperheelle| Valitse toiminto, jonka haluat suorittaa valituille %count% tuoteperheille
+    confirm: Olet päivittämässä tuoteperhettä seuraavilla tiedoilla, ole hyvä ja vahvista. | Olet päivittämässä tuoteperheitä %count% seuraavilla tiedoilla, ole hyvä ja vahvista.
+    steps:
+      first: Valitse tuoteperheet
+      second: Valitse toiminto
+      third: Konfiguroi
+      fourth: Vahvista
+  change-status:
+    label: Muuta tuotteen tila
+    description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
+    success_flash: Tuotteiden tila on muutettu
+  edit-common-attributes:
+    label: Muokkaa attribuutteja
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
+    empty: Ole hyvä ja valitse attribuutit joita haluat muokata
+    success_flash: Tuotteen attribuutit on päivitetty
+    message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
+    no_attribute.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
+  classify:
+    label: Lisää kategorioihin
+    description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
+    success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
+  change-family:
+    label: Muuta perhe
+    description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
+    success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
+    no_family: Ei perhettä
+  add-to-groups:
+    label: Lisää ryhmiin
+    description: Valitse ryhmät joihin valitut tuotteet lisätään
+    success_flash: Tuotteet lisättiin onnistuneesti valittuihin ryhmiin
+  set-attribute-requirements:
+    label: Aseta vaaditut attribuutit
+    description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
+    success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
+To enable: Ottaa käyttöön
+Select attributes: Valitse attribuutit
+Select: Valitse
+Remove this attribute: Poista tämä attribuutti
+Copy: Kopioi
+Current tab: Nykyinen välilehti
+Group: Ryhmä
+View group: Näytä ryhmä
+Products: Tuotteet
+Properties: Ominaisuudet
+History: Historia
+pane.accordion:
+  node_values: Solmun arvot
+  general_properties: Yleiset ominaisuudet
+  locale_values: Paikalliset arvot
+  backend_parameters: Backend parametrit
+  general_parameters: Yleiset parametrit
+  validation_parameters: Validaatioparametrit
+  label_translations: Nimikkeiden käännökset
+  options: Vaihtoehdot
+  group_values: Ryhmän arvot
+popin.create:
+  association_type.title: Luo uusi määritetyyppi
+  group.title: Luo uusi ryhmä
+  product.title: Luo uusi tuote
+  option.title: Luo uusi vaihtoehto
+In group: Ryhmässä
+Attribute as label: Attribuutti otsikkona
+Is associated: Liittyy
+Complete: Valmis
+Created At: Luotu
+Updated At: Päivitetty
+Enabled: Käytössä
+Disabled: Poistettu käytöstä
+Status: Status
+Change History: Muutoshistoria
+Data Audit: Tietojen audit
+Data Audit - System: 'Tietojen audit - järjestelmä'
+Action: Toimi
+Version: Versio
+Entity type: Entiteettityyppi
+Entity name: Entiteetin nimi
+Entity id: Entiteetin ID
+Data: Tiedot
+Author: Tekijä
+Logged at: Kirjattu
+Deleted: Poistettu
+Old values: Vanhat arvot
+New values: Uudet arvot
+System configuration: Järjestelmän asetukset
+General setup: Yleiset asetukset
+Localization: Lokalisointi
+Localization options: Lokalisoinnin asetukset
+Locale: Lokaatio
+Location: Sijainti
+Format address by address country: Muotoile osoite osoitteen maan mukaan
+Language: Kieli
+Timezone: Aikavyöhyke
+Currency: Valuutta
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "seurakunta"
+      state: "osavaltio"
+      island: "saari"
+      county: "maakunta"
+      area: "alue"
+      prefecture: "prefektuuri"
+      department: "osasto"
+      district: "alue"
+      province: "provinssi"
+  form:
+    tooltip:
+      locale: "Valitse lokaatio, jonka avulla järjestelmän numerot, osoitteet, nimet ja päivämäärät muotoillaan"
+      location: " Lokaatiota käytetään osoitteiden muotoiluun, kun \"muotoile osoite maa-asetuksen mukaan\" vaihtoehto on poistettu käytöstä"
+      format_address_by_address_country: "Tämän vaihtoehdon valitsemisen jälkeen osoitteet muotoillaan sen valtion mukaan missä ne ovat. Tämän vaihtoehdon ottaminen pois käytöstä aiheuttaa sen, että osoitteet muotoillaan oman sijaintisi mukaan"
+      language: "Valitse kieli, jota haluat käyttää"
+      timezone: "Valitse aikavyöhyke päivän ja ajan näyttämiseen"
+      currency: "Valitse oletusvaluutta"
+Selected products successfully deleted: Valitut tuotteet poistettiin
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: <strong>%label%</strong> massamuokkaus epäonnistui
+      warning: <strong>%label%</strong>n massamuokkaus päättyi varoituksilla
+      success: <strong>%label%</strong> massamuokkaus päättyi
+    quick_export:
+      error: <strong>%label%</strong>n pikavienti epäonnistui
+      warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia
+      success: <strong>%label%</strong>n pikavienti päättyi
+    mass_delete:
+      error: Massapoisto <strong>%label%</strong> epäonnistui
+      warning: Massapoisto <strong>%label%</strong> päättyi varoituksin
+      success: Massapoisto <strong>%label%</strong> päättyi
+job_execution.summary:
+  mass_edited: Massamuokattu
+  skip: Ohitettu
+  skipped_products: Ohitetut tuotteet
+  skipped_attributes: Ohitetut attribuutit
+  skipped_families: Ohitetut perheet
+  deleted_products: Poistetut tuotteet
+  deleted_product_models: Poistetut tuotemallit
+pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
+edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
+update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
+remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
+edit_common_attributes: Muokkaa attribuutteja
+perform.steps.duplicated.title: Päällekkäät akselit
+perform.steps.excluded.title: Poissuljetut tuotteet
+mass_edit report:
+  overview: Massamuokkaa vientejä
+job_tracker:
+  tab:
+    title: Prosessiseurain
+  filter:
+    started_at: Alkoi
+pim_enrich_attribute_form:
+  code: Koodi
+  type: Attribuuttityyppi
+  reference_data_name: Referenssidatan nimi
+  scopable: Kanavakohtainen arvo
+  localizable: Kielikohtainen arvo
+  unique: Yksilöllinen arvo
+  availableLocales: Saatavilla olevat alueet
+  locale_specific: Aluespesifi
+  group: Attribuuttiryhmä
+  useableAsGridFilter: Käytettävissä ruudukossa

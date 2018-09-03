@@ -49,11 +49,11 @@ extensions:
         position: 90
         config:
             trans:
-                title: confirmation.remove.channel
+                title: pim_enrich.entity.channel.module.delete.confirm
                 subTitle: pim_menu.item.channel
-                content: pim_enrich.confirmation.delete_item
-                success: flash.channel.removed
-                fail: error.removing.channel
+                content: pim_common.confirm_deletion
+                success: pim_enrich.entity.channel.flash.delete.success
+                fail: pim_enrich.entity.channel.flash.delete.fail
             redirect: pim_enrich_channel_index
 
     pim-channel-edit-form-save-buttons:
@@ -76,7 +76,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.channel.title
+            entity: pim_enrich.entity.channel.label
 
     pim-channel-edit-form-properties-tab:
         module: pim/common/tab
@@ -84,7 +84,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.channel.tab.properties.title
+            label: pim_common.properties
 
     pim-channel-edit-form-properties:
         module: pim/common/simple-view
@@ -99,8 +99,8 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-            title: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.code
+            title: pim_common.general_properties
+            codeLabel: pim_common.code
 
     pim-channel-edit-form-properties-general-currencies:
         module: pim/channel-edit-form/properties/general/currencies
@@ -128,7 +128,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.channel.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-channel-edit-form-properties-translation:
@@ -145,7 +145,7 @@ extensions:
         targetZone: accordion
         position: 150
         config:
-            label: 'pim_enrich.form.channel.tab.properties.label_conversion_units'
+            label: 'pim_enrich.entity.channel.property.label_conversion_units'
             fieldBaseId: 'pim_enrich_channel_form_conversion_unit_'
 
     pim-channel-edit-form-history:
@@ -156,4 +156,4 @@ extensions:
         position: 170
         config:
             class: 'channel'
-            title: 'pim_enrich.form.channel.tab.history.title'
+            title: 'pim_common.history'

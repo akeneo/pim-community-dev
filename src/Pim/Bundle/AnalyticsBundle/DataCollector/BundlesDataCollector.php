@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
 /**
  * Collects the list of all active bundles used by the PIM.

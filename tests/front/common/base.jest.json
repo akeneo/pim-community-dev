@@ -19,5 +19,7 @@
   "collectCoverage": true,
   "coverageReporters": [
     "html"
-  ]
+  ],
+  "cacheDirectory": "/tmp/jest",
+  "testURL": "http://localhost/"
 }

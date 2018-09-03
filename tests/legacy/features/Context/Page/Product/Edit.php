@@ -2,7 +2,7 @@
 
 namespace Context\Page\Product;
 
-use Akeneo\Component\Classification\Model\Category;
+use Akeneo\Tool\Component\Classification\Model\Category;
 use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
@@ -96,7 +96,7 @@ class Edit extends ProductEditForm
     {
         return count(
             $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown')
-                ->findAll('css', 'a[data-locale]')
+                ->findAll('css', '[data-locale]')
         );
     }
 
@@ -118,7 +118,7 @@ class Edit extends ProductEditForm
                 $dropdown->click();
             }
 
-            return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
+            return $dropdown->find('css', sprintf('[data-locale="%s"]', $localeCode));
         }, 'Can not click on the locale dropdown button');
 
         if ($flag) {
@@ -351,12 +351,12 @@ class Edit extends ProductEditForm
     /**
      * @return NodeElement|null
      */
-    public function getStatusSwitcher()
+    public function getProductStatusSwitcher()
     {
         try {
             $switcher = $this->spin(function () {
-                return $this->find('css', '.status-switcher');
-            }, 'Cannot find ".status-switcher" element');
+                return $this->find('css', '.product-status');
+            }, 'Cannot find ".product-status" element');
         } catch (\Exception $e) {
             $switcher = null;
         }

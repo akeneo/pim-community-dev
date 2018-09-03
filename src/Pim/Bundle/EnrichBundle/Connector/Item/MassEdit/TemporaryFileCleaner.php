@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Temporary file cleaner. It cleans file after the mass edit is done because

@@ -1,0 +1,15 @@
+job_execution.summary:
+  read: llegir
+  write: escrit
+  skip: omès
+  create: creat
+  process: processat
+  update_products: productes actualitzats
+  process_products: productes processats
+  skip_products: productes omesos
+  displayed: primers avisos mostrats
+  charset_validator:
+    title: 'Codificació de l''arxiu:'
+    skipped: omès, extensió a la llista blanca
+  product_skipped_no_diff: producte omès (no hi ha diferències)
+  item_position: llegir les línies

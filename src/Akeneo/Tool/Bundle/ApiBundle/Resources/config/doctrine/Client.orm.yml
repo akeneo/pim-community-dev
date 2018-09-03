@@ -1,0 +1,13 @@
+Akeneo\Tool\Bundle\ApiBundle\Entity\Client:
+    type: entity
+    table: pim_api_client
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type: string
+            length: 255
+            nullable: true

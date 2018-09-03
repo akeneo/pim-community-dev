@@ -1,0 +1,137 @@
+batch_jobs:
+  default_steps:
+    validation: Tiedostojen tarkistaminen
+    import_associations: Liitännäisten tuonti
+    import_root_product_model: Juuritason tuotemallin tuonti
+    import_sub_product_model: Alatason tuotemallin tuonti
+  csv_product_export:
+    label: Tuotteiden vienti CSV-muodossa
+    export.label: Tuotteiden vienti
+  csv_product_model_export:
+    label: Tuotemallien vienti CSV-muodossa
+    export.label: Tuotemallien vienti
+  csv_category_export:
+    label: Kategorian vienti CSV-muodossa
+    export.label: Kategorian vienti
+  csv_attribute_export:
+    label: Attribuuttien vienti CSV-muodossa
+    export.label: Attribuuttien vienti
+  csv_attribute_option_export:
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
+  csv_association_type_export:
+    label: Liitännäistyyppien vienti CSV-muodossa
+    export.label: Liitännäistyyppien vienti
+  csv_group_export:
+    label: Ryhmän vienti CSV-muodossa
+    export.label: Ryhmän vienti
+  csv_family_export:
+    label: Ryhmän tuonti CSV-tiedostona
+    export.label: Ryhmän vienti
+  csv_family_variant_export:
+    label: Varianttiperheen vienti CSV-muodossa
+    export.label: Varianttiperheen vienti
+  csv_product_import:
+    label: Tuotteiden tuonti CSV-muodossa
+    import.label: Tuotteiden tuonti
+  csv_product_model_import:
+    label: Tuotemallien tuonti CSV-muodossa
+    import_product_model_descendants.label: Lasketaan tuotemallin rakenne
+  csv_category_import:
+    label: Kategorioiden tuonti CSV-muodossa
+    import.label: Kategorioiden tuonti
+  csv_attribute_import:
+    label: Attribuuttien tuonti CSV-muodossa
+    import.label: Attribuuttien tuonti
+  csv_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    import.label: Attribuuttien määritteiden tuonti
+  csv_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    import.label: Liitännäistyyppien tuonti
+  csv_family_import:
+    label: Ryhmän tuonti CSV-tiedostona
+    import.label: Ryhmätuonti
+  csv_family_variant_import:
+    label: Varianttiperheen tuonti CSV-muodossa
+    import.label: Varianttiperheen tuonti
+  csv_group_import:
+    label: Ryhmien tuonti CSV-muodossa
+    import.label: Ryhmien tuonti
+  csv_attribute_group_export:
+    label: Attribuuttiryhmävienti CSV-muodossa
+    export.label: Attribuuttiryhmävienti
+  csv_group_type_export:
+    label: Ryhmätyyppivienti CSV-muodossa
+    export.label: Ryhmätyyppivienti
+  csv_attribute_group_import:
+    label: Attribuuttiryhmätuonti CSV-muodossa
+    import.label: Attribuuttiryhmätuonti
+  csv_group_type_import:
+    label: Ryhmätyyppituonti CSV-muodossa
+    import.label: Ryhmätyyppituonti
+  xlsx_category_import:
+    label: Kategorioiden tuonti XLSX-muodossa
+    import.label: Kategorioiden tuonti
+  xlsx_association_type_import:
+    label: Liitännäistyyppien tuonti CSV-muodossa
+    import.label: Liitännäistyyppien tuonti
+  xlsx_attribute_import:
+    label: Attribuuttien tuonti XLSX-muodossa
+    import.label: Attribuuttien tuonti
+  xlsx_attribute_option_import:
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    import.label: Attribuuttien määritteiden tuonti
+  xlsx_family_import:
+    label: Perheiden tuonti XLSX-muodossa
+    import.label: Ryhmätuonti
+  xlsx_family_variant_import:
+    label: Varianttiperheen tuonti XLSX-muodossa
+    import.label: Varianttiperheen tuonti
+  xlsx_product_export:
+    label: Tuotteiden vienti XLSX-muodossa
+    export.label: Tuotteiden vienti
+  xlsx_product_model_export:
+    label: Tuotemallien vienti XLSX-muodossa
+    export.label: Tuotemallien vienti
+  xlsx_product_import:
+    label: Tuotteiden tuonti XLSX-muodossa
+    import.label: Tuotteiden tuonti
+  xlsx_product_model_import:
+    import_product_model_descendants.label: Lasketaan tuotemallin rakenne
+  xlsx_group_export:
+    label: Ryhmävienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_group_import:
+    label: Ryhmätuonti XLSX-muodossa
+    import.label: Ryhmien tuonti
+  xlsx_family_export:
+    label: Perhevienti XLSX-muodossa
+    export.label: Ryhmän vienti
+  xlsx_family_variant_export:
+    label: Varianttiperheen vienti XLSX-muodossa
+    export.label: Varianttiperheen vienti
+  xlsx_category_export:
+    label: Kategoriavienti XLSX-muodossa
+    export.label: Kategorian vienti
+  xlsx_attribute_export:
+    label: Attribuuttivienti XLSX-muodossa
+    export.label: Attribuuttivienti XLSX-muodossa
+  xlsx_attribute_option_export:
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
+  xlsx_association_type_export:
+    label: Liitännäistyyppien vienti XLSX-muodossa
+    export.label: Liitännäistyyppien vienti XLSX-muodossa
+  xlsx_attribute_group_export:
+    label: Attribuuttiryhmävienti XLSX-muodossa
+    export.label: Attribuuttiryhmävienti
+  xlsx_group_type_export:
+    label: Ryhmätyyppivienti XLSX-muodossa
+    export.label: Ryhmätyyppivienti
+  xlsx_attribute_group_import:
+    label: Attribuuttiryhmätuonti XLSX-muodossa
+    import.label: Attribuuttiryhmätuonti
+  xlsx_group_type_import:
+    label: Ryhmätyyppituonti XLSX-muodossa
+    import.label: Ryhmätyyppituonti

@@ -3,10 +3,10 @@
 namespace spec\Pim\Component\ReferenceData\Factory\Value;
 
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
@@ -130,6 +130,39 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
         $productValue->shouldHaveReferenceData([$silk, $cotton]);
+    }
+
+    function it_sorts_reference_data_multi_select_product_value(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        Fabric $silk,
+        Fabric $cotton,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn($cotton);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            ['silk', 'cotton']
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
+        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHaveReferenceDataSorted([$cotton, $silk]);
     }
 
     function it_creates_a_localizable_and_scopable_reference_data_multi_select_product_value(
@@ -263,6 +296,20 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
                 }
 
                 return $hasFabrics;
+            },
+            'haveReferenceDataSorted' => function ($subject, $expected) {
+                $data = $subject->getData();
+                if (count($data) !== count($expected)) {
+                    return false;
+                }
+
+                for ($i = 0; $i < count($expected); $i++) {
+                    if ($expected[$i] !== $data[$i]) {
+                        return false;
+                    }
+                }
+
+                return true;
             },
         ];
     }

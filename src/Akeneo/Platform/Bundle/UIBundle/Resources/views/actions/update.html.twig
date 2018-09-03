@@ -1,0 +1,60 @@
+{% import 'PimUIBundle::macros.html.twig' as UI %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% block page_container %}
+    {% block content %}
+    <div class="AknDefault-mainContent">
+        {{ form_start(form, {
+            'action': formAction,
+            'method': 'post',
+            'id': form.vars.name
+        }) }}
+
+            {% block pageHeader %}
+                {% set buttons %}
+                    {% block navButtons %}{% endblock navButtons %}
+                    <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
+                {% endset %}
+
+                {% set meta %}
+                    {% block stats %}
+                        {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
+                            <span class="AknTitleContainer-metaItem">{{ 'pim_common.created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|datetime_presenter : 'N/A' }}</span>
+                            <span class="AknTitleContainer-metaItem">{{ 'pim_common.updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|datetime_presenter : 'N/A' }}</span>
+                        {% endif %}
+                    {% endblock stats %}
+                {% endset %}
+
+                {% set title %}
+                    {% block breadcrumbs %}
+                        <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
+                        <span class="separator">/</span>
+                        {% if breadcrumbs.additional is defined %}
+                            {% for breadcrumb in breadcrumbs.additional %}
+                                <a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a>
+                                <span class="separator">/</span>
+                            {% endfor %}
+                        {% endif %}
+                        {{ breadcrumbs.entityTitle }}
+                    {% endblock breadcrumbs %}
+                {% endset %}
+
+                {{ elements.page_header(
+                    {
+                        title: title,
+                        buttons: buttons,
+                        meta: meta
+                    }
+                ) }}
+
+            {% endblock pageHeader %}
+
+            <div class="layout-content">
+                {% block content_data %}
+                    {{ UI.scrollData(id, data, form) }}
+                {% endblock content_data %}
+            </div>
+        {{ form_end(form) }}
+    </div>
+    {% endblock content %}
+{% endblock %}

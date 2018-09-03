@@ -11,7 +11,7 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
     /**
      * Testing class name
      */
-    const TESTING_CLASS = 'Oro\Bundle\FilterBundle\Twig\RenderLayoutExtension';
+    const TESTING_CLASS = RenderLayoutExtension::class;
 
     /**#@+
      * Test parameters

@@ -49,11 +49,11 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.association_type
+                title: pim_enrich.entity.association_type.module.delete.confirm
                 subTitle: pim_menu.item.association_type
-                content: pim_enrich.confirmation.delete_item
-                success: flash.association_type.removed
-                fail: error.removing.association_type
+                content: pim_common.confirm_deletion
+                success: pim_enrich.entity.association_type.flash.delete.success
+                fail: pim_enrich.entity.association_type.flash.delete.fail
             redirect: pim_enrich_associationtype_index
 
     pim-association-type-edit-form-save-buttons:
@@ -68,9 +68,9 @@ extensions:
         targetZone: buttons
         position: 0
         config:
-            updateSuccessMessage: pim_enrich.entity.association_type.info.update_successful
-            updateFailureMessage: pim_enrich.entity.association_type.info.update_failed
-            notReadyMessage: pim_enrich.entity.association_type.info.field_not_ready
+            updateSuccessMessage: pim_enrich.entity.association_type.flash.update.success
+            updateFailureMessage: pim_enrich.entity.association_type.flash.update.fail
+            notReadyMessage: pim_enrich.entity.association_type.flash.update.fields_not_ready
             url: pim_enrich_associationtype_rest_post
 
     pim-association-type-edit-form-state:
@@ -79,7 +79,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.association_type.title
+            entity: pim_enrich.entity.association_type.label
 
     pim-association-type-edit-form-properties-tab:
         module: pim/common/tab
@@ -87,7 +87,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.association_type.tab.properties.title
+            label: pim_common.properties
 
     pim-association-type-edit-form-properties:
         module: pim/common/simple-view
@@ -102,9 +102,9 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-          sectionTitle: pim_enrich.form.association_type.tab.properties.general
-          codeLabel: pim_enrich.form.association_type.tab.properties.code
-          formRequired: pim_enrich.form.required
+          sectionTitle: pim_common.general_properties
+          codeLabel: pim_common.code
+          formRequired: pim_common.required_label
           inputField: pim_enrich_association_type_form_code
 
     pim-association-type-edit-form-properties-translation-section:
@@ -115,7 +115,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.association_type.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-association-type-edit-form-properties-translation:
@@ -134,4 +134,4 @@ extensions:
         position: 120
         config:
             class: association_type
-            title: pim_enrich.form.association_type.tab.history.title
+            title: pim_common.history

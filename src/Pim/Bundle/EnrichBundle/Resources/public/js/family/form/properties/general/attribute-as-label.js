@@ -72,7 +72,7 @@ define([
                     fieldBaseId: this.config.fieldBaseId,
                     errors: this.errors,
                     label: __(this.config.label),
-                    requiredLabel: __('pim_enrich.form.required'),
+                    requiredLabel: __('pim_common.required_label'),
                     isReadOnly: !SecurityContext.isGranted('pim_enrich_family_edit_properties')
                 }));
 

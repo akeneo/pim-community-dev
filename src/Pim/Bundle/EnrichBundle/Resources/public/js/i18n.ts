@@ -1,8 +1,12 @@
 const flagTemplate = (country: string, language: string, displayLanguage: boolean) => {
   return `
 <span class="flag-language">
-  <i class="flag flag-${country}"></i>
-  ${displayLanguage ? `<span class="language">${language}</span>` : ''}
+  <i class="flag flag-${country}"></i>${
+    displayLanguage
+      ? `
+  <span class="language">${language}</span>`
+      : ''
+  }
 </span>`;
 };
 
@@ -16,7 +20,7 @@ export const getFlag = (locale: string, displayLanguage: boolean = true): string
   let country = info[1];
 
   if (3 === info.length) {
-      country = info[2];
+    country = info[2];
   }
 
   return flagTemplate(country.toLowerCase(), language, displayLanguage);

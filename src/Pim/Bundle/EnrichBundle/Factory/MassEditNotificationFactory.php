@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Factory;
 
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
+use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 
 /**
  * Factory that creates a notification for mass edit from a job instance
@@ -40,7 +40,7 @@ class MassEditNotificationFactory extends AbstractNotificationFactory implements
         if (!$jobExecution instanceof JobExecution) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Akeneo\Component\Batch\Model\JobExecution, "%s" provided',
+                    'Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "%s" provided',
                     ClassUtils::getClass($jobExecution)
                 )
             );

@@ -1,0 +1,5 @@
+Akeneo\Pim\Structure\Component\Model\VariantAttributeSet:
+    constraints:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes: ~
+    payload:
+        standardPropertyName: variant_attribute_sets

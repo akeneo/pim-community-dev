@@ -2,9 +2,9 @@
 
 namespace Context;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductModel;
 
 /**
  * Context for data transformations

@@ -1,0 +1,78 @@
+Akeneo\Tool\Component\Batch\Model\StepExecution:
+    type: entity
+    table: akeneo_batch_step_execution
+    # TODO: should be like other entities
+    #changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        stepName:
+            type: string
+            length: 100
+            nullable: true
+            column: step_name
+        status:
+            type: integer
+            column: status
+        readCount:
+            type: integer
+            column: read_count
+        writeCount:
+            type: integer
+            column: write_count
+        filterCount:
+            type: integer
+            column: filter_count
+        startTime:
+            type: datetime
+            column: start_time
+            nullable: true
+        endTime:
+            type: datetime
+            column: end_time
+            nullable: true
+        exitCode:
+            type: string
+            length: 255
+            column: exit_code
+            nullable: true
+        exitDescription:
+            type: text
+            column: exit_description
+            nullable: true
+        terminateOnly:
+            type: boolean
+            column: terminate_only
+            nullable: true
+        failureExceptions:
+            type: array
+            column: failure_exceptions
+            nullable: true
+        errors:
+            type: array
+            column: errors
+        summary:
+            type: array
+            column: summary
+    oneToMany:
+        warnings:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\Warning
+            mappedBy: stepExecution
+            cascade:
+                - persist
+                - remove
+            orphanRemoval: true
+            fetch: EXTRA_LAZY
+            orderBy:
+                id: ASC
+    manyToOne:
+        jobExecution:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
+            inversedBy: stepExecutions
+            joinColumn:
+                name: job_execution_id
+                referencedColumnName: id
+                onDelete: 'CASCADE'

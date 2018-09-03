@@ -80,7 +80,7 @@ function($, _, Backbone, app) {
          *
          * @property
          */
-        placeholder: _.__('oro_filter.placeholder.all'),
+        placeholder: _.__('pim_common.all'),
 
         /**
          * Label of filter

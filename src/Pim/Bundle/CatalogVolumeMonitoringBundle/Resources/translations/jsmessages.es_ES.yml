@@ -1,0 +1,22 @@
+pim_catalog_volume:
+  section:
+    product_values:
+      title: Ejes que influencian el número de valores de productos
+    catalog_structure:
+      title: Ejes relacionados a la estructura del catálogo
+    variant_modelling:
+      title: Ejes según el modelado de variantes
+  axis:
+    count_products: Productos
+    average_max_attributes_per_family: Atributos por familia
+    count_channels: Canales
+    count_locales: Locales (activado)
+    count_localizable_attributes: Atributos localizables
+    count_families: Familias
+    count_attributes: Atributos
+    average_max_options_per_attribute: Opciones por atributo
+    count_categories: Categorías
+    count_category_trees: Árbol de categoría
+    count_variant_products: Productos variantes
+    count_product_models: Modelos de producto
+    warning: '¡Wow, ha alcanzado un récord con este eje! No dude en contactarnos si necesita ayuda con estos volúmenes.'

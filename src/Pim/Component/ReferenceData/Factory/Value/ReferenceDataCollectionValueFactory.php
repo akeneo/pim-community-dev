@@ -2,10 +2,10 @@
 
 namespace Pim\Component\ReferenceData\Factory\Value;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -13,7 +13,7 @@ use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterf
 /**
  * Factory that creates simple-select and multi-select product values.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ProductValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -55,6 +55,8 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
         if (null === $data) {
             $data = [];
         }
+
+        sort($data);
 
         $value = new $this->productValueClass(
             $attribute,
@@ -140,9 +142,9 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
      *       one reference data, when the others in the collection could be valid. So the value will not
      *       be loaded at all, when what we want is the value to be loaded minus the wrong reference data.
      *
-     * @param AttributeInterface               $attribute
-     * @param ReferenceDataRepositoryInterface $repository
-     * @param string                           $referenceDataCode
+     * @param AttributeInterface $attribute
+     * @param ReferenceDataRepositoryInterface                         $repository
+     * @param string                                                   $referenceDataCode
      *
      * @throws InvalidPropertyException
      * @return ReferenceDataInterface

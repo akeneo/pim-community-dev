@@ -1,0 +1,34 @@
+services:
+    pim_external_api_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_standard_format_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_indexing_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_storage_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_datagrid_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_internal_api_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    # Encoders
+    serializer.encoder.json:
+        public: false
+        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
+        tags:
+            - { name: pim_serializer.encoder, priority: 90 }
+            - { name: pim_external_api_serializer.encoder, priority: 90 }
+            - { name: pim_standard_format_serializer.encoder, priority: 90 }
+            - { name: pim_indexing_serializer.encoder, priority: 90 }
+            - { name: pim_storage_serializer.encoder, priority: 90 }
+            - { name: pim_datagrid_serializer.encoder, priority: 90 }
+            - { name: pim_internal_api_serializer.encoder, priority: 90 }

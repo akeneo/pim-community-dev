@@ -1,0 +1,9 @@
+pim_catalog_volume:
+  axis:
+    count_products: Produkter
+    count_channels: Kanaler
+    count_families: Familier
+    count_attributes: Egenskaber
+    count_categories: Kategorier
+    count_category_trees: Kategoritræstrukturen
+    count_product_models: Produktmodeller

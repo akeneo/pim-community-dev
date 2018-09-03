@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -50,22 +50,27 @@ final class EntityBuilder
     {
         $entity = $this->resourceFactory->create();
         $this->resourceUpdater->update($entity, $data);
-        $errors = $this->validator->validate($entity);
 
-        if (0 !== $errors->count()) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[] = sprintf(
-                    "\n- property path: %s\n- message: %s",
-                    $error->getPropertyPath(),
-                    $error->getMessage()
-                );
-            }
-
-            throw new \InvalidArgumentException(
-                "An error occurred on resource creation:".implode("\n", $errorMessages)
-            );
-        }
+        // @todo revert that when it possible
+        // Several validation constraints are couple to doctrine. That's means it is impossible to use this builder
+        // for creating object for acceptance tests. For instance, UniqueEntity constraint will always use the
+        // doctrine repository instead of the in memory one.
+//        $errors = $this->validator->validate($entity);
+//
+//        if (0 !== $errors->count()) {
+//            $errorMessages = [];
+//            foreach ($errors as $error) {
+//                $errorMessages[] = sprintf(
+//                    "\n- property path: %s\n- message: %s",
+//                    $error->getPropertyPath(),
+//                    $error->getMessage()
+//                );
+//            }
+//
+//            throw new \InvalidArgumentException(
+//                "An error occurred on resource creation:".implode("\n", $errorMessages)
+//            );
+//        }
 
         return $entity;
     }

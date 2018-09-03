@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\tests\integration\PQB\Filter\ReferenceData;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
@@ -108,7 +107,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "a_ref_data_multi_select" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
@@ -117,7 +116,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "a_ref_data_multi_select" expects a valid code. No reference data "fabrics" with code "NOT_FOUND" has been found, "NOT_FOUND" given.
      */
     public function testErrorOptionNotFound()
@@ -126,7 +125,7 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
+     * @expectedException \Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_ref_data_multi_select" is not supported or does not support operator "BETWEEN"
      */
     public function testErrorOperatorNotSupported()

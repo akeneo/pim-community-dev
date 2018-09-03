@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\User;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, SaverInterface
+class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, ObjectRepository
 {
-    /** @var Role[] */
+    /** @var RoleInterface[] */
     private $roles;
 
     public function __construct()
@@ -49,5 +50,45 @@ class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, S
     public function findOneByIdentifier($identifier)
     {
         return $this->roles->get($identifier);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function find($id)
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAll()
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBy(array $criteria)
+    {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassName()
+    {
+        throw new NotImplementedException();
     }
 }

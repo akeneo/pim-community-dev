@@ -1,3 +1,0 @@
-parameters:
-    pim_versioning.entity.version.class: Akeneo\Component\Versioning\Model\Version
-    pim_versioning.versionable_entities: ~

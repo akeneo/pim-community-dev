@@ -41,9 +41,9 @@ extensions:
         targetZone: buttons
         position: 0
         config:
-            updateSuccessMessage: pim_enrich.entity.attribute.info.update_successful
-            updateFailureMessage: pim_enrich.entity.attribute.info.update_failed
-            notReadyMessage: pim_enrich.entity.attribute.info.field_not_ready
+            updateSuccessMessage: pim_enrich.entity.attribute.flash.update.success
+            updateFailureMessage: pim_enrich.entity.attribute.flash.update.fail
+            notReadyMessage: pim_enrich.entity.attribute.flash.update.fields_not_ready
             url: pim_enrich_attribute_rest_create
             method: PUT
             redirectAfter: pim_enrich_attribute_edit
@@ -56,7 +56,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.attribute.title
+            entity: pim_enrich.entity.attribute.label
 
     pim-attribute-create-form-form-tabs:
         module: pim/form/common/form-tabs
@@ -70,7 +70,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.attribute.tab.properties.title
+            label: pim_common.properties
 
     pim-attribute-create-form-properties:
         module: pim/common/simple-view
@@ -87,7 +87,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.section.common
+                sectionTitle: pim_enrich.entity.attribute.module.edit.common
                 dropZone: content
 
     pim-attribute-create-form-properties-common-code:
@@ -97,7 +97,7 @@ extensions:
         position: 90
         config:
             fieldName: code
-            label: pim_enrich.form.attribute.tab.properties.label.code
+            label: pim_common.code
             required: true
 
     pim-attribute-create-form-properties-common-type:
@@ -107,7 +107,7 @@ extensions:
         position: 100
         config:
             fieldName: type
-            label: pim_enrich.form.attribute.tab.properties.label.type
+            label: pim_common.type
             readOnly: true
 
     pim-attribute-create-form-properties-common-group:
@@ -118,7 +118,7 @@ extensions:
         aclResourceId: pim_enrich_attributegroup_add_attribute
         config:
             fieldName: group
-            label: pim_enrich.form.attribute.tab.properties.label.group
+            label: pim_enrich.entity.attribute.property.group.label
             required: true
 
     pim-attribute-create-form-properties-common-unique:
@@ -128,7 +128,7 @@ extensions:
         position: 120
         config:
             fieldName: unique
-            label: pim_enrich.form.attribute.tab.properties.label.unique
+            label: pim_enrich.entity.attribute.property.unique
             activeForTypes: [pim_catalog_number, pim_catalog_text]
 
     pim-attribute-create-form-properties-common-scopable:
@@ -138,7 +138,7 @@ extensions:
         position: 130
         config:
             fieldName: scopable
-            label: pim_enrich.form.attribute.tab.properties.label.scopable
+            label: pim_enrich.entity.attribute.property.scopable
 
     pim-attribute-create-form-properties-common-localizable:
         module: pim/attribute-edit-form/properties/localizable
@@ -147,7 +147,7 @@ extensions:
         position: 140
         config:
             fieldName: localizable
-            label: pim_enrich.form.attribute.tab.properties.label.localizable
+            label: pim_enrich.entity.attribute.property.localizable
 
     pim-attribute-create-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form
@@ -163,7 +163,7 @@ extensions:
         targetZone: container
         position: 110
         config:
-            label: pim_enrich.form.attribute.tab.labels.title
+            label: pim_common.label_translations
 
     pim-attribute-create-form-labels-container:
         module: pim/common/simple-view

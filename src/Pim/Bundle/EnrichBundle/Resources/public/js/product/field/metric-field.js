@@ -11,17 +11,18 @@ define([
     'jquery',
     'pim/field',
     'underscore',
+    'oro/translator',
     'pim/fetcher-registry',
     'pim/template/product/field/metric',
     'pim/initselect2'
-], function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
+], function ($, Field, _, __, FetcherRegistry, fieldTemplate, initSelect2) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
             'change .field-input:first .data, .field-input:first .unit': 'updateModel'
         },
         renderInput: function (context) {
-            var $element = $(this.fieldTemplate(context));
+            const $element = $(this.fieldTemplate(_.extend({}, context, {__: __})));
             initSelect2.init($element.find('.unit'));
 
             return $element;

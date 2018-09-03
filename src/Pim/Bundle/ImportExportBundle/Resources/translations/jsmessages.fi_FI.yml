@@ -1,0 +1,142 @@
+job_execution:
+  summary:
+    display_item: Näytä kohde
+    hide_item: Piilota kohde
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Kategoriavalinta
+        title: Valitse kategoriat
+    locales:
+      validation:
+        not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.
+pim_import_export:
+  entity:
+    job_instance:
+      label: työprofiili
+      flash:
+        update:
+          success: Työprofiili päivitetty.
+          fail: Työprofiilia ei voitu päivittää.
+        delete:
+          success: Tehtävä poistaminen onnistui
+    import_profile:
+      uppercase_label: Tuontiprofiili
+      flash:
+        create:
+          success: Tuontiprofiilin tallentaminen onnistui
+      module:
+        create:
+          button: Luo tuontiprofiili
+    export_profile:
+      uppercase_label: Vientiprofiili
+      flash:
+        create:
+          success: Vientiprofiilin tallentaminen onnistui
+      module:
+        create:
+          button: Luo vientiprofiili
+  form:
+    job_execution:
+      title.details: Suorittamisen yksityiskohdat
+      refreshBtn.title: Päivitä
+      button:
+        show_profile.title: Näytä profiili
+        download_log.title: Lataa loki
+        download_file.title: Lataa viety tiedosto
+        download_archive.title: Lataa viety tallenne
+      summary:
+        fetching: Kerää tietoja työsuorituksesta...
+        warning: Varoitus
+        header.step: Vaihe
+        header.warnings: Varoitus
+        header.summary: Yhteenveto
+        header.start: Aloitus
+        header.end: Loppu
+    job_instance:
+      fail:
+        launch: Profiilin käynnistäminen epäonnistui. Varmista profiilin oikeellisuus ja että sinulla on oikeudet sen käynnistämiseen.
+        save: Profiilin tallentaminen epäonnistui. Varmista että sinulla on oikeudet profiilin muokkaamiseen.
+      button:
+        export.title: Vie nyt
+        import.launch: Tuo nyt
+        import.upload: Lataa ja tuo nyt
+        import.upload_file: Lataa tiedosto
+      meta:
+        job: Työ
+        connector: Liitin
+      subsection:
+        last_executions: Viimeksi suoritettu
+      tab:
+        content:
+          title: Sisältö
+        properties:
+          decimal_separator:
+            title: Desimaalierotin
+            help: Määritä desimaalierotin
+          date_format:
+            title: Päivämäärän muoto
+            help: Määritä päivämääräkenttien formaatti
+          file_path:
+            title: Tiedostopolku
+            help: Mihin kirjoittaa generoitu tiedosto tiedostorakenteessa
+          delimiter:
+            title: Erotin
+            help: Yhtä merkkiä käytetään kentän erottajan määrittämiseen
+          enclosure:
+            title: Liite
+            help: Yhtä merkkiä käytetään kentän liitteen määrittämiseen
+          with_header:
+            title: Otsikon kanssa
+            help: Tulostaako sarakkeen nimen vai ei
+          with_media:
+            title: Vie tiedostot ja kuvat
+            help: Viedäänkö tiedostot ja kuvat vai ei
+          lines_per_file:
+            title: Riviä per tiedosto
+            help: Määritä rivimäärä per tiedosto
+          upload_allowed:
+            title: Salli tiedoston tuonti
+            help: Sallitaanko tiedoston suora lataus järjestelmään
+          categories_column:
+            title: Kategoriasarake
+            help: Kategoriasarakkeen nimi
+          escape:
+            title: Koodinvaihto
+            help: Ohjausmerkki
+          family_column:
+            title: Perhesarake
+            help: Perhesarakkeen nimi
+          groups_column:
+            title: Ryhmäsarake
+            help: Ryhmäsarakkeen nimi
+          enabled:
+            title: Enabloi tuote
+            help: Pitääkö tuodun tuotteen olla enabloitu
+          enabled_comparison:
+            title: Vertaa arvoja
+            help: Ota päälle alkuperäisten ja tuotujen arvojen vertailu. Voi nopeuttaa tuonti, ja tuodut arvot ovat hyvin samanlaisia kuin alkuperäiset arvot
+          real_time_versioning:
+            title: Reaaliaikainen historiapäivitys
+            help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
+          family_variant_column:
+            title: Varianttiperheen sarake
+      file_path: Tiedostopolku
+confirmation:
+  remove:
+    import_profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+    export_profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
+    job_instance: Oletko varma, että haluat poistaa tämän tehtävän?
+pim_title:
+  pim_importexport_export_profile_index: Vientiprofiilien hallinta
+  pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_export_profile_show: Vientiprofiili {{ job.label }} | Näytä
+  pim_importexport_export_execution_index: Vientihistoria
+  pim_importexport_export_execution_show: Vientisuoritukset | Yksityiskohdat
+  pim_importexport_import_profile_index: Tuontiprofiilien hallinta
+  pim_importexport_import_profile_edit: Tuontiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_import_profile_show: Tuontiprofiili {{ job.label }} | Näytä
+  pim_importexport_import_execution_index: Tuontihistoria
+  pim_importexport_import_execution_show: Tuontisuoritukset | Yksityiskohdat

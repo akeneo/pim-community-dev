@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\User;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -19,7 +18,7 @@ use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
  */
 class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, UserRepositoryInterface
 {
-    /** @var User[] */
+    /** @var UserInterface[] */
     private $users;
 
     public function __construct()
@@ -88,7 +87,18 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException(__METHOD__);
+        $username = $criteria['username'] ?? null;
+        if (null === $username || count($criteria) > 1) {
+            throw new \InvalidArgumentException('This method only supports finding by "username"');
+        }
+
+        foreach ($this->users as $user) {
+            if (null !== $username && $username === $user->getUsername()) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 
     /**

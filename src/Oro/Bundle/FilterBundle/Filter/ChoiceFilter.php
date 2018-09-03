@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\FilterBundle\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 

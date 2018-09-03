@@ -1,0 +1,21 @@
+parameters:
+    pim_catalog.manager.completeness.class:        Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager
+    pim_catalog.resolver.attribute_values.class:         Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver
+
+services:
+    # Managers
+    pim_catalog.manager.completeness:
+        class: '%pim_catalog.manager.completeness.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.completeness.generator'
+            - '@pim_catalog.remover.completeness'
+            - '@pim_catalog.completeness.checker'
+
+    pim_catalog.resolver.attribute_values:
+        class: '%pim_catalog.resolver.attribute_values.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'

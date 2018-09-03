@@ -24,15 +24,23 @@ define(
     ) {
         return BaseForm.extend({
             loadingMask: null,
-            updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
-            updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
-            label: __('pim_enrich.entity.save.label'),
+            updateFailureMessage: __('pim_enrich.entity.fallback.flash.update.fail'),
+            updateSuccessMessage: __('pim_enrich.entity.fallback.flash.update.success'),
+            isFlash: true,
+            label: __('pim_common.save'),
 
             /**
              * {@inheritdoc}
              */
             initialize: function (config) {
                 this.config = config.config;
+
+                if (this.config.hasOwnProperty('updateSuccessMessage')) {
+                    this.updateSuccessMessage = __(this.config.updateSuccessMessage);
+                }
+                if (this.config.hasOwnProperty('updateFailureMessage')) {
+                    this.updateFailureMessage = __(this.config.updateFailureMessage);
+                }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -83,7 +91,8 @@ define(
 
                 messenger.notify(
                     'success',
-                    this.updateSuccessMessage
+                    this.updateSuccessMessage,
+                    {flash: this.isFlash}
                 );
             },
 

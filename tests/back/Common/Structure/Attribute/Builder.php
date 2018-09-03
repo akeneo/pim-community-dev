@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Test\Common\Structure\Attribute;
 
 use Akeneo\Test\Common\EntityWithValue\Code;
-use Pim\Bundle\CatalogBundle\Entity;
-use Pim\Component\Catalog\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
  * @Todo This builder should be improved. For now, you can use to create a identifier attribute with a code
@@ -30,11 +30,11 @@ class Builder
     }
 
     /**
-     * @return Entity\Attribute
+     * @return Model\Attribute
      */
-    public function build(): Entity\Attribute
+    public function build(): Model\Attribute
     {
-        $attribute = new Entity\Attribute();
+        $attribute = new Model\Attribute();
         $attribute->setCode((string) $this->code);
         $attribute->setType((string) $this->type);
 

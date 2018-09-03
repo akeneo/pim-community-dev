@@ -1,0 +1,160 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Tagabasa ng paunang sulat
+    product_reader.title: Pagkuha ng produkto
+    entity_reader.title: Pagkuha ng entity
+    csv_reader:
+      title: Tagabasa ng CSV
+    file_reader:
+      invalid_item_columns_count: 'Inaasahang magkakaroon ng %totalColumnsCount% na bilang ng column, pero may totoong bilang na %itemColumnsCount% sa %filePath%:%lineno%'
+    csv_product_reader.title: Tagabasa ng produkto ng CSV
+    csv_category_reader.title: Tagabasa ng kategorya ng CSV
+    dummy_processor.title: Taga-proseso ng paunang sulat
+    product_processor.title: Taga-gawa ng produkto
+    category_processor.title: Paggawa ng kategorya
+    association_processor.title: Paggawa ng asosasyon
+    product_association_processor.title: Paggawa ng asosasyon
+    group_processor.title: Paggawa ng grupo
+    attribute_processor.title: Paggawa ng katangian
+    attribute_option_processor.title: Paggawa ng pagpipiliang katangian
+    heterogeneous_processor.title: Taga-serialize ng produktong CSV
+    homogeneous_processor.title: Taga-serialize ng CSV entity
+    transformer_processor.title: Pagbabago
+    dummy_writer.title: Tagasulat ng paunang sulat
+    file_writer.title: Kinalabasan
+    product_writer.title: Imbakan ng produkto
+    category_writer.title: Imbakan ng kategorya
+    writer.title: Imbakan ng entity
+    csv_writer.title: Tagasulat ng Csv
+job_execution.summary:
+  process: prinoseso
+  process_products: prinosesong produkto
+  product_skipped_no_diff: linaktawang produkto (walang pinagbago)
+  item_position: magbasa ng mga linya
+batch_jobs:
+  csv_product_export:
+    label: Pagluwas ng produkto sa CSV
+    export.label: Pagluwas ng produkto
+  csv_product_model_export:
+    label: I-eksport ang modelo ng produkto sa CSV
+    export.label: Pagluwas ng modelo ng produkto
+  csv_category_export:
+    label: Pagluwas ng kategorya sa CSV
+    export.label: Pagluwas ng kategorya
+  csv_attribute_export:
+    label: Pagluwas ng katangian sa CSV
+    export.label: Pagluwas ng katangian
+  csv_attribute_option_export:
+    label: Pagluwas ng pagpipiliang katangian sa CSV
+    export.label: Pagluwas ng pagpipiliang katangian
+  csv_association_type_export:
+    label: Tipo ng asosasyon na pagluwas sa CSV
+    export.label: Tip ng asosasyon na pagluwas
+  csv_group_export:
+    label: Pagluwas ng grupo sa CSV
+    export.label: Pagluwas ng grupo
+  csv_family_export:
+    label: Pagluwas ng pamilya sa CSV
+    export.label: Pagluwas ng pamilya
+  csv_family_variant_export:
+    label: I-eksport ang ibat-ibang pamilya sa CSV
+    export.label: I-esksport ang baryante ng pamilya
+  csv_product_import:
+    label: Pag-aklas sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng produkto
+    import_associations.label: Pag-angkat ng asosasyon
+  csv_product_model_import:
+    label: Angkatin ang modelo ng produkto sa CSV
+    validation.label: Pagbibigay-bisa sa file
+  csv_category_import:
+    label: Pag-angkat ng kategorya sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng kategorya
+  csv_attribute_import:
+    label: Pag-angkat ng katangian sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng katangian
+  csv_attribute_option_import:
+    label: Pag-angkat ng pagpipiliang katangian sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng pagpipiliang katangian
+  csv_association_type_import:
+    label: Pag angkat ng tipo ng asosasyon sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng tipo ng asosasyon
+  csv_family_import:
+    label: Pag-angkat ng pamilya CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng pamilya
+  csv_family_variant_import:
+    label: Angkatin ang ibat-ibang pamilya sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Angkating ang ibat-ibang pamilya
+  csv_group_import:
+    label: Grupong pag-angkat sa CSV
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-aangkat ng grupo
+  csv_channel_import:
+    validation.label: Pagbibigay-bisa sa file
+  csv_locale_import:
+    validation.label: Pagbibigay-bisa sa file
+  csv_attribute_group_import:
+    validation.label: Pagbibigay-bisa sa file
+  csv_currency_import:
+    validation.label: Pagbibigay-bisa sa file
+  csv_group_type_import:
+    validation.label: Pagbibigay-bisa sa file
+  xlsx_category_import:
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng kategorya
+  xlsx_association_type_import:
+    label: Pag-angkat ng uri ng asosasyon sa XLSX
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng tipo ng asosasyon
+  xlsx_attribute_import:
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng katangian
+  xlsx_attribute_option_import:
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng pagpipiliang katangian
+  xlsx_family_import:
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng pamilya
+  xlsx_family_variant_import:
+    label: Angkatin ang baryante ng pamilya sa XLSX
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Angkating ang ibat-ibang pamilya
+  xlsx_product_export:
+    export.label: Pagluwas ng produkto
+  xlsx_product_model_export:
+    label: I-eksport ang modelo ng produkto sa XLSX
+    export.label: Pagluwas ng modelo ng produkto
+  xlsx_product_import:
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-angkat ng produkto
+    import_associations.label: Pag-angkat ng asosasyon
+  xlsx_product_model_import:
+    label: Angkatin ang modelo ng produkto sa XSLX
+    validation.label: Pagbibigay-bisa sa file
+  xlsx_group_export:
+    export.label: Pagluwas ng grupo
+  xlsx_group_import:
+    validation.label: Pagbibigay-bisa sa file
+    import.label: Pag-aangkat ng grupo
+  xlsx_family_export:
+    export.label: Pagluwas ng pamilya
+  xlsx_family_variant_export:
+    export.label: I-esksport ang baryante ng pamilya
+  xlsx_category_export:
+    export.label: Pagluwas ng kategorya
+  xlsx_channel_import:
+    validation.label: Pagbibigay-bisa sa file
+  xlsx_locale_import:
+    validation.label: Pagbibigay-bisa sa file
+  xlsx_attribute_group_import:
+    validation.label: Pagbibigay-bisa sa file
+  xlsx_currency_import:
+    validation.label: Pagbibigay-bisa sa file
+  xlsx_group_type_import:
+    validation.label: Pagbibigay-bisa sa file

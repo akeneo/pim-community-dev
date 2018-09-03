@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\AnalyticsBundle\Controller;
 
-use Akeneo\Component\Analytics\ChainedDataCollector;
+use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

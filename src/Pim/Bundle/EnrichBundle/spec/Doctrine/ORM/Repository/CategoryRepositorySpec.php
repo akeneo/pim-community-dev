@@ -2,13 +2,15 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Gedmo\Tree\Strategy\ORM\Nested;
 use Gedmo\Tree\TreeListener;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Prophecy\Argument;
 
 class CategoryRepositorySpec extends ObjectBehavior
@@ -38,12 +40,12 @@ class CategoryRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository');
+        $this->shouldHaveType(CategoryRepository::class);
     }
 
     function it_provides_translated_data()
     {
-        $this->shouldImplement('Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface');
+        $this->shouldImplement(TranslatedLabelsProviderInterface::class);
     }
 
     function it_is_a_doctrine_repository()

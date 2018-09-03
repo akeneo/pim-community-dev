@@ -1,0 +1,86 @@
+services:
+    pim_catalog.validator.constraint.family_requirements:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirementsValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
+
+    pim_catalog.validator.constraint.family_attribute_as_label:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabelValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_as_label_validator }
+
+    pim_catalog.validator.constraint.family_attribute_as_image:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImageValidator'
+        arguments:
+            - [ 'pim_catalog_image', 'pim_assets_collection' ]
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_as_image_validator }
+
+    pim_catalog.validator.constraint.immutable_family_variant_axes:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_variant_axes_validator }
+
+    pim_catalog.validator.constraint.family_attribute_used_as_axis:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxisValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_used_as_axis }
+
+    pim_catalog.validator.constraint.file_allowed_extensions:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AllowedExtensionsValidator'
+        arguments:
+            - '%pim_catalog_file_allowed_extensions%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_file_allowed_extensions_validator }
+
+    pim_catalog.validator.constraint.image_allowed_extensions:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AllowedExtensionsValidator'
+        arguments:
+            - '%pim_catalog_image_allowed_extensions%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_image_allowed_extensions_validator }
+
+    pim_catalog.validator.constraint.attribute_type_for_option:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeTypeForOptionValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_attribute_type_for_option_validator }
+
+    pim_catalog.validator.constraint.family_variant_axes:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyVariantValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_variant }
+
+    pim_catalog.validator.constraint.is_reference_data_configured:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfiguredValidator'
+        arguments:
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect', 'pim_assets_collection']
+            - '@?pim_reference_data.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_is_reference_data_configured_validator }
+
+    pim_catalog.validator.constraint.not_null_properties:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\NotNullPropertiesValidator'
+        arguments:
+            - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect', 'pim_assets_collection']
+        tags:
+            - { name: validator.constraint_validator, alias: pim_not_null_properties_validator }
+
+    pim_catalog.validator.constraint.valid_metric:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator'
+        arguments:
+            - '@property_accessor'
+            - '%akeneo_measure.measures_config%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_metric_validator }
+
+    pim_catalog.validator.constraint.single_identifier:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }

@@ -27,6 +27,6 @@ class TypeProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        return $this->translator->trans($value);
+        return $this->translator->trans(sprintf('pim_datagrid.cells.type.%s', $value));
     }
 }

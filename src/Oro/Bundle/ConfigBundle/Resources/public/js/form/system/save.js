@@ -25,7 +25,7 @@ define([
              */
             render: function () {
                 this.$el.html(this.template({
-                    label: _.__('pim_enrich.entity.save.label')
+                    label: _.__('pim_common.save')
                 }));
             },
 

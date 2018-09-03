@@ -1,8 +1,0 @@
-Akeneo\Component\Batch\Step\ItemStep:
-    properties:
-        reader:
-            - Valid: ~
-        processor:
-            - Valid: ~
-        writer:
-            - Valid: ~

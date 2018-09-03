@@ -96,7 +96,7 @@ define(
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.hideLoadingMask();
 
-                        return this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
+                        return this.displayErrorPage(__('error.exception.forbidden'), '403');
                     }
 
                     controller.el = $view;
@@ -126,7 +126,7 @@ define(
 
                 switch (xhr.status) {
                     case 401:
-                        window.location = this.generate('oro_user_security_login');
+                        window.location = this.generate('pim_user_security_login');
                         break;
                     default:
                         this.errorPage(xhr);
@@ -223,7 +223,7 @@ define(
              * Redirect to the given route
              */
             redirectToRoute: function (route, routeParams, options) {
-                this.redirect(Routing.generate(route, routeParams), options);
+                return this.redirect(Routing.generate(route, routeParams), options);
             },
 
             /**

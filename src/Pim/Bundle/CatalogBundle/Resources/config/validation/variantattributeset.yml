@@ -1,5 +1,0 @@
-Pim\Component\Catalog\Model\VariantAttributeSet:
-    constraints:
-        - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes: ~
-    payload:
-        standardPropertyName: variant_attribute_sets

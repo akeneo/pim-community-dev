@@ -1,0 +1,25 @@
+pim_title:
+  pim_user_index: Käyttäjät
+  pim_user_role_index: Roolit
+  pim_user_group_index: Käyttäjäryhmät
+  oro_config_configuration_system: Kokoonpano
+  pim_user_security_login: Kirjaudu sisään
+  pim_user_reset_request: Unohdin salasanani
+pim_user_management:
+  entity:
+    user:
+      module:
+        create:
+          button: Luo käyttäjä
+        delete:
+          confirm: Haluatko varmasti poistaa tämän käyttäjän?
+    role:
+      module:
+        create:
+          button: Luo rooli
+        delete:
+          confirm: Oletko varma, että haluat poistaa tämän roolin?
+    group:
+      module:
+        create:
+          button: Luo ryhmä

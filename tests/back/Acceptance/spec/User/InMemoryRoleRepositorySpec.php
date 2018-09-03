@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Test\Acceptance\User;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\User\InMemoryRoleRepository;
-use Oro\Bundle\UserBundle\Entity\Role;
 use PhpSpec\ObjectBehavior;
+use Akeneo\UserManagement\Component\Model\Role;
 use Prophecy\Argument;
 
 class InMemoryRoleRepositorySpec extends ObjectBehavior
@@ -15,7 +15,7 @@ class InMemoryRoleRepositorySpec extends ObjectBehavior
     {
         $this->shouldHaveType(InMemoryRoleRepository::class);
     }
-    
+
     function it_is_a_identifiable_object_repository()
     {
         $this->shouldImplement(IdentifiableObjectRepositoryInterface::class);

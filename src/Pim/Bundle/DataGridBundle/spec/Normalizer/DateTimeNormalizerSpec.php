@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Pim\Bundle\DataGridBundle\Normalizer\DateTimeNormalizer;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DateTimeNormalizerSpec extends ObjectBehavior
@@ -28,7 +29,7 @@ class DateTimeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\DateTimeNormalizer');
+        $this->shouldHaveType(DateTimeNormalizer::class);
     }
 
     function it_is_a_normalizer()

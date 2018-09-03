@@ -8,12 +8,12 @@ security:
     providers:
         chain_provider:
             chain:
-                providers:                  [oro_user]
-        oro_user:
-            id:                             oro_user.security.provider
+                providers: [pim_user]
+        pim_user:
+            id: pim_user.provider.user
 
     encoders:
-        Pim\Bundle\UserBundle\Entity\User: sha512
+        Akeneo\UserManagement\Component\Model\User: sha512
         Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
@@ -59,11 +59,11 @@ security:
             provider:                       chain_provider
             form_login:
                 csrf_token_generator:       security.csrf.token_manager
-                check_path:                 oro_user_security_check
-                login_path:                 oro_user_security_login
+                check_path:                 pim_user_security_check
+                login_path:                 pim_user_security_login
                 use_forward:                true
             logout:
-                path:                       oro_user_security_logout
+                path:                       pim_user_security_logout
             remember_me:
                 secret:                     "%secret%"
                 name:                       BAPRM

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Attribute;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -68,16 +68,18 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     {
         $attributes = [];
         foreach ($this->attributes as $attribute) {
-            $keepThisAttribute = true;
             foreach ($criteria as $key => $value) {
                 $getter = sprintf('get%s', ucfirst($key));
-                if ($attribute->$getter() !== $value) {
-                    $keepThisAttribute = false;
-                }
-            }
 
-            if ($keepThisAttribute) {
-                $attributes[] = $attribute;
+                if (! is_array($value)) {
+                    $value = [$value];
+                }
+
+                foreach ($value as $criteriaValue) {
+                    if ($attribute->$getter() === $criteriaValue) {
+                        $attributes[] = $attribute;
+                    }
+                }
             }
         }
 

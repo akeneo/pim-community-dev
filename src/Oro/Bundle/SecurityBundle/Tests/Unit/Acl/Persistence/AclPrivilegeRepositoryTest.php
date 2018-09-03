@@ -5,8 +5,13 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
@@ -36,7 +41,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->extension = $this->createMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface');
+        $this->extension = $this->createMock(AclExtensionInterface::class);
         $this->extension->expects($this->any())
             ->method('getObjectIdentity')
             ->will(
@@ -56,18 +61,18 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('getAllMaskBuilders')
             ->will($this->returnValue([new EntityMaskBuilder()]));
 
-        $this->extensionSelector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
+        $this->extensionSelector = $this->getMockBuilder(AclExtensionSelector::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->extensionSelector->expects($this->any())
             ->method('select')
             ->will($this->returnValue($this->extension));
 
-        $this->aceProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper')
+        $this->aceProvider = $this->getMockBuilder(AceManipulationHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->manager = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager')
+        $this->manager = $this->getMockBuilder(AclManager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->manager->expects($this->any())
@@ -154,11 +159,11 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             'Acme\Class1',
             'Acme\Class2',
         ];
-        $class1 = $this->createMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo');
+        $class1 = $this->createMock(AclClassInfo::class);
         $class1->expects($this->once())->method('getClassName')->will($this->returnValue($classes[0]));
         $class1->expects($this->once())->method('getGroup')->will($this->returnValue('SomeGroup'));
         $class1->expects($this->once())->method('getLabel')->will($this->returnValue('Class 1'));
-        $class2 = $this->createMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo');
+        $class2 = $this->createMock(AclClassInfo::class);
         $class2->expects($this->once())->method('getClassName')->will($this->returnValue($classes[1]));
         $class2->expects($this->once())->method('getGroup')->will($this->returnValue('SomeGroup'));
         $class2->expects($this->once())->method('getLabel')->will($this->returnValue('Class 2'));

@@ -1,0 +1,25 @@
+pim_title:
+  pim_user_index: ユーザー
+  pim_user_role_index: 権限
+  pim_user_group_index: ユーザーグループ
+  oro_config_configuration_system: 設定
+  pim_user_security_login: ログイン
+  pim_user_reset_request: パスワードを忘れた
+pim_user_management:
+  entity:
+    user:
+      module:
+        create:
+          button: ユーザー作成
+        delete:
+          confirm: このユーザーを削除してもよろしいですか?
+    role:
+      module:
+        create:
+          button: 権限を作成
+        delete:
+          confirm: このロールを削除してもよろしいですか？
+    group:
+      module:
+        create:
+          button: グループを作成

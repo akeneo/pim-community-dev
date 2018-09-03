@@ -1,0 +1,32 @@
+Akeneo\Pim\Structure\Component\Model\AttributeGroup:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        translations:
+            - Valid: ~
+        sortOrder:
+            - NotNull: ~
+            - Type: numeric
+            - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal: {}
+            - GreaterThanOrEqual:
+                value: 0
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Attribute group code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
+
+Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+        locale:
+            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+                payload:
+                    standardPropertyName: labels

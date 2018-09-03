@@ -1,4 +1,4 @@
-const createElementDecorator = (config, parent) => async (key) => {
+const createElementDecorator = (config) => async (parent, key) => {
   const elementConfig = config[key];
 
   if (Array.isArray(parent)) parent = parent[0];
@@ -8,7 +8,7 @@ const createElementDecorator = (config, parent) => async (key) => {
   const decoratedElements = [];
 
   elements.forEach(element => {
-    decoratedElements.push(elementConfig.decorator(element, createElementDecorator));
+    decoratedElements.push(elementConfig.decorator(element, createElementDecorator, parent));
   });
 
   return (elementConfig.multiple ? decoratedElements : decoratedElements[0]);

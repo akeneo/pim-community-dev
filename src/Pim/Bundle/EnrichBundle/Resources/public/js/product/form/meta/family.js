@@ -54,7 +54,7 @@ define(
                         this.template({
                             familyLabel: family ?
                                 i18n.getLabel(family.labels, UserContext.get('catalogLocale'), product.family) :
-                                _.__('pim_enrich.entity.product.meta.family.none')
+                                _.__('pim_common.none')
                         })
                     );
 

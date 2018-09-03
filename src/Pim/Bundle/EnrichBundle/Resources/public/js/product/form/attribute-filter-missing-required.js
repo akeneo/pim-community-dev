@@ -36,7 +36,7 @@ define(
              * @returns {String}
              */
             getLabel() {
-                return __('pim_enrich.form.product.tab.attributes.attribute_filter.missing_required');
+                return __('pim_enrich.entity.product.module.attribute_filter.missing_required');
             },
 
             /**

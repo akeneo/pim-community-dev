@@ -1,0 +1,33 @@
+Akeneo\Pim\Structure\Component\Model\AssociationType:
+    type: entity
+    table: pim_catalog_association_type
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        created:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        translations:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+            orphanRemoval: true

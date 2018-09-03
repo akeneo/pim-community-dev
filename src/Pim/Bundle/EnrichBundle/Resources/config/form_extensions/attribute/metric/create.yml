@@ -11,7 +11,7 @@ extensions:
         position: 70
         config:
             fieldName: useable_as_grid_filter
-            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
 
     pim-attribute-edit-form-metric-create-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
@@ -20,7 +20,7 @@ extensions:
         position: 80
         config:
             fieldName: is_locale_specific
-            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
 
     pim-attribute-edit-form-metric-create-available-locales:
         module: pim/attribute-edit-form/properties/available-locales
@@ -29,7 +29,7 @@ extensions:
         position: 90
         config:
             fieldName: available_locales
-            label: pim_enrich.form.attribute.tab.properties.label.available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
 
     pim-attribute-form-metric-create-type-specific-params:
         module: pim/common/simple-view
@@ -39,7 +39,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.section.type_specific
+                sectionTitle: pim_enrich.entity.attribute.module.edit.type_specific
                 dropZone: content
 
     pim-attribute-form-metric-create-type-specific-params-metric-family:
@@ -49,7 +49,7 @@ extensions:
         position: 100
         config:
             fieldName: metric_family
-            label: pim_enrich.form.attribute.tab.properties.label.metric_family
+            label: pim_enrich.entity.attribute.property.metric_family.label
             required: true
 
     pim-attribute-form-metric-create-type-specific-params-default-metric-unit:
@@ -59,7 +59,7 @@ extensions:
         position: 110
         config:
             fieldName: default_metric_unit
-            label: pim_enrich.form.attribute.tab.properties.label.default_metric_unit
+            label: pim_enrich.entity.attribute.property.default_metric_unit.label
             required: true
 
     pim-attribute-form-metric-create-validation-params:
@@ -70,7 +70,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.section.validation
+                sectionTitle: pim_enrich.entity.attribute.module.edit.validation
                 dropZone: content
 
     pim-attribute-form-metric-create-validation-params-negative-allowed:
@@ -80,7 +80,7 @@ extensions:
         position: 100
         config:
             fieldName: negative_allowed
-            label: pim_enrich.form.attribute.tab.properties.label.negative_allowed
+            label: pim_enrich.entity.attribute.property.negative_allowed
             defaultValue: true
 
     pim-attribute-form-metric-create-validation-params-decimals-allowed:
@@ -90,7 +90,7 @@ extensions:
         position: 110
         config:
             fieldName: decimals_allowed
-            label: pim_enrich.form.attribute.tab.properties.label.decimals_allowed
+            label: pim_enrich.entity.attribute.property.decimals_allowed
             defaultValue: true
 
     pim-attribute-form-metric-create-validation-params-number-min:
@@ -100,7 +100,7 @@ extensions:
         position: 120
         config:
             fieldName: number_min
-            label: pim_enrich.form.attribute.tab.properties.label.number_min
+            label: pim_enrich.entity.attribute.property.number_min
 
     pim-attribute-form-metric-create-validation-params-number-max:
         module: pim/form/common/fields/text
@@ -109,4 +109,4 @@ extensions:
         position: 130
         config:
             fieldName: number_max
-            label: pim_enrich.form.attribute.tab.properties.label.number_max
+            label: pim_enrich.entity.attribute.property.number_max

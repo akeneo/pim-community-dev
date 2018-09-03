@@ -11,11 +11,11 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
     return ChoiceFilter.extend({
       initialize: function() {
         this.choices = [
-          {'label': __('pim.grid.choice_filter.label_contains'), 'value': '1'},
-          {'label': __('pim.grid.choice_filter.label_does_not_contain'), 'value': '2'},
-          {'label': __('pim.grid.choice_filter.label_equal'), 'value': '3'},
-          {'label': __('pim.grid.choice_filter.label_start_with'), 'value': '4'},
-          {'label': __('pim.grid.choice_filter.label_in_list'), 'value': 'in'},
+          {'label': __('pim_datagrid.filters.common.contains'), 'value': '1'},
+          {'label': __('pim_datagrid.filters.common.does_not_contain'), 'value': '2'},
+          {'label': __('pim_datagrid.filters.common.equal'), 'value': '3'},
+          {'label': __('pim_datagrid.filters.common.start_with'), 'value': '4'},
+          {'label': __('pim_datagrid.filters.common.in_list'), 'value': 'in'},
         ];
         this.emptyValue = { 'type': 'in', 'value': ''};
 
@@ -27,11 +27,11 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
        */
       _getOperatorChoices() {
         return {
-          '1': __('pim.grid.choice_filter.label_contains'),
-          '2': __('pim.grid.choice_filter.label_does_not_contain'),
-          '3': __('pim.grid.choice_filter.label_equal'),
-          '4': __('pim.grid.choice_filter.label_start_with'),
-          'in': __('pim.grid.choice_filter.label_in_list'),
+          '1': __('pim_datagrid.filters.common.contains'),
+          '2': __('pim_datagrid.filters.common.does_not_contain'),
+          '3': __('pim_datagrid.filters.common.equal'),
+          '4': __('pim_datagrid.filters.common.start_with'),
+          'in': __('pim_datagrid.filters.common.in_list'),
         };
       },
     });

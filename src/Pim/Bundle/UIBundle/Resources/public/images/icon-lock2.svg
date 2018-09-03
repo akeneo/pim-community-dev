@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-lock</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-lock" fill="#67768A">
+            <path d="M170.005694,125 L170,125 L170,212 L190,212 L190,126 C190,89.5492065 219.549207,60 256,60 C292.450793,60 322,89.5492065 322,126 L322,212 L342,212 L342,125 L341.994306,125 C341.45839,77.9642473 303.162708,40 256,40 C208.837292,40 170.54161,77.9642473 170.005694,125 Z M80,212 L432,212 L432,472 L80,472 L80,212 Z M100,232 L100,452 L412,452 L412,232 L100,232 Z M246,299 L266,299 L266,386 L246,386 L246,299 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

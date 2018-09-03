@@ -1,0 +1,49 @@
+version: '2'
+
+# Copy this file as "docker-compose.override.yml", and use it to override/add configuration on your containers.
+# You can find a detailed documentation here: https://docs.akeneo.com/master/install_pim/docker/installation_docker.html
+
+services:
+  fpm:
+    environment:
+      COMPOSER_HOME: '/home/docker/.composer'
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
+      PHP_XDEBUG_ENABLED: 0
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+    volumes:
+      - '~/.composer:/home/docker/.composer'
+      - '/tmp/behat/screenshots:/tmp/behat/screenshots'
+
+  node:
+    environment:
+      YARN_CACHE_FOLDER: '/home/node/.yarn-cache'
+    volumes:
+      - '~/.cache/yarn:/home/node/.yarn-cache'
+
+  selenium:
+    ports:
+      - '5910:5900'
+
+  httpd:
+    environment:
+      PHP_IDE_CONFIG: 'serverName=pim-ce'
+
+  httpd-behat:
+    environment:
+      PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
+
+  mysql:
+    ports:
+      - '33006:3306'
+
+  mysql-behat:
+    ports:
+      - '33007:3306'
+    tmpfs:
+      - '/tmp'
+      - '/var/lib/mysql'
+
+  elasticsearch:
+    ports:
+      - '9210:9200'

@@ -59,7 +59,7 @@ class EntityAclExtension extends AbstractAclExtension
         $this->entityClassResolver = $entityClassResolver;
 
         $this->maskBuilderClassNames[EntityMaskBuilder::IDENTITY]
-            = 'Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder';
+            = EntityMaskBuilder::class;
 
         $this->permissionToMaskBuilderIdentity['VIEW'] = EntityMaskBuilder::IDENTITY;
         $this->permissionToMaskBuilderIdentity['CREATE'] = EntityMaskBuilder::IDENTITY;

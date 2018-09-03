@@ -54,12 +54,12 @@ define(
             initialize: function (meta) {
                 this.config = _.extend({}, {
                     trans: {
-                        title: 'confirmation.remove.item',
-                        content: 'pim_enrich.confirmation.delete_item',
-                        success: 'flash.item.removed',
-                        fail: 'error.removing.item',
+                        title: 'pim_enrich.entity.fallback.module.delete.item',
+                        content: 'pim_common.confirm_deletion',
+                        success: 'pim_enrich.entity.fallback.flash.delete.success',
+                        fail: 'pim_enrich.entity.fallback.flash.delete.error',
                         subTitle: '',
-                        buttonText: 'pim_datagrid.mass_action.delete.label'
+                        buttonText: 'pim_common.delete'
                     },
                     redirect: 'oro_default'
                 }, meta.config);

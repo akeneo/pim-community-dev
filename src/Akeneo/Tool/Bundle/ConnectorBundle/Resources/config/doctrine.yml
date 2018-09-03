@@ -1,0 +1,16 @@
+parameters:
+    pim_connector.doctrine.cache_clearer.class: 'Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer'
+
+services:
+    pim_connector.doctrine.cache_clearer:
+        class: '%pim_connector.doctrine.cache_clearer.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            -
+                - '@pim_catalog.repository.cached_attribute'
+                - '@pim_catalog.repository.cached_attribute_option'
+                - '@pim_catalog.repository.cached_family'
+                - '@pim_catalog.repository.cached_category'
+                - '@pim_catalog.repository.cached_channel'
+                - '@pim_catalog.repository.cached_locale'
+                - '@pim_catalog.repository.cached_currency'

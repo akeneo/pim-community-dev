@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\ViewElement;
 
+use Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface;
+use Pim\Bundle\EnrichBundle\ViewElement\BaseViewElement;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ViewElement\Checker\VisibilityCheckerInterface;
 use Prophecy\Argument;
@@ -15,12 +17,12 @@ class BaseViewElementSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\ViewElement\BaseViewElement');
+        $this->shouldHaveType(BaseViewElement::class);
     }
 
     function it_is_a_view_element()
     {
-        $this->shouldImplement('Pim\Bundle\EnrichBundle\ViewElement\ViewElementInterface');
+        $this->shouldImplement(ViewElementInterface::class);
     }
 
     function it_has_an_alias()

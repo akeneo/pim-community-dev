@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Product;
 
-use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 class InMemoryProductRepository implements
     IdentifiableObjectRepositoryInterface,
@@ -59,7 +59,12 @@ class InMemoryProductRepository implements
 
     public function find($id)
     {
-        throw new NotImplementedException(__METHOD__);
+        $product = $this->products->filter(
+            function (ProductInterface $product) use ($id) {
+                return $product->getId() === $id;
+            })->first();
+
+        return (false === $product) ? null : $product;
     }
 
     public function findAll()

@@ -1,0 +1,27 @@
+pim_catalog_volume:
+  link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
+  section:
+    product_values:
+      title: Achsen, die die Anzahl der Produktwerte nutzen
+    catalog_structure:
+      hint: Sie wissen sicherlich, dass eine gute Katalogstruktur sehr wichtig ist und eine Voraussetzung für effizientes anreichern von Produkten. Im Folgenden sehen Sie die verschiedene Achsen, um Ihre Katalogstruktur zu überwachen.
+      title: Achsen, verbunden mit der Katalogstruktur
+    variant_modelling:
+      hint: Falls Sie Variantenmodellierung nutzen, können diese Achsen Ihnen bei der Überwachung des Umfangs helfen.
+      title: Achsen für die Variante "Modellierung"
+  axis:
+    count_products: Produkte
+    average_max_attributes_per_family: Attribute pro Produktfamilie
+    count_channels: Ausgabekanäle
+    count_locales: Gebietsschemen (aktiviert)
+    count_scopable_attributes: Ausgabekanalspezifisches Attribute
+    count_localizable_and_scopable_attributes: Lokalisierbare und ausgabekanalspezifische Attribute
+    count_localizable_attributes: Lokalisierbare Attribute
+    count_families: Produktfamilien
+    count_attributes: Attribute
+    average_max_options_per_attribute: Optionen nach Attributen
+    count_categories: Kategorien
+    count_category_trees: Kategorie-Strukturbäume
+    count_variant_products: Produktvarianten
+    count_product_models: Produktmodelle
+    warning: Wow! Sie haben mit dieser Achse das Limit erreicht! Zögern Sie nicht uns zu kontaktieren, falls Sie Hilfe benötigen.

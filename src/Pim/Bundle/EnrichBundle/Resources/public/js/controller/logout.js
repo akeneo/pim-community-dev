@@ -9,7 +9,7 @@ define(
              */
             renderRoute: function (route, path) {
                 return $.get(path).then(() => {
-                    window.location = router.generate('oro_user_security_login');
+                    window.location = router.generate('pim_user_security_login');
                 }).promise();
             }
         });

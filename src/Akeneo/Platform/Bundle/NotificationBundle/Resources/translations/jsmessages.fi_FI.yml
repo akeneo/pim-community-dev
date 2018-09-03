@@ -1,0 +1,4 @@
+pim_notification:
+  report: Raportti
+  mark_all_as_read: Merkitse kaikki luetuiksi
+  no_notifications: Ei ilmoituksia

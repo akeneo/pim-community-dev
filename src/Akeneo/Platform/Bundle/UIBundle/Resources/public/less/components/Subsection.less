@@ -1,0 +1,49 @@
+@import '../base/variables';
+
+.AknSubsection {
+  &-title {
+    background: white;
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    border-bottom: 2px solid @AknSlateGrey;
+    font-weight: bold;
+    line-height: @AknBigButtonSize;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    z-index: 2;
+
+    &--sticky {
+      position: sticky;
+      top: 0;
+      padding-top: 10px;
+    }
+
+    &--blockDown {
+      margin-bottom: 36px;
+    }
+  }
+
+  &-container {
+    display: flex;
+  }
+
+  &-comment {
+    margin-left: 5px;
+    font-size: @AknDefaultFontSize;
+    line-height: 36px;
+    text-transform: none;
+    font-weight: normal;
+
+    &--clickable {
+      color: @AknLightPurple;
+      transition: color 0.1s ease-in;
+      cursor: pointer;
+
+      &:hover {
+        color: @AknPurple;
+      }
+    }
+  }
+}

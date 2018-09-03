@@ -1,0 +1,18 @@
+pim_datagrid:
+  column_configurator:
+    min_message: You must select at least one datagrid column to display
+  label:
+    unique_message: The label must be unique
+    not_blank_message: The label must not be blank
+  view_selector:
+    flash:
+      created: Datagrid view successfully created
+      removed: Datagrid view successfully removed
+      not_removable: You don't have the permission to remove this view
+  cells:
+    type:
+      quick_export: Quick Export
+      import: Import
+      export: Export
+      mass_edit: Mass Edit
+      mass_delete: Mass Delete

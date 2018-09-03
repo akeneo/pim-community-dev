@@ -7,7 +7,6 @@ services:
         arguments:
             - '@akeneo_batch.job.job_registry'
             - '@translator'
-            - '@pim_import_export.job_label.translated_label_provider'
             - '@akeneo_batch.job_parameters_factory'
             - '@oro_security.security_facade'
         tags:

@@ -25,8 +25,8 @@ define(['oro/datagrid/string-cell', 'underscore', 'oro/translator', 'pim/templat
 
                 this.$el.empty().html(
                     this.template({
-                        clientIdLabel: __('Client ID'),
-                        secretLabel: __('Secret'),
+                        clientIdLabel: __('pim_datagrid.cells.credientials.client_id'),
+                        secretLabel: __('pim_datagrid.cells.credientials.secret'),
                         publicId: credentials.public_id,
                         secret: credentials.secret
                     })

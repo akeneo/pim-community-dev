@@ -84,8 +84,8 @@ define(
                             ),
                             locale: UserContext.get('uiLocale'),
                             i18n,
-                            label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
-                            addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations')
+                            label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
+                            addAssociationsLabel: __('pim_enrich.entity.product.module.associations.add_associations')
                         }));
                         this.delegateEvents();
                     });
@@ -103,8 +103,8 @@ define(
                         const items = products.concat(productModels);
                         this.$el.html(this.confirmTemplate({
                             items: items,
-                            title: __('pim_enrich.form.basket.title'),
-                            emptyLabel: __('pim_enrich.form.basket.empty_basket'),
+                            title: __('pim_enrich.entity.product.basket.title'),
+                            emptyLabel: __('pim_enrich.entity.product.basket.empty_basket'),
                             confirmLabel: __(
                                 'pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.confirm'
                             ),
@@ -245,7 +245,7 @@ define(
                         .getFetcher('association-type')
                         .fetch(this.getCurrentAssociationTypeCode())
                         .then((associationType) => {
-                            form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
+                            form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
                                 associationType: associationType.labels[UserContext.get('catalogLocale')]
                             }));
 
@@ -260,7 +260,7 @@ define(
                                 title: '',
                                 content: '',
                                 cancelText: ' ',
-                                okText: __('confirmation.title')
+                                okText: __('pim_common.confirm')
                             });
                             modal.open();
                             modal.on('cancel', deferred.reject);

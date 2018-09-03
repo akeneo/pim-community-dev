@@ -1,0 +1,33 @@
+pim_enrich_associationtype_index:
+    path: ''
+
+pim_enrich_associationtype_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.association_type:createAction }
+    methods: [POST]
+
+pim_enrich_associationtype_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.association_type:indexAction }
+    methods: [GET]
+
+pim_enrich_associationtype_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.association_type:getAction }
+    methods: [GET]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_associationtype_rest_post:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.association_type:postAction }
+    methods: [POST]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_associationtype_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.association_type:removeAction }
+    methods: [DELETE]
+    requirements:
+        code: '[a-zA-Z0-9_]+'

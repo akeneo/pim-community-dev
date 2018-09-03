@@ -116,7 +116,7 @@ define([
                 operator: this.getOperator(),
                 startValue: startValue,
                 endValue: endValue,
-                operatorChoices: this.config.operators
+                operators: this.getLabelledOperatorChoices(this.shortname)
             });
         },
 

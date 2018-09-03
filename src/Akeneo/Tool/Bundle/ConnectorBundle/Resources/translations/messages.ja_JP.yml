@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount% 列を想定していますが、実際には%itemColumnsCount% 列が%filePath%の%lineno%にあります'
+job_execution.summary:
+  read: 読み込み
+  write: 書き込み
+  skip: スキップ
+  create: 作成
+  process: 処理済
+  update_products: 更新された製品
+  process_products: 処理済商品
+  skip_products: スキップされた製品
+  displayed: 最初の警告が表示されます
+  charset_validator:
+    title: 'ファイルの文字コード:'
+    skipped: スキップしました。拡張子がホワイトリストにあります
+  product_skipped_no_diff: スキップされた商品 (変更なし)
+  product_skipped_no_associations: スキップされた商品 (関連性はなし)
+  product_model_skipped_no_diff: スキップされた製品モデル (変更なし)
+  item_position: 行の読み込み
+  skipped_in_root_product_model: スキップされた親製品モデル
+  skipped_in_sub_product_model: スキップされた親でない製品モデル

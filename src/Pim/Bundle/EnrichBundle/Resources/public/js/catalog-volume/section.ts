@@ -49,7 +49,7 @@ class SectionView extends BaseView {
 
   readonly config: SectionConfig = {
     align: 'left',
-    warningText: __('catalog_volume.axis.warning'),
+    warningText: __('pim_catalog_volume.axis.warning'),
     templates: {
       averageMax: 'pim/template/catalog-volume/average-max',
       count: 'pim/template/catalog-volume/number',
@@ -59,7 +59,7 @@ class SectionView extends BaseView {
       code: '',
       title: '',
     },
-    title: ''
+    title: '',
   };
 
   public events(): Backbone.EventsHash {
@@ -182,7 +182,7 @@ class SectionView extends BaseView {
         icon: this.getIconName(name),
         value: axis.value,
         has_warning: axis.hasWarning,
-        title: __(`catalog_volume.axis.${name}`),
+        title: __(`pim_catalog_volume.axis.${name}`),
         warningText: this.config.warningText,
       });
 

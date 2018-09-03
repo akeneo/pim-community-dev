@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
-use Pim\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
@@ -28,7 +29,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $settings = [
-        'oro_user' => [
+        'pim_user' => [
             'level'    => [
                 'value' => 20,
                 'type'  => 'scalar',
@@ -42,8 +43,8 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         $this->object = new UserConfigManager($this->om, $this->settings);
 
         $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
-        $this->group1 = $this->createMock('Oro\Bundle\UserBundle\Entity\Group');
-        $this->group2 = $this->createMock('Oro\Bundle\UserBundle\Entity\Group');
+        $this->group1 = $this->createMock(Group::class);
+        $this->group2 = $this->createMock(Group::class);
 
         $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $user = new User();
@@ -74,7 +75,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->addGroup($this->group2);
 
         $this->object = $this->createMock(
-            'Oro\Bundle\ConfigBundle\Config\UserConfigManager',
+            UserConfigManager::class,
             ['loadStoredSettings'],
             [$this->om, $this->settings]
         );

@@ -1,0 +1,87 @@
+parameters:
+    pim_catalog.remover.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
+    pim_catalog.remover.base_options_resolver.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
+    pim_catalog.remover.completeness.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover
+
+services:
+    pim_catalog.remover.group_type:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.group_type.class%'
+
+    pim_catalog.remover.product:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.product.interface%'
+
+    pim_catalog.remover.product_model:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.product_model.interface%'
+
+    pim_catalog.remover.association_type:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.association_type.class%'
+
+    pim_catalog.remover.attribute_group:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.attribute_group.class%'
+
+    pim_catalog.remover.attribute:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.attribute.class%'
+
+    pim_catalog.remover.attribute_option:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.attribute_option.class%'
+
+    pim_catalog.remover.category:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.category.class%'
+
+    pim_catalog.remover.group:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.entity.group.class%'
+
+    pim_catalog.remover.completeness:
+        class: '%pim_catalog.remover.completeness.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - 'pim_catalog_completeness'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_catalog.remover.base_options_resolver:
+        class: '%pim_catalog.remover.base_options_resolver.class%'
+
+    pim_comment.remover.comment:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_comment.entity.comment.class%'

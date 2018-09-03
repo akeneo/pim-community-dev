@@ -43,7 +43,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
-                label:     pim.grid.action.show.title
+                label:     pim_datagrid.action.show.title
                 link:      show_link
                 rowAction: true
         sorters:

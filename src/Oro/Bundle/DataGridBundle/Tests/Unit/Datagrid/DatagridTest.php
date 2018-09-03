@@ -2,7 +2,11 @@
 
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 
 class DatagridTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +20,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->acceptor = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Extension\Acceptor')
+        $this->acceptor = $this->getMockBuilder(Acceptor::class)
             ->disableOriginalConstructor()->getMock();
         $this->grid = new Datagrid(self::TEST_NAME, $this->acceptor);
     }
@@ -40,7 +44,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDatasource()
     {
-        $dataSource = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $dataSource = $this->getMockForAbstractClass(DatasourceInterface::class);
 
         $this->assertNull($this->grid->getDatasource());
         $this->grid->setDatasource($dataSource);
@@ -69,10 +73,10 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetData()
     {
-        $dataSource = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $dataSource = $this->getMockForAbstractClass(DatasourceInterface::class);
         $this->grid->setDatasource($dataSource);
 
-        $resultFQCN = 'Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject';
+        $resultFQCN = ResultsIterableObject::class;
 
         $this->acceptor->expects($this->once())->method('acceptDatasource')
             ->with($dataSource);
@@ -88,7 +92,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAcceptedDataSource()
     {
-        $dataSource = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $dataSource = $this->getMockForAbstractClass(DatasourceInterface::class);
         $this->grid->setDatasource($dataSource);
 
         $this->acceptor->expects($this->once())->method('acceptDatasource')
@@ -103,7 +107,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMetaData()
     {
-        $resultFQCN = 'Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject';
+        $resultFQCN = MetadataIterableObject::class;
 
         $this->acceptor->expects($this->once())->method('acceptMetadata')
             ->with($this->isInstanceOf($resultFQCN));

@@ -1,0 +1,14 @@
+Akeneo\Tool\Component\Batch\Model\JobInstance:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        # TODO move this constraint!
+        - Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance:
+            property: jobName
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: The code must only contain alphanumeric characters and underscore.
+        label:
+            - NotBlank: ~

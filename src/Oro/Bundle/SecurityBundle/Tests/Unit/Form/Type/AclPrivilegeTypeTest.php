@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
+use Oro\Bundle\SecurityBundle\Form\Type\PermissionCollectionType;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 
 class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +24,7 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $builder->expects($this->at(0))->method('add')->with(
             'identity',
-            $this->isInstanceOf('Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType'),
+            $this->isInstanceOf(AclPrivilegeIdentityType::class),
             ['required' => false]
         );
         $options = [
@@ -31,7 +34,7 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
         ];
         $builder->expects($this->at(1))->method('add')->with(
             'permissions',
-            $this->isInstanceOf('Oro\Bundle\SecurityBundle\Form\Type\PermissionCollectionType'),
+            $this->isInstanceOf(PermissionCollectionType::class),
             $this->contains($options)
         );
         $this->formType->buildForm($builder, $options);
@@ -52,7 +55,7 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
             ->with(
                 [
                     'privileges_config' => [],
-                    'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
+                    'data_class'        => AclPrivilege::class,
                 ]
             );
         $this->formType->configureOptions($resolver);

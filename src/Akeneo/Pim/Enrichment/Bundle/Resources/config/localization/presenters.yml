@@ -1,0 +1,87 @@
+parameters:
+    pim_catalog.localization.presenter.registry.class: Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistry
+    pim_catalog.localization.presenter.prices.class:   Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PricesPresenter
+    pim_catalog.localization.presenter.metric.class:   Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\MetricPresenter
+    pim_catalog.localization.presenter.number.class:   Akeneo\Tool\Component\Localization\Presenter\NumberPresenter
+    pim_catalog.localization.presenter.date.class:     Akeneo\Tool\Component\Localization\Presenter\DatePresenter
+    pim_catalog.localization.presenter.boolean.class:  Akeneo\Tool\Component\Localization\Presenter\BooleanPresenter
+
+services:
+    pim_catalog.localization.presenter.registry:
+        class: '%pim_catalog.localization.presenter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+
+    # Product values
+    pim_catalog.localization.presenter.prices:
+        class: '%pim_catalog.localization.presenter.prices.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.currency'
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_value' }
+
+    pim_catalog.localization.presenter.metric:
+        class: '%pim_catalog.localization.presenter.metric.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.number'
+            - ['pim_catalog_metric']
+            - '@pim_catalog.localization.translator.proxy'
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_value' }
+
+    pim_catalog.localization.presenter.number:
+        class: '%pim_catalog.localization.presenter.number.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.number'
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_value' }
+
+    pim_catalog.localization.presenter.date:
+        class: '%pim_catalog.localization.presenter.date.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.date'
+            - ['pim_catalog_date']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_value' }
+
+    pim_catalog.localization.presenter.product_value.boolean:
+        class: '%pim_catalog.localization.presenter.boolean.class%'
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_value' }
+
+    # Product fields
+    pim_catalog.localization.presenter.datetime:
+        class: '%pim_catalog.localization.presenter.date.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.datetime'
+            - ['created_at', 'updated_at']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_field' }
+
+    pim_catalog.localization.presenter.product_field.boolean:
+        class: '%pim_catalog.localization.presenter.boolean.class%'
+        arguments:
+            - ['enabled']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_field' }
+
+    # Attribute options
+    pim_catalog.localization.presenter.number.attribute_option:
+        class: '%pim_catalog.localization.presenter.number.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.number'
+            - ['number_min', 'number_max']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'attribute_option' }
+
+    pim_catalog.localization.presenter.date.attribute_option:
+        class: '%pim_catalog.localization.presenter.date.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.date'
+            - ['date_min', 'date_max']
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'attribute_option' }

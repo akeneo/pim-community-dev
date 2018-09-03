@@ -3,6 +3,7 @@ namespace Oro\Bundle\AsseticBundle\Tests\Unit\Factory;
 
 use Assetic\Asset\FileAsset;
 use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
+use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -146,7 +147,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function createMockOroAsseticNode($nameUnCompress, array $children = [])
     {
-        $result = $this->getMockBuilder('Oro\Bundle\AsseticBundle\Node\OroAsseticNode')
+        $result = $this->getMockBuilder(OroAsseticNode::class)
             ->disableOriginalConstructor()
             ->setMethods(['getNameUnCompress', 'getUnCompressAsset', 'getAttribute', 'getIterator'])
             ->getMock();

@@ -2,16 +2,16 @@
 
 namespace spec\Akeneo\Test\Acceptance\Product;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Prophecy\Argument;
 
 class InMemoryProductRepositorySpec extends ObjectBehavior
@@ -78,7 +78,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
-        $this->shouldThrow(NotImplementedException::class)->during('find', ['a-product']);
         $this->shouldThrow(NotImplementedException::class)->during('findAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
@@ -89,5 +88,18 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $this->shouldThrow(NotImplementedException::class)->during('countAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('hasAttributeInFamily', ['a-product', 'an-attribute']);
         $this->shouldThrow(NotImplementedException::class)->during('searchAfter', [null, 89]);
+    }
+
+    function it_finds_a_product_from_its_id()
+    {
+        $product = new Product();
+        $this->save($product);
+
+        $this->find($product->getId())->shouldReturn($product);
+    }
+
+    function it_returns_null_when_it_does_not_find_a_product()
+    {
+        $this->find(mt_rand())->shouldReturn(null);
     }
 }

@@ -1,0 +1,22 @@
+Akeneo\Tool\Bundle\ApiBundle\Entity\RefreshToken:
+    type: entity
+    table: pim_api_refresh_token
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        user:
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
+            joinColumns:
+                user:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        client:
+            targetEntity: Akeneo\Tool\Bundle\ApiBundle\Entity\Client
+            joinColumns:
+                client:
+                    referencedColumnName: id
+                    onDelete: CASCADE

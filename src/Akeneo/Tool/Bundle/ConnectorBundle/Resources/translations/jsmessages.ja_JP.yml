@@ -1,0 +1,137 @@
+batch_jobs:
+  default_steps:
+    validation: ファイルの検証
+    import_associations: 関連付けのインポート
+    import_root_product_model: ルート製品モデルのインポート
+    import_sub_product_model: サブ製品モデルのインポート
+  csv_product_export:
+    label: 商品をCSV形式でエクスポート
+    export.label: 商品エクスポート
+  csv_product_model_export:
+    label: 製品モデルをCSV形式でエクスポート
+    export.label: 商品モデルをエクスポート
+  csv_category_export:
+    label: カテゴリをCSV形式でエクスポート
+    export.label: カテゴリエクスポート
+  csv_attribute_export:
+    label: 属性をCSV形式でエクスポート
+    export.label: 属性エクスポート
+  csv_attribute_option_export:
+    label: 属性オプションをCSV形式でエクスポート
+    export.label: 属性オプションのエクスポート
+  csv_association_type_export:
+    label: CSVエクスポートで関連付ける種別
+    export.label: エクスポートに関連付ける種別
+  csv_group_export:
+    label: CSVにエクスポートするグループ
+    export.label: グループエクスポート
+  csv_family_export:
+    label: ファミリーをCSV形式でエクスポート
+    export.label: ファミリーエクスポート
+  csv_family_variant_export:
+    label: ファミリーバリアントをCSV形式でエクスポート
+    export.label: ファミリーバリアントをエクスポート
+  csv_product_import:
+    label: 製品をCSV形式でインポート
+    import.label: 製品のインポート
+  csv_product_model_import:
+    label: 製品モデルをCSV形式でインポート
+    import_product_model_descendants.label: 製品モデルの子孫を計算します。
+  csv_category_import:
+    label: カテゴリをCSV形式でインポート
+    import.label: カテゴリのインポート
+  csv_attribute_import:
+    label: 属性をCSV形式でインポート
+    import.label: 属性のインポート
+  csv_attribute_option_import:
+    label: 属性オプションをCSV形式でインポート
+    import.label: 属性オプションのインポート
+  csv_association_type_import:
+    label: 関連タイプをCSVでインポート
+    import.label: 関連付けタイプのインポート
+  csv_family_import:
+    label: ファミリーをCSV形式でインポート
+    import.label: ファミリーインポート
+  csv_family_variant_import:
+    label: ファミリーバリアントをCSV形式でインポート
+    import.label: ファミリーバリアントをインポート
+  csv_group_import:
+    label: グループをCSVでインポート
+    import.label: グループのインポート
+  csv_attribute_group_export:
+    label: 属性グループをCSV形式でエクスポート
+    export.label: 属性グループエクスポート
+  csv_group_type_export:
+    label: グループタイプをCSV形式でエクスポート
+    export.label: グループタイプエクスポート
+  csv_attribute_group_import:
+    label: 属性グループをCSV形式でインポート
+    import.label: 属性グループインポート
+  csv_group_type_import:
+    label: グループタイプをCSV形式でインポート
+    import.label: グループタイプインポート
+  xlsx_category_import:
+    label: カテゴリをXLSX形式でインポート
+    import.label: カテゴリのインポート
+  xlsx_association_type_import:
+    label: 関連タイプをXLSXでインポート
+    import.label: 関連付けタイプのインポート
+  xlsx_attribute_import:
+    label: 属性をXLSX形式でインポート
+    import.label: 属性のインポート
+  xlsx_attribute_option_import:
+    label: 属性オプションをXLSX形式でインポート
+    import.label: 属性オプションのインポート
+  xlsx_family_import:
+    label: ファミリーをXLSX形式でインポート
+    import.label: ファミリーインポート
+  xlsx_family_variant_import:
+    label: ファミリーバリアントをXLSX形式でインポート
+    import.label: ファミリーバリアントをインポート
+  xlsx_product_export:
+    label: 商品をXLSX形式でエクスポート
+    export.label: 商品エクスポート
+  xlsx_product_model_export:
+    label: 商品モデルをXLSX形式でエクスポート
+    export.label: 商品モデルをエクスポート
+  xlsx_product_import:
+    label: 商品をXLSX形式でインポート
+    import.label: 製品のインポート
+  xlsx_product_model_import:
+    import_product_model_descendants.label: 製品モデルの子孫を計算します。
+  xlsx_group_export:
+    label: グループをXLSX形式でインポート
+    export.label: グループエクスポート
+  xlsx_group_import:
+    label: グループをXLSX形式でインポート
+    import.label: グループのインポート
+  xlsx_family_export:
+    label: ファミリーをXLSX形式でエクスポート
+    export.label: ファミリーエクスポート
+  xlsx_family_variant_export:
+    label: ファミリーバリアントをXLSX形式でエクスポート
+    export.label: ファミリーバリアントをエクスポート
+  xlsx_category_export:
+    label: カテゴリをXLSX形式でエクスポート
+    export.label: カテゴリエクスポート
+  xlsx_attribute_export:
+    label: 属性をXLSX形式でエクスポート
+    export.label: 属性をXLSX形式でエクスポート
+  xlsx_attribute_option_export:
+    label: 属性オプションをXLSX形式でエクスポート
+    export.label: 属性オプションをXLSX形式でエクスポート
+  xlsx_association_type_export:
+    label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でインポート
+  xlsx_attribute_group_export:
+    label: 属性グループをXLSX形式でエクスポート
+    export.label: 属性グループエクスポート
+  xlsx_group_type_export:
+    label: グループタイプをXLSX形式でエクスポート
+    export.label: グループタイプエクスポート
+  xlsx_attribute_group_import:
+    label: 属性グループをXLSX形式でインポート
+    import.label: 属性グループインポート
+  xlsx_group_type_import:
+    label: グループタイプをXLSX形式でインポート
+    import.label: グループタイプインポート

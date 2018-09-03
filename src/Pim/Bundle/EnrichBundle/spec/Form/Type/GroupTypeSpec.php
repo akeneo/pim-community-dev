@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

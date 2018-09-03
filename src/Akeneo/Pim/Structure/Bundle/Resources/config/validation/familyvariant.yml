@@ -1,0 +1,36 @@
+Akeneo\Pim\Structure\Component\Model\FamilyVariant:
+    constraints:
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyVariant: ~
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
+            properties:
+                - code
+                - family
+
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Family variant code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
+        family:
+            - NotNull: ~
+        translations:
+            - Valid: ~
+
+    getters:
+        variantAttributeSets:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true
+
+Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
+        locale:
+            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+                payload:
+                    standardPropertyName: labels

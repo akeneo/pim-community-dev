@@ -19,7 +19,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
              */
             render: function () {
                 if ('product_model' !== this.model.get('document_type')) {
-                    this.$el.empty().html(__('not_available'));
+                    this.$el.empty().html(__('pim_common.not_available'));
 
                     return this;
                 }

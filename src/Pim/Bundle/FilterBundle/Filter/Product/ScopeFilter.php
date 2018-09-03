@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

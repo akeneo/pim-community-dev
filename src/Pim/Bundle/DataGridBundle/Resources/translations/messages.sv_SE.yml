@@ -1,0 +1,16 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Du måste välja minst en tabellkolumn att visa
+  label:
+    unique_message: Etiketten måste vara unik
+    not_blank_message: Etiketten får inte vara tom
+  view_selector:
+    flash:
+      created: Vy har skapats
+      removed: Vy har tagits bort
+  cells:
+    type:
+      quick_export: Snabbexport
+      import: Import
+      export: Export
+      mass_edit: Massredigera

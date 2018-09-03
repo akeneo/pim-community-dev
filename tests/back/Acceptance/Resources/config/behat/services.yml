@@ -29,21 +29,21 @@ services:
             - '@__symfony__.validator'
 
     test.attribute.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.attribute'
             - '@__symfony__.pim_catalog.updater.attribute'
             - '@__symfony__.validator'
 
     test.attribute_group.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.attribute_group'
             - '@__symfony__.pim_catalog.updater.attribute_group'
             - '@__symfony__.validator'
 
     test.family.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.family'
             - '@__symfony__.pim_catalog.updater.family'

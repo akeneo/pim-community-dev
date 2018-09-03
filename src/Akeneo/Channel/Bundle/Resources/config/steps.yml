@@ -1,0 +1,126 @@
+services:
+    ### Locale
+    pim_connector.step.csv_locale_import.import:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_locale'
+            - '@pim_connector.processor.denormalization.locale'
+            - '@pim_connector.writer.database.locale'
+
+    pim_connector.step.csv_locale_export.export:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.locale'
+            - '@pim_connector.processor.normalization.locale'
+            - '@pim_connector.writer.file.csv_locale'
+
+    pim_connector.step.xlsx_locale_import.import:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_locale'
+            - '@pim_connector.processor.denormalization.locale'
+            - '@pim_connector.writer.database.locale'
+
+    pim_connector.step.xlsx_locale_export.export:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.locale'
+            - '@pim_connector.processor.normalization.locale'
+            - '@pim_connector.writer.file.xlsx_locale'
+            - 10
+
+    ### Channel
+    pim_connector.step.csv_channel_import.import:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_channel'
+            - '@pim_connector.processor.denormalization.channel'
+            - '@pim_connector.writer.database.channel'
+
+    pim_connector.step.csv_channel_export.export:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.channel'
+            - '@pim_connector.processor.normalization.channel'
+            - '@pim_connector.writer.file.csv_channel'
+
+    pim_connector.step.xlsx_channel_import.import:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_channel'
+            - '@pim_connector.processor.denormalization.channel'
+            - '@pim_connector.writer.database.channel'
+
+    pim_connector.step.xlsx_channel_export.export:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.channel'
+            - '@pim_connector.processor.normalization.channel'
+            - '@pim_connector.writer.file.xlsx_channel'
+            - 10
+
+    ### Currency
+    pim_connector.step.csv_currency_import.import:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_currency'
+            - '@pim_connector.processor.denormalization.currency'
+            - '@pim_connector.writer.database.currency'
+
+    pim_connector.step.csv_currency_export.export:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.currency'
+            - '@pim_connector.processor.normalization.currency'
+            - '@pim_connector.writer.file.csv_currency'
+
+    pim_connector.step.xlsx_currency_import.import:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_currency'
+            - '@pim_connector.processor.denormalization.currency'
+            - '@pim_connector.writer.database.currency'
+
+    pim_connector.step.xlsx_currency_export.export:
+        class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.currency'
+            - '@pim_connector.processor.normalization.currency'
+            - '@pim_connector.writer.file.xlsx_currency'
+            - 10

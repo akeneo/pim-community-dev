@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: Web API tilladelser
+    attribute:
+      edit: Opret og opdatere attributter
+      list: Liste over attributter
+    attribute_option:
+      edit: Opret og opdatere indstillinger for attribut
+      list: Indstillinger for attribut
+    attribute_group:
+      edit: Opret og Opdater attributgrupper
+      list: List attributgrupper
+    category:
+      edit: Opret og Opdater kategorier
+      list: Kategoriliste
+    family:
+      edit: Opret og Opdater familier
+      list: Liste over familier
+    family_variant:
+      edit: Opret og Opdater familie varianter
+      list: Vis familie varianter
+    channel:
+      edit: Opret og Opdater familier
+      list: Liste over kanaler
+    locale.list: Liste over landestandarder
+    currency.list: Liste over valutaer
+    association_type:
+      edit: Opret og Opdater association typer
+      list: List sammenhængstyper
+  acl_group:
+    overall_access: Samlede Web API-adgang
+    attribute: Egenskaber
+    attribute_option: Attribut valg
+    attribute_group: Attributgrupper
+    category: Kategorier
+    family: Familier
+    family_variant: Familie varianter
+    channel: Kanaler
+    locale: Landestandarder
+    currency: Valutaer
+    association_type: Sammenhængstyper
+pim_user:
+  roles:
+    tab:
+      api: Web API tilladelser

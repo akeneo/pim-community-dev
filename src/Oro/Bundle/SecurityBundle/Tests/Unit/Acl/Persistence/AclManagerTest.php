@@ -2,7 +2,11 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 
+use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -35,25 +39,25 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->objectIdentityFactory =
-            $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+            $this->getMockBuilder(ObjectIdentityFactory::class)
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $this->extension = $this->createMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface');
+        $this->extension = $this->createMock(AclExtensionInterface::class);
         $this->extension->expects($this->any())->method('getExtensionKey')->will($this->returnValue('entity'));
         $this->extension->expects($this->any())->method('getServiceBits')->will($this->returnValue(0));
-        $this->extensionSelector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
+        $this->extensionSelector = $this->getMockBuilder(AclExtensionSelector::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->extensionSelector->expects($this->any())
             ->method('select')
             ->will($this->returnValue($this->extension));
 
-        $this->aclProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider')
+        $this->aclProvider = $this->getMockBuilder(MutableAclProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->aceProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper')
+        $this->aceProvider = $this->getMockBuilder(AceManipulationHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -67,17 +71,17 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testIsAclEnabled()
     {
-        $factory = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
+        $factory = $this->getMockBuilder(ObjectIdentityFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $extensionSelector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
+        $extensionSelector = $this->getMockBuilder(AclExtensionSelector::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager = new AclManager($factory, $extensionSelector);
 
         $this->assertFalse($manager->isAclEnabled());
 
-        $aclProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider')
+        $aclProvider = $this->getMockBuilder(MutableAclProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager = new AclManager($factory, $extensionSelector, $aclProvider);

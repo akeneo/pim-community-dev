@@ -1,0 +1,84 @@
+pim_datagrid:
+  entity_hint: entité
+  no_entities: "Aucun(e) {{ entityHint }} trouvé(e)"
+  no_results: "Désolé, il n’y a aucun(e) {{ entityHint }} pour votre recherche."
+  no_results_subtitle: "Essayez à nouveau avec d'autres critères de recherche."
+  search: "Rechercher sur {{ label }}"
+  select:
+    title: Sélectionner
+    all_visible: Tous les éléments visibles
+  delete_error:
+    title: Erreur lors de la suppression
+  reset_confirmation:
+    title: Confirmation de remise à zéro
+    content: Vos modifications seront perdues. Êtes-vous certain(e) de vouloir réinitialiser la grille ?
+  refresh_confirmation:
+    title: Confirmer l'actualisation
+    content: Vos modifications seront perdues. Êtes-vous certain(e) de vouloir actualiser la grille ?
+  column_configurator:
+    label: Colonnes
+    title: Configurer les colonnes
+    all_groups: Tous les groupes
+    search: Recherche
+    clear: Réinitialiser
+    displayed_columns: Colonnes sélectionnées
+    remove_column: Supprimer
+    description: Sélectionnez les informations que vous souhaitez afficher dans vos colonnes
+    min_message: Vous devez sélectionner au moins une colonne à afficher
+    system_group: Système
+  view_selector:
+    create_view: Créer une vue
+    placeholder: Nom de la nouvelle vue
+    choose_label: Choisissez un titre pour la vue
+    remove: Supprimer cette vue
+    save_changes: Enregistrer cette vue
+    default_view: Vue par défaut
+    select: Veuillez sélectionner une vue
+    confirmation:
+      remove: Êtes-vous sûr(e) de vouloir supprimer cette vue ?
+  display_selector:
+    label: Affichage
+    gallery: Galerie
+    list: Liste
+  mass_action:
+    delete:
+      empty_selection: Aucun produit sélectionné
+      success_message: "{0} Aucune entité n'a été supprimée|{1} Une entité a été supprimée|]1, Inf [ %count% entités ont été supprimées"
+    default:
+      confirmation:
+        title: Confirmation de l'Action de masse
+        content: Êtes-vous sûr(e) de que vouloir faire cela ?
+      success: Action de masse effectuée
+      error: L'action de masse n'a pas été effectuée
+      no_items: Veuillez sélectionner des éléments pour exécuter cette action de masse.
+    quick_export:
+      title: Export rapide
+      success: L'export rapide a été lancé
+  action:
+    default:
+      confirmation:
+        title: Confirmation de l'exécution
+        content: Êtes-vous sûr(e) de que vouloir faire cela ?
+      success: Action exécutée
+      error: L'action n'a pas été exécutée
+      no_items: Veuillez sélectionner des éléments afin d'effectuer l'action.
+    show:
+      title: Afficher
+  filters:
+    common:
+      empty: est vide
+      not_empty: n'est pas vide
+      in_list: dans la liste
+      contains: contient
+      does_not_contain: ne contient pas
+      equal: est égal à
+      start_with: commence par
+      operator: Opérateur
+    price_filter:
+      label: Devise
+    metric_filter:
+      label: Unité
+  cells:
+    credientials:
+      client_id: ID du client
+      secret: Secret 

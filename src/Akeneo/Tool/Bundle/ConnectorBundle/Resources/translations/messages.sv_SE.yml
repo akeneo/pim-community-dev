@@ -1,0 +1,20 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Förväntade %totalColumnsCount% kolumner, faktiskt antal %itemColumnsCount% i %filePath%:%lineno%'
+job_execution.summary:
+  read: läst
+  write: skrivet
+  skip: hoppades över
+  create: skapades
+  process: bearbetade
+  update_products: uppdaterade produkter
+  process_products: bearbetade produkter
+  skip_products: överhoppade produkter
+  displayed: första varningarna visas
+  charset_validator:
+    title: 'Filkodning:'
+    skipped: hoppades över, filändelsen i godkäntlistan
+  product_skipped_no_diff: hoppade över produkten (inga skillnader)
+  product_skipped_no_associations: hoppade över produkten (inga associationer hittades)
+  item_position: lästa rader

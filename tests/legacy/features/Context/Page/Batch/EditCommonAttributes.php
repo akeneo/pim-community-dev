@@ -4,6 +4,7 @@ namespace Context\Page\Batch;
 
 use Behat\Mink\Session;
 use Context\Page\Base\ProductEditForm;
+use Pim\Behat\Decorator\Grid\PaginationDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
 /**
@@ -40,7 +41,7 @@ class EditCommonAttributes extends ProductEditForm
                 'Grid toolbar'              => [
                     'css'        => '.AknGridToolbar',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Grid\PaginationDecorator',
+                        PaginationDecorator::class,
                     ],
                 ],
             ]

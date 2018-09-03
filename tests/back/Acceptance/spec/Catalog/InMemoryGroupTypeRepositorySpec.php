@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Test\Acceptance\Catalog;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryGroupTypeRepositorySpec extends ObjectBehavior

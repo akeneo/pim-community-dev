@@ -1,17 +1,12 @@
 parameters:
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
-    pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
     pim_enrich.form.type.category.class:         Pim\Bundle\EnrichBundle\Form\Type\CategoryType
-    pim_enrich.form.type.group_type.class:       Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType
     pim_enrich.form.type.association.class:      Pim\Bundle\EnrichBundle\Form\Type\AssociationType
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
     pim_enrich.form.type.media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
 
     pim_enrich.form.type.product_grid_filter_choice.class: Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
-    pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
-    pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
-    pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
     pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
@@ -34,34 +29,6 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
 
-    pim_enrich.form.type.attribute_option:
-        class: '%pim_enrich.form.type.attribute_option.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_option.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attribute_option }
-
-    pim_enrich.form.type.attribute_option_value:
-        class: '%pim_enrich.form.type.attribute_option_value.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_option_value.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attribute_option_value }
-
-    pim_enrich.form.type.attribute_option_create:
-        class: '%pim_enrich.form.type.attribute_option_create.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_option.class%'
-        tags:
-            - { name: form.type, alias: pim_attribute_option_create }
-
-    pim_enrich.form.type.family:
-        class: '%pim_enrich.form.type.family.class%'
-        arguments:
-            - '%pim_catalog.entity.family.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_family }
-
     pim_enrich.form.type.category:
         class: '%pim_enrich.form.type.category.class%'
         arguments:
@@ -82,13 +49,6 @@ services:
             - '%pim_catalog.entity.group.class%'
         tags:
             - { name: form.type, alias: pim_enrich_group }
-
-    pim_enrich.form.type.group_type:
-        class: '%pim_enrich.form.type.group_type.class%'
-        arguments:
-            - '%pim_catalog.entity.group_type.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_grouptype }
 
     pim_enrich.form.type.media:
         class: '%pim_enrich.form.type.media.class%'
@@ -113,18 +73,6 @@ services:
             - '%pim_enrich.entity.available_attributes.class%'
         tags:
             - { name: form.type, alias: pim_available_attributes }
-
-    pim_enrich.form.type.association:
-        class: '%pim_enrich.form.type.association.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product.class%'
-            - '%pim_catalog.entity.association_type.class%'
-            - '%pim_catalog.entity.group.class%'
-            - '%pim_catalog.entity.association.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_association }
 
     pim_enrich.form.type.light_entity:
         class: '%pim_enrich.form.type.light_entity.class%'

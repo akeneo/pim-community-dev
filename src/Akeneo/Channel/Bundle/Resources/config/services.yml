@@ -1,0 +1,189 @@
+parameters:
+    pim_catalog.model.channel.interface: 'Akeneo\Channel\Component\Model\ChannelInterface'
+    akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
+    akeneo_channel.model.currency.interface: 'Akeneo\Channel\Component\Model\CurrencyInterface'
+    pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
+    pim_catalog.entity.channel.class: 'Akeneo\Channel\Component\Model\Channel'
+    pim_catalog.model.channel_translation.interface: 'Akeneo\Channel\Component\Model\ChannelTranslationInterface'
+    pim_catalog.entity.channel_translation.class: 'Akeneo\Channel\Component\Model\ChannelTranslation'
+    pim_catalog.entity.currency.class: 'Akeneo\Channel\Component\Model\Currency'
+
+services:
+    ### Locale
+    pim_catalog.factory.locale:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.locale.class%'
+
+    pim_catalog.saver.locale:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%akeneo_channel.model.locale.interface%'
+
+    pim_catalog.normalizer.standard.locale:
+        class: 'Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.locale:
+        class: 'Akeneo\Channel\Component\Normalizer\Versioning\LocaleNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.locale'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.locale:
+        class: 'Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer'
+        arguments:
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.locale:
+        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.locale'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_catalog.repository.locale:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.locale.class%']
+        tags:
+            - { name: 'channel_repository' }
+
+    pim_api.repository.locale:
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.locale.class%'
+            - '@pim_catalog.repository.locale'
+
+    pim_catalog.updater.locale:
+        class: 'Akeneo\Channel\Component\Updater\LocaleUpdater'
+
+    pim_enrich.event_subscriber.storage.channel_locale:
+        class: 'Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.saver.locale'
+            - '@pim_catalog.command_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Channel
+    pim_catalog.factory.channel:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.channel.class%'
+
+    pim_catalog.saver.channel:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.channel.interface%'
+
+    pim_catalog.repository.channel:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.channel.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_catalog.normalizer.standard.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_catalog.updater.channel:
+        class: 'Akeneo\Channel\Component\Updater\ChannelUpdater'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_localization.updater.translatable'
+
+    pim_catalog.remover.channel:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_catalog.repository.channel'
+            - '@translator'
+            - '%pim_catalog.entity.channel.class%'
+
+    pim_enrich.normalizer.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_enrich.normalizer.locale'
+            - '@pim_versioning.repository.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_versioning.serializer.normalizer.flat.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    ### Currency
+    pim_catalog.repository.currency:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.currency.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_catalog.updater.currency:
+        class: 'Akeneo\Channel\Component\Updater\CurrencyUpdater'
+
+    pim_api.normalizer.currency:
+        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\CurrencyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.currency'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.currency:
+        class: 'Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_catalog.event_subscriber.currency_disabling:
+        class: 'Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber'
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.factory.currency:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.currency.class%'
+
+    pim_catalog.saver.currency:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%akeneo_channel.model.currency.interface%'

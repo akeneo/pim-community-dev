@@ -2,8 +2,9 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Akeneo\Channel\Component\Model\Channel;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
@@ -23,7 +24,7 @@ class DisableFieldSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber');
+        $this->shouldHaveType(DisableFieldSubscriber::class);
     }
 
     function it_is_an_event_subscriber()

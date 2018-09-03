@@ -1,0 +1,16 @@
+media:
+    resource: '@PimApiBundle/Resources/config/routing/media.yml'
+    prefix: /rest/v1
+
+fos_oauth_server_token:
+    path: /oauth/v1/token
+    defaults: { _controller: pim_api.controller.token:tokenAction }
+    methods: [POST]
+
+endpoint:
+    resource: '@PimApiBundle/Resources/config/routing/endpoint.yml'
+    prefix: /rest
+
+measure_family:
+    resource: '@PimApiBundle/Resources/config/routing/measure_family.yml'
+    prefix: /rest/v1

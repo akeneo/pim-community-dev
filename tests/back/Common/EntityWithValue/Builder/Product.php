@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Common\EntityWithValue\Association;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
-use Akeneo\Test\Common\EntityWithValue\ListOfValues;
 use Akeneo\Test\Common\EntityWithValue\Status;
 use Akeneo\Test\Common\EntityWithValue\Value;
+use Akeneo\Test\Common\EntityWithValue\ListOfValues;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

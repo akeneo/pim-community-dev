@@ -84,7 +84,7 @@ define(
                             __: __,
                             comments: this.comments,
                             username: UserContext.get('username'),
-                            emptyLabel: __('comment.index.empty')
+                            emptyLabel: __('pim_comment.index.empty')
                         })
                     );
                     this.delegateEvents();
@@ -162,7 +162,7 @@ define(
             removeComment: function (event) {
                 Dialog.confirm(
                     __('confirmation.remove.comment'),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     this.doRemove.bind(this, event)
                 );
             },

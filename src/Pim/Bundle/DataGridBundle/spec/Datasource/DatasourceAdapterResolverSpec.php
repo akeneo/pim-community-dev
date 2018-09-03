@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Prophecy\Argument;
 
 class DatasourceAdapterResolverSpec extends ObjectBehavior
@@ -16,7 +16,7 @@ class DatasourceAdapterResolverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver');
+        $this->shouldHaveType(DatasourceAdapterResolver::class);
     }
 
     function it_returns_an_orm_adapter_class_for_default_datasource_when_orm_support_is_enabled()

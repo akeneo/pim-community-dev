@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Panell de contol
+  version: Versió
+  widget:
+    completeness:
+      title: Integritat per canals i locales
+    last_operations:
+      title: Últimes operacions
+      status: Estat
+      type: Tipus

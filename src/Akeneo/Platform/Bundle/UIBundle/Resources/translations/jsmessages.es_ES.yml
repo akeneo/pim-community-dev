@@ -1,0 +1,112 @@
+"Yes, Delete": "Sí, eliminar"
+"Yes, I Agree": "Sí, estoy de acuerdo"
+"Yes, do it": "Sí, hazlo"
+"Ok, got it.": "De acuerdo."
+"Delete Confirmation": "Confirmación de eliminación"
+"Edit": "Editar"
+"Unexpected error occured. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
+"Yes, revoke": "Si, revocar"
+"Revoke Confirmation": "Revocar confirmación"
+Prev: Ant
+Today: Hoy
+Wk: Smn
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Selecciona Hora"
+Time: Tiempo
+Hour: Hora
+Minute: Minuto
+Second: Segundo
+Millisecond: Milisegundo
+Microsecond: Microsegundo
+"Time Zone": "Zona Horaria"
+Localized value: Valor localizado
+Columns: Columnas
+Datagrid Configuration: Configuración de cuadrícula de datos
+Action: Acción
+Unit: Unidad
+Currency: Moneda
+jstree:
+  all: Todos los productos
+  unclassified: Productos sin clasificar
+  product:
+    all: Todos los productos
+    unclassified: Productos sin clasificar
+  no_tree: Ningún árbol disponible
+  include_sub: Incluir subcategorías
+datetimepicker:
+  days:
+    Sunday: Domingo
+    Monday: Lunes
+    Tuesday: Martes
+    Wednesday: Miércoles
+    Thursday: Jueves
+    Friday: Viernes
+    Saturday: Sábado
+  daysShort:
+    Sun: Dom
+    Mon: Lun
+    Tue: Mar
+    Wed: Mie
+    Thu: Jue
+    Fri: Vie
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Lu
+    Tu: Ma
+    We: Mi
+    Th: Ju
+    Fr: Vi
+    Sa: Sa
+  months:
+    January: Enero
+    February: Febrero
+    March: Marzo
+    April: Abril
+    May: Mayo
+    June: Junio
+    July: Julio
+    August: Agosto
+    September: Septiembre
+    October: Octubre
+    November: Noviembre
+    December: Diciembre
+  monthsShort:
+    Jan: Ene
+    Feb: Feb
+    Mar: Mar
+    Apr: Abr
+    May: Mayo
+    Jun: Jun
+    Jul: Jul
+    Aug: Ago
+    Sep: Sep
+    Oct: Oct
+    Nov: Nov
+    Dec: Dic
+oro_config:
+  form:
+    config:
+      title: Configuración del sistema
+      tab:
+        system:
+          title: Sistema
+      group:
+        localization:
+          title: Localización
+          system_locale: idioma
+        notification:
+          title: Notificaciones
+          system_notification: Notificaciones de nuevas versiones
+        loading_message:
+          title: Cargando mensajes
+          label: Activar los mensajes de carga
+        loading_messages:
+          label: Mensajes de carga disponibles
+"Sorry, page was not loaded correctly": "Lo sentimos, la página no se cargó correctamente"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Se perderán los cambios locales. ¿Está seguro que desea actualizar la página?"
+"navigation.message.content.outdated": "El contenido de la página {{ title }} es obsoleto, por favor <a href='#' data-action='page-refresh'> actualice la página</a>"
+"Content of pinned page is outdated": "Contenido de página anclada esta anticuado"

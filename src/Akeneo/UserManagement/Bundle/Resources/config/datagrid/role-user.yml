@@ -1,0 +1,64 @@
+datagrid:
+    pim-role-user-grid:
+        extend: pim-user-relation-grid
+        source:
+            acl_resource: pim_user_role_edit
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:role_id IS NOT NULL) THEN
+                        CASE WHEN (:role_id MEMBER OF u.roles OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as has_role
+        columns:
+            has_role:
+                label: pim_user.user.fields.has_role
+                editable: true
+                frontend_type: boolean
+            username:
+                label: pim_user.user.fields.username
+                frontend_type: label
+            email:
+                label: pim_user.user.fields.email
+            firstName:
+                label: pim_user.user.fields.first_name
+            lastName:
+                label: pim_user.user.fields.last_name
+        filters:
+            columns:
+                has_role:
+                    type: boolean
+                    data_name: has_role
+                    filter_by_having: true
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+        sorters:
+            columns:
+                has_role:
+                    data_name: has_role
+            default:
+                has_role: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+              - oro/datagrid/pagination-input
+            columnListener:
+                dataField: id
+                columnName: has_role
+                selectors:
+                    included: '#roleAppendUsers'
+                    excluded: '#roleRemoveUsers'

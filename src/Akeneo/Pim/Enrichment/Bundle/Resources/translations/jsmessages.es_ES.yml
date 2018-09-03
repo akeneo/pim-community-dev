@@ -1,0 +1,28 @@
+pim_notification:
+  types:
+    settings: Configuración
+flash:
+  comment:
+    create:
+      success: Su comentario ha sido creado con éxito.
+      error: Se ha producido un error durante la creación de su comentario.
+    delete:
+      success: Su comentario ha sido eliminado con éxito.
+      error: Se ha producido un error durante la eliminación de su comentario.
+    reply:
+      success: Su respuesta ha sido creada exitosamente.
+      error: Ocurrió un error durante la creación de su respuesta.
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Añadir nuevo comentario
+        reply: Responder
+        title: Comentarios
+  index:
+    empty: Ningún comentario por el momento
+    header_comment: '{{ user }} comenta el producto'
+    header_reply: '{{ user }} contesta al comentario'
+  placeholder:
+    new: Escribir un nuevo comentario...
+    reply: Responder a este comentario...

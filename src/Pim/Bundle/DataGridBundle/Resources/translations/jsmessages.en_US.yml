@@ -1,0 +1,95 @@
+pim_datagrid:
+  entity_hint: entity
+  no_entities: "No {{ entityHint }} found"
+  no_results: "Sorry, there is no {{ entityHint }} for your search."
+  no_results_subtitle: "Try again with new search criteria."
+  search: "Search on {{ label }}"
+
+  select:
+    title: Select
+    all_visible: All visible
+
+  delete_error:
+    title: Delete Error
+
+  reset_confirmation:
+    title: Reset Confirmation
+    content: Your local changes will be lost. Are you sure you want to reset the grid?
+
+  refresh_confirmation:
+    title: Refresh Confirmation
+    content: Your local changes will be lost. Are you sure you want to refresh the grid?
+
+  column_configurator:
+    label: Columns
+    title: Configure columns
+    all_groups: All groups
+    search: Search
+    clear: Clear
+    displayed_columns: Selected Columns
+    remove_column: Remove
+    description: Select the information you want to display as column
+    min_message: You must select at least one datagrid column to display
+    system_group: System
+
+  view_selector:
+    create_view: Create view
+    placeholder: Name of new view
+    choose_label: Choose a label for the view
+    remove: Delete this view
+    save_changes: Save this view
+    default_view: Default view
+    select: Please select view
+    confirmation:
+      remove: Are you sure you want to delete this view?
+
+  display_selector:
+    label: Display
+    gallery: Gallery
+    list: List
+
+  mass_action:
+    delete:
+      empty_selection: No product selected
+      success_message: "{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed"
+    default:
+      confirmation:
+        title: Mass action confirmation
+        content: Are you sure you want to do this?
+      success: Mass action performed
+      error: Mass action was not performed
+      no_items: Please, select items to perform mass action.
+    quick_export:
+      title: Quick Export
+      success: Quick export has been launched
+
+  action:
+    default:
+      confirmation:
+        title: Execution confirmation
+        content: Are you sure you want to do this?
+      success: Action performed
+      error: Action was not performed
+      no_items: Please, select item to perform action.
+    show:
+      title: Show
+
+  filters:
+    common:
+      empty: is empty
+      not_empty: is not empty
+      in_list: in list
+      contains: contains
+      does_not_contain: does not contain
+      equal: is equal to
+      start_with: starts with
+      operator: Operator
+    price_filter:
+      label: Currency
+    metric_filter:
+      label: Unit
+
+  cells:
+    credientials:
+      client_id: Client ID
+      secret: Secret

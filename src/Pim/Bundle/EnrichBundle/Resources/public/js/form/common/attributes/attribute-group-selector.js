@@ -126,7 +126,7 @@ define(
                             allAttributeCode: this.all.code,
                             currentElement: _.findWhere(this.getElements(), {code: this.getCurrent()}),
                             i18n: i18n,
-                            label: __('pim_enrich.form.product.tab.attributes.attribute_group_selector')
+                            label: __('pim_enrich.entity.attribute_group.uppercase_label')
                         }));
                     }
 

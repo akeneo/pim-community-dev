@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'oro/mediator',
         'pim/form',
@@ -25,6 +26,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         mediator,
         BaseForm,
@@ -79,10 +81,9 @@ define(
                 this.trigger('save-buttons:register-button', {
                     className: 'save-and-continue',
                     priority: 250,
-                    label: _.__(
-                        'pim_enrich.form.product.sequential_edit.btn.save_and_' +
-                            (undefined !== nextObject ? 'next' : 'finish')
-                    ),
+                    label: undefined !== nextObject ?
+                        __('pim_enrich.entity.product.module.sequential_edit.save_and_next') :
+                        __('pim_enrich.entity.product.module.sequential_edit.save_and_finish'),
                     events: {
                         'click .save-and-continue': this.saveAndContinue.bind(this)
                     }

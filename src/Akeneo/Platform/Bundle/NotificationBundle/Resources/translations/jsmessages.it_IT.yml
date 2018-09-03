@@ -1,0 +1,4 @@
+pim_notification:
+  report: Report
+  mark_all_as_read: Segna tutti come già letti
+  no_notifications: Nessuna notifica

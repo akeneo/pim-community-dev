@@ -1,0 +1,215 @@
+services:
+    ### Attribute
+    pim_catalog.normalizer.standard.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.datetime'
+            - ['auto_option_sorting']
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_enrich.provider.field.chained'
+            - '@pim_enrich.provider.empty_value.chained'
+            - '@pim_enrich.provider.filter.chained'
+            - '@pim_catalog.localization.localizer.number'
+
+    pim_versioning.serializer.normalizer.flat.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    ### Attribute option
+    pim_enrich.normalizer.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.factory.attribute_option_value'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeOptionNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_option'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Storage\AttributeOptionNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_option'
+        tags:
+            - { name: pim_storage_serializer.normalizer, priority: 90 }
+
+    ### Family
+    pim_enrich.normalizer.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_requirement'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Indexing\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
+
+    ### Family Variant
+    pim_enrich.normalizer.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyVariantNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_enrich.provider.structure_version.family_variant'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyVariantNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family_variant'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_versioning.serializer.normalizer.flat.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_enrich.provider.structure_version.group_type'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_catalog.normalizer.standard.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    ### Association type
+    pim_enrich.normalizer.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_versioning.serializer.normalizer.flat.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
+        tags:
+            - { name: pim_external_api_serializer.normalizer, priority: 90 }

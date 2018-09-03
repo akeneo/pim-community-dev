@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\tests\Unit\Form\Subscriber;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PHPUnit\Framework\TestCase;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Test related class
@@ -150,7 +150,7 @@ class FilterLocaleValueSubscriberTest extends TestCase
      * @param mixed $attribute
      * @param mixed $locale
      *
-     * @return \Pim\Component\Catalog\Model\ValueInterface
+     * @return ValueInterface
      */
     private function getProductValueMock($attribute, $locale)
     {
@@ -170,7 +170,7 @@ class FilterLocaleValueSubscriberTest extends TestCase
     /**
      * @param bool $localizable
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     private function getAttributeMock($localizable = true)
     {

@@ -1,0 +1,31 @@
+Akeneo\Tool\Component\Batch\Model\Warning:
+    type: entity
+    table: akeneo_batch_warning
+    # TODO: should be like other entities
+    #changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        reason:
+            type: text
+            nullable: true
+            column: reason
+        reasonParameters:
+            type: array
+            column: reason_parameters
+            nullable: false
+        item:
+            type: array
+            column: item
+            nullable: false
+    manyToOne:
+        stepExecution:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution
+            inversedBy: warnings
+            joinColumn:
+                name: step_execution_id
+                referencedColumnName: id
+                onDelete: 'CASCADE'

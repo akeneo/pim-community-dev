@@ -1,0 +1,72 @@
+pim_datagrid:
+  no_results_subtitle: "Pruebe con nuevos criterios de búsqueda."
+  select:
+    title: Seleccione
+    all_visible: Todo lo visible
+  delete_error:
+    title: Error al eliminar
+  reset_confirmation:
+    title: Confirmación de reajuste
+  refresh_confirmation:
+    title: Confirmación de la actualización
+  column_configurator:
+    label: Columnas
+    title: Configurar columnas
+    all_groups: Todos los grupos
+    search: Buscar
+    clear: Restablecer
+    displayed_columns: Columnas seleccionadas
+    remove_column: Quitar
+    description: Seleccione la información que desea mostrar como columna
+    min_message: Debe seleccionar al menos una columna de datagrid para mostrar
+    system_group: Sistema
+  view_selector:
+    create_view: Crear vista
+    placeholder: Nombre de la nueva vista
+    choose_label: Elija una etiqueta para la vista
+    remove: Eliminar esta vista
+    save_changes: Guardar esta vista
+    default_view: Vista por defecto
+    select: Por favor, seleccione Vista
+    confirmation:
+      remove: '¿Está seguro que desea eliminar esta vista?'
+  display_selector:
+    label: Mostrar
+    gallery: Galería
+    list: Lista
+  mass_action:
+    delete:
+      empty_selection: Ningún producto seleccionado
+      success_message: "{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas"
+    default:
+      confirmation:
+        content: '¿Está seguro de quere hacer esto?'
+      no_items: Por favor, seleccionar los elementos para realizar la acción en masa.
+    quick_export:
+      title: Exportación rápida
+      success: Se ha ejecutado la exportación rápida
+  action:
+    default:
+      confirmation:
+        content: '¿Está seguro de quere hacer esto?'
+      no_items: Por favor, seleccione elemento para realizar la acción.
+    show:
+      title: Mostrar
+  filters:
+    common:
+      empty: está vacía
+      not_empty: no está vacío
+      in_list: en la lista
+      contains: contiene
+      does_not_contain: no contiene
+      equal: es igual a
+      start_with: comienza con
+      operator: Operador
+    price_filter:
+      label: Moneda
+    metric_filter:
+      label: Unidad
+  cells:
+    credientials:
+      client_id: Client ID
+      secret: Secreto

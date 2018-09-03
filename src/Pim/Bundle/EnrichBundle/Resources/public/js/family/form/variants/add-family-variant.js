@@ -35,7 +35,7 @@ define(
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(__('pim_enrich.entity.family.variant.add_variant'));
+                this.$el.html(__('pim_enrich.entity.family_variant.module.create.label'));
                 this.delegateEvents();
 
                 return BaseForm.prototype.render.apply(this, arguments);
@@ -48,8 +48,8 @@ define(
                 const modalParameters = {
                     className: 'modal modal--fullPage add-family-variant-modal',
                     content: '',
-                    cancelText: __('pim_enrich.entity.family.variant.cancel'),
-                    okText: __('pim_enrich.entity.family.variant.create'),
+                    cancelText: __('pim_common.cancel'),
+                    okText: __('pim_common.create'),
                     okCloses: false
                 };
 
@@ -71,7 +71,7 @@ define(
                     .then((familyVariant) => {
                         messenger.notify(
                             'success',
-                            _.__('pim_enrich.form.family.tab.variant.flash.family_variant_created')
+                            _.__('pim_enrich.entity.family_variant.flash.create.success')
                         );
                         this.getRoot().trigger('pim_enrich.entity.family.family_variant.post_create', familyVariant);
                     });

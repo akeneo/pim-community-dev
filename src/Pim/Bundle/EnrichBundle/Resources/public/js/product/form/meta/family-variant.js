@@ -49,13 +49,12 @@ define(
 
                 const entity = this.getFormData();
                 const familyVariant = entity.meta.family_variant;
-                let label = __('pim_enrich.entity.product.meta.family_variant.none');
 
                 if (null === familyVariant) {
                     return this;
                 }
 
-                label = i18n.getLabel(
+                const label = i18n.getLabel(
                     familyVariant.labels,
                     UserContext.get('catalogLocale'),
                     entity.family_variant
@@ -63,7 +62,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        title: __('pim_enrich.entity.product.meta.family_variant.title'),
+                        title: __('pim_enrich.entity.family_variant.short_label'),
                         familyVariantLabel: label
                     })
                 );

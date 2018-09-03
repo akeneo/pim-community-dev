@@ -2,23 +2,22 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Model\Warning;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator, PresenterInterface $presenter, TranslatedLabelProvider $labelProvider)
+    function let(TranslatorInterface $translator, PresenterInterface $presenter)
     {
-        $this->beConstructedWith($translator, $presenter, $labelProvider);
+        $this->beConstructedWith($translator, $presenter);
     }
 
     function it_is_a_normalizer()
@@ -34,7 +33,6 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_step_execution(
         $translator,
         $presenter,
-        $labelProvider,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $stepExecution,
@@ -44,7 +42,6 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->getStepName()->willReturn('such_step');
         $jobInstance->getJobName()->willReturn('wow_job');
-        $labelProvider->getStepLabel('wow_job', 'such_step')->willReturn('Export step');
 
         $stepExecution->getSummary()->willReturn(['read' => 12, 'write' => 50]);
         $translator->trans('job_execution.summary.read')->willReturn('Read');
@@ -91,18 +88,19 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
 
         $this->normalize($stepExecution, 'any')->shouldReturn(
             [
-               'label'     => 'Export step',
-               'status'    => 'PENDING',
-               'summary'   => ['Read' => 12, 'Write' => 50],
-               'startedAt' => '22-09-2014',
-               'endedAt'   => null,
-               'warnings'  => [
-                   [
-                       'reason' => 'WARNING!',
-                       'item'   => ['a' => 'A', 'b' => 'B', 'c' => 'C'],
-                   ]
-               ],
-               'failures'  => ['FAIL!'],
+                'label'     => 'such_step',
+                'job'       => 'wow_job',
+                'status'    => 'PENDING',
+                'summary'   => ['Read' => 12, 'Write' => 50],
+                'startedAt' => '22-09-2014',
+                'endedAt'   => null,
+                'warnings'  => [
+                    [
+                        'reason' => 'WARNING!',
+                        'item'   => ['a' => 'A', 'b' => 'B', 'c' => 'C'],
+                    ]
+                ],
+                'failures'  => ['FAIL!'],
             ]
         );
     }

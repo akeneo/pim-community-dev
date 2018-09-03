@@ -161,8 +161,8 @@ function($, _, __, mediator, Modal, AbstractListener) {
          */
         _onExecuteRefreshAction: function (e, action, options) {
             this._confirmAction(action, options, 'refresh', {
-                title: __('Refresh Confirmation'),
-                content: __('Your local changes will be lost. Are you sure you want to refresh grid?')
+                title: __('pim_datagrid.refresh_confirmation.title'),
+                content: __('pim_datagrid.refresh_confirmation.content')
             });
         },
 
@@ -175,8 +175,8 @@ function($, _, __, mediator, Modal, AbstractListener) {
          */
         _onExecuteResetAction: function(e, action, options) {
             this._confirmAction(action, options, 'reset', {
-                title: __('Reset Confirmation'),
-                content: __('Your local changes will be lost. Are you sure you want to reset grid?')
+                title: __('pim_datagrid.reset_confirmation.title'),
+                content: __('pim_datagrid.reset_confirmation.content')
             });
         },
 
@@ -221,8 +221,8 @@ function($, _, __, mediator, Modal, AbstractListener) {
             this.confirmModal = this.confirmModal || {};
             if (!this.confirmModal[type]) {
                 this.confirmModal[type] = new Modal(_.extend({
-                    title: __('Confirmation'),
-                    okText: __('Ok, got it.'),
+                    title: __('pim_common.confirm'),
+                    okText: __('pim_common.yes'),
                     okButtonClass: 'btn-primary btn-large'
                 }, options));
                 this.confirmModal[type].on('ok', _.bind(callback, this));

@@ -1,0 +1,26 @@
+pim_catalog_volume:
+  product_values: "Sinulla on <span>{{values}}</span> tuotearvoa PIM:ssä! Keskiarvoisesti se on <span>{{average}}</span> arvoa tuotetta kohden! 💪"
+  product_values_description: 'Mitä enemmän tuotearvoja on, sitä arvokkaampi on PIM -järjestelmäsi ja sitä korkeampi on ROI! Katso lisätietoja <a href="#">täältä</a>'
+  section:
+    product_values:
+      title: Ulottuvuudet, jotka vaikuttavat tuotearvojen lukumäärään
+    catalog_structure:
+      hint: Varmaan tiedätkin, että hyvä katalogirakenne on erittäin tärkeä ja edellytys tehokkaalle rikastukselle. Alla on joitakin ulottuvuuksia katalogirakenteen seurantaan.
+      title: Tuotekatalogin rakenteeseen liittyvät ulottuvuudet
+    variant_modelling:
+      hint: Jos käytät tuotevariantteja, seuraavat ulottuvuudet auttavat seuraamaan katalogin kokoa.
+      title: Ulottuvuudet koskien tuotemalleja
+  axis:
+    count_products: Tuotteet
+    average_max_attributes_per_family: Attribuutteja tuoteperheellä
+    count_channels: Kanavat
+    count_locales: Lokaatioita (aktivoidut)
+    count_scopable_attributes: Kanavakohtaisia attribuutteja
+    count_localizable_and_scopable_attributes: Lokalisoituja ja kanavakohtaisia attribuutteja
+    count_localizable_attributes: Lokalisoituja attribuutteja
+    count_families: Perheet
+    count_attributes: Attribuutit
+    average_max_options_per_attribute: Attribuuttioptioita
+    count_categories: Kategoriat
+    count_category_trees: Kategoriahierarkia
+    count_product_models: Tuotemallit

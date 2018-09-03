@@ -3,8 +3,10 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension\Configuration;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension\SomeExtension;
@@ -35,7 +37,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
         $result = $method->invoke($this->extension);
         $this->assertNull($result, 'Could be empty from constructor');
 
-        $requestParams = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\RequestParameters')
+        $requestParams = $this->getMockBuilder(RequestParameters::class)
             ->disableOriginalConstructor()->getMock();
         $newExtension = new SomeExtension($requestParams);
 
@@ -53,7 +55,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitDatasource()
     {
-        $datasourceMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $datasourceMock = $this->getMockForAbstractClass(DatasourceInterface::class);
         $config = DatagridConfiguration::create([]);
 
         $this->extension->visitDatasource($config, $datasourceMock);
@@ -64,7 +66,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitResult()
     {
-        $result = ResultsObject::create([]);
+        $result = ResultsIterableObject::create([]);
         $config = DatagridConfiguration::create([]);
 
         $this->extension->visitResult($config, $result);
@@ -75,7 +77,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitMetadata()
     {
-        $data = MetadataObject::create([]);
+        $data = MetadataIterableObject::create([]);
         $config = DatagridConfiguration::create([]);
 
         $this->extension->visitMetadata($config, $data);

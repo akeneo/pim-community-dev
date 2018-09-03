@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\Component\Versioning\Model\Version;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Versioning\Model\Version;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -93,7 +93,7 @@ class VersionNormalizer implements NormalizerInterface
             $user = $this->userManager->findUserByUsername($author);
 
             if (null === $user) {
-                $userName = sprintf('%s - %s', $author, $this->translator->trans('Removed user'));
+                $userName = sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
             } else {
                 $userName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
             }

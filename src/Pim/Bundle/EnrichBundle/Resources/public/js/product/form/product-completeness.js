@@ -81,12 +81,12 @@ define(
                 if (null !== ratio) {
                     this.$el.append(this.template({
                         __: __,
-                        label: __('pim_enrich.entity.product.completeness'),
+                        label: __('pim_enrich.entity.product.module.completeness.complete'),
                         ratio: ratio,
                         completenesses: this.getCurrentCompletenesses(options.scope),
                         badgeClass: this.getBadgeClass(options),
                         currentLocale: options.locale,
-                        missingValues: 'pim_enrich.form.product.panel.completeness.missing_values',
+                        missingValues: 'pim_enrich.entity.product.module.completeness.missing_values',
                         i18n: i18n
                     }));
                 } else {

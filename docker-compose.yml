@@ -1,0 +1,88 @@
+version: '2'
+
+services:
+  fpm:
+    image: 'akeneo/fpm:php-7.1'
+    user: 'docker'
+    volumes:
+      - './:/srv/pim'
+    working_dir: '/srv/pim'
+    networks:
+      - 'akeneo'
+      - 'behat'
+
+  node:
+    image: 'juliensnz/node'
+    user: 'node'
+    volumes:
+      - './:/srv/pim'
+    working_dir: '/srv/pim'
+    networks:
+      - 'akeneo'
+      - 'behat'
+
+  selenium:
+    image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
+    volumes:
+      - './:/srv/pim:ro'
+    networks:
+      - 'behat'
+
+  httpd:
+    image: 'httpd:2.4'
+    depends_on:
+      - 'fpm'
+    ports:
+      - '${DOCKER_PORT_HTTP}:80'
+    volumes:
+      - './:/srv/pim:ro'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
+    networks:
+      - 'akeneo'
+
+  httpd-behat:
+    image: 'httpd:2.4'
+    depends_on:
+      - 'fpm'
+    ports:
+      - '${DOCKER_PORT_HTTP_BEHAT}:80'
+    volumes:
+      - './:/srv/pim:ro'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf:ro'
+    networks:
+      - 'behat'
+
+  mysql:
+    image: 'mysql:5.7'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'akeneo_pim'
+      MYSQL_PASSWORD: 'akeneo_pim'
+      MYSQL_DATABASE: 'akeneo_pim'
+    networks:
+      - 'akeneo'
+
+  mysql-behat:
+    image: 'mysql:5.7'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'akeneo_pim'
+      MYSQL_PASSWORD: 'akeneo_pim'
+      MYSQL_DATABASE: 'akeneo_pim'
+    networks:
+      - 'behat'
+
+  elasticsearch:
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:5.5.3'
+    environment:
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+      discovery.type: 'single-node'
+    networks:
+      - 'akeneo'
+      - 'behat'
+
+networks:
+  akeneo:
+  behat:

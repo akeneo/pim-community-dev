@@ -340,31 +340,31 @@ config:
                 pim_enrich_family_edit:
                     module: pim/controller/family
                     aclResourceId: pim_enrich_family_index
-                oro_user_index:
+                pim_user_index:
                     module: pim/controller/common/index
                     config:
                         entity: user
-                oro_user_create:
+                pim_user_create:
                     module: pim/controller/form
-                oro_user_update:
+                pim_user_update:
                     module: pim/controller/user
-                oro_user_profile_update:
+                pim_user_profile_update:
                     module: pim/controller/user
-                oro_user_role_index:
+                pim_user_role_index:
                     module: pim/controller/common/index
                     config:
                         entity: user-role
-                oro_user_role_create:
+                pim_user_role_create:
                     module: pim/controller/form
-                oro_user_role_update:
+                pim_user_role_update:
                     module: pim/controller/role
-                oro_user_group_create:
+                pim_user_group_create:
                     module: pim/controller/form
-                oro_user_group_index:
+                pim_user_group_index:
                     module: pim/controller/common/index
                     config:
                         entity: user-group
-                oro_user_group_update:
+                pim_user_group_update:
                     module: pim/controller/form
                 pim_importexport_import_profile_launch_upload:
                     module: pim/controller/redirect
@@ -381,7 +381,7 @@ config:
                 pim_importexport_export_profile_remove:
                     module: pim/controller/redirect
                     aclResourceId: pim_importexport_export_profile_remove
-                oro_user_profile_update:
+                pim_user_profile_update:
                     module: pim/controller/form
                 pim_enrich_locale_index:
                     module: pim/controller/common/index
@@ -465,7 +465,7 @@ config:
                         entity: api-connection
                 pim_enrich_catalog_volume_index:
                     module: pim/controller/catalog-volume
-                oro_user_security_logout:
+                pim_user_security_logout:
                     module: pim/controller/logout
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
@@ -1002,6 +1002,7 @@ config:
         pim/template/common/grid:                                 pimenrich/templates/common/grid.html
         pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
         pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
+        pim/template/common/description-header:                   pimenrich/templates/common/description-header.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
@@ -1252,7 +1253,6 @@ config:
         pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current
 
         # Catalog volume monitoring
-        pim/template/catalog-volume/header:       pimenrich/templates/catalog-volume/header.html
         pim/template/catalog-volume/section:      pimenrich/templates/catalog-volume/section.html
         pim/template/catalog-volume/number:       pimenrich/templates/catalog-volume/number.html
         pim/template/catalog-volume/average-max:     pimenrich/templates/catalog-volume/average-max.html

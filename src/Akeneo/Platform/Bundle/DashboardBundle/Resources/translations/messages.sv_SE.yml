@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Instrumentpanel
+  version: Version
+  widget:
+    completeness:
+      title: Fullständighet över kanaler och språk
+    last_operations:
+      title: Senaste händelser
+      status: Status
+      type: Typ

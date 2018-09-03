@@ -91,9 +91,9 @@ define(
                     title: step.getTitle(),
                     labelCount: step.getLabelCount(),
                     confirm: __(this.config.confirm, {itemsCount}, itemsCount),
-                    previousLabel: __('pim_enrich.mass_edit.previous'),
-                    nextLabel: __('pim_enrich.mass_edit.next'),
-                    confirmLabel: __('pim_enrich.mass_edit.confirm'),
+                    previousLabel: __('pim_common.previous'),
+                    nextLabel: __('pim_common.next'),
+                    confirmLabel: __('pim_common.confirm'),
                     illustrationClass: step.getIllustrationClass(),
                     __: __
                 }));

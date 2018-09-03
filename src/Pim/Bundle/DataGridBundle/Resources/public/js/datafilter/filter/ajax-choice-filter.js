@@ -72,8 +72,8 @@ define(
                 _.each(results, function(result) {
                     choices.push({ value: result.id, label: result.text });
                 });
-                choices.push({ value: 'empty', label: _.__('pim.grid.ajax_choice_filter.label_empty') });
-                choices.push({ value: 'not empty', label: _.__('pim.grid.ajax_choice_filter.label_not_empty') });
+                choices.push({ value: 'empty', label: _.__('pim_datagrid.filters.common.empty') });
+                choices.push({ value: 'not empty', label: _.__('pim_datagrid.filters.common.not_empty') });
 
                 this.choices        = choices;
                 this.choicesFetched = true;

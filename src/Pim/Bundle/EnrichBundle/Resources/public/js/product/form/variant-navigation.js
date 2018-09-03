@@ -81,7 +81,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        commonLabel: __('pim_enrich.entity.product.common'),
+                        commonLabel: __('pim_enrich.entity.product.module.variant_navigation.common'),
                         currentLocale: catalogLocale,
                         entity: entity,
                         navigation: entity.meta.variant_navigation
@@ -165,7 +165,7 @@ define(
                                 }
 
                                 const footer = this.templateAddChild({
-                                    label: __('pim_enrich.entity.product_model.add_child.create')
+                                    label: __('pim_enrich.entity.product_model.module.variant_axis.create')
                                 });
 
                                 $('#select2-drop')
@@ -227,8 +227,8 @@ define(
                 const modalParameters = {
                     className: 'modal modal--fullPage add-product-model-child',
                     content: '',
-                    cancelText: __('pim_enrich.entity.product_model.add_child.cancel'),
-                    okText: __('pim_enrich.entity.product_model.add_child.confirm'),
+                    cancelText: __('pim_common.cancel'),
+                    okText: __('pim_common.confirm'),
                     okCloses: false
                 };
 
@@ -264,8 +264,8 @@ define(
              */
             submitForm: function (isVariantProduct, formModal) {
                 const message = isVariantProduct
-                    ? __('pim_enrich.form.product_model.flash.variant_product_added')
-                    : __('pim_enrich.form.product_model.flash.product_model_added');
+                    ? __('pim_enrich.entity.product_model.flash.create.variant_product_added')
+                    : __('pim_enrich.entity.product_model.flash.create.product_model_added');
 
                 const route = isVariantProduct
                     ? 'pim_enrich_product_rest_create'

@@ -1,0 +1,2 @@
+parameters:
+    akeneo_classification.factory.category.class: Akeneo\Tool\Component\Classification\Factory\CategoryFactory

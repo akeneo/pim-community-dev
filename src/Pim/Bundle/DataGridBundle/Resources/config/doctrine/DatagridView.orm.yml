@@ -29,7 +29,7 @@ Pim\Bundle\DataGridBundle\Entity\DatagridView:
 
     manyToOne:
         owner:
-            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
             joinColumns:
                 owner_id:
                     referencedColumnName: id

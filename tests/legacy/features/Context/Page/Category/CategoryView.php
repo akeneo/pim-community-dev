@@ -2,8 +2,8 @@
 
 namespace Context\Page\Category;
 
-use Behat\Mink\Element\NodeElement;
 use Context\Page\Base\Form;
+use Pim\Behat\Decorator\Tree\JsTreeDecorator;
 
 /**
  * Abstract page view for categories
@@ -29,7 +29,7 @@ abstract class CategoryView extends Form
                 'Category tree'    => [
                     'css'        => '#tree',
                     'decorators' => [
-                        'Pim\Behat\Decorator\Tree\JsTreeDecorator'
+                        JsTreeDecorator::class
                     ]
                 ],
                 'Tree select'      => ['css' => '#tree_select'],

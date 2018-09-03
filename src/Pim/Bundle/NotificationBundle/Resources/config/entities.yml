@@ -1,3 +1,0 @@
-parameters:
-    pim_notification.entity.notification.class:      Pim\Bundle\NotificationBundle\Entity\Notification
-    pim_notification.entity.user_notification.class: Pim\Bundle\NotificationBundle\Entity\UserNotification

@@ -1,0 +1,35 @@
+parameters:
+    pim_catalog.localization.factory.date.class:     Akeneo\Tool\Component\Localization\Factory\DateFactory
+    pim_catalog.localization.factory.datetime.class: Akeneo\Tool\Component\Localization\Factory\DateTimeFactory
+    pim_catalog.localization.factory.number.class:   Akeneo\Tool\Component\Localization\Factory\NumberFactory
+
+    pim_catalog.localization.factory.date.formats:
+        en_US: 'MM/dd/yyyy'
+        fr_FR: 'dd/MM/yyyy'
+    pim_catalog.localization.factory.datetime.formats:
+        en_US: 'MM/dd/yyyy hh:mm a'
+        fr_FR: 'dd/MM/yyyy HH:mm'
+    pim_catalog.localization.factory.currency.formats:
+        en_US: '¤#,##0.00'
+        fr_FR: '#,##0.00 ¤'
+
+services:
+    pim_catalog.localization.factory.currency:
+        class: '%pim_catalog.localization.factory.number.class%'
+        arguments:
+            - '%pim_catalog.localization.factory.currency.formats%'
+
+    pim_catalog.localization.factory.number:
+        class: '%pim_catalog.localization.factory.number.class%'
+        arguments:
+            - []
+
+    pim_catalog.localization.factory.date:
+        class: '%pim_catalog.localization.factory.date.class%'
+        arguments:
+            - '%pim_catalog.localization.factory.date.formats%'
+
+    pim_catalog.localization.factory.datetime:
+        class: '%pim_catalog.localization.factory.datetime.class%'
+        arguments:
+            - '%pim_catalog.localization.factory.datetime.formats%'

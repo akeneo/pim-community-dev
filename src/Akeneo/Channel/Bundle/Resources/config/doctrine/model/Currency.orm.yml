@@ -1,0 +1,18 @@
+Akeneo\Channel\Component\Model\Currency:
+    type: entity
+    table: pim_catalog_currency
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 3
+            unique: true
+        activated:
+            type: boolean
+            column: is_activated

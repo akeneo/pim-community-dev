@@ -32,7 +32,7 @@ define(
              */
             render() {
                 this.$el.append(this.template({
-                    label: __('jstree.done')
+                    label: __('pim_common.done')
                 }));
             },
 

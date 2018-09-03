@@ -1,6 +1,15 @@
 /* global define */
-define(['oro/datagrid/string-cell', 'oro/translator'],
-    function(StringCell, __) {
+define(
+    [
+        'oro/datagrid/string-cell',
+        'oro/translator',
+        'pim/template/datagrid/cell/enabled-cell'
+    ],
+    function(
+        StringCell,
+        __,
+        template
+    ) {
         'use strict';
 
         /**
@@ -9,8 +18,10 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
          * @extends oro.datagrid.StringCell
          */
         return StringCell.extend({
+            template: _.template(template),
+
             /**
-             * Render the field enabled.
+             * {@inheritdoc}
              */
             render: function () {
                 if ('product_model' === this.model.get('document_type')) {
@@ -20,12 +31,13 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
                     return this;
                 }
 
-                var value = this.formatter.fromRaw(this.model.get(this.column.get("name")));
+                const value = this.formatter.fromRaw(this.model.get(this.column.get("name")));
+                const enabled = true === value ? 'enabled' : 'disabled';
+                const label = true === value ?
+                    __('pim_enrich.entity.product.module.status.enabled') :
+                    __('pim_enrich.entity.product.module.status.disabled');
 
-                var enabled = true === value ? 'enabled' : 'disabled';
-
-                this.$el.empty().html('<div class="AknBadge AknBadge--medium AknBadge--' + enabled + ' status-' + enabled + '">' +
-                    '<i class="AknBadge-icon icon-status-' + enabled + ' icon-circle"></i>' + __('pim_enrich.entity.product.btn.' + enabled) + '</div>');
+                this.$el.empty().html(this.template({ enabled, label }));
 
                 return this;
             }

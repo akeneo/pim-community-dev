@@ -1,0 +1,51 @@
+Attribute code may contain only letters, numbers and underscore: Ang code ng katangian ay maaari lamang maglaman ng mga letra, numero at salungguhit
+Attribute code may contain only letters (at least one), numbers and underscores: Ang code ng katangian ay maaari lamang maglaman ng mga letra (kahit isa), mga numero at mga salungguhit
+This attribute type must be required: Ang uri ng katangiang ito ay kinakailangan
+This attribute type can't be required: Ang uri ng katangiang ito ay hindi maaaring kailanganin
+This attribute type can't have unique value: Ang uri ng katangiang ito ay hindi maaaring magkaroon ng natatanging halaga
+No default value may be specified for this attribute type: Walang default na halaga ang maaaring matukoy para sa uri ng katangiang ito
+This value should not be blank: Ang halagang ito ay dapat hindi blangko
+Option code may contain only letters, numbers and underscores: Ang code na pagpipilian ay maaari lamang maglaman ng mga letra, mga numero at mga salungguhit
+Option code may contain only letters (at least one), numbers and underscores: Ang code na pagpipilian ay maaari lamang maglaman ng mga letra (kahit isa), mga numero at mga salungguhit
+This value should not be a decimal.: Ang halagang ito ay hindi dapat desimal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Ang ekstensyon ng file ay hindi pinapayagan (pinapayagang ekstensyon: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Ang halagang %value% ay nakatakda na sa ibang produkto para sa natatanging katangiang %attribute%
+regex.comma_or_semicolon.message: Ang patlang na ito ay hindi dapat maglaman ng anumang kuwit o tuldok-kuwit.
+file.extensions.message: 'Ang ekstensyon ng file ay hindi pinapayagan (pinapayagang ekstensyon: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Ang uri ng halagang ito ay umaasa sa paggamit ng {{ decimal_separator }} para paghiwalayin ang mga desimal.
+"This type of value expects the use of dot (.) to separate decimals.": Ang uri ng halagang ito ay umaasa sa paggamit ng tuldok (.) para paghiwalayin ang mga desimal.
+"This type of value expects the use of comma (,) to separate decimals.": Ang uri ng halagang ito ay umaasa sa paggamit ng kuwit (,) para paghiwalayin ang mga desimal.
+"This type of value expects the use of the format {{ date_format }} for dates.": Itong uri ng halagang ay umaasa sa paggamit ng format na {{ date_format }} para sa mga petsa.
+"The category \"%category%\" has to be a root category.": Ang kategoryang "%category%" ay dapat na isang kategoryang ugat.
+"The attribute \"%attributeCode%\" does not exist.": Ang katangiang "%attributeCode%" ay hindi umiiral.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Ang katangiang "%attributeCode%" ay hindi isang metrik na katangian.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Ang yunit na "%unitCode%" ay hindi umiiral o hindi nabibilang sa default na pamilyang metrik ng ibinigay na katangian na "%attributeCode%".
+product_model.code.not_blank.message: Ang code ng modelo ng produkto ay hindi dapat blangko.
+product_model.code.unique.message: Ang parehong code ay nakatakda na sa ibang modelo ng produkto.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Ang katangiang "%attribute%" ay hindi maaaring maging blangko, dahil ito ay tinutukoy bilang isang aksis para sa entity na ito'
+    can_have_family_variant_duplicate_axis_value: 'Hindi maaaring itakda ang halagang "%values%" para sa aksis ng katangiang "%attributes%", dahil may ibang kapatid na entity na may ganito ring halaga'
+    can_have_family_variant_unexpected_attribute: 'Hindi maaaring itakda ang katangiang "%attribute%" sa entity na ito dahil wala ito sa pangkat ng mga katangian'
+    cannot_have_product_model_as_parent: 'Ang modelo ng produktong "%product_model%" ay hindi maaaring magkaroon ng modelo ng produktong "%parent_product_model%" bilang magulang'
+    cannot_have_parent: 'Ang modelo ng produktong "%product_model%" ay hindi maaaring magkaroon ng magulang'
+    attribute_does_not_belong_to_family: 'Ang katangiang "%attribute%" ay hindi nabibilang sa pamilyang "%family%"'
+    variant_product_has_parent: 'Ang baryanteng produktong "%variant_product%" ay dapat mayroong magulang'
+    invalid_variant_product_parent: 'Ang baryanteng produktong "%variant_product%" ay hindi maaaring magkaroon ng modelo ng produktong "%product_model%" bilang magulang, (ang modelo ng produktong ito ay maaari lamang magkaroon ng ibang mga modelo ng produkto bilang mga supling)'
+    family_variant_attributes_unique: Ang mga katangian ay dapat natatangi, "%attributes%" ay ginagamit ng maraming beses sa mga baryanteng pangkat ng katangian
+    family_variant_axes_unique: Ang mga baryanteng aksis ay dapat na natatangi, "%attributes%" ay ginagamit ng maraming beses sa mga pangkat ng baryanteng katangian
+    family_variant_axes_immutable: 'Ang mga baryanteng aksis ay hindi maaaring baguhin para sa antas na "%level%"'
+    family_variant_axes_attribute_type: Ang baryanteng aksis "%axis%" ay dapat isang boolean, simpleng pinili, o simpleng datos na reperensiya o isang metrik
+    family_variant_axes_wrong_type: Ang baryanteng aksis "%axis%" ay hindi maaaring maisalokal, hindi masasaklaw at hindi partikular sa pinagmulan
+    family_variant_axes_number_of_axes: 'Ang baryanteng pangkat ng katangian ay hindi maaaring magkaroon ng higit pa sa %max_axes_number% na mga aksis'
+    family_variant_has_family_attribute: '"%attribute%" na katangian ay hindi maidadagdag sa "%family_variant%" ng baryanteng pamilya, dahil hindi ito katangian ng "%family%" na pamilya'
+    family_variant_level_do_not_exist: Walang baryanteng katangian na naitakda para sa antas na "%level%"
+    family_variant_no_level: Dapat ay mayroong kahit isang antas na matukoy sa baryanteng pamilya
+    family_variant_unique_attributes_in_last_level: Ang natatanging katangiang "%attribute%" ay dapat maitakda sa antas ng produkto
+    0: Isang hindi inaasahang error ang naganap.
+    100: Hindi inaasahang halaga
+    200: Isang panloob na error ang naganap
+    201: Isang panloob na error ang naganap
+    205: Isang panloob na error ang naganap
+    pim_immutable_product_model_validator: Ang parehong code ay naitakda na sa ibang modelo ng produkto.
+

@@ -11,7 +11,7 @@ extensions:
         position: 90
         config:
             fieldName: useable_as_grid_filter
-            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
             readOnly: true
             defaultValue: true
 
@@ -22,7 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: is_locale_specific
-            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
             readOnly: true
 
     pim-attribute-identifier-form-validation-params:
@@ -33,7 +33,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.section.validation
+                sectionTitle: pim_enrich.entity.attribute.module.edit.validation
                 dropZone: content
 
     pim-attribute-identifier-form-validation-params-max-characters:
@@ -43,7 +43,7 @@ extensions:
         position: 100
         config:
             fieldName: max_characters
-            label: pim_enrich.form.attribute.tab.properties.label.max_characters
+            label: pim_enrich.entity.attribute.property.max_characters
 
     pim-attribute-identifier-form-validation-params-validation-rule:
         module: pim/form/common/fields/select
@@ -52,9 +52,9 @@ extensions:
         position: 110
         config:
             fieldName: validation_rule
-            label: pim_enrich.form.attribute.tab.properties.label.validation_rule
+            label: pim_enrich.entity.attribute.property.validation_rule.label
             choices:
-                regexp: pim_enrich.entity.attribute.validation_rule.regexp
+                regexp: pim_enrich.entity.attribute.property.validation_rule.regexp
 
     pim-attribute-identifier-form-validation-params-validation-regexp:
         module: pim/attribute-edit-form/properties/validation-regexp
@@ -63,4 +63,4 @@ extensions:
         position: 120
         config:
             fieldName: validation_regexp
-            label: pim_enrich.form.attribute.tab.properties.label.validation_regexp
+            label: pim_enrich.entity.attribute.property.validation_regexp

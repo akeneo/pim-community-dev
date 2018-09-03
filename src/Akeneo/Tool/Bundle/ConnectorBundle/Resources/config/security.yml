@@ -1,0 +1,12 @@
+parameters:
+    pim_connector.event_listener.job_execution_authenticator.class: Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator
+
+services:
+    pim_connector.event_listener.job_execution_authenticator:
+        class: '%pim_connector.event_listener.job_execution_authenticator.class%'
+        arguments:
+            - '@pim_user.provider.user'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+

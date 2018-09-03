@@ -37,9 +37,9 @@ define(
              */
             initialize: function (meta) {
                 this.config = _.extend({}, {
-                    confirmationMessage: 'pim_enrich.confirmation.discard_changes',
-                    confirmationTitle: 'pim_enrich.confirmation.leave',
-                    message: 'pim_enrich.info.entity.updated'
+                    confirmationMessage: 'pim_enrich.entity.fallback.module.edit.discard_changes',
+                    confirmationTitle: 'pim_enrich.entity.fallback.module.edit.leave',
+                    message: 'pim_common.entity_updated'
                 }, meta.config);
 
                 this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)});

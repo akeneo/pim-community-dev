@@ -1,0 +1,129 @@
+pim_user:
+  user:
+    title: Användare
+    fields:
+      name_prefix: Namnprefix
+      email: E-mail
+      username: Användarnanm
+      first_name: Förnamn
+      middle_name: Mellannamn
+      last_name: Efternamn
+      name_suffix: Namnsuffix
+      date_of_birth: Födelsedatum
+      avatar: Profilbild
+      timezone: Tidszon
+      roles: Roller
+      groups: Grupper
+      password: Lösenord
+      password_again: Ange lösenordet igen
+      product_grid_filters: Filter för produktlista
+      catalog_locale: Katalogspråk
+      catalog_scope: Område för katalog
+      default_tree: Standardträd
+      current_password: Nuvarande lösenord
+      new_password: Nytt Lösenord
+      new_password_again: Nytt lösenord (upprepa)
+      default_grid_view:
+        none: Ingen
+      default_product_grid_view:
+        label: Standard produktlistningsvy
+      ui_locale: Gränssnittspråk
+      last_logged_in: Senast inloggad
+      login_count: Loginräknare
+      user_salt: Användarsalt
+      created: Skapat
+      updated: Ändrad
+      status: Status
+      capabilities: Funktioner
+      has_role: Har roll
+      has_group: Har gruppen
+      active: Aktiv
+      inactive: Inaktiv
+    tabs:
+      general:
+        title: Allmänna
+        contact_information: Kontaktuppgifter
+      additional:
+        title: Ytterligare
+      interfaces:
+        title: Gränssnitt
+      group_and_role.title: Grupper och roller
+      password.title: Lösenord
+      business_unit.title: Affärsenheter
+      email_synchronization.title: Inställningar för synkronisering av e-post
+    removed_user: Raderad användare
+    login:
+      username_or_email: Användarnamn eller e-post
+      remember_me: Kom ihåg mig på den här datorn
+      password_forgotten: Glömt ditt lösenord?
+      log_in: Logga in
+      forgot_password: Glömt Lösenord
+      request: Förfrågan
+      reset: Återställ
+      homepage: Gå till hemsidan
+  group:
+    tab:
+      general.title: Allmänna
+      users.title: Användare
+  roles:
+    title: Roll
+    tab:
+      general: Allmänna
+      action: Behörigheter
+      users: Användare
+  controller:
+    group:
+      message:
+        saved: "Grupp sparad"
+    role:
+      message:
+        saved: "Roll sparad"
+    user:
+      message:
+        saved: "Användare sparad"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Skapad den"
+      updatedAt: "Uppdaterad den"
+    roles:
+      label: "Etikett"
+    groups:
+      name: "Namn"
+confirmation:
+  remove:
+    role: Är du säker på att du vill ta bort denna roll?
+    user: Är du säker på att du vill ta bort denna användare?
+flash:
+  role:
+    removed: Rollen har tagits bort
+  user:
+    removed: Användaren har tagits bort
+oro_security:
+  acl_group:
+    user: Användare
+    role: Roller
+    group: Användargrupper
+  acl:
+    user:
+      view: Visa användare
+      create: Skapa en användare
+      edit: Redigera användare
+      delete: Ta bort en användare
+    role:
+      view: Visa roller
+      create: Skapa en roll
+      edit: Redigera roller
+      delete: Ta bort en roll
+    group:
+      view: Visa användargrupper
+      create: Skapa en användargrupp
+      edit: Redigera användargrupper
+      delete: Ta bort en användargrupp
+(default): Standardbehörighet på entiteter
+VIEW: Visa
+CREATE: Skapa
+EDIT: Redigera
+DELETE: Ta bort
+ASSIGN: Tilldela
+SHARE: Dela

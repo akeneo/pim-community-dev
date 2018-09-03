@@ -251,6 +251,25 @@ define([
             } else {
                 this.setLocale(localeEvent.localeCode, {silent: true});
             }
+        },
+
+        /**
+         * Returns the list of the operator choices with their translations.
+         *
+         * @returns {object}
+         */
+        getLabelledOperatorChoices(shortName) {
+            let result = {};
+            this.config.operators.forEach((operator) => {
+                const key = 'pim_enrich.export.product.filter.' + shortName + '.operators.' + operator;
+                let translation = __(key);
+                if (translation === key) {
+                    translation = __('pim_common.operators.' + operator);
+                }
+                result[operator] = translation;
+            });
+
+            return result;
         }
     });
 });

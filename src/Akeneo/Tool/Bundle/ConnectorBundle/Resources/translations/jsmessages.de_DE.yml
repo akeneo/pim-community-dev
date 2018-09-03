@@ -1,0 +1,125 @@
+batch_jobs:
+  default_steps:
+    validation: Dateivalidierung
+    import_associations: Produktverbindungen-Import
+    import_root_product_model: Produktmodell-Import Hauptebene
+    import_sub_product_model: Produktmodell-Import Subebene
+  csv_product_export:
+    label: Produkt-Export als CSV-Datei
+    export.label: Produkt export
+  csv_product_model_export:
+    label: Produktmodell-Export als CSV-Datei
+    export.label: Produktmodell-Export
+  csv_category_export:
+    label: Kategorie-Export als CSV-Datei
+    export.label: Kategorie export
+  csv_attribute_export:
+    label: Attribut-Export als CSV-Datei
+    export.label: Attribut export
+  csv_attribute_option_export:
+    label: Attribut-Option in CSV-Datei exportieren
+    export.label: Attribut-Option export
+  csv_association_type_export:
+    label: Verbindungstyp-Export als CSV-Datei
+    export.label: Verbindungstyp-Export
+  csv_group_export:
+    label: Gruppen-Export in CSV-Datei
+    export.label: Gruppen-Export
+  csv_family_export:
+    label: Produktfamilien-Export als CSV-Datei
+    export.label: Produktfamilien-Export
+  csv_product_import:
+    label: Produkt-Export als CSV-Datei
+    import.label: Produkt import
+  csv_product_model_import:
+    label: Produktmodell-Import aus CSV-Datei
+    import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
+  csv_category_import:
+    label: Kategorie-Import aus CSV-Datei
+    import.label: Kategorie-Import
+  csv_attribute_import:
+    label: Attribut-Import aus CSV-Datei
+    import.label: Attribut-Import
+  csv_attribute_option_import:
+    label: Attribut-Optionen aus CSV-Datei importieren
+    import.label: Attribut-Option import
+  csv_association_type_import:
+    label: Verbindungstyp-Import als CSV-Datei
+    import.label: Verbindungstyp-Import
+  csv_family_import:
+    label: Produktfamilien-Import aus CSV-Datei
+    import.label: Produktfamilien-Import
+  csv_group_import:
+    label: Gruppen-Import aus CSV-Datei
+    import.label: Gruppen-Import
+  csv_attribute_group_export:
+    label: Attributgruppen-Export als CSV-Datei
+    export.label: Attributgruppen-Export
+  csv_group_type_export:
+    label: Gruppentyp-Export als CSV-Datei
+    export.label: Gruppentyp-Export
+  csv_attribute_group_import:
+    label: Attributgruppen-Import aus CSV-Datei
+    import.label: Attributgruppen-Import
+  csv_group_type_import:
+    label: Gruppentyp-Import aus CSV-Datei
+    import.label: Gruppentyp-Import
+  xlsx_category_import:
+    label: Kategorie-Import aus XLSX-Datei
+    import.label: Kategorie-Import
+  xlsx_association_type_import:
+    label: Verbindungstyp-Import aus XLSX-Datei
+    import.label: Verbindungstyp-Import
+  xlsx_attribute_import:
+    label: Attribut-Import aus XLSX-Datei
+    import.label: Attribut-Import
+  xlsx_attribute_option_import:
+    label: Attributoptionen-Import aus XLSX-Datei
+    import.label: Attribut-Option import
+  xlsx_family_import:
+    label: Produktfamilien-Import aus XLSX-Datei
+    import.label: Produktfamilien-Import
+  xlsx_product_export:
+    label: Produkt-Export als XLSX-Datei
+    export.label: Produkt export
+  xlsx_product_model_export:
+    label: Produktmodell-Export als XLSX-Datei
+    export.label: Produktmodell-Export
+  xlsx_product_import:
+    label: Produkt-Import aus XLSX-Datei
+    import.label: Produkt import
+  xlsx_product_model_import:
+    import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
+  xlsx_group_export:
+    label: Gruppen-Export als XSLX-Datei
+    export.label: Gruppen-Export
+  xlsx_group_import:
+    label: Gruppen-Import aus XLSX-Datei
+    import.label: Gruppen-Import
+  xlsx_family_export:
+    label: Produktfamilien-Eport als XLSX-Datei
+    export.label: Produktfamilien-Export
+  xlsx_category_export:
+    label: Kategorie-Export als XLSX-Datei
+    export.label: Kategorie export
+  xlsx_attribute_export:
+    label: Attribut-Export als XLSX-Datei
+    export.label: Attribut-Export als XLSX-Datei
+  xlsx_attribute_option_export:
+    label: Attributoptionen-Export als XLSX-Datei
+    export.label: Attributoptionen-Export als XLSX-Datei
+  xlsx_association_type_export:
+    label: Verbindungstyp-Export als XLSX-Datei
+    export.label: Verbindungstyp-Export als XLSX-Datei
+  xlsx_attribute_group_export:
+    label: Attributgruppen-Export als XLSX-Datei
+    export.label: Attributgruppen-Export
+  xlsx_group_type_export:
+    label: Gruppentyp-Export als XLSX-Datei
+    export.label: Gruppentyp-Export
+  xlsx_attribute_group_import:
+    label: Attributgruppen-Import aus XLSX-Datei
+    import.label: Attributgruppen-Import
+  xlsx_group_type_import:
+    label: Gruppen-Import aus XLSX-Datei
+    import.label: Gruppentyp-Import

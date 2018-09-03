@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Entity\AssociationType as EntityAssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
+use Akeneo\Pim\Structure\Component\Model\AssociationType as EntityAssociationType;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

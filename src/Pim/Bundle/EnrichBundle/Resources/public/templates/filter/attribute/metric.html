@@ -1,7 +1,7 @@
 <select class="select2 operator" name="filter-operator" <%- editable ? '' : 'disabled' %>>
-    <% _.each(operators, function (operatorChoice) { %>
+    <% _.each(operators, function (operatorChoiceLabel, operatorChoice) { %>
         <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
-            <%- __('pim_enrich.export.product.filter.metric.operators.' + operatorChoice) %>
+            <%- operatorChoiceLabel %>
         </option>
     <% }); %>
 </select>
@@ -12,7 +12,7 @@
     <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
         <% _.each(_.keys(units.units), function (key) { %>
             <option value="<%- key %>"<%- value.unit === key ? ' selected' : '' %>>
-                <%- __(key) %>
+                <%- __(`pim_measure.units.${key}`) %>
             </option>
         <% }); %>
     </select>

@@ -1,0 +1,52 @@
+Akeneo\Pim\Structure\Component\Model\FamilyVariant:
+    type: entity
+    table: pim_catalog_family_variant
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+
+    oneToMany:
+        translations:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+            orphanRemoval: true
+
+    # oneToMany Unidirectional
+    manyToMany:
+        variantAttributeSets:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface
+            joinTable:
+                name: pim_catalog_family_variant_has_variant_attribute_sets
+                joinColumns:
+                    family_variant_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    variant_attribute_sets_id:
+                        referencedColumnName: id
+                        unique: true
+                        onDelete: CASCADE
+            cascade:
+                - persist
+                - detach
+                - remove
+
+    manyToOne:
+        family:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
+            inversedBy: familyVariants
+            joinColumn:
+              name: family_id
+              referencedColumnName: id

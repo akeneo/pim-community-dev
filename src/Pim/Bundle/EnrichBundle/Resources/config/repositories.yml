@@ -1,48 +1,16 @@
 parameters:
-    ## Searchable repositories
-    pim_enrich.repository.family.search.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
-    pim_enrich.repository.family_variant.search.class:   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository
-    pim_enrich.repository.attribute.search.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
-    pim_enrich.repository.attribute_option.search.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository
-
     ## Default UI repositories
     pim_enrich.repository.category.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository
     pim_enrich.repository.group.class:                   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository
-    pim_enrich.repository.group_type.class:              Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository
-    pim_enrich.repository.association_type.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository
-    pim_enrich.repository.attribute.class:               Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
-    pim_enrich.repository.family.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository
-    pim_enrich.repository.family_variant.class:          Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantRepository
     pim_enrich.repository.locale.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository
     pim_enrich.repository.channel.class:                 Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_enrich.repository.currency.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository
-    pim_enrich.repository.attribute_group.class:         Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository
-    pim_enrich.repository.attribute_group.search.class:  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository
     pim_enrich.repository.job_instance.class:            Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository
     pim_enrich.repository.job_execution.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository
     pim_enrich.repository.job_tracker.class:             Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobTrackerRepository
     pim_enrich.repository.client.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ClientRepository
 
 services:
-    ## Searchable repositories
-    pim_enrich.repository.family.search:
-        class: '%pim_enrich.repository.family.search.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.family.class%'
-
-    pim_enrich.repository.family_variant.search:
-        class: '%pim_enrich.repository.family_variant.search.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.family_variant.class%'
-
-    pim_enrich.repository.attribute.search:
-        class: '%pim_enrich.repository.attribute.search.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute.class%'
-
     ## Default UI repositories
     pim_enrich.repository.category:
         class: '%pim_enrich.repository.category.class%'
@@ -57,39 +25,6 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.group.class%'
-
-    pim_enrich.repository.group_type:
-        class: '%pim_enrich.repository.group_type.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.group_type.class%'
-
-    pim_enrich.repository.association_type:
-        class: '%pim_enrich.repository.association_type.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.association_type.class%'
-
-    pim_enrich.repository.attribute:
-        class: '%pim_enrich.repository.attribute.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute.class%'
-
-    pim_enrich.repository.family:
-        class: '%pim_enrich.repository.family.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.family.class%'
-
-    pim_enrich.repository.family_variant:
-        class: '%pim_enrich.repository.family_variant.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.family_variant.class%'
 
     pim_enrich.repository.locale:
         class: '%pim_enrich.repository.locale.class%'
@@ -109,19 +44,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.currency.class%'
 
-    pim_enrich.repository.attribute_group:
-        class: '%pim_enrich.repository.attribute_group.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute_group.class%'
-
-    pim_enrich.repository.attribute_group.search:
-        class: '%pim_enrich.repository.attribute_group.search.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute_group.class%'
-
     pim_enrich.repository.job_instance:
         class: '%pim_enrich.repository.job_instance.class%'
         arguments:
@@ -139,13 +61,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_execution.class%'
-
-    pim_enrich.repository.attribute_option.search:
-        class: '%pim_enrich.repository.attribute_option.search.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute_option.class%'
-            - '@pim_catalog.repository.attribute'
 
     pim_enrich.repository.client:
         class: '%pim_enrich.repository.client.class%'

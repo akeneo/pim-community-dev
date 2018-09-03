@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 
 class CategoryRepository extends NestedTreeRepository implements TranslatedLabelsProviderInterface

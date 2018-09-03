@@ -17,7 +17,7 @@ extensions:
             templateParams:
                 gridName: product-grid
 
-    pim-product-index-useser-navigation:
+    pim-product-index-user-navigation:
         module: pim/menu/user-navigation
         parent: pim-product-index
         targetZone: user-menu
@@ -30,7 +30,7 @@ extensions:
         parent: pim-product-index
         targetZone: title
         config:
-            title: pim_enrich.entity.product.index_title
+            title: pim_enrich.entity.product.page_title.index
 
     pim-product-index-left-column:
         module: pim/form/common/column
@@ -38,7 +38,7 @@ extensions:
         targetZone: column
         config:
           stateCode: product_index
-          navigationTitle: pim_enrich.entity.product.navigation
+          navigationTitle: pim_menu.navigation.product
 
     pim-product-index-column-inner:
         module: pim/common/simple-view
@@ -57,18 +57,18 @@ extensions:
         parent: pim-product-index
         targetZone: buttons
         config:
-            buttonTitle: pim_enrich.entity.product.create
-            modalTitle: pim_enrich.entity.product.modalTitle
-            subTitle: pim_enrich.entity.product.subTitle
+            buttonTitle: pim_common.create
+            modalTitle: pim_enrich.entity.product.module.create.title
+            subTitle: pim_enrich.entity.product.module.create.subtitle
             choices:
                 create-product:
                     form: pim-product-create-modal
-                    title: pim_enrich.entity.product.create_popin.type
+                    title: pim_enrich.entity.product.uppercase_label
                     icon: icon-product
                     aclResourceId: pim_enrich_product_create
                 create-product-model:
                     form: pim-product-model-create-modal
-                    title: pim_enrich.entity.product_model.create_popin.type
+                    title: pim_enrich.entity.product_model.uppercase_label
                     icon: icon-model
                     aclResourceId: pim_enrich_product_model_create
 
@@ -95,7 +95,7 @@ extensions:
         aclResourceId: pim_enrich_product_category_list
         config:
             gridName: product-grid
-            categoryTreeName: pim_enrich_categorytree
+            categoryTreeName: pim_enrich_product_grid_category_tree
 
     pim-product-index-category-tree-done:
         module: pim/grid/category-tree-done
@@ -115,7 +115,7 @@ extensions:
         parent: pim-product-index
         targetZone: bottom-panel
         config:
-            label: pim_enrich.entity.product.selected
+            label: pim_datagrid.mass_action.selected.product
 
     pim-product-index-grid-filters-manage:
         module: oro/datafilter/filters-button

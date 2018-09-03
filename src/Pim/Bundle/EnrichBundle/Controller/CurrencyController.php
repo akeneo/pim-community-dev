@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Channel\Component\Exception\LinkedChannelException;
+use Akeneo\Channel\Component\Model\Currency;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Pim\Component\Catalog\Exception\LinkedChannelException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
