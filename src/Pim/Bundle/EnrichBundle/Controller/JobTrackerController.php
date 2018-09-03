@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
-use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
+use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

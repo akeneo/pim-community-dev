@@ -1,8 +1,0 @@
-parameters:
-    pim_import_export.datagrid.provider.job.class: Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider
-
-services:
-    pim_import_export.datagrid.provider.job:
-        class: '%pim_import_export.datagrid.provider.job.class%'
-        arguments:
-            - '@akeneo_batch.job.job_registry'

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
@@ -12,37 +12,20 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Job execution controller
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class JobExecutionController
 {
-    const BLOCK_SIZE = 8192;
-
-    /** @var Request */
-    protected $request;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var BatchLogHandler */
     protected $batchLogHandler;
 
@@ -52,61 +35,49 @@ class JobExecutionController
     /** @var string */
     protected $jobType;
 
-    /** @var SerializerInterface */
-    protected $serializer;
-
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
+
+    /** @var EngineInterface */
+    protected $templating;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var TranslatorInterface */
+    protected $translator;
 
     /** @var JobExecutionRepository */
     protected $jobExecutionRepo;
 
     /**
-     * @param Request                  $request
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
-     * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param JobExecutionRepository   $jobExecutionRepo
      * @param string                   $jobType
      */
     public function __construct(
-        Request $request,
         EngineInterface $templating,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
-        SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
         $jobType
     ) {
+        $this->templating = $templating;
+        $this->translator = $translator;
+        $this->eventDispatcher = $eventDispatcher;
         $this->batchLogHandler = $batchLogHandler;
         $this->archivist = $archivist;
-        $this->serializer = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
-        $this->templating = $templating;
-        $this->request = $request;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->jobType = $jobType;
-    }
-
-    /**
-     * List the reports
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return $this->templating->renderResponse(
-            sprintf('PimEnrichBundle:MassEditExecution:index.html.twig', ucfirst($this->getJobType()))
-        );
     }
 
     /**
