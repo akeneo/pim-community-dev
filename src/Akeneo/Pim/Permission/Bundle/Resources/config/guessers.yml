@@ -1,6 +1,6 @@
 parameters:
     pimee_security.update_guesser.category_access.class:        Akeneo\Pim\Permission\Bundle\UpdateGuesser\CategoryAccessUpdateGuesser
-    pimee_security.update_guesser.attribute_group_access.class: Akeneo\Pim\Permission\Bundle\UpdateGuesser\CategoryAccessUpdateGuesser
+    pimee_security.update_guesser.attribute_group_access.class: Akeneo\Pim\Permission\Bundle\UpdateGuesser\AttributeGroupAccessUpdateGuesser
     pimee_security.update_guesser.locale_access.class:          Akeneo\Pim\Permission\Bundle\UpdateGuesser\LocaleAccessUpdateGuesser
 
 services:

@@ -13,6 +13,8 @@ Feature: Enforce no permissions for a category
     And I open the category tree
     And I select the "Master" tree
     And I filter by "category" with operator "" and value "master_men"
+    And I filter by "parent" with operator "is empty" and value ""
+    And I sort by "family" value ascending
     And I close the category tree
     Then I should see the product models plain and jack
 

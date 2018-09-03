@@ -1,0 +1,22 @@
+services:
+    pimee_api.checker.query_parameters_product:
+        class: Akeneo\Pim\Permission\Bundle\Api\QueryParametersChecker
+        decorates: pim_api.checker.query_parameters_product
+        decoration_inner_name: pim_api.checker.query_parameters_product.community
+        arguments:
+            - '@pim_api.checker.query_parameters_product.community'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
+
+    pimee_api.checker.query_parameters_product_model:
+        class: Akeneo\Pim\Permission\Bundle\Api\QueryParametersChecker
+        decorates: pim_api.checker.query_parameters_product_model
+        decoration_inner_name: pim_api.checker.query_parameters_product_model.community
+        arguments:
+            - '@pim_api.checker.query_parameters_product_model.community'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
