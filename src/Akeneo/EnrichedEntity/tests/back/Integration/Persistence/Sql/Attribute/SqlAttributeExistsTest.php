@@ -90,7 +90,8 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }

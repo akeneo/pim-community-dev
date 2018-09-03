@@ -16,7 +16,7 @@ Feature: Edit an enriched entity
 
   @acceptance-back
   Scenario: Updating when the enriched entity doesn't have an image
-    Given the enriched entity 'designer' with the label '"en_US"' equal to '"Designer"'
+    Given the enriched entity 'designer' with the label 'en_US' equal to '"Designer"'
     When the user updates the image of the enriched entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
     Then the image of the enriched entity 'designer' should be '"/path/image.jpg"'
 
@@ -29,7 +29,7 @@ Feature: Edit an enriched entity
   @acceptance-back
   Scenario: Updating without update the image
     Given an image on an enriched entity 'designer' with path '"/path/image.jpg"' and filename '"image.jpg"'
-    When the user updates the enriched entity 'designer' with the label '"en_US"' equal to '"Designer"'
+    When the user updates the enriched entity 'designer' with the label 'en_US' equal to '"Designer"'
     Then the image of the enriched entity 'designer' should be '"/path/image.jpg"'
 
   @acceptance-back

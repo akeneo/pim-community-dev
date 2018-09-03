@@ -138,7 +138,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
-        ]);
+        ], null);
         $enrichedEntityRepository->create($entityItem);
 
         $user = new User();

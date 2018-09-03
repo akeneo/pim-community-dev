@@ -209,7 +209,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer'
-            ]
+            ],
+            null
         );
         $repository->create($enrichedEntity);
     }

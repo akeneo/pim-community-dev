@@ -372,8 +372,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_edit', true);
 
         $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), []));
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), []));
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [], null));
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [], null));
 
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
         $name = TextAttribute::createText(

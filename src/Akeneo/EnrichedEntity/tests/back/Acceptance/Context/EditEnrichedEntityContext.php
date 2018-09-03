@@ -36,7 +36,7 @@ final class EditEnrichedEntityContext implements Context
     private $enrichedEntityRepository;
 
     /** @var EditEnrichedEntityHandler */
-    private $editEnrichedEntityCommandHandler;
+    private $editEnrichedEntityHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -49,18 +49,18 @@ final class EditEnrichedEntityContext implements Context
 
     /**
      * @param EnrichedEntityRepositoryInterface $enrichedEntityRepository
-     * @param EditEnrichedEntityHandler         $editEnrichedEntityCommandHandler
+     * @param EditEnrichedEntityHandler         $editEnrichedEntityHandler
      * @param ValidatorInterface                $validator
      * @param ConstraintViolationsContext       $constraintViolationsContext
      */
     public function __construct(
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
-        EditEnrichedEntityHandler $editEnrichedEntityCommandHandler,
+        EditEnrichedEntityHandler $editEnrichedEntityHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext
     ) {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
-        $this->editEnrichedEntityHandler = $editEnrichedEntityCommandHandler;
+        $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
     }
@@ -74,7 +74,8 @@ final class EditEnrichedEntityContext implements Context
             $this->enrichedEntityRepository->create(
                 EnrichedEntity::create(
                     EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
-                    json_decode($enrichedEntity['labels'], true)
+                    json_decode($enrichedEntity['labels'], true),
+                    null
                 )
             );
         }
@@ -129,10 +130,13 @@ final class EditEnrichedEntityContext implements Context
      */
     public function theEnrichedEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
+        $label = json_decode($label);
+
         $this->enrichedEntityRepository->create(
             EnrichedEntity::create(
                 EnrichedEntityIdentifier::fromString($identifier),
-                [$localCode => $label]
+                [$localCode => $label],
+                null
             )
         );
     }
@@ -150,7 +154,7 @@ final class EditEnrichedEntityContext implements Context
         $file->setOriginalFilename($filename);
 
         $this->enrichedEntityRepository->create(
-            EnrichedEntity::createWithImage(
+            EnrichedEntity::create(
                 EnrichedEntityIdentifier::fromString($identifier),
                 [],
                 Image::fromFileInfo($file)
@@ -181,7 +185,6 @@ final class EditEnrichedEntityContext implements Context
      */
     public function theUserUpdatesTheEnrichedEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
-        $localCode = json_decode($localCode);
         $label = json_decode($label);
 
         $editEnrichedEntityCommand = new EditEnrichedEntityCommand();

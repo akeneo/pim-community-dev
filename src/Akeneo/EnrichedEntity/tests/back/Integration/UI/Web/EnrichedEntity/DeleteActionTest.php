@@ -176,13 +176,13 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
-        ]);
+        ], null);
         $enrichedEntityRepository->create($entityItem);
 
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [
             'en_US' => 'Brand',
             'fr_FR' => 'Marque',
-        ]);
+        ], null);
         $enrichedEntityRepository->create($entityItem);
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');

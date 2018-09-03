@@ -47,14 +47,16 @@ class EnrichedEntitySpec extends ObjectBehavior
         $sameIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $sameEnrichedEntity = EnrichedEntity::create(
             $sameIdentifier,
-            []
+            [],
+            null
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(true);
 
         $anotherIdentifier = EnrichedEntityIdentifier::fromString('same_identifier');
         $sameEnrichedEntity = EnrichedEntity::create(
             $anotherIdentifier,
-            []
+            [],
+            null
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(false);
     }

@@ -91,7 +91,8 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntityFull);
 
@@ -169,7 +170,8 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntityEmpty);
     }

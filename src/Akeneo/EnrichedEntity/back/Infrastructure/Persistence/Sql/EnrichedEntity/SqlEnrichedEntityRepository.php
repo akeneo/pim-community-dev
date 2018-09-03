@@ -93,9 +93,12 @@ SQL;
     public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $fetch = <<<SQL
-        SELECT ee.identifier, ee.labels, fi.file_key, fi.original_filename
+        SELECT ee.identifier, ee.labels, fi.image
         FROM akeneo_enriched_entity_enriched_entity ee
-        LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -112,8 +115,7 @@ SQL;
         return $this->hydrateEnrichedEntity(
             $result['identifier'],
             $result['labels'],
-            $result['file_key'],
-            $result['original_filename']
+            $result['image']
         );
     }
 
@@ -157,34 +159,26 @@ SQL;
     private function hydrateEnrichedEntity(
         string $identifier,
         string $normalizedLabels,
-        ?string $fileKey,
-        ?string $originalFilename
+        ?array $image
     ): EnrichedEntity {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
-        if (null !== $fileKey && null !== $originalFilename) {
+        if (null !== $image) {
             $file = new FileInfo();
-            $file->setKey($fileKey);
-            $file->setOriginalFilename($originalFilename);
-
-            $enrichedEntity = EnrichedEntity::createWithImage(
-                EnrichedEntityIdentifier::fromString(
-                    $identifier
-                ),
-                $labels,
-                Image::fromFileInfo($file)
-            );
-        } else {
-            $enrichedEntity = EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString(
-                    $identifier
-                ),
-                $labels
-            );
+            $file->setKey($image['fileKey']);
+            $file->setOriginalFilename($image['originalFilename']);
         }
+
+        $enrichedEntity = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString(
+                $identifier
+            ),
+            $labels,
+            (null !== $image) ? Image::fromFileInfo($file) : null
+        );
 
         return $enrichedEntity;
     }

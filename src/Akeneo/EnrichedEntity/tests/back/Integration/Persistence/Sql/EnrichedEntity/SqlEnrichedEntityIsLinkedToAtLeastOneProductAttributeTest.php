@@ -66,7 +66,8 @@ class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInteg
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }

@@ -82,7 +82,8 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntityFull);
 
@@ -111,7 +112,8 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntityEmpty);
     }

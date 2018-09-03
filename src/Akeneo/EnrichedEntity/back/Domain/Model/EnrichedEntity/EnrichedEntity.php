@@ -41,14 +41,7 @@ class EnrichedEntity
         $this->image = $image;
     }
 
-    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection): self
-    {
-        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
-
-        return new self($identifier, $labelCollection, null);
-    }
-
-    public static function createWithImage(EnrichedEntityIdentifier $identifier, array $rawLabelCollection, Image $image)
+    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection, ?Image $image): self
     {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
