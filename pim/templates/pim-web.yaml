@@ -106,8 +106,8 @@ spec:
             - name: ONBOARDER_QUEUE_NAME
               value:  {{ .Values.onboarder.pubsub.queueName | quote }}
             {{- end }}
-{{- if .Values.common.phpConf }}
-{{ toYaml .Values.common.phpConf  | indent 12 }}
+{{- if .Values.common.phpConfFPM }}
+{{ toYaml .Values.common.phpConfFPM  | indent 12 }}
 {{- end }}
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
