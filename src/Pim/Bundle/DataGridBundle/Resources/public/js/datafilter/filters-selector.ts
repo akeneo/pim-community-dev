@@ -67,7 +67,7 @@ class FiltersColumn extends BaseView {
 
     for (let filterName in this.modules) {
       const filter = this.modules[filterName]
-      const shortName = `'__${filterName}`
+      const shortName = `__${filterName}`
 
       if (filter.enabled) {
           if (!filter.isEmpty()) {
