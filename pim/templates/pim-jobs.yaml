@@ -70,13 +70,13 @@ spec:
               value: {{ $tplCtx.Values.common.gcpProjectID | quote }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
-            - name: AOB_MIDDLEWARE_URL
+            - name: ONBOARDER_RETAILER_URL
               value: {{ $tplCtx.Values.common.retailerUrl | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_PUB
+            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
               value:  {{ $tplCtx.Values.onboarder.pubsub.topicPub | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_TOPIC_CON
+            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
               value:  {{ $tplCtx.Values.onboarder.pubsub.topicCon | quote }}
-            - name: AOB_PIMMASTER_ONBOARDER_QUEUE_NAME
+            - name: ONBOARDER_QUEUE_NAME
               value:  {{ $tplCtx.Values.onboarder.pubsub.queueName | quote }}
             {{- end }}
 {{- if $tplCtx.Values.common.phpConfCLI }}

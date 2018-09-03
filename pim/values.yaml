@@ -116,7 +116,7 @@ pimUsers:
     firstName: cloud
     lastName: Admin
     email: tech-cloud@akeneo.com
-    password: changemeretailer
+    password: generateme
     catalogDefaultLocale: en_US
     userDefaultLocale: en_US
     catalogDefaultScope: ecommerce
@@ -130,8 +130,8 @@ mysql:
   mysql:
     serviceName: pim-mysql
     defaultUser: akeneo_pim
-    userPassword: changeme
-    rootPassword: changeme
+    userPassword: generateme
+    rootPassword: generateme
     defaultDatabase: akeneo_pim
     dataDiskSize: 10Gi
     stateful:
