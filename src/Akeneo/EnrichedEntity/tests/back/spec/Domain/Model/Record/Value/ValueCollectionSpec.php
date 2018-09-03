@@ -129,4 +129,10 @@ class ValueCollectionSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    function it_cannot_with_any_other_objects_than_values()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[1]]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[new \StdClass()]]);
+    }
 }

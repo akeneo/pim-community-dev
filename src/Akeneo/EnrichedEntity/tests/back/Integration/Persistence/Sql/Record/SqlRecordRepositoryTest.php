@@ -19,6 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
@@ -50,7 +51,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
 
         $this->repository->create($record);
@@ -71,7 +73,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
         $this->repository->create($record);
 
@@ -91,7 +94,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
         $this->repository->create($record);
         $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
@@ -114,7 +118,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
 
         $this->expectException(\RuntimeException::class);
@@ -136,7 +141,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
-            []
+            [],
+            ValueCollection::fromValues([])
         );
 
         $this->repository->create($record);
@@ -149,7 +155,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
-            []
+            [],
+            ValueCollection::fromValues([])
         );
 
         $this->repository->create($record);

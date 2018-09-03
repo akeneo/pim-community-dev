@@ -19,6 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
@@ -99,7 +100,8 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
                 $this->recordIdentifier,
                 $enrichedEntityIdentifier,
                 $starckCode,
-                ['fr_Fr' => 'Philippe Starck']
+                ['fr_Fr' => 'Philippe Starck'],
+                ValueCollection::fromValues([])
             )
         );
     }

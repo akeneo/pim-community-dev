@@ -33,7 +33,7 @@ class TextData implements ValueDataInterface
         return new self($normalizedData);
     }
 
-    public static function createFromString(string $string)
+    public static function fromString(string $string)
     {
         return new self($string);
     }

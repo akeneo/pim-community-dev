@@ -19,6 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
@@ -100,7 +101,8 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
                 $this->starckIdentifier,
                 $enrichedEntityIdentifier,
                 $starkCode,
-                ['fr_Fr' => 'Philippe Starck']
+                ['fr_Fr' => 'Philippe Starck'],
+                ValueCollection::fromValues([])
             )
         );
         $cocoCode = RecordCode::fromString('coco');
@@ -110,7 +112,8 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
                 $this->cocoIdentifier,
                 $enrichedEntityIdentifier,
                 $cocoCode,
-                ['fr_Fr' => 'Coco Chanel']
+                ['fr_Fr' => 'Coco Chanel'],
+                ValueCollection::fromValues([])
             )
         );
     }

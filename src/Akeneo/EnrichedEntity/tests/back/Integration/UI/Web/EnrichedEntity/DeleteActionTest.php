@@ -10,6 +10,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
@@ -194,7 +195,8 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             [
                 'en_US' => 'ASUS',
                 'fr_FR' => 'ASUS',
-            ]
+            ],
+            ValueCollection::fromValues([])
         );
         $recordRepository->create($recordItem);
 

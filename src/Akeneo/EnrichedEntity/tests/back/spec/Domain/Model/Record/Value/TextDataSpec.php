@@ -15,7 +15,7 @@ class TextDataSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('createFromString', ['This is a text']);
+        $this->beConstructedThrough('fromString', ['This is a text']);
     }
 
     public function it_is_initializable()
@@ -37,13 +37,13 @@ class TextDataSpec extends ObjectBehavior
 
     public function it_can_be_constructed_with_a_string()
     {
-        $this->beConstructedThrough('createFromString', ['Hello!']);
+        $this->beConstructedThrough('fromString', ['Hello!']);
         $this->shouldBeAnInstanceOf(TextData::class);
     }
 
     public function it_cannot_be_constructed_with_an_empty_string()
     {
-        $this->beConstructedThrough('createFromString', ['']);
+        $this->beConstructedThrough('fromString', ['']);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 

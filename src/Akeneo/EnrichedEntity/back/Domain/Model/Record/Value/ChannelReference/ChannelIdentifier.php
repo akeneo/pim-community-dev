@@ -11,7 +11,7 @@ class ChannelIdentifier implements ChannelReferenceInterface
     /** @var ?string */
     private $channelCode;
 
-    private function __construct(?string $channelCode)
+    private function __construct(string $channelCode)
     {
         Assert::notEmpty($channelCode, 'Channel code should not be empty');
 
@@ -21,11 +21,6 @@ class ChannelIdentifier implements ChannelReferenceInterface
     public static function fromCode(string $code): self
     {
         return new self($code);
-    }
-
-    public static function createEmpty()
-    {
-        return new self(null);
     }
 
     public function equals(ChannelReferenceInterface $channelReference): bool
