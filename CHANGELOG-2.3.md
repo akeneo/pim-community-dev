@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7611: Fix issue with download of assets
+
 # 2.3.5 (2018-08-22)
 
 ## Bug fixes
