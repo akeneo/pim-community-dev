@@ -26,8 +26,8 @@ class ValueCollectionSpec extends ObjectBehavior
             [
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
-                    ChannelReference::noChannel(),
-                    LocaleReference::noLocale(),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
                     TextData::fromString('Philippe Starck')
                 ),
                 Value::create(
@@ -71,8 +71,8 @@ class ValueCollectionSpec extends ObjectBehavior
         $newValueCollection = $this->setValue(
             Value::create(
                 AttributeIdentifier::fromString('name_designer_fingerprint'),
-                ChannelReference::noChannel(),
-                LocaleReference::noLocale(),
+                ChannelReference::noReference(),
+                LocaleReference::noReference(),
                 TextData::fromString('Updated name')
             )
         );

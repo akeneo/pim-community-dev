@@ -20,7 +20,7 @@ class LocaleReferenceSpec extends ObjectBehavior
 
     function it_can_be_constructed_with_no_channel()
     {
-        $this->beConstructedThrough('noLocale', []);
+        $this->beConstructedThrough('noReference', []);
     }
 
     function it_normalizes_itself_when_instanciated_with_a_channel_identifier()
@@ -30,7 +30,7 @@ class LocaleReferenceSpec extends ObjectBehavior
 
     function it_normalizes_itself_when_instanciated_with_no_channel()
     {
-        $this->beConstructedThrough('noLocale', []);
+        $this->beConstructedThrough('noReference', []);
         $this->normalize()->shouldReturn(null);
     }
 
@@ -38,13 +38,13 @@ class LocaleReferenceSpec extends ObjectBehavior
     {
         $this->equals(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('mobile')))->shouldReturn(true);
         $this->equals(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('print')))->shouldReturn(false);
-        $this->equals(LocaleReference::noLocale())->shouldReturn(false);
+        $this->equals(LocaleReference::noReference())->shouldReturn(false);
     }
 
     function it_tells_if_is_equal_to_empty_reference()
     {
-        $this->beConstructedThrough('noLocale', []);
-        $this->equals(LocaleReference::noLocale())->shouldReturn(true);
+        $this->beConstructedThrough('noReference', []);
+        $this->equals(LocaleReference::noReference())->shouldReturn(true);
         $this->equals(LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('print')))->shouldReturn(false);
     }
 }

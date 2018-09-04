@@ -9,27 +9,27 @@ use Webmozart\Assert\Assert;
 class ChannelIdentifier
 {
     /** @var string */
-    private $channelCode;
+    private $identifier;
 
-    private function __construct(string $channelCode)
+    private function __construct(string $identifier)
     {
-        Assert::notEmpty($channelCode, 'Channel code should not be empty');
+        Assert::notEmpty($identifier, 'Channel identifier should not be empty');
 
-        $this->channelCode = $channelCode;
+        $this->identifier = $identifier;
     }
 
-    public static function fromCode(string $code): self
+    public static function fromCode(string $identifier): self
     {
-        return new self($code);
+        return new self($identifier);
     }
 
     public function equals(ChannelIdentifier $channelIdentifier): bool
     {
-        return $this->channelCode === $channelIdentifier->channelCode;
+        return $this->identifier === $channelIdentifier->identifier;
     }
 
     public function normalize(): ?string
     {
-        return $this->channelCode;
+        return $this->identifier;
     }
 }

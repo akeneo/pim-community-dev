@@ -9,27 +9,27 @@ use Webmozart\Assert\Assert;
 class LocaleIdentifier
 {
     /** @var string */
-    private $localeCode;
+    private $identifier;
 
-    private function __construct(string $localeCode)
+    private function __construct(string $identifier)
     {
-        Assert::notEmpty($localeCode, 'Locale code should not be empty');
+        Assert::notEmpty($identifier, 'Locale identifier should not be empty');
 
-        $this->localeCode = $localeCode;
+        $this->identifier = $identifier;
     }
 
-    public static function fromCode(string $code): self
+    public static function fromCode(string $identifier): self
     {
-        return new self($code);
+        return new self($identifier);
     }
 
     public function normalize(): string
     {
-        return $this->localeCode;
+        return $this->identifier;
     }
 
     public function equals(LocaleIdentifier $localeIdentifier): bool
     {
-        return $localeIdentifier->localeCode === $this->localeCode;
+        return $localeIdentifier->identifier === $this->identifier;
     }
 }

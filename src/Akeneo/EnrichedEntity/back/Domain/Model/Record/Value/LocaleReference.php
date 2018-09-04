@@ -20,46 +20,46 @@ use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 class LocaleReference
 {
     /** @var LocaleIdentifier|null */
-    private $localeIdentifier;
+    private $identifier;
 
-    private function __construct(?LocaleIdentifier $localeIdentifier)
+    private function __construct(?LocaleIdentifier $identifier)
     {
-        $this->localeIdentifier = $localeIdentifier;
+        $this->identifier = $identifier;
     }
 
-    public static function fromLocaleIdentifier(LocaleIdentifier $localeIdentifier): self
+    public static function fromLocaleIdentifier(LocaleIdentifier $identifier): self
     {
-        return new self($localeIdentifier) ;
+        return new self($identifier) ;
     }
 
-    public static function noLocale(): self
+    public static function noReference(): self
     {
         return new self(null) ;
     }
 
     public function equals(LocaleReference $localeReference): bool
     {
-        if (null === $localeReference->localeIdentifier && null === $this->localeIdentifier) {
+        if ($localeReference->isEmpty() && $this->isEmpty()) {
             return true;
         }
-        if (null === $localeReference->localeIdentifier || null === $this->localeIdentifier) {
+        if ($localeReference->isEmpty() || $this->isEmpty()) {
             return false;
         }
 
-        return $this->localeIdentifier->equals($localeReference->localeIdentifier);
+        return $this->identifier->equals($localeReference->identifier);
     }
 
     public function normalize(): ?string
     {
-        if (null === $this->localeIdentifier) {
+        if (null === $this->identifier) {
             return null;
         }
 
-        return $this->localeIdentifier->normalize();
+        return $this->identifier->normalize();
     }
 
     public function isEmpty(): bool
     {
-        return null === $this->localeIdentifier;
+        return null === $this->identifier;
     }
 }

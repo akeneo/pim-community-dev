@@ -54,7 +54,7 @@ class ValueSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelReference::noChannel(),
+            ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Starck'),
         ]);
@@ -71,7 +71,7 @@ class ValueSpec extends ObjectBehavior
         $this->beConstructedThrough('create', [
             AttributeIdentifier::fromString('name_designer_fingerprint'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
-            LocaleReference::noLocale(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck'),
         ]);
         $this->hasLocale()->shouldReturn(false);
@@ -81,15 +81,15 @@ class ValueSpec extends ObjectBehavior
     {
         $this->sameAttribute(Value::create(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelReference::noChannel(),
-            LocaleReference::noLocale(),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck')
         ))->shouldReturn(true);
 
         $this->sameAttribute(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelReference::noChannel(),
-            LocaleReference::noLocale(),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
     }
@@ -99,20 +99,20 @@ class ValueSpec extends ObjectBehavior
         $this->sameChannel(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
-            LocaleReference::noLocale(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck')
         ))->shouldReturn(true);
 
         $this->sameChannel(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('another_channel')),
-            LocaleReference::noLocale(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
         $this->sameChannel(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelReference::noChannel(),
-            LocaleReference::noLocale(),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
     }
@@ -121,21 +121,21 @@ class ValueSpec extends ObjectBehavior
     {
         $this->sameLocale(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelReference::noChannel(),
+            ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Starck')
         ))->shouldReturn(true);
 
         $this->sameLocale(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelReference::noChannel(),
+            ChannelReference::noReference(),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('another_locale')),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
         $this->sameLocale(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelReference::noChannel(),
-            LocaleReference::noLocale(),
+            ChannelReference::noReference(),
+            LocaleReference::noReference(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
     }

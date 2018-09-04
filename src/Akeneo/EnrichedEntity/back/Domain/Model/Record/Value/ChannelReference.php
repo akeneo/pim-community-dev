@@ -20,11 +20,11 @@ use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
 class ChannelReference
 {
     /** @var ChannelIdentifier|null */
-    private $channelIdentifier;
+    private $identifier;
 
-    private function __construct(?ChannelIdentifier $channelIdentifier)
+    private function __construct(?ChannelIdentifier $identifier)
     {
-        $this->channelIdentifier = $channelIdentifier;
+        $this->identifier = $identifier;
     }
 
     public static function fromChannelIdentifier(ChannelIdentifier $identifier): self
@@ -32,34 +32,34 @@ class ChannelReference
         return new self($identifier) ;
     }
 
-    public static function noChannel(): self
+    public static function noReference(): self
     {
-        return new self(null) ;
+        return new self(null);
     }
 
     public function equals(ChannelReference $channelReference): bool
     {
-        if (null === $channelReference->channelIdentifier && null === $this->channelIdentifier) {
+        if ($channelReference->isEmpty() && $this->isEmpty()) {
             return true;
         }
-        if (null === $channelReference->channelIdentifier || null === $this->channelIdentifier) {
+        if ($channelReference->isEmpty() || $this->isEmpty()) {
             return false;
         }
 
-        return $this->channelIdentifier->equals($channelReference->channelIdentifier);
+        return $this->identifier->equals($channelReference->identifier);
     }
 
     public function normalize(): ?string
     {
-        if (null === $this->channelIdentifier) {
+        if (null === $this->identifier) {
             return null;
         }
 
-        return $this->channelIdentifier->normalize();
+        return $this->identifier->normalize();
     }
 
     public function isEmpty(): bool
     {
-        return null === $this->channelIdentifier;
+        return null === $this->identifier;
     }
 }

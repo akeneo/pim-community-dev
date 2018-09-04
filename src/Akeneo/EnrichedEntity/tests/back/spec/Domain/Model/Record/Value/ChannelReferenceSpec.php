@@ -20,7 +20,7 @@ class ChannelReferenceSpec extends ObjectBehavior
 
     function it_can_be_constructed_with_no_channel()
     {
-        $this->beConstructedThrough('noChannel', []);
+        $this->beConstructedThrough('noReference', []);
     }
 
     function it_normalizes_itself_when_instanciated_with_a_channel_identifier()
@@ -30,7 +30,7 @@ class ChannelReferenceSpec extends ObjectBehavior
 
     function it_normalizes_itself_when_instanciated_with_no_channel()
     {
-        $this->beConstructedThrough('noChannel', []);
+        $this->beConstructedThrough('noReference', []);
         $this->normalize()->shouldReturn(null);
     }
 
@@ -38,13 +38,13 @@ class ChannelReferenceSpec extends ObjectBehavior
     {
         $this->equals(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')))->shouldReturn(true);
         $this->equals(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('print')))->shouldReturn(false);
-        $this->equals(ChannelReference::noChannel())->shouldReturn(false);
+        $this->equals(ChannelReference::noReference())->shouldReturn(false);
     }
 
     function it_tells_if_is_equal_to_empty_reference()
     {
-        $this->beConstructedThrough('noChannel', []);
-        $this->equals(ChannelReference::noChannel())->shouldReturn(true);
+        $this->beConstructedThrough('noReference', []);
+        $this->equals(ChannelReference::noReference())->shouldReturn(true);
         $this->equals(ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('print')))->shouldReturn(false);
     }
 }
