@@ -1,6 +1,6 @@
 services:
     # Repositories
-    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+    akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository
 
     akeneo_enrichedentity.infrastructure.persistence.record:
@@ -28,7 +28,7 @@ services:
     akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityExists
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+            - '@akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity'
 
     akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryRecordExists

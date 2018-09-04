@@ -1,6 +1,6 @@
 services:
     # Repositories
-    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+    akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityRepository
         arguments:
             - '@database_connection'

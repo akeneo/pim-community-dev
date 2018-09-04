@@ -156,7 +156,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
     private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
     }
 
     private function getRecordRepository(): RecordRepositoryInterface

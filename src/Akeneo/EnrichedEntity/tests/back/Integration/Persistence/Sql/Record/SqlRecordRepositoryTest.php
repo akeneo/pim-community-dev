@@ -210,7 +210,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     private function insertEnrichedEntity(): void
     {
-        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
