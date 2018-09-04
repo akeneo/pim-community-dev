@@ -67,7 +67,7 @@ module.exports = async function(cucumber) {
           request,
           [
             {
-              messageTemplate: 'pim_enriched_entity.enriched_entity.validation.identifier.pattern',
+              messageTemplate: 'pim_enriched_entity.enriched_entity.validation.code.pattern',
               parameters: {'{{ value }}': '\u0022invalid/identifier\u0022'},
               plural: null,
               message: message,

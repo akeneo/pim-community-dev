@@ -4,7 +4,7 @@ import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/identifi
 
 export const redirectToRecord = (record: Record) => {
   return redirectToRoute('akeneo_enriched_entities_record_edit', {
-    identifier: record.getIdentifier().stringValue(),
+    recordCode: record.getCode().stringValue(),
     enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
     tab: 'enrich',
   });
@@ -13,6 +13,6 @@ export const redirectToRecord = (record: Record) => {
 export const redirectToRecordIndex = (enrichedEntityIdentifier: EnrichedEntityIdentifier) => {
   return redirectToRoute('akeneo_enriched_entities_enriched_entity_edit', {
     enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
-    tab: 'records',
+    tab: 'record',
   });
 };

@@ -51,27 +51,27 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           <span className="group-label">{__('pim_enriched_entity.record.enrich.title')}</span>
         </header>
         <div className="AknFormContainer AknFormContainer--withPadding">
-          <div className="AknFieldContainer" data-code="identifier">
+          <div className="AknFieldContainer" data-code="code">
             <div className="AknFieldContainer-header">
               <label
-                title="{__('pim_enriched_entity.record.enrich.identifier')}"
+                title="{__('pim_enriched_entity.record.enrich.code')}"
                 className="AknFieldContainer-label"
-                htmlFor="pim_enriched_entity.record.enrich.identifier"
+                htmlFor="pim_enriched_entity.record.enrich.code"
               >
-                {__('pim_enriched_entity.record.enrich.identifier')}
+                {__('pim_enriched_entity.record.enrich.code')}
               </label>
             </div>
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
-                name="identifier"
-                id="pim_enriched_entity.record.enrich.identifier"
+                name="code"
+                id="pim_enriched_entity.record.enrich.code"
                 className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
-                value={this.props.form.data.identifier}
+                value={this.props.form.data.code}
                 readOnly
               />
             </div>
-            {getErrorsView(this.props.form.errors, 'identifier')}
+            {getErrorsView(this.props.form.errors, 'code')}
           </div>
           <div className="AknFieldContainer" data-code="label">
             <div className="AknFieldContainer-header">

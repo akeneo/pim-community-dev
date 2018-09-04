@@ -14,7 +14,7 @@ config:
                 tabs:
                     record:
                         label: pim_enriched_entity.enriched_entity.tab.records
-                        view: akeneoenrichedentity/application/component/enriched-entity/edit/records
+                        view: akeneoenrichedentity/application/component/enriched-entity/edit/record
                     attribute:
                         label: pim_enriched_entity.enriched_entity.tab.attribute
                         view: akeneoenrichedentity/application/component/enriched-entity/edit/attribute

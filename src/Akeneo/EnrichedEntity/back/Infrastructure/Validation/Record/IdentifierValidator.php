@@ -40,7 +40,7 @@ class IdentifierValidator extends ConstraintValidator
                 new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_-]+$/',
-                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern',
+                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern', //same here: should we warn him that the validator is invalid if it's never exposed to the user? how could he be changing that?
                     ]
                 ),
             ]

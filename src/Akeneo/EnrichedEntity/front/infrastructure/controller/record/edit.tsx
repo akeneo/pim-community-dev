@@ -14,7 +14,7 @@ import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'aken
 import {setUpSidebar} from 'akeneoenrichedentity/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoenrichedentity/application/action/locale';
 import {updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 
 const BaseController = require('pim/controller/base');
@@ -32,10 +32,7 @@ class RecordEditController extends BaseController {
 
   renderRoute(route: any) {
     recordFetcher
-      .fetch(
-        createEnrichedEntityIdentifier(route.params.enrichedEntityIdentifier),
-        createIdentifier(route.params.identifier)
-      )
+      .fetch(createEnrichedEntityIdentifier(route.params.enrichedEntityIdentifier), createCode(route.params.recordCode))
       .then((record: Record) => {
         this.store = createStore(true)(recordReducer);
         this.store.dispatch(recordEditionReceived(record));

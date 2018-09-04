@@ -82,7 +82,7 @@ class EditAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $normalizedCommand['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
-            $normalizedCommand['identifier'] !== $request->get('recordIdentifier');
+            $normalizedCommand['code'] !== $request->get('recordCode');
     }
 
     private function getEditCommand(Request $request): EditRecordCommand

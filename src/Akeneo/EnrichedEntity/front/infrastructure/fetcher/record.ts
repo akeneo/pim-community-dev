@@ -5,7 +5,7 @@ import hydrator from 'akeneoenrichedentity/application/hydrator/record';
 import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import RecordIdentifier from 'akeneoenrichedentity/domain/model/record/identifier';
+import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 import attributeFetcher from 'akeneoenrichedentity/infrastructure/fetcher/attribute';
 
 const routing = require('routing');
@@ -15,18 +15,18 @@ export class RecordFetcherImplementation implements RecordFetcher {
     Object.freeze(this);
   }
 
-  async fetch(enrichedEntityIdentifier: EnrichedEntityIdentifier, identifier: RecordIdentifier): Promise<Record> {
-    console.log(identifier);
-    const backendRecords = await getJSON(
-      routing.generate('akeneo_enriched_entities_record_index_rest', {
+  async fetch(enrichedEntityIdentifier: EnrichedEntityIdentifier, recordCode: RecordCode): Promise<Record> {
+    const backendRecord = await getJSON(
+      routing.generate('akeneo_enriched_entities_records_get_rest', {
         enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+        recordCode: recordCode.stringValue(),
       })
     );
 
     const attributes = await attributeFetcher.fetchAll(enrichedEntityIdentifier);
 
     const record = {
-      ...backendRecords.items[0],
+      ...backendRecord,
       image: {
         filePath: '4/b/2/3/4b23afc720c1698357eb6dce11b0e2a85af7b1be_tom_dixon.jpeg',
         originalFilename: 'tom_dixon.jpeg',

@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 /**
  * Find a record by its composite identifier (made of its Enriched Entity identifier
@@ -24,5 +25,5 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
  */
 interface FindRecordDetailsInterface
 {
-    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails;
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): ?RecordDetails;
 }

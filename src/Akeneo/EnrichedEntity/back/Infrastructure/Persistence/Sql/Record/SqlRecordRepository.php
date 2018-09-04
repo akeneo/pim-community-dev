@@ -100,6 +100,30 @@ SQL;
         }
     }
 
+    public function getByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): Record
+    {
+        $fetch = <<<SQL
+        SELECT identifier, code, enriched_entity_identifier, labels
+        FROM akeneo_enriched_entity_record
+        WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            [
+                'code' => (string) $code,
+                'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
+            ]
+        );
+        $result = $statement->fetch();
+        $statement->closeCursor();
+
+        if (!$result) {
+            throw RecordNotFoundException::withCode($enrichedEntityIdentifier, $code);
+        }
+
+        return $this->hydrateRecord($result['identifier'], $result['code'], $result['enriched_entity_identifier'], $result['labels']);
+    }
+
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
         $fetch = <<<SQL

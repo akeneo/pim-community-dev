@@ -42,9 +42,9 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): ?RecordDetails
     {
-        $result = $this->fetchResult($recordIdentifier);
+        $result = $this->fetchResult($enrichedEntityIdentifier, $recordCode);
 
         if (empty($result)) {
             return null;
@@ -60,15 +60,16 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         return $recordDetails;
     }
 
-    private function fetchResult(RecordIdentifier $recordIdentifier): array
+    private function fetchResult(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): array
     {
         $query = <<<SQL
         SELECT identifier, code, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record
-        WHERE identifier = :identifier;
+        WHERE code = :code && enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => (string) $recordIdentifier
+            'code' => (string) $recordCode,
+            'enriched_entity_identifier' => (string) $enrichedEntityIdentifier
         ]);
         $result = $statement->fetch();
         $statement->closeCursor();

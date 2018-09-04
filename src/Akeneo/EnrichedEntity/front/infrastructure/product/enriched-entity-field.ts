@@ -10,7 +10,7 @@ const extendTemplateContext = (templateContext: any, records: Record[]) => {
   templateContext.choices = records.reduce(
     (choices: {[key: string]: string}, record: Record) => ({
       ...choices,
-      [record.getIdentifier().identifier]: record.getLabel(UserContext.get('catalogLocale')),
+      [record.getCode().stringValue()]: record.getLabel(UserContext.get('catalogLocale')),
     }),
     {}
   );

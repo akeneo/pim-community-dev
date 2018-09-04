@@ -6,8 +6,10 @@ pim_title:
 pim_enriched_entity:
     enriched_entity:
         validation:
-            identifier:
+            code:
                 should_be_unique: 'This code already exists.'
+                pattern: 'This field may only contain letters, numbers and underscores.'
+                should_be_unique: 'This code already exists for this entity.'
         button:
             save: Save
             create: Create
@@ -51,7 +53,7 @@ pim_enriched_entity:
                 fail: An error occured during the deletion of the enriched entity
     record:
         validation:
-            identifier:
+            code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'This code already exists for this entity.'
         no_data:
@@ -62,7 +64,7 @@ pim_enriched_entity:
             create: Add new
         enrich:
             title: Record attributes
-            identifier: Code
+            code: Code
             label: Label
         title: Records
         create:

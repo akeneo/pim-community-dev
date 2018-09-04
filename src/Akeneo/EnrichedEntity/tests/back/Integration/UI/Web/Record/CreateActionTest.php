@@ -158,6 +158,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
+            //to rework
             '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record identifier already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
     }
 
@@ -221,7 +222,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'brand',
                 'brand',
                 '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
-            'Record Identifier has a dash character'                                                     => [
+            'Record Identifier has a dash character'                                                     => [//rework as it should not be possible
                 'invalid-identifier',
                 'brand',
                 'brand',
