@@ -15,9 +15,11 @@ namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Repository\Do
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Schema\MySqlSchemaManager;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\Assert;
 
@@ -30,13 +32,15 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = 'a-random-string';
-        $subscription = new ProductSubscription($product, $subscriptionId, ['foo' => 'bar']);
+        $subscription = new ProductSubscription($product, $subscriptionId);
+        $subscription->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+
         $this->getRepository()->save($subscription);
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
-            'SELECT product_id, subscription_id, suggested_data from pim_suggest_data_product_subscription;'
+            'SELECT product_id, subscription_id, raw_suggested_data from pim_suggest_data_product_subscription;'
         );
         $retrievedSubscriptions = $statement->fetchAll();
 
@@ -45,7 +49,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             [
                 'product_id'      => $product->getId(),
                 'subscription_id' => $subscriptionId,
-                'suggested_data'  => '{"foo": "bar"}',
+                'raw_suggested_data'  => '{"foo": "bar"}',
             ],
             $retrievedSubscriptions[0]
         );
@@ -60,11 +64,13 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'another_attribute' => 'some other data',
         ];
 
-        /** @var EntityManager $entityManager */
+        $query = <<<SQL
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
+VALUES (:productId, :subscriptionId, :suggestedData)
+SQL;
+
         $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->prepare(
-            'INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, suggested_data) VALUES (:productId, :subscriptionId, :suggestedData)'
-        );
+        $statement = $entityManager->getConnection()->prepare($query);
         $statement->execute(
             [
                 'productId'      => $product->getId(),
@@ -77,16 +83,20 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         Assert::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
         Assert::assertSame($product, $subscription->getProduct());
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
-        Assert::assertSame($suggestedData, $subscription->getSuggestedData());
+        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
     }
 
-    public function test_that_it_gets_a_subscription_for_a_subscribed_product_id()
+    public function test_that_it_gets_a_subscription_from_a_product_id()
     {
         $product = $this->createProduct('a_product');
         $subscriptionId = uniqid();
+        $suggestedData = [
+            'an_attribute'      => 'some data',
+            'another_attribute' => 'some other data',
+        ];
 
         $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, suggested_data) 
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
 VALUES (:productId, :subscriptionId, :suggestedData)
 SQL;
 
@@ -95,20 +105,13 @@ SQL;
         $statement->execute([
             'productId'      => $product->getId(),
             'subscriptionId' => $subscriptionId,
-            'suggestedData'  => json_encode([]),
+            'suggestedData'  => json_encode($suggestedData),
         ]);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
-
         Assert::assertTrue($subscription instanceof ProductSubscriptionInterface);
-        Assert::assertSame(
-            $subscriptionId,
-            $subscription->getSubscriptionId()
-        );
-        Assert::assertSame(
-            [],
-            $subscription->getSuggestedData()
-        );
+        Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
+        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
     }
 
     public function test_that_it_gets_null_for_a_non_subscribed_product_id()

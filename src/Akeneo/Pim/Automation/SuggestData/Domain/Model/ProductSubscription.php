@@ -27,7 +27,7 @@ class ProductSubscription implements ProductSubscriptionInterface
     private $subscriptionId;
 
     /** @var SuggestedData */
-    private $suggestedData = [];
+    private $suggestedData;
 
     /** @var ProductInterface */
     private $product;
@@ -68,7 +68,7 @@ class ProductSubscription implements ProductSubscriptionInterface
      */
     public function getSuggestedData(): SuggestedData
     {
-        if (null === $this->suggestedData && null !== $this->rawSuggestedData) {
+        if (null === $this->suggestedData) {
             $this->suggestedData = new SuggestedData($this->rawSuggestedData);
         }
 
