@@ -17,6 +17,9 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  *
  * master
  * |
+ * +-----> collection-2017
+ * |               |
+ * |               +------> winter-2017
  * +-----> collection-2018
  * |               |
  * |               +------> winter-2018
@@ -32,31 +35,31 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  *
  * Dataset:
  *
- *                       +----+
- *                       |    | model-shoe
- *                       |    | category: "shoes", description: "Superb shoe!", brand: null
- *                       +----+
- *                      X      X
- *                     X        X
- *                    X          X
- *                   X            X
- *             +----+             +----+
- *     model-s |    |             |    | model-m
- *             |    |             |    | category: "collection-2018"
- *             +----+             +----+
- *            X      X           X      X
- *           X        X         X        X
- *          X          X       X          X
- *         X            X     X            X
- *        X              X   X              X
- *  +----+          +----+   +----+         +----+          +-----+                           +------+
- *  |    |          |    |   |    |         |    |          |     |                           |      |
- *  |    |          |    |   |    |         |    |          |     |                           |      |
- *  +----+          +----+   +----+         +----+          +-----+                           +------+
- *  red-s          blue-s     red-m         blue-m         another-shoe                       unclassified-product
- *  category:      category:  category:     category:      category: "women,winter-2018"      description: "quantum mechanics"
- *  "women"        "men"      "women"       "men"          description: "Superb other shoe"
- *                                                         brand: "nyke"
+ *                       +----+ model-shoe                   +----+ model-winter-2017
+ *                       |    | category: "shoes"            |    | category: "winter-2017"
+ *                       |    | description: "Superb shoe!"  |    | description: "2017 shoe!"
+ *                       +----+ brand: null                  +----+
+ *                      X  X                                  X
+ *                     X    X                                X
+ *                    X      X                              X
+ *                   X        X                            X
+ *             +----+         +----+                       X
+ *     model-s |    |         |    | model-m               X
+ *             |    |         |    | category:             X
+ *             +----+         +----+   "collection-2018"   X
+ *            X      X         X    X                      X
+ *           X        X        X     X                    X
+ *          X          X       X      X                  X
+ *         X            X      X       X                X
+ *        X              X     X        X              X
+ *  +----+          +----+   +----+    +----+      +-----+        +-----+                           +------+
+ *  |    |          |    |   |    |    |    |      |     |        |     |                           |      |
+ *  |    |          |    |   |    |    |    |      |     |        |     |                           |      |
+ *  +----+          +----+   +----+    +----+      +-----+        +-----+                           +------+
+ *  red-s          blue-s     red-m     blue-m     blue-2017-m    another-shoe                       unclassified-product
+ *  category:      category:  category: category:  category:      category: "women,winter-2018"      description: "quantum mechanics"
+ *  "women"        "men"      "women"   "men"       ""            description: "Superb other shoe"
+ *                                                                brand: "nyke"
  *
  * Tests of the filter category used in the UI along with some filters with attributes. The search results needs be
  * aggregated towards higher product model level as much as possible.
@@ -80,15 +83,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Select a category set on the root product model (without including sub categories)
      *      - Filter on attribute set on the root product model
      * should show:
      *      - The root product model
      */
-    public function withoutIncludingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
+    public function testWithoutIncludingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
     {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes']],
@@ -98,8 +99,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Select a category set on the root product model (including sub categories)
      *      - Filter on attribute set on the root product model
@@ -107,7 +106,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      *      - The root product model
      *      - Other products being in the category children and satisfying the attribute filter
      */
-    public function includingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
+    public function testIncludingSubCategoriesSelectCategoryAndAttributeOnRootProductModel(): void
     {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes', 'men', 'women']],
@@ -117,15 +116,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Select a category set on a root product model (without including sub categories)
      *      - Filter on attribute set on the sub product model
      * should show:
      *      - The sub product model
      */
-    public function withoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInSubProductModel(): void
+    public function testWithoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInSubProductModel(): void
     {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes']],
@@ -135,15 +132,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Select a category set on a root product model (Without including sub categories)
      *      - Filter on attribute set on product-variants
      * should show:
      *      - The product variants satisfying the filter on attribute
      */
-    public function withoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInProductVariant()
+    public function testWithoutIncludingSubCategoriesSelectCategoryOnRootProductModelAndFilterOnAttributeInProductVariant()
     : void {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['shoes']],
@@ -153,15 +148,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Select a category set on a variant product
      *      - Filter on attribute set on product model
      * should show:
      *      - The product variants satisfying the attribute filter
      */
-    public function selectCategoryOnVariantProductAndFilterOnAttributeSetInProductModel()
+    public function testSelectCategoryOnVariantProductAndFilterOnAttributeSetInProductModel()
     : void {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['men']],
@@ -171,15 +164,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Filter on attribute set on root product model
      *      - Select a category set on a sub product model (including sub categories)
      * should show:
      *      - The product and the sub product model
      */
-    public function includingSubCategoriesFilterAttributeSetOnRootProductModelAndSelectCategoryOnSubProductModel()
+    public function testIncludingSubCategoriesFilterAttributeSetOnRootProductModelAndSelectCategoryOnSubProductModel()
     : void {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['collection-2018', 'winter-2018']],
@@ -189,8 +180,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Given:
      *      - Filter on attribute set on root product model
      *      - Select a category set on a variant product
@@ -198,7 +187,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      *      - The product variants having the category and inheriting the root product model values
      *      - Other products stasifying this filter.
      */
-    public function filterAttributeSetOnRootProductModelAndSelectCategoryOnProductVariant(): void
+    public function testFilterAttributeSetOnRootProductModelAndSelectCategoryOnProductVariant(): void
     {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['women']],
@@ -208,11 +197,9 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Select all unclassified and filter on an attribute
      */
-    public function showAllUnclassifiedAndFilterOnAttribute(): void
+    public function testShowAllUnclassifiedAndFilterOnAttribute(): void
     {
         $result = $this->executeFilter([
             ['categories', Operators::UNCLASSIFIED, []],
@@ -222,23 +209,36 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @test
-     *
      * Using the IS_EMPTY operator should only show the products and product models which should have the selected
      * attribute (because it is in their family) and not the others.
      */
-    public function selectIsEmptyOrNotEmptyOnAnAttribute(): void
+    public function testSelectIsEmptyOrNotEmptyOnAnAttribute(): void
     {
         sleep(5);
         $result = $this->executeFilter([
             ['brand', Operators::IS_EMPTY, '']
         ]);
-        $this->assert($result, ['model-shoe']);
+        $this->assert($result, ['model-shoe', 'model-winter-2017']);
 
         $result = $this->executeFilter([
             ['brand', Operators::IS_NOT_EMPTY, '']
         ]);
         $this->assert($result, ['another-shoe']);
+    }
+
+    /**
+     * Given:
+     *      - Select a sub category set on the sub product model
+     *      - Filter on root categorie
+     * should show:
+     *      - The root product model
+     */
+    public function testWithSubCategoriesSelectRootCategory(): void
+    {
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST, ['collection-2017']]
+        ]);
+        $this->assert($result, ['model-winter-2017']);
     }
 
     /**
@@ -251,6 +251,8 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
         $this->createCategory(['code' => 'shoes', 'parent' => 'master']);
         $this->createCategory(['code' => 'collection-2018', 'parent' => 'master']);
         $this->createCategory(['code' => 'winter-2018', 'parent' => 'collection-2018']);
+        $this->createCategory(['code' => 'collection-2017', 'parent' => 'master']);
+        $this->createCategory(['code' => 'winter-2017', 'parent' => 'collection-2017']);
         $this->createCategory(['code' => 'men', 'parent' => 'shoes']);
         $this->createCategory(['code' => 'women', 'parent' => 'shoes']);
     }
@@ -268,6 +270,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
             'parent'         => null,
             'categories'     => ['shoes'],
             'values'         => ['description' => [['data' => 'Superb shoe!', 'locale' => null, 'scope' => null]]],
+        ]);
+        $this->createProductModel([
+            'code'           => 'model-winter-2017',
+            'family_variant' => 'shoe_size',
+            'parent'         => null,
+            'categories'     => ['winter-2017'],
+            'values'         => ['description' => [['data' => '2017 winter shoe!', 'locale' => null, 'scope' => null]]],
         ]);
         $this->createProductModel([
             'code'           => 'model-s',
@@ -302,6 +311,11 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
             'categories' => ['men'],
             'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
         ]);
+        $this->createVariantProduct('blue-2017-m', [
+            'parent'     => 'model-winter-2017',
+            'categories' => [],
+            'values'     => ['size' => [['data' => 'M', 'locale' => null, 'scope' => null]]],
+        ]);
         $this->createProduct('another-shoe', [
             'categories' => ['women', 'winter-2018'],
             'values' => [
@@ -315,6 +329,9 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
                 'description' => [['data' => 'quantum mechanics', 'locale' => null, 'scope' => null]],
             ],
         ]);
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -377,6 +394,17 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
         ]);
 
         $this->createFamilyVariant([
+            'code'                   => 'shoe_size',
+            'family'                 => 'shoes',
+            'variant_attribute_sets' => [
+                [
+                    'level'      => 1,
+                    'axes'       => ['size'],
+                    'attributes' => ['size'],
+                ]
+            ],
+        ]);
+        $this->createFamilyVariant([
             'code'                   => 'shoe_size_color',
             'family'                 => 'shoes',
             'variant_attribute_sets' => [
@@ -392,8 +420,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
                 ],
             ],
         ]);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
     }
 
     /**
@@ -411,8 +437,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
         $this->assertEquals(0, $violations->count());
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
     }
 
     /**
@@ -426,7 +450,6 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
         $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
         $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
     }
 
     /**
