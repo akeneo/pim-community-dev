@@ -143,7 +143,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_if_the_attribute_type_is_not_known()
     {
         $identifier = $this->insertRowWithUnsupportedType();
-        $this->expectException(\LogicException::class);
+        $this->expectException(\RuntimeException::class);
         $this->attributeRepository->getByIdentifier($identifier);
     }
 

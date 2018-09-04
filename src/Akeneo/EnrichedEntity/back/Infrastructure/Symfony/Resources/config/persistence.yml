@@ -9,14 +9,14 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
         arguments:
             - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository
         arguments:
             - '@database_connection'
 
-    # Query functions
-    # Enriched entities
+    # Enriched entities query functions
     akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity\SqlEnrichedEntityExists
         arguments:
@@ -48,7 +48,7 @@ services:
         arguments:
             - '@database_connection'
 
-    # Records
+    # Record query functions
     akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordExists
         arguments:
@@ -59,7 +59,7 @@ services:
         arguments:
             - '@database_connection'
 
-    # Attributes
+    # Attributes query functions
     akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeExists
         arguments:
@@ -74,3 +74,17 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesDetails
         arguments:
             - '@database_connection'
+
+    # hydrators
+    akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry
+
+    akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute.text_attribute_hydrator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\TextAttributeHydrator
+        tags:
+            - { name: akeneo_enrichedentity.attribute_hydrator }
+
+    akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute.image_attribute_hydrator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator
+        tags:
+            - { name: akeneo_enrichedentity.attribute_hydrator }

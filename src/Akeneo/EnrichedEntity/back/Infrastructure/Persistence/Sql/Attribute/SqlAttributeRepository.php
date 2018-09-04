@@ -14,24 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
@@ -48,9 +36,13 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
     /** @var Connection */
     private $sqlConnection;
 
-    public function __construct(Connection $sqlConnection)
+    /** @var AttributeHydratorRegistry */
+    private $attributeHydratorRegistry;
+
+    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
     {
         $this->sqlConnection = $sqlConnection;
+        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
     }
 
     public function create(AbstractAttribute $attribute): void
@@ -178,7 +170,7 @@ SQL;
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateAttribute($result);
+        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
     }
 
     /**
@@ -214,7 +206,7 @@ SQL;
 
         $attributes = [];
         foreach ($results as $result) {
-            $attributes[] = $this->hydrateAttribute($result);
+            $attributes[] = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
         }
 
         return $attributes;
@@ -233,88 +225,6 @@ SQL;
         unset($normalizedAttribute['type']);
 
         return $normalizedAttribute;
-    }
-
-    /**
-     * This method should probably split into hydrators.
-     *
-     * One idea could be:
-     * AbstractAttributeHydrator <- hydrates the common properties
-     * ^
-     * TextAttributeHydrator <- hydrates attributes specific to the text attribute and creates an instance of attribute.
-     */
-    private function hydrateAttribute(array $result): AbstractAttribute
-    {
-        $identifier = $result['identifier'];
-        $code = $result['code'];
-        $enrichedEntityIdentifier = $result['enriched_entity_identifier'];
-        $labels = json_decode($result['labels'], true);
-        $order = (int) $result['attribute_order'];
-        $isRequired = (bool) $result['is_required'];
-        $valuePerChannel = (bool) $result['value_per_channel'];
-        $valuePerLocale = (bool) $result['value_per_locale'];
-        $additionnalProperties = json_decode($result['additional_properties'], true);
-
-        if ('text' === $result['attribute_type']) {
-            $maxLength = (int) $additionnalProperties['max_length'];
-
-            if (true === $additionnalProperties['is_textarea']) {
-                $isRichTextEditor = $additionnalProperties['is_rich_text_editor'];
-
-                return TextAttribute::createTextarea(
-                    AttributeIdentifier::fromString($identifier),
-                    EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                    AttributeCode::fromString($code),
-                    LabelCollection::fromArray($labels),
-                    AttributeOrder::fromInteger($order),
-                    AttributeIsRequired::fromBoolean($isRequired),
-                    AttributeValuePerChannel::fromBoolean($valuePerChannel),
-                    AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                    null === $maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($maxLength),
-                    AttributeIsRichTextEditor::fromBoolean($isRichTextEditor)
-                );
-            }
-
-            $validationRule = $additionnalProperties['validation_rule'];
-            $regularExpression = $additionnalProperties['regular_expression'];
-
-            return TextAttribute::createText(
-                AttributeIdentifier::fromString($identifier),
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                AttributeCode::fromString($code),
-                LabelCollection::fromArray($labels),
-                AttributeOrder::fromInteger($order),
-                AttributeIsRequired::fromBoolean($isRequired),
-                AttributeValuePerChannel::fromBoolean($valuePerChannel),
-                AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                AttributeMaxLength::fromInteger($maxLength),
-                null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule),
-                null === $regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($regularExpression)
-            );
-        }
-
-        if ('image' === $result['attribute_type']) {
-            $maxFileSize = $additionnalProperties['max_file_size'];
-            $extensions = $additionnalProperties['allowed_extensions'];
-
-            return ImageAttribute::create(
-                AttributeIdentifier::fromString($identifier),
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                AttributeCode::fromString($code),
-                LabelCollection::fromArray($labels),
-                AttributeOrder::fromInteger($order),
-                AttributeIsRequired::fromBoolean($isRequired),
-                AttributeValuePerChannel::fromBoolean($valuePerChannel),
-                AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                null === $maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($maxFileSize),
-                AttributeAllowedExtensions::fromList($extensions)
-            );
-        }
-
-        throw new \LogicException(
-            sprintf('Only attribute types "text" or "image" are supported, "%s" given', $result['attribute_type']
-            )
-        );
     }
 
     /**
