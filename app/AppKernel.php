@@ -96,7 +96,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new Akeneo\Platform\Bundle\UIBundle\PimUIBundle(),
             new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
-            new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
+            new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
         ];
     }
 
