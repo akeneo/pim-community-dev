@@ -20,12 +20,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AttributeMappingController
 {
-    /**
-     * TODO Move this into the model.
-     */
-    private const PENDING = 0;
-    private const ACTIVE = 1;
-    private const INACTIVE = 2;
+    /** TODO Move this into the model. */
+
+    /** There is no attributes to map (i.e. it has no attributes) */
+    private const MAPPING_EMPTY = 0;
+
+    /** All attributes are mapped (i.e. it has attributes and no pending attributes) */
+    private const MAPPING_FULL = 1;
+
+    /** There is new attributes to map (i.e. it has at least 1 pending attribute) */
+    private const MAPPING_PENDING_ATTRIBUTES = 2;
+
+    /* The attribute is not mapped yet */
+    private const ATTRIBUTE_PENDING = 0;
+
+    /** The attribute is mapped */
+    private const ATTRIBUTE_MAPPED = 1;
+
+    /** The attribute was registered to not be mapped */
+    private const ATTRIBUTE_UNMAPPED = 2;
 
     /**
      * Mocked return
@@ -39,7 +52,7 @@ class AttributeMappingController
         $RESPONSE = [
             [
                 'code' => 'clothing',
-                'has_mapping' => true,
+                'status' => self::MAPPING_EMPTY,
                 'labels' => [
                     'en_US' => 'clothing',
                     'fr_FR' => 'vetements',
@@ -47,7 +60,7 @@ class AttributeMappingController
                 ]
             ], [
                 'code' => 'accessories',
-                'has_mapping' => false,
+                'status' => self::MAPPING_PENDING_ATTRIBUTES,
                 'labels' => [
                     'en_US' => 'accessories',
                     'fr_FR' => 'accessoires',
@@ -55,7 +68,7 @@ class AttributeMappingController
                 ]
             ], [
                 'code' => 'camcorders',
-                'has_mapping' => true,
+                'status' => self::MAPPING_FULL,
                 'labels' => [
                     'en_US' => 'camcorders',
                     'fr_FR' => 'caméras',
@@ -94,42 +107,47 @@ class AttributeMappingController
         if ('camcorders' === $identifier) {
             return new JsonResponse([
                 'code' => 'camcorders',
-                'enabled' => true,
                 'mapping' => [
                     'pimaiattributecode1' => [
                         'pim_ai_attribute' => [
                             'label' => 'the pim.ai attribute label 1'
                         ],
                         'attribute' => 'weight',
-                        'status' => self::ACTIVE
-                    ],
-                    'pimaiattributecode2' => [
-                        'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 2'
-                        ],
-                        'attribute' => null,
-                        'status' => self::PENDING
+                        'status' => self::ATTRIBUTE_MAPPED
                     ],
                     'pimaiattributecode3' => [
                         'pim_ai_attribute' => [
                             'label' => 'the pim.ai attribute label 3'
                         ],
                         'attribute' => null,
-                        'status' => self::INACTIVE
+                        'status' => self::ATTRIBUTE_UNMAPPED
                     ]
                 ]
             ]);
         } elseif ('clothing' === $identifier) {
             return new JsonResponse([
                 'code' => 'clothing',
-                'enabled' => true,
                 'mapping' => []
             ]);
         } else {
             return new JsonResponse([
                 'code' => 'accessories',
-                'enabled' => false,
-                'mapping' => []
+                'mapping' => [
+                    'pimaiattributecode1' => [
+                        'pim_ai_attribute' => [
+                            'label' => 'the pim.ai attribute label 1'
+                        ],
+                        'attribute' => 'weight',
+                        'status' => self::ATTRIBUTE_MAPPED
+                    ],
+                    'pimaiattributecode2' => [
+                        'pim_ai_attribute' => [
+                            'label' => 'the pim.ai attribute label 2'
+                        ],
+                        'attribute' => null,
+                        'status' => self::ATTRIBUTE_PENDING
+                    ]
+                ]
             ]);
         }
     }

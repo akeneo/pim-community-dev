@@ -13,13 +13,18 @@ const template = require('pimee/template/settings/mapping/attributes-mapping');
 interface Config {
   labels: {
     pending: string,
-    active: string,
-    inactive: string,
+    mapped: string,
+    unmapped: string,
     pim_ai_attribute: string,
     catalog_attribute: string,
     suggest_data: string
   }
 }
+
+/* Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
+const ATTRIBUTE_PENDING: number = 0;
+const ATTRIBUTE_MAPPED: number = 1;
+const ATTRIBUTE_UNMAPPED: number = 2;
 
 class InterfaceNormalizedAttributeMapping {
     mapping: { [key: string] : { attribute: string } };
@@ -30,8 +35,8 @@ class AttributeMapping extends BaseForm {
   readonly config: Config = {
     labels: {
       pending: '',
-      active: '',
-      inactive: '',
+      mapped: '',
+      unmapped: '',
       pim_ai_attribute: '',
       catalog_attribute: '',
       suggest_data: ''
@@ -55,11 +60,10 @@ class AttributeMapping extends BaseForm {
     const familyMapping: InterfaceNormalizedAttributeMapping = this.getFormData();
     if (familyMapping.hasOwnProperty('mapping') && Object.keys(familyMapping.mapping).length) {
       const mapping = familyMapping.mapping;
-      const statuses = {
-        0: __(this.config.labels.pending),
-        1: __(this.config.labels.active),
-        2: __(this.config.labels.inactive)
-      };
+      const statuses: { [key: number]: string } = {};
+      statuses[ATTRIBUTE_PENDING] = __(this.config.labels.pending);
+      statuses[ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
+      statuses[ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
       this.$el.html(this.template({
         mapping,
         statuses,
