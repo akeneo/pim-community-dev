@@ -67,7 +67,12 @@ class FiltersColumn extends BaseView {
         filterModule.render()
         filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
         filterModule.on('disable', this.updateDatagridStateWithFilters.bind(this))
+
         list.appendChild(filterModule.el)
+      }
+
+      if (filterModule.isSearch) {
+        this.getRoot().$('.search-zone').empty().append(filterModule.$el.get(0));
       }
     })
 
