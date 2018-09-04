@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Query\AssociatedProduct\GetAssociatedProductCodesByProduct;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class GetAssociatedProductCodesByPublishedProductFromDB implements GetAssociatedProductCodesByProduct

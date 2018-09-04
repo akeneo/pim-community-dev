@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\Doctrine\ORM\Query;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\integration\Doctrine\ORM\Query;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Test\Integration\TestCase;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
