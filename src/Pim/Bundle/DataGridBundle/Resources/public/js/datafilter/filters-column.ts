@@ -15,8 +15,6 @@ interface GridFilter {
     enabled: boolean
 }
 
-// @TODO only load when you expand the column
-// @TODO only initialize filters when you click on them
 // @TODO restore enabled status after search
 // @TODO restore selected state after updating filters (decoupled from filters-selector)
 
@@ -26,6 +24,8 @@ class FiltersColumn extends BaseView {
   public loadedFilters: GridFilter[] = []
   public gridCollection: any
   public page: number = 1
+  public opened = false
+  public filterList = null
 
   readonly config: FiltersConfig
   readonly template: string = `
@@ -33,9 +33,8 @@ class FiltersColumn extends BaseView {
         <div>Filters</div>
     </button>
     <div class="filter-selector"><div>
-    <div
-        class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton filter-list select-filter-widget pimmultiselect"
-        style="width: 230px;display: block;top: -191px;left: 360px;position:fixed;overflow: scroll"
+    <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton filter-list select-filter-widget pimmultiselect"
+        style="width: 230px;display: block;top: -191px;left: 59px;position:absolute;overflow: scroll"
     >
         <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
         <div class="filters-column"></div>
@@ -68,15 +67,18 @@ class FiltersColumn extends BaseView {
 
   public events(): Backbone.EventsHash {
     return {
-      'keyup input[type="search"]': 'searchFilters',
-      'change input[type="checkbox"]': 'toggleFilter',
-      'scroll .filter-list': 'fetchNextFilters',
       'click [data-toggle]': 'togglePanel'
     }
   }
 
   togglePanel() {
-    console.log('toggle panel')
+    this.opened = !this.opened
+
+    if (this.opened) {
+       $(this.filterList).css({ left: 360 })
+    } else {
+       $(this.filterList).css({ left: 59 })
+    }
   }
 
   toggleFilter(event: JQueryEventObject): void {
@@ -129,7 +131,7 @@ class FiltersColumn extends BaseView {
   }
 
   doSearch() {
-      const searchValue: any = this.$('input[type="search"]').val()
+      const searchValue: any = $(this.filterList).find('input[type="search"]').val()
 
       if (searchValue.length === 0) {
           return this.renderFilters()
@@ -147,18 +149,19 @@ class FiltersColumn extends BaseView {
   }
 
   listenToListScroll(): void {
-    this.$('.filter-list').off('scroll').on('scroll', this.fetchNextFilters.bind(this))
+    $(this.filterList).off('scroll').on('scroll', this.fetchNextFilters.bind(this))
   }
 
   stopListeningToListScroll(): void {
-    this.$('.filter-list').off('scroll')
+    $(this.filterList).off('scroll')
   }
 
   renderFilters(filters = this.loadedFilters) {
     const groupedFilters: any = this.groupFilters(filters)
     const list = document.createDocumentFragment();
+    const filterColumn = $(this.filterList).find('.filters-column')
 
-    this.$('.filters-column').empty()
+    filterColumn.empty()
 
     for (let groupName in groupedFilters) {
         const group: GridFilter[] = groupedFilters[groupName]
@@ -166,7 +169,9 @@ class FiltersColumn extends BaseView {
         list.appendChild($(groupElement).get(0));
     }
 
-    this.$('.filters-column').append(list)
+    filterColumn.append(list)
+
+    $('input[type="checkbox"]', filterColumn).on('change', this.toggleFilter.bind(this))
   }
 
   loadFilterList(gridCollection: any, gridElement: any) {
@@ -186,7 +191,7 @@ class FiltersColumn extends BaseView {
   }
 
   getSelectedFilters() {
-    return this.$('input[checked]').map(((_, el) => $(el).attr('id'))).toArray()
+    return $(this.filterList).find('input[checked]').map(((_, el) => $(el).attr('id'))).toArray()
   }
 
   renderFilterGroup(filters: GridFilter[], groupName: string) {
@@ -208,6 +213,10 @@ class FiltersColumn extends BaseView {
    */
   render(): BaseView {
       this.$el.html(_.template(this.template))
+      this.filterList = $('.filter-list').appendTo($('body'))
+
+      $('input[type="search"]', this.filterList).on('keyup', this.searchFilters.bind(this))
+      $('.filter-list', this.filterList).on('scroll', this.searchFilters.bind(this))
 
       return this
   }
