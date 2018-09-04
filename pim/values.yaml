@@ -86,15 +86,6 @@ pim:
       pimCommand: "pim:volume:aggregate"
       schedule: "0 4 * * *"
 
-# Onboarder
-onboarder:
-  enabled: false
-  pubsub:
-    topicPub: middleware
-    topicCon: pimmaster
-    queueName: middleware
-  serviceAccount: Y2hhbmdlbWU=
-
 nfs:
   nameOverride: ""
   persistence:
@@ -158,6 +149,3 @@ catalog:
     icecat: 
       path: vendor/akeneo/pim-enterprise-dev/src/PimEnterprise/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
       class: PimEnterpriseInstallerBundle:icecat_demo_dev
-    onboarder: 
-      path: vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder
-      class: PimOnboarderBundle:onboarder

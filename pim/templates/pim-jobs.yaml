@@ -35,12 +35,6 @@ spec:
                 mountPath: /var/www/html/app/config/parameters.yml
                 subPath: parameters.yml
                 readOnly: true
-              {{- if $tplCtx.Values.onboarder.enabled }}
-              - name: google-cloud-onboarder-key
-                mountPath: /var/secrets/google/key.json
-                subPath: key.json
-                readonly: true
-              {{- end }}
             env:
             - name: SYMFONY_ENV
               value: prod
@@ -63,22 +57,6 @@ spec:
                 secretKeyRef:
                   name: pim-secrets
                   key: mysqlPIMuserpassword
-            {{- if $tplCtx.Values.onboarder.enabled }}
-            - name: GCP_PROJECT_ID
-              value: {{ $tplCtx.Values.common.gcpProjectID | quote }}
-            - name: PUBSUB_PROJECT_ID #FIXME : will be replace by GCP_PROJECT_ID
-              value: {{ $tplCtx.Values.common.gcpProjectID | quote }}
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/key.json
-            - name: ONBOARDER_RETAILER_URL
-              value: {{ $tplCtx.Values.common.retailerUrl | quote }}
-            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
-              value:  {{ $tplCtx.Values.onboarder.pubsub.topicPub | quote }}
-            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
-              value:  {{ $tplCtx.Values.onboarder.pubsub.topicCon | quote }}
-            - name: ONBOARDER_QUEUE_NAME
-              value:  {{ $tplCtx.Values.onboarder.pubsub.queueName | quote }}
-            {{- end }}
 {{- if $tplCtx.Values.common.phpConfCLI }}
 {{ toYaml $tplCtx.Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
@@ -93,14 +71,6 @@ spec:
             - name: fpm-data
               persistentVolumeClaim:
                 claimName: pvc-data-pim-{{ $tplCtx.Values.global.extraLabels.pfid }}
-            {{- if $tplCtx.Values.onboarder.enabled }}
-            - name: google-cloud-onboarder-key
-              secret:
-                secretName: pim-secrets
-                items:
-                - key: akobOnboarderKey
-                  path: key.json
-            {{- end }}
 ---
 {{- end }}
 {{- end }}

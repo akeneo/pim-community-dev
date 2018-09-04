@@ -57,12 +57,6 @@ spec:
               mountPath: /var/www/html/app/config/parameters.yml
               subPath: parameters.yml
               readOnly: true
-            {{- if .Values.onboarder.enabled }}
-            - name: google-cloud-onboarder-key
-              mountPath: /var/secrets/google/key.json
-              subPath: key.json
-              readOnly: true
-            {{- end }}
           env:
             - name: SYMFONY_ENV
               value: prod
@@ -87,22 +81,6 @@ spec:
                 secretKeyRef:
                   name: pim-secrets
                   key: mysqlPIMuserpassword
-            {{- if .Values.onboarder.enabled }}
-            - name: GCP_PROJECT_ID
-              value: {{ .Values.common.gcpProjectID | quote }}
-            - name: PUBSUB_PROJECT_ID #FIXME : will be replace by GCP_PROJECT_ID
-              value: {{ .Values.common.gcpProjectID | quote }}
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/key.json
-            - name: ONBOARDER_RETAILER_URL
-              value: {{ .Values.common.retailerUrl | quote }}
-            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
-              value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
-            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
-              value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
-            - name: ONBOARDER_QUEUE_NAME
-              value:  {{ .Values.onboarder.pubsub.queueName | quote }}
-            {{- end }}
 {{- if .Values.common.phpConfFPM }}
 {{ toYaml .Values.common.phpConfFPM  | indent 12 }}
 {{- end }}
@@ -139,11 +117,3 @@ spec:
                 path: httpd.conf
               - key: mime.types
                 path: mime.types
-        {{- if .Values.onboarder.enabled }}
-        - name: google-cloud-onboarder-key
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: akobOnboarderKey
-              path: key.json
-        {{- end }}

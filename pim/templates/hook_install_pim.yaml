@@ -44,7 +44,6 @@ spec:
         - name: pim-install
           image:  "{{ .Values.image.pim.repository }}:{{ .Values.image.pim.tag }}"
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          # We call pim:installer:dump-require-paths after install for onboarder dynamic configuration
           command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console pim:install" ;  su -m -l www-data -s /bin/bash -c "php bin/console pim:installer:dump-require-paths"']
           env:
             - name: SYMFONY_ENV
@@ -70,18 +69,6 @@ spec:
                   key: mysqlPIMuserpassword
             - name: GOOGLE_CLOUD_PROJECT
               value: {{ .Values.common.gcpProjectID | quote }}
-            {{- if .Values.onboarder.enabled }}
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/key.json
-            - name: ONBOARDER_RETAILER_URL
-              value: {{ .Values.common.retailerUrl | quote }}
-            - name: ONBOARDER_TOPIC_NAME_FOR_PUBLICATION
-              value:  {{ .Values.onboarder.pubsub.topicPub | quote }}
-            - name: ONBOARDER_TOPIC_NAME_FOR_CONSUMPTION
-              value:  {{ .Values.onboarder.pubsub.topicCon | quote }}
-            - name: ONBOARDER_QUEUE_NAME
-              value:  {{ .Values.onboarder.pubsub.queueName | quote }}
-            {{- end }}
 {{- if .Values.common.phpConfCLI }}
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}
@@ -97,12 +84,6 @@ spec:
               mountPath: /var/www/html/app/config/parameters.yml
               subPath: parameters.yml
               readOnly: true
-            {{- if .Values.onboarder.enabled }}
-            - name: google-cloud-onboarder-key
-              mountPath: /var/secrets/google/key.json
-              subPath: key.json
-              readOnly: true
-            {{- end }}
       volumes:
         - name: pim-parameter
           configMap:
@@ -119,11 +100,3 @@ spec:
         - name: fpm-data
           persistentVolumeClaim:
             claimName: pvc-data-pim-{{ .Values.global.extraLabels.pfid }}
-        {{- if .Values.onboarder.enabled }}
-        - name: google-cloud-onboarder-key
-          secret:
-            secretName: pim-secrets
-            items:
-            - key: akobOnboarderKey
-              path: key.json
-        {{- end }}
