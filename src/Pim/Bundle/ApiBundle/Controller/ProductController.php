@@ -561,8 +561,16 @@ class ProductController
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
                 if (in_array($propertyCode, ['created', 'updated'])) {
-                    //PIM-7541 Create the date with the server timezone configuration. Do not force it to UTC timezone.
-                    $value = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
+                    if (Operators::BETWEEN === $filter['operator'] && is_array($value)) {
+                        $values = [];
+                        foreach ($value as $date) {
+                            $values[] = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
+                        }
+                        $value = $values;
+                    } else {
+                        //PIM-7541 Create the date with the server timezone configuration. Do not force it to UTC timezone.
+                        $value = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
+                    }
                 }
 
                 $this->queryParametersChecker->checkPropertyParameters($propertyCode, $filter['operator']);
