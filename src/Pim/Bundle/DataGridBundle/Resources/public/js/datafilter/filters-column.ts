@@ -88,7 +88,7 @@ class FiltersColumn extends BaseView {
         filter.enabled = checked
     }
 
-    this.triggerFiltersUpdated()
+    this.triggerFiltersUpdated(filter)
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
@@ -178,12 +178,11 @@ class FiltersColumn extends BaseView {
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
-        this.triggerFiltersUpdated()
     })
   }
 
-  triggerFiltersUpdated() {
-    mediator.trigger('filters-column:updatedFilters', this.loadedFilters, this.gridCollection)
+  triggerFiltersUpdated(filter) {
+    mediator.trigger('filters-column:update-filters', this.loadedFilters, this.gridCollection)
   }
 
   getSelectedFilters() {

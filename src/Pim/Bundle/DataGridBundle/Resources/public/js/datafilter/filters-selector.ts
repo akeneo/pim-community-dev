@@ -27,7 +27,17 @@ class FiltersColumn extends BaseView {
   }
 
   configure() {
-    this.listenTo(mediator, 'filters-column:updatedFilters', this.renderFilters)
+    this.listenTo(mediator, 'datagrid_collection_set_after', (gridCollection: any, gridElement: any) => {
+      const datagrid = $(gridElement).data()
+      const filters = datagrid.metadata.filters.map(filter => {
+        filter.enabled = true
+        return filter
+      })
+
+      this.renderFilters(filters, gridCollection)
+    });
+
+    this.listenTo(mediator, 'filters-column:update-filters', this.renderFilters)
 
     return BaseView.prototype.configure.apply(this, arguments)
   }
@@ -39,7 +49,7 @@ class FiltersColumn extends BaseView {
 
     if (!cachedFilter) {
       const filterModule = requireContext(`oro/datafilter/${filterType}-filter`)
-      return new (filterModule.extend(filter))(filter);
+      return this.modules[filter.name] = new (filterModule.extend(filter))(filter);
     }
 
     return cachedFilter
@@ -52,9 +62,8 @@ class FiltersColumn extends BaseView {
 
     filters.forEach((filter) => {
       const filterModule =  this.getFilterModule(filter)
-      this.modules[filter.name] = filterModule
 
-      if (filterModule.enabled) {
+      if (true === filter.enabled) {
         filterModule.render()
         filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
         filterModule.on('disable', this.updateDatagridStateWithFilters.bind(this))
@@ -63,8 +72,8 @@ class FiltersColumn extends BaseView {
     })
 
     this.el.appendChild(list)
-    this.restoreFilterState(state, filters)
     this.hideDisabledFilters(filters)
+    this.restoreFilterState(state, filters)
   }
 
   hideDisabledFilters(filters) {
