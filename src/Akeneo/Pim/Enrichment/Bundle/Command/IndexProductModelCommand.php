@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -107,24 +108,21 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>%s product models to index</info>', $totalElements));
 
         $lastRootProductModel = null;
-        $progress = 0;
+        $progressBar = new ProgressBar($output, $totalElements);
 
+        $progressBar->start();
         while (!empty($rootProductModels =
             $this->productModelRepository->searchRootProductModelsAfter($lastRootProductModel, self::BULK_SIZE))) {
-            $output->writeln(sprintf(
-                'Indexing product models %d to %d',
-                $progress + 1,
-                $progress + count($rootProductModels)
-            ));
 
             $this->bulkProductModelIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
             $this->objectManager->clear();
 
             $lastRootProductModel = end($rootProductModels);
-
-            $progress += count($rootProductModels);
+            $progressBar->advance(count($rootProductModels));
         }
+
+        $progressBar->finish();
 
         return $totalElements;
     }
@@ -160,7 +158,9 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $i = 0;
         $productModelBulk = [];
         $totalProductModelsIndexed = 0;
+        $progressBar = new ProgressBar($output, $totalProductModelsIndexed);
 
+        $progressBar->start();
         foreach ($productModels as $productModel) {
             $productModelBulk[] = $productModel;
 
@@ -171,15 +171,11 @@ class IndexProductModelCommand extends ContainerAwareCommand
                 $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
                 $this->objectManager->clear();
 
+                $progressBar->advance(count($productModelBulk));
+
                 $productModelBulk = [];
 
                 $totalProductModelsIndexed += self::BULK_SIZE;
-
-                $output->writeln(sprintf(
-                    '%d on %d product models indexed',
-                    $totalProductModelsIndexed,
-                    $productModelsCount
-                ));
             }
         }
 
@@ -188,8 +184,11 @@ class IndexProductModelCommand extends ContainerAwareCommand
             $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
             $this->objectManager->clear();
 
+            $progressBar->advance(count($productModelBulk));
+
             $totalProductModelsIndexed += count($productModelBulk);
         }
+        $progressBar->finish();
 
         return $totalProductModelsIndexed;
     }
