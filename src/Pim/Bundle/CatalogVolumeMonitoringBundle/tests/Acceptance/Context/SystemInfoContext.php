@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
-use Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
+use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
 use Webmozart\Assert\Assert;
 
 final class SystemInfoContext implements Context
