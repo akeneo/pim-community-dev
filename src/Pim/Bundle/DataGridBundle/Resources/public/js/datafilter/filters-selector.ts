@@ -29,7 +29,7 @@ class FiltersColumn extends BaseView {
   configure() {
     this.listenTo(mediator, 'datagrid_collection_set_after', (gridCollection: any, gridElement: any) => {
       const datagrid = $(gridElement).data()
-      const filters = datagrid.metadata.filters.map(filter => {
+      const filters = datagrid.metadata.filters.map((filter: any) => {
         filter.enabled = true
         return filter
       })
@@ -60,7 +60,7 @@ class FiltersColumn extends BaseView {
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
 
-    filters.forEach((filter) => {
+    filters.forEach((filter: any) => {
       const filterModule =  this.getFilterModule(filter)
 
       if (true === filter.enabled) {
@@ -81,15 +81,15 @@ class FiltersColumn extends BaseView {
     this.restoreFilterState(state, filters)
   }
 
-  hideDisabledFilters(filters) {
-    filters.forEach(filter => {
+  hideDisabledFilters(filters: any) {
+    filters.forEach((filter: any) => {
       const filterModule = this.modules[filter.name];
       (false === filter.enabled) ? filterModule.disable() : filterModule.enable()
     })
   }
 
   restoreFilterState(state: any, filters: any) {
-    filters.forEach((filter) => {
+    filters.forEach((filter: any) => {
       const filterName = filter.name
       const filterModule = this.modules[filterName]
       const filterState = state[filterName]
