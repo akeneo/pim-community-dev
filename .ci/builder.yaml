@@ -1,7 +1,7 @@
 steps:
-  - name: 'eu.gcr.io/cloud-builders/docker'
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['pull', 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master']
-  - name: 'eu.gcr.io/cloud-builders/docker'
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '--cache-from', 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master', '--build-arg', 'COMPOSER_COMMAND=${_COMPOSER_COMMAND}', '-t', '${_IMAGE_TAG}', '.']
 images: [
   '${_IMAGE_TAG}'
