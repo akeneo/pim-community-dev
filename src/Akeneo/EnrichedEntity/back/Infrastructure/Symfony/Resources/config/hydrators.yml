@@ -1,0 +1,3 @@
+services:
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Hydrator\RecordHydrator

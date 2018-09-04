@@ -17,7 +17,7 @@ class FileDataSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedThrough('createFromNormalize', [
-            ['key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'originalFilename' => 'file.ext']
+            ['file_key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'original_filename' => 'file.ext']
         ]);
     }
 
@@ -29,7 +29,7 @@ class FileDataSpec extends ObjectBehavior
     public function it_can_be_constructed_through_normalized_data()
     {
         $this->beConstructedThrough('createFromNormalize', [
-            ['key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'originalFilename' => 'file.ext']
+            ['file_key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'original_filename' => 'file.ext']
         ]);
         $this->shouldBeAnInstanceOf(FileData::class);
     }
@@ -43,13 +43,13 @@ class FileDataSpec extends ObjectBehavior
     public function it_cannot_be_constructed_with_a_missing_key()
     {
         $this->beConstructedThrough('createFromNormalize', [
-            ['key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd']
+            ['file_key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd']
         ]);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
 
 
         $this->beConstructedThrough('createFromNormalize', [
-            ['originalFilename' => 'file.ext']
+            ['original_filename' => 'file.ext']
         ]);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
@@ -66,7 +66,7 @@ class FileDataSpec extends ObjectBehavior
     public function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn(
-            ['key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'originalFilename' => 'file.ext']
+            ['file_key' => 'f/r/z/a/oihdaozijdoiaaodoaoiaidjoaihd', 'original_filename' => 'file.ext']
         );
     }
 }

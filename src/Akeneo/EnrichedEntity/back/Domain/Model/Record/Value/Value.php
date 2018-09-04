@@ -75,6 +75,21 @@ class Value
         return $otherValue->localeReference->equals($this->localeReference);
     }
 
+    public function getAttributeIdentifier(): AttributeIdentifier
+    {
+        return $this->attributeIdentifier;
+    }
+
+    public function getChannelReference(): ChannelReference
+    {
+        return $this->channelReference;
+    }
+
+    public function getLocaleReference(): LocaleReference
+    {
+        return $this->localeReference;
+    }
+
     public function normalize(): array
     {
         return [

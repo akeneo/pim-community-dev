@@ -133,5 +133,15 @@ abstract class AbstractAttribute
         ];
     }
 
+    public function hasValuePerChannel(): bool
+    {
+        return $this->valuePerChannel->isTrue();
+    }
+
+    public function hasValuePerLocale(): bool
+    {
+        return $this->valuePerLocale->isTrue();
+    }
+
     abstract protected function getType(): string;
 }

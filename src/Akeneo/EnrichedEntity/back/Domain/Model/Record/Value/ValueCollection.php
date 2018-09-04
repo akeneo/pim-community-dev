@@ -24,21 +24,16 @@ class ValueCollection
 
     public function normalize(): array
     {
-        $valuesNormalized = [];
-        foreach ($this->values as $value) {
-            $valuesNormalized[] = $value->normalize();
-        }
-
-        return $valuesNormalized;
+        return array_map(function (Value $value) {
+            return $value->normalize();
+        }, $this->values);
     }
 
     public function setValue(Value $newValue): ValueCollection
     {
-        $values = array_filter($this->values, function (Value $value) use ($newValue) {
-            return !($newValue->sameChannel($value) && $newValue->sameLocale($value) && $newValue->sameAttribute($value));
-        });
-
-        $values[] = $newValue;
+        $values = $this->values;
+        $key = ValueCollection::getKey($newValue);
+        $values[$key] = $newValue;
 
         return new self($values);
     }
@@ -46,5 +41,15 @@ class ValueCollection
     public static function fromValues(array $values): ValueCollection
     {
         return new self($values);
+    }
+
+    private static function getKey(Value $value): string
+    {
+        return sprintf(
+            '%s%s%s',
+            $value->getAttributeIdentifier()->normalize(),
+            $value->hasChannel() ? $value->getChannelReference()->getIdentifier()->normalize() : '',
+            $value->hasLocale() ? $value->getLocaleReference()->getIdentifier()->normalize() : ''
+        );
     }
 }

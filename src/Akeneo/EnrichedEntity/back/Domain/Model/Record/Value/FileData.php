@@ -13,8 +13,8 @@ use Webmozart\Assert\Assert;
  */
 class FileData implements ValueDataInterface
 {
-    private const KEY = 'key';
-    private const ORIGINAL_FILENAME = 'originalFilename';
+    private const KEY = 'file_key';
+    private const ORIGINAL_FILENAME = 'original_filename';
 
     /** @var string */
     private $key;

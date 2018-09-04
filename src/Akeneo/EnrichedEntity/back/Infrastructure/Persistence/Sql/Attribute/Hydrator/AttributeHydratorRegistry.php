@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\HydratorInterface;
-
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class AttributeHydratorRegistry
 {
-    /** @var HydratorInterface */
+    /** @var AttributeHydratorInterface */
     private $attributeHydrators;
 
     public function __construct()
@@ -20,12 +18,12 @@ class AttributeHydratorRegistry
         $this->attributeHydrators = [];
     }
 
-    public function register(HydratorInterface $attributeHydrator): void
+    public function register(AttributeHydratorInterface $attributeHydrator): void
     {
         $this->attributeHydrators[] = $attributeHydrator;
     }
 
-    public function getHydrator(array $toHydrate): HydratorInterface
+    public function getHydrator(array $toHydrate): AttributeHydratorInterface
     {
         foreach ($this->attributeHydrators as $attributeHydrator) {
             if ($attributeHydrator->supports($toHydrate)) {

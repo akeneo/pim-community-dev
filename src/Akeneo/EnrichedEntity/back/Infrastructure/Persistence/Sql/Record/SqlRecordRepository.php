@@ -20,6 +20,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydrator;
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
@@ -33,12 +35,18 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var Connection */
     private $sqlConnection;
 
+    /** @var RecordHydratorInterface */
+    private $recordHydrator;
+
     /**
      * @param Connection $sqlConnection
      */
-    public function __construct(Connection $sqlConnection)
-    {
+    public function __construct(
+        Connection $sqlConnection,
+        RecordHydratorInterface $recordHydrator
+    ) {
         $this->sqlConnection = $sqlConnection;
+        $this->recordHydrator = $recordHydrator;
     }
 
     public function count(): int
@@ -54,8 +62,8 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, data)
-        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :data);
+        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, valueCollection)
+        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :valueCollection);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -64,7 +72,7 @@ SQL;
                 'code' => (string) $record->getCode(),
                 'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
                 'labels' => $serializedLabels,
-                'data' => '{}'
+                'valueCollection' => '{}'
             ]
         );
         if ($affectedRows > 1) {
@@ -81,7 +89,7 @@ SQL;
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
         UPDATE akeneo_enriched_entity_record
-        SET labels = :labels, data = :data
+        SET labels = :labels, valueCollection = :valueCollection
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -89,7 +97,7 @@ SQL;
             [
                 'identifier' => $record->getIdentifier(),
                 'labels' => $serializedLabels,
-                'data' => '{}'
+                'valueCollection' => '{}'
             ]
         );
 

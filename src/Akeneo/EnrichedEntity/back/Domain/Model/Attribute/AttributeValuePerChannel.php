@@ -37,4 +37,9 @@ class AttributeValuePerChannel
     {
         return $this->value;
     }
+
+    public function isTrue(): bool
+    {
+        return $this->value;
+    }
 }

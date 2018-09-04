@@ -105,6 +105,11 @@ class Record
         $this->valueCollection = $valueCollection;
     }
 
+    public function getValues(): ValueCollection
+    {
+        return $this->valueCollection;
+    }
+
     public function normalize(): array
     {
         return [

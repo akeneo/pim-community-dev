@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\HydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -14,7 +13,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-abstract class AbstractAttributeHydrator implements HydratorInterface
+abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 {
     /** @var \Doctrine\DBAL\Platforms\AbstractPlatform */
     private $platform;

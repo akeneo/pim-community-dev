@@ -18,17 +18,29 @@ class LocaleReferenceSpec extends ObjectBehavior
         $this->shouldHaveType(LocaleReference::class);
     }
 
-    function it_can_be_constructed_with_no_channel()
+    function it_can_be_constructed_with_no_locale()
     {
         $this->beConstructedThrough('noReference', []);
     }
 
-    function it_normalizes_itself_when_instanciated_with_a_channel_identifier()
+    function it_can_be_constructed_with_a_locale_code()
+    {
+        $this->beConstructedThrough('fromLocaleCode', ['fr_FR']);
+        $this->normalize()->shouldReturn('fr_FR');
+    }
+
+    function it_can_be_constructed_with_no_locale_code()
+    {
+        $this->beConstructedThrough('fromLocaleCode', [null]);
+        $this->normalize()->shouldReturn(null);
+    }
+
+    function it_normalizes_itself_when_instanciated_with_a_locale_identifier()
     {
         $this->normalize()->shouldReturn('mobile');
     }
 
-    function it_normalizes_itself_when_instanciated_with_no_channel()
+    function it_normalizes_itself_when_instanciated_with_no_locale()
     {
         $this->beConstructedThrough('noReference', []);
         $this->normalize()->shouldReturn(null);

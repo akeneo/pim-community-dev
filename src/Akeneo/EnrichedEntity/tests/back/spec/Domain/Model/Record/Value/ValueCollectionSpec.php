@@ -24,13 +24,13 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->beConstructedThrough('fromValues', [
             [
-                Value::create(
+                'name_designer_fingerprint' => Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
                     ChannelReference::noReference(),
                     LocaleReference::noReference(),
                     TextData::fromString('Philippe Starck')
                 ),
-                Value::create(
+                'image_designer_fingerprintmobilefr_FR' => Value::create(
                     AttributeIdentifier::fromString('image_designer_fingerprint'),
                     ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
@@ -48,19 +48,19 @@ class ValueCollectionSpec extends ObjectBehavior
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([
-            [
+            'name_designer_fingerprint' => [
                 'attribute' => 'name_designer_fingerprint',
                 'channel'   => null,
                 'locale'    => null,
                 'data'      => 'Philippe Starck',
             ],
-            [
+            'image_designer_fingerprintmobilefr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
                 'data'      => [
-                    'key'              => '/a/file/key',
-                    'originalFilename' => 'my_file.png',
+                    'file_key'              => '/a/file/key',
+                    'original_filename' => 'my_file.png',
                 ],
             ],
         ]);
@@ -77,20 +77,20 @@ class ValueCollectionSpec extends ObjectBehavior
             )
         );
         $newValueCollection->normalize()->shouldReturn([
-            [
-                'attribute' => 'image_designer_fingerprint',
-                'channel'   => 'mobile',
-                'locale'    => 'fr_FR',
-                'data'      => [
-                    'key'              => '/a/file/key',
-                    'originalFilename' => 'my_file.png',
-                ],
-            ],
-            [
+            'name_designer_fingerprint' => [
                 'attribute' => 'name_designer_fingerprint',
                 'channel'   => null,
                 'locale'    => null,
                 'data'      => 'Updated name',
+            ],
+            'image_designer_fingerprintmobilefr_FR' => [
+                'attribute' => 'image_designer_fingerprint',
+                'channel'   => 'mobile',
+                'locale'    => 'fr_FR',
+                'data'      => [
+                    'file_key'              => '/a/file/key',
+                    'original_filename' => 'my_file.png',
+                ],
             ],
         ]);
     }
@@ -106,22 +106,22 @@ class ValueCollectionSpec extends ObjectBehavior
             )
         );
         $values->normalize()->shouldReturn([
-            [
+            'name_designer_fingerprint' => [
                 'attribute' => 'name_designer_fingerprint',
                 'channel'   => null,
                 'locale'    => null,
                 'data'      => 'Philippe Starck',
             ],
-            [
+            'image_designer_fingerprintmobilefr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
                 'data'      => [
-                    'key'              => '/a/file/key',
-                    'originalFilename' => 'my_file.png',
+                    'file_key'              => '/a/file/key',
+                    'original_filename' => 'my_file.png',
                 ],
             ],
-            [
+            'name_designer_fingerprintmobilefr_FR' => [
                 'attribute' => 'name_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
@@ -134,5 +134,28 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[1]]);
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[new \StdClass()]]);
+    }
+
+    function it_gets_a_key_for_a_given_value(
+        Value $value,
+        ChannelReference $channelReference,
+        ChannelIdentifier $channelIdentifier,
+        LocaleReference $localeReference,
+        LocaleIdentifier $localeIdentifier,
+        AttributeIdentifier $attributeIdentifier
+    ) {
+        $attributeIdentifier->normalize()->willReturn('name_brand_fingerprint');
+
+        $value->hasChannel()->willReturn(true);
+        $value->getChannelReference()->willReturn($channelReference);
+        $channelReference->getIdentifier()->willReturn($channelIdentifier);
+        $channelIdentifier->normalize()->willReturn('mobile');
+
+        $value->hasLocale()->willReturn(true);
+        $value->getLocaleReference()->willReturn($localeReference);
+        $localeReference->getIdentifier()->willReturn($localeIdentifier);
+        $localeIdentifier->normalize()->willReturn('de_DE');
+
+        $value->getAttributeIdentifier()->willReturn($attributeIdentifier);
     }
 }

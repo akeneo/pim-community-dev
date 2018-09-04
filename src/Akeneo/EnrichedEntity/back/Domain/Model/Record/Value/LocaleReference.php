@@ -27,6 +27,17 @@ class LocaleReference
         $this->identifier = $identifier;
     }
 
+    public static function fromLocaleCode(?string $localeCode): self
+    {
+        if (null === $localeCode) {
+            return LocaleReference::noReference();
+        }
+
+        return self::fromLocaleIdentifier(
+            LocaleIdentifier::fromCode($localeCode)
+        );
+    }
+
     public static function fromLocaleIdentifier(LocaleIdentifier $identifier): self
     {
         return new self($identifier) ;
@@ -47,6 +58,11 @@ class LocaleReference
         }
 
         return $this->identifier->equals($localeReference->identifier);
+    }
+
+    public function getIdentifier(): LocaleIdentifier
+    {
+        return $this->identifier;
     }
 
     public function normalize(): ?string
