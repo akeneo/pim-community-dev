@@ -121,7 +121,7 @@ class AppKernel extends Kernel
             new Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
             new Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
-            new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
+            new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
             new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
