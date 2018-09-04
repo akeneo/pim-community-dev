@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
+namespace Akeneo\EnrichedEntity\Domain\Model;
 
 use Webmozart\Assert\Assert;
 
-class ChannelIdentifier implements ChannelReferenceInterface
+class ChannelIdentifier
 {
-    /** @var ?string */
+    /** @var string */
     private $channelCode;
 
     private function __construct(string $channelCode)
@@ -23,10 +23,9 @@ class ChannelIdentifier implements ChannelReferenceInterface
         return new self($code);
     }
 
-    public function equals(ChannelReferenceInterface $channelReference): bool
+    public function equals(ChannelIdentifier $channelIdentifier): bool
     {
-        return $channelReference instanceof ChannelIdentifier &&
-            $channelReference->channelCode === $this->channelCode;
+        return $this->channelCode === $channelIdentifier->channelCode;
     }
 
     public function normalize(): ?string

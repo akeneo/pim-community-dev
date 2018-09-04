@@ -3,11 +3,11 @@
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\NoChannel;
+use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\LocaleIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\NoLocale;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use PhpSpec\ObjectBehavior;
@@ -18,8 +18,8 @@ class ValueSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelIdentifier::fromCode('mobile'),
-            LocaleIdentifier::fromCode('fr_FR'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Starck'),
         ]);
     }
@@ -38,8 +38,8 @@ class ValueSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelIdentifier::fromCode('mobile'),
-            LocaleIdentifier::fromCode('fr_FR'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             EmptyData::create(),
         ]);
         $this->isEmpty()->shouldReturn(true);
@@ -54,8 +54,8 @@ class ValueSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            NoChannel::create(),
-            LocaleIdentifier::fromCode('fr_FR'),
+            ChannelReference::noChannel(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Starck'),
         ]);
         $this->hasChannel()->shouldReturn(false);
@@ -70,72 +70,72 @@ class ValueSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelIdentifier::fromCode('mobile'),
-            NoLocale::create(),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck'),
         ]);
         $this->hasLocale()->shouldReturn(false);
     }
 
-    function it_tells_if_it_two_values_have_the_same_attribute()
+    function it_tells_if_two_values_have_the_same_attribute()
     {
         $this->sameAttribute(Value::create(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
-            NoChannel::create(),
-            NoLocale::create(),
+            ChannelReference::noChannel(),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck')
         ))->shouldReturn(true);
 
         $this->sameAttribute(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            NoChannel::create(),
-            NoLocale::create(),
+            ChannelReference::noChannel(),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
     }
 
-    function it_tells_if_it_two_values_have_the_same_channel()
+    function it_tells_if_two_values_have_the_same_channel()
     {
         $this->sameChannel(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelIdentifier::fromCode('mobile'),
-            NoLocale::create(),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck')
         ))->shouldReturn(true);
 
         $this->sameChannel(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            ChannelIdentifier::fromCode('another_channel'),
-            NoLocale::create(),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('another_channel')),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
         $this->sameChannel(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            NoChannel::create(),
-            NoLocale::create(),
+            ChannelReference::noChannel(),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
     }
 
-    function it_tells_if_it_two_values_have_the_same_locale()
+    function it_tells_if_two_values_have_the_same_locale()
     {
         $this->sameLocale(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            NoChannel::create(),
-            LocaleIdentifier::fromCode('fr_FR'),
+            ChannelReference::noChannel(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Starck')
         ))->shouldReturn(true);
 
         $this->sameLocale(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            NoChannel::create(),
-            LocaleIdentifier::fromCode('another_locale'),
+            ChannelReference::noChannel(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('another_locale')),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
         $this->sameLocale(Value::create(
             AttributeIdentifier::fromString('another_attribute'),
-            NoChannel::create(),
-            NoLocale::create(),
+            ChannelReference::noChannel(),
+            LocaleReference::noLocale(),
             TextData::fromString('Starck')
         ))->shouldReturn(false);
     }

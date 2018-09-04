@@ -11,7 +11,7 @@ class TextData implements ValueDataInterface
     /** @var string */
     private $text;
 
-    public function __construct(string $text)
+    private function __construct(string $text)
     {
         Assert::notEmpty($text, 'Text data should be a non empty string');
 
@@ -23,7 +23,7 @@ class TextData implements ValueDataInterface
      */
     public function normalize()
     {
-        return (string) $this->text;
+        return $this->text;
     }
 
     public static function createFromNormalize($normalizedData): ValueDataInterface

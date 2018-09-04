@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
+namespace Akeneo\EnrichedEntity\Domain\Model;
 
 use Webmozart\Assert\Assert;
 
-class LocaleIdentifier implements LocaleReferenceInterface
+class LocaleIdentifier
 {
+    /** @var string */
     private $localeCode;
 
     private function __construct(string $localeCode)
@@ -27,9 +28,8 @@ class LocaleIdentifier implements LocaleReferenceInterface
         return $this->localeCode;
     }
 
-    public function equals(LocaleReferenceInterface $localeReference): bool
+    public function equals(LocaleIdentifier $localeIdentifier): bool
     {
-        return $localeReference instanceof LocaleIdentifier &&
-            $localeReference->localeCode === $this->localeCode;
+        return $localeIdentifier->localeCode === $this->localeCode;
     }
 }

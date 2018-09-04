@@ -3,11 +3,11 @@
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\NoChannel;
+use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\LocaleIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\NoLocale;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
@@ -26,14 +26,14 @@ class ValueCollectionSpec extends ObjectBehavior
             [
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
-                    NoChannel::create(),
-                    NoLocale::create(),
+                    ChannelReference::noChannel(),
+                    LocaleReference::noLocale(),
                     TextData::fromString('Philippe Starck')
                 ),
                 Value::create(
                     AttributeIdentifier::fromString('image_designer_fingerprint'),
-                    ChannelIdentifier::fromCode('mobile'),
-                    LocaleIdentifier::fromCode('fr_FR'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                     FileData::createFromFileinfo($file)
                 ),
             ],
@@ -71,8 +71,8 @@ class ValueCollectionSpec extends ObjectBehavior
         $newValueCollection = $this->setValue(
             Value::create(
                 AttributeIdentifier::fromString('name_designer_fingerprint'),
-                NoChannel::create(),
-                NoLocale::create(),
+                ChannelReference::noChannel(),
+                LocaleReference::noLocale(),
                 TextData::fromString('Updated name')
             )
         );
@@ -100,8 +100,8 @@ class ValueCollectionSpec extends ObjectBehavior
         $values = $this->setValue(
             Value::create(
                 AttributeIdentifier::fromString('name_designer_fingerprint'),
-                ChannelIdentifier::fromCode('mobile'),
-                LocaleIdentifier::fromCode('fr_FR'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('mobile')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                 TextData::fromString('name for fr_FR and mobile')
             )
         );
@@ -130,7 +130,7 @@ class ValueCollectionSpec extends ObjectBehavior
         ]);
     }
 
-    function it_cannot_with_any_other_objects_than_values()
+    function it_cannot_instanciate_with_any_other_objects()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[1]]);
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[new \StdClass()]]);

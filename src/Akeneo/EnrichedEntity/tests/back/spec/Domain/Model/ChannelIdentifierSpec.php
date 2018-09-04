@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
+namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\ChannelReferenceInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference\NoChannel;
+use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
 use PhpSpec\ObjectBehavior;
 
 class ChannelIdentifierSpec extends ObjectBehavior
@@ -18,11 +17,6 @@ class ChannelIdentifierSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(ChannelIdentifier::class);
-    }
-
-    public function it_is_a_channel_reference()
-    {
-        $this->shouldImplement(ChannelReferenceInterface::class);
     }
 
     public function it_cannot_be_created_with_an_empty_string()
@@ -39,6 +33,5 @@ class ChannelIdentifierSpec extends ObjectBehavior
     {
         $this->equals(ChannelIdentifier::fromCode('print'))->shouldReturn(true);
         $this->equals(ChannelIdentifier::fromCode('mobile'))->shouldReturn(false);
-        $this->equals(NoChannel::create())->shouldReturn(false);
     }
 }

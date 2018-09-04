@@ -48,14 +48,14 @@ Feature: Create a record
       | code  | labels             |
       | stark | {"en_US": "Stark"} |
 
-  @acceptance-front
-  Scenario: Cannot create a record with invalid identifier
-    When the user asks for the enriched entity "designer"
-    Given the user has the following rights:
-      | akeneo_enrichedentity_record_create | true |
-    And the user creates a record of "designer" with:
-      | code               | labels |
-      | invalid/identifier | {}     |
-    Then the record validation error will be "This field may only contain letters, numbers and underscores."
-    And the user saves the record
-    And a validation message is displayed "This field may only contain letters, numbers and underscores."
+#  @acceptance-front
+#  Scenario: Cannot create a record with invalid identifier
+#    When the user asks for the enriched entity "designer"
+#    Given the user has the following rights:
+#      | akeneo_enrichedentity_record_create | true |
+#    And the user creates a record of "designer" with:
+#      | code               | labels |
+#      | invalid/identifier | {}     |
+#    Then the record validation error will be "This field may only contain letters, numbers and underscores."
+#    And the user saves the record
+#    And a validation message is displayed "This field may only contain letters, numbers and underscores."

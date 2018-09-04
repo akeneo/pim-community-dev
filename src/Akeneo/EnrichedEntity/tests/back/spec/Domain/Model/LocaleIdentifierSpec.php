@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
+namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\LocaleIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\LocaleReferenceInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference\NoLocale;
+use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class LocaleIdentifierSpec extends ObjectBehavior
@@ -18,11 +16,6 @@ class LocaleIdentifierSpec extends ObjectBehavior
     public function it_is_initializable()
     {
         $this->shouldHaveType(LocaleIdentifier::class);
-    }
-
-    public function it_is_a_channel_reference()
-    {
-        $this->shouldImplement(LocaleReferenceInterface::class);
     }
 
     public function it_cannot_be_created_with_an_empty_string()
@@ -39,6 +32,5 @@ class LocaleIdentifierSpec extends ObjectBehavior
     {
         $this->equals(LocaleIdentifier::fromCode('en_US'))->shouldReturn(true);
         $this->equals(LocaleIdentifier::fromCode('fr_FR'))->shouldReturn(false);
-        $this->equals(NoLocale::create())->shouldReturn(false);
     }
 }

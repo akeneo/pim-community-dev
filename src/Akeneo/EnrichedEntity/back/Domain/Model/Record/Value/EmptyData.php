@@ -12,6 +12,10 @@ use Webmozart\Assert\Assert;
  */
 class EmptyData implements ValueDataInterface
 {
+    private function __construct()
+    {
+    }
+
     /**
      * @return null
      */
