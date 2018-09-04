@@ -1,6 +1,6 @@
 dependencies:
 - name: mysql
-  version: "1.0.0"
+  version: "1.0.1"
   repository: "gs://akeneo-charts/"
 - name: elasticsearch
   version: "0.2.4"

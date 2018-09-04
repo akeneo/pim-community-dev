@@ -46,29 +46,33 @@ spec:
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www/ ; chown -R www-data:www-data /data ; su -m -l www-data -s /bin/bash -c "php bin/console pim:install" ;  su -m -l www-data -s /bin/bash -c "php bin/console pim:installer:dump-require-paths"']
           env:
-            - name: SYMFONY_ENV
-              value: prod
             - name: PIM_INSTALLER_DATA
               value: {{ with (index .Values.catalog.EE .Values.pim.defaultCatalog ) }}{{ .class }}{{ end }}
-            - name: PIM_ELASTICSEARCH_HOST
-              value: elasticsearch
-            - name: PIM_ELASTICSEARCH_PORT
-              value: "9200"
-            - name: PIM_SHARED_STORAGE
-              value: /data
-            - name: PIM_DATABASE_HOST
-              value: {{ .Values.mysql.mysql.serviceName | quote }}
-            - name: PIM_DATABASE_NAME
-              value: {{ .Values.mysql.mysql.defaultDatabase | quote }}
-            - name: PIM_DATABASE_USER
-              value: {{ .Values.mysql.mysql.defaultUser | quote }}
+            - { name: SYMFONY_ENV, value: prod }
+            - { name: TRUSTED_PROXY_IPS, value: 10.0.0.0/8 }
+            - { name: PIM_ELASTICSEARCH_HOST, value: elasticsearch }
+            - { name: PIM_ELASTICSEARCH_PORT, value: "9200" }
+            - { name: PIM_SHARED_STORAGE, value: /data }
+            - { name: PIM_DATABASE_HOST, value: {{ .Values.mysql.mysql.serviceName | quote }} }
+            - { name: PIM_DATABASE_NAME, value: {{ .Values.mysql.mysql.defaultDatabase | quote }} }
+            - { name: PIM_DATABASE_USER, value: {{ .Values.mysql.mysql.defaultUser | quote }} }
+            - { name: GOOGLE_CONTAINER_NAME, value: fpm }
+            - { name: GOOGLE_LOCATION, value: {{ .Values.google.location | quote }} }
+            - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.google.project_id | quote }} }
+            - { name: K8S_CLUSTER_NAME, value: {{ .Values.google.cluster_name | quote }} }
             - name: PIM_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: pim-secrets
                   key: mysqlPIMuserpassword
-            - name: GOOGLE_CLOUD_PROJECT
-              value: {{ .Values.common.gcpProjectID | quote }}
+            - name: GOOGLE_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: GOOGLE_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
 {{- if .Values.common.phpConfCLI }}
 {{ toYaml .Values.common.phpConfCLI  | indent 12 }}
 {{- end }}

@@ -7,7 +7,6 @@ global:
     enabled: false
 common:
   extraLabels: []
-  gcpProjectID: default
   pimMasterUrl: nil
   retailerUrl: nil
   mailgunPassword: generateme
@@ -42,6 +41,11 @@ common:
     value: "22527" # E_ALL & ~E_DEPRECATED & ~E_STRICT
   - name: "PHP_CONF_DATE_TIMEZONE"
     value: "Etc/UTC"
+
+google:
+  project_id: default
+  location: europe-west3-b
+  cluster_name: default
 
 image:
   pim:
