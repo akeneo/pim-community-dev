@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -58,7 +59,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         AscendantCategoriesInterface $ascendantCategories,
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -83,7 +85,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $ascendantCategories,
             $incompleteValuesNormalizer,
             $missingAssociationAdder,
-            $parentAssociationsNormalizer
+            $parentAssociationsNormalizer,
+            $catalogContext
         );
     }
 

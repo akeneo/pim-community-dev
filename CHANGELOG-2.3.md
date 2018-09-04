@@ -1,6 +1,32 @@
 # 2.3.x
 
+## Enhancements
+
+- PIM-7610: Add a command to create users
+
+## Bug fixes
+
+- PIM-7600: Change the default return value of ResetIndexesCommand to true to allow the --no-interaction parameter.
+- PIM-7572: Cross to remove associations displayed at PV level whereas association is done at PM level
+- PIM-7618: Hide the "Process tracker" link in the Dashboard if the user does not have the permission 
+- PIM-7626: Fix attribute groups order in the product grid's column configurator
+
+# 2.3.5 (2018-08-22)
+
+## Bug fixes
+
+- PIM-7580: Fixes the search on categories with product models
 - PIM-7573: Fix "nesting level too deep" error during family import
+- PIM-7562: Fix API filter product on status and groups
+- PIM-7571: Fix job instance validation in case of attribute deletion
+- PIM-7542: Fix completeness filter on edit product group page
+- PIM-7589: Fix job `compute_product_models_descendants` launched too many times
+- PIM-7587: Fix the preview generation configuration with imagine
+- PIM-7414: Fix localisable assets used as main image for family and added to product, break the product form
+
+## BC breaks
+
+- PIM-7414: Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\CatalogBundle\Context\CatalogContext` as a new argument.
 
 # 2.3.4 (2018-08-08)
 

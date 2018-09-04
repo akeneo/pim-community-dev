@@ -12,7 +12,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 class ProductValueKeyGenerator
 {
     /**
-     * This class is not intended to be instanciated
+     * This class is not intended to be instantiated
      */
     private function __construct()
     {

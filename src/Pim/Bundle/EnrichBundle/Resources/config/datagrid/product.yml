@@ -265,7 +265,7 @@ datagrid:
                         field_options:
                             choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
                 completeness:
-                    type:      product_completeness
+                    type:      product_and_product_model_completeness
                     label:     Complete
                     data_name: ratio
                 created:

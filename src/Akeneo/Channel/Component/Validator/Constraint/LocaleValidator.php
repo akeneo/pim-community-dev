@@ -31,6 +31,10 @@ class LocaleValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (null === $value) {
+            return;
+        }
+
         $locale = $this->localeRepository->findOneByIdentifier($value);
         if (null === $locale) {
             if (null !== $constraint->propertyPath) {

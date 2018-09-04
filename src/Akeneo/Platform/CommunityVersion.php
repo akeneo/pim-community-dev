@@ -12,7 +12,7 @@ namespace Akeneo\Platform;
 class CommunityVersion
 {
     /** @staticvar string */
-    const VERSION = '2.3.2';
+    const VERSION = '2.3.5';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'What’s up Doc?';

@@ -1,3 +1,9 @@
+# 2.0.33 (2018-08-16)
+
+## Bug fixes
+
+- PIM-7574: Use step start time to name exported files instead of current time
+
 # 2.0.32 (2018-08-06)
 
 ## Bug fixes

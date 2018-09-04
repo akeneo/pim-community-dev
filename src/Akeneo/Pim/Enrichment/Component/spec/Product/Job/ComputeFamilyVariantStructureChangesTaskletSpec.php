@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
@@ -22,8 +22,8 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         EntityRepository $familyVariantRepository,
         ObjectRepository $variantProductRepository,
         ProductModelRepositoryInterface $productModelRepository,
-        SaverInterface $productSaver,
-        SaverInterface $productModelSaver,
+        BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator
     ) {
@@ -67,7 +67,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($variantProduct)->willReturn($variantProductViolations);
         $variantProductViolations->count()->willReturn(0);
-        $productSaver->save($variantProduct)->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct])->shouldBeCalled();
 
         // Process the root product models
         $productModelRepository->findRootProductModels($familyVariant)
@@ -76,7 +76,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
         $rootProductModelViolations->count()->willReturn(0);
-        $productModelSaver->save($rootProductModel)->shouldBeCalled();
+        $productModelSaver->saveAll([$rootProductModel])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -93,10 +93,12 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         FamilyVariantInterface $familyVariant,
-        ProductInterface $variantProduct,
+        ProductInterface $variantProduct1,
+        ProductInterface $variantProduct2,
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel,
-        ConstraintViolationListInterface $variantProductViolations,
+        ConstraintViolationListInterface $variantProductViolations1,
+        ConstraintViolationListInterface $variantProductViolations2,
         ConstraintViolationListInterface $subProductModelViolations,
         ConstraintViolationListInterface $rootProductModelViolations
     ) {
@@ -108,12 +110,14 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
 
         // Process the variant products
         $variantProductRepository->findBy(['familyVariant' => $familyVariant])
-            ->willReturn([$variantProduct]);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])
+            ->willReturn([$variantProduct1, $variantProduct2]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1, $variantProduct2])
             ->shouldBeCalled();
-        $validator->validate($variantProduct)->willReturn($variantProductViolations);
-        $variantProductViolations->count()->willReturn(0);
-        $productSaver->save($variantProduct)->shouldBeCalled();
+        $validator->validate($variantProduct1)->willReturn($variantProductViolations1);
+        $validator->validate($variantProduct2)->willReturn($variantProductViolations2);
+        $variantProductViolations1->count()->willReturn(0);
+        $variantProductViolations2->count()->willReturn(0);
+        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
 
         // Process the sub product models
         $productModelRepository->findSubProductModels($familyVariant)
@@ -122,7 +126,7 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($subProductModel)->willReturn($subProductModelViolations);
         $subProductModelViolations->count()->willReturn(0);
-        $productModelSaver->save($subProductModel)->shouldBeCalled();
+        $productModelSaver->saveAll([$subProductModel])->shouldBeCalled();
 
 
         // Process the root product models
@@ -132,13 +136,13 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
         $rootProductModelViolations->count()->willReturn(0);
-        $productModelSaver->save($rootProductModel)->shouldBeCalled();
+        $productModelSaver->saveAll([$rootProductModel])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();
     }
 
-    function it_throws_an_exception_if_there_is_a_validation_error(
+    function it_throws_an_exception_if_there_is_a_validation_error_on_product(
         $familyVariantRepository,
         $variantProductRepository,
         $productSaver,
@@ -163,7 +167,51 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($variantProduct)->willReturn($variantProductViolations);
         $variantProductViolations->count()->willReturn(1);
-        $productSaver->save($variantProduct)->shouldNotBeCalled();
+        $productSaver->saveAll([$variantProduct])->shouldNotBeCalled();
+
+        $this->setStepExecution($stepExecution);
+        $this->shouldThrow(\LogicException::class)->during('execute');
+    }
+
+    function it_throws_an_exception_if_there_is_a_validation_error_on_product_model(
+        $familyVariantRepository,
+        $variantProductRepository,
+        $productModelRepository,
+        $productSaver,
+        $productModelSaver,
+        $keepOnlyValuesForVariation,
+        $validator,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        FamilyVariantInterface $familyVariant,
+        ProductInterface $variantProduct,
+        ProductModelInterface $rootProductModel,
+        ConstraintViolationListInterface $variantProductViolations,
+        ConstraintViolationListInterface $rootProductModelViolations
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('family_variant_codes')->willReturn(['tshirt']);
+
+        $familyVariantRepository->findBy(['code' => ['tshirt']])->willReturn([$familyVariant]);
+        $familyVariant->getNumberOfLevel()->willReturn(1);
+
+        // Process the variant products
+        $variantProductRepository->findBy(['familyVariant' => $familyVariant])
+            ->willReturn([$variantProduct]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])
+            ->shouldBeCalled();
+        $validator->validate($variantProduct)->willReturn($variantProductViolations);
+        $variantProductViolations->count()->willReturn(0);
+        $productSaver->saveAll([$variantProduct])->shouldBeCalled();
+
+        // Process the root product models
+        $productModelRepository->findRootProductModels($familyVariant)
+            ->willReturn([$rootProductModel]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])
+            ->shouldBeCalled();
+        $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
+        $rootProductModelViolations->count()->willReturn(1);
+        $productModelSaver->saveAll([$rootProductModel])->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->shouldThrow(\LogicException::class)->during('execute');

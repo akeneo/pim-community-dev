@@ -62,6 +62,10 @@ class Grid extends Index
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
         ],
+        'product_and_product_model_completeness' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+        ],
         'product_scope' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
@@ -190,16 +194,19 @@ class Grid extends Index
      */
     public function getGrid()
     {
-        return $this->spin(function () {
+        $grids = $this->spin(function () {
             $container = $this->getContainer();
-            $grids = $container->findAll('css', $this->elements['Grid']['css']);
 
+            return $container->findAll('css', $this->elements['Grid']['css']);
+        }, 'No grid found');
+
+        return $this->spin(function () use ($grids) {
             foreach ($grids as $grid) {
                 if ($grid->isVisible()) {
                     return $grid;
                 }
             }
-        }, 'No visible grid found');
+        }, 'The grid was found but it was not visible');
     }
 
     /**

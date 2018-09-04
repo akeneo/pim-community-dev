@@ -66,8 +66,8 @@ class ResetIndexesCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>');
         $question = new ConfirmationQuestion(
-            '<question>Are you sure you want to proceed ?</question> (y/N)',
-            false
+            '<question>Are you sure you want to proceed ?</question> (Y/n)',
+            true
         );
         $question->setMaxAttempts(2);
         $helper = $this->getHelper('question');

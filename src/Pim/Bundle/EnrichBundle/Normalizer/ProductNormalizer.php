@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface;
@@ -104,6 +105,9 @@ class ProductNormalizer implements NormalizerInterface
      */
     private $missingAssociationAdder;
 
+    /** @var CatalogContext */
+    protected $catalogContext;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -128,6 +132,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $incompleteValuesNormalizer
      * @param MissingAssociationAdder                   $missingAssociationAdder
      * @param NormalizerInterface                       $parentAssociationsNormalizer
+     * @param CatalogContext                            $catalogContext
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -152,7 +157,8 @@ class ProductNormalizer implements NormalizerInterface
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer,
         MissingAssociationAdder $missingAssociationAdder,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $parentAssociationsNormalizer,
+        CatalogContext $catalogContext = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -177,6 +183,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->incompleteValuesNormalizer       = $incompleteValuesNormalizer;
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
         $this->missingAssociationAdder          = $missingAssociationAdder;
+        $this->catalogContext                   = $catalogContext;
     }
 
     /**
@@ -227,7 +234,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'required_missing_attributes' => $incompleteValues,
-            'image'             => $this->normalizeImage($product->getImage(), $context),
+            'image'             => $this->normalizeImage($product->getImage(), $this->catalogContext->getLocaleCode()),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
@@ -307,13 +314,13 @@ class ProductNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface $value
-     * @param array          $context
+     * @param string         $localeCode
      *
      * @return array|null
      */
-    protected function normalizeImage(?ValueInterface $value, array $context = []): ?array
+    protected function normalizeImage(?ValueInterface $value, ?string $localeCode = null): ?array
     {
-        return $this->imageNormalizer->normalize($value, $context['locale']);
+        return $this->imageNormalizer->normalize($value, $localeCode);
     }
 
     /**

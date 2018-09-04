@@ -66,11 +66,12 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
                                     'fields'             => [
                                         'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
                                         'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
-                                        'attributes' => new FilterStructureAttribute(
+                                        'attributes' => new Type(
                                             [
+                                                'type'   => 'array',
                                                 'groups' => ['Default', 'DataFilters'],
                                             ]
-                                        ),
+                                        )
                                     ],
                                     'allowMissingFields' => true,
                                 ]

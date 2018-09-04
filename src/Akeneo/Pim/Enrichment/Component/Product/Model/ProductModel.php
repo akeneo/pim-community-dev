@@ -768,9 +768,8 @@ class ProductModel implements ProductModelInterface
             foreach ($association->getGroups() as $group) {
                 $foundInCollection->addGroup($group);
             }
-        } else {
-            $associationsCollection->add($association);
         }
+        $associationsCollection->add($association);
 
         return $associationsCollection;
     }

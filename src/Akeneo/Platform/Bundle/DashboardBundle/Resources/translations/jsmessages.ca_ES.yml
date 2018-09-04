@@ -10,6 +10,9 @@ pim_dashboard:
         export: Exportar
         mass_edit: Edició massiva
         quick_export: Exportació ràpida
+        compute_product_models_descendants: Calcular descendents dels models de producte
+        compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
+        mass_delete: Esborrat massiu de productes
     completeness:
       load_more: 'Carrega''n més...'
     header:

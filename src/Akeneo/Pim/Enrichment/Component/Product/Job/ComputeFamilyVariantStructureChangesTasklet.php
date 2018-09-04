@@ -6,12 +6,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -35,10 +36,10 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     private $productSaver;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     private $productModelSaver;
 
     /** @var KeepOnlyValuesForVariation */
@@ -51,8 +52,8 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
      * @param EntityRepository                               $familyVariantRepository
      * @param ObjectRepository                               $variantProductRepository
      * @param ProductModelRepositoryInterface                $productModelRepository
-     * @param SaverInterface                                 $productSaver
-     * @param SaverInterface                                 $productModelSaver
+     * @param BulkSaverInterface                             $productSaver
+     * @param BulkSaverInterface                             $productModelSaver
      * @param KeepOnlyValuesForVariation                     $keepOnlyValuesForVariation
      * @param ValidatorInterface                             $validator
      */
@@ -60,8 +61,8 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         EntityRepository $familyVariantRepository,
         ObjectRepository $variantProductRepository,
         ProductModelRepositoryInterface $productModelRepository,
-        SaverInterface $productSaver,
-        SaverInterface $productModelSaver,
+        BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator
     ) {
@@ -118,32 +119,91 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     {
         $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant($entities);
 
-        foreach ($entities as $entity) {
-            $violations = $this->validator->validate($entity);
+        $productModels = $this->filterProductModels($entities);
+        $products = $this->filterProducts($entities);
 
-            if ($violations->count() === 0) {
-                if ($entity instanceof ProductModelInterface) {
-                    $this->productModelSaver->save($entity);
-                } else {
-                    $this->productSaver->save($entity);
-                }
-            } else {
-                if ($entity instanceof ProductModelInterface) {
-                    throw new \LogicException(
-                        sprintf(
-                            'Validation error for ProductModel with code "%s" during family variant structure change',
-                            $entity->getCode()
-                        )
-                    );
-                } else {
-                    throw new \LogicException(
-                        sprintf(
-                            'Validation error for Product with identifier "%s" during family variant structure change',
-                            $entity->getIdentifier()
-                        )
-                    );
-                }
+        if (!empty($productModels)) {
+            $this->validateProductModels($productModels);
+            $this->productModelSaver->saveAll($productModels);
+        }
+
+        if (!empty($products)) {
+            $this->validateProducts($products);
+            $this->productSaver->saveAll($products);
+        }
+    }
+
+    /**
+     * @param ProductModelInterface[] $productModels
+     *
+     * @throws \LogicException
+     */
+    private function validateProductModels(array $productModels): void
+    {
+        foreach ($productModels as $productModel) {
+            $violations = $this->validator->validate($productModel);
+
+            if ($violations->count() !== 0) {
+                throw new \LogicException(
+                    sprintf(
+                        'Validation error for ProductModel with code "%s" during family variant structure change',
+                        $productModel->getCode()
+                    )
+                );
             }
         }
+    }
+
+    /**
+     * @param ProductInterface[] $products
+     *
+     * @throws \LogicException
+     */
+    private function validateProducts(array $products): void
+    {
+        foreach ($products as $product) {
+            $violations = $this->validator->validate($product);
+
+            if ($violations->count() !== 0) {
+                throw new \LogicException(
+                    sprintf(
+                        'Validation error for Product with identifier "%s" during family variant structure change',
+                        $product->getIdentifier()
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Returns only product models from the given array.
+     *
+     * @param array $entities
+     *
+     * @return ProductModelInterface[]
+     */
+    private function filterProductModels(array $entities): array
+    {
+        return array_values(
+            array_filter($entities, function ($item) {
+                return $item instanceof ProductModelInterface;
+            })
+        );
+    }
+
+    /**
+     * Returns only products from the given array.
+     *
+     * @param array $entities
+     *
+     * @return ProductInterface[]
+     */
+    private function filterProducts(array $entities): array
+    {
+        return array_values(
+            array_filter($entities, function ($item) {
+                return $item instanceof ProductInterface;
+            })
+        );
     }
 }

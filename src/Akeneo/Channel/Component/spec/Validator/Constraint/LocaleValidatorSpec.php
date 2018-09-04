@@ -46,4 +46,14 @@ class LocaleValidatorSpec extends ObjectBehavior
 
         $this->validate($localeCode, $constraint);
     }
+
+    function it_does_not_validate_if_value_is_null($localeRepository, $context, Locale $constraint)
+    {
+        $localeCode = null;
+
+        $localeRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($localeCode, $constraint);
+    }
 }

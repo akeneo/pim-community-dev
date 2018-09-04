@@ -68,10 +68,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
-        $this->assertCount(
-            14,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
-        );
     }
 
     public function testMoveAttributeDownKeepsValuesOnOneLevel()
@@ -127,10 +123,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->assertCount(
             1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
-        );
-        $this->assertCount(
-            14,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
         );
     }
 
@@ -212,10 +204,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
-        $this->assertCount(
-            4,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
-        );
     }
 
     public function testMoveAttributeDownKeepsValuesOnTwoLevels()
@@ -289,10 +277,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
-        $this->assertCount(
-            4,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
-        );
     }
 
     public function testItDoesNotRunBackgroundJobWhenAFamilyVariantHasNotChanged()
@@ -302,10 +286,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->assertCount(
             1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
-        );
-        $this->assertCount(
-            0,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
         );
     }
 
@@ -356,10 +336,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             0,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
-        $this->assertCount(
-            0,
-            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
-        );
     }
 
     protected function setUp()
@@ -372,7 +348,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             'akeneo_integration_tests.launcher.job_execution_observer'
         );
         $this->jobExecutionObserver->purge('compute_family_variant_structure_changes');
-        $this->jobExecutionObserver->purge('compute_product_models_descendants');
     }
 
     /**

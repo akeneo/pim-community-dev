@@ -230,7 +230,7 @@ class AssociatedProductDatasource extends ProductDatasource
      */
     protected function normalizeProductsAndProductModels(
         CursorInterface $products,
-        array $idsFromInheritance,
+        array $identifiersFromInheritance,
         $locale,
         $scope
     ) {
@@ -258,7 +258,13 @@ class AssociatedProductDatasource extends ProductDatasource
                 ]
             );
 
-            $normalized['from_inheritance'] = in_array($product->getId(), $idsFromInheritance);
+            if ($product instanceof ProductModelInterface) {
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $product->getId());
+            } else {
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $product->getId());
+            }
+
+            $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
 
             $data[] = new ResultRecord($normalized);
         }

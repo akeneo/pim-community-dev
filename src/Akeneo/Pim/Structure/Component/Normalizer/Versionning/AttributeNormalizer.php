@@ -55,6 +55,7 @@ class AttributeNormalizer implements NormalizerInterface
         $flatAttribute = $standardAttribute;
         $flatAttribute['allowed_extensions'] = implode(self::ITEM_SEPARATOR, $standardAttribute['allowed_extensions']);
         $flatAttribute['available_locales'] = implode(self::ITEM_SEPARATOR, $standardAttribute['available_locales']);
+        $flatAttribute['locale_specific'] = $attribute->isLocaleSpecific();
 
         unset($flatAttribute['labels']);
         $flatAttribute += $this->translationNormalizer->normalize($standardAttribute['labels'], 'flat', $context);

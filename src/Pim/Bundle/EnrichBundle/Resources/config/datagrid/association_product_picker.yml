@@ -73,7 +73,7 @@ datagrid:
                                 Enabled: 1
                                 Disabled: 0
                 completeness:
-                    type:      product_completeness
+                    type:      product_and_product_model_completeness
                     label:     Complete
                     data_name: ratio
                 label_or_identifier:

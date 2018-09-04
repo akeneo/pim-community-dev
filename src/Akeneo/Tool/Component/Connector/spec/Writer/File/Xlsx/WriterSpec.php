@@ -14,7 +14,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
-use Prophecy\Argument;
 
 class WriterSpec extends ObjectBehavior
 {
@@ -53,10 +52,11 @@ class WriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTimeImmutable('1967-08-05 15:15:00'));
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('XLSX Group export');
         $jobParameters->get('withHeader')->willReturn(true);
-        $jobParameters->get('filePath')->willReturn('%job_label%_group.xlsx');
+        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $groups = [
@@ -132,22 +132,35 @@ class WriterSpec extends ObjectBehavior
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTimeImmutable('1967-08-05 15:15:00'));
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('XLSX Group export');
-        $jobParameters->get('linesPerFile')->willReturn(2);
-        $jobParameters->get('filePath')->willReturn('my/file/path/foo/%job_label%_group.xlsx');
+        $jobParameters->get('linesPerFile')->willReturn(1);
+        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx');
         $jobParameters->has('ui_locale')->willReturn(false);
 
         $bufferFactory->create()->willReturn($flatRowBuffer);
 
+        $this->initialize();
         $flusher->flush(
             $flatRowBuffer,
-            Argument::type('array'),
-            Argument::type('string'),
-            2
-        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+            ['type' => 'xlsx'],
+            sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00.xlsx',
+            1
+        )->willReturn(
+            [
+                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_1.xlsx',
+                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_2.xlsx',
+            ]
+        );
 
-        $this->initialize();
         $this->flush();
+
+        $this->getWrittenFiles()->shouldReturn(
+            [
+                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_1.xlsx' => 'XLSX_Group_export_1967-08-05_15-15-00_1.xlsx',
+                sys_get_temp_dir() . '/my/file/path/XLSX_Group_export_1967-08-05_15-15-00_2.xlsx' => 'XLSX_Group_export_1967-08-05_15-15-00_2.xlsx',
+            ]
+        );
     }
 }
