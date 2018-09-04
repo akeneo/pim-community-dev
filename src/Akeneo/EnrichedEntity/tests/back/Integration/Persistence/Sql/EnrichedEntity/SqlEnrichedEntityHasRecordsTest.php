@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityHasRecordsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
@@ -89,7 +90,8 @@ class SqlEnrichedEntityHasRecordsTest extends SqlIntegrationTestCase
                 $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode),
                 $enrichedEntityIdentifier,
                 $recordCode,
-                ['fr_FR' => 'Philippe Starck']
+                ['fr_FR' => 'Philippe Starck'],
+                ValueCollection::fromValues([])
             )
         );
     }

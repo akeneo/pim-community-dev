@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
 class RecordSpec extends ObjectBehavior
@@ -30,8 +31,15 @@ class RecordSpec extends ObjectBehavior
             'en_US' => 'Stark',
             'fr_FR' => 'Stark'
         ];
+        $valueCollection = ValueCollection::fromValues([]);
 
-        $this->beConstructedThrough('create', [$identifier, $enrichedEntityIdentifier, $recordCode, $labelCollection]);
+        $this->beConstructedThrough('create', [
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            $labelCollection,
+            $valueCollection
+        ]);
     }
 
     public function it_is_initializable()
@@ -60,7 +68,8 @@ class RecordSpec extends ObjectBehavior
             $sameIdentifier,
             EnrichedEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
-            []
+            [],
+            ValueCollection::fromValues([])
         );
         $this->equals($sameRecord)->shouldReturn(true);
 
@@ -69,7 +78,8 @@ class RecordSpec extends ObjectBehavior
             $anotherIdentifier,
             EnrichedEntityIdentifier::fromString('designer'),
             RecordCode::fromString('jony_ive'),
-            []
+            [],
+            ValueCollection::fromValues([])
         );
         $this->equals($anotherRecord)->shouldReturn(false);
     }

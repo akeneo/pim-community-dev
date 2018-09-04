@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -142,7 +143,8 @@ SQL;
             RecordIdentifier::fromString($identifier),
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
             RecordCode::fromString($code),
-            $labels
+            $labels,
+            ValueCollection::fromValues([])
         );
 
         return $record;

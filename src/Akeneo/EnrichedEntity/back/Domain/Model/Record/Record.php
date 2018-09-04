@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Webmozart\Assert\Assert;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -36,27 +36,33 @@ class Record
     /** @var LabelCollection */
     private $labelCollection;
 
+    /** @var ValueCollection */
+    private $valueCollection;
+
     private function __construct(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
-        LabelCollection $labelCollection
+        LabelCollection $labelCollection,
+        ValueCollection $valueCollection
     ) {
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $this->labelCollection = $labelCollection;
         $this->code = $code;
+        $this->labelCollection = $labelCollection;
+        $this->valueCollection = $valueCollection;
     }
 
     public static function create(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
-        array $rawLabelCollection
+        array $rawLabelCollection, // TODO: receive LabelCollection instead
+        ValueCollection $valueCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection);
+        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $valueCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
@@ -89,8 +95,24 @@ class Record
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function updateLabels(LabelCollection $labelCollection): void
+    public function setLabels(LabelCollection $labelCollection): void
     {
         $this->labelCollection = $labelCollection;
+    }
+
+    public function setValues(ValueCollection $valueCollection): void
+    {
+        $this->valueCollection = $valueCollection;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'identifier' => $this->identifier->normalize(),
+            'code' => $this->code->normalize(),
+            'enrichedEntityIdentifier' => $this->enrichedEntityIdentifier->normalize(),
+            'labels' => $this->labelCollection->normalize(),
+            'values' => $this->valueCollection->normalize()
+        ];
     }
 }
