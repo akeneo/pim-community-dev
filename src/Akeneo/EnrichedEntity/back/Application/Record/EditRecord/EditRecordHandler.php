@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
