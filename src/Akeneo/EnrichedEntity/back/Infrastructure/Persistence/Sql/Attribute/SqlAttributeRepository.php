@@ -164,13 +164,13 @@ SQL;
             ]
         );
         $result = $statement->fetch();
-        $statement->closeCursor();
 
         if (!$result) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
+        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($this->sqlConnection->getDatabasePlatform(),
+            $result);
     }
 
     /**
@@ -202,11 +202,12 @@ SQL;
             ]
         );
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $statement->closeCursor();
 
         $attributes = [];
         foreach ($results as $result) {
-            $attributes[] = $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
+            $attributes[] = $this->attributeHydratorRegistry
+                ->getHydrator($result)
+                ->hydrate($this->sqlConnection->getDatabasePlatform(), $result);
         }
 
         return $attributes;

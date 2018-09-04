@@ -17,6 +17,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -24,27 +26,67 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
  */
 class TextAttributeHydrator extends AbstractAttributeHydrator
 {
+    public const EXPECTED_KEYS = [
+        'identifier',
+        'enriched_entity_identifier',
+        'code',
+        'labels',
+        'attribute_order',
+        'is_required',
+        'value_per_locale',
+        'value_per_channel',
+        'attribute_type',
+        'max_length',
+        'is_textarea',
+        'validation_rule',
+        'regular_expression',
+        'is_rich_text_editor'
+    ];
+
     public function supports(array $result): bool
     {
         return isset($result['attribute_type']) && 'text' === $result['attribute_type'];
     }
 
-    public function hydrate(array $result)
+    public function hydrate(AbstractPlatform $platform, array $result)
     {
-        $result = $this->hydrateCommonProperties($result);
+        $this->checkResult($result);
+
+        $result = $this->hydrateCommonProperties($platform, $result);
         if (true === $result['additional_properties']['is_textarea']) {
-            return $this->hydrateTextArea($result);
+            return $this->hydrateTextArea($result, $platform);
         }
 
-        return $this->hydrateSimpleText($result);
+        return $this->hydrateSimpleText($result, $platform);
     }
 
-    private function hydrateTextArea(array $result): TextAttribute
+    private function checkResult(array $result): void
+    {
+        $actualKeys = array_keys($result);
+        if (isset($result['additional_properties'])) {
+            $actualKeys = array_merge(
+                $actualKeys,
+                array_keys(json_decode($result['additional_properties'], true))
+            );
+            unset($result['additional_properties']);
+        }
+
+        $missingInformation = array_diff(self::EXPECTED_KEYS, $actualKeys);
+        $canHydrate = 0 === count($missingInformation);
+        if (!$canHydrate) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Impossible to hydrate the text attribute because some information is missing: %s',
+                    implode(', ', $missingInformation)
+                )
+            );
+        }
+    }
+
+    private function hydrateTextArea(array $result, AbstractPlatform $platform): TextAttribute
     {
         $isRichTextEditor = $result['additional_properties']['is_rich_text_editor'];
-        $maxLength = null === $result['additional_properties']['max_length'] ?
-            AttributeMaxLength::noLimit()
-            : AttributeMaxLength::fromInteger((int) $result['additional_properties']['max_length']);
+        $maxLength = $this->getMaxLength($platform, $result['additional_properties']['max_length']);
 
         return TextAttribute::createTextarea(
             AttributeIdentifier::fromString($result['identifier']),
@@ -60,13 +102,11 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
         );
     }
 
-    private function hydrateSimpleText($result): TextAttribute {
-        $maxLength = null === $result['max_length'] ?
-            AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($result['max_length']);
-        $validationRule = null === $result['additionnal_properties']['validation_rule'] ?
-            AttributeValidationRule::none() : AttributeValidationRule::fromString($result['additionnal_properties']['validation_rule']);
-        $regularExpression = null === $result['additionnal_properties']['regular_expression'] ?
-            AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($result['additionnal_properties']['regular_expression']);
+    private function hydrateSimpleText($result, AbstractPlatform $platform): TextAttribute
+    {
+        $maxLength = $this->getMaxLength($platform, $result['additional_properties']['max_length']);
+        $validationRule = $this->getValidationRule($platform, $result['additional_properties']['validation_rule']);
+        $regularExpression = $this->getRegularExpression($platform, $result['additional_properties']['regular_expression']);
 
         return TextAttribute::createText(
             AttributeIdentifier::fromString($result['identifier']),
@@ -81,5 +121,35 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
             $validationRule,
             $regularExpression
         );
+    }
+
+    private function getMaxLength(AbstractPlatform $platform, $maxLength): AttributeMaxLength
+    {
+        if (null === $maxLength) {
+            return AttributeMaxLength::noLimit();
+        }
+        $maxLength = Type::getType(Type::INTEGER)->convertToPhpValue($maxLength, $platform);
+
+        return AttributeMaxLength::fromInteger($maxLength);
+    }
+
+    private function getValidationRule(AbstractPlatform $platform, $validationRule): AttributeValidationRule
+    {
+        if (null === $validationRule) {
+            return AttributeValidationRule::none();
+        }
+        $validationRule = Type::getType(Type::STRING)->convertToPhpValue($validationRule, $platform);
+
+        return AttributeValidationRule::fromString($validationRule);
+    }
+
+    private function getRegularExpression(AbstractPlatform $platform, $regularExpression): AttributeRegularExpression
+    {
+        if (null === $regularExpression) {
+            return AttributeRegularExpression::createEmpty();
+        }
+        $regularExpression = Type::getType(Type::STRING)->convertToPhpValue($regularExpression, $platform);
+
+        return AttributeRegularExpression::fromString($regularExpression);
     }
 }
