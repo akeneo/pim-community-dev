@@ -49,7 +49,7 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_is_a_corresponding_record_identifier()
     {
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('Coco');
         $recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
@@ -79,7 +79,7 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
 
     public function loadRecordStarck(): void
     {
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $this->recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);

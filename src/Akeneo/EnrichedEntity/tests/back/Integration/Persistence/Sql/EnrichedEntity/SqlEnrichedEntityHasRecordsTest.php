@@ -84,7 +84,7 @@ class SqlEnrichedEntityHasRecordsTest extends SqlIntegrationTestCase
         );
         $enrichedEntityRepository->create($enrichedEntity);
 
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $recordRepository->create(
             Record::create(
                 $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode),

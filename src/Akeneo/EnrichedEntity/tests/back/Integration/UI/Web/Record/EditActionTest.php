@@ -208,7 +208,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function getRecordRepository(): RecordRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
     }
 
     private function loadFixtures(): void

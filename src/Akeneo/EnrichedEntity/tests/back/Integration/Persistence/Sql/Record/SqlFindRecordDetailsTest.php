@@ -41,7 +41,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->findRecordDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_details');
-        $this->recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $this->recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $this->resetDB();
         $this->loadEnrichedEntityAndRecords();
     }

@@ -34,7 +34,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $this->resetDB();
         $this->insertEnrichedEntity();
     }

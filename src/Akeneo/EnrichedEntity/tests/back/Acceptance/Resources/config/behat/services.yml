@@ -39,7 +39,7 @@ services:
     akeneo_enrichedentity.tests.back.acceptance.context.create_record_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateRecordContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.record'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.record'
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_record_handler'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:

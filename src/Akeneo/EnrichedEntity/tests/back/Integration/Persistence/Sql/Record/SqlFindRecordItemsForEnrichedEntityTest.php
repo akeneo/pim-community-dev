@@ -94,7 +94,7 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
         );
         $enrichedEntityRepository->create($enrichedEntity);
 
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $starckCode = RecordCode::fromString('starck');
         $this->starckIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $starckCode);
         $recordRepository->create(
