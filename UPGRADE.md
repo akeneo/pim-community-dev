@@ -818,4 +818,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DashboardBundle\\W
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DashboardBundle\\Widget\\WidgetInterface/Akeneo\\Platform\\Bundle\\DashboardBundle\\Widget\\WidgetInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UIBundle/Akeneo\\Platform\\Bundle\\UIBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle/Akeneo\\Platform\\Bundle\\ImportExportBundle/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\InstallerBundle/Akeneo\\Platform\\Bundle\\InstallerBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\AnalyticsBundle/Akeneo\\Platform\\Bundle\\AnalyticsBundle/g'
