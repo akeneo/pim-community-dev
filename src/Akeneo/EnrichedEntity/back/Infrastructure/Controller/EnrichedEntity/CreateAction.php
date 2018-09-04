@@ -82,7 +82,7 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = new CreateEnrichedEntityCommand();
-        $command->identifier = $normalizedCommand['identifier'] ?? null;
+        $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
 
         return $command;

@@ -11,19 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks whether a given enriched entity identifier already exists in the data referential
+ * Checks whether a given record already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityIdentifierShouldBeUnique extends Constraint
+class RecordCodeShouldBeUnique extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique';
+    //todo, what to do here: we should not prompt the user about the identifier as he has no power on it
+    public const ERROR_MESSAGE = 'pim_enriched_entity.record.validation.code.should_be_unique';
 
     public function getTargets()
     {
@@ -32,6 +33,6 @@ class EnrichedEntityIdentifierShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.enriched_entity.identifier_is_unique';
+        return 'akeneo_enrichedentity.validator.record.record_is_unique';
     }
 }

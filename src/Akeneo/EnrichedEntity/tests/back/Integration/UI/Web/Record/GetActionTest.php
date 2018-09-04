@@ -54,7 +54,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             self::RECORD_DETAIL_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
-                'recordIdentifier' => 'designer_starck_a1677570-a278-444b-ab46-baa1db199392'
+                'recordCode' => 'starck'
             ]
         );
 
@@ -79,7 +79,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             self::RECORD_DETAIL_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
-                'recordIdentifier' => 'wrong_record_identifier'
+                'recordCode' => 'wrong_record_code'
             ],
             'GET'
         );

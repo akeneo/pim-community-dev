@@ -29,6 +29,11 @@ interface RecordRepositoryInterface
      */
     public function getByIdentifier(RecordIdentifier $identifier): Record;
 
+    /**
+     * @throws RecordNotFoundException
+     */
+    public function getByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): Record;
+
     public function count(): int;
 
     public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code):  RecordIdentifier;

@@ -55,6 +55,18 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return $this->records[$identifier->__toString()];
     }
 
+    public function getByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): Record
+    {
+        foreach ($this->records as $record) {
+            if ($record->getCode()->equals($code) && $record->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+                return $record;
+            }
+        }
+
+        //Not ideal
+        throw RecordNotFoundException::withIdentifier($code);
+    }
+
     public function count(): int
     {
         $recordCount = 0;

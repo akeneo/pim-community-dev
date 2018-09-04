@@ -66,7 +66,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordIdentifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
+                'recordCode' => 'celine_dion',
                 'enrichedEntityIdentifier' => 'singer',
             ],
             'POST',
@@ -80,8 +80,9 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
 
         $repository = $this->getRecordRepository();
-        $recordItem = $repository->getByIdentifier(
-            RecordIdentifier::fromString($postContent['identifier'])
+        $recordItem = $repository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString($postContent['enriched_entity_identifier']),
+            RecordCode::fromString($postContent['code'])
         );
 
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
@@ -99,7 +100,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordIdentifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
+                'recordCode' => 'celine_dion',
                 'enrichedEntityIdentifier' => 'singer',
             ],
             'POST'
@@ -127,7 +128,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordIdentifier' => 'celine_dion',
+                'recordCode' => 'celine_dion',
                 'enrichedEntityIdentifier' => 'singer',
             ],
             'POST',
@@ -160,7 +161,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordIdentifier' => 'starck',
+                'recordCode' => 'starck',
                 'enrichedEntityIdentifier' => 'singer',
             ],
             'POST',
@@ -192,7 +193,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::RECORD_EDIT_ROUTE,
             [
-                'recordIdentifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
+                'recordCode' => 'celine_dion',
                 'enrichedEntityIdentifier' => 'coco',
             ],
             'POST',

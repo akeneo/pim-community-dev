@@ -29,6 +29,8 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
   dispatch: any,
   getState: () => EditState
 ): Promise<void> => {
+  dispatch(attributeEditionCancel());
+  dispatch(attributeDeleted(attributeIdentifier));
   try {
     const enrichedEntityIdentifier = createIdentifier(getState().form.data.identifier);
     const errors = await attributeRemover.remove(enrichedEntityIdentifier, attributeIdentifier);
@@ -38,14 +40,12 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
       return;
     }
 
-    dispatch(attributeDeleted(attributeIdentifier));
     dispatch(notifyAttributeWellDeleted());
-    dispatch(updateAttributeList());
   } catch (error) {
     dispatch(notifyAttributeDeletionFailed());
 
     throw error;
+  } finally {
+    dispatch(updateAttributeList());
   }
-
-  dispatch(attributeEditionCancel());
 };

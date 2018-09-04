@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
 
@@ -33,15 +34,16 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
 
     public function save(RecordDetails $recordDetails)
     {
-        $this->results[(string) $recordDetails->identifier] = $recordDetails;
+        $this->results[sprintf('%s____%s', $recordDetails->enrichedEntityIdentifier, $recordDetails->code)] = $recordDetails;
     }
 
     /**
      * {@inheritdoc}
      */
     public function __invoke(
-        RecordIdentifier $recordIdentifier
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $recordCode
     ): ?RecordDetails {
-        return $this->results[(string) $recordIdentifier] ?? null;
+        return $this->results[sprintf('%s____%s', $enrichedEntityIdentifier, $recordCode)] ?? null;
     }
 }

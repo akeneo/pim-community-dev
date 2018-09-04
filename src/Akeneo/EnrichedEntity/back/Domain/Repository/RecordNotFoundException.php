@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Repository;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,7 +35,6 @@ class RecordNotFoundException extends \RuntimeException
 
     public static function withCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): self
     {
-        error_log((new \Exception())->getTraceAsString());
         $message = sprintf(
             'Could not find record with code "%s" for enriched entity "%s"',
             (string) $code,

@@ -158,8 +158,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            //to rework
-            '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record identifier already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_enriched_entity.record.validation.code.should_be_unique","parameters":{"%enriched_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
     }
 
     /** @test */
@@ -223,10 +222,10 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'brand',
                 '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier has a dash character'                                                     => [//rework as it should not be possible
-                'invalid-identifier',
+                'invalid-code',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[]},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"pim_enriched_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',
@@ -238,9 +237,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             'Enriched Entity Identifier has a dash character'                                            => [
                 'intel',
-                'invalid-identifier',
-                'invalid-identifier',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"invalid-identifier","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                'invalid-code',
+                'invalid-code',
+                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"invalid-code","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Enriched Entity Identifier is 256 characters long'                                          => [
                 'intel',
                 $longIdentifier,

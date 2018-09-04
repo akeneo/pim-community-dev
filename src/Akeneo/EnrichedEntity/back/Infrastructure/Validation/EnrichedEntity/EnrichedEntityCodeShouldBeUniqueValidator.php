@@ -11,33 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Checks whether a given record already exists in the data referential
+ * Checks whether a given enriched_entity already exists in the data referential
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
+class EnrichedEntityCodeShouldBeUniqueValidator extends ConstraintValidator
 {
-    /** @var RecordExistsInterface */
-    private $recordExists;
+    /** @var EnrichedEntityExistsInterface */
+    private $enrichedEntityExists;
 
-    public function __construct(RecordExistsInterface $recordExists)
+    public function __construct(EnrichedEntityExistsInterface $recordExists)
     {
-        $this->recordExists = $recordExists;
+        $this->enrichedEntityExists = $recordExists;
     }
 
-    public function validate($command, Constraint $constraint)
+    public function validate($command, Constraint $constraint): void
     {
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
@@ -49,9 +48,9 @@ class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof CreateRecordCommand) {
+        if (!$command instanceof CreateEnrichedEntityCommand) {
             throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                CreateRecordCommand::class, get_class($command)));
+                CreateEnrichedEntityCommand::class, get_class($command)));
         }
     }
 
@@ -60,23 +59,20 @@ class RecordIdentifierShouldBeUniqueValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof RecordIdentifierShouldBeUnique) {
+        if (!$constraint instanceof EnrichedEntityCodeShouldBeUnique) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(CreateRecordCommand $command): void
+    private function validateCommand(CreateEnrichedEntityCommand $command): void
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier);
-        $code = RecordCode::fromString($command->code);
-        $alreadyExists = $this->recordExists->withEnrichedEntityAndCode(
-            $enrichedEntityIdentifier,
-            $code
+        $enrichedEntityIdentifier = $command->code;
+        $alreadyExists = $this->enrichedEntityExists->withIdentifier(
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier)
         );
         if ($alreadyExists) {
-            $this->context->buildViolation(RecordIdentifierShouldBeUnique::ERROR_MESSAGE)
+            $this->context->buildViolation(EnrichedEntityCodeShouldBeUnique::ERROR_MESSAGE)
                 ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
-                ->setParameter('%code%', $code)
                 ->atPath('code')
                 ->addViolation();
         }

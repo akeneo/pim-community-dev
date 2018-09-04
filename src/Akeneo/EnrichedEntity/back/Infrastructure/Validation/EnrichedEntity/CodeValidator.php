@@ -23,24 +23,24 @@ use Symfony\Component\Validator\Validation;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class IdentifierValidator extends ConstraintValidator
+class CodeValidator extends ConstraintValidator
 {
     private const MAX_IDENTIFIER_LENGTH = 255;
 
-    public function validate($identifier, Constraint $constraint)
+    public function validate($code, Constraint $constraint)
     {
-        if (!$constraint instanceof Identifier) {
+        if (!$constraint instanceof Code) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($identifier, [
+        $violations = $validator->validate($code, [
                 new Constraints\NotBlank(),
                 new Constraints\Type(['type' => 'string']),
                 new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'pim_enriched_entity.enriched_entity.validation.identifier.pattern',
+                        'message' => 'pim_enriched_entity.enriched_entity.validation.code.pattern',
                     ]
                 ),
             ]

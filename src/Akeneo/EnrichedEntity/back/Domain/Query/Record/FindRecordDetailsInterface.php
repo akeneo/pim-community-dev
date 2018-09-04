@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 
 /**
  * Find a record by its composite identifier (made of its Enriched Entity identifier

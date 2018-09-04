@@ -2,7 +2,7 @@ import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenriched
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import {createRecord, denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
 
 const michelIdentifier = createRecordIdentifier('michel');
 const designerIdentifier = createEnrichedEntityIdentifier('designer');
@@ -66,6 +66,18 @@ describe('akeneo > record > domain > model --- record', () => {
 
   test('I can get the code of the record', () => {
     expect(createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels).getCode()).toBe(didierCode);
+  });
+
+  test('I can create the record from normalized', () => {
+    expect(
+      denormalizeRecord({
+        identifier: 'didier',
+        code: 'didier',
+        labels: {},
+        image: null,
+        enrichedEntityIdentifier: 'designer',
+      }).getCode()
+    ).toEqual(didierCode);
   });
 
   test('I can normalize an record', () => {

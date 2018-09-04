@@ -40,6 +40,11 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
     expect(description.getIdentifier()).toEqual(denormalizeAttributeIdentifier('description_1234'));
   });
 
+  test('I can compare two attributes', () => {
+    expect(description.equals(frontView)).toEqual(false);
+    expect(description.equals(description)).toEqual(true);
+  });
+
   test('I cannot create a malformed attribute', () => {
     expect(() => {
       denormalizeAttribute({
@@ -74,4 +79,16 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
       false
     );
   }).toThrow('Attribute expect a number as order');
+
+  expect(() => {
+    new ConcreteImageAttribute(
+      'front_view_1234',
+      createEnrichedEntityIdentifier('designer'),
+      createCode('front_view'),
+      createLabelCollection({en_US: 'Front View'}),
+      true,
+      false,
+      0
+    );
+  }).toThrow('Attribute expect an AttributeIdentifier argument');
 });

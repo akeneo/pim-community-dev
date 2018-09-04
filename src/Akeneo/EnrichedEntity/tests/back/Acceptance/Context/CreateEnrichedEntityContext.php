@@ -51,11 +51,11 @@ final class CreateEnrichedEntityContext implements Context
     /**
      * @When /^the user creates an enriched entity "([^"]+)" with:$/
      */
-    public function theUserCreatesAnEnrichedEntityWith($identifier, TableNode $updateTable)
+    public function theUserCreatesAnEnrichedEntityWith($code, TableNode $updateTable)
     {
         $updates = current($updateTable->getHash());
         $command = new CreateEnrichedEntityCommand();
-        $command->identifier = $identifier;
+        $command->code = $code;
         $command->labels = json_decode($updates['labels'], true);
         try {
             ($this->createEnrichedEntityHandler)($command);
@@ -67,9 +67,9 @@ final class CreateEnrichedEntityContext implements Context
     /**
      * @Then /^there is an enriched entity "([^"]+)" with:$/
      */
-    public function thereIsAnEnrichedEntityWith(string $identifier, TableNode $enrichedEntityTable)
+    public function thereIsAnEnrichedEntityWith(string $code, TableNode $enrichedEntityTable)
     {
-        $expectedIdentifier = EnrichedEntityIdentifier::fromString($identifier);
+        $expectedIdentifier = EnrichedEntityIdentifier::fromString($code);
         $expectedInformation = current($enrichedEntityTable->getHash());
         $actualEnrichedEntity = $this->enrichedEntityRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
