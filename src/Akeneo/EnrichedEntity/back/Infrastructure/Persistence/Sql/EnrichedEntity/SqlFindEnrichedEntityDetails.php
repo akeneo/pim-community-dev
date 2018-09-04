@@ -62,7 +62,7 @@ class SqlFindEnrichedEntityDetails implements FindEnrichedEntityDetailsInterface
     private function fetchResult(EnrichedEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.labels, ee.image as file_key, fi.original_filename
+        SELECT ee.identifier, ee.labels, fi.file_key, fi.original_filename
         FROM akeneo_enriched_entity_enriched_entity as ee
         LEFT JOIN akeneo_file_storage_file_info AS fi ON fi.file_key = ee.image 
         WHERE ee.identifier = :identifier;
@@ -80,7 +80,7 @@ SQL;
     /**
      * @param string  $identifier
      * @param string  $normalizedLabels
-     * @param ?string $filePath
+     * @param ?string $fileKey
      * @param ?string $originalFilename
      *
      * @return EnrichedEntityDetails

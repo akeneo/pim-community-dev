@@ -28,22 +28,24 @@ class EnrichedEntity
     /** @var LabelCollection */
     private $labelCollection;
 
-    /** @var Image */
+    /** @var Image|null */
     private $image;
 
     private function __construct(
         EnrichedEntityIdentifier $identifier,
-        LabelCollection $labelCollection
+        LabelCollection $labelCollection,
+        ?Image $image
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
+        $this->image = $image;
     }
 
-    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection): self
+    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection, ?Image $image): self
     {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $labelCollection);
+        return new self($identifier, $labelCollection, $image);
     }
 
     public function getIdentifier(): EnrichedEntityIdentifier

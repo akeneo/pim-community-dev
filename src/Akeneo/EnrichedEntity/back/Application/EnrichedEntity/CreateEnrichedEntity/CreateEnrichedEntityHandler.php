@@ -35,7 +35,8 @@ class CreateEnrichedEntityHandler
     {
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString($createEnrichedEntityCommand->identifier),
-            $createEnrichedEntityCommand->labels
+            $createEnrichedEntityCommand->labels,
+            null
         );
 
         $this->enrichedEntityRepository->create($enrichedEntity);

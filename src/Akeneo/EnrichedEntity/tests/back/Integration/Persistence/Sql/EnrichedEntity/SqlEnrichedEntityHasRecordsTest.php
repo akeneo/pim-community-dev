@@ -68,7 +68,8 @@ class SqlEnrichedEntityHasRecordsTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntity);
 
@@ -77,7 +78,8 @@ class SqlEnrichedEntityHasRecordsTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntity);
 

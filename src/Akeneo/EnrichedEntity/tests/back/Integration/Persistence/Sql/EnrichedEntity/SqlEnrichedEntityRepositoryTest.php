@@ -57,7 +57,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     public function it_creates_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], null);
 
         $this->repository->create($enrichedEntity);
 
@@ -71,7 +71,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_when_creating_an_enriched_entity_with_the_same_identifier()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], null);
         $this->repository->create($enrichedEntity);
 
         $this->expectException(DBALException::class);
@@ -84,7 +84,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     public function it_updates_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], null);
         $this->repository->create($enrichedEntity);
         $enrichedEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
 
@@ -114,7 +114,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     public function it_deletes_an_enriched_entity_given_an_identifier()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], null);
         $this->repository->create($enrichedEntity);
 
         $this->repository->deleteByIdentifier($identifier);
@@ -129,7 +129,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     public function it_deletes_an_enriched_entity_given_an_identifier_even_if_it_has_attributes()
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity = EnrichedEntity::create($enrichedEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $enrichedEntity = EnrichedEntity::create($enrichedEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], null);
         $this->repository->create($enrichedEntity);
 
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');

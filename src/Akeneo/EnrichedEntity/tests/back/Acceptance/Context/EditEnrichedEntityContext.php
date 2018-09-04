@@ -17,7 +17,9 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnri
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -72,7 +74,8 @@ final class EditEnrichedEntityContext implements Context
             $this->enrichedEntityRepository->create(
                 EnrichedEntity::create(
                     EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
-                    json_decode($enrichedEntity['labels'], true)
+                    json_decode($enrichedEntity['labels'], true),
+                    null
                 )
             );
         }
@@ -123,34 +126,76 @@ final class EditEnrichedEntityContext implements Context
     }
 
     /**
-     * @When /^the user updates the \'([^\']*)\' enriched entity image with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @Given /^the enriched entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheEnrichedEntityImageWithPathAndFilename(string $identifier, string $filePath, string $filename): void
+    public function theEnrichedEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
+    {
+        $label = json_decode($label);
+
+        $this->enrichedEntityRepository->create(
+            EnrichedEntity::create(
+                EnrichedEntityIdentifier::fromString($identifier),
+                [$localCode => $label],
+                null
+            )
+        );
+    }
+
+    /**
+     * @Given /^an image on an enriched entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     */
+    public function anImageOnAnEnrichedEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
-        $enrichedEntity = $this->enrichedEntityRepository
-            ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
+        $file = new FileInfo();
+        $file->setKey($filePath);
+        $file->setOriginalFilename($filename);
 
-        $editImage = new EditEnrichedEntityCommand();
-        $editImage->identifier = $identifier;
-        foreach ($enrichedEntity->getLabelCodes() as $localCode) {
-            $editImage->labels[$localCode] = $enrichedEntity->getLabel($localCode);
-        }
-        $editImage->image = [
-            'filePath' => $filePath,
-            'originalFilename' => $filename
-        ];
-        $this->constraintViolationsContext->addViolations($this->validator->validate($editImage));
-
-        if (!$this->constraintViolationsContext->hasViolations()) {
-            ($this->editEnrichedEntityHandler)($editImage);
-        }
+        $this->enrichedEntityRepository->create(
+            EnrichedEntity::create(
+                EnrichedEntityIdentifier::fromString($identifier),
+                [],
+                Image::fromFileInfo($file)
+            )
+        );
     }
 
     /**
-     * @Then /^the image of the \'([^\']*)\' enriched entity should be \'([^\']*)\'$/
+     * @When /^the user updates the image of the enriched entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     */
+    public function theUserUpdatesTheImageOfTheEnrichedEntityWithPathAndFilename(string $identifier, string $filePath, string $filename): void
+    {
+        $filePath = json_decode($filePath);
+        $filename = json_decode($filename);
+
+        $editEnrichedEntityCommand = new EditEnrichedEntityCommand();
+        $editEnrichedEntityCommand->identifier = $identifier;
+        $editEnrichedEntityCommand->labels = [];
+        $editEnrichedEntityCommand->image = [
+            'filePath' => $filePath,
+            'originalFilename' => $filename
+        ];
+        $this->editEnrichedEntity($editEnrichedEntityCommand);
+    }
+
+    /**
+     * @When /^the user updates the enriched entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     */
+    public function theUserUpdatesTheEnrichedEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
+    {
+        $label = json_decode($label);
+
+        $editEnrichedEntityCommand = new EditEnrichedEntityCommand();
+        $editEnrichedEntityCommand->identifier = $identifier;
+        $editEnrichedEntityCommand->labels[$localCode] = $label;
+        $editEnrichedEntityCommand->image = null;
+        $this->editEnrichedEntity($editEnrichedEntityCommand);
+    }
+
+    /**
+     * @Then /^the image of the enriched entity \'([^\']*)\' should be \'([^\']*)\'$/
      */
     public function theImageOfTheEnrichedEntityShouldBe(string $identifier, string $filePath)
     {
@@ -162,5 +207,14 @@ final class EditEnrichedEntityContext implements Context
             ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
 
         Assert::assertEquals($enrichedEntity->getImage()->getKey(), $filePath);
+    }
+    
+    private function editEnrichedEntity(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
+    {
+        $this->constraintViolationsContext->addViolations($this->validator->validate($editEnrichedEntityCommand));
+
+        if (!$this->constraintViolationsContext->hasViolations()) {
+            ($this->editEnrichedEntityHandler)($editEnrichedEntityCommand);
+        }
     }
 }
