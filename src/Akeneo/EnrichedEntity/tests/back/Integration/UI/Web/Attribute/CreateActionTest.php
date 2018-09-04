@@ -160,7 +160,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $descriptionAttribute = $attributeRepository->getByIdentifier(
             AttributeIdentifier::fromString(
                 sprintf('%s_%s_%s', 'description', 'designer', md5('designer_description'))

@@ -375,7 +375,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [], null));
         $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [], null));
 
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
             EnrichedEntityIdentifier::fromString('designer'),
@@ -407,7 +407,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function getAttributeRepository(): AttributeRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
     }
 
     private function revokeCreationRights(): void

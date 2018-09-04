@@ -5,7 +5,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_enrichedentity.infrastructure.persistence.attribute:
+    akeneo_enrichedentity.infrastructure.persistence.repository.attribute:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
         arguments:
             - '@database_connection'
