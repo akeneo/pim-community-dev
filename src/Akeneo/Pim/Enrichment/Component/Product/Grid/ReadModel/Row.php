@@ -181,9 +181,9 @@ class Row
     }
 
     /**
-     * @return int
+     * @return null|int
      */
-    public function completeness(): int
+    public function completeness(): ?int
     {
         return $this->completeness;
     }

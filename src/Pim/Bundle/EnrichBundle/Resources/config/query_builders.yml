@@ -59,6 +59,7 @@ services:
         class: 'Pim\Bundle\DataGridBundle\Storage\Sql\GetProductRowsFromIdentifiers'
         arguments:
             - '@database_connection'
+            - '@pim_catalog.factory.value_collection'
 
 
     akeneo.pim.enrichment.query.get_product_model_rows_from_identifiers:

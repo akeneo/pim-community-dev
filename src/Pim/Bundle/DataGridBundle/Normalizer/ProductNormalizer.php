@@ -61,12 +61,13 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $data['identifier'] = $product->identifier();
         $data['family'] = $product->family();
-        $data['groups'] = $product->groups();
+        $data['groups'] = implode(',', $product->groups());
         $data['enabled'] = $product->enabled();
         $data['values'] = $this->normalizeValues($product->values(), $format, $context);
         $data['created'] = $this->normalizer->normalize($product->created(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($product->updated(), $format, $context);
-        $data['label'] = $this->normalizer->normalize($product->label());
+        $data['label'] = null === $product->label() || empty($product->label()->getData()) ?
+            $product->identifier() : $product->label()->getData();
         $data['image'] = $this->normalizeImage($product->image(), $context);
         $data['completeness'] = $product->completeness();
         $data['document_type'] = $product->documentType();
