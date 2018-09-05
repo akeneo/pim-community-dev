@@ -22,11 +22,29 @@ class StringFilter extends AbstractFilter
         $operator = $this->getOperator($data['type']);
         $parameterName = $ds->generateParameterName($this->getName());
 
-        $this->applyFilterToClause(
-            $ds,
-            $ds->expr()->comparison($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName, true)
-        );
+        switch ($operator) {
+            case Operators::IS_EMPTY:
+                $expression = $ds->expr()->orX(
+                    $ds->expr()->isNull($this->get(FilterUtility::DATA_NAME_KEY)),
+                    $ds->expr()->eq($this->get(FilterUtility::DATA_NAME_KEY), $parameterName, true)
+                );
+                break;
+            case Operators::IS_NOT_EMPTY:
+                $expression = $ds->expr()->andX(
+                    $ds->expr()->isNotNull($this->get(FilterUtility::DATA_NAME_KEY)),
+                    $ds->expr()->neq($this->get(FilterUtility::DATA_NAME_KEY), $parameterName, true)
+                );
+                break;
+            default:
+                $expression = $ds->expr()->comparison(
+                    $this->get(FilterUtility::DATA_NAME_KEY),
+                    $operator,
+                    $parameterName,
+                    true
+                );
+        }
 
+        $this->applyFilterToClause($ds, $expression);
         $ds->setParameter($parameterName, $data['value']);
 
         return true;
@@ -47,7 +65,17 @@ class StringFilter extends AbstractFilter
      */
     protected function parseData($data)
     {
-        if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
+        if (!is_array($data) || !array_key_exists('value', $data) || !array_key_exists('type', $data)) {
+            return false;
+        }
+
+        if (in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])) {
+            $data['value'] = '';
+
+            return $data;
+        }
+
+        if (null === $data['value'] || '' === $data['value']) {
             return false;
         }
 
