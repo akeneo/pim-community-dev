@@ -90,9 +90,9 @@ SQL;
                 'additional_properties'      => json_encode($additionalProperties),
             ],
             [
-                'is_required'       => Type::getType('boolean'),
-                'value_per_channel' => Type::getType('boolean'),
-                'value_per_locale'  => Type::getType('boolean'),
+                'is_required'       => Type::getType(Type::BOOLEAN),
+                'value_per_channel' => Type::getType(Type::BOOLEAN),
+                'value_per_locale'  => Type::getType(Type::BOOLEAN),
             ]
         );
         if ($affectedRows > 1) {
@@ -112,21 +112,22 @@ SQL;
             attribute_order = :attribute_order,
             is_required = :is_required,
             additional_properties = :additional_properties
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
-                'identifier'                 => $normalizedAttribute['code'],
+                'identifier'                 => $normalizedAttribute['identifier'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
                 'labels'                     => $normalizedAttribute['labels'],
                 'attribute_order'            => $normalizedAttribute['order'],
                 'is_required'                => $normalizedAttribute['is_required'],
-                'additional_properties'      => json_encode($additionalProperties),
+                'additional_properties'      => $additionalProperties,
             ],
             [
-                'is_required' => Type::getType('boolean'),
-                'labels' => Type::getType('json_array')
+                'is_required' => Type::getType(Type::BOOLEAN),
+                'labels' => Type::getType(Type::JSON_ARRAY),
+                'additional_properties' => Type::getType(Type::JSON_ARRAY)
             ]
         );
         if ($affectedRows > 1) {
@@ -169,8 +170,9 @@ SQL;
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($this->sqlConnection->getDatabasePlatform(),
-            $result);
+        return $this->attributeHydratorRegistry
+            ->getHydrator($result)
+            ->hydrate($this->sqlConnection->getDatabasePlatform(), $result);
     }
 
     /**

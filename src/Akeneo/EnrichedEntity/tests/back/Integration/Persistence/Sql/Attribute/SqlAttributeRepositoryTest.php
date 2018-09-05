@@ -167,7 +167,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     }
 
     /** @test */
-    public function it_updates_an_attribute()
+    public function it_updates_a_text_area_attribute()
     {
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
@@ -175,7 +175,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             $identifier,
             $enrichedEntityIdentifier,
             AttributeCode::fromString('name'),
-            LabelCollection::fromArray(['en_US' => 'Nickname', 'fr_FR' => 'Surnom']),
+            LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
             AttributeOrder::fromInteger(0),
             AttributeIsRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(false),
@@ -184,8 +184,42 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
             AttributeIsRichTextEditor::fromBoolean(false)
         );
         $this->attributeRepository->create($expectedAttribute);
-        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnom', 'en_US' => 'Nickname']));
 
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Biography', 'en_US' => 'Biographie']));
+        $expectedAttribute->setMaxLength(AttributeMaxLength::fromInteger(100));
+        $expectedAttribute->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(true));
+        $this->attributeRepository->update($expectedAttribute);
+
+        $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
+        $this->assertAttribute($expectedAttribute, $actualAttribute);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_a_text_attribute()
+    {
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedAttribute = TextAttribute::createText(
+            $identifier,
+            $enrichedEntityIdentifier,
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $this->attributeRepository->create($expectedAttribute);
+
+        $expectedAttribute->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Surnom', 'en_US' => 'Nickname']));
+        $expectedAttribute->setMaxLength(AttributeMaxLength::fromInteger(100));
+        $expectedAttribute->setValidationRule(AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION));
+        $expectedAttribute->setRegularExpression(AttributeRegularExpression::fromString('/[0-9]+/'));
         $this->attributeRepository->update($expectedAttribute);
 
         $actualAttribute = $this->attributeRepository->getByIdentifier($identifier);
