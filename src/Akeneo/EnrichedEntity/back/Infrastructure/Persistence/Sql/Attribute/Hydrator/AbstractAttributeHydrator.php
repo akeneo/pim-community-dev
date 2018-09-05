@@ -17,18 +17,33 @@ abstract class AbstractAttributeHydrator implements HydratorInterface
 {
     public function hydrate(AbstractPlatform $platform, array $result): AbstractAttribute
     {
-        $this->checkResult($result);
+        $this->checkResultKeys($result);
         $result = $this->convertCommonProperties($platform, $result);
         $result = $this->convertAdditionalProperties($platform, $result);
 
         return $this->hydrateAttribute($result);
     }
 
-    abstract protected function checkResult(array $result): void;
+    protected function checkResultKeys(array $result): void
+    {
+        $additionalKeys = array_keys($result);
+        if (in_array('additional_properties', $additionalKeys)) {
+            $additionalKeys = array_keys(json_decode($result['additional_properties'], true));
+            unset($result['additional_properties']);
+        }
 
-    abstract protected  function convertAdditionalProperties(AbstractPlatform $platform, array $result): array;
+        $actualKeys = array_merge(array_keys($result), $additionalKeys);
+        $missingKeys = array_diff($this->getExpectedKeys(), $actualKeys);
 
-    abstract protected function hydrateAttribute(array $result): AbstractAttribute;
+        if (!empty($missingKeys)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Impossible to hydrate the attribute because some information is missing: %s',
+                    implode(', ', $missingKeys)
+                )
+            );
+        }
+    }
 
     private function convertCommonProperties(AbstractPlatform $platform, array $result): array
     {
@@ -44,4 +59,10 @@ abstract class AbstractAttributeHydrator implements HydratorInterface
 
         return $result;
     }
+
+    abstract protected function getExpectedKeys(): array;
+
+    abstract protected function convertAdditionalProperties(AbstractPlatform $platform, array $result): array;
+
+    abstract protected function hydrateAttribute(array $result): AbstractAttribute;
 }

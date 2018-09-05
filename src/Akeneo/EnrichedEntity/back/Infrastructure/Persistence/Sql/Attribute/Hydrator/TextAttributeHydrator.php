@@ -27,49 +27,9 @@ use Doctrine\DBAL\Types\Type;
  */
 class TextAttributeHydrator extends AbstractAttributeHydrator
 {
-    private const EXPECTED_KEYS = [
-        'identifier',
-        'enriched_entity_identifier',
-        'code',
-        'labels',
-        'attribute_order',
-        'is_required',
-        'value_per_locale',
-        'value_per_channel',
-        'attribute_type',
-        'max_length',
-        'is_textarea',
-        'validation_rule',
-        'regular_expression',
-        'is_rich_text_editor'
-    ];
-
     public function supports(array $result): bool
     {
         return isset($result['attribute_type']) && 'text' === $result['attribute_type'];
-    }
-
-    protected function checkResult(array $result): void
-    {
-        $actualKeys = array_keys($result);
-        if (isset($result['additional_properties'])) {
-            $actualKeys = array_merge(
-                $actualKeys,
-                array_keys(json_decode($result['additional_properties'], true))
-            );
-            unset($result['additional_properties']);
-        }
-
-        $missingInformation = array_diff(self::EXPECTED_KEYS, $actualKeys);
-        $canHydrate = 0 === count($missingInformation);
-        if (!$canHydrate) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Impossible to hydrate the text attribute because some information is missing: %s',
-                    implode(', ', $missingInformation)
-                )
-            );
-        }
     }
 
     public function convertAdditionalProperties(AbstractPlatform $platform, array $result): array
@@ -93,6 +53,26 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
         }
 
         return $this->hydrateSimpleText($result);
+    }
+
+    protected function getExpectedKeys(): array
+    {
+        return [
+            'identifier',
+            'enriched_entity_identifier',
+            'code',
+            'labels',
+            'attribute_order',
+            'is_required',
+            'value_per_locale',
+            'value_per_channel',
+            'attribute_type',
+            'max_length',
+            'is_textarea',
+            'validation_rule',
+            'regular_expression',
+            'is_rich_text_editor'
+        ];
     }
 
     private function hydrateTextArea(array $result): TextAttribute

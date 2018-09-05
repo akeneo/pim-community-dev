@@ -29,7 +29,7 @@ class RegisterAttributeHydratorPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::ATTRIBUTE_HYDRATOR_REGISTRY);
         $attributeHydrators = $container->findTaggedServiceIds(self::ATTRIBUTE_HYDRATOR_TAG);
