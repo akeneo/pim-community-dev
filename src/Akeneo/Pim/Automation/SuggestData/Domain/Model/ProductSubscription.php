@@ -33,7 +33,7 @@ class ProductSubscription implements ProductSubscriptionInterface
     private $product;
 
     /** @var array */
-    private $rawSuggestedData = [];
+    private $rawSuggestedData;
 
     /**
      * @param ProductInterface $product
@@ -83,7 +83,7 @@ class ProductSubscription implements ProductSubscriptionInterface
     public function setSuggestedData(SuggestedData $suggestedData): ProductSubscriptionInterface
     {
         $this->suggestedData = $suggestedData;
-        $this->rawSuggestedData = $suggestedData->getValues();
+        $this->rawSuggestedData = ($suggestedData->isEmpty()) ? null : $suggestedData->getValues();
 
         return $this;
     }

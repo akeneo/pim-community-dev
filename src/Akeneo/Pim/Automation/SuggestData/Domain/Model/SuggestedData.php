@@ -21,14 +21,16 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 final class SuggestedData
 {
     /** @var array */
-    private $values;
+    private $values = [];
 
     /**
      * @param array $values
      */
-    public function __construct(array $values)
+    public function __construct(?array $values)
     {
-        $this->values = $values;
+        if (null !== $values) {
+            $this->values = $values;
+        }
     }
 
     /**
@@ -37,5 +39,13 @@ final class SuggestedData
     public function getValues(): array
     {
         return $this->values;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->values);
     }
 }
