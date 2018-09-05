@@ -27,6 +27,9 @@ services:
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
+    akeneo.pim.automation.suggest_data.handler.create_proposals:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler'
+
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'

@@ -1,0 +1,8 @@
+services:
+    akeneo.pim.automation.suggest_data.command.create_proposals:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\CreateProposalsCommand'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.handler.create_proposals'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+        tags:
+            - { name: 'console.command' }
