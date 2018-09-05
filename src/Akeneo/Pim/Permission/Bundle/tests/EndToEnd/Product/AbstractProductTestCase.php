@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractProductTestCase extends ApiTestCase

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\PublishedProduct;
 
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 

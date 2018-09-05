@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Product;
 
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 
