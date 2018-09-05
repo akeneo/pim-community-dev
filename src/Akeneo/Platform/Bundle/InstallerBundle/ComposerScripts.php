@@ -11,8 +11,8 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle;
 
-use Composer\Script\Event;
 use Akeneo\Platform\Bundle\InstallerBundle\ComposerScripts as BaseComposerScripts;
+use Composer\Script\Event;
 use Symfony\Component\Finder\Finder;
 
 /**

@@ -241,7 +241,7 @@ acceptance:
         FriendsOfBehat\ContextServiceExtension:
            imports:
                - 'vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/behat/services.yml'

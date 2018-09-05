@@ -85,7 +85,9 @@ class Catalog implements CatalogInterface
             $this->getRootDirectory() .
             'src' .
             DIRECTORY_SEPARATOR .
-            'PimEnterprise' .
+            'Akeneo' .
+            DIRECTORY_SEPARATOR .
+            'Platform' .
             DIRECTORY_SEPARATOR .
             'Bundle' .
             DIRECTORY_SEPARATOR .
