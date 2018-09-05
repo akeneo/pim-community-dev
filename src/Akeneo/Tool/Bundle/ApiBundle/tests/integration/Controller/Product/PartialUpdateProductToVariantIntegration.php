@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Response;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 
 class PartialUpdateProductToVariantIntegration extends AbstractProductTestCase
 {
