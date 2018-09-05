@@ -10,6 +10,12 @@ const lineTemplate = require('pimee/template/settings/mapping/family-line');
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
+
+/** Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
+const MAPPING_EMPTY: number = 0;
+const MAPPING_FULL: number = 1;
+const MAPPING_PENDING_ATTRIBUTES: number = 2;
+
 class FamilySelector extends BaseSelect {
   readonly lineView = _.template(lineTemplate);
 
@@ -57,9 +63,19 @@ class FamilySelector extends BaseSelect {
   /**
    * {@inheritdoc}
    */
-  convertBackendItem(item: { enabled: boolean }) {
+  convertBackendItem(item: { status: number }) {
     const result = BaseSelect.prototype.convertBackendItem.apply(this, arguments);
-    result.enabled = item.enabled;
+    switch (item.status) {
+      case MAPPING_FULL:
+        result.className = 'select2-result-label-attribute select2-result-label-attribute--full';
+        break;
+      case MAPPING_PENDING_ATTRIBUTES:
+        result.className = 'select2-result-label-attribute select2-result-label-attribute--pending';
+        break;
+      case MAPPING_EMPTY:
+      default:
+        result.className = '';
+    }
     return result;
   }
 }

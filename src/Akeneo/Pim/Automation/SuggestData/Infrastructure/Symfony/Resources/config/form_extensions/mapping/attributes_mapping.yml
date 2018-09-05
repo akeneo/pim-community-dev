@@ -87,7 +87,7 @@ extensions:
         config:
             fieldName: code
             label: pim_enrich.entity.family.uppercase_label
-            choiceRoute: pim_enrich_family_rest_index
+            choiceRoute: akeneo_sugggest_data_attributes_mapping_list
 
     pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
@@ -97,8 +97,8 @@ extensions:
         config:
             labels:
                 pending: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.pending
-                active: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.active
-                inactive: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.inactive
+                mapped: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.mapped
+                unmapped: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.unmapped
                 pim_ai_attribute: akeneo_suggest_data.entity.family_mapping.fields.pim_ai_attribute
                 catalog_attribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
                 suggest_data: akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data
