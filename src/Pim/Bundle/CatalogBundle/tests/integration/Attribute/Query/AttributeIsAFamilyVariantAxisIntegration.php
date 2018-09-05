@@ -7,10 +7,7 @@ use Akeneo\Test\Integration\TestCase;
 
 class AttributeIsAFamilyVariantAxisIntegration extends TestCase
 {
-    /**
-     * @test
-     */
-    function it_returns_true_if_an_attribute_is_used_as_variant_axis()
+    function testItReturnsTrueIfAnAttributeIsUsedAsVariantAxis()
     {
         $result = $this->getFromTestContainer('pim_catalog.doctrine.query.attribute_is_an_family_variant_axis')
             ->execute('color');
@@ -18,10 +15,7 @@ class AttributeIsAFamilyVariantAxisIntegration extends TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
-    function it_returns_false_if_an_attribute_is_not_used_as_variant_axis()
+    function testItReturnsFalseIfAnAttributeIsNotUsedAsVariantAxis()
     {
         $result = $this->getFromTestContainer('pim_catalog.doctrine.query.attribute_is_an_family_variant_axis')
             ->execute('sku');
