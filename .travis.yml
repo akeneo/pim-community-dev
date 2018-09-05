@@ -56,7 +56,7 @@ script:
     - vendor/bin/behat -s acceptance --config src/Akeneo/EnrichedEntity/behat.yml --no-interaction
     - vendor/bin/phpunit -c src/Akeneo/EnrichedEntity
     - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-    - vendor/bin/phpspec run --no-interaction
+    - vendor/bin/phpspec run -c src/Akeneo/EnrichedEntity/phpspec.yml --no-interaction
 
 notifications:
   email: false
