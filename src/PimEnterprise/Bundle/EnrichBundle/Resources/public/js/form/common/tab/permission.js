@@ -74,6 +74,8 @@ define([
                         this.$('.select2').select2();
                     }.bind(this));
 
+                this.delegateEvents();
+
                 return this;
             },
 

@@ -19,7 +19,7 @@ use Akeneo\Asset\Component\ProcessedItemList;
 use Akeneo\Asset\Component\Upload\ImporterInterface;
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Akeneo\Asset\Component\Upload\UploadMessages;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -34,6 +34,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MassUploadProcessor
 {
+    private const BATCH_SIZE =  10;
+
     /** @var ImporterInterface */
     protected $importer;
 
@@ -49,8 +51,8 @@ class MassUploadProcessor
     /** @var RetrieveAssetGenerationErrors */
     protected $retrieveAssetGenerationErrors;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
+    /** @var EntityManagerClearerInterface */
+    private $entityManagerClearer;
 
     /**
      * @param ImporterInterface             $importer
@@ -58,7 +60,7 @@ class MassUploadProcessor
      * @param SaverInterface                $assetSaver
      * @param EventDispatcherInterface      $eventDispatcher
      * @param RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors
-     * @param ObjectDetacherInterface       $objectDetacher
+     * @param EntityManagerClearerInterface $entityManagerClearer
      */
     public function __construct(
         ImporterInterface $importer,
@@ -66,14 +68,14 @@ class MassUploadProcessor
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
-        ObjectDetacherInterface $objectDetacher
+        EntityManagerClearerInterface $entityManagerClearer
     ) {
         $this->importer = $importer;
         $this->assetBuilder = $assetBuilder;
         $this->assetSaver = $assetSaver;
         $this->eventDispatcher = $eventDispatcher;
         $this->retrieveAssetGenerationErrors = $retrieveAssetGenerationErrors;
-        $this->objectDetacher = $objectDetacher;
+        $this->entityManagerClearer = $entityManagerClearer;
     }
 
     /**
@@ -90,6 +92,7 @@ class MassUploadProcessor
         $this->importer->import($uploadContext);
 
         $importedFiles = $this->importer->getImportedFiles($uploadContext);
+        $i = 0;
 
         foreach ($importedFiles as $file) {
             try {
@@ -109,8 +112,11 @@ class MassUploadProcessor
             } catch (\Exception $e) {
                 $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
             } finally {
+                $i++;
                 if (isset($asset)) {
-                    $this->objectDetacher->detach($asset);
+                    if ($i % self::BATCH_SIZE === 0) {
+                        $this->entityManagerClearer->clear();
+                    }
                 }
             }
         }

@@ -6,3 +6,9 @@ services:
         class: '%pimee_workflow.query.draft_authors.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pimee_workflow.query.get_associated_product_codes_by_published_product:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetAssociatedProductCodesByPublishedProductFromDB
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.token_storage'

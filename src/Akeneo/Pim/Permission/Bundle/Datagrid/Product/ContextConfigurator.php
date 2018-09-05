@@ -125,14 +125,17 @@ class ContextConfigurator extends BaseContextConfigurator
     protected function addCurrentTreeId()
     {
         $treeId = $this->getTreeId();
-        $path = $this->getSourcePath(self::CURRENT_TREE_ID_KEY);
-        $this->configuration->offsetSetByPath($path, $treeId);
+
+        if (null !== $treeId) {
+            $path = $this->getSourcePath(self::CURRENT_TREE_ID_KEY);
+            $this->configuration->offsetSetByPath($path, $treeId);
+        }
     }
 
     /**
      * Get current tree from datagrid parameters, then user config
      *
-     * @return string
+     * @return int|null
      */
     protected function getTreeId()
     {
@@ -140,9 +143,13 @@ class ContextConfigurator extends BaseContextConfigurator
         if (isset($filterValues['category']['value']['treeId']) && $filterValues['category']['value']['treeId']) {
             return $filterValues['category']['value']['treeId'];
         } else {
-            $tree = $this->userContext->getAccessibleUserTree();
+            try {
+                $tree = $this->userContext->getAccessibleUserTree();
 
-            return $tree->getId();
+                return $tree->getId();
+            } catch (\LogicException $e) {
+                return null;
+            }
         }
     }
 }

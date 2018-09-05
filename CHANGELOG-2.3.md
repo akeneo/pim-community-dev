@@ -1,9 +1,15 @@
-# 2.3.x
+# 2.3.5 (2018-08-22)
 
 ## Bug fixes
 
 - PIM-7509: Compute the completeness of variant products after a rule execution on models
 - PIM-7575: Fix missing elements on product and product model edit pages in view mode
+- PIM-7567: Fix permissions autofill after saving forms
+- PIM-7563: Fix permissions on API filters
+- PIM-7582: Fix memory leak on assets mass upload
+- PIM-7579: Fix assets display in product edit form when they have full numeric codes, they don't disappear anymore after preview.
+- PIM-7568: Fix the history of the attribute groups on permission update
+- PIM-7587: Fix issue with preview of non-images assets
 
 # 2.3.4 (2018-08-08)
 

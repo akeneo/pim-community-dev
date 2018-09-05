@@ -200,7 +200,9 @@ define(
              * @param {Event} clickEvent
              */
             updateAssetsFromPreview: function (clickEvent) {
-                const currentAssetCode = $(clickEvent.currentTarget).closest('.asset-thumbnail-item').data('asset');
+                const currentAssetCode = $(clickEvent.currentTarget).closest('.asset-thumbnail-item')
+                    .data('asset')
+                    .toString();
 
                 this.openPreviewModal(currentAssetCode).then(function (assets) {
                     this.data = assets;
@@ -316,7 +318,7 @@ define(
                         const thumbnails = modal.$('.asset-thumbnail-item');
                         let assetCodes = [];
                         thumbnails.each(function (i, thumbnail) {
-                            assetCodes.push($(thumbnail).data('asset'));
+                            assetCodes.push($(thumbnail).data('asset').toString());
                         });
                         modal.close();
 

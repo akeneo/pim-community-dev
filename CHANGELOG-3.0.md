@@ -119,7 +119,7 @@
 - Change constructor of `Akeneo\Pim\Permission\Bundle\Filter\ProductValueLocaleRightFilter`. Add argument `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Move namespace `PimEnterprise\Bundle\ProductAssetBundle` to `Akeneo\Asset\Bundle`
 - Move namespace `PimEnterprise\Component\ProductAsset` to `Akeneo\Asset\Component`
-
+- Change constructor of `Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor`. Replace argument `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface` with `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`.
 
 ## Security
 

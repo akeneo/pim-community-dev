@@ -1,3 +1,14 @@
+# 2.0.35 (2018-08-24)
+
+# 2.0.34 (2018-08-17)
+
+# 2.0.33 (2018-08-16)
+
+## Bug fixes
+
+- PIM-7578: Fix the pdf generation of a product page with an asset collection containing a PDF file
+- PIM-7586: Fix products grid when user has no permission on products
+
 # 2.0.32 (2018-08-06)
 
 # 2.0.31 (2018-08-01)
