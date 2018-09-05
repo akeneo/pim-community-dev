@@ -72,4 +72,17 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     {
         return $this->em->getRepository($this->className)->findOneByProduct($productId);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findPendingSubscriptions(): array
+    {
+        $qb = $this->em->createQueryBuilder()->select('subscription')->from($this->className, 'subscription');
+        $qb->where(
+            $qb->expr()->isNotNull('subscription.rawSuggestedData')
+        );
+
+        return $qb->getQuery()->getResult();
+    }
 }

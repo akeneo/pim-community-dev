@@ -63,21 +63,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'an_attribute'      => 'some data',
             'another_attribute' => 'some other data',
         ];
-
-        $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
-VALUES (:productId, :subscriptionId, :suggestedData)
-SQL;
-
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->prepare($query);
-        $statement->execute(
-            [
-                'productId'      => $product->getId(),
-                'subscriptionId' => $subscriptionId,
-                'suggestedData'  => json_encode($suggestedData),
-            ]
-        );
+        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
         Assert::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
@@ -94,19 +80,7 @@ SQL;
             'an_attribute'      => 'some data',
             'another_attribute' => 'some other data',
         ];
-
-        $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
-VALUES (:productId, :subscriptionId, :suggestedData)
-SQL;
-
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->prepare($query);
-        $statement->execute([
-            'productId'      => $product->getId(),
-            'subscriptionId' => $subscriptionId,
-            'suggestedData'  => json_encode($suggestedData),
-        ]);
+        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertTrue($subscription instanceof ProductSubscriptionInterface);
@@ -119,6 +93,27 @@ SQL;
         $result = $this->getRepository()->findOneByProductId(42);
 
         Assert::assertTrue(null === $result);
+    }
+
+    public function test_it_finds_pending_product_subscriptions()
+    {
+        $product = $this->createProduct('a_product');
+        $subscriptionId = uniqid();
+        $suggestedData = [
+            'an_attribute' => 'some data',
+            'another_attribute' => 'some other data',
+        ];
+        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
+
+        $otherProduct = $this->createProduct('another_product');
+        $otherSubscriptionId = uniqid();
+        $this->insertSuggestedData($otherProduct->getId(), $otherSubscriptionId, []);
+
+        $pendingSubscriptions = $this->getRepository()->findPendingSubscriptions();
+        Assert::assertCount(1, $pendingSubscriptions);
+        Assert::assertSame($product, $pendingSubscriptions[0]->getProduct());
+        Assert::assertSame($subscriptionId, $pendingSubscriptions[0]->getSubscriptionId());
+        Assert::assertSame($suggestedData, $pendingSubscriptions[0]->getSuggestedData()->getValues());
     }
 
     /**
@@ -141,6 +136,29 @@ SQL;
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    /**
+     * @param int $productId
+     * @param string $subscriptionId
+     * @param array|null $suggestedData
+     */
+    private function insertSuggestedData(int $productId, string $subscriptionId, array $suggestedData): void
+    {
+        $query = <<<SQL
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
+VALUES (:productId, :subscriptionId, :suggestedData)
+SQL;
+
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute(
+            [
+                'productId' => $productId,
+                'subscriptionId' => $subscriptionId,
+                'suggestedData' => empty($suggestedData) ? null: json_encode($suggestedData),
+            ]
+        );
     }
 
     /**

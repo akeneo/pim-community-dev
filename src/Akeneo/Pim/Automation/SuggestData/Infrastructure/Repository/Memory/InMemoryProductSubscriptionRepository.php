@@ -77,6 +77,21 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     }
 
     /**
+     * @inheritdoc
+     */
+    public function findPendingSubscriptions(): array
+    {
+        return array_values(
+            array_filter(
+                $this->subscriptions,
+                function (ProductSubscriptionInterface $subscription) {
+                    return !$subscription->getSuggestedData()->isEmpty();
+                }
+            )
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getSubscriptionStatusForProductId(int $productId): array

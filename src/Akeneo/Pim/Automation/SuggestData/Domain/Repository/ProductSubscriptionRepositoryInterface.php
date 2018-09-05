@@ -43,4 +43,9 @@ interface ProductSubscriptionRepositoryInterface
      * @return ProductSubscriptionInterface|null
      */
     public function findOneByProductId(int $productId): ?ProductSubscriptionInterface;
+
+    /**
+     * @return ProductSubscriptionInterface[]
+     */
+    public function findPendingSubscriptions(): array;
 }
