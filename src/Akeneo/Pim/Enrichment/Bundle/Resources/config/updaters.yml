@@ -467,6 +467,6 @@ services:
             - { name: 'pim_catalog.updater.remover' }
 
     pim_api.updater.product_model:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater\ProductModelUpdater'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\ExternalApi\ProductModelUpdater'
         arguments:
             - '@pim_catalog.updater.product_model'

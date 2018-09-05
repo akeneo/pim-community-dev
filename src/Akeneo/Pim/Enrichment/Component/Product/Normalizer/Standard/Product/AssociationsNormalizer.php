@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,8 +20,7 @@ class AssociationsNormalizer implements NormalizerInterface
     /** @var GetAssociatedProductCodesByProduct */
     private $getAssociatedProductCodeByProduct;
 
-    // TODO: remove null on master
-    public function __construct(GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct = null)
+    public function __construct(GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct)
     {
         $this->getAssociatedProductCodeByProduct = $getAssociatedProductCodeByProduct;
     }
@@ -32,12 +32,8 @@ class AssociationsNormalizer implements NormalizerInterface
      */
     public function normalize($associationAwareEntity, $format = null, array $context = [])
     {
-        if (null !== $this->getAssociatedProductCodeByProduct) {
-            $ancestorProducts = $this->getAncestorProducts($associationAwareEntity);
-            $data = $this->normalizeAssociations($ancestorProducts);
-        } else { // TODO: remove it on master
-            $data = $this->legacyNormalizeAssociations($associationAwareEntity);
-        }
+        $ancestorProducts = $this->getAncestorProducts($associationAwareEntity);
+        $data = $this->normalizeAssociations($ancestorProducts);
 
         return $data;
     }
@@ -67,7 +63,7 @@ class AssociationsNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param array $associationAwareEntities
+     * @param EntityWithAssociationsInterface[] $associationAwareEntities
      *
      * @return array
      */
@@ -107,40 +103,6 @@ class AssociationsNormalizer implements NormalizerInterface
             $association['products'] = array_unique($association['products']);
             return $association;
         }, $data);
-
-        ksort($data);
-
-        return $data;
-    }
-
-    /**
-     * TODO: remove it and keep only normalizeAssociations() on master
-     *
-     * @param EntityWithAssociationsInterface $associationAwareEntity
-     *
-     * @return array
-     */
-    private function legacyNormalizeAssociations(EntityWithAssociationsInterface $associationAwareEntity)
-    {
-        $data = [];
-
-        foreach ($associationAwareEntity->getAllAssociations() as $association) {
-            $code = $association->getAssociationType()->getCode();
-            $data[$code]['groups'] = [];
-            foreach ($association->getGroups() as $group) {
-                $data[$code]['groups'][] = $group->getCode();
-            }
-
-            $data[$code]['products'] = [];
-            foreach ($association->getProducts() as $product) {
-                $data[$code]['products'][] = $product->getReference();
-            }
-
-            $data[$code]['product_models'] = [];
-            foreach ($association->getProductModels() as $productModel) {
-                $data[$code]['product_models'][] = $productModel->getCode();
-            }
-        }
 
         ksort($data);
 
