@@ -53,7 +53,6 @@ class FiltersColumn extends BaseView {
   }
 
   renderFilters(filters: any, datagridCollection: any) {
-    console.log('first filters', filters, datagridCollection.state.filters)
     this.datagridCollection = datagridCollection
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
@@ -64,7 +63,11 @@ class FiltersColumn extends BaseView {
       if (true === filter.enabled) {
         filterModule.render()
         filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
-        filterModule.on('disable', this.updateDatagridStateWithFilters.bind(this))
+        filterModule.on('disable', (filter: any) => {
+          console.log('disable a filter', filter)
+          mediator.trigger('filters-selector:disable-filter', filter)
+          this.updateDatagridStateWithFilters.bind(this)
+        })
 
         list.appendChild(filterModule.el)
       }
@@ -99,7 +102,6 @@ class FiltersColumn extends BaseView {
   }
 
   updateDatagridStateWithFilters() {
-    console.log('updated filter')
     const filterState: any = {}
 
     for (let filterName in this.modules) {

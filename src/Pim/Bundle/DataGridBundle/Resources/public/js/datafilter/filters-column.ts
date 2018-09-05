@@ -34,10 +34,11 @@ class FiltersColumn extends BaseView {
     </button>
     <div class="filter-selector"><div>
     <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton filter-list select-filter-widget pimmultiselect"
-        style="width: 230px;display: block;top: -191px;left: 59px;position:absolute;overflow: scroll"
+        style="width: 230px;display: none;top: -191px;left: 59px;position:absolute;overflow: scroll"
     >
         <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
         <div class="filters-column"></div>
+        <div class="AknColumn-bottomButtonContainer"><div class="AknButton AknButton--apply close">Done</div></div>
     </div>
   `
 
@@ -75,9 +76,9 @@ class FiltersColumn extends BaseView {
     this.opened = !this.opened
 
     if (this.opened) {
-       $(this.filterList).css({ left: 360 })
+       $(this.filterList).css({ left: 360, display: 'block' })
     } else {
-       $(this.filterList).css({ left: 59 })
+       $(this.filterList).css({ left: 59, display: 'none' })
     }
   }
 
@@ -180,14 +181,22 @@ class FiltersColumn extends BaseView {
     this.defaultFilters = metadata.filters
     this.gridCollection = gridCollection
     this.fetchFilters().then((loadedFilters: GridFilter[]) => {
-        console.log('loaded filters', loadedFilters)
         // @TODO when you merge defaultFilters make sure that the array is unique and default filters override the loaded ones
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
         this.triggerFiltersUpdated()
-        // @TODO the selected filters need to be communicated to filters-selector, right now it's only merging them if they have a value
     })
+  }
+
+  disableFilter(filterToDisable: any) {
+    this.loadedFilters.forEach(filter => {
+        if (filter.name === filterToDisable.name) {
+            filter.enabled = false;
+        }
+    })
+
+    this.renderFilters();
   }
 
   triggerFiltersUpdated() {
@@ -208,6 +217,7 @@ class FiltersColumn extends BaseView {
 
   configure() {
     this.listenTo(mediator, 'datagrid_collection_set_after', this.loadFilterList)
+    this.listenTo(mediator, 'filters-selector:disable-filter', this.disableFilter)
 
     return BaseView.prototype.configure.apply(this, arguments)
   }
@@ -221,6 +231,7 @@ class FiltersColumn extends BaseView {
 
       $('input[type="search"]', this.filterList).on('keyup', this.searchFilters.bind(this))
       $('.filter-list', this.filterList).on('scroll', this.searchFilters.bind(this))
+      $('.close', this.filterList).on('click', this.togglePanel.bind(this))
 
       return this
   }
