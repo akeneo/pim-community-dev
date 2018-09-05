@@ -92,7 +92,6 @@ class AppKernel extends Kernel
             new Akeneo\Asset\Bundle\AkeneoAssetBundle(),
             new Akeneo\Pim\Asset\Bundle\AkeneoPimAssetBundle(),
             new Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle(),
-            new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
             new Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle(),
             new Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle(),

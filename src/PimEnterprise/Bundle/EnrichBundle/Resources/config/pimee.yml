@@ -8,7 +8,7 @@ assetic:
         - PimEnterpriseEnrichBundle
 
 twig:
-    form_theme: ['PimEnterpriseUIBundle:Form:pimee-fields.html.twig', 'AkeneoAssetBundle:Form:pimee-fields.html.twig']
+    form_theme: ['AkeneoAssetBundle:Form:pimee-fields.html.twig']
 
 fos_rest:
     exception:
