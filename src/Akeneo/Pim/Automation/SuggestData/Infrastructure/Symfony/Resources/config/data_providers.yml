@@ -2,9 +2,6 @@ parameters:
     akeneo.pim.automation.suggest_data.data_provider.alias: 'pim_ai'
 
 services:
-    akeneo.pim.automation.suggest_data.data_provider.suggested_data_factory:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SuggestedDataFactory'
-
     akeneo.pim.automation.suggest_data.data_provider.registry:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderRegistry'
 

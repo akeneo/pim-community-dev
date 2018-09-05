@@ -33,12 +33,12 @@ interface ProductSubscriptionInterface
     /**
      * @return array
      */
-    public function getSuggestedData(): array;
+    public function getSuggestedData(): SuggestedData;
 
     /**
-     * @param array $suggestedData
+     * @param SuggestedData $suggestedData
      *
      * @return ProductSubscriptionInterface
      */
-    public function setSuggestedData(array $suggestedData): self;
+    public function setSuggestedData(SuggestedData $suggestedData): self;
 }

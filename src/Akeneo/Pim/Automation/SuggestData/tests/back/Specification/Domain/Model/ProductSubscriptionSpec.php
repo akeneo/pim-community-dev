@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
 
@@ -25,15 +26,13 @@ class ProductSubscriptionSpec extends ObjectBehavior
 {
     private $product;
     private $subscriptionId;
-    private $suggestedData;
 
     public function let()
     {
         $this->product = new Product();
         $this->subscriptionId = 'foobar';
-        $this->suggestedData = [];
 
-        $this->beConstructedWith($this->product, $this->subscriptionId, $this->suggestedData);
+        $this->beConstructedWith($this->product, $this->subscriptionId);
     }
 
     public function it_is_a_product_subscription()
@@ -42,18 +41,27 @@ class ProductSubscriptionSpec extends ObjectBehavior
         $this->shouldImplement(ProductSubscriptionInterface::class);
     }
 
-    public function it_gets_the_product_subscription_product()
+    public function it_gets_the_product()
     {
         $this->getProduct()->shouldReturn($this->product);
     }
 
-    public function it_gets_the_product_subscription_id()
+    public function it_gets_the_subscription_id()
     {
         $this->getSubscriptionId()->shouldReturn($this->subscriptionId);
     }
 
-    public function it_gets_the_product_subscription_suggested_data()
+    public function it_sets_the_suggested_data()
     {
-        $this->getSuggestedData()->shouldReturn($this->suggestedData);
+        $suggestedData = new SuggestedData([]);
+        $this->setSuggestedData($suggestedData)->shouldReturn($this);
+    }
+
+    public function it_gets_the_suggested_data()
+    {
+        $suggestedData = new SuggestedData(['upc' => '42']);
+        $this->setSuggestedData($suggestedData);
+
+        $this->getSuggestedData()->shouldReturn($suggestedData);
     }
 }

@@ -17,9 +17,10 @@ Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription:
             type: string
             column: subscription_id
             nullable: false
-        suggestedData:
+        rawSuggestedData:
             type: native_json
-            column: suggested_data
+            column: raw_suggested_data
+            nullable: true
     oneToOne:
         product:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
