@@ -165,7 +165,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
     private function getAttributeRepository(): AttributeRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
     }
 
     private function revokeDeletionRights(): void

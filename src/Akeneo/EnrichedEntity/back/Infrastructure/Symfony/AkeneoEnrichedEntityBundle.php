@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Symfony;
 
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeFactoryPass;
+use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeHydratorPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeUpdaterPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
@@ -33,9 +34,10 @@ class AkeneoEnrichedEntityBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RegisterSerializerPass('enriched_entity_serializer'));
-        $container->addCompilerPass(new RegisterAttributeFactoryPass());
         $container->addCompilerPass(new RegisterCreateAttributeCommandFactoryPass());
         $container->addCompilerPass(new RegisterEditAttributeCommandFactoryPass());
+        $container->addCompilerPass(new RegisterAttributeFactoryPass());
         $container->addCompilerPass(new RegisterAttributeUpdaterPass());
+        $container->addCompilerPass(new RegisterAttributeHydratorPass());
     }
 }

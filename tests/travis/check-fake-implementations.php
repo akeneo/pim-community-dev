@@ -42,7 +42,7 @@ $FILES_TO_CHECK = [
 
 $referenceContent = openFileFromRoot($REFERENCE_FILE);
 
-$pattern = '/akeneo_enrichedentity.infrastructure.persistence\.(.+):/';
+$pattern = '/akeneo_enrichedentity.infrastructure.persistence.(query|repository)\.(.+):/';
 $matches = [];
 preg_match_all($pattern, $referenceContent, $matches);
 

@@ -45,7 +45,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $this->attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $this->resetDB();
         $this->insertEnrichedEntity();
     }
@@ -57,7 +57,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('name');
-        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute')
             ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
 
         $expectedAttribute = TextAttribute::createTextarea(
@@ -86,7 +86,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('picture');
-        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute')
             ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
 
         $expectedAttribute = ImageAttribute::create(
@@ -115,7 +115,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('name');
-        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute')
             ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
 
         $attribute = $this->createAttributeWithIdentifier($identifier);
@@ -130,7 +130,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute')
             ->nextIdentifier(EnrichedEntityIdentifier::fromString('designer'), AttributeCode::fromString('bio'));
 
         $this->expectException(AttributeNotFoundException::class);
@@ -143,7 +143,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     public function it_throws_if_the_attribute_type_is_not_known()
     {
         $identifier = $this->insertRowWithUnsupportedType();
-        $this->expectException(\LogicException::class);
+        $this->expectException(\RuntimeException::class);
         $this->attributeRepository->getByIdentifier($identifier);
     }
 
@@ -154,7 +154,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('name');
-        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute')
             ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
 
         $textAttribute = $this->createAttributeWithIdentifier($identifier);
@@ -210,7 +210,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
     private function insertEnrichedEntity(): void
     {
-        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
@@ -226,7 +226,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $attributeCode = AttributeCode::fromString('age');
-        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute')
+        $identifier = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute')
             ->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
 
         $sqlConnection = $this->get('database_connection');

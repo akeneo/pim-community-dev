@@ -84,7 +84,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
 
     private function loadEnrichedEntity(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
@@ -98,7 +98,7 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
 
     private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, int $order = 0): AttributeIdentifier
     {
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
             AttributeCode::fromString($attributeCode)

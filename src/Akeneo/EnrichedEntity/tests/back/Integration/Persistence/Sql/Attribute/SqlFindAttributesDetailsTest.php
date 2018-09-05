@@ -83,8 +83,8 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
     private function loadEnrichedEntitiesAndAttributes(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
+        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
 
         $enrichedEntityFull = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
