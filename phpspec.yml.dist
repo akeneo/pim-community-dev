@@ -218,12 +218,6 @@ suites:
         psr4_prefix: Akeneo\UserManagement\Bundle
         spec_path: src/Akeneo/UserManagement/Bundle
         src_path: src/Akeneo/UserManagement/Bundle
-    CatalogVolumeMonitoringBundle:
-        namespace: Pim\Bundle\CatalogVolumeMonitoringBundle
-        psr4_prefix: Pim\Bundle\CatalogVolumeMonitoringBundle
-        spec_path: src/Pim/Bundle/CatalogVolumeMonitoringBundle
-        src_path: src/Pim/Bundle/CatalogVolumeMonitoringBundle
-
     ## Oro bundles
     OroFilterBundle:
         namespace: Oro\Bundle\FilterBundle

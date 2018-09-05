@@ -1,0 +1,8 @@
+parameters:
+    pim_volume_monitoring.controller.volume_monitoring.class: Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller\VolumeMonitoringController
+
+services:
+    pim_volume_monitoring.controller.volume_monitoring:
+        class: '%pim_volume_monitoring.controller.volume_monitoring.class%'
+        arguments:
+            - '@pim_volume_monitoring.volume.normalizer.volumes'

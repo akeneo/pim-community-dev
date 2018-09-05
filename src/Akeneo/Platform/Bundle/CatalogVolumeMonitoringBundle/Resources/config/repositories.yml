@@ -1,0 +1,5 @@
+services:
+    pim_volume_monitoring.volume.repository.aggregated_volume:
+        class:  Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repository\Sql\AggregatedVolumeRepository
+        arguments:
+            - '@database_connection'
