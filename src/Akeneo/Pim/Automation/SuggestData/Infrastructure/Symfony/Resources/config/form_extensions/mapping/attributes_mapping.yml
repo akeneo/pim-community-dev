@@ -79,7 +79,7 @@ extensions:
         config:
             template: pimee/template/settings/mapping/family-mapping
 
-    pim-suggest-data-settings-identifiers-mapping-index-attribute-family-selector:
+    pim-suggest-data-settings-attributes-mapping-index-attribute-family-selector:
         module: pimee/settings/mapping/family-selector
         parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 10
@@ -89,7 +89,13 @@ extensions:
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: akeneo_sugggest_data_attributes_mapping_list
 
-    pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
+    pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
+        module: pimee/settings/front-search-filter
+        parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
+        position: 20
+        targetZone: mapping
+
+    pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
         parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 30

@@ -72,6 +72,7 @@ config:
         pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping.ts
         pimee/settings/mapping/index: akeneosuggestdata/js/settings/mapping/index.ts
         pimee/settings/mapping/state: akeneosuggestdata/js/settings/mapping/state.ts
+        pimee/settings/front-search-filter: akeneosuggestdata/js/settings/front-search-filter.ts
 
         # Templates
         pimee/template/form/product/subscription-status-switcher: akeneosuggestdata/templates/product/edit/subscription-status-switcher.html
