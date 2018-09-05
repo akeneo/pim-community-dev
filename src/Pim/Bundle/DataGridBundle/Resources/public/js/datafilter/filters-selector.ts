@@ -7,6 +7,7 @@ const requireContext = require('require-context')
 class FiltersColumn extends BaseView {
   public modules: any
   public datagridCollection: any
+  public fetchedOnce: boolean
 
   public config = {
     filterTypes: {
@@ -18,25 +19,21 @@ class FiltersColumn extends BaseView {
     }
   }
 
+  public className() {
+    return 'filter-box'
+  }
+
   constructor(options: {config: any}) {
     super(options)
 
     this.config = {...this.config, ...options.config}
     this.modules = {}
     this.datagridCollection = null;
+    this.fetchedOnce = false;
   }
 
   configure() {
-    this.listenTo(mediator, 'datagrid_collection_set_after', (gridCollection: any, gridElement: any) => {
-      const datagrid = $(gridElement).data()
-      const filters = datagrid.metadata.filters.map((filter: any) => {
-        filter.enabled = true
-        return filter
-      })
-
-      this.renderFilters(filters, gridCollection)
-    });
-
+    //@TODO - filters should already be merged with their values before this
     this.listenTo(mediator, 'filters-column:update-filters', this.renderFilters)
 
     return BaseView.prototype.configure.apply(this, arguments)
@@ -56,6 +53,7 @@ class FiltersColumn extends BaseView {
   }
 
   renderFilters(filters: any, datagridCollection: any) {
+    console.log('first filters', filters, datagridCollection.state.filters)
     this.datagridCollection = datagridCollection
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
@@ -101,6 +99,7 @@ class FiltersColumn extends BaseView {
   }
 
   updateDatagridStateWithFilters() {
+    console.log('updated filter')
     const filterState: any = {}
 
     for (let filterName in this.modules) {
@@ -118,15 +117,9 @@ class FiltersColumn extends BaseView {
       }
     }
 
-    // Update state if changed
-    const currentState = _.omit(this.datagridCollection.state.filters, 'scope');
-    const updatedState = _.omit(filterState, 'scope')
-
-    if (!_.isEqual(currentState, updatedState)) {
-      this.datagridCollection.state.filters = filterState;
-      this.datagridCollection.state.currentPage = 1;
-      this.datagridCollection.fetch();
-    }
+    this.datagridCollection.state.filters = filterState;
+    this.datagridCollection.state.currentPage = 1;
+    this.datagridCollection.fetch();
   }
 }
 

@@ -180,10 +180,13 @@ class FiltersColumn extends BaseView {
     this.defaultFilters = metadata.filters
     this.gridCollection = gridCollection
     this.fetchFilters().then((loadedFilters: GridFilter[]) => {
+        console.log('loaded filters', loadedFilters)
         // @TODO when you merge defaultFilters make sure that the array is unique and default filters override the loaded ones
         this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
         this.renderFilters()
         this.listenToListScroll()
+        this.triggerFiltersUpdated()
+        // @TODO the selected filters need to be communicated to filters-selector, right now it's only merging them if they have a value
     })
   }
 
