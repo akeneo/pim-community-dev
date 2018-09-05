@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify a product is well saved in database.
@@ -99,7 +99,7 @@ class ProductSaverIntegration extends TestCase
     private function createProductModel(string $identifier, string $familyVariantCode): ProductModelInterface
     {
         $familyVariant = $this->get('pim_api.repository.family_variant')->findOneByIdentifier($familyVariantCode);
-        
+
         $model = new ProductModel();
         $model->setCode($identifier);
         $model->setFamilyVariant($familyVariant);
