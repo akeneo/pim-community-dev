@@ -194,3 +194,4 @@
 - Remove `PimEnterprise\Component\Catalog\Updater\AttributeUpdater`
 - Remove `PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer`
 - Remove `PimEnterprise\Component\Catalog\Normalizer\Standard\AttributeNormalizer`
+- Remove `PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle`
