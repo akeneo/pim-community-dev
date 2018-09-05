@@ -24,11 +24,7 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
     function it_throws_if_any_of_the_required_keys_are_not_present_to_hydrate()
     {
         $platform = new MySqlPlatform();
-        $message = sprintf(
-            'Impossible to hydrate the image attribute because some information is missing: %s',
-            implode(', ', ImageAttributeHydrator::EXPECTED_KEYS)
-        );
-        $this->shouldThrow(new \RuntimeException($message))->during('hydrate', [$platform, ['wrong_key' => 'wrong_value']]);
+        $this->shouldThrow(\RuntimeException::class)->during('hydrate', [$platform, ['wrong_key' => 'wrong_value']]);
     }
 
     function it_hydrates_an_image_attribute_with_no_max_file_size_and_no_extensions()

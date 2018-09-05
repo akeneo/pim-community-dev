@@ -4,7 +4,6 @@ namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hy
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\TextAttributeHydrator;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
@@ -25,11 +24,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
     function it_throws_if_any_of_the_required_keys_are_not_present_to_hydrate()
     {
         $platform = new MySqlPlatform();
-        $message = sprintf(
-            'Impossible to hydrate the text attribute because some information is missing: %s',
-            implode(', ', TextAttributeHydrator::EXPECTED_KEYS)
-        );
-        $this->shouldThrow(new \RuntimeException($message))->during('hydrate', [$platform, ['wrong_key' => 'wrong_value']]);
+        $this->shouldThrow(\RuntimeException::class)->during('hydrate', [$platform, ['wrong_key' => 'wrong_value']]);
     }
 
     function it_hydrates_a_text_area_with_a_max_length()
@@ -192,6 +187,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
             'regular_expression'         => null,
         ]);
     }
+
     function it_hydrates_a_simple_text_with_having_a_regular_expression()
     {
         $platform = new MySqlPlatform();

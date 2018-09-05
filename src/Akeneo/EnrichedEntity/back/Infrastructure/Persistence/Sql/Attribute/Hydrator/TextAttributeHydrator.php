@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -26,7 +27,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class TextAttributeHydrator extends AbstractAttributeHydrator
 {
-    public const EXPECTED_KEYS = [
+    private const EXPECTED_KEYS = [
         'identifier',
         'enriched_entity_identifier',
         'code',
@@ -48,19 +49,7 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
         return isset($result['attribute_type']) && 'text' === $result['attribute_type'];
     }
 
-    public function hydrate(AbstractPlatform $platform, array $result)
-    {
-        $this->checkResult($result);
-
-        $result = $this->hydrateCommonProperties($platform, $result);
-        if (true === $result['additional_properties']['is_textarea']) {
-            return $this->hydrateTextArea($result, $platform);
-        }
-
-        return $this->hydrateSimpleText($result, $platform);
-    }
-
-    private function checkResult(array $result): void
+    protected function checkResult(array $result): void
     {
         $actualKeys = array_keys($result);
         if (isset($result['additional_properties'])) {
@@ -83,10 +72,34 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
         }
     }
 
-    private function hydrateTextArea(array $result, AbstractPlatform $platform): TextAttribute
+    public function convertAdditionalProperties(AbstractPlatform $platform, array $result): array
     {
-        $isRichTextEditor = $result['additional_properties']['is_rich_text_editor'];
-        $maxLength = $this->getMaxLength($platform, $result['additional_properties']['max_length']);
+        $result['is_textarea'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['additional_properties']['is_textarea'], $platform);
+        $result['max_length'] = Type::getType(Type::INTEGER)->convertToPhpValue($result['additional_properties']['max_length'], $platform);
+        if (true === $result['additional_properties']['is_textarea']) {
+            $result['is_rich_text_editor'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['additional_properties']['is_rich_text_editor'], $platform);
+        } else {
+            $result['validation_rule'] = Type::getType(Type::STRING)->convertToPhpValue($result['additional_properties']['validation_rule'], $platform);
+            $result['regular_expression'] = Type::getType(Type::STRING)->convertToPhpValue($result['additional_properties']['regular_expression'], $platform);
+        }
+
+        return $result;
+    }
+
+    protected function hydrateAttribute(array $result): AbstractAttribute
+    {
+        if (true === $result['is_textarea']) {
+            return $this->hydrateTextArea($result);
+        }
+
+        return $this->hydrateSimpleText($result);
+    }
+
+    private function hydrateTextArea(array $result): TextAttribute
+    {
+        $maxLength = null === $result['max_length'] ?
+            AttributeMaxLength::noLimit()
+            : AttributeMaxLength::fromInteger($result['max_length']);
 
         return TextAttribute::createTextarea(
             AttributeIdentifier::fromString($result['identifier']),
@@ -98,15 +111,21 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
             AttributeValuePerChannel::fromBoolean($result['value_per_channel']),
             AttributeValuePerLocale::fromBoolean($result['value_per_locale']),
             $maxLength,
-            AttributeIsRichTextEditor::fromBoolean($isRichTextEditor)
+            AttributeIsRichTextEditor::fromBoolean($result['additional_properties']['is_rich_text_editor'])
         );
     }
 
-    private function hydrateSimpleText($result, AbstractPlatform $platform): TextAttribute
+    private function hydrateSimpleText($result): TextAttribute
     {
-        $maxLength = $this->getMaxLength($platform, $result['additional_properties']['max_length']);
-        $validationRule = $this->getValidationRule($platform, $result['additional_properties']['validation_rule']);
-        $regularExpression = $this->getRegularExpression($platform, $result['additional_properties']['regular_expression']);
+        $maxLength = null === $result['max_length'] ?
+            AttributeMaxLength::noLimit()
+            : AttributeMaxLength::fromInteger($result['max_length']);
+        $validationRule = null === $result['validation_rule'] ?
+            AttributeValidationRule::none()
+            : AttributeValidationRule::fromString($result['validation_rule']);
+        $regularExpression = null === $result['regular_expression'] ?
+            AttributeRegularExpression::createEmpty()
+            : AttributeRegularExpression::fromString($result['regular_expression']);
 
         return TextAttribute::createText(
             AttributeIdentifier::fromString($result['identifier']),
@@ -121,35 +140,5 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
             $validationRule,
             $regularExpression
         );
-    }
-
-    private function getMaxLength(AbstractPlatform $platform, $maxLength): AttributeMaxLength
-    {
-        if (null === $maxLength) {
-            return AttributeMaxLength::noLimit();
-        }
-        $maxLength = Type::getType(Type::INTEGER)->convertToPhpValue($maxLength, $platform);
-
-        return AttributeMaxLength::fromInteger($maxLength);
-    }
-
-    private function getValidationRule(AbstractPlatform $platform, $validationRule): AttributeValidationRule
-    {
-        if (null === $validationRule) {
-            return AttributeValidationRule::none();
-        }
-        $validationRule = Type::getType(Type::STRING)->convertToPhpValue($validationRule, $platform);
-
-        return AttributeValidationRule::fromString($validationRule);
-    }
-
-    private function getRegularExpression(AbstractPlatform $platform, $regularExpression): AttributeRegularExpression
-    {
-        if (null === $regularExpression) {
-            return AttributeRegularExpression::createEmpty();
-        }
-        $regularExpression = Type::getType(Type::STRING)->convertToPhpValue($regularExpression, $platform);
-
-        return AttributeRegularExpression::fromString($regularExpression);
     }
 }
