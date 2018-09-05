@@ -13,3 +13,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.product_model.class%'
+
+    pim_catalog.query.get_associated_product_codes_by_product:
+        class: Akeneo\Pim\Permission\Bundle\Entity\Query\GetAssociatedProductCodesByProductFromDB
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.token_storage'

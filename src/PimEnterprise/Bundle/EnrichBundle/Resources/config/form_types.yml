@@ -1,6 +1,6 @@
 parameters:
     ## Form Types
-    pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
+    pimee_enrich.form.type.locale.class: Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType
 
 services:
     pim_enrich.form.type.category:

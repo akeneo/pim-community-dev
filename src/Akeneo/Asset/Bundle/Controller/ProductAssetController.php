@@ -549,7 +549,7 @@ class ProductAssetController extends Controller
     /**
      * Action to render the asset thumbnail depending on a channel (and a locale if the asset is localizable).
      *
-     * @see \PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
+     * @see \Akeneo\Asset\Component\Model\AssetInterface::getFileForContext()
      *
      * @param Request $request
      * @param string  $code

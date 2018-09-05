@@ -1,3 +1,5 @@
+# 1.7.30 (2018-08-14)
+
 # 1.7.29 (2018-08-01)
 
 # 1.7.28 (2018-07-26)
@@ -95,8 +97,6 @@
 
 - PIM-6393: Context kept when creating category tree
 - PIM-6470: Fix issue on Permission filter when added to the user default filters
-
-# 1.7.5 (2017-06-02)
 
 # 1.7.4 (2017-05-10)
 

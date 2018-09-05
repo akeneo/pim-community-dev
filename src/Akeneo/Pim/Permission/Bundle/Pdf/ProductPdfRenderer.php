@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
@@ -30,10 +31,12 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
  */
 class ProductPdfRenderer extends PimProductPdfRenderer
 {
+    private const IMAGE_MIME_TYPE_PREFIX = 'image/';
+
     /** @var FilterProductValuesHelper */
     protected $filterHelper;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */
@@ -121,7 +124,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
                     foreach ($assets as $asset) {
                         $file = $asset->getFileForContext($channel, $locale);
 
-                        if (null !== $file) {
+                        if (null !== $file && $this->isImage($file)) {
                             $imagePaths[] = $file->getKey();
                         }
                     }
@@ -130,5 +133,19 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         }
 
         return $imagePaths;
+    }
+
+    /**
+     * Checks a file has a mime type of type image.
+     *
+     * @param FileInfoInterface $file
+     *
+     * @return bool
+     */
+    private function isImage(FileInfoInterface $file): bool
+    {
+        $fileMimeType = $file->getMimeType();
+
+        return 0 === strpos($fileMimeType, self::IMAGE_MIME_TYPE_PREFIX);
     }
 }
