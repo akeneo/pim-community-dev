@@ -83,7 +83,7 @@ class AppKernel extends Kernel
             new Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle(),
             new Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle(),
             new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
+            new Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
@@ -96,7 +96,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new Akeneo\Platform\Bundle\UIBundle\PimUIBundle(),
             new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
-            new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
+            new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
         ];
     }
 
