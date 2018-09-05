@@ -23,10 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CreateFamilyIntegration extends ApiTestCase
 {
-    /**
-     * @test
-     */
-    public function create_a_family_with_an_asset_as_attribute_as_image()
+    public function testCreateAFamilyWithAnAssetAsAttributeAsImage()
     {
         $client = $this->createAuthenticatedClient();
 
