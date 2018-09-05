@@ -34,7 +34,7 @@ services:
     pim_catalog.normalizer.storage.product.product_values:
         class: '%pim_catalog.normalizer.storage.product.product_values.class%'
         arguments:
-            - '@pim_catalog.normalizer.standard.product.product_values'
+            - '@pim_catalog.normalizer.storage.product.product_value'
         tags:
             - { name: pim_storage_serializer.normalizer, priority: 90 }
         lazy: true

@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\MassiveImport\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
-class AddedValueInProduct
+class EditedValueInProduct
 {
     /** @var string */
     private $identifier;

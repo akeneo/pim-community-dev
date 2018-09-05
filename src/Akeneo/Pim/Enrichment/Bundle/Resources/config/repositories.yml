@@ -145,3 +145,10 @@ services:
             - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.product'
+
+    pim_enrichment.massive_operation.product_repository:
+        class: 'Akeneo\Pim\Enrichment\Bundle\MassiveImport\Repository\Sql\ProductRepository'
+        arguments:
+            - '@database_connection'
+            - '@pim_storage_serializer'
+
