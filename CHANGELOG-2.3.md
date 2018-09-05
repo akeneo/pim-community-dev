@@ -3,6 +3,7 @@
 ## Enhancements
 
 - PIM-7610: Add a command to create users
+- PIM-7635: Fix elasticsearch config override
 
 ## Bug fixes
 
