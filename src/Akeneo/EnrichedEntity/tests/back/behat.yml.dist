@@ -2,7 +2,7 @@ default:
     suites:
         acceptance:
             paths:
-                - '%paths.base%/tests/features'
+                - '%paths.base%/../features'
             contexts_services:
                 - akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context
                 - akeneo_enrichedentity.tests.back.acceptance.context.delete_enriched_entity_context
@@ -18,13 +18,10 @@ default:
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - 'tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 env: test_fake
-        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
-        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
-
     formatters:
         pretty: true
