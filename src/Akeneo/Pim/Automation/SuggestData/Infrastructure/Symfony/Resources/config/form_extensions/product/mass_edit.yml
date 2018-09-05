@@ -10,7 +10,7 @@ extensions:
             labelCount: akeneo_suggest_data.mass_edit.product.operation.suggest_data.label_count
             description: akeneo_suggest_data.mass_edit.product.operation.suggest_data.description
             code: suggest_data
-            jobInstanceCode: suggest_data_push_products
+            jobInstanceCode: TODO_in_APAI-157
             warning: akeneo_suggest_data.mass_edit.product.operation.suggest_data.warning
             icon: icon-robot
             illustration: robot

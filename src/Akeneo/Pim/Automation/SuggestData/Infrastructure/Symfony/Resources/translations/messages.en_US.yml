@@ -1,5 +1,3 @@
-batch_jobs.suggest_data_push_products.perform.label: Suggest data
-
 akeneo_suggest_data:
     acl:
         suggest_data:

@@ -72,8 +72,3 @@ jobs:
         alias:     refresh_project_completeness_calculation
         label:     Refresh project completeness
         type:      refresh_project_completeness_calculation
-    suggest_data_push_products:
-        connector: suggest_data
-        alias:     suggest_data_push_products
-        label:     Suggest data push products
-        type:      mass_edit

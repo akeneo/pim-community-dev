@@ -37,4 +37,3 @@ compute_family_variant_structure_changes;All;
 delete_products_and_product_models;All;
 add_to_group;All;
 change_parent_product;IT support,Manager,Redactor;
-suggest_data_push_products;All;
