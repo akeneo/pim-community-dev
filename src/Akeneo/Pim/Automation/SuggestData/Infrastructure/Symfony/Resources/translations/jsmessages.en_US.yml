@@ -52,7 +52,7 @@ akeneo_suggest_data:
         edit:
             btn.push: Suggest data
             flash:
-                success: Successfully asked for suggest data
+                success: Product successfully subscribed to Franklin Insights.
                 error: Error during suggest data
             subscription_status_title: 'Franklin Subscription'
 
