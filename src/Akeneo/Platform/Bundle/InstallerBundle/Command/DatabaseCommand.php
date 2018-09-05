@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Doctrine\DBAL\Exception\ConnectionException;
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Doctrine\DBAL\Exception\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Platform\Bundle\AnalyticsBundle\Doctrine\Query;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
-use Akeneo\Platform\Bundle\AnalyticsBundle\Doctrine\Query;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 
 /**

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\EventListener;
 
-use Doctrine\DBAL\Connection;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

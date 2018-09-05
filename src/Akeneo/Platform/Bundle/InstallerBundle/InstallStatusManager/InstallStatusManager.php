@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Exception\ConnectionException;
-use Akeneo\Platform\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 
 /**
  * Checks whether the PIM has already been installed by checking that an 'pim_user' table exists.

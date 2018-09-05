@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Akeneo\Platform\VersionProviderInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
-use Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

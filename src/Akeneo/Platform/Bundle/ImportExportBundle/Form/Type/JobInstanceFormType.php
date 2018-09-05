@@ -2,11 +2,11 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Form\Type;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Akeneo\Platform\Bundle\ImportExportBundle\Form\Subscriber\JobInstanceSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

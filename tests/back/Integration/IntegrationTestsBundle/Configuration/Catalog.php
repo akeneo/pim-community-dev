@@ -54,7 +54,7 @@ class Catalog implements CatalogInterface
     public function useMinimalCatalog(): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('src', 'Pim', 'Bundle', 'InstallerBundle', 'Resources', 'fixtures', 'minimal'),
+            (string) new Path('src', 'Akeneo', 'Platform', 'Bundle', 'InstallerBundle', 'Resources', 'fixtures', 'minimal'),
         ];
 
         $fixtureDirectories = [

@@ -190,7 +190,7 @@ acceptance:
         FriendsOfBehat\ContextServiceExtension:
            imports:
                - 'tests/back/Acceptance/Resources/config/behat/services.yml'
-               - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
                - 'src/Akeneo/Pim/Enrichment/Bundle/tests/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
