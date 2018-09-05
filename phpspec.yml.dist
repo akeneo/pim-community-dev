@@ -3,12 +3,6 @@ extensions:
     Akeneo\SkipExampleExtension: ~
 
 suites:
-    EnrichedEntity:
-        namespace: Akeneo\EnrichedEntity
-        psr4_prefix: Akeneo\EnrichedEntity
-        spec_path: src/Akeneo/EnrichedEntity/tests/back
-        src_path: src/Akeneo/EnrichedEntity/back
-
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle
