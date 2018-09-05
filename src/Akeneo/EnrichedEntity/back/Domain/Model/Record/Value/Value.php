@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

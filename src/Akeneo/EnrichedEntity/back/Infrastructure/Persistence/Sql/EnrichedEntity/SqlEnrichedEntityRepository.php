@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -115,7 +116,7 @@ SQL;
         return $this->hydrateEnrichedEntity(
             $result['identifier'],
             $result['labels'],
-            $result['image']
+            null !== $result['image'] ? json_decode($result['image'], true) : null
         );
     }
 
@@ -168,8 +169,8 @@ SQL;
 
         if (null !== $image) {
             $file = new FileInfo();
-            $file->setKey($image['fileKey']);
-            $file->setOriginalFilename($image['originalFilename']);
+            $file->setKey($image['file_key']);
+            $file->setOriginalFilename($image['original_filename']);
         }
 
         $enrichedEntity = EnrichedEntity::create(
