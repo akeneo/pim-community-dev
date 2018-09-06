@@ -1,5 +1,5 @@
 #!groovy
-@Library("k8s-utils@v2.0.0")
+@Library("k8s-utils@2.x")
 
 String[] features = ["features", "vendor/akeneo/pim-community-dev/features"]
 String ceBranch = "2.0"
