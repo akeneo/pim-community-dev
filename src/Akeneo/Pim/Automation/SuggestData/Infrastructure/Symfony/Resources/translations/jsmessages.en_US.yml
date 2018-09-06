@@ -35,8 +35,8 @@ akeneo_suggest_data:
                 attribute_not_found: "Attribute with attribute code \"{{ attributeCode }}\" for the identifiers mapping does not exist."
                 mandatory_attribute_mapping: "This attribute is mandatory"
                 attribute_type: "The type of this attribute can not be set as identifier"
-        family_mapping:
-            label: Family mapping
+        attributes_mapping:
+            label: Attributes mapping
             fields:
                 pim_ai_attribute: 'PIM.ai attribute'
                 suggest_data:
