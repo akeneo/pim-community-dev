@@ -60,19 +60,25 @@ class CreateProposalsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // TODO APAI-242: paginate/cursor the subscriptions (perfs)
+        // TODO APAI-242: paginate/cursorize the subscriptions (perfs)
         $subscriptions = $this->subscriptionRepo->findPendingSubscriptions();
         foreach ($subscriptions as $subscription) {
+            $output->write(
+                sprintf(
+                    '<comment>Creating proposal for subscription %s...</comment>',
+                    $subscription->getSubscriptionId()
+                )
+            );
             $command = new CreateProposalCommand($subscription);
             // TODO APAI-244: handle errors
             $this->handler->handle($command);
             $output->writeln(
                 sprintf(
-                    '<info>Successfully created proposal for subscription %s...</info>',
+                    '<comment> OK</comment>',
                     $subscription->getSubscriptionId()
                 )
             );
         }
-        $output->writeln('<success>Proposals sucessfully created</success>');
+        $output->writeln('<info>Proposals sucessfully created</info>');
     }
 }
