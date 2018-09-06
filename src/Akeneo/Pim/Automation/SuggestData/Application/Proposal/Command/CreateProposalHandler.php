@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -91,7 +92,6 @@ class CreateProposalHandler
         }
 
         $this->createProposal($product, $suggestedValues);
-
         // TODO APAI-240: empty suggested data from subscription
     }
 
@@ -104,12 +104,12 @@ class CreateProposalHandler
     private function getSuggestedValues(SuggestedData $suggestedData, FamilyInterface $family): array
     {
         $normalizedData = $this->suggestedDataNormalizer->normalize($suggestedData);
-        $availableAttributes = $family->getAttributeCodes();
+        $availableAttributeCodes = $family->getAttributeCodes();
 
         return array_filter(
             $normalizedData,
-            function ($attributeCode) use ($availableAttributes) {
-                return in_array($attributeCode, $availableAttributes);
+            function ($attributeCode) use ($availableAttributeCodes) {
+                return in_array($attributeCode, $availableAttributeCodes);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -131,22 +131,22 @@ class CreateProposalHandler
                 ]
             );
             $productDraft = $this->draftBuilder->build($product, self::PROPOSAL_AUTHOR);
-
-            if (null !== $productDraft) {
-                $this->eventDispatcher->dispatch(
-                    EntityWithValuesDraftEvents::PRE_READY,
-                    new GenericEvent($productDraft)
-                );
-
-                $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
-                $this->productDraftSaver->save($productDraft);
-
-                // TODO APAI-252: handle notifications
-                //$this->eventDispatcher->dispatch(EntityWithValuesDraftEvents::POST_READY, new GenericEvent($productDraft));
-            }
-        } catch (\Exception $e) {
+        } catch (PropertyException $e) {
             // TODO APAI-244: handle error
             return;
+        }
+
+        if (null !== $productDraft) {
+            $this->eventDispatcher->dispatch(
+                EntityWithValuesDraftEvents::PRE_READY,
+                new GenericEvent($productDraft)
+            );
+
+            $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
+            $this->productDraftSaver->save($productDraft);
+
+            // TODO APAI-252: handle notifications
+            //$this->eventDispatcher->dispatch(EntityWithValuesDraftEvents::POST_READY, new GenericEvent($productDraft));
         }
     }
 }

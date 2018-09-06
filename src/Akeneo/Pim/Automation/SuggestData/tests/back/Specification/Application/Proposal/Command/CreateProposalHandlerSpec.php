@@ -114,11 +114,6 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $draft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $draftSaver->save($draft)->shouldBeCalled();
 
-//        $eventDispatcher->dispatch(
-//            EntityWithValuesDraftEvents::POST_READY,
-//            new GenericEvent($draft)
-//        )->shouldBeCalled();
-
         $this->handle($command)->shouldReturn(null);
     }
 }
