@@ -165,6 +165,19 @@ define(
         },
 
         /**
+         * @inheritDoc
+         */
+        _renderCriteria: function(el) {
+            TextFilter.prototype._renderCriteria.apply(this, arguments);
+
+            const defaultOperator = this.emptyValue.type;
+            this._toggleListSelection('in' === defaultOperator);
+            this._toggleInput(_.contains(['empty', 'not empty'], defaultOperator));
+
+            return this;
+        },
+
+        /**
          * Updates the select classes and hide/show sub-elements
          *
          * @param {Event} e
@@ -174,18 +187,18 @@ define(
             const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
             this._highlightDropdown(value, '.operator');
 
-            if (value === 'in') {
-                this._enableListSelection();
-            } else {
-                this._disableListSelection();
-            }
-            if (_.contains(['empty', 'not empty'], value)) {
-                this._disableInput();
-            } else {
-                this._enableInput();
-            }
+            this._toggleListSelection('in' === value);
+            this._toggleInput(_.contains(['empty', 'not empty'], value));
 
             e.preventDefault();
+        },
+
+        _toggleListSelection: function(enableList) {
+            enableList ? this._enableListSelection() : this._disableListSelection();
+        },
+
+        _toggleInput: function(enableInput) {
+            enableInput ? this._disableInput() : this._enableInput();
         },
 
         _enableListSelection: function() {
