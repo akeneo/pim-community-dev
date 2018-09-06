@@ -61,7 +61,6 @@ class FetchProductsHandler
                 $subscriptionResponse->getProductId()
             );
 
-            // TODO: What if subscription has been removed?
             $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
             $subscription->setSuggestedData($suggestedData);
 
