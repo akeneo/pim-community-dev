@@ -1,5 +1,6 @@
 import * as _ from "underscore";
 import * as $ from 'jquery';
+import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
 const __ = require('oro/translator');
 const template = require('pim/template/datagrid/filter/search-filter');
@@ -25,12 +26,25 @@ class FrontSearchFilter extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  public events() {
+  public events(): EventsHash {
     return {
       'keydown input[name="value"]': this.runTimeout,
       'keypress input[name="value"]': this.runTimeout
     }
   };
+
+  /**
+   * {@inheritdoc}
+   */
+  public render(): BaseForm {
+    this.$el.html(this.template({
+      label: __('pim_datagrid.search', {
+        label: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute')
+      })
+    }));
+
+    return this;
+  }
 
   /**
    * Runs a timer to wait some time. When the time is done, it execute the search.
@@ -51,19 +65,6 @@ class FrontSearchFilter extends BaseForm {
   };
 
   /**
-   * {@inheritdoc}
-   */
-  render() {
-    this.$el.html(this.template({
-      label: __('pim_datagrid.search', {
-        label: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute')
-      })
-    }));
-
-    return this;
-  }
-
-  /**
    * Filter the items by words. If the user types 'foo bar', it will look for every row containing the strings
    * 'foo' and 'bar', no matter the order of the words.
    */
@@ -73,14 +74,10 @@ class FrontSearchFilter extends BaseForm {
 
     $('.searchable-row').each((_i: number, row: any) => {
       const value = $(row).find('.searchable-value').html().trim();
-      const match = words.reduce((old, word) => {
-        return old && value.indexOf(word) >= 0;
+      const match = words.reduce((acc, word) => {
+        return acc && value.indexOf(word) >= 0;
       }, true);
-      if (match) {
-        $(row).show();
-      } else {
-        $(row).hide();
-      }
+      match ? $(row).show() : $(row).hide();
     });
   }
 }
