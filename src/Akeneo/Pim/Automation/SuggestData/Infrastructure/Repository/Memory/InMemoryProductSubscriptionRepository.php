@@ -27,16 +27,6 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     private $subscriptions = [];
 
     /**
-     * @param ProductSubscriptionInterface[] $subscriptions
-     */
-    public function __construct(array $subscriptions = [])
-    {
-        foreach ($subscriptions as $subscription) {
-            $this->save($subscription);
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findOneByProductAndSubscriptionId(

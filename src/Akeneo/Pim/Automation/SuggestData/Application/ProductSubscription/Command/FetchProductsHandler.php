@@ -31,7 +31,7 @@ class FetchProductsHandler
     private $dataProviderFactory;
 
     /** @var ProductSubscriptionRepositoryInterface */
-    private $productSusbcriptionRepository;
+    private $productSubscriptionRepository;
 
     /**
      * @param DataProviderFactory $dataProviderFactory
@@ -56,11 +56,12 @@ class FetchProductsHandler
         $dataProvider = $this->dataProviderFactory->create();
         $subscribedResponses = $dataProvider->fetch();
 
-        foreach ($subscribedResponses as $subscriptionResponse) {
-            /** @var ProductSubscriptionResponse $subscriptionResponse */
+        foreach ($subscribedResponses->responses() as $subscriptionResponse) {
             $subscription = $this->productSubscriptionRepository->findOneByProductId(
                 $subscriptionResponse->getProductId()
             );
+
+            // TODO: What if subscription has been removed?
             $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
             $subscription->setSuggestedData($suggestedData);
 

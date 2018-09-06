@@ -84,8 +84,9 @@ class ProductSubscriptionContext implements Context
     {
         $this->dataFixturesContext->theFollowingProduct($table);
 
-        $productDefinition = $table->getColumnsHash()[0];
-        $this->subscribeProductToPimAi($productDefinition['identifier'], true);
+        foreach ($table->getHash() as $productRow) {
+            $this->subscribeProductToPimAi($productRow['identifier'], true);
+        }
     }
 
     /**
@@ -120,6 +121,19 @@ class ProductSubscriptionContext implements Context
     public function thereAreNoMoreCreditsOnMyAccount()
     {
         $this->subscriptionApi->disableCredit();
+    }
+
+    /**
+     * @Then /^([0-9]*) suggested data should have been added$/
+     *
+     * @param mixed $count (could be
+     */
+    public function suggestedDataHaveBeenAdded(int $count)
+    {
+        $expectedNumber = (int) $count;
+
+        $pendingSubscriptions = $this->productSubscriptionRepository->findPendingSubscriptions();
+        Assert::count($pendingSubscriptions, $expectedNumber);
     }
 
     /**

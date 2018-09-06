@@ -83,7 +83,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
-        Assert::assertTrue($subscription instanceof ProductSubscriptionInterface);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
     }
@@ -93,6 +93,58 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $result = $this->getRepository()->findOneByProductId(42);
 
         Assert::assertTrue(null === $result);
+    }
+
+    public function test_it_saves_empty_suggested_data_as_null()
+    {
+        $subscription1 = new ProductSubscription($this->createProduct('a_product'), 'subscription-1');
+        $subscription1->setSuggestedData(new SuggestedData(null));
+        $this->getRepository()->save($subscription1);
+
+        $subscription2 = new ProductSubscription($this->createProduct('another_product'), 'subscription-2');
+        $this->getRepository()->save($subscription2);
+
+        $subscription3 = new ProductSubscription($this->createProduct('a_third_product'), 'subscription-3');
+        $subscription3->setSuggestedData(new SuggestedData([]));
+        $this->getRepository()->save($subscription3);
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->query(
+            'SELECT raw_suggested_data from pim_suggest_data_product_subscription;'
+        );
+
+        $subscriptionRows = $statement->fetchAll();
+
+        Assert::assertCount(3, $subscriptionRows);
+
+        foreach ($subscriptionRows as $subscriptionRow) {
+            Assert::isNull($subscriptionRow['raw_suggested_data']);
+        }
+    }
+
+    public function test_it_fetches_a_null_raw_suggested_data_as_empty_array()
+    {
+        $product = $this->createProduct('a_product');
+
+        $query = <<<SQL
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
+VALUES (:productId, :subscriptionId, :suggestedData)
+SQL;
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute(
+            [
+                'productId'      => $product->getId(),
+                'subscriptionId' => uniqid(),
+                'suggestedData'  => null,
+            ]
+        );
+
+        $subscription = $this->getRepository()->findOneByProductId($product->getId());
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
+        Assert::assertInstanceOf(SuggestedData::class, $subscription->getSuggestedData());
+        Assert::assertTrue($subscription->getSuggestedData()->isEmpty());
     }
 
     public function test_it_finds_pending_product_subscriptions()
@@ -149,7 +201,6 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
 INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
 VALUES (:productId, :subscriptionId, :suggestedData)
 SQL;
-
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->prepare($query);
         $statement->execute(

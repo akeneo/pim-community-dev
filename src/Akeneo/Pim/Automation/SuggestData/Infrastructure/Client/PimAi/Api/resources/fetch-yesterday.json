@@ -84,9 +84,87 @@
             }
           }
         }
+      },
+      {
+        "id": "67fadef5-46f5-4dd4-baed-3b7b67112491",
+        "identifiers": {
+          "upc": "730870200933",
+          "asin": "B00EYZY6AC",
+          "mpn_brand": {
+            "mpn": "FE20093",
+            "brand": "Frederic Fekkai"
+          }
+        },
+        "attributes": {
+          "Memory": "RAM (Installed): 256 MB",
+          "Series": "R7000",
+          "General": "Color: Black",
+          "Features": "Quality of Service (QoS)",
+          "Processor": "1 GHz",
+          "Connectivity": "Wireless, Wired",
+          "Flash Memory": "128 MB",
+          "Power Device": "External Power Adapter",
+          "Product Type": "Wireless Router-4-Port Switch (Integrated)",
+          "Product Color": "Black",
+          "Product Depth": "7.3 Inch",
+          "Product Width": "11.2 Inch",
+          "Wireless Type": "802.11 a/b/g/n/ac",
+          "Enclosure Type": "Desktop",
+          "Frequency Band": "2.4 GHz/5 GHz",
+          "Product Height": "2 Inch",
+          "Product Weight": "1.65 lbs",
+          "Battery Type(s)": "1 Lithium Ion Batteries Required",
+          "Cable(s) Included": "1 x Network Cable",
+          "Hardware Platform": "Pc;Mac;Unix",
+          "Performance / STS": "Data Transfer Rate: 1900 MB/s",
+          "Software Included": "Netgear Genie",
+          "Network Technology": "10/100/1000BASE-T",
+          "Ethernet Technology": "Gigabit Ethernet",
+          "Number of LAN Ports": "4",
+          "Encryption Algorithm": "WPA-PSK, WPA2-PSK",
+          "Network Connectivity": "Wireless-Wi-Fi 802.11a",
+          "ISM Maximum Frequency": "2.4 GHz",
+          "Number Of Usb 2 Ports": "1",
+          "Number Of Usb 3 Ports": "1",
+          "Wireless LAN Standard": "IEEE 802.11ac",
+          "UNII Maximum Frequency": "5 GHz",
+          "Wireless Transmission Speed": "1300 Mbit/s"
+        },
+        "extra": [],
+        "created_at": "2018-09-06T13:39:12+00:00",
+        "refreshed_at": null,
+        "valid_until": "2019-09-06T13:39:12+00:00",
+        "message": "",
+        "_links": {
+          "self": {
+            "href": "/api/subscriptions/67fadef5-46f5-4dd4-baed-3b7b67112491"
+          },
+          "cancel": {
+            "href": "/api/subscriptions/67fadef5-46f5-4dd4-baed-3b7b67112491",
+            "type": "application/prs.hal-forms+json"
+          }
+        },
+        "_embedded": {
+          "cancel": {
+            "_links": {
+              "self": {
+                "href": "/api/subscriptions/67fadef5-46f5-4dd4-baed-3b7b67112491"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "cancel",
+                "description": "cancel a subscription",
+                "method": "DELETE",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": []
+              }
+            }
+          }
+        }
       }
     ]
   },
-  "total": 1,
+  "total": 2,
   "limit": 100
 }

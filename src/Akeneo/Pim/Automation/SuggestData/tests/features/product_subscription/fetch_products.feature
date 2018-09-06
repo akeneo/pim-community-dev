@@ -8,21 +8,33 @@ Feature: Fetch products from PIM.ai
     Given the PIM.ai token is expired
     And last fetch of subscribed products has been done yesterday
     When the subscribed products are fetched from PIM.ai
-    #Then no product subscriptions have been processed (APAI-156)
+    Then 0 suggested data should have been added
 
   Scenario: Successfully fetch products from PIM.ai
     Given PIM.ai is configured with a valid token
+    Given the following attribute:
+      | code | type                   |
+      | ean  | pim_catalog_text       |
+      | sku  | pim_catalog_identifier |
+    And the following family:
+      | code   | attributes |
+      | tshirt | sku,ean    |
+    And a predefined mapping as follows:
+      | pim_ai_code | attribute_code |
+      | upc         | ean            |
+    And the following product subscribed to pim.ai:
+      | identifier | family | ean          |
+      | ts_0013    | tshirt | 606449099812 |
+      | ts_0042    | tshirt | 730870200933 |
     And last fetch of subscribed products has been done yesterday
-    When the subscribed products are fetched from PIM.ai
-    #Then suggested data should be processed (APAI-156)
+    #When the subscribed products are fetched from PIM.ai (APAI-153)
+    #Then 2 suggested data should have been added (APAI-153)
 
   Scenario: Successfully fetch no product from PIM.ai
     Given PIM.ai is configured with a valid token
     And last fetch of subscribed products has been done today
     When the subscribed products are fetched from PIM.ai
-    #Then no product subscriptions have been processed (APAI-156)
-
-  #Scenario: Token not configured or invalid
+    Then 0 suggested data should have been added
 
   #Scenario: Identifiers mapping not configured or invalid
 

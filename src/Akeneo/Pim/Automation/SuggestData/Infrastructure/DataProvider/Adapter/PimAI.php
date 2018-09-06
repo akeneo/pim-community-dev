@@ -117,11 +117,24 @@ class PimAI implements DataProviderInterface
      */
     public function fetch(): ProductSubscriptionsResponse
     {
-        $clientResponse = $this->subscriptionApi->fetchProducts();
+        try {
+            $clientResponse = $this->subscriptionApi->fetchProducts();
+        } catch (ClientException $e) {
+            throw new ProductSubscriptionException($e->getMessage());
+        }
 
-        return new ProductSubscriptionsResponse(
-            $clientResponse->content()->getSubscriptions()
-        );
+        $subscriptions = $clientResponse->content()->getSubscriptions();
+
+        $subscriptionsResponse = new ProductSubscriptionsResponse();
+        foreach ($subscriptions as $subscription) {
+            $subscriptionResponse = new ProductSubscriptionResponse(
+                42, // @TODO: Use tracker id (See APAI-153)
+                $subscription->getSubscriptionId(),
+                $subscription->getAttributes()
+            );
+            $subscriptionsResponse->add($subscriptionResponse);
+        }
+        return $subscriptionsResponse;
     }
 
     /**
