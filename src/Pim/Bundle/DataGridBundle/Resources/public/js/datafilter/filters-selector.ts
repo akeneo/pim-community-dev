@@ -64,7 +64,6 @@ class FiltersColumn extends BaseView {
         filterModule.render()
         filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
         filterModule.on('disable', (filter: any) => {
-          console.log('disable a filter', filter)
           mediator.trigger('filters-selector:disable-filter', filter)
           this.updateDatagridStateWithFilters.bind(this)
         })
