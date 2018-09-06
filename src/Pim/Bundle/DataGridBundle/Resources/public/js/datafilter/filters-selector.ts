@@ -1,6 +1,4 @@
 import BaseView = require('pimenrich/js/view/base')
-import * as _ from 'underscore'
-
 const mediator = require('oro/mediator')
 const requireContext = require('require-context')
 
@@ -19,12 +17,8 @@ class FiltersColumn extends BaseView {
     }
   }
 
-  public className() {
-    return 'filter-box'
-  }
-
   constructor(options: {config: any}) {
-    super(options)
+    super({...options, ...{ className: 'filter-box' }})
 
     this.config = {...this.config, ...options.config}
     this.modules = {}
