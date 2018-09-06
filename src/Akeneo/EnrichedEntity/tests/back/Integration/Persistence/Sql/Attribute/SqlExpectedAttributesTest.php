@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -49,19 +50,56 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_things()
+    public function it_returns_all_attributes()
     {
         $designer = EnrichedEntityIdentifier::fromString('designer');
-        $this->loadAttribute('designer', 'image', false, false, false);
-        $this->loadAttribute('designer', 'description', false, false, true);
-        $this->loadAttribute('designer', 'name', false, true, true);
-        $this->loadAttribute('designer', 'height', false, true, false);
-        $this->loadAttribute('designer', 'weigth', true, true, true);
-        $this->loadAttribute('designer', 'popularity', true, true, false);
-        $this->loadAttribute('designer', 'age', true, false, false);
-        // $this->loadAttribute('brand', 'name', true, false, true);
-        $results = $this->expectedAttributes->withEnrichedEntityIdentifier($designer);
-        // Assert::assertTrue($isExisting);
+        $image = $this->loadAttribute('designer', 'image', false, false, false);
+        $description = $this->loadAttribute('designer', 'description', false, false, true);
+        $name = $this->loadAttribute('designer', 'name', false, true, true);
+        $height = $this->loadAttribute('designer', 'height', false, true, false);
+        $weight = $this->loadAttribute('designer', 'weigth', true, true, true);
+        $popularity = $this->loadAttribute('designer', 'popularity', true, true, false);
+        $age = $this->loadAttribute('designer', 'age', true, false, false);
+        $results = ($this->expectedAttributes)($designer);
+        $this->assertAttribute($image, $results[sprintf('%s', $image->getIdentifier())]);
+        $this->assertAttribute($description, $results[sprintf('%s', $description->getIdentifier())]);
+        $this->assertAttribute($name, $results[sprintf('%sen_US', $name->getIdentifier())]);
+        $this->assertAttribute($height, $results[sprintf('%sen_US', $height->getIdentifier())]);
+        $this->assertAttribute($weight, $results[sprintf('%secommerceen_US', $weight->getIdentifier())]);
+        $this->assertAttribute($popularity, $results[sprintf('%secommerceen_US', $popularity->getIdentifier())]);
+        $this->assertAttribute($age, $results[sprintf('%secommerce', $age->getIdentifier())]);
+        $this->assertSame(count($results), 7);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_only_required_attributes()
+    {
+        $designer = EnrichedEntityIdentifier::fromString('designer');
+        $image = $this->loadAttribute('designer', 'image', false, false, false);
+        $description = $this->loadAttribute('designer', 'description', false, false, true);
+        $name = $this->loadAttribute('designer', 'name', false, true, true);
+        $height = $this->loadAttribute('designer', 'height', false, true, false);
+        $weight = $this->loadAttribute('designer', 'weigth', true, true, true);
+        $popularity = $this->loadAttribute('designer', 'popularity', true, true, false);
+        $age = $this->loadAttribute('designer', 'age', true, false, false);
+        $results = ($this->expectedAttributes)($designer, true);
+        $this->assertAttribute($description, $results[sprintf('%s', $description->getIdentifier())]);
+        $this->assertAttribute($name, $results[sprintf('%sen_US', $name->getIdentifier())]);
+        $this->assertAttribute($weight, $results[sprintf('%secommerceen_US', $weight->getIdentifier())]);
+        $this->assertSame(count($results), 3);
+    }
+
+    private function assertAttribute(
+        AbstractAttribute $expectedAttribute,
+        AbstractAttribute $actualAttribute
+    ): void {
+        $expected = $expectedAttribute->normalize();
+        $actual = $actualAttribute->normalize();
+        sort($expected['labels']);
+        sort($actual['labels']);
+        $this->assertSame($expected, $actual);
     }
 
     private function resetDB(): void
@@ -83,7 +121,7 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
         $enrichedEntityRepository->create($enrichedEntity);
     }
 
-    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale, bool $isRequired): AttributeIdentifier
+    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale, bool $isRequired): AbstractAttribute
     {
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
@@ -91,22 +129,22 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
             AttributeCode::fromString($attributeCode)
         );
 
-        $attributeRepository->create(
-            TextAttribute::createText(
-                $identifier,
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                AttributeCode::fromString($attributeCode),
-                LabelCollection::fromArray(['fr_FR' => 'dummy label']),
-                AttributeOrder::fromInteger($this->order++),
-                AttributeIsRequired::fromBoolean($isRequired),
-                AttributeValuePerChannel::fromBoolean($hasValuePerChannel),
-                AttributeValuePerLocale::fromBoolean($hasValuePerLocale),
-                AttributeMaxLength::fromInteger(25),
-                AttributeValidationRule::none(),
-                AttributeRegularExpression::createEmpty()
-            )
+        $attribute = TextAttribute::createText(
+            $identifier,
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            AttributeCode::fromString($attributeCode),
+            LabelCollection::fromArray(['fr_FR' => 'dummy label']),
+            AttributeOrder::fromInteger($this->order++),
+            AttributeIsRequired::fromBoolean($isRequired),
+            AttributeValuePerChannel::fromBoolean($hasValuePerChannel),
+            AttributeValuePerLocale::fromBoolean($hasValuePerLocale),
+            AttributeMaxLength::fromInteger(25),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
         );
 
-        return $identifier;
+        $attributeRepository->create($attribute);
+
+        return $attribute;
     }
 }

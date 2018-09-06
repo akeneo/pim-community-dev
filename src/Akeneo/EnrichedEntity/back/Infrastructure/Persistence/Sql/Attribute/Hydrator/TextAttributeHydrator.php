@@ -27,35 +27,35 @@ use Doctrine\DBAL\Types\Type;
  */
 class TextAttributeHydrator extends AbstractAttributeHydrator
 {
-    public function supports(array $result): bool
+    public function supports(array $row): bool
     {
-        return isset($result['attribute_type']) && 'text' === $result['attribute_type'];
+        return isset($row['attribute_type']) && 'text' === $row['attribute_type'];
     }
 
-    public function convertAdditionalProperties(AbstractPlatform $platform, array $result): array
+    public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $result['is_textarea'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['additional_properties']['is_textarea'], $platform);
-        $result['max_length'] = Type::getType(Type::INTEGER)->convertToPhpValue($result['additional_properties']['max_length'], $platform);
-        if (true === $result['additional_properties']['is_textarea']) {
-            $result['is_rich_text_editor'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['additional_properties']['is_rich_text_editor'], $platform);
+        $row['is_textarea'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_textarea'], $platform);
+        $row['max_length'] = Type::getType(Type::INTEGER)->convertToPhpValue($row['additional_properties']['max_length'], $platform);
+        if (true === $row['additional_properties']['is_textarea']) {
+            $row['is_rich_text_editor'] = Type::getType(Type::BOOLEAN)->convertToPhpValue($row['additional_properties']['is_rich_text_editor'], $platform);
         } else {
-            $result['validation_rule'] = Type::getType(Type::STRING)->convertToPhpValue($result['additional_properties']['validation_rule'], $platform);
-            $result['regular_expression'] = Type::getType(Type::STRING)->convertToPhpValue($result['additional_properties']['regular_expression'], $platform);
+            $row['validation_rule'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['validation_rule'], $platform);
+            $row['regular_expression'] = Type::getType(Type::STRING)->convertToPhpValue($row['additional_properties']['regular_expression'], $platform);
         }
 
-        return $result;
+        return $row;
     }
 
-    protected function hydrateAttribute(array $result): AbstractAttribute
+    protected function hydrateAttribute(array $row): AbstractAttribute
     {
-        if (true === $result['is_textarea']) {
-            return $this->hydrateTextArea($result);
+        if (true === $row['is_textarea']) {
+            return $this->hydrateTextArea($row);
         }
 
-        return $this->hydrateSimpleText($result);
+        return $this->hydrateSimpleText($row);
     }
 
-    protected function getExpectedKeys(): array
+    protected function getExpectedProperties(): array
     {
         return [
             'identifier',
@@ -75,47 +75,47 @@ class TextAttributeHydrator extends AbstractAttributeHydrator
         ];
     }
 
-    private function hydrateTextArea(array $result): TextAttribute
+    private function hydrateTextArea(array $row): TextAttribute
     {
-        $maxLength = null === $result['max_length'] ?
+        $maxLength = null === $row['max_length'] ?
             AttributeMaxLength::noLimit()
-            : AttributeMaxLength::fromInteger($result['max_length']);
+            : AttributeMaxLength::fromInteger($row['max_length']);
 
         return TextAttribute::createTextarea(
-            AttributeIdentifier::fromString($result['identifier']),
-            EnrichedEntityIdentifier::fromString($result['enriched_entity_identifier']),
-            AttributeCode::fromString($result['code']),
-            LabelCollection::fromArray($result['labels']),
-            AttributeOrder::fromInteger($result['attribute_order']),
-            AttributeIsRequired::fromBoolean($result['is_required']),
-            AttributeValuePerChannel::fromBoolean($result['value_per_channel']),
-            AttributeValuePerLocale::fromBoolean($result['value_per_locale']),
+            AttributeIdentifier::fromString($row['identifier']),
+            EnrichedEntityIdentifier::fromString($row['enriched_entity_identifier']),
+            AttributeCode::fromString($row['code']),
+            LabelCollection::fromArray($row['labels']),
+            AttributeOrder::fromInteger($row['attribute_order']),
+            AttributeIsRequired::fromBoolean($row['is_required']),
+            AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
+            AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             $maxLength,
-            AttributeIsRichTextEditor::fromBoolean($result['additional_properties']['is_rich_text_editor'])
+            AttributeIsRichTextEditor::fromBoolean($row['additional_properties']['is_rich_text_editor'])
         );
     }
 
-    private function hydrateSimpleText($result): TextAttribute
+    private function hydrateSimpleText($row): TextAttribute
     {
-        $maxLength = null === $result['max_length'] ?
+        $maxLength = null === $row['max_length'] ?
             AttributeMaxLength::noLimit()
-            : AttributeMaxLength::fromInteger($result['max_length']);
-        $validationRule = null === $result['validation_rule'] ?
+            : AttributeMaxLength::fromInteger($row['max_length']);
+        $validationRule = null === $row['validation_rule'] ?
             AttributeValidationRule::none()
-            : AttributeValidationRule::fromString($result['validation_rule']);
-        $regularExpression = null === $result['regular_expression'] ?
+            : AttributeValidationRule::fromString($row['validation_rule']);
+        $regularExpression = null === $row['regular_expression'] ?
             AttributeRegularExpression::createEmpty()
-            : AttributeRegularExpression::fromString($result['regular_expression']);
+            : AttributeRegularExpression::fromString($row['regular_expression']);
 
         return TextAttribute::createText(
-            AttributeIdentifier::fromString($result['identifier']),
-            EnrichedEntityIdentifier::fromString($result['enriched_entity_identifier']),
-            AttributeCode::fromString($result['code']),
-            LabelCollection::fromArray($result['labels']),
-            AttributeOrder::fromInteger($result['attribute_order']),
-            AttributeIsRequired::fromBoolean($result['is_required']),
-            AttributeValuePerChannel::fromBoolean($result['value_per_channel']),
-            AttributeValuePerLocale::fromBoolean($result['value_per_locale']),
+            AttributeIdentifier::fromString($row['identifier']),
+            EnrichedEntityIdentifier::fromString($row['enriched_entity_identifier']),
+            AttributeCode::fromString($row['code']),
+            LabelCollection::fromArray($row['labels']),
+            AttributeOrder::fromInteger($row['attribute_order']),
+            AttributeIsRequired::fromBoolean($row['is_required']),
+            AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
+            AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             $maxLength,
             $validationRule,
             $regularExpression

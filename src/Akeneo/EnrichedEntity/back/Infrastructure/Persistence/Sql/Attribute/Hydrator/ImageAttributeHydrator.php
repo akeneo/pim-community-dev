@@ -25,40 +25,40 @@ use Doctrine\DBAL\Types\Type;
  */
 class ImageAttributeHydrator extends AbstractAttributeHydrator
 {
-    public function supports(array $result): bool
+    public function supports(array $row): bool
     {
-        return isset($result['attribute_type']) && 'image' === $result['attribute_type'];
+        return isset($row['attribute_type']) && 'image' === $row['attribute_type'];
     }
 
-    public function convertAdditionalProperties(AbstractPlatform $platform, array $result): array
+    public function convertAdditionalProperties(AbstractPlatform $platform, array $row): array
     {
-        $result['allowed_extensions'] = $result['additional_properties']['allowed_extensions'];
-        $result['max_file_size'] = Type::getType(Type::STRING)->convertToPHPValue($result['additional_properties']['max_file_size'], $platform);
+        $row['allowed_extensions'] = $row['additional_properties']['allowed_extensions'];
+        $row['max_file_size'] = Type::getType(Type::STRING)->convertToPHPValue($row['additional_properties']['max_file_size'], $platform);
 
-        return $result;
+        return $row;
     }
 
-    public function hydrateAttribute(array $result): AbstractAttribute
+    public function hydrateAttribute(array $row): AbstractAttribute
     {
-        $maxFileSize = null === $result['max_file_size'] ?
+        $maxFileSize = null === $row['max_file_size'] ?
             AttributeMaxFileSize::noLimit()
-            : AttributeMaxFileSize::fromString($result['max_file_size']);
+            : AttributeMaxFileSize::fromString($row['max_file_size']);
 
         return ImageAttribute::create(
-            AttributeIdentifier::fromString($result['identifier']),
-            EnrichedEntityIdentifier::fromString($result['enriched_entity_identifier']),
-            AttributeCode::fromString($result['code']),
-            LabelCollection::fromArray($result['labels']),
-            AttributeOrder::fromInteger($result['attribute_order']),
-            AttributeIsRequired::fromBoolean($result['is_required']),
-            AttributeValuePerChannel::fromBoolean($result['value_per_channel']),
-            AttributeValuePerLocale::fromBoolean($result['value_per_locale']),
+            AttributeIdentifier::fromString($row['identifier']),
+            EnrichedEntityIdentifier::fromString($row['enriched_entity_identifier']),
+            AttributeCode::fromString($row['code']),
+            LabelCollection::fromArray($row['labels']),
+            AttributeOrder::fromInteger($row['attribute_order']),
+            AttributeIsRequired::fromBoolean($row['is_required']),
+            AttributeValuePerChannel::fromBoolean($row['value_per_channel']),
+            AttributeValuePerLocale::fromBoolean($row['value_per_locale']),
             $maxFileSize,
-            AttributeAllowedExtensions::fromList($result['allowed_extensions'])
+            AttributeAllowedExtensions::fromList($row['allowed_extensions'])
         );
     }
 
-    protected function getExpectedKeys(): array
+    protected function getExpectedProperties(): array
     {
         return [
             'identifier',

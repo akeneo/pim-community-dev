@@ -14,24 +14,25 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\SqlExpectedAttributesInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ExpectedAttributesInterface;
 use Doctrine\DBAL\Connection;
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 
-// class SqlExpectedAttributes implements SqlExpectedAttributesInterface
-class SqlExpectedAttributes
+class SqlExpectedAttributes implements ExpectedAttributesInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
+    /** @var AttributeHydratorRegistry */
+    private $attributeHydratorRegistry;
+
+    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
     {
         $this->sqlConnection = $sqlConnection;
+        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
     }
 
-    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, bool $onlyRequired = false, bool $withAttribute = true)
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier, bool $onlyRequired = false, bool $withAttribute = true)
     {
         $attributeQuery = <<<SQL
         SELECT identifier FROM akeneo_enriched_entity_attribute WHERE enriched_entity_identifier = :enriched_entity_identifier
@@ -77,8 +78,15 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'enriched_entity_identifier' => $enrichedEntityIdentifier,
         ]);
-        $result = $statement->fetchAll();
+        $rows = $statement->fetchAll();
 
-        return $result;
+        $expectedAttributes = [];
+        foreach ($rows as $row) {
+            $expectedAttributes[$row['key']] = $withAttribute ?
+                $this->attributeHydratorRegistry->getHydrator($row)->hydrate($row) :
+                null;
+        }
+
+        return $expectedAttributes;
     }
 }
