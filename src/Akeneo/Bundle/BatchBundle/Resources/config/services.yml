@@ -40,6 +40,7 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, lazy: true }
 
+    # TODO merge: remove second argument (@security.token_storage) on master
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:

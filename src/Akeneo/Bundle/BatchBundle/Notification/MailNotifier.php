@@ -21,6 +21,7 @@ class MailNotifier implements Notifier
     protected $logger;
 
     /**
+     * @todo @merge: remove on master
      * @var TokenStorageInterface $tokenStorage
      */
     protected $tokenStorage;
@@ -46,6 +47,8 @@ class MailNotifier implements Notifier
     protected $recipientEmail;
 
     /**
+     * @todo @merge: remove $tokenStorage argument from constructor on master
+     *
      * @param BatchLogHandler       $logger
      * @param TokenStorageInterface $tokenStorage
      * @param \Twig_Environment     $twig
@@ -85,7 +88,7 @@ class MailNotifier implements Notifier
      */
     public function notify(JobExecution $jobExecution)
     {
-        if (null === $email = $this->getEmail()) {
+        if (null === $this->recipientEmail) {
             return;
         }
 
@@ -100,32 +103,10 @@ class MailNotifier implements Notifier
         $message = $this->mailer->createMessage();
         $message->setSubject('Job has been executed');
         $message->setFrom($this->senderEmail);
-        $message->setTo($email);
+        $message->setTo($this->recipientEmail);
         $message->setBody($txtBody, 'text/plain');
         $message->addPart($htmlBody, 'text/html');
 
         $this->mailer->send($message);
-    }
-
-    /**
-     * Get the current authenticated user
-     *
-     * @return null|string
-     */
-    private function getEmail()
-    {
-        if ($this->recipientEmail) {
-            return $this->recipientEmail;
-        }
-
-        if (null === $token = $this->tokenStorage->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return;
-        }
-
-        return $user->getEmail();
     }
 }

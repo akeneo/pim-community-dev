@@ -17,11 +17,11 @@ class MailNotifierSpec extends ObjectBehavior
         \Swift_Mailer $mailer
     ) {
         $this->beConstructedWith($handler, $tokenStorage, $twig, $mailer, 'myEmail');
-        $this->setRecipientEmail('destEmail');
     }
 
     function it_notifies(JobExecution $jobExecution, $mailer, \Swift_Message $message)
     {
+        $this->setRecipientEmail('destEmail');
         $mailer->createMessage()->willReturn($message);
         $message->setSubject('Job has been executed')->shouldBeCalled();
         $message->setFrom('myEmail')->shouldBeCalled();
@@ -30,6 +30,12 @@ class MailNotifierSpec extends ObjectBehavior
         $message->addPart(Argument::any(), 'text/html')->shouldBeCalled();
         $mailer->send($message)->shouldBeCalled();
 
+        $this->notify($jobExecution);
+    }
+
+    function it_does_not_notify_if_no_recipient_is_provided(JobExecution $jobExecution, $mailer)
+    {
+        $mailer->send(Argument::any())->shouldNotBeCalled();
         $this->notify($jobExecution);
     }
 }
