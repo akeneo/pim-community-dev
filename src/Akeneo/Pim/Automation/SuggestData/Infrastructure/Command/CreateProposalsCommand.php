@@ -64,6 +64,7 @@ class CreateProposalsCommand extends Command
         $subscriptions = $this->subscriptionRepo->findPendingSubscriptions();
         foreach ($subscriptions as $subscription) {
             $command = new CreateProposalCommand($subscription);
+            // TODO APAI-244: handle errors
             $this->handler->handle($command);
             $output->writeln(
                 sprintf(

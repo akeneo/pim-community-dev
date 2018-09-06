@@ -29,6 +29,8 @@ services:
 
     akeneo.pim.automation.suggest_data.handler.create_proposals:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
 
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
