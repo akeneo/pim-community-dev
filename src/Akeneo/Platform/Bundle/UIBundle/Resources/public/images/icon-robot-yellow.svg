@@ -10,8 +10,8 @@
         <mask id="mask-2" fill="white">
             <use xlink:href="#path-1"></use>
         </mask>
-        <use id="Combined-Shape" fill="#9452BA" fill-rule="nonzero" xlink:href="#path-1"></use>
-        <g id="Colors/Purple" mask="url(#mask-2)" fill="#9452BA">
+        <use id="Combined-Shape" fill="#F8B441" fill-rule="nonzero" xlink:href="#path-1"></use>
+        <g id="Colors/Purple" mask="url(#mask-2)" fill="#F8B441">
             <g transform="translate(0.000000, -30.000000)" id="Background">
                 <rect x="0" y="0" width="512" height="512"></rect>
             </g>
