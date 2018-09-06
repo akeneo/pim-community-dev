@@ -37,7 +37,7 @@ class ProductSubscriptionsResponse
     /**
      * @return ProductSubscriptionResponse[]
      */
-    public function responses()
+    public function responses(): array
     {
         return $this->responses;
     }
@@ -45,7 +45,7 @@ class ProductSubscriptionsResponse
     /**
      * @param ProductSubscriptionResponse $response
      */
-    public function add(ProductSubscriptionResponse $response)
+    public function add(ProductSubscriptionResponse $response): void 
     {
         $this->responses[] = $response;
     }
