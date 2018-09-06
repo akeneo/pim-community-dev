@@ -1,6 +1,0 @@
-config:
-    paths:
-        pimee/dashboard/proposal-widget: pimenterprisedashboard/js/proposal-widget
-
-        #template
-        pimee/templates/dashboard/proposal-widget: pimenterprisedashboard/templates/proposal-widget.html
