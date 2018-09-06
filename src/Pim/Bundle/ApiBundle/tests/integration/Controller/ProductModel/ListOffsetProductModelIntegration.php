@@ -175,7 +175,7 @@ JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $productModels = [];
-        for ($i = 0; $i <= 10001; $i++) {
+        for ($i = 0; $i <= 201; $i++) {
             $productModel = $this->get('pim_catalog.factory.product_model')->create();
             $this->get('pim_catalog.updater.product_model')
                 ->update($productModel, [
@@ -186,7 +186,6 @@ JSON;
         }
 
         $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
-        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 
         $client->request('GET', 'api/rest/v1/product-models?page=101&limit=100');
 
