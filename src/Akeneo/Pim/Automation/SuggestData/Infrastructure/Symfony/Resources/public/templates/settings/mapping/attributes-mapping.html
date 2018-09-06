@@ -6,7 +6,11 @@
         <th class="AknGrid-headerCell"><%- suggest_data %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
-        <tr class="AknGrid-bodyRow searchable-row">
+        <tr
+                class="AknGrid-bodyRow searchable-row"
+                data-pim_ai_attribute="<%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>"
+                data-status="<%- mapping[pim_ai_attribute_code].status %>"
+        >
             <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight searchable-value">
                 <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
             </td>

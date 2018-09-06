@@ -72,7 +72,16 @@ class AttributeMapping extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  render() {
+  configure(): JQueryPromise<any> {
+    return $.when(
+      this.onExtensions('pim_datagrid:filter-front', this.filter.bind(this))
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public render(): BaseForm {
     this.$el.html('');
     const familyMapping: InterfaceNormalizedAttributeMapping = this.getFormData();
     if (familyMapping.hasOwnProperty('mapping') && Object.keys(familyMapping.mapping).length) {
@@ -118,6 +127,67 @@ class AttributeMapping extends BaseForm {
     this.renderExtensions();
 
     return this;
+  }
+
+  /**
+   * Filters the rows with a filter.
+   * Each row contains a 'data' element called 'active-filters'. This element contains the list the filters if the row
+   * should not be displayed by this filter. The row is displayed if there is no active filters in it, i.e. the active
+   * filters are empty.
+   *
+   * @param {{value: string, type: "equals" | "search", field: string}} filter
+   */
+  private filter(filter: { value: string, type: 'equals'|'search', field: string }): void {
+    $('.searchable-row').each((_i: number, row: any) => {
+      const value = $(row).data(filter.field);
+      let filteredByThisFilter = false;
+      switch(filter.type) {
+        case 'equals': filteredByThisFilter = !this.filterEquals(filter.value, value); break;
+        case 'search': filteredByThisFilter = !this.filterSearch(filter.value, value); break;
+      }
+
+      let filters = $(row).data('active-filters');
+      if (filters === undefined) {
+        filters = [];
+      }
+      if ((filters.indexOf(filter.field) < 0) && filteredByThisFilter) {
+        filters.push(filter.field);
+      } else if ((filters.indexOf(filter.field) >= 0) && !filteredByThisFilter) {
+        filters.splice(filters.indexOf(filter.field), 1);
+      }
+      $(row).data('active-filters', filters);
+
+      filters.length > 0 ? $(row).hide() : $(row).show();
+    });
+  }
+
+  /**
+   * Returns true if the values are the same.
+   *
+   * @param {string} filterValue
+   * @param {string} rowValue
+   *
+   * @returns {boolean}
+   */
+  private filterEquals(filterValue: string, rowValue: string): boolean {
+    return filterValue === '' || filterValue === rowValue;
+  }
+
+  /**
+   * Return if the row matches the search filter by words. If the user types 'foo bar', it will look for every row
+   * containing the strings 'foo' and 'bar', no matter the order of the words.
+   *
+   * @param {string} filterValue
+   * @param {string} rowValue
+   *
+   * @returns {boolean}
+   */
+  private filterSearch(filterValue: string, rowValue: string): boolean {
+    const words: string[] = filterValue.split(' ');
+
+    return words.reduce((acc, word) => {
+      return acc && rowValue.indexOf(word) >= 0;
+    }, true);
   }
 }
 
