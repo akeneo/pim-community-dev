@@ -1,5 +1,5 @@
 #!groovy
-@Library("k8s-utils@override")
+@Library("k8s-utils@2.x")
 
 String[] legacyFeatures = ["tests/legacy/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
 String ceBranch = "2.3"
