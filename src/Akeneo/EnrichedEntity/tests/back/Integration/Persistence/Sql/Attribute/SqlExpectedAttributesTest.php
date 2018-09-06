@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -52,54 +54,56 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
      */
     public function it_returns_all_attributes()
     {
+        $resetLocale = <<<SQL
+        INSERT INTO `pim_catalog_locale` (`code`, `is_activated`)
+        VALUES
+            ('de_DE', 1),
+            ('en_US', 1),
+            ('fr_FR', 1);
+SQL;
+        $resetCategory = <<<SQL
+INSERT INTO `pim_catalog_category` (`id`, `parent_id`, `code`, `created`, `root`, `lvl`, `lft`, `rgt`)
+        VALUES
+            (1, NULL, 'master', '2018-09-04 20:00:54', 1, 0, 1, 2);
+SQL;
+        $resetChannel = <<<SQL
+        INSERT INTO `pim_catalog_channel` (`category_id`, `code`, `conversionUnits`)
+        VALUES
+            (1, 'mobile', 'a:0:{}'),
+            (1, 'print', 'a:0:{}'),
+            (1, 'ecommerce', 'a:0:{}');
+SQL;
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_locale;');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_category;');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_channel;');
+        $this->get('database_connection')->executeQuery($resetLocale);
+        $this->get('database_connection')->executeQuery($resetCategory);
+        $this->get('database_connection')->executeQuery($resetChannel);
+
         $designer = EnrichedEntityIdentifier::fromString('designer');
-        $image = $this->loadAttribute('designer', 'image', false, false, false);
-        $description = $this->loadAttribute('designer', 'description', false, false, true);
-        $name = $this->loadAttribute('designer', 'name', false, true, true);
-        $height = $this->loadAttribute('designer', 'height', false, true, false);
-        $weight = $this->loadAttribute('designer', 'weigth', true, true, true);
-        $popularity = $this->loadAttribute('designer', 'popularity', true, true, false);
-        $age = $this->loadAttribute('designer', 'age', true, false, false);
+        $image = $this->loadAttribute('designer', 'image', false, false);
+        $name = $this->loadAttribute('designer', 'name', false, true);
+        $age = $this->loadAttribute('designer', 'age', true, false);
+        $weight = $this->loadAttribute('designer', 'weigth', true, true);
         $results = ($this->expectedAttributes)($designer);
-        $this->assertAttribute($image, $results[sprintf('%s', $image->getIdentifier())]);
-        $this->assertAttribute($description, $results[sprintf('%s', $description->getIdentifier())]);
-        $this->assertAttribute($name, $results[sprintf('%sen_US', $name->getIdentifier())]);
-        $this->assertAttribute($height, $results[sprintf('%sen_US', $height->getIdentifier())]);
-        $this->assertAttribute($weight, $results[sprintf('%secommerceen_US', $weight->getIdentifier())]);
-        $this->assertAttribute($popularity, $results[sprintf('%secommerceen_US', $popularity->getIdentifier())]);
-        $this->assertAttribute($age, $results[sprintf('%secommerce', $age->getIdentifier())]);
-        $this->assertSame(count($results), 7);
-    }
 
-    /**
-     * @test
-     */
-    public function it_returns_only_required_attributes()
-    {
-        $designer = EnrichedEntityIdentifier::fromString('designer');
-        $image = $this->loadAttribute('designer', 'image', false, false, false);
-        $description = $this->loadAttribute('designer', 'description', false, false, true);
-        $name = $this->loadAttribute('designer', 'name', false, true, true);
-        $height = $this->loadAttribute('designer', 'height', false, true, false);
-        $weight = $this->loadAttribute('designer', 'weigth', true, true, true);
-        $popularity = $this->loadAttribute('designer', 'popularity', true, true, false);
-        $age = $this->loadAttribute('designer', 'age', true, false, false);
-        $results = ($this->expectedAttributes)($designer, true);
-        $this->assertAttribute($description, $results[sprintf('%s', $description->getIdentifier())]);
-        $this->assertAttribute($name, $results[sprintf('%sen_US', $name->getIdentifier())]);
-        $this->assertAttribute($weight, $results[sprintf('%secommerceen_US', $weight->getIdentifier())]);
-        $this->assertSame(count($results), 3);
-    }
-
-    private function assertAttribute(
-        AbstractAttribute $expectedAttribute,
-        AbstractAttribute $actualAttribute
-    ): void {
-        $expected = $expectedAttribute->normalize();
-        $actual = $actualAttribute->normalize();
-        sort($expected['labels']);
-        sort($actual['labels']);
-        $this->assertSame($expected, $actual);
+        $this->assertContains(sprintf('%s', $image->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_en_US', $name->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_de_DE', $name->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_fr_FR', $name->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_ecommerce', $age->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_mobile', $age->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_print', $age->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_mobile_en_US', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_print_en_US', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_ecommerce_de_DE', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_print_de_DE', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_mobile_fr_FR', $weight->getIdentifier()), $results);
+        $this->assertContains(sprintf('%s_print_fr_FR', $weight->getIdentifier()), $results);
+        $this->assertSame(count($results), 16);
     }
 
     private function resetDB(): void
@@ -121,7 +125,7 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
         $enrichedEntityRepository->create($enrichedEntity);
     }
 
-    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale, bool $isRequired): AbstractAttribute
+    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale): AbstractAttribute
     {
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
@@ -135,7 +139,7 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),
-            AttributeIsRequired::fromBoolean($isRequired),
+            AttributeIsRequired::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean($hasValuePerChannel),
             AttributeValuePerLocale::fromBoolean($hasValuePerLocale),
             AttributeMaxLength::fromInteger(25),

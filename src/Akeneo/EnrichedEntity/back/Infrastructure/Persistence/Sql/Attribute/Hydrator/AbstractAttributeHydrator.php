@@ -6,9 +6,9 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrato
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\HydratorInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -16,19 +16,19 @@ use Doctrine\DBAL\Connection;
  */
 abstract class AbstractAttributeHydrator implements HydratorInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    /** @var \Doctrine\DBAL\Platforms\AbstractPlatform */
+    private $platform;
 
     public function __construct(Connection $sqlConnection)
     {
-        $this->sqlConnection = $sqlConnection;
+        $this->platform = $sqlConnection->getDatabasePlatform();
     }
 
     public function hydrate(array $row): AbstractAttribute
     {
         $this->checkRowProperties($row);
-        $row = $this->convertCommonProperties($this->sqlConnection->getDatabasePlatform(), $row);
-        $row = $this->convertAdditionalProperties($this->sqlConnection->getDatabasePlatform(), $row);
+        $row = $this->convertCommonProperties($this->platform, $row);
+        $row = $this->convertAdditionalProperties($this->platform, $row);
 
         return $this->hydrateAttribute($row);
     }

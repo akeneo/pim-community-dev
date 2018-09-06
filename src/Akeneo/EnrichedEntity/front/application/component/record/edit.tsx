@@ -11,7 +11,6 @@ import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import {saveRecord, deleteRecord, recordImageUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
-import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 const securityContext = require('pim/security-context');
 import ImageModel from 'akeneoenrichedentity/domain/model/image';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
@@ -42,7 +41,6 @@ interface StateProps {
 interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
-    onRecordCreationStart: () => void;
     onLocaleChanged: (locale: Locale) => void;
     onImageUpdated: (image: ImageModel | null) => void;
     onDelete: (record: Record) => void;
@@ -79,22 +77,6 @@ class RecordEditView extends React.Component<EditProps> {
     if (confirm(__('pim_enriched_entity.record.module.delete.confirm'))) {
       this.props.events.onDelete(this.props.record);
     }
-  };
-
-  private getPrimaryAction = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
-    if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
-      return (
-        <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
-          {__('pim_enriched_entity.record.button.create')}
-        </button>
-      );
-    }
-
-    return (
-      <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
-        {__('pim_enriched_entity.record.button.save')}
-      </button>
-    );
   };
 
   private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
@@ -172,7 +154,9 @@ class RecordEditView extends React.Component<EditProps> {
                         <div className="AknButtonList">
                           {this.getSecondaryActions(this.props.acls.delete)}
                           <div className="AknTitleContainer-rightButton">
-                            {this.getPrimaryAction(this.props.acls.create, this.props.sidebar.currentTab)}
+                            <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
+                              {__('pim_enriched_entity.record.button.save')}
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -238,9 +222,6 @@ export default connect(
       events: {
         onSaveEditForm: () => {
           dispatch(saveRecord());
-        },
-        onRecordCreationStart: () => {
-          dispatch(recordCreationStart());
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));

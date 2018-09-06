@@ -85,10 +85,10 @@ module.exports = async function(cucumber) {
     await showAttributesTab(this.page);
 
     const attributes = await await getElement(this.page, 'Attributes');
-    const isValid = await expectedAttributes.hashes().reduce(async (isValid, expectedAttribute) => {
-      return (await isValid) && (await attributes.hasAttribute(expectedAttribute.code, expectedAttribute.type));
+    const hasAllAttribute = await expectedAttributes.hashes().reduce(async (hasAllAttribute, expectedAttribute) => {
+      return (await hasAllAttribute) && (await attributes.hasAttribute(expectedAttribute.code, expectedAttribute.type));
     }, true);
-    assert.strictEqual(isValid, true);
+    assert.strictEqual(hasAllAttribute, true);
   });
 
   const editAttribute = async function(page, attributeIdentifier) {

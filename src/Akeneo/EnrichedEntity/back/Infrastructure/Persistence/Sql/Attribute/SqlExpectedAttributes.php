@@ -15,8 +15,8 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ExpectedAttributesInterface;
-use Doctrine\DBAL\Connection;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Doctrine\DBAL\Connection;
 
 class SqlExpectedAttributes implements ExpectedAttributesInterface
 {
@@ -32,61 +32,39 @@ class SqlExpectedAttributes implements ExpectedAttributesInterface
         $this->attributeHydratorRegistry = $attributeHydratorRegistry;
     }
 
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier, bool $onlyRequired = false, bool $withAttribute = true)
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier)
     {
         $attributeQuery = <<<SQL
         SELECT identifier FROM akeneo_enriched_entity_attribute WHERE enriched_entity_identifier = :enriched_entity_identifier
 SQL;
 
-        if ($onlyRequired) {
-            $attributeQuery .= <<<SQL
-           AND is_required = 1
-SQL;
-        }
-
-        $valueQuery = <<<SQL
+        $query = <<<SQL
         SELECT
-            CONCAT(attribute_per_locale_and_channel.identifier, channel.code, locale.code) as value_key, identifier
+            CONCAT(attribute_per_locale_and_channel.identifier, '_', channel.code, '_', locale.code) as `key`
             FROM (%s AND value_per_locale = 1 and value_per_channel = 1) as attribute_per_locale_and_channel
             JOIN (SELECT code FROM pim_catalog_locale WHERE is_activated = 1) as locale
             JOIN (SELECT code FROM pim_catalog_channel) as channel
-        UNION SELECT CONCAT(attribute_per_channel.identifier, channel.code), identifier
+        UNION SELECT
+            CONCAT(attribute_per_channel.identifier, '_', channel.code) as `key`
             FROM (%s AND value_per_locale = 0 and value_per_channel = 1) as attribute_per_channel
             JOIN (SELECT code FROM pim_catalog_channel) as channel
-        UNION SELECT CONCAT(attribute_per_locale.identifier, locale.code), identifier
+        UNION SELECT
+            CONCAT(attribute_per_locale.identifier, '_', locale.code) as `key`
             FROM (%s AND value_per_locale = 1 and value_per_channel = 0) as attribute_per_locale
             JOIN (SELECT code FROM pim_catalog_locale WHERE is_activated = 1) as locale
-        UNION SELECT CONCAT(attribute.identifier), identifier
+        UNION SELECT
+            identifier as `key`
             FROM (%s AND value_per_locale = 0 and value_per_channel = 0) as attribute
-            JOIN (SELECT code FROM pim_catalog_locale WHERE is_activated = 1) as locale
 SQL;
-
-        if ($withAttribute) {
-            $attributeJoinQuery = <<<SQL
-            SELECT value_key as `key`, attribute.* FROM (%s) as join_value_key JOIN akeneo_enriched_entity_attribute as attribute
-            WHERE attribute.identifier = join_value_key.identifier
-SQL;
-            $query = sprintf($attributeJoinQuery, $valueQuery);
-        } else {
-            $joinQuery = <<<SQL
-            SELECT value_key as `key` FROM (%s) as value_key
-SQL;
-            $query = sprintf($joinQuery, $valueQuery);
-        }
 
         $query = sprintf($query, $attributeQuery, $attributeQuery, $attributeQuery, $attributeQuery);
         $statement = $this->sqlConnection->executeQuery($query, [
             'enriched_entity_identifier' => $enrichedEntityIdentifier,
         ]);
-        $rows = $statement->fetchAll();
 
-        $expectedAttributes = [];
-        foreach ($rows as $row) {
-            $expectedAttributes[$row['key']] = $withAttribute ?
-                $this->attributeHydratorRegistry->getHydrator($row)->hydrate($row) :
-                null;
-        }
+        $rows = $statement->fetchAll(\PDO::FETCH_COLUMN);
 
-        return $expectedAttributes;
+        // Add hydration in next PR
+        return $rows;
     }
 }

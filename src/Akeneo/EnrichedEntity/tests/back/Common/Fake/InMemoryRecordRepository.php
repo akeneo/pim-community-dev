@@ -63,8 +63,7 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
             }
         }
 
-        //Not ideal
-        throw RecordNotFoundException::withIdentifier($code);
+        throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
     }
 
     public function count(): int

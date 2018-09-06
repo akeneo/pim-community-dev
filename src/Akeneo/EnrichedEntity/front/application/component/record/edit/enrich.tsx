@@ -24,7 +24,7 @@ interface DispatchProps {
   };
 }
 
-class Properties extends React.Component<StateProps & DispatchProps> {
+class Enrich extends React.Component<StateProps & DispatchProps> {
   private labelInput: HTMLInputElement;
   props: StateProps & DispatchProps;
 
@@ -135,4 +135,4 @@ export default connect(
       },
     };
   }
-)(Properties);
+)(Enrich);

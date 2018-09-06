@@ -6,7 +6,6 @@ import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
-import attributeFetcher from 'akeneoenrichedentity/infrastructure/fetcher/attribute';
 
 const routing = require('routing');
 
@@ -23,28 +22,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
       })
     );
 
-    const attributes = await attributeFetcher.fetchAll(enrichedEntityIdentifier);
-
-    const record = {
-      ...backendRecord,
-      image: {
-        filePath: '4/b/2/3/4b23afc720c1698357eb6dce11b0e2a85af7b1be_tom_dixon.jpeg',
-        originalFilename: 'tom_dixon.jpeg',
-      },
-      values: {
-        description_1234567890: [
-          {
-            identifier: 'description_1234567890',
-            data: 'a nice description',
-            locale: 'en_US',
-            channel: null,
-          },
-        ],
-      },
-      attributes,
-    };
-
-    return this.hydrator(record);
+    return this.hydrator(backendRecord);
   }
 
   async fetchAll(enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Record[]> {

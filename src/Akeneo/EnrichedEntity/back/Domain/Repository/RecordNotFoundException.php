@@ -33,7 +33,7 @@ class RecordNotFoundException extends \RuntimeException
         return new self($message);
     }
 
-    public static function withCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): self
+    public static function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): self
     {
         $message = sprintf(
             'Could not find record with code "%s" for enriched entity "%s"',

@@ -170,9 +170,7 @@ SQL;
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->attributeHydratorRegistry
-            ->getHydrator($result)
-            ->hydrate($this->sqlConnection->getDatabasePlatform(), $result);
+        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
     }
 
     /**
@@ -209,7 +207,7 @@ SQL;
         foreach ($results as $result) {
             $attributes[] = $this->attributeHydratorRegistry
                 ->getHydrator($result)
-                ->hydrate($this->sqlConnection->getDatabasePlatform(), $result);
+                ->hydrate($result);
         }
 
         return $attributes;

@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class RecordCodeShouldBeUnique extends Constraint
 {
-    //todo, what to do here: we should not prompt the user about the identifier as he has no power on it
     public const ERROR_MESSAGE = 'pim_enriched_entity.record.validation.code.should_be_unique';
 
     public function getTargets()

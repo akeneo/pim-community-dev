@@ -115,10 +115,9 @@ SQL;
             ]
         );
         $result = $statement->fetch();
-        $statement->closeCursor();
 
         if (!$result) {
-            throw RecordNotFoundException::withCode($enrichedEntityIdentifier, $code);
+            throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
         }
 
         return $this->hydrateRecord($result['identifier'], $result['code'], $result['enriched_entity_identifier'], $result['labels']);
@@ -138,7 +137,6 @@ SQL;
             ]
         );
         $result = $statement->fetch();
-        $statement->closeCursor();
 
         if (!$result) {
             throw RecordNotFoundException::withIdentifier($identifier);
