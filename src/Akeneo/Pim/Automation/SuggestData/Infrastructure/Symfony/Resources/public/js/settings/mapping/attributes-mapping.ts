@@ -115,6 +115,8 @@ class AttributeMapping extends BaseForm {
       });
     }
 
+    this.renderExtensions();
+
     return this;
   }
 }

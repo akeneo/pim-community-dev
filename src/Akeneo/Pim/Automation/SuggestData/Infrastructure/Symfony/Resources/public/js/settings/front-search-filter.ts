@@ -20,7 +20,7 @@ class FrontSearchFilter extends BaseForm {
    * {@inheritdoc}
    */
   constructor(options: { config: Object }) {
-    super({...options, ...{ className: 'AknTitleContainer-search' }});
+    super({...options, ...{ className: 'AknFilterBox-searchContainer' }});
   };
 
   /**

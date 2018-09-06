@@ -1,0 +1,19 @@
+<div class="AknFilterBox-filter" data-toggle="dropdown">
+    <span class="AknFilterBox-filterLabel"><%- label %></span>
+    <button type="button" class="ui-multiselect ui-corner-all AknFilterBox-filterCriteria">
+        <span class="filter-criteria-hint">
+            <%- filters.find((filter) => {
+                return filter.value === currentValue;
+            }).label %>
+        </span>
+        <span class="AknFilterBox-filterCaret"></span>
+    </button>
+</div>
+<ul class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%- label %></div>
+    <% filters.forEach((filter) => { %>
+        <li class="AknDisplaySelector-item">
+            <a class="AknDropdown-menuLink"><%- filter.label %></a>
+        </li>
+    <% }) %>
+</ul>
