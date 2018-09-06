@@ -58,7 +58,9 @@ define([
              */
             render: function () {
                 this.$el.html(this.template({
-                    attributeGroups: _.sortBy(_.values(this.attributeGroups), 'sort_order'),
+                    attributeGroups: _.sortBy(_.values(this.attributeGroups), function(attributeGroup) {
+                        return [attributeGroup.sort_order, attributeGroup.code].join('_');
+                    }),
                     i18n: i18n,
                     uiLocale: UserContext.get('catalogLocale')
                 }));

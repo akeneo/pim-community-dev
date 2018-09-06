@@ -116,7 +116,9 @@ define(
                     if (this.shouldBeDisplayed(this.getElements())) {
                         this.$el.html(this.template({
                             current: this.getCurrent(),
-                            elements: _.sortBy(this.getElements(), 'sort_order'),
+                            elements: _.sortBy(this.getElements(), function(attributeGroup) {
+                                return [attributeGroup.sort_order, attributeGroup.code].join('_');
+                            }),
                             badges: this.badges,
                             locale: UserContext.get('catalogLocale'),
                             toFillAttributeGroups: toFillAttributeGroups,
