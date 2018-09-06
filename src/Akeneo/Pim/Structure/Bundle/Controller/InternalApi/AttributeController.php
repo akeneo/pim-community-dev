@@ -151,8 +151,10 @@ class AttributeController
             $options['identifiers'] = array_unique(explode(',', $request->request->get('identifiers')));
         }
 
-        if ($request->request->has('types')) {
-            $options['types'] = explode(',', $request->request->get('types'));
+        if ($request->get('types', null) !== null) {
+            $options['types'] = is_array($request->get('types')) ?
+                $request->get('types') :
+                explode(',', $request->get('types'));
         }
 
         if ($request->request->has('attribute_groups')) {
