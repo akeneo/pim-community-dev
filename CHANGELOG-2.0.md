@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7639: Fix the "forgot password" title visibility 
+
 # 2.0.36 (2018-09-05)
 
 ## Bug fixes
