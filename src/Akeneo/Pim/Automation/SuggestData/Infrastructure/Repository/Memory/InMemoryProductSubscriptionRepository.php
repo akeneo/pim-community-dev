@@ -77,7 +77,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findPendingSubscriptions(): array
     {

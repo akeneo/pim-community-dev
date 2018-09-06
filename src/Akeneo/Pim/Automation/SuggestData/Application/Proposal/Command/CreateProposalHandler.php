@@ -75,7 +75,7 @@ class CreateProposalHandler
     public function handle(CreateProposalCommand $command): void
     {
         $product = $command->getProductSubscription()->getProduct();
-        if ($product->isVariant() || 0 === count($product->getCategoryCodes()) || null === $product->getFamily()) {
+        if (0 === count($product->getCategoryCodes())) {
             // TODO APAI-244: handle error
             return;
         }
@@ -141,6 +141,7 @@ class CreateProposalHandler
                 $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
                 $this->productDraftSaver->save($productDraft);
 
+                // TODO APAI-252: handle notifications
                 //$this->eventDispatcher->dispatch(EntityWithValuesDraftEvents::POST_READY, new GenericEvent($productDraft));
             }
         } catch (\Exception $e) {

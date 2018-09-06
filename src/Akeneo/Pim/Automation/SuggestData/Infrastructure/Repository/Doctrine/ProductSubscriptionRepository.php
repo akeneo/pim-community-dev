@@ -74,7 +74,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findPendingSubscriptions(): array
     {

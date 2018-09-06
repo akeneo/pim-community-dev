@@ -47,48 +47,13 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(CreateProposalHandler::class);
     }
 
-    function it_does_not_do_anything_if_product_is_variant(
-        $suggestedDataNormalizer,
-        CreateProposalCommand $command,
-        ProductInterface $product,
-        ProductSubscriptionInterface $subscription
-    ) {
-        $product->isVariant()->willReturn(true);
-        $subscription->getProduct()->willReturn($product);
-        $command->getProductSubscription()->willReturn($subscription);
-
-        $subscription->getSuggestedData()->shouldNotBeCalled();
-        $suggestedDataNormalizer->normalize(Argument::any())->shouldNotBeCalled();
-
-        $this->handle($command)->shouldReturn(null);
-    }
-
     function it_does_not_do_anything_if_product_is_not_categorized(
         $suggestedDataNormalizer,
         CreateProposalCommand $command,
         ProductInterface $product,
         ProductSubscriptionInterface $subscription
     ) {
-        $product->isVariant()->willReturn(false);
         $product->getCategoryCodes()->willReturn([]);
-        $subscription->getProduct()->willReturn($product);
-        $command->getProductSubscription()->willReturn($subscription);
-
-        $subscription->getSuggestedData()->shouldNotBeCalled();
-        $suggestedDataNormalizer->normalize(Argument::any())->shouldNotBeCalled();
-
-        $this->handle($command)->shouldReturn(null);
-    }
-
-    function it_does_not_do_anything_if_product_has_no_family(
-        $suggestedDataNormalizer,
-        CreateProposalCommand $command,
-        ProductInterface $product,
-        ProductSubscriptionInterface $subscription
-    ) {
-        $product->isVariant()->willReturn(false);
-        $product->getCategoryCodes()->willReturn(['category_1']);
-        $product->getFamily()->willReturn(null);
         $subscription->getProduct()->willReturn($product);
         $command->getProductSubscription()->willReturn($subscription);
 
@@ -110,7 +75,6 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         FamilyInterface $family,
         EntityWithValuesDraftInterface $draft
     ) {
-        $product->isVariant()->willReturn(false);
         $product->getCategoryCodes()->willReturn(['category_1']);
         $product->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(['foo']);
