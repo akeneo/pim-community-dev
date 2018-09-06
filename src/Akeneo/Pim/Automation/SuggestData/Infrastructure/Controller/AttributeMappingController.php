@@ -110,14 +110,16 @@ class AttributeMappingController
                 'mapping' => [
                     'pimaiattributecode1' => [
                         'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 1'
+                            'label' => 'the pim.ai attribute label 1',
+                            'type' => 'metric'
                         ],
                         'attribute' => 'weight',
                         'status' => self::ATTRIBUTE_MAPPED
                     ],
                     'pimaiattributecode3' => [
                         'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 3'
+                            'label' => 'the pim.ai attribute label 3',
+                            'type' => 'select'
                         ],
                         'attribute' => null,
                         'status' => self::ATTRIBUTE_UNMAPPED
@@ -135,14 +137,16 @@ class AttributeMappingController
                 'mapping' => [
                     'pimaiattributecode1' => [
                         'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 1'
+                            'label' => 'the pim.ai attribute label 1',
+                            'type' => 'metric'
                         ],
                         'attribute' => 'weight',
                         'status' => self::ATTRIBUTE_MAPPED
                     ],
                     'pimaiattributecode2' => [
                         'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 2'
+                            'label' => 'the pim.ai attribute label 2',
+                            'type' => 'number'
                         ],
                         'attribute' => null,
                         'status' => self::ATTRIBUTE_PENDING

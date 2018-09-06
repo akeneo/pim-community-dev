@@ -12,13 +12,13 @@ const LineTemplate = require('pimee/template/settings/mapping/attribute-line');
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
 class InterfaceNormalizedAttribute {
-    code: string;
-    labels: { [key: string] : string };
-    group: string
+  code: string;
+  labels: { [key: string]: string };
+  group: string
 }
 
 class InterfaceNormalizedAttributeGroup {
-    labels: { [key: string] : string };
+  labels: { [key: string]: string };
 }
 
 class SimpleSelectAttribute extends BaseSimpleSelect {
@@ -100,6 +100,7 @@ class SimpleSelectAttribute extends BaseSimpleSelect {
       is_locale_specific: false,
       scopable: false,
       search: term,
+      types: this.config.types.join(','),
       options: {
         limit: this.resultsPerPage,
         page: page

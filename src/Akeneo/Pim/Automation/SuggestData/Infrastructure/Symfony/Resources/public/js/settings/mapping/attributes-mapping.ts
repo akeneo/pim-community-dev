@@ -26,8 +26,25 @@ const ATTRIBUTE_PENDING: number = 0;
 const ATTRIBUTE_MAPPED: number = 1;
 const ATTRIBUTE_UNMAPPED: number = 2;
 
+const VALID_MAPPING: { [key: string]: string[] } = {
+  'metric': [ 'pim_catalog_metric' ],
+  'select': [ 'pim_catalog_simpleselect' ],
+  'multiselect': [ 'pim_catalog_multiselect' ],
+  'number': [ 'pim_catalog_number' ],
+  'text': [ 'pim_catalog_text' ],
+};
+
 class InterfaceNormalizedAttributeMapping {
-    mapping: { [key: string] : { attribute: string } };
+    mapping: {
+      [key: string] : {
+        pim_ai_attribute: {
+          label: string,
+          type: string
+        },
+        attribute: string,
+        status: number
+      }
+    };
 }
 
 class AttributeMapping extends BaseForm {
@@ -86,7 +103,8 @@ class AttributeMapping extends BaseForm {
              */
             fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
             label: '',
-            choiceRoute: 'pim_enrich_attribute_rest_index'
+            choiceRoute: 'pim_enrich_attribute_rest_index',
+            types: VALID_MAPPING[mapping[pim_ai_attribute_code].pim_ai_attribute.type],
           },
           className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
         });
