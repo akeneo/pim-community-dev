@@ -1,3 +1,13 @@
+# 1.7.31 (2018-08-22)
+
+## Bug fixes
+
+- PIM-7585: apply permissions on the column picker of the product datagrid
+
+## Improvements
+
+- PIM-7614: Reduce SQL queries and loading time on the product edit form
+
 # 1.7.30 (2018-08-14)
 
 # 1.7.29 (2018-08-01)
