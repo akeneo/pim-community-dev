@@ -16,7 +16,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

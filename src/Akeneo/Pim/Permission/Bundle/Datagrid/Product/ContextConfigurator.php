@@ -20,7 +20,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

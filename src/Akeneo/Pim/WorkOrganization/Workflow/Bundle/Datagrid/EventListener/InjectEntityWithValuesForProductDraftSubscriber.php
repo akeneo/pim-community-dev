@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Inject the entity with values id for product draft datagrid

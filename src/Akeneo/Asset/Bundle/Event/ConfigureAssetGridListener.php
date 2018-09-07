@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Event;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Grid listener to configure asset grid

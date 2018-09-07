@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\Datasource;
+use Oro\Bundle\PimDataGridBundle\Datasource\Datasource;
 use Prophecy\Argument;
 
 class ConfigureRuleRelationGridListenerSpec extends ObjectBehavior

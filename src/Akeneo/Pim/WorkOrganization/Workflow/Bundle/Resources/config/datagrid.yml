@@ -6,7 +6,7 @@ parameters:
     pimee_workflow.datasource.result_record.hydrator.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator
     pimee_workflow.datagrid.mass_action.handler.mass_approve.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler\MassApproveActionHandler
     pimee_workflow.datagrid.datasource.product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource
-    pimee_workflow.datagrid.datasource.product_draft.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pimee_workflow.datagrid.datasource.product_draft.class: Oro\Bundle\PimDataGridBundle\Datasource\Datasource
     pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener\ConfigureProposalGridListener
     pimee_workflow.datagrid.configuration.proposal.context_configurator.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\Proposal\ContextConfigurator
     pimee_workflow.datagrid.product_draft_utility.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ProductDraftFilterUtility

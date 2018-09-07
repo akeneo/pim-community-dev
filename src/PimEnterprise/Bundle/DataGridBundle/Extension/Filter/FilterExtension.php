@@ -20,9 +20,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
-use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
-use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolver;
+use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

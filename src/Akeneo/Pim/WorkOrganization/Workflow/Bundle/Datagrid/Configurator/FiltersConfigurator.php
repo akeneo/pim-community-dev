@@ -7,14 +7,14 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configurator;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Filters configurator for proposal grid.
  *
- * Nearly the same inner workings as CE (@see \Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator)
+ * Nearly the same inner workings as CE (@see \Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator)
  *
  * But does not show the identifier filter by default to the user.
  *

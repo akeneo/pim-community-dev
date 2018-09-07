@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
+use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
 /**
  * @author Marie Bochu <marie.bochu@akeneo.com>

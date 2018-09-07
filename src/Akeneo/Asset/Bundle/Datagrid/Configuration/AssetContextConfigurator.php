@@ -13,8 +13,8 @@ namespace Akeneo\Asset\Bundle\Datagrid\Configuration;
 
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 
 /**
  * Asset grid context configurator

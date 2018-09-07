@@ -14,7 +14,7 @@ namespace Akeneo\Pim\Permission\Bundle\Manager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Pim\Bundle\FilterBundle\Filter\CategoryFilter;
 use Symfony\Component\Security\Core\User\UserInterface;
 

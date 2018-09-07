@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Datagrid\Extension\Selector\Orm\Asset;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\Selector\SelectorInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>

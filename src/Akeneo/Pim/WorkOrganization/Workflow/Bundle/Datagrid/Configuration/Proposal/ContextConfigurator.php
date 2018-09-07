@@ -16,8 +16,8 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 

@@ -123,7 +123,7 @@ class AppKernel extends Kernel
             new Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
             new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
+            new Oro\Bundle\PimDataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle(),

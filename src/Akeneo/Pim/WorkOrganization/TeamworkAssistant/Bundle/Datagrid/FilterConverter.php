@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -13,7 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Voter;
 
 use Akeneo\Pim\Permission\Bundle\Manager\DatagridViewAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

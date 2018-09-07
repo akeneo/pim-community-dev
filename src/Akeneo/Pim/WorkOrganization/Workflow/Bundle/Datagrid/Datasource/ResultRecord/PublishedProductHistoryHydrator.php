@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\Result
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Hydrator for product history (ORM support)

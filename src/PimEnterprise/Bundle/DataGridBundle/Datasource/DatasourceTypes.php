@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datasource;
 
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes as BaseDatasourceTypes;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceTypes as BaseDatasourceTypes;
 
 /**
  * Existing datasource types

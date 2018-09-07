@@ -15,7 +15,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
