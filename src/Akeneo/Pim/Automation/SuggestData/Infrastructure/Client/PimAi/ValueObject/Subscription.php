@@ -49,6 +49,14 @@ class Subscription
     }
 
     /**
+     * @return int
+     */
+    public function getTrackerId()
+    {
+        return $this->rawSubscription['tracker_id'];
+    }
+
+    /**
      * @param array $rawSubscription
      * @throws \InvalidArgumentException
      */
@@ -58,6 +66,7 @@ class Subscription
             'id',
             'identifiers',
             'attributes',
+            'tracker_id'
         ];
 
         foreach ($expectedKeys as $key) {

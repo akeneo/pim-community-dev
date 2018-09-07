@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientExce
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -100,13 +101,9 @@ class PimAI implements DataProviderInterface
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
-        $subscriptions = $clientResponse->content();
+        $subscription = $clientResponse->content()->getFirst();
 
-        return new ProductSubscriptionResponse(
-            $request->getProduct()->getId(),
-            $subscriptions->getFirst()->getSubscriptionId(),
-            $subscriptions->getFirst()->getAttributes()
-        );
+        return $this->buildSubscriptionResponse($subscription);
     }
 
     /**
@@ -136,11 +133,7 @@ class PimAI implements DataProviderInterface
 
         $subscriptionsResponse = new ProductSubscriptionsResponse();
         foreach ($subscriptions as $subscription) {
-            $subscriptionResponse = new ProductSubscriptionResponse(
-                42, // @TODO: Use tracker id (See APAI-153)
-                $subscription->getSubscriptionId(),
-                $subscription->getAttributes()
-            );
+            $subscriptionResponse = $this->buildSubscriptionResponse($subscription);
             $subscriptionsResponse->add($subscriptionResponse);
         }
         return $subscriptionsResponse;
@@ -152,5 +145,19 @@ class PimAI implements DataProviderInterface
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
         $this->identifiersMappingApi->update($this->identifiersMappingNormalizer->normalize($identifiersMapping));
+    }
+
+    /**
+     * @param Subscription $subscription
+     *
+     * @return ProductSubscriptionResponse
+     */
+    private function buildSubscriptionResponse(Subscription $subscription)
+    {
+        return new ProductSubscriptionResponse(
+            $subscription->getTrackerId(),
+            $subscription->getSubscriptionId(),
+            $subscription->getAttributes()
+        );
     }
 }
