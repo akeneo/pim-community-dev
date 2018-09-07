@@ -80,18 +80,32 @@ class RecordHydratorSpec extends ObjectBehavior
         Value $gameDescriptionEnUS,
         Value $gameBoxImageMobile
     ) {
+        $gameDescriptionIdentifier->normalize()->willReturn('description_game_fingerprint');
+        $gameDescription->getIdentifier()->willReturn($gameDescriptionIdentifier);
+
+        $gameDescriptionFrFrValueKey = ValueKey::createFromNormalized('description_game_finger-fr_FR');
         $gameDescriptionFrFrNormalized = [
             'attribute' => 'description_game_fingerprint',
             'channel'   => null,
             'locale'    => 'fr_FR',
             'data'      => 'Le fameux MMORPG PC de Blizzard',
         ];
+        $gameDescriptionFrFr->normalize()->willReturn($gameDescriptionFrFrNormalized);
+        $gameDescriptionFrFr->getValueKey()->willReturn($gameDescriptionFrFrValueKey);
+
+        $gameDescriptionEnUsValueKey = ValueKey::createFromNormalized('description_game_finger-en_US');
         $gameDescriptionEnUSNormalized = [
             'attribute' => 'description_game_fingerprint',
             'channel'   => null,
             'locale'    => 'en_US',
             'data'      => 'The famous MMORPG PC Game by Blizzard',
         ];
+        $gameDescriptionEnUS->normalize()->willReturn($gameDescriptionEnUSNormalized);
+        $gameDescriptionEnUS->getValueKey()->willReturn($gameDescriptionEnUsValueKey);
+
+        $gameBoxImageIdentifier->normalize()->willReturn('boximage_game_fingerprint');
+        $gameBoxImage->getIdentifier()->willReturn($gameBoxImageIdentifier);
+        $gameBoxImageMobileValueKey = ValueKey::createFromNormalized('boximage_game_fingerprint-mobile');
         $gameBoxImageMobileNormalized = [
             'attribute' => 'boximage_game_fingerprint',
             'channel'   => 'mobile',
@@ -101,15 +115,8 @@ class RecordHydratorSpec extends ObjectBehavior
                 'original_filename' => 'box_wow.png',
             ],
         ];
-        $gameDescriptionFrFr->normalize()->willReturn($gameDescriptionFrFrNormalized);
-        $gameDescriptionEnUS->normalize()->willReturn($gameDescriptionEnUSNormalized);
         $gameBoxImageMobile->normalize()->willReturn($gameBoxImageMobileNormalized);
-
-        $gameDescriptionIdentifier->normalize()->willReturn('description_game_fingerprint');
-        $gameDescription->getIdentifier()->willReturn($gameDescriptionIdentifier);
-
-        $gameBoxImageIdentifier->normalize()->willReturn('boximage_game_fingerprint');
-        $gameBoxImage->getIdentifier()->willReturn($gameBoxImageIdentifier);
+        $gameBoxImageMobile->getValueKey()->willReturn($gameBoxImageMobileValueKey);
 
         $rawValues = [
             'description_game_finger-fr_FR' => $gameDescriptionFrFrNormalized,
@@ -117,9 +124,9 @@ class RecordHydratorSpec extends ObjectBehavior
             'boximage_game_fingerprint-mobile' => $gameBoxImageMobileNormalized,
         ];
         $expectedValueKeys = ValueKeyCollection::fromValueKeys([
-            ValueKey::createFromNormalized('description_game_finger-fr_FR'),
-            ValueKey::createFromNormalized('description_game_finger-en_US'),
-            ValueKey::createFromNormalized('boximage_game_fingerprint-mobile'),
+            $gameDescriptionFrFrValueKey,
+            $gameDescriptionEnUsValueKey,
+            $gameBoxImageMobileValueKey,
         ]);
         $indexedAttributes = [
             'description_game_fingerprint' => $gameDescription,
@@ -156,6 +163,7 @@ class RecordHydratorSpec extends ObjectBehavior
         AttributeIdentifier $gameDescriptionIdentifier,
         Value $gameDescriptionFrFr
     ) {
+        $descriptionGameFrFRValueKey = ValueKey::createFromNormalized('description_game_finger-fr_FR');
         $gameDescriptionFrFrNormalized = [
             'attribute' => 'description_game_fingerprint',
             'channel'   => null,
@@ -163,6 +171,7 @@ class RecordHydratorSpec extends ObjectBehavior
             'data'      => 'Le fameux MMORPG PC de Blizzard',
         ];
         $gameDescriptionFrFr->normalize()->willReturn($gameDescriptionFrFrNormalized);
+        $gameDescriptionFrFr->getValueKey()->willReturn($descriptionGameFrFRValueKey);
 
         $gameDescriptionIdentifier->normalize()->willReturn('description_game_fingerprint');
         $gameDescription->getIdentifier()->willReturn($gameDescriptionIdentifier);
@@ -185,9 +194,8 @@ class RecordHydratorSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $expectedValueKeys = ValueKeyCollection::fromValueKeys([
-            ValueKey::createFromNormalized('description_game_finger-fr_FR'),
-        ]);
+        $expectedValueKeys = ValueKeyCollection::fromValueKeys([$descriptionGameFrFRValueKey]);
+
         $indexedAttributes = ['description_game_fingerprint' => $gameDescription];
 
         $valueHydrator->hydrate($gameDescriptionFrFrNormalized, $gameDescription)->willReturn($gameDescriptionFrFr);
