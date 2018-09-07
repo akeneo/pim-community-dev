@@ -25,13 +25,13 @@ class LocaleReferenceSpec extends ObjectBehavior
 
     function it_can_be_constructed_with_a_locale_code()
     {
-        $this->beConstructedThrough('fromLocaleCode', ['fr_FR']);
+        $this->beConstructedThrough('createFromNormalized', ['fr_FR']);
         $this->normalize()->shouldReturn('fr_FR');
     }
 
     function it_can_be_constructed_with_no_locale_code()
     {
-        $this->beConstructedThrough('fromLocaleCode', [null]);
+        $this->beConstructedThrough('createFromNormalized', [null]);
         $this->normalize()->shouldReturn(null);
     }
 

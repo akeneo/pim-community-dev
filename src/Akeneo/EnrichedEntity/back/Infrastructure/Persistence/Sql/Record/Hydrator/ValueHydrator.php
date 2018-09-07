@@ -48,8 +48,8 @@ class ValueHydrator implements ValueHydratorInterface
 
         return Value::create(
             $attribute->getIdentifier(),
-            $this->getChannelReference($row),
-            $this->getLocaleReference($row),
+            ChannelReference::createfromNormalized($row['channel']),
+            LocaleReference::createfromNormalized($row['locale']),
             $data
         );
     }
@@ -62,15 +62,5 @@ class ValueHydrator implements ValueHydratorInterface
         ) {
             throw new \RuntimeException('Cannot hydrate the value because either the channel, locale or data is missing');
         }
-    }
-
-    private function getChannelReference(array $row): ChannelReference
-    {
-        return null === $row['channel'] ? ChannelReference::noReference() : ChannelReference::fromChannelCode($row['channel']);
-    }
-
-    private function getLocaleReference(array $row): LocaleReference
-    {
-        return null === $row['locale'] ? LocaleReference::noReference() : LocaleReference::fromLocaleCode($row['locale']);
     }
 }

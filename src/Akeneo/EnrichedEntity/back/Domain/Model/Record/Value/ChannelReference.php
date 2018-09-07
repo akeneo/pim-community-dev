@@ -27,26 +27,6 @@ class ChannelReference
         $this->identifier = $identifier;
     }
 
-    public static function fromChannelCode(?string $channelCode): self
-    {
-        // We need to discuss this:
-        // I see the point here, but we miss the point of having an explicit/dedicated constructor for the case
-        // when there are no reference.
-        //
-        // In my opinion, it's fine to do have some checkings in the classes instanciating this class
-        // to call the right constructor because that's what *we* want, we want to make explicit that it
-        // can construct a channel with no reference.
-        // while having this kind of constructors *hides* this business case.
-        // @see Akeneo/EnrichedEntity/back/Infrastructure/Persistence/Sql/Record/Hydrator/ValueHydrator.php:67
-        if (null === $channelCode) {
-            return ChannelReference::noReference();
-        }
-
-        return self::fromChannelIdentifier(
-            ChannelIdentifier::fromCode($channelCode)
-        );
-    }
-
     public static function fromChannelIdentifier(ChannelIdentifier $identifier): self
     {
         return new self($identifier) ;
@@ -55,6 +35,15 @@ class ChannelReference
     public static function noReference(): self
     {
         return new self(null);
+    }
+
+    public static function createfromNormalized(?string $normalizedReference): self
+    {
+        if (null === $normalizedReference) {
+            return ChannelReference::noReference();
+        }
+
+        return self::fromChannelIdentifier(ChannelIdentifier::fromCode($normalizedReference));
     }
 
     public function equals(ChannelReference $channelReference): bool

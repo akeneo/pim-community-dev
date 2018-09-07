@@ -24,4 +24,3 @@ interface ValueHydratorInterface
 {
     public function hydrate(array $row, AbstractAttribute $attribute): Value;
 }
-

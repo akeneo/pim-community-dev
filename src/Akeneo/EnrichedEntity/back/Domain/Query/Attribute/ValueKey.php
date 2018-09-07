@@ -36,7 +36,7 @@ class ValueKey
         $this->key = $key;
     }
 
-    public static function fromNormalized(string $normalizedKey): self
+    public static function createFromNormalized(string $normalizedKey): self
     {
         return new self($normalizedKey);
     }

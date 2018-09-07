@@ -12,10 +12,12 @@ class ValueKeyCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromValueKeys', [[
-            ValueKey::fromNormalized('viande'),
-            ValueKey::fromNormalized('picklerick')
-        ]]);
+        $this->beConstructedThrough('fromValueKeys', [
+            [
+                ValueKey::createFromNormalized('viande'),
+                ValueKey::createFromNormalized('picklerick'),
+            ],
+        ]);
     }
 
     function it_is_initializable()
@@ -34,10 +36,11 @@ class ValueKeyCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_normalizes_itself() {
+    function it_normalizes_itself()
+    {
         $this->normalize()->shouldReturn([
             'viande',
-            'picklerick'
+            'picklerick',
         ]);
     }
 }

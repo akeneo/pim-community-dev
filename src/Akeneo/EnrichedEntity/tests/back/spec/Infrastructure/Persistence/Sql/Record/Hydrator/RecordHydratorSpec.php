@@ -46,9 +46,9 @@ class RecordHydratorSpec extends ObjectBehavior
             'boximage_game_finger'    => $gameBoxImage,
         ];
         $expectedValueKeys = ValueKeyCollection::fromValueKeys([
-            ValueKey::fromNormalized('description_game_fingerprint-fr_FR'),
-            ValueKey::fromNormalized('description_game_fingerprint-en_US'),
-            ValueKey::fromNormalized('boximage_game_fingerprint-mobile'),
+            ValueKey::createFromNormalized('description_game_fingerprint-fr_FR'),
+            ValueKey::createFromNormalized('description_game_fingerprint-en_US'),
+            ValueKey::createFromNormalized('boximage_game_fingerprint-mobile'),
         ]);
         $record = $this->hydrate(
             [
@@ -117,9 +117,9 @@ class RecordHydratorSpec extends ObjectBehavior
             'boximage_game_fingerprint-mobile' => $gameBoxImageMobileNormalized,
         ];
         $expectedValueKeys = ValueKeyCollection::fromValueKeys([
-            ValueKey::fromNormalized('description_game_finger-fr_FR'),
-            ValueKey::fromNormalized('description_game_finger-en_US'),
-            ValueKey::fromNormalized('boximage_game_fingerprint-mobile'),
+            ValueKey::createFromNormalized('description_game_finger-fr_FR'),
+            ValueKey::createFromNormalized('description_game_finger-en_US'),
+            ValueKey::createFromNormalized('boximage_game_fingerprint-mobile'),
         ]);
         $indexedAttributes = [
             'description_game_fingerprint' => $gameDescription,
@@ -186,7 +186,7 @@ class RecordHydratorSpec extends ObjectBehavior
             ],
         ];
         $expectedValueKeys = ValueKeyCollection::fromValueKeys([
-            ValueKey::fromNormalized('description_game_finger-fr_FR'),
+            ValueKey::createFromNormalized('description_game_finger-fr_FR'),
         ]);
         $indexedAttributes = ['description_game_fingerprint' => $gameDescription];
 

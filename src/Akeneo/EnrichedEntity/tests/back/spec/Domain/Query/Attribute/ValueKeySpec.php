@@ -11,7 +11,7 @@ class ValueKeySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromNormalized', ['name_brand_AE7F6A76E5F_mobile_en_US']);
+        $this->beConstructedThrough('createFromNormalized', ['name_brand_AE7F6A76E5F_mobile_en_US']);
     }
 
     function it_is_initializable()
@@ -31,7 +31,7 @@ class ValueKeySpec extends ObjectBehavior
 
     function it_cannot_be_created_with_an_empty_string()
     {
-        $this->beConstructedThrough('fromNormalized', ['']);
+        $this->beConstructedThrough('createFromNormalized', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

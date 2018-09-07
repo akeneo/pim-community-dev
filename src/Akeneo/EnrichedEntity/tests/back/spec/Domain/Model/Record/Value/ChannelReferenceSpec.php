@@ -25,13 +25,13 @@ class ChannelReferenceSpec extends ObjectBehavior
 
     function it_can_be_constructed_with_a_channel_code()
     {
-        $this->beConstructedThrough('fromChannelCode', ['mobile']);
+        $this->beConstructedThrough('createFromNormalized', ['mobile']);
         $this->normalize()->shouldReturn('mobile');
     }
 
     function it_can_be_constructed_with_no_channel_code()
     {
-        $this->beConstructedThrough('fromChannelCode', [null]);
+        $this->beConstructedThrough('createFromNormalized', [null]);
         $this->normalize()->shouldReturn(null);
     }
 

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
