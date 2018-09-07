@@ -871,3 +871,4 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
 - Change constructor of `Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue`, remove `Doctrine\ORM\EntityManagerInterface` argument
 - Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter`
+- Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
