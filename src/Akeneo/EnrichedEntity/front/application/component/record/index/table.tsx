@@ -40,7 +40,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
       const enrichedEntityIdentifier = createEnrichedEntityIdentifier('');
       const code = createCode('');
       const labelCollection = createLabelCollection({});
-      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, code, labelCollection);
+      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, code, labelCollection, null);
 
       return (
         <ItemView

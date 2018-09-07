@@ -91,9 +91,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedResponse = '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022des igner\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"des igner"},"propertyPath":"identifier","invalidValue":"des igner","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]';
-
-        $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
+        $this->webClientHelper->assert500ServerError($this->client->getResponse());
     }
 
     /**

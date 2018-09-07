@@ -17,7 +17,8 @@ export const createRecord = () => async (dispatch: any, getState: () => EditStat
     createIdentifier(code),
     createEnrichedEntityIdentifier(enrichedEntity.identifier),
     createCode(code),
-    createLabelCollection(labels)
+    createLabelCollection(labels),
+    null
   );
 
   try {

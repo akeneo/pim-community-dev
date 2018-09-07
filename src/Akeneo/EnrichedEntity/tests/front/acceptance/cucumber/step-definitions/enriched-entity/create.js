@@ -5,11 +5,8 @@ const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-  tools: {answerJson, convertItemTable}
-} = require(path.resolve(
-  process.cwd(),
-  './tests/front/acceptance/cucumber/test-helpers.js'
-));
+  tools: {answerJson, convertItemTable},
+} = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
 module.exports = async function(cucumber) {
   const {When, Then} = cucumber;
@@ -18,36 +15,39 @@ module.exports = async function(cucumber) {
   const config = {
     Header: {
       selector: '.AknTitleContainer',
-      decorator: Header
+      decorator: Header,
     },
     Modal: {
       selector: '.modal--fullPage',
-      decorator: Modal
+      decorator: Modal,
     },
     Grid: {
       selector: '.AknGridContainer',
-      decorator: Grid
-    }
+      decorator: Grid,
+    },
   };
 
   const getElement = createElementDecorator(config);
 
-  const saveEnrichedEntity = async function (page) {
+  const saveEnrichedEntity = async function(page) {
     page.on('request', request => {
       if ('http://pim.com/rest/enriched_entity' === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
       }
-    })
+    });
   };
 
-  const listEnrichedUpdated = async function (page, identifier, labels) {
+  const listEnrichedUpdated = async function(page, identifier, labels) {
     page.on('request', request => {
       if ('http://pim.com/rest/enriched_entity' === request.url()) {
         answerJson(request, {
-          items: [{
-            identifier: identifier,
-            labels: labels
-          }], total: 1000
+          items: [
+            {
+              identifier: identifier,
+              labels: labels,
+            },
+          ],
+          total: 1000,
         });
       }
     });
@@ -56,23 +56,29 @@ module.exports = async function(cucumber) {
   const validationMessageShown = async function(page, message) {
     page.on('request', request => {
       if ('http://pim.com/rest/enriched_entity' === request.url() && 'POST' === request.method()) {
-        answerJson(request, [{
-          'messageTemplate': 'pim_enriched_entity.enriched_entity.validation.identifier.pattern',
-          'parameters': {'{{ value }}': '\u0022invalid\/identifier\u0022'},
-          'plural': null,
-          'message': message,
-          'root': {'identifier': 'invalid\/identifier', 'labels': []},
-          'propertyPath': 'identifier',
-          'invalidValue': 'invalid\/identifier',
-          'constraint': {'defaultOption': null, 'requiredOptions': [], 'targets': 'property', 'payload': null},
-          'cause': null,
-          'code': null
-        }], 400);
+        answerJson(
+          request,
+          [
+            {
+              messageTemplate: 'pim_enriched_entity.enriched_entity.validation.code.pattern',
+              parameters: {'{{ value }}': '\u0022invalid/identifier\u0022'},
+              plural: null,
+              message: message,
+              root: {identifier: 'invalid/identifier', labels: []},
+              propertyPath: 'identifier',
+              invalidValue: 'invalid/identifier',
+              constraint: {defaultOption: null, requiredOptions: [], targets: 'property', payload: null},
+              cause: null,
+              code: null,
+            },
+          ],
+          400
+        );
       }
     });
   };
 
-  When('the user creates an enriched entity {string} with:', async function (identifier, updates) {
+  When('the user creates an enriched entity {string} with:', async function(identifier, updates) {
     const enrichedEntity = convertItemTable(updates)[0];
 
     await this.page.evaluate(async () => {
@@ -92,12 +98,12 @@ module.exports = async function(cucumber) {
     }
   });
 
-  When('the user saves the enriched entity', async function () {
+  When('the user saves the enriched entity', async function() {
     const modal = await await getElement(this.page, 'Modal');
     await modal.save();
   });
 
-  Then('there is an enriched entity {string} with:', async function (identifier, updates) {
+  Then('there is an enriched entity {string} with:', async function(identifier, updates) {
     const enrichedEntity = convertItemTable(updates)[0];
 
     listEnrichedUpdated(this.page, identifier, enrichedEntity.labels);
@@ -111,15 +117,15 @@ module.exports = async function(cucumber) {
     }
   });
 
-  Then('The validation error will be {string}', async function (expectedMessage) {
+  Then('The validation error will be {string}', async function(expectedMessage) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the enriched entity will be saved', async function () {
+  Then('the enriched entity will be saved', async function() {
     await saveEnrichedEntity(this.page);
   });
 
-  Then('a validation message is displayed {string}', async function (expectedMessage) {
+  Then('a validation message is displayed {string}', async function(expectedMessage) {
     const modal = await await getElement(this.page, 'Modal');
     const actualMesssage = await modal.getValidationMessageForCode();
     assert.strictEqual(expectedMessage, actualMesssage);
@@ -127,6 +133,6 @@ module.exports = async function(cucumber) {
 
   Then('the user should not be able to create an enriched entity', async function() {
     const header = await await getElement(this.page, 'Header');
-    assert.strictEqual(false, await header.isCreateButtonVisible())
+    assert.strictEqual(false, await header.isCreateButtonVisible());
   });
 };

@@ -32,11 +32,11 @@ class EnrichedEntityCollectionValueNormalizer extends AbstractProductValueNormal
     protected function getNormalizedData(ValueInterface $value): string
     {
         $records = $value->getData();
-        $recordsIdentifier = array_map(function (Record $record) {
-            return $record->getIdentifier()->__toString();
+        $recordsCode = array_map(function (Record $record) {
+            return $record->getCode()->__toString();
         }, $records);
 
-        return implode($recordsIdentifier, ',');
+        return implode($recordsCode, ',');
     }
 
     /**

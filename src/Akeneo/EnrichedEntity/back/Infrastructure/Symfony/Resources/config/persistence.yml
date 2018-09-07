@@ -75,17 +75,26 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.expected_attributes:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlExpectedAttributes
+        arguments:
+            - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry'
+
     # hydrators
     akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry
 
     akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute.text_attribute_hydrator:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\TextAttributeHydrator
+        arguments:
+            - '@database_connection'
         tags:
             - { name: akeneo_enrichedentity.attribute_hydrator }
 
     akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute.image_attribute_hydrator:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator
+        arguments:
+            - '@database_connection'
         tags:
             - { name: akeneo_enrichedentity.attribute_hydrator }
-

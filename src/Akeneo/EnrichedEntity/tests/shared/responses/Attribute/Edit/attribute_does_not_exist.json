@@ -2,7 +2,7 @@
   "status": 400,
   "content": [
     {
-      "messageTemplate":"pim_enriched_entity.attribute.validation.identifier.should_exist",
+      "messageTemplate":"pim_enriched_entity.attribute.validation.code.should_exist",
       "parameters":[],
       "plural": null,
       "message": "The attribute was not found",

@@ -7,7 +7,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 interface HydratorInterface
 {
-    public function supports(array $result): bool;
+    public function supports(array $row): bool;
 
-    public function hydrate(AbstractPlatform $platform, array $result);
+    public function hydrate(array $row);
 }

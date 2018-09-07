@@ -21,9 +21,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityIdentifierShouldBeUnique extends Constraint
+class EnrichedEntityCodeShouldBeUnique extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique';
+    public const ERROR_MESSAGE = 'pim_enriched_entity.enriched_entity.validation.code.should_be_unique';
 
     public function getTargets()
     {
@@ -32,6 +32,6 @@ class EnrichedEntityIdentifierShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.enriched_entity.identifier_is_unique';
+        return 'akeneo_enrichedentity.validator.enriched_entity.code_is_unique';
     }
 }

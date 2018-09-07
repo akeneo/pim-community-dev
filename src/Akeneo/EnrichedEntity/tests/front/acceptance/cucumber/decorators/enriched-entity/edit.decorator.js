@@ -36,7 +36,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const getProperties = async () => {
     const sidebar = await await getElement(page, 'Sidebar');
-    await sidebar.clickOnTab('pim-enriched-entity-edit-form-properties');
+    await sidebar.clickOnTab('property');
 
     return await await getElement(page, 'Properties');
   };

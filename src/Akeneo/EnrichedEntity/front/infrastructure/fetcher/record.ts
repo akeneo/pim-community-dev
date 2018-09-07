@@ -5,7 +5,7 @@ import hydrator from 'akeneoenrichedentity/application/hydrator/record';
 import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import RecordIdentifier from 'akeneoenrichedentity/domain/model/record/identifier';
+import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 
 const routing = require('routing');
 
@@ -14,9 +14,12 @@ export class RecordFetcherImplementation implements RecordFetcher {
     Object.freeze(this);
   }
 
-  async fetch(identifier: RecordIdentifier, enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Record> {
+  async fetch(enrichedEntityIdentifier: EnrichedEntityIdentifier, recordCode: RecordCode): Promise<Record> {
     const backendRecord = await getJSON(
-      routing.generate('akeneo_enriched_entities_record_index_rest', {enrichedEntityIdentifier, identifier})
+      routing.generate('akeneo_enriched_entities_records_get_rest', {
+        enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+        recordCode: recordCode.stringValue(),
+      })
     );
 
     return this.hydrator(backendRecord);
@@ -27,7 +30,7 @@ export class RecordFetcherImplementation implements RecordFetcher {
       routing.generate('akeneo_enriched_entities_record_index_rest', {enrichedEntityIdentifier})
     );
 
-    return hydrateAll<Record>(this.hydrator)(backendRecords);
+    return hydrateAll<Record>(this.hydrator)(backendRecords.items);
   }
 
   async search(query: Query): Promise<{items: Record[]; total: number}> {

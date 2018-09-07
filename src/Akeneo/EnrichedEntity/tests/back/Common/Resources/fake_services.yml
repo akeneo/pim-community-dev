@@ -58,6 +58,9 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.expected_attributes:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryExpectedAttributes
+
     # Third party services
     oro_security.security_facade:
         class: Akeneo\EnrichedEntity\tests\back\Common\Fake\SecurityFacadeStub

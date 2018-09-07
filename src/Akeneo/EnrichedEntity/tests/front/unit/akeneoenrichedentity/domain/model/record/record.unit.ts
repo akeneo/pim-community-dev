@@ -2,7 +2,7 @@ import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenriched
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import {createRecord, denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
 
 const michelIdentifier = createRecordIdentifier('michel');
 const designerIdentifier = createEnrichedEntityIdentifier('designer');
@@ -23,25 +23,25 @@ describe('akeneo > record > domain > model --- record', () => {
   test('I cannot create a malformed record', () => {
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier);
-    }).toThrow('Record expect an EnrichedEntityIdentifier as second argument');
+    }).toThrow('Record expect an EnrichedEntityIdentifier as argument');
     expect(() => {
       createRecord();
-    }).toThrow('Record expect a RecordIdentifier as first argument');
+    }).toThrow('Record expect a RecordIdentifier as argument');
     expect(() => {
       createRecord(12);
-    }).toThrow('Record expect a RecordIdentifier as first argument');
+    }).toThrow('Record expect a RecordIdentifier as argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels);
-    }).toThrow('Record expect a RecordCode as third argument');
+    }).toThrow('Record expect a RecordCode as argument');
   });
 
   test('I can compare two record', () => {
@@ -66,6 +66,18 @@ describe('akeneo > record > domain > model --- record', () => {
 
   test('I can get the code of the record', () => {
     expect(createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels).getCode()).toBe(didierCode);
+  });
+
+  test('I can create the record from normalized', () => {
+    expect(
+      denormalizeRecord({
+        identifier: 'didier',
+        code: 'didier',
+        labels: {},
+        image: null,
+        enrichedEntityIdentifier: 'designer',
+      }).getCode()
+    ).toEqual(didierCode);
   });
 
   test('I can normalize an record', () => {

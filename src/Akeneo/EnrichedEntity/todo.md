@@ -28,6 +28,7 @@
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
   (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
 - rework constructors to receive domain models (label collection)
+- fix the enriched entity field on the pef to be able to search when the search will work (front)
 
 DONE:
 

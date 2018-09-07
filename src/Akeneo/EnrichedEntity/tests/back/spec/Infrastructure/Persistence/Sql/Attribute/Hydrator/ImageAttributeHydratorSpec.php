@@ -4,11 +4,18 @@ namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hy
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\ImageAttributeHydrator;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeHydratorSpec extends ObjectBehavior
 {
+    function let(Connection $connection)
+    {
+        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $this->beConstructedWith($connection);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ImageAttributeHydrator::class);
@@ -23,14 +30,12 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
 
     function it_throws_if_any_of_the_required_keys_are_not_present_to_hydrate()
     {
-        $platform = new MySqlPlatform();
-        $this->shouldThrow(\RuntimeException::class)->during('hydrate', [$platform, ['wrong_key' => 'wrong_value']]);
+        $this->shouldThrow(\RuntimeException::class)->during('hydrate', [['wrong_key' => 'wrong_value']]);
     }
 
     function it_hydrates_an_image_attribute_with_no_max_file_size_and_no_extensions()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'picture_designer_fingerprint',
             'code'                       => 'picture',
             'enriched_entity_identifier' => 'designer',
@@ -64,8 +69,7 @@ class ImageAttributeHydratorSpec extends ObjectBehavior
 
     function it_hydrates_an_image_attribute_with_a_max_file_size_and_with_allowed_extensions()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'picture_designer_fingerprint',
             'code'                       => 'picture',
             'enriched_entity_identifier' => 'designer',

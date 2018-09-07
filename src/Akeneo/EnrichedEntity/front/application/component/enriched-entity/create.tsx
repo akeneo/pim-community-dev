@@ -124,7 +124,7 @@ class Create extends React.Component<CreateProps> {
                         onKeyPress={this.onKeyPress}
                       />
                     </div>
-                    {getErrorsView(this.props.errors, 'code')}
+                    {getErrorsView(this.props.errors, 'identifier')}
                   </div>
                 </div>
               </div>

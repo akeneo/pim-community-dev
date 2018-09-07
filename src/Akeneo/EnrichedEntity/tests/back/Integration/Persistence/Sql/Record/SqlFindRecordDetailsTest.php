@@ -52,9 +52,8 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     public function it_returns_null_when_there_is_no_records()
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('unknown_enriched_entity');
-        $recordCode = RecordCode::fromString('unknown_record_identifier');
-        $recordIdentifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $this->assertNull(($this->findRecordDetailsQuery)($recordIdentifier));
+        $recordCode = RecordCode::fromString('unknown_record_code');
+        $this->assertNull(($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordCode));
     }
 
     /**
@@ -64,7 +63,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $actualStarck = ($this->findRecordDetailsQuery)($this->recordIdentifier);
+        $actualStarck = ($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordCode);
 
         $expectedStarck = new RecordDetails();
         $expectedStarck->identifier = $this->recordIdentifier;

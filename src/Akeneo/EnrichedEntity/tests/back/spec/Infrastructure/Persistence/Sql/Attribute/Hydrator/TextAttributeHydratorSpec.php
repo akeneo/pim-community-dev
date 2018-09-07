@@ -4,11 +4,18 @@ namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hy
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\TextAttributeHydrator;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
 
 class TextAttributeHydratorSpec extends ObjectBehavior
 {
+    function let(Connection $connection)
+    {
+        $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
+        $this->beConstructedWith($connection);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(TextAttributeHydrator::class);
@@ -23,14 +30,12 @@ class TextAttributeHydratorSpec extends ObjectBehavior
 
     function it_throws_if_any_of_the_required_keys_are_not_present_to_hydrate()
     {
-        $platform = new MySqlPlatform();
-        $this->shouldThrow(\RuntimeException::class)->during('hydrate', [$platform, ['wrong_key' => 'wrong_value']]);
+        $this->shouldThrow(\RuntimeException::class)->during('hydrate', [['wrong_key' => 'wrong_value']]);
     }
 
     function it_hydrates_a_text_area_with_a_max_length()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'description_designer_fingerprint',
             'code'                       => 'description',
             'enriched_entity_identifier' => 'designer',
@@ -70,8 +75,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_simple_text_with_no_max_length_and_no_validation_rule()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'name_designer_fingerprint',
             'code'                       => 'name',
             'enriched_entity_identifier' => 'designer',
@@ -110,8 +114,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_text_attribute_which_is_an_email()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'email_address_designer_fingerprint',
             'code'                       => 'email_address',
             'enriched_entity_identifier' => 'designer',
@@ -150,8 +153,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_simple_text_with_a_validation_rule_email()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'name_designer_fingerprint',
             'code'                       => 'name',
             'enriched_entity_identifier' => 'designer',
@@ -190,8 +192,7 @@ class TextAttributeHydratorSpec extends ObjectBehavior
 
     function it_hydrates_a_simple_text_with_having_a_regular_expression()
     {
-        $platform = new MySqlPlatform();
-        $textArea = $this->hydrate($platform, [
+        $textArea = $this->hydrate([
             'identifier'                 => 'regular_expression_designer_fingerprint',
             'code'                       => 'regular_expression',
             'enriched_entity_identifier' => 'designer',

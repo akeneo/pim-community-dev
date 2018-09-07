@@ -20,7 +20,7 @@ export class RecordSaverImplementation implements RecordSaver {
     return await postJSON(
       routing.generate('akeneo_enriched_entities_record_edit_rest', {
         enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
-        identifier: record.getIdentifier().identifier,
+        identifier: record.getCode(),
       }),
       normalizedRecord
     ).catch(handleError);

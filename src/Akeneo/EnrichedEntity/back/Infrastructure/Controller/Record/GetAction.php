@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,10 +36,11 @@ class GetAction
         $this->findRecordDetailsQuery = $findRecordDetailsQuery;
     }
 
-    public function __invoke(string $enrichedEntityIdentifier, string $recordIdentifier): JsonResponse
+    public function __invoke(string $enrichedEntityIdentifier, string $recordCode): JsonResponse
     {
-        $recordIdentifier = $this->getRecordIdentifierOr404($recordIdentifier);
-        $recordDetails = $this->findRecordDetailsOr404($recordIdentifier);
+        $recordCode = $this->getRecordCodeOr404($recordCode);
+        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
+        $recordDetails = $this->findRecordDetailsOr404($enrichedEntityIdentifier, $recordCode);
 
         return new JsonResponse($recordDetails->normalize());
     }
@@ -47,10 +48,22 @@ class GetAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getRecordIdentifierOr404(string $recordIdentifier): RecordIdentifier
+    private function getRecordCodeOr404(string $recordCode): RecordCode
     {
         try {
-            return RecordIdentifier::fromString($recordIdentifier);
+            return RecordCode::fromString($recordCode);
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    private function getEnrichedEntityIdentifierOr404(string $enrichedEntityIdentifier): EnrichedEntityIdentifier
+    {
+        try {
+            return EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
@@ -60,9 +73,10 @@ class GetAction
      * @throws NotFoundHttpException
      */
     private function findRecordDetailsOr404(
-        RecordIdentifier $recordIdentifier
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $recordCode
     ): RecordDetails {
-        $result = ($this->findRecordDetailsQuery)($recordIdentifier);
+        $result = ($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordCode);
 
         if (null === $result) {
             throw new NotFoundHttpException();

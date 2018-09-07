@@ -1,12 +1,15 @@
 pim_title:
     akeneo_enriched_entities_enriched_entity_index: Create a new entity
     akeneo_enriched_entities_enriched_entity_edit: Edit an enriched entity
+    akeneo_enriched_entities_record_edit: Edit a record
 
 pim_enriched_entity:
     enriched_entity:
         validation:
-            identifier:
+            code:
                 should_be_unique: 'This code already exists.'
+                pattern: 'This field may only contain letters, numbers and underscores.'
+                should_be_unique: 'This code already exists for this entity.'
         button:
             save: Save
             create: Create
@@ -50,7 +53,7 @@ pim_enriched_entity:
                 fail: An error occured during the deletion of the enriched entity
     record:
         validation:
-            identifier:
+            code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'This code already exists for this entity.'
         no_data:
@@ -59,6 +62,11 @@ pim_enriched_entity:
         button:
             save: Save
             create: Add new
+        enrich:
+            title: Record attributes
+            code: Code
+            label: Label
+        title: Records
         create:
             header:
                 title: Create
@@ -68,6 +76,8 @@ pim_enriched_entity:
                 label: Label
                 code: Code (required)
             confirm: confirm
+        tab:
+            enrich: Enrich
         notification:
             save:
                 success: Record successfully updated.

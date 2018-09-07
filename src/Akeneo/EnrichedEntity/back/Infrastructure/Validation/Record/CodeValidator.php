@@ -40,7 +40,7 @@ class CodeValidator extends ConstraintValidator
                 new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern',
+                        'message' => 'pim_enriched_entity.record.validation.code.pattern',
                     ]
                 ),
             ]

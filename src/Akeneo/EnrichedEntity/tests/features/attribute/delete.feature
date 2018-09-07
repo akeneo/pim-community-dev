@@ -29,7 +29,7 @@ Feature: Delete an attribute linked to an enriched entity
       | portrait | image |
     When the user deletes the attribute "name" linked to the enriched entity "designer"
     And the user should see the deleted notification
-    Then there should not be the following attributes:
+    Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
 

@@ -5,6 +5,10 @@ describe('akeneo > enriched entity > domain > model --- identifier', () => {
     expect(createIdentifier('michel').identifier).toBe('michel');
   });
 
+  test('I can get the string value of an identifier', () => {
+    expect(createIdentifier('michel').stringValue()).toBe('michel');
+  });
+
   test('I cannot create a new identifier with a value for enriched entity identifier other than a string', () => {
     expect(() => {
       createIdentifier(12);

@@ -7,12 +7,10 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
 
   const hasAttribute = async (code, type) => {
     await isLoaded();
-    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknFieldContainer[data-placeholder="false"]');
-    const attribute = await nodeElement.$(
-      `.AknFieldContainer[data-identifier="${code}"][data-type="${type}"][data-placeholder="false"]`
-    );
+    const fieldSelector = `[data-identifier="${code}"][data-type="${type}"][data-placeholder="false"]`;
+    await page.waitFor(`.AknDefault-mainContent .AknSubsection .AknFieldContainer${fieldSelector}`);
 
-    return attribute !== null;
+    return true;
   };
 
   const isEmpty = async () => {

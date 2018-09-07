@@ -6,6 +6,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrato
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\HydratorInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
@@ -15,25 +16,33 @@ use Doctrine\DBAL\Types\Type;
  */
 abstract class AbstractAttributeHydrator implements HydratorInterface
 {
-    public function hydrate(AbstractPlatform $platform, array $result): AbstractAttribute
-    {
-        $this->checkResultKeys($result);
-        $result = $this->convertCommonProperties($platform, $result);
-        $result = $this->convertAdditionalProperties($platform, $result);
+    /** @var \Doctrine\DBAL\Platforms\AbstractPlatform */
+    private $platform;
 
-        return $this->hydrateAttribute($result);
+    public function __construct(Connection $sqlConnection)
+    {
+        $this->platform = $sqlConnection->getDatabasePlatform();
     }
 
-    protected function checkResultKeys(array $result): void
+    public function hydrate(array $row): AbstractAttribute
     {
-        $additionalKeys = array_keys($result);
+        $this->checkRowProperties($row);
+        $row = $this->convertCommonProperties($this->platform, $row);
+        $row = $this->convertAdditionalProperties($this->platform, $row);
+
+        return $this->hydrateAttribute($row);
+    }
+
+    protected function checkRowProperties(array $row): void
+    {
+        $additionalKeys = array_keys($row);
         if (in_array('additional_properties', $additionalKeys)) {
-            $additionalKeys = array_keys(json_decode($result['additional_properties'], true));
-            unset($result['additional_properties']);
+            $additionalKeys = array_keys(json_decode($row['additional_properties'], true));
+            unset($row['additional_properties']);
         }
 
-        $actualKeys = array_merge(array_keys($result), $additionalKeys);
-        $missingKeys = array_diff($this->getExpectedKeys(), $actualKeys);
+        $actualKeys = array_merge(array_keys($row), $additionalKeys);
+        $missingKeys = array_diff($this->getExpectedProperties(), $actualKeys);
 
         if (!empty($missingKeys)) {
             throw new \RuntimeException(
@@ -45,24 +54,24 @@ abstract class AbstractAttributeHydrator implements HydratorInterface
         }
     }
 
-    private function convertCommonProperties(AbstractPlatform $platform, array $result): array
+    private function convertCommonProperties(AbstractPlatform $platform, array $row): array
     {
-        $result['identifier'] = Type::getType(Type::STRING)->convertToPHPValue($result['identifier'], $platform);
-        $result['enriched_entity_identifier'] = Type::getType(Type::STRING)->convertToPHPValue($result['enriched_entity_identifier'], $platform);
-        $result['code'] = Type::getType(Type::STRING)->convertToPHPValue($result['code'], $platform);
-        $result['labels'] = json_decode($result['labels'], true);
-        $result['attribute_order'] = Type::getType(Type::INTEGER)->convertToPHPValue($result['attribute_order'], $platform);
-        $result['is_required'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($result['is_required'], $platform);
-        $result['value_per_channel'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($result['value_per_channel'], $platform);
-        $result['value_per_locale'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($result['value_per_locale'], $platform);
-        $result['additional_properties'] = json_decode($result['additional_properties'], true);
+        $row['identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['identifier'], $platform);
+        $row['enriched_entity_identifier'] = Type::getType(Type::STRING)->convertToPHPValue($row['enriched_entity_identifier'], $platform);
+        $row['code'] = Type::getType(Type::STRING)->convertToPHPValue($row['code'], $platform);
+        $row['labels'] = json_decode($row['labels'], true);
+        $row['attribute_order'] = Type::getType(Type::INTEGER)->convertToPHPValue($row['attribute_order'], $platform);
+        $row['is_required'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['is_required'], $platform);
+        $row['value_per_channel'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['value_per_channel'], $platform);
+        $row['value_per_locale'] = Type::getType(Type::BOOLEAN)->convertToPHPValue($row['value_per_locale'], $platform);
+        $row['additional_properties'] = json_decode($row['additional_properties'], true);
 
-        return $result;
+        return $row;
     }
 
-    abstract protected function getExpectedKeys(): array;
+    abstract protected function getExpectedProperties(): array;
 
-    abstract protected function convertAdditionalProperties(AbstractPlatform $platform, array $result): array;
+    abstract protected function convertAdditionalProperties(AbstractPlatform $platform, array $row): array;
 
-    abstract protected function hydrateAttribute(array $result): AbstractAttribute;
+    abstract protected function hydrateAttribute(array $row): AbstractAttribute;
 }

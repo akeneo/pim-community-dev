@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeShouldNotExist extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.attribute.validation.identifier.should_not_exist';
+    public const ERROR_MESSAGE = 'pim_enriched_entity.attribute.validation.code.should_not_exist';
 
     public function getTargets()
     {

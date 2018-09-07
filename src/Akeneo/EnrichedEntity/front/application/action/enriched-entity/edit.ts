@@ -46,9 +46,7 @@ export const saveEnrichedEntity = () => async (dispatch: any, getState: () => Ed
   dispatch(enrichedEntityEditionSucceeded());
   dispatch(notifyEnrichedEntityWellSaved());
 
-  const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(
-    enrichedEntity.getIdentifier().stringValue()
-  );
+  const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(enrichedEntity.getIdentifier());
 
   dispatch(enrichedEntityEditionReceived(savedEnrichedEntity.normalize()));
 };

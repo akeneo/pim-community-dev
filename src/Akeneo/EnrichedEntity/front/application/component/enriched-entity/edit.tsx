@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {EditState as State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
-import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
+import sidebarProvider from 'akeneoenrichedentity/application/configuration/sidebar';
 import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
 import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
@@ -78,7 +78,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   }
 
   private updateTabView = async (currentTab: string): Promise<void> => {
-    const TabView = await editTabsProvider.getView(currentTab);
+    const TabView = await sidebarProvider.getView('akeneo_enriched_entities_enriched_entity_edit', currentTab);
 
     this.tabView = <TabView code={currentTab} />;
     this.forceUpdate();
@@ -91,7 +91,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   };
 
   private getPrimaryAction = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
-    if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
+    if (currentTab === 'record' && canCreate) {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
           {__('pim_enriched_entity.record.button.create')}
@@ -99,7 +99,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
       );
     }
 
-    if (currentTab === 'pim-enriched-entity-edit-form-attribute') {
+    if (currentTab === 'attribute') {
       return (
         <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
           {__('pim_enriched_entity.attribute.button.add')}
