@@ -11,7 +11,7 @@ metadata:
     role: pim-web
     {{ include "pim.extravarsPim" . | indent 4}}
   annotations:
-    kubernetes.io/ingress.class: traefik
+    certmanager.k8s.io/cluster-issuer: {{ .Values.certmanager.issuer }}
 spec:
   rules:
   - host: {{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}

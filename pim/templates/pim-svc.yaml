@@ -5,12 +5,10 @@ metadata:
   name: pim-http
   labels:
     {{ include "pim.extravarsPim" . | indent 4}}
-    role: pim-web
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     component: {{ template "pim.fullName" . }}
     role: pim-web
   ports:
-    - name: pim-http
-      port: 80
+    - port: 80

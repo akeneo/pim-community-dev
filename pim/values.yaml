@@ -47,6 +47,9 @@ google:
   location: europe-west3-b
   cluster_name: default
 
+certmanager:
+  issuer: selfsigning
+
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud

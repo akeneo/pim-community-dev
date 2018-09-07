@@ -10,7 +10,6 @@ metadata:
     component: {{ template "pim.fullName" . }}
     {{ include "pim.extravarsPim" . | indent 4}}
     role: pim-web
-
 spec:
   replicas: {{ .Values.pim.replicas }}
   minReadySeconds: 30
@@ -66,7 +65,7 @@ spec:
             - { name: PIM_DATABASE_HOST, value: {{ .Values.mysql.mysql.serviceName | quote }} }
             - { name: PIM_DATABASE_NAME, value: {{ .Values.mysql.mysql.defaultDatabase | quote }} }
             - { name: PIM_DATABASE_USER, value: {{ .Values.mysql.mysql.defaultUser | quote }} }
-            - { name: GOOGLE_CONTAINER_NAME, value: fpm }
+            - { name: CONTAINER_NAME, value: pim }
             - { name: GOOGLE_LOCATION, value: {{ .Values.google.location | quote }} }
             - { name: GOOGLE_CLOUD_PROJECT, value: {{ .Values.google.project_id | quote }} }
             - { name: K8S_CLUSTER_NAME, value: {{ .Values.google.cluster_name | quote }} }

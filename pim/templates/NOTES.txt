@@ -1,15 +1,4 @@
-###########################################
-#   Akeneo pim release deployed     #
-###########################################
-Image deployed for pim pods: {{ .Values.image.pim.repository}}:{{ .Values.image.pim.tag}}
-
-A few minutes could be necessary before the application is accessible :
-
-With your browser if DNS resolution is available (just a few minutes normally) :
-    PIM: https://{{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
-
-Or if you cannot wait for DNS resolution to be available (just a few minutes normally) :
- * Get the LoadBalancer external IP :
-   export TRAEFIK_IP=$(kubectl --namespace kube-system get svc traefik-web -o jsonpath="{.spec.loadBalancerIP}")
- * With ${TRAEFIK_IP} defined:
-   curl -H Host:{{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }} http://${TRAEFIK_IP}
+Image deployed: {{ .Values.image.pim.repository}}:{{ .Values.image.pim.tag}}
+Username: {{ .Values.pimUsers.cloudadmin.email }}
+Password: {{ .Values.pimUsers.cloudadmin.password }}
+Url: https://{{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
