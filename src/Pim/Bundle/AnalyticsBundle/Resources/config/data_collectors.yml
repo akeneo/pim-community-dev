@@ -8,6 +8,7 @@ parameters:
     pim_analytics.data_collector.bundles.class:          Pim\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector
     pim_analytics.data_collector.storage.class:          Pim\Bundle\AnalyticsBundle\DataCollector\StorageDataCollector
     pim_analytics.data_collector.attribute.class:        Pim\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector
+    pim_analytics.data_collector.search_engine.class:    Pim\Bundle\AnalyticsBundle\DataCollector\SearchEngineDataCollector
 
 services:
     pim_analytics.data_collector.chained:
@@ -90,4 +91,14 @@ services:
             - '%database_password%'
         tags:
             - { name: pim_analytics.data_collector, type: system_info_report }
+            - { name: pim_analytics.data_collector, type: system_info_report }
+
+    pim_analytics.data_collector.search_engine:
+        class: '%pim_analytics.data_collector.search_engine.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client_builder'
+            -
+                - '%index_hosts%'
+        tags:
+            - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
