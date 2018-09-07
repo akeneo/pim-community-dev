@@ -821,3 +821,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\AnalyticsBundle/Akeneo\\Platform\\Bundle\\AnalyticsBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogVolumeMonitoringBundle/Akeneo\\Platform\\Bundle\\CatalogVolumeMonitoringBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\PimDataGridBundle/Oro\\Bundle\\PimDataGridBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\PimFilterBundle/Oro\\Bundle\\PimFilterBundle/g'

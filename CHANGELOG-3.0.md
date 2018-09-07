@@ -872,3 +872,4 @@
 - Change constructor of `Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue`, remove `Doctrine\ORM\EntityManagerInterface` argument
 - Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter`
 - Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
+- Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`
