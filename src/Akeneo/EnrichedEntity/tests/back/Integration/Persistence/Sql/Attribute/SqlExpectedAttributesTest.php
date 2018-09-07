@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
@@ -31,7 +28,6 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ExpectedAttributesInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use PHPUnit\Framework\Assert;
 
 class SqlExpectedAttributesTest extends SqlIntegrationTestCase
 {
@@ -74,8 +70,8 @@ SQL;
             (1, 'ecommerce', 'a:0:{}');
 SQL;
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_locale;');
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_category;');
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_channel;');
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_category;');
         $this->get('database_connection')->executeQuery($resetLocale);
         $this->get('database_connection')->executeQuery($resetCategory);
         $this->get('database_connection')->executeQuery($resetChannel);

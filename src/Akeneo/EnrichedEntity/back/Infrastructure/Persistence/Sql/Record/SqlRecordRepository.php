@@ -20,7 +20,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydrator;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -62,8 +61,8 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, valueCollection)
-        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :valueCollection);
+        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, value_collection)
+        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :value_collection);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -72,7 +71,7 @@ SQL;
                 'code' => (string) $record->getCode(),
                 'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
                 'labels' => $serializedLabels,
-                'valueCollection' => '{}'
+                'value_collection' => '{}'
             ]
         );
         if ($affectedRows > 1) {
@@ -89,7 +88,7 @@ SQL;
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
         UPDATE akeneo_enriched_entity_record
-        SET labels = :labels, valueCollection = :valueCollection
+        SET labels = :labels, value_collection = :value_collection
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -97,7 +96,7 @@ SQL;
             [
                 'identifier' => $record->getIdentifier(),
                 'labels' => $serializedLabels,
-                'valueCollection' => '{}'
+                'value_collection' => '{}'
             ]
         );
 

@@ -36,7 +36,7 @@ class RecordHydrator implements RecordHydratorInterface
     /** @var AbstractPlatform */
     private $platform;
 
-    public function __construct(ValueHydratorInterface $valueHydrator, Connection $connection)
+    public function __construct(Connection $connection, ValueHydratorInterface $valueHydrator)
     {
         $this->valueHydrator = $valueHydrator;
         $this->platform = $connection->getDatabasePlatform();

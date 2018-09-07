@@ -24,7 +24,7 @@ class RecordHydratorSpec extends ObjectBehavior
     public function let(ValueHydratorInterface $valueHydrator, Connection $connection)
     {
         $connection->getDatabasePlatform()->willReturn(new MySqlPlatform());
-        $this->beConstructedWith($valueHydrator, $connection);
+        $this->beConstructedWith($connection, $valueHydrator);
     }
 
     public function it_is_initializable()

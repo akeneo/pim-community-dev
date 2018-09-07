@@ -15,7 +15,7 @@ use Doctrine\DBAL\Types\Type;
  */
 abstract class AbstractAttributeHydrator implements AttributeHydratorInterface
 {
-    /** @var \Doctrine\DBAL\Platforms\AbstractPlatform */
+    /** @var AbstractPlatform */
     private $platform;
 
     public function __construct(Connection $sqlConnection)
