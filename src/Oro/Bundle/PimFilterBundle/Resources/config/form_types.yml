@@ -1,0 +1,68 @@
+parameters:
+    pim_filter.form.type.filter.scope_class:       Oro\Bundle\PimFilterBundle\Form\Type\Filter\ScopeFilterType
+    pim_filter.form.type.filter.category_class:    Oro\Bundle\PimFilterBundle\Form\Type\Filter\CategoryFilterType
+    pim_filter.form.type.filter.metric_class:      Oro\Bundle\PimFilterBundle\Form\Type\Filter\MetricFilterType
+    pim_filter.form.type.filter.price_class:       Oro\Bundle\PimFilterBundle\Form\Type\Filter\PriceFilterType
+    pim_filter.form.type.filter.ajax_choice_class: Oro\Bundle\PimFilterBundle\Form\Type\Filter\AjaxChoiceFilterType
+    pim_filter.form.type.filter.boolean_class:     Oro\Bundle\PimFilterBundle\Form\Type\Filter\BooleanFilterType
+
+    pim_filter.form.type.category_class:        Oro\Bundle\PimFilterBundle\Form\Type\CategoryType
+    pim_filter.form.type.date_range.class:      Oro\Bundle\PimFilterBundle\Form\Type\DateRangeType
+    pim_filter.form.type.date_time_range.class: Oro\Bundle\PimFilterBundle\Form\Type\DateTimeRangeType
+
+services:
+    pim_filter.form.type.filter.scope:
+        class: '%pim_filter.form.type.filter.scope_class%'
+        arguments:
+            - '@translator'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_type_scope_filter }
+
+    pim_filter.form.type.filter.category:
+        class: '%pim_filter.form.type.filter.category_class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type, alias: pim_type_category_filter }
+
+    pim_filter.form.type.filter.metric:
+        class: '%pim_filter.form.type.filter.metric_class%'
+        tags:
+            - { name: form.type, alias: pim_type_metric_filter }
+
+    pim_filter.form.type.filter.price:
+        class: '%pim_filter.form.type.filter.price_class%'
+        arguments:
+            - '@pim_catalog.repository.currency'
+        tags:
+            - { name: form.type, alias: pim_type_price_filter }
+
+    pim_filter.form.type.filter.ajax_choice:
+        class: '%pim_filter.form.type.filter.ajax_choice_class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type, alias: pim_type_ajax_choice_filter }
+
+    pim_filter.form.type.boolean:
+        class: '%pim_filter.form.type.filter.boolean_class%'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type, alias: pim_type_boolean_filter }
+
+    pim_filter.form.type.category:
+        class: '%pim_filter.form.type.category_class%'
+        tags:
+            - { name: form.type, alias: pim_type_category }
+
+    pim_filter.form.type.date_range:
+        class: '%pim_filter.form.type.date_range.class%'
+        tags:
+            - { name: form.type, alias: pim_type_date_range }
+
+    pim_filter.form.type.datetime_range:
+        class: '%pim_filter.form.type.date_time_range.class%'
+        tags:
+            - { name: form.type, alias: pim_type_datetime_range }
