@@ -29,6 +29,8 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Ide
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use PhpSpec\ObjectBehavior;
 
 class PimAISpec extends ObjectBehavior
@@ -95,7 +97,9 @@ class PimAISpec extends ObjectBehavior
         $subscriptionApi,
         ProductInterface $product,
         AttributeInterface $ean,
-        ValueInterface $eanValue
+        ValueInterface $eanValue,
+        FamilyInterface $family,
+        FamilyTranslation $familyTranslation
     ) {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
@@ -106,15 +110,24 @@ class PimAISpec extends ObjectBehavior
         );
 
         $ean->getCode()->willReturn('ean');
+
+        $family->getCode()->willReturn('tshirt');
+        $family->getLabel()->willReturn('T-shirt');
+        $family->getTranslation()->willReturn($familyTranslation);
+        $familyTranslation->getLocale()->willReturn('en_US');
+
+        $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($family);
+        $product->getValue('ean')->willReturn($eanValue);
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('123456789');
-        $product->getValue('ean')->willReturn($eanValue);
+
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
         $subscriptionApi->subscribeProduct(
-            [
-                'upc' => '123456789',
-            ]
+            ['upc' => '123456789'],
+            42,
+            ['code' => 'tshirt', 'label' => ['en_US' => 'T-shirt']]
         )->willThrow(new ClientException('exception-message'));
 
         $this->shouldThrow(new ProductSubscriptionException('exception-message'))->during(
@@ -123,14 +136,16 @@ class PimAISpec extends ObjectBehavior
         );
     }
 
-    public function it_subscribes_products_to_pim_ai(
+    public function it_subscribes_product_to_pim_ai(
         $identifiersMappingRepository,
         $subscriptionApi,
         ProductInterface $product,
         AttributeInterface $ean,
         AttributeInterface $sku,
         ValueInterface $eanValue,
-        ValueInterface $skuValue
+        ValueInterface $skuValue,
+        FamilyInterface $family,
+        FamilyTranslation $familyTranslation
     ) {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
@@ -144,14 +159,20 @@ class PimAISpec extends ObjectBehavior
         $ean->getCode()->willReturn('ean');
         $sku->getCode()->willReturn('sku');
 
-        $eanValue->hasData()->willReturn(true);
-        $skuValue->hasData()->willReturn(true);
+        $family->getCode()->willReturn('tshirt');
+        $family->getLabel()->willReturn('T-shirt');
+        $family->getTranslation()->willReturn($familyTranslation);
+        $familyTranslation->getLocale()->willReturn('en_US');
 
-        $eanValue->__toString()->willReturn('123456789');
-        $skuValue->__toString()->willReturn('987654321');
-
+        $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($family);
         $product->getValue('ean')->willReturn($eanValue);
         $product->getValue('sku')->willReturn($skuValue);
+
+        $eanValue->hasData()->willReturn(true);
+        $skuValue->hasData()->willReturn(true);
+        $eanValue->__toString()->willReturn('123456789');
+        $skuValue->__toString()->willReturn('987654321');
 
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
         $product->getId()->willReturn(42);
@@ -160,7 +181,9 @@ class PimAISpec extends ObjectBehavior
             [
                 'upc'  => '123456789',
                 'asin' => '987654321',
-            ]
+            ],
+            42,
+            ['code' => 'tshirt', 'label' => ['en_US' => 'T-shirt']]
         )->willReturn(new ApiResponse(200, $this->buildFakeApiResponse()));
 
         $this

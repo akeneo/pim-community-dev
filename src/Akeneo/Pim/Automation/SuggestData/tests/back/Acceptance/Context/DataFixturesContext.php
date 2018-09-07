@@ -123,6 +123,10 @@ class DataFixturesContext implements Context
                 $family->addAttribute($attribute);
             }
 
+            if (isset($familyData['label-en_US'])) {
+                $family->setLocale('en-US')->setLabel($familyData['label-en_US']);
+            }
+
             $this->familyRepository->save($family);
         }
     }

@@ -10,8 +10,8 @@ Feature: Subscribe a product to PIM.ai
       | ean   | pim_catalog_text       |
       | sku   | pim_catalog_identifier |
     And the following family:
-      | code | attributes |
-      | tshirt | sku,ean  |
+      | code   | attributes | label-en_US |
+      | tshirt | sku,ean    | T-Shirt     |
     And the following product:
       | identifier | family | ean          |
       | ts_0013    | tshirt | 606449099812 |
@@ -41,8 +41,8 @@ Feature: Subscribe a product to PIM.ai
       | sku   | pim_catalog_identifier |
       | ean   | pim_catalog_text       |
     And the following family:
-      | code   | attributes |
-      | tshirt | sku,ean    |
+      | code   | attributes | label-en_US |
+      | tshirt | sku,ean    | T-Shirt     |
     And the following product:
       | identifier             | family |
       | product_without_values | tshirt |
@@ -58,8 +58,8 @@ Feature: Subscribe a product to PIM.ai
       | ean  | pim_catalog_text       |
       | sku  | pim_catalog_identifier |
     And the following family:
-      | code   | attributes |
-      | tshirt | sku,ean    |
+      | code   | attributes | label-en_US |
+      | tshirt | sku,ean    | T-Shirt     |
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
@@ -76,8 +76,8 @@ Feature: Subscribe a product to PIM.ai
       | ean  | pim_catalog_text       |
       | sku  | pim_catalog_identifier |
     And the following family:
-      | code   | attributes |
-      | tshirt | sku,ean    |
+      | code   | attributes | label-en_US |
+      | tshirt | sku,ean    | T-Shirt     |
     And the following product:
       | identifier | family | ean          |
       | ts_0013    | tshirt | 606449099812 |
@@ -94,8 +94,8 @@ Feature: Subscribe a product to PIM.ai
       | ean  | pim_catalog_text       |
       | sku  | pim_catalog_identifier |
     And the following family:
-      | code   | attributes |
-      | tshirt | sku,ean    |
+      | code   | attributes | label-en_US |
+      | tshirt | sku,ean    | T-Shirt     |
     And the following product:
       | identifier | family | ean          |
       | ts_0013    | tshirt | 606449099812 |

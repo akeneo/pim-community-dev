@@ -69,6 +69,7 @@ class Client
             if ($config instanceof Configuration) {
                 $this->token = $config->getToken();
             }
+            $this->token = '844cd47f-a7fd-432e-9cf7-f9ae9edec473';
         }
 
         return $this->token;

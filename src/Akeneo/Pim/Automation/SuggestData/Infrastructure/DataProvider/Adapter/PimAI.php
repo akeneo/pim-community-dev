@@ -86,8 +86,17 @@ class PimAI implements DataProviderInterface
             );
         }
 
+        $productId = $request->getProduct()->getId();
+        $family = $request->getProduct()->getFamily();
+        $familyInfos = [
+            'code' => $family->getCode(),
+            'label' => [
+                $family->getTranslation()->getLocale() => $family->getLabel()
+            ]
+        ];
+
         try {
-            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped);
+            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $productId, $familyInfos);
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
