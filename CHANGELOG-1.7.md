@@ -1,5 +1,7 @@
 # 1.7.x
 
+# 1.7.32 (2018-09-07)
+
 ## Improvements
 
 - PIM-7614: Reduce SQL queries and loading time on the product edit form
