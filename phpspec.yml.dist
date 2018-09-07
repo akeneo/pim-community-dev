@@ -193,11 +193,6 @@ suites:
         psr4_prefix: Pim\Bundle\EnrichBundle
         spec_path: src/Pim/Bundle/EnrichBundle
         src_path: src/Pim/Bundle/EnrichBundle
-    FilterBundle:
-        namespace: Pim\Bundle\FilterBundle
-        psr4_prefix: Pim\Bundle\FilterBundle
-        spec_path: src/Pim/Bundle/FilterBundle
-        src_path: src/Pim/Bundle/FilterBundle
     LocalizationBundle:
         namespace: Pim\Bundle\LocalizationBundle
         psr4_prefix: Pim\Bundle\LocalizationBundle
@@ -239,3 +234,8 @@ suites:
         psr4_prefix: Oro\Bundle\PimDataGridBundle
         spec_path: src/Oro/Bundle/PimDataGridBundle
         src_path: src/Oro/Bundle/PimDataGridBundle
+    FilterBundle:
+        namespace: Oro\Bundle\PimFilterBundle
+        psr4_prefix: Oro\Bundle\PimFilterBundle
+        spec_path: src/Oro/Bundle/PimFilterBundle
+        src_path: src/Oro/Bundle/PimFilterBundle
