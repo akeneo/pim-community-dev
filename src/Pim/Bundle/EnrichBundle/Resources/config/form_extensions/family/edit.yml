@@ -237,6 +237,7 @@ extensions:
         parent: pim-family-edit-form-variant
         targetZone: variant-toolbar
         position: 100
+        aclResourceId: pim_enrich_family_edit_variants
 
     pim-family-edit-form-history:
         module: pim/common/tab/history

@@ -37,6 +37,7 @@ datagrid:
                 propertyCode: familyVariantCode
                 fetcher:      family-variant
                 rowAction:    true
+                acl_resource: pim_enrich_family_edit_variants
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
