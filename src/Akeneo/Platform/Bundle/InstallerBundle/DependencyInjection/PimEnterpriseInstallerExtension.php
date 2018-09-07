@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\InstallerBundle\DependencyInjection;
+namespace Akeneo\Platform\Bundle\InstallerBundle\DependencyInjection;
 
-use Pim\Bundle\InstallerBundle\DependencyInjection\PimInstallerExtension as BasePimInstallerExtension;
+use Akeneo\Platform\Bundle\InstallerBundle\DependencyInjection\PimInstallerExtension as BasePimInstallerExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;

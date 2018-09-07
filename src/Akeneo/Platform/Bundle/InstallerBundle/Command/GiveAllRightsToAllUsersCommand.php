@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\InstallerBundle\Command;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;

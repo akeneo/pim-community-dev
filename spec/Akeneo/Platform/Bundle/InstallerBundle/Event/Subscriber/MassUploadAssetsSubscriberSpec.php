@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\InstallerBundle\Event\Subscriber;
+namespace spec\Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
-use Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
-use PimEnterprise\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber;
+use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber;
 use Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand;
 use Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand;
 use Prophecy\Argument;

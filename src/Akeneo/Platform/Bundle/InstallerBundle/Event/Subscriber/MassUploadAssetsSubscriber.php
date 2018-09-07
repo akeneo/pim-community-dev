@@ -8,14 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PimEnterprise\Bundle\InstallerBundle\Event\Subscriber;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
 use Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand;
 use Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand;
+use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
-use Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;

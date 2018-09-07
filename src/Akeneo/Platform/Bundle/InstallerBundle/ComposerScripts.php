@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\InstallerBundle;
+namespace Akeneo\Platform\Bundle\InstallerBundle;
 
+use Akeneo\Platform\Bundle\InstallerBundle\ComposerScripts as BaseComposerScripts;
 use Composer\Script\Event;
-use Pim\Bundle\InstallerBundle\ComposerScripts as BaseComposerScripts;
 use Symfony\Component\Finder\Finder;
 
 /**

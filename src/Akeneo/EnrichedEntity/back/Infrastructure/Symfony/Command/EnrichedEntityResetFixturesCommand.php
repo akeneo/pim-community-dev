@@ -11,10 +11,10 @@
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\Command;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
-use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

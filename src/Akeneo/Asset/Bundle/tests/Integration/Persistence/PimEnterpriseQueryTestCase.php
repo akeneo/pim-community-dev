@@ -5,7 +5,7 @@ namespace Akeneo\Asset\Bundle\tests\Integration\Persistence;
 use Akeneo\Asset\Component\FileStorage;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\CategoryInterface;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
 
 class PimEnterpriseQueryTestCase extends QueryTestCase
 {

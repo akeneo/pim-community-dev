@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command;
 
-use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
