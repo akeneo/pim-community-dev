@@ -19,7 +19,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -42,11 +41,8 @@ class RecordHydrator implements RecordHydratorInterface
         $this->platform = $connection->getDatabasePlatform();
     }
 
-    public function hydrate(
-        array $row,
-        ValueKeyCollection $valueKeyCollection,
-        array $attributes
-    ): Record {
+    public function hydrate(array $row, ValueKeyCollection $valueKeyCollection, array $attributes): Record
+    {
         $labels = json_decode($row['labels'], true);
         $valueCollection = json_decode($row['value_collection'], true);
         $recordIdentifier = Type::getType(Type::STRING)
@@ -57,14 +53,14 @@ class RecordHydrator implements RecordHydratorInterface
             ->convertToPHPValue($row['code'], $this->platform);
 
         $hydratedValues = [];
-        foreach ($valueKeyCollection->normalize() as $key) {
+        foreach ($valueKeyCollection as $valueKey) {
+            $key = (string) $valueKey;
             if (!array_key_exists($key, $valueCollection)) {
                 continue;
             }
 
             $rawValue = $valueCollection[$key];
             $attributeIdentifier = $rawValue['attribute'];
-
             $hydratedValues[$key] = $this->valueHydrator->hydrate(
                 $rawValue,
                 $attributes[$attributeIdentifier]

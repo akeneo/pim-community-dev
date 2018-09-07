@@ -32,7 +32,7 @@ use Webmozart\Assert\Assert;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ValueKeyCollection
+class ValueKeyCollection implements \IteratorAggregate
 {
     /** @var ValueKey[] */
     private $valueKeys;
@@ -56,7 +56,12 @@ class ValueKeyCollection
     public function normalize(): array
     {
         return array_map(function (ValueKey $valueKey) {
-            return $valueKey->normalize();
+            return $valueKey->__toString();
         }, $this->valueKeys);
+    }
+
+    public function getIterator(): \Iterator
+    {
+        return new \ArrayIterator($this->valueKeys);
     }
 }

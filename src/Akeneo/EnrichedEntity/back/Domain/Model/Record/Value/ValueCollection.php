@@ -6,6 +6,12 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * Values are indexed by value keys.
+ *
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ */
 class ValueCollection
 {
     /** @var array */
@@ -32,24 +38,23 @@ class ValueCollection
     public function setValue(Value $newValue): ValueCollection
     {
         $values = $this->values;
-        $key = ValueCollection::getKey($newValue);
+        $key = $newValue->getValueKey()->__toString();
         $values[$key] = $newValue;
 
         return new self($values);
     }
 
+    // TODO SPEC IT
+    /**
+     * @param Value $values
+     */
     public static function fromValues(array $values): ValueCollection
     {
-        return new self($values);
-    }
+        $indexedValues = [];
+        foreach ($values as $value) {
+            $indexedValues[(string) $value->getValueKey()] = $value;
+        }
 
-    private static function getKey(Value $value): string
-    {
-        return sprintf(
-            '%s%s%s',
-            $value->getAttributeIdentifier()->normalize(),
-            $value->hasChannel() ? $value->getChannelReference()->getIdentifier()->normalize() : '',
-            $value->hasLocale() ? $value->getLocaleReference()->getIdentifier()->normalize() : ''
-        );
+        return new self($indexedValues);
     }
 }

@@ -16,15 +16,15 @@ namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 /**
- * Find the list of expected keys and attributes for the given enriched entity
+ * Finds a list of attribute details by their enriched entity identifiers
  *
- * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface ExpectedAttributesInterface
+interface FindAttributesIndexedByIdentifierInterface
 {
     /**
-     * @return string[]
+     * @return AbstractAttributeDetails[]
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier);
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
 }

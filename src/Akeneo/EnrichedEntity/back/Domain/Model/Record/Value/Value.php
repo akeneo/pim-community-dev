@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -98,5 +99,10 @@ class Value
             'locale'    => $this->localeReference->normalize(),
             'data'      => $this->data->normalize(),
         ];
+    }
+
+    public function getValueKey(): ValueKey
+    {
+        return ValueKey::create($this->attributeIdentifier, $this->channelReference, $this->localeReference);
     }
 }

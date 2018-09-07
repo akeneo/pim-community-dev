@@ -14,22 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ExpectedAttributesInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Doctrine\DBAL\Connection;
 
-class SqlExpectedAttributes implements ExpectedAttributesInterface
+class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 {
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var AttributeHydratorRegistry */
-    private $attributeHydratorRegistry;
-
-    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
+    public function __construct(Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
-        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
     }
 
     public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier)
@@ -64,7 +61,16 @@ SQL;
 
         $rows = $statement->fetchAll(\PDO::FETCH_COLUMN);
 
-        // Add hydration in next PR
-        return $rows;
+        return $this->createValueKeyCollection($rows);
+    }
+
+    private function createValueKeyCollection($rows): ValueKeyCollection
+    {
+        $valueKeys = [];
+        foreach ($rows as $row) {
+            $valueKeys[] = ValueKey::createFromNormalized($row);
+        }
+
+        return ValueKeyCollection::fromValueKeys($valueKeys);
     }
 }

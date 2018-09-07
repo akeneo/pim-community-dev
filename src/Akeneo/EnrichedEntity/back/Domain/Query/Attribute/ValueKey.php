@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Webmozart\Assert\Assert;
 
 /**
@@ -36,12 +39,24 @@ class ValueKey
         $this->key = $key;
     }
 
+    public static function create(
+        AttributeIdentifier $attributeIdentifier,
+        ChannelReference $channelReference,
+        LocaleReference $localeReference
+    ): self {
+        $channelPart = $channelReference->isEmpty() ? '' : sprintf('_%s', $channelReference->normalize());
+        $localePart = $localeReference->isEmpty() ? '' : sprintf('_%s', $localeReference->normalize());
+        $key = sprintf('%s%s%s', $attributeIdentifier->normalize(), $channelPart, $localePart);
+
+        return new self($key);
+    }
+
     public static function createFromNormalized(string $normalizedKey): self
     {
         return new self($normalizedKey);
     }
 
-    public function normalize(): string
+    public function __toString(): string
     {
         return $this->key;
     }

@@ -26,7 +26,7 @@ class ValueKeySpec extends ObjectBehavior
 
     function it_normalizes_itself()
     {
-        $this->normalize()->shouldReturn('name_brand_AE7F6A76E5F_mobile_en_US');
+        $this->__toString()->shouldReturn('name_brand_AE7F6A76E5F_mobile_en_US');
     }
 
     function it_cannot_be_created_with_an_empty_string()

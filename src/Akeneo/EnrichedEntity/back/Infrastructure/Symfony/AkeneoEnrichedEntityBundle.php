@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\Re
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueDataHydratorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -39,5 +40,6 @@ class AkeneoEnrichedEntityBundle extends Bundle
         $container->addCompilerPass(new RegisterAttributeFactoryPass());
         $container->addCompilerPass(new RegisterAttributeUpdaterPass());
         $container->addCompilerPass(new RegisterAttributeHydratorPass());
+        $container->addCompilerPass(new RegisterValueDataHydratorPass());
     }
 }
