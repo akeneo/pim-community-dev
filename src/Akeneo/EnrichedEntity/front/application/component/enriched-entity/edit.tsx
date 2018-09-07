@@ -61,28 +61,7 @@ interface DispatchProps {
 interface EditProps extends StateProps, DispatchProps {}
 
 class EnrichedEntityEditView extends React.Component<EditProps> {
-  private tabView: JSX.Element;
-
   public props: EditProps;
-
-  constructor(props: EditProps) {
-    super(props);
-
-    this.updateTabView(props.sidebar.currentTab);
-  }
-
-  componentDidUpdate(nextProps: EditProps) {
-    if (JSON.stringify(this.props.sidebar.currentTab) !== JSON.stringify(nextProps.sidebar.currentTab)) {
-      this.updateTabView(this.props.sidebar.currentTab);
-    }
-  }
-
-  private updateTabView = async (currentTab: string): Promise<void> => {
-    const TabView = await sidebarProvider.getView('akeneo_enriched_entities_enriched_entity_edit', currentTab);
-
-    this.tabView = <TabView code={currentTab} />;
-    this.forceUpdate();
-  };
 
   private onClickDelete = () => {
     if (confirm(__('pim_enriched_entity.enriched_entity.module.delete.confirm'))) {
@@ -137,6 +116,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
     const label = this.props.enrichedEntity.getLabel(this.props.context.locale);
+    const TabView = sidebarProvider.getView('akeneo_enriched_entities_enriched_entity_edit', this.props.sidebar.currentTab);
 
     return (
       <div className="AknDefault-contentWithColumn">
@@ -202,7 +182,9 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                 </div>
               </div>
             </header>
-            <div className="content">{this.tabView}</div>
+            <div className="content">
+              <TabView code={this.props.sidebar.currentTab} />
+            </div>
           </div>
         </div>
         <Sidebar />

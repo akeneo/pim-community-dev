@@ -6,7 +6,7 @@ const LocaleSwitcher = async (nodeElement, createElementDecorator, page) => {
     await page.waitForSelector('.AknDropdown.locale-switcher .AknDropdown-menuLink');
     const localeButton = await nodeElement.$(`.AknDropdown-menuLink[data-identifier="${locale}"]`);
     await localeButton.click();
-    await page.waitForSelector(`.AknActionButton-highlight[data-identifier="${locale}"]`);
+    return await page.waitForSelector(`.AknActionButton-highlight[data-identifier="${locale}"]`);
   };
 
   return {switchLocale};
