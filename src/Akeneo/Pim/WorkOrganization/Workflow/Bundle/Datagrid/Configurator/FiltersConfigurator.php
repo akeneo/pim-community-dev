@@ -9,7 +9,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Filters configurator for proposal grid.

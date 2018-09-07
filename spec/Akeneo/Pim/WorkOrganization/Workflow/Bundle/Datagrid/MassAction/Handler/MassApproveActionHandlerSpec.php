@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
-use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;

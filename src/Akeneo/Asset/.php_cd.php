@@ -39,7 +39,7 @@ $rules = [
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
         'Oro\Bundle\FilterBundle',
-        'Pim\Bundle\FilterBundle',
+        'Oro\Bundle\PimFilterBundle',
         // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
         'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
         'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager',

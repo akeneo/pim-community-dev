@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Permission\Bundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter;
+use Oro\Bundle\PimFilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;

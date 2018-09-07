@@ -13,7 +13,7 @@ parameters:
     pimee_workflow.datagrid.product_draft_attribute_choice_filter.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\AttributeChoiceFilter
     pimee_workflow.datagrid.product_draft_choice_filter.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ChoiceFilter
     pimee_workflow.datagrid.product_draft_author_filter.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\AuthorFilter
-    pimee_workflow.datagrid.product_draft_date_filter.class: Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pimee_workflow.datagrid.product_draft_date_filter.class: Oro\Bundle\PimFilterBundle\Filter\ProductValue\DateTimeRangeFilter
     pimee_workflow.datagrid.configuration.published_product.grid_helper.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\PublishedProduct\GridHelper
     pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ResultRecord\PublishedProductHistoryHydrator
 

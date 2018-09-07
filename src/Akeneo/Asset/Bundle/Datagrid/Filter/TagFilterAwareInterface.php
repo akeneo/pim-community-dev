@@ -14,7 +14,7 @@
 
 namespace Akeneo\Asset\Bundle\Datagrid\Filter;
 
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * Tag filter
