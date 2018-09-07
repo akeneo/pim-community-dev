@@ -178,13 +178,6 @@ suites:
         psr4_prefix: Pim\Component\CatalogVolumeMonitoring
         spec_path: src/Pim/Component/CatalogVolumeMonitoring
         src_path: src/Pim/Component/CatalogVolumeMonitoring
-
-    ## Pim Bundles
-    AnalyticsBundle:
-        namespace: Pim\Bundle\AnalyticsBundle
-        psr4_prefix: Pim\Bundle\AnalyticsBundle
-        spec_path: src/Pim/Bundle/AnalyticsBundle
-        src_path: src/Pim/Bundle/AnalyticsBundle
     ApiBundle:
         namespace: Akeneo\Tool\Bundle\ApiBundle
         psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
@@ -210,16 +203,6 @@ suites:
         psr4_prefix: Pim\Bundle\FilterBundle
         spec_path: src/Pim/Bundle/FilterBundle
         src_path: src/Pim/Bundle/FilterBundle
-    ImportExportBundle:
-        namespace: Pim\Bundle\ImportExportBundle
-        psr4_prefix: Pim\Bundle\ImportExportBundle
-        spec_path: src/Pim/Bundle/ImportExportBundle
-        src_path: src/Pim/Bundle/ImportExportBundle
-    InstallerBundle:
-        namespace: Pim\Bundle\InstallerBundle
-        psr4_prefix: Pim\Bundle\InstallerBundle
-        spec_path: src/Pim/Bundle/InstallerBundle
-        src_path: src/Pim/Bundle/InstallerBundle
     LocalizationBundle:
         namespace: Pim\Bundle\LocalizationBundle
         psr4_prefix: Pim\Bundle\LocalizationBundle
@@ -235,12 +218,6 @@ suites:
         psr4_prefix: Akeneo\UserManagement\Bundle
         spec_path: src/Akeneo/UserManagement/Bundle
         src_path: src/Akeneo/UserManagement/Bundle
-    CatalogVolumeMonitoringBundle:
-        namespace: Pim\Bundle\CatalogVolumeMonitoringBundle
-        psr4_prefix: Pim\Bundle\CatalogVolumeMonitoringBundle
-        spec_path: src/Pim/Bundle/CatalogVolumeMonitoringBundle
-        src_path: src/Pim/Bundle/CatalogVolumeMonitoringBundle
-
     ## Oro bundles
     OroFilterBundle:
         namespace: Oro\Bundle\FilterBundle

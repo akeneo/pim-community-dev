@@ -1,0 +1,13 @@
+parameters:
+    pim_import_export.form.type.job_instance.class: Akeneo\Platform\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType
+
+services:
+    pim_import_export.form.type.job_instance:
+        class: '%pim_import_export.form.type.job_instance.class%'
+        arguments:
+            - '@akeneo_batch.job.job_registry'
+            - '@translator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@oro_security.security_facade'
+        tags:
+            - { name: form.type, alias: pim_import_export_job_instance }

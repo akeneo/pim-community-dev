@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\DashboardBundle\Widget;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

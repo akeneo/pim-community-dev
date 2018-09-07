@@ -816,4 +816,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DashboardBundle\\P
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DashboardBundle\\Widget\\LastOperationsWidget/Akeneo\\Platform\\Bundle\\DashboardBundle\\Widget\\LastOperationsWidget/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DashboardBundle\\Widget\\Registry/Akeneo\\Platform\\Bundle\\DashboardBundle\\Widget\\Registry/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DashboardBundle\\Widget\\WidgetInterface/Akeneo\\Platform\\Bundle\\DashboardBundle\\Widget\\WidgetInterface/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\UIBundle/Akeneo\Platform\Bundle\UIBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UIBundle/Akeneo\\Platform\\Bundle\\UIBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle/Akeneo\\Platform\\Bundle\\ImportExportBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\AnalyticsBundle/Akeneo\\Platform\\Bundle\\AnalyticsBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogVolumeMonitoringBundle/Akeneo\\Platform\\Bundle\\CatalogVolumeMonitoringBundle/g'

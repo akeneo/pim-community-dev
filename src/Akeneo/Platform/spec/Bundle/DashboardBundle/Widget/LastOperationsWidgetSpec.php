@@ -6,7 +6,7 @@ use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
+use Akeneo\Platform\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Prophecy\Argument;
