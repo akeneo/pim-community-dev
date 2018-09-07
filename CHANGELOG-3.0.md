@@ -865,3 +865,4 @@
 - Move `Pim\Bundle\AnalyticsBundle` to `Akeneo\Platform\Bundle\AnalyticsBundle`
 - Move `Pim\Bundle\CatalogVolumeMonitoringBundle` to `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle`
 - Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
+- Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`
