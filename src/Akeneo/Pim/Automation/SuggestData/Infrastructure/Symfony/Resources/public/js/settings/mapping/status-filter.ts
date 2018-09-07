@@ -1,6 +1,5 @@
 import * as _ from "underscore";
 import BaseForm = require('pimenrich/js/view/base');
-import BaseView = require('pimenrich/js/view/base');
 import {EventsHash} from "backbone";
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/status-filter');
@@ -39,7 +38,7 @@ class StatusFilter extends BaseForm {
   /**
    * {@inheritdoc}
    */
-  public render(): BaseView {
+  public render(): BaseForm {
     this.$el.html(this.template({
       label: __('pim_common.status'),
       currentValue: '',

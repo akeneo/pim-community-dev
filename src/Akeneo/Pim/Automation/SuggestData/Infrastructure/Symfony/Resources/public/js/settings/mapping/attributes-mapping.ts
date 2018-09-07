@@ -140,14 +140,14 @@ class AttributeMapping extends BaseForm {
 
   /**
    * Filters the rows with a filter.
-   * Each row contains a 'data' element called 'active-filters'. This element contains the list the filters if the row
-   * should not be displayed by this filter. The row is displayed if there is no active filters in it, i.e. the active
-   * filters are empty.
+   * Each row contains a 'data' element called 'active-filters'. This element contains a list of filters. A filter is
+   * contained in this row if it is hidden by this filter. The row is displayed if there is no active filters in it,
+   * i.e. the active filters are empty.
    *
    * @param {{value: string, type: "equals" | "search", field: string}} filter
    */
   private filter(filter: { value: string, type: 'equals'|'search', field: string }): void {
-    $('.searchable-row').each((_i: number, row: any) => {
+    this.$el.find('.searchable-row').each((_i: number, row: any) => {
       const value = $(row).data(filter.field);
       let filteredByThisFilter = false;
       switch(filter.type) {
@@ -156,7 +156,7 @@ class AttributeMapping extends BaseForm {
       }
 
       let filters = $(row).data('active-filters');
-      if (filters === undefined) {
+      if (undefined === filters) {
         filters = [];
       }
       if ((filters.indexOf(filter.field) < 0) && filteredByThisFilter) {
@@ -176,7 +176,9 @@ class AttributeMapping extends BaseForm {
    * Toggle the "there is no data" message regarding the number of visible rows.
    */
   private toggleNoDataMessage() {
-    $('.searchable-row:visible').length ? this.$el.find('.no-data').hide() : this.$el.find('.no-data').show();
+    this.$el.find('.searchable-row:visible').length ?
+      this.$el.find('.no-data').hide() :
+      this.$el.find('.no-data').show();
   }
 
   /**
