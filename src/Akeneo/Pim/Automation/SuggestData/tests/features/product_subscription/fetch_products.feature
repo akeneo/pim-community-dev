@@ -17,8 +17,8 @@ Feature: Fetch products from PIM.ai
       | ean  | pim_catalog_text       |
       | sku  | pim_catalog_identifier |
     And the following family:
-      | code   | attributes |
-      | tshirt | sku,ean    |
+      | code   | attributes | label-en_US |
+      | tshirt | sku,ean    | T-Shirt     |
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | ean            |
@@ -27,7 +27,7 @@ Feature: Fetch products from PIM.ai
       | ts_0013    | tshirt | 606449099812 |
       | ts_0042    | tshirt | 730870200933 |
     And last fetch of subscribed products has been done yesterday
-    #When the subscribed products are fetched from PIM.ai (APAI-153)
+    #When the subscribed products are fetched from PIM.ai
     #Then 2 suggested data should have been added (APAI-153)
 
   Scenario: Successfully fetch no product from PIM.ai
