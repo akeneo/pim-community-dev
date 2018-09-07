@@ -121,9 +121,4 @@ class Record
             'values' => $this->valueCollection->normalize()
         ];
     }
-
-    public function setValue(Value $value): void
-    {
-        $this->valueCollection = $this->valueCollection->setValue($value);
-    }
 }

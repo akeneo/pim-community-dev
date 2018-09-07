@@ -84,6 +84,28 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_creates_a_record_with_and_finds_it_by_enriched_entity_and_record_code()
+    {
+        $recordCode = RecordCode::fromString('starck');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
+        );
+
+        $this->repository->create($record);
+
+        $recordFound = $this->repository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
+    }
+
+    /**
+     * @test
+     */
     public function it_creates_a_record_with_values_and_returns_it()
     {
         $recordCode = RecordCode::fromString('starck');
@@ -188,8 +210,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
         );
-        $record->setValue($valueToUpdate);
-        $record->setValue($valueToAdd);
+        $updatedValueCollection = ValueCollection::fromValues([$valueToAdd, $valueToUpdate]);
+        $record->setValues($updatedValueCollection);
 
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);

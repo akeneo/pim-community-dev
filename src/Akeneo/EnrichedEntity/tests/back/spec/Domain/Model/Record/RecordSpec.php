@@ -13,17 +13,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -66,33 +59,6 @@ class RecordSpec extends ObjectBehavior
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
 
         $this->getEnrichedEntityIdentifier()->shouldBeLike($enrichedEntityIdentifier);
-    }
-
-    public function it_updates_the_value_collection()
-    {
-        $this->setValue(Value::create(
-            AttributeIdentifier::fromString('name_designer_fingerprint'),
-            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
-            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString('A description')
-        ));
-        $this->normalize()->shouldReturn([
-            'identifier'               => 'designer_starck_fingerprint',
-            'code'                     => 'starck',
-            'enrichedEntityIdentifier' => 'designer',
-            'labels'                   => [
-                'en_US' => 'Stark',
-                'fr_FR' => 'Stark',
-            ],
-            'values'                   => [
-                'name_designer_fingerprint_ecommerce_en_US' => [
-                    'attribute' => 'name_designer_fingerprint',
-                    'channel'   => 'ecommerce',
-                    'locale'    => 'en_US',
-                    'data'      => 'A description',
-                ],
-            ],
-        ]);
     }
 
     // TODO Missing specs
