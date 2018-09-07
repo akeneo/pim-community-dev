@@ -3,19 +3,20 @@ import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/en
 import hydrator from 'akeneoenrichedentity/application/hydrator/enriched-entity';
 import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
+import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/identifier';
 
 const routing = require('routing');
 
-export interface EnrichedEntityFetcher extends Fetcher<EnrichedEntity> {}
+export interface EnrichedEntityFetcher extends Fetcher<EnrichedEntityIdentifier, EnrichedEntity> {}
 
 export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetcher {
   constructor(private hydrator: (backendEnrichedEntity: any) => EnrichedEntity) {
     Object.freeze(this);
   }
 
-  async fetch(identifier: string): Promise<EnrichedEntity> {
+  async fetch(identifier: EnrichedEntityIdentifier): Promise<EnrichedEntity> {
     const backendEnrichedEntity = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_get_rest', {identifier})
+      routing.generate('akeneo_enriched_entities_enriched_entity_get_rest', {identifier: identifier.stringValue()})
     );
 
     return this.hydrator(backendEnrichedEntity);

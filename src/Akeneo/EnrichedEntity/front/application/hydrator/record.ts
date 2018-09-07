@@ -6,15 +6,17 @@ import EnrichedEntityIdentifier, {
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
 import RecordCode, {createCode} from 'akeneoenrichedentity/domain/model/record/code';
+import Image from 'akeneoenrichedentity/domain/model/image';
 
 export const hydrator = (
   createRecord: (
     identifier: Identifier,
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
     code: RecordCode,
-    labelCollection: LabelCollection
+    labelCollection: LabelCollection,
+    image: Image | null
   ) => EnrichedEntity,
-  createIdentifier: (enrichedEntityIdentifier: string, identifier: string) => Identifier,
+  createIdentifier: (identifier: string) => Identifier,
   createEnrichedEntityIdentifier: (identifier: string) => EnrichedEntityIdentifier,
   createRecordCode: (code: string) => RecordCode,
   createLabelCollection: (labelCollection: any) => LabelCollection
@@ -23,15 +25,13 @@ export const hydrator = (
 
   validateKeys(backendRecord, expectedKeys, 'The provided raw record seems to be malformed.');
 
-  const identifier = createIdentifier(
-    backendRecord.identifier.enriched_entity_identifier,
-    backendRecord.identifier.identifier
-  );
+  const identifier = createIdentifier(backendRecord.identifier);
   const enrichedEntityIdentifier = createEnrichedEntityIdentifier(backendRecord.enriched_entity_identifier);
   const code = createRecordCode(backendRecord.code);
   const labelCollection = createLabelCollection(backendRecord.labels);
+  const image = backendRecord.image;
 
-  return createRecord(identifier, enrichedEntityIdentifier, code, labelCollection);
+  return createRecord(identifier, enrichedEntityIdentifier, code, labelCollection, image);
 };
 
 export default hydrator(

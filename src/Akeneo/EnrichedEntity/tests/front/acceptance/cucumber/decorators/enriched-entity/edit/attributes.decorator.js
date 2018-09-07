@@ -1,18 +1,16 @@
 const Attributes = async (nodeElement, createElementDecorator, page) => {
   const isLoaded = async () => {
-    await page.waitFor('.AknDefault-mainContent .AknSubsection');
+    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknButton.AknButton--action');
 
     return true;
   };
 
   const hasAttribute = async (code, type) => {
     await isLoaded();
-    await page.waitFor('.AknDefault-mainContent .AknSubsection .AknFieldContainer[data-placeholder="false"]');
-    const attribute = await nodeElement.$(
-      `.AknFieldContainer[data-identifier="${code}"][data-type="${type}"][data-placeholder="false"]`
-    );
+    const fieldSelector = `[data-identifier="${code}"][data-type="${type}"][data-placeholder="false"]`;
+    await page.waitFor(`.AknDefault-mainContent .AknSubsection .AknFieldContainer${fieldSelector}`);
 
-    return attribute !== null;
+    return true;
   };
 
   const isEmpty = async () => {
@@ -22,27 +20,19 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
     return true;
   };
 
-  const remove = async attributeIdentifier => {
-    await page.evaluate(
-      (attributes, attributeIdentifier) => {
-        const button = attributes.querySelector(
-          `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--trash`
-        );
+  const remove = async () => {
+    await page.evaluate(attributes => {
+      const button = attributes.querySelector('.AknQuickEdit .AknButton--delete');
 
-        button.style.width = '20px';
-        button.style.height = '20px';
-      },
-      nodeElement,
-      attributeIdentifier
-    );
+      button.style.width = '20px';
+      button.style.height = '20px';
+    }, nodeElement);
 
     page.on('dialog', async dialog => {
-      await dialog.accept();
+      if ('The attribute will be deleted. Confirm?' === dialog.message()) await dialog.accept();
     });
 
-    const deleteButton = await nodeElement.$(
-      `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--trash`
-    );
+    const deleteButton = await nodeElement.$('.AknQuickEdit .AknButton--delete');
     await deleteButton.click();
   };
 
@@ -63,19 +53,15 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
       attributeIdentifier
     );
 
-    page.on('dialog', async dialog => {
-      await dialog.accept();
-    });
-
-    const deleteButton = await nodeElement.$(
+    const editButton = await nodeElement.$(
       `.AknFieldContainer[data-identifier="${attributeIdentifier}"][data-placeholder="false"] .AknIconButton--edit`
     );
-    await deleteButton.click();
+    await editButton.click();
   };
 
   const cancelDeletion = async () => {
     await page.evaluate(attributes => {
-      const button = attributes.querySelector('.AknFieldContainer .AknIconButton--trash');
+      const button = attributes.querySelector('.AknQuickEdit .AknButton.AknButton--delete');
 
       button.style.width = '20px';
       button.style.height = '20px';
@@ -85,7 +71,7 @@ const Attributes = async (nodeElement, createElementDecorator, page) => {
       await dialog.dismiss();
     });
 
-    const deleteButton = await nodeElement.$('.AknFieldContainer .AknIconButton--trash');
+    const deleteButton = await nodeElement.$('.AknQuickEdit .AknButton.AknButton--delete');
     await deleteButton.click();
   };
 

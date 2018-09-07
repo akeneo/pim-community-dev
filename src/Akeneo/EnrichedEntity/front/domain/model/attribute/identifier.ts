@@ -1,44 +1,34 @@
 class InvalidTypeError extends Error {}
 
-export interface NormalizedAttributeIdentifier {
-  identifier: string;
-  enriched_entity_identifier: string;
-}
+export type NormalizedAttributeIdentifier = string;
 
 export default class Identifier {
-  private constructor(readonly enrichedEntityIdentifier: string, readonly identifier: string) {
-    if ('string' !== typeof enrichedEntityIdentifier) {
-      throw new InvalidTypeError('AttributeIdentifier expect a string as first parameter to be created');
-    }
+  private constructor(readonly identifier: string) {
     if ('string' !== typeof identifier) {
-      throw new InvalidTypeError('AttributeIdentifier expect a string as second parameter to be created');
+      throw new InvalidTypeError('AttributeIdentifier expect a string as parameter to be created');
     }
 
     Object.freeze(this);
   }
 
-  public static create(enrichedEntityIdentifier: string, identifier: string): Identifier {
-    return new Identifier(enrichedEntityIdentifier, identifier);
+  public static create(identifier: string): Identifier {
+    return new Identifier(identifier);
   }
 
-  public static createFromNormalized({
-    enriched_entity_identifier,
-    identifier,
-  }: NormalizedAttributeIdentifier): Identifier {
-    return new Identifier(enriched_entity_identifier, identifier);
+  public static createFromNormalized(identifier: NormalizedAttributeIdentifier): Identifier {
+    return new Identifier(identifier);
   }
 
   public equals(identifier: Identifier): boolean {
-    return (
-      this.identifier === identifier.identifier && this.enrichedEntityIdentifier === identifier.enrichedEntityIdentifier
-    );
+    return this.identifier === identifier.identifier;
   }
 
   public normalize(): NormalizedAttributeIdentifier {
-    return {
-      identifier: this.identifier,
-      enriched_entity_identifier: this.enrichedEntityIdentifier,
-    };
+    return this.identifier;
+  }
+
+  public stringValue(): string {
+    return this.identifier;
   }
 }
 

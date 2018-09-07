@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Repository;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
@@ -39,4 +40,6 @@ interface AttributeRepositoryInterface
      * @return AbstractAttribute[]
      */
     public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
+
+    public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
 }

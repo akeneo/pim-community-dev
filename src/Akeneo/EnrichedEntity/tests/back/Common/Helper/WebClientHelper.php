@@ -92,6 +92,11 @@ HTML;
         Assert::assertSame(404, $response->getStatusCode());
     }
 
+    public function assert500ServerError(Response $response): void
+    {
+        Assert::assertSame(500, $response->getStatusCode());
+    }
+
     public function assertFromFile(Response $response, string $relativeFilePath): void
     {
         $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);

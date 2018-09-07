@@ -121,10 +121,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
 
   public static createFromNormalized(normalizedTextAttribute: NormalizedTextAttribute) {
     return new ConcreteTextAttribute(
-      createIdentifier(
-        normalizedTextAttribute.identifier.enriched_entity_identifier,
-        normalizedTextAttribute.identifier.identifier
-      ),
+      createIdentifier(normalizedTextAttribute.identifier),
       createEnrichedEntityIdentifier(normalizedTextAttribute.enriched_entity_identifier),
       createCode(normalizedTextAttribute.code),
       createLabelCollection(normalizedTextAttribute.labels),

@@ -1,17 +1,17 @@
 services:
-    akeneo_enrichedentity.infrastructure.validation.record.record_identifier_should_be_unique:
-        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordIdentifierShouldBeUniqueValidator
+    akeneo_enrichedentity.infrastructure.validation.record.record_code_should_be_unique:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUniqueValidator
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.record_exists'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.record_is_unique' }
 
-    akeneo_enrichedentity.infrastructure.validation.enriched_entity.enriched_entity_identifier_should_be_unique:
-        class: Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityIdentifierShouldBeUniqueValidator
+    akeneo_enrichedentity.infrastructure.validation.enriched_entity.enriched_entity_code_should_be_unique:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityCodeShouldBeUniqueValidator
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
         tags:
-            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.enriched_entity.identifier_is_unique' }
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.enriched_entity.code_is_unique' }
 
     akeneo_enrichedentity.infrastructure.validation.attribute.attribute_should_not_exist:
         class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExistValidator
@@ -51,7 +51,7 @@ services:
     akeneo_enrichedentity.infrastructure.validation.attribute.text_property_updates_should_be_coherent_validator:
         class: Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherentValidator
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.text_property_updates_should_be_coherent_validator' }
 

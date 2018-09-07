@@ -19,9 +19,6 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute;
  */
 abstract class AbstractCreateAttributeCommand
 {
-    /** @var array */
-    public $identifier;
-
     /** @var string */
     public $enrichedEntityIdentifier;
 

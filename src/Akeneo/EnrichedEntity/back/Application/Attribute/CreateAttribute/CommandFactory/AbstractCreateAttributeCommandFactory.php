@@ -25,10 +25,6 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
         AbstractCreateAttributeCommand $command,
         array $normalizedCommand
     ): AbstractCreateAttributeCommand {
-        $command->identifier = [
-            'identifier' => $normalizedCommand['identifier']['identifier'] ?? null,
-            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null
-        ];
         $command->code = $normalizedCommand['code'] ?? null;
         $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? null;

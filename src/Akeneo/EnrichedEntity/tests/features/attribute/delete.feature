@@ -29,7 +29,7 @@ Feature: Delete an attribute linked to an enriched entity
       | portrait | image |
     When the user deletes the attribute "name" linked to the enriched entity "designer"
     And the user should see the deleted notification
-    Then there should not be the following attributes:
+    Then there should be the following attributes:
       | code     | type  |
       | name     | text  |
 
@@ -62,7 +62,7 @@ Feature: Delete an attribute linked to an enriched entity
       | code     | type  |
       | name     | text  |
       | portrait | image |
-    When the user cancel the deletion of attribute
+    When the user cancel the deletion of attribute "portrait"
     Then the user should not see the delete notification
     And there should be the following attributes:
       | code     | type  |

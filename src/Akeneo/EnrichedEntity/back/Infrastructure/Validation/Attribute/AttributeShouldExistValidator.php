@@ -42,20 +42,13 @@ class AttributeShouldExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $enrichedEntityIdentifier = $command->identifier['enriched_entity_identifier'];
-        $identifier = $command->identifier['identifier'];
-        $alreadyExists = $this->attributeExists->withIdentifier(
-            AttributeIdentifier::create(
-                $enrichedEntityIdentifier,
-                $identifier
-            )
+        $attributeExists = $this->attributeExists->withIdentifier(
+            AttributeIdentifier::fromString($command->identifier)
         );
 
-        if (!$alreadyExists) {
+        if (!$attributeExists) {
             $this->context->buildViolation(AttributeShouldExist::ERROR_MESSAGE)
-                ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
-                ->setParameter('%code%', $identifier)
-                ->atPath('identifier')
+                ->atPath('code')
                 ->addViolation();
         }
     }

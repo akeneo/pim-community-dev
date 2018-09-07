@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -39,18 +40,39 @@ class SqlAttributeExists implements AttributeExistsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withIdentifier(AttributeIdentifier $attributeIdentifier): bool
+    public function withIdentifier(AttributeIdentifier $identifier): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
             FROM akeneo_enriched_entity_attribute
-            WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier
+            WHERE identifier = :identifier
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'identifier' => $attributeIdentifier->getIdentifier(),
-            'enriched_entity_identifier' => $attributeIdentifier->getEnrichedEntityIdentifier(),
+            'identifier' => $identifier,
+        ]);
+
+        $platform = $this->sqlConnection->getDatabasePlatform();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
+
+        return $isExisting;
+    }
+
+    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeCode $attributeCode): bool
+    {
+        $query = <<<SQL
+        SELECT EXISTS (
+            SELECT 1
+            FROM akeneo_enriched_entity_attribute
+            WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier
+        ) as is_existing
+SQL;
+        $statement = $this->sqlConnection->executeQuery($query, [
+            'code' => $attributeCode,
+            'enriched_entity_identifier' => $enrichedEntityIdentifier,
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();

@@ -6,7 +6,6 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
 
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -88,8 +87,7 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier')
-            || $normalizedCommand['identifier']['identifier'] !== $request->get('attributeIdentifier');
+        return $normalizedCommand['identifier'] !== $request->get('attributeIdentifier');
     }
 
     private function getEditCommand(Request $request): AbstractEditAttributeCommand

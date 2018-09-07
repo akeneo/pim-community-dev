@@ -36,7 +36,6 @@ use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\HttpFoundation\Response;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
@@ -112,7 +111,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
+    public function it_returns_a_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -139,9 +138,9 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_create', true);
 
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), []));
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), []));
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [], null));
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [], null));
 
         $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
@@ -152,7 +151,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     private function createNameAttribute(): AbstractAttributeDetails
     {
         $nameAttribute = new TextAttributeDetails();
-        $nameAttribute->identifier = AttributeIdentifier::create('designer', 'name');
+        $nameAttribute->identifier = AttributeIdentifier::create('designer', 'name', md5('fingerprint'));
         $nameAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $nameAttribute->code = AttributeCode::fromString('name');
         $nameAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
@@ -172,7 +171,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     private function createEmailAttribute()
     {
         $emailAttribute = new TextAttributeDetails();
-        $emailAttribute->identifier = AttributeIdentifier::create('designer', 'email');
+        $emailAttribute->identifier = AttributeIdentifier::create('designer', 'email', md5('fingerprint'));
         $emailAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $emailAttribute->code = AttributeCode::fromString('email');
         $emailAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
@@ -192,7 +191,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     private function createPortraitAttribute(): AbstractAttributeDetails
     {
         $imageAttribute = new ImageAttributeDetails();
-        $imageAttribute->identifier = AttributeIdentifier::create('designer', 'image');
+        $imageAttribute->identifier = AttributeIdentifier::create('designer', 'image', md5('fingerprint'));
         $imageAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $imageAttribute->code = AttributeCode::fromString('name');
         $imageAttribute->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -32,12 +33,35 @@ class InMemoryAttributeExists implements AttributeExistsInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function withIdentifier(AttributeIdentifier $attributeIdentifier): bool
+    public function withIdentifier(AttributeIdentifier $identifier): bool
     {
-        $key = $this->attributeRepository->getKey($attributeIdentifier);
         $attributes = $this->attributeRepository->getAttributes();
+        $found = false;
 
-        return isset($attributes[$key]);
+        foreach ($attributes as $attribute) {
+            if ($attribute->getIdentifier()->equals($identifier)) {
+                $found = true;
+            }
+        }
+
+        return $found;
+    }
+
+    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeCode $attributeCode): bool
+    {
+        $attributes = $this->attributeRepository->getAttributes();
+        $found = false;
+
+        foreach ($attributes as $attribute) {
+            $sameEnrichedEntity = $attribute->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier);
+            $sameCode = $attribute->getCode()->equals($attributeCode);
+
+            if ($sameEnrichedEntity && $sameCode) {
+                $found = true;
+            }
+        }
+
+        return $found;
     }
 
     public function withEnrichedEntityIdentifierAndOrder(

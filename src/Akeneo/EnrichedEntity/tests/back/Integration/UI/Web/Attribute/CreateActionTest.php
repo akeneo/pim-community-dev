@@ -59,10 +59,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'identifier'                 => 'name',
-                    'enriched_entity_identifier' => 'designer',
-                ],
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [
@@ -96,10 +92,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'identifier'                 => 'picture',
-                    'enriched_entity_identifier' => 'designer',
-                ],
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'picture',
                 'labels'                     => [
@@ -132,10 +124,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'identifier'                 => 'name',
-                    'enriched_entity_identifier' => 'designer',
-                ],
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [
@@ -160,10 +148,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'identifier'                 => 'description',
-                    'enriched_entity_identifier' => 'designer',
-                ],
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'description',
                 'labels'                     => [
@@ -176,9 +160,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $descriptionAttribute = $attributeRepository->getByIdentifier(
-            AttributeIdentifier::create('designer', 'description')
+            AttributeIdentifier::fromString(
+                sprintf('%s_%s_%s', 'description', 'designer', md5('designer_description'))
+            )
         );
 
         $this->assertEquals(1, $descriptionAttribute->getOrder()->intValue());
@@ -202,10 +188,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => 'name',
-                    'enriched_entity_identifier' => 'designer'
-                ],
                 'enriched_entity_identifier' => 'designer',
                 'code' => 'name',
                 'labels'                     => [],
@@ -225,10 +207,10 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     /**
      * @test
-     * @dataProvider invalidIdentifiers
+     * @dataProvider invalidCodes
      */
-    public function it_returns_an_error_when_the_attribute_identifier_is_not_valid(
-        $recordCode,
+    public function it_returns_an_error_when_the_attribute_code_is_not_valid(
+        $attributeCode,
         $enrichedEntityIdentifier,
         $enrichedEntityIdentifierURL,
         $type,
@@ -246,12 +228,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'identifier' => [
-                    'identifier' => $recordCode,
-                    'enriched_entity_identifier' => $enrichedEntityIdentifier
-                ],
                 'enriched_entity_identifier' => $enrichedEntityIdentifier,
-                'code' => $recordCode,
+                'code'                       => $attributeCode,
                 'labels'                     => [],
                 'type'                       => $type,
                 'is_required'                   => false,
@@ -270,15 +248,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_attribute_identifier_is_not_unique()
+    public function it_returns_an_error_when_the_attribute_code_is_not_unique_in_the_enriched_identifier()
     {
         $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
         $content = [
-            'identifier'                 => [
-                'identifier'                 => 'name',
-                'enriched_entity_identifier' => 'designer'
-            ],
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => [],
@@ -293,7 +267,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute($this->client, self::CREATE_ATTRIBUTE_ROUTE, $urlParameters, $method, $headers,
             $content);
 
-        $expectedContent = '[{"messageTemplate":"pim_enriched_entity.attribute.validation.identifier.should_not_exist","parameters":{"%enriched_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"The attribute already exists for the enriched entity \u0022designer\u0022 and the attribute code \u0022name\u0022","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"identifier","invalidValue":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+        $expectedContent = '[{"messageTemplate":"pim_enriched_entity.attribute.validation.code.should_not_exist","parameters":{"%enriched_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"The attribute already exists for the enriched entity \u0022designer\u0022 and the attribute code \u0022name\u0022","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, $expectedContent);
     }
@@ -318,10 +292,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'identifier'                 => 'name',
-                    'enriched_entity_identifier' => 'designer',
-                ],
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => [],
@@ -444,69 +414,69 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_create', false);
     }
 
-    public function invalidIdentifiers()
+    public function invalidCodes()
     {
-        $longIdentifier = str_repeat('a', 256);
+        $longCode = str_repeat('a', 256);
 
         return [
             // Image
-            'Image attribute identifier is null'                                                                  => [
+            'Image attribute code is null' => [
                 null,
                 'brand',
                 'brand',
                 'image',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
-            'Image attribute identifier is an integer'                                                            => [
+            'Image attribute code is an integer' => [
                 1234123,
                 'brand',
                 'brand',
                 'image',
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":1234123,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":1234123,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"brand","code":1234123,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
-            'Image attribute identifier has a dash character'                                                     => [
-                'invalid-identifier',
+            'Image attribute code has a dash character' => [
+                'invalid-code',
                 'brand',
                 'brand',
                 'image',
-                '[{"messageTemplate":"pim_enriched_entity.attribute.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"invalid-identifier","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_enriched_entity.attribute.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"brand","code":"invalid-code","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
-            'Image attribute identifier is 256 characters long'                                                   => [
-                $longIdentifier,
+            'Image attribute identifier is 256 characters long' => [
+                $longCode,
                 'brand',
                 'brand',
                 'image',
-                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"brand","code":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
 
             // Text
-            'Text attribute identifier is null'                                                                  => [
+            'Text attribute code is null' => [
                 null,
                 'brand',
                 'brand',
                 'text',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"enrichedEntityIdentifier":"brand","code":null,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
-            'Text attribute identifier is an integer'                                                            => [
+            'Text attribute code is an integer' => [
                 1234123,
                 'brand',
                 'brand',
                 'text',
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"identifier":{"identifier":1234123,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":1234123,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"enrichedEntityIdentifier":"brand","code":1234123,"labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
-            'Text attribute identifier has a dash character'                                                     => [
-                'invalid-identifier',
+            'Text attribute code has a dash character' => [
+                'invalid-code',
                 'brand',
                 'brand',
                 'text',
-                '[{"messageTemplate":"pim_enriched_entity.attribute.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"identifier":{"identifier":"invalid-identifier","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"pim_enriched_entity.attribute.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"enrichedEntityIdentifier":"brand","code":"invalid-code","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
-            'Text attribute identifier is 256 characters long'                                                   => [
-                $longIdentifier,
+            'Text attribute code is 256 characters long' => [
+                $longCode,
                 'brand',
                 'brand',
                 'text',
-                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"identifier":{"identifier":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"maxLength":null,"isTextarea":false,"isRichTextEditor":false,"validationRule":"none","regularExpression":null,"enrichedEntityIdentifier":"brand","code":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
     }
@@ -516,11 +486,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Value per channel is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":null,"valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":null,"valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Value per channel is not a boolean' => [
                 'wrong_boolean_value',
-                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":"wrong_boolean_value","valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":"wrong_boolean_value","valuePerLocale":false},"propertyPath":"valuePerChannel","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
         ];
     }
@@ -530,11 +500,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Value per locale is null' => [
                 null,
-                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":null},"propertyPath":"valuePerLocale","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":null},"propertyPath":"valuePerLocale","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Value per locale is not a boolean' => [
                 'wrong_boolean_value',
-                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":null,"allowedExtensions":[],"identifier":{"identifier":"name","enriched_entity_identifier":"designer"},"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":"wrong_boolean_value"},"propertyPath":"valuePerLocale","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should be of type boolean.","parameters":{"{{ value }}":"\u0022wrong_boolean_value\u0022","{{ type }}":"boolean"},"plural":null,"message":"This value should be of type boolean.","root":{"maxFileSize":null,"allowedExtensions":[],"enrichedEntityIdentifier":"designer","code":"name","labels":[],"order":0,"isRequired":false,"valuePerChannel":false,"valuePerLocale":"wrong_boolean_value"},"propertyPath":"valuePerLocale","invalidValue":"wrong_boolean_value","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
         ];
     }

@@ -22,10 +22,6 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_create_a_text_attribute()
     {
         $command = $this->create([
-            'identifier'  => [
-                'identifier'                 => 'name',
-                'enriched_entity_identifier' => 'designer',
-            ],
             'enriched_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
@@ -40,10 +36,6 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
             'regular_expression' => '/\w+/',
         ]);
         $command->shouldBeAnInstanceOf(CreateTextAttributeCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => 'name',
-            'enriched_entity_identifier' => 'designer',
-        ]);
         $command->enrichedEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('name');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
@@ -63,10 +55,6 @@ class CreateTextAttributeCommandFactorySpec extends ObjectBehavior
         $command = $this->create([]);
 
         $command->shouldBeAnInstanceOf(CreateTextAttributeCommand::class);
-        $command->identifier->shouldBeEqualTo([
-            'identifier'                 => null,
-            'enriched_entity_identifier' => null,
-        ]);
         $command->enrichedEntityIdentifier->shouldBeEqualTo(null);
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\EnrichedEntity\Component\Factory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
@@ -113,12 +114,12 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
     {
         $collection = [];
 
-        foreach ($recordCodes as $recordCode) {
-            $enrichedEntityCode = $attribute->getReferenceDataName();
-            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityCode);
-            $recordIdentifier = RecordIdentifier::create($enrichedEntityCode, $recordCode);
+        foreach ($recordCodes as $code) {
+            $enrichedEntityIdentifier = $attribute->getReferenceDataName();
+            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+            $recordCode = RecordCode::fromString($code);
 
-            $record = $this->recordRepository->getByIdentifier($recordIdentifier);
+            $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
 
             if (null === $record) {
                 throw InvalidPropertyException::validEntityCodeExpected(
@@ -129,7 +130,7 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
                         (string) $enrichedEntityIdentifier
                     ),
                     static::class,
-                    (string) $recordIdentifier
+                    (string) $recordCode
                 );
             }
 

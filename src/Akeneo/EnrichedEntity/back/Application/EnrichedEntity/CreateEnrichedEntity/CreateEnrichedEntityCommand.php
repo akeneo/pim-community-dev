@@ -19,7 +19,7 @@ namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity;
 class CreateEnrichedEntityCommand
 {
     /** @var string */
-    public $identifier;
+    public $code;
 
     /** @var array */
     public $labels;

@@ -14,28 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
 use PDO;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -47,9 +36,13 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
     /** @var Connection */
     private $sqlConnection;
 
-    public function __construct(Connection $sqlConnection)
+    /** @var AttributeHydratorRegistry */
+    private $attributeHydratorRegistry;
+
+    public function __construct(Connection $sqlConnection, AttributeHydratorRegistry $attributeHydratorRegistry)
     {
         $this->sqlConnection = $sqlConnection;
+        $this->attributeHydratorRegistry = $attributeHydratorRegistry;
     }
 
     public function create(AbstractAttribute $attribute): void
@@ -59,6 +52,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         $insert = <<<SQL
         INSERT INTO akeneo_enriched_entity_attribute (
             identifier,
+            code,
             enriched_entity_identifier,
             labels,
             attribute_type,
@@ -70,6 +64,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         )
         VALUES (
             :identifier,
+            :code,
             :enriched_entity_identifier,
             :labels,
             :attribute_type,
@@ -83,7 +78,8 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier'                 => $normalizedAttribute['code'],
+                'identifier'                 => $normalizedAttribute['identifier'],
+                'code'                       => $normalizedAttribute['code'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
                 'labels'                     => json_encode($normalizedAttribute['labels']),
                 'attribute_type'             => $normalizedAttribute['type'],
@@ -94,9 +90,9 @@ SQL;
                 'additional_properties'      => json_encode($additionalProperties),
             ],
             [
-                'is_required'       => Type::getType('boolean'),
-                'value_per_channel' => Type::getType('boolean'),
-                'value_per_locale'  => Type::getType('boolean'),
+                'is_required'       => Type::getType(Type::BOOLEAN),
+                'value_per_channel' => Type::getType(Type::BOOLEAN),
+                'value_per_locale'  => Type::getType(Type::BOOLEAN),
             ]
         );
         if ($affectedRows > 1) {
@@ -116,21 +112,22 @@ SQL;
             attribute_order = :attribute_order,
             is_required = :is_required,
             additional_properties = :additional_properties
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
-                'identifier'                 => $normalizedAttribute['code'],
+                'identifier'                 => $normalizedAttribute['identifier'],
                 'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
                 'labels'                     => $normalizedAttribute['labels'],
                 'attribute_order'            => $normalizedAttribute['order'],
                 'is_required'                => $normalizedAttribute['is_required'],
-                'additional_properties'      => json_encode($additionalProperties),
+                'additional_properties'      => $additionalProperties,
             ],
             [
-                'is_required' => Type::getType('boolean'),
-                'labels' => Type::getType('json_array')
+                'is_required' => Type::getType(Type::BOOLEAN),
+                'labels' => Type::getType(Type::JSON_ARRAY),
+                'additional_properties' => Type::getType(Type::JSON_ARRAY)
             ]
         );
         if ($affectedRows > 1) {
@@ -149,6 +146,7 @@ SQL;
         $fetch = <<<SQL
         SELECT
             identifier,
+            code,
             enriched_entity_identifier,
             labels,
             attribute_type,
@@ -158,23 +156,21 @@ SQL;
             value_per_locale,
             additional_properties
         FROM akeneo_enriched_entity_attribute
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'identifier' => $identifier->getIdentifier(),
-                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
+                'identifier' => $identifier,
             ]
         );
         $result = $statement->fetch();
-        $statement->closeCursor();
 
         if (!$result) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateAttribute($result);
+        return $this->attributeHydratorRegistry->getHydrator($result)->hydrate($result);
     }
 
     /**
@@ -206,11 +202,12 @@ SQL;
             ]
         );
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $statement->closeCursor();
 
         $attributes = [];
         foreach ($results as $result) {
-            $attributes[] = $this->hydrateAttribute($result);
+            $attributes[] = $this->attributeHydratorRegistry
+                ->getHydrator($result)
+                ->hydrate($result);
         }
 
         return $attributes;
@@ -232,87 +229,6 @@ SQL;
     }
 
     /**
-     * This method should probably split into hydrators.
-     *
-     * One idea could be:
-     * AbstractAttributeHydrator <- hydrates the common properties
-     * ^
-     * TextAttributeHydrator <- hydrates attributes specific to the text attribute and creates an instance of attribute.
-     */
-    private function hydrateAttribute(array $result): AbstractAttribute
-    {
-        $code = $result['identifier'];
-        $enrichedEntityIdentifier = $result['enriched_entity_identifier'];
-        $labels = json_decode($result['labels'], true);
-        $order = (int) $result['attribute_order'];
-        $isRequired = (bool) $result['is_required'];
-        $valuePerChannel = (bool) $result['value_per_channel'];
-        $valuePerLocale = (bool) $result['value_per_locale'];
-        $additionnalProperties = json_decode($result['additional_properties'], true);
-
-        if ('text' === $result['attribute_type']) {
-            $maxLength = (int) $additionnalProperties['max_length'];
-
-            if (true === $additionnalProperties['is_textarea']) {
-                $isRichTextEditor = $additionnalProperties['is_rich_text_editor'];
-
-                return TextAttribute::createTextarea(
-                    AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
-                    EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                    AttributeCode::fromString($code),
-                    LabelCollection::fromArray($labels),
-                    AttributeOrder::fromInteger($order),
-                    AttributeIsRequired::fromBoolean($isRequired),
-                    AttributeValuePerChannel::fromBoolean($valuePerChannel),
-                    AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                    null === $maxLength ? AttributeMaxLength::noLimit() : AttributeMaxLength::fromInteger($maxLength),
-                    AttributeIsRichTextEditor::fromBoolean($isRichTextEditor)
-                );
-            }
-
-            $validationRule = $additionnalProperties['validation_rule'];
-            $regularExpression = $additionnalProperties['regular_expression'];
-
-            return TextAttribute::createText(
-                AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                AttributeCode::fromString($code),
-                LabelCollection::fromArray($labels),
-                AttributeOrder::fromInteger($order),
-                AttributeIsRequired::fromBoolean($isRequired),
-                AttributeValuePerChannel::fromBoolean($valuePerChannel),
-                AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                AttributeMaxLength::fromInteger($maxLength),
-                null === $validationRule ? AttributeValidationRule::none() : AttributeValidationRule::fromString($validationRule),
-                null === $regularExpression ? AttributeRegularExpression::createEmpty() : AttributeRegularExpression::fromString($regularExpression)
-            );
-        }
-
-        if ('image' === $result['attribute_type']) {
-            $maxFileSize = $additionnalProperties['max_file_size'];
-            $extensions = $additionnalProperties['allowed_extensions'];
-
-            return ImageAttribute::create(
-                AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']),
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-                AttributeCode::fromString($code),
-                LabelCollection::fromArray($labels),
-                AttributeOrder::fromInteger($order),
-                AttributeIsRequired::fromBoolean($isRequired),
-                AttributeValuePerChannel::fromBoolean($valuePerChannel),
-                AttributeValuePerLocale::fromBoolean($valuePerLocale),
-                null === $maxFileSize ? AttributeMaxFileSize::noLimit() : AttributeMaxFileSize::fromString($maxFileSize),
-                AttributeAllowedExtensions::fromList($extensions)
-            );
-        }
-
-        throw new \LogicException(
-            sprintf('Only attribute types "text" or "image" are supported, "%s" given', $result['attribute_type']
-            )
-        );
-    }
-
-    /**
      * @throws AttributeNotFoundException
      * @throws DBALException
      */
@@ -320,17 +236,27 @@ SQL;
     {
         $sql = <<<SQL
         DELETE FROM akeneo_enriched_entity_attribute
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $sql,
             [
-                'identifier' => $identifier->getIdentifier(),
-                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
+                'identifier' => $identifier,
             ]
         );
         if (1 !== $affectedRows) {
             throw AttributeNotFoundException::withIdentifier($identifier);
         }
+    }
+
+    public function nextIdentifier(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        AttributeCode $attributeCode
+    ): AttributeIdentifier {
+        return AttributeIdentifier::create(
+            (string) $enrichedEntityIdentifier,
+            (string) $attributeCode,
+            Uuid::uuid4()->toString()
+        );
     }
 }

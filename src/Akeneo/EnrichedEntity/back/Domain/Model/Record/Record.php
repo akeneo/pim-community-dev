@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Webmozart\Assert\Assert;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -36,45 +36,43 @@ class Record
     /** @var LabelCollection */
     private $labelCollection;
 
+    /** @var ValueCollection */
+    private $valueCollection;
+
     private function __construct(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
-        LabelCollection $labelCollection
+        LabelCollection $labelCollection,
+        ValueCollection $valueCollection
     ) {
-        Assert::eq($identifier->getIdentifier(), (string) $code, sprintf(
-                'The identifier and code should be the same, "%s" and "%s" given.',
-                $identifier->getIdentifier(),
-                (string) $code
-            )
-        );
-        Assert::eq($identifier->getEnrichedEntityIdentifier(), (string) $enrichedEntityIdentifier, sprintf(
-                'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
-                $identifier->getEnrichedEntityIdentifier(),
-                (string) $enrichedEntityIdentifier
-            )
-        );
-
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $this->labelCollection = $labelCollection;
         $this->code = $code;
+        $this->labelCollection = $labelCollection;
+        $this->valueCollection = $valueCollection;
     }
 
     public static function create(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
-        array $rawLabelCollection
+        array $rawLabelCollection, // TODO: receive LabelCollection instead
+        ValueCollection $valueCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection);
+        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $valueCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
     {
         return $this->identifier;
+    }
+
+    public function getCode(): RecordCode
+    {
+        return $this->code;
     }
 
     public function getEnrichedEntityIdentifier(): EnrichedEntityIdentifier
@@ -84,8 +82,7 @@ class Record
 
     public function equals(Record $record): bool
     {
-        return $this->identifier->equals($record->identifier) &&
-            $this->enrichedEntityIdentifier->equals($record->enrichedEntityIdentifier);
+        return $this->identifier->equals($record->identifier);
     }
 
     public function getLabel(string $localeCode): ?string
@@ -98,8 +95,24 @@ class Record
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function updateLabels(LabelCollection $labelCollection): void
+    public function setLabels(LabelCollection $labelCollection): void
     {
         $this->labelCollection = $labelCollection;
+    }
+
+    public function setValues(ValueCollection $valueCollection): void
+    {
+        $this->valueCollection = $valueCollection;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'identifier' => $this->identifier->normalize(),
+            'code' => $this->code->normalize(),
+            'enrichedEntityIdentifier' => $this->enrichedEntityIdentifier->normalize(),
+            'labels' => $this->labelCollection->normalize(),
+            'values' => $this->valueCollection->normalize()
+        ];
     }
 }

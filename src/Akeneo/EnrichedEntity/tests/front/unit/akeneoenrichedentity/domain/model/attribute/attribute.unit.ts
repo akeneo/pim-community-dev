@@ -6,7 +6,7 @@ import {createCode} from 'akeneoenrichedentity/domain/model/attribute/code';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 
 const description = denormalizeAttribute({
-  identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+  identifier: 'description_1234',
   enriched_entity_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
@@ -22,7 +22,7 @@ const description = denormalizeAttribute({
   regular_expression: null,
 });
 const frontView = denormalizeAttribute({
-  identifier: {identifier: 'front_view', enriched_entity_identifier: 'designer'},
+  identifier: 'front_view_1234',
   enriched_entity_identifier: 'designer',
   code: 'front_view',
   labels: {en_US: 'Front view'},
@@ -37,13 +37,18 @@ const frontView = denormalizeAttribute({
 
 describe('akeneo > attribute > domain > model --- attribute', () => {
   test('I can create a new attribute with a identifier and labels', () => {
-    expect(description.getIdentifier()).toEqual(denormalizeAttributeIdentifier('designer', 'description'));
+    expect(description.getIdentifier()).toEqual(denormalizeAttributeIdentifier('description_1234'));
+  });
+
+  test('I can compare two attributes', () => {
+    expect(description.equals(frontView)).toEqual(false);
+    expect(description.equals(description)).toEqual(true);
   });
 
   test('I cannot create a malformed attribute', () => {
     expect(() => {
       denormalizeAttribute({
-        identifier: {identifier: 'description', enriched_entity_identifier: 'designer'},
+        identifier: 'description_1234',
         enriched_entity_identifier: 'designer',
         labels: {en_US: 'My label'},
         code: 'description',
@@ -54,7 +59,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
 
   expect(() => {
     new ConcreteImageAttribute(
-      denormalizeAttributeIdentifier('designer', 'front_view'),
+      denormalizeAttributeIdentifier('front_view_1234'),
       createEnrichedEntityIdentifier('designer'),
       createCode('front_view'),
       createLabelCollection({en_US: 'Front View'}),
@@ -66,7 +71,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
 
   expect(() => {
     new ConcreteImageAttribute(
-      denormalizeAttributeIdentifier('designer', 'front_view'),
+      denormalizeAttributeIdentifier('front_view_1234'),
       createEnrichedEntityIdentifier('designer'),
       createCode('front_view'),
       createLabelCollection({en_US: 'Front View'}),
@@ -74,4 +79,16 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
       false
     );
   }).toThrow('Attribute expect a number as order');
+
+  expect(() => {
+    new ConcreteImageAttribute(
+      'front_view_1234',
+      createEnrichedEntityIdentifier('designer'),
+      createCode('front_view'),
+      createLabelCollection({en_US: 'Front View'}),
+      true,
+      false,
+      0
+    );
+  }).toThrow('Attribute expect an AttributeIdentifier argument');
 });

@@ -11,10 +11,12 @@ import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enri
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
 import {enrichedEntityEditionReceived} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
-import {setUpSidebar} from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
+import {setUpSidebar} from 'akeneoenrichedentity/application/action/sidebar';
 import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
 import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
 import {updateActivatedLocales} from 'akeneoenrichedentity/application/action/locale';
+import {updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
+import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -29,13 +31,14 @@ class EnrichedEntityEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
-    enrichedEntityFetcher.fetch(route.params.identifier).then((enrichedEntity: EnrichedEntity) => {
+    enrichedEntityFetcher.fetch(createIdentifier(route.params.identifier)).then((enrichedEntity: EnrichedEntity) => {
       this.store = createStore(true)(enrichedEntityReducer);
       this.store.dispatch(enrichedEntityEditionReceived(enrichedEntity.normalize()));
       this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
       this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
       this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-      this.store.dispatch(setUpSidebar() as any);
+      this.store.dispatch(setUpSidebar('akeneo_enriched_entities_enriched_entity_edit') as any);
+      this.store.dispatch(updateCurrentTab(route.params.tab));
       this.store.dispatch(updateRecordResults());
       this.store.dispatch(updateAttributeList() as any);
       this.store.dispatch(updateActivatedLocales() as any);

@@ -26,21 +26,21 @@ class CodeValidator extends ConstraintValidator
 {
     private const MAX_IDENTIFIER_LENGTH = 255;
 
-    public function validate($identifier, Constraint $constraint)
+    public function validate($code, Constraint $constraint)
     {
         if (!$constraint instanceof Code) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($identifier, [
+        $violations = $validator->validate($code, [
                 new Constraints\NotBlank(),
                 new Constraints\NotNull(),
                 new Constraints\Type(['type' => 'string']),
                 new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
                 new Constraints\Regex([
                         'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern',
+                        'message' => 'pim_enriched_entity.record.validation.code.pattern',
                     ]
                 ),
             ]

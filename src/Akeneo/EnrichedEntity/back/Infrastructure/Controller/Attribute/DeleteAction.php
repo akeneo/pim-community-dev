@@ -65,10 +65,7 @@ class DeleteAction
         }
 
         $command = new DeleteAttributeCommand();
-        $command->identifier = [
-            'identifier' => $attributeIdentifier,
-            'enrichedEntityIdentifier' => $enrichedEntityIdentifier,
-        ];
+        $command->attributeIdentifier = $attributeIdentifier;
 
         $violations = $this->validator->validate($command);
 

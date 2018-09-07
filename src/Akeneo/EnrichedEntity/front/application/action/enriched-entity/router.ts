@@ -4,9 +4,10 @@ import {redirectToRoute} from 'akeneoenrichedentity/application/event/router';
 export const redirectToEnrichedEntity = (enrichedEntity: EnrichedEntity) => {
   return redirectToRoute('akeneo_enriched_entities_enriched_entity_edit', {
     identifier: enrichedEntity.getIdentifier().stringValue(),
+    tab: 'attribute',
   });
 };
 
 export const redirectToEnrichedEntityIndex = () => {
-  return redirectToRoute('akeneo_enriched_entities_enriched_entity_index', {});
+  return redirectToRoute('akeneo_enriched_entities_enriched_entity_index');
 };

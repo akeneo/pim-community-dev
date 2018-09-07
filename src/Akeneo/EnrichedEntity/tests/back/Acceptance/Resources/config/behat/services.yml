@@ -12,7 +12,7 @@ services:
     akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditEnrichedEntityContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity'
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
             - '@__symfony__.validator'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
@@ -30,7 +30,7 @@ services:
     akeneo_enrichedentity.tests.back.acceptance.context.create_enriched_entity_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateEnrichedEntityContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity'
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
@@ -39,7 +39,7 @@ services:
     akeneo_enrichedentity.tests.back.acceptance.context.create_record_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateRecordContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.record'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.record'
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_record_handler'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
@@ -48,7 +48,7 @@ services:
     akeneo_enrichedentity.tests.back.acceptance.context.create_attribute_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\CreateAttributeContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
             - '@__symfony__.akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry'
             - '@__symfony__.validator'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
@@ -60,7 +60,7 @@ services:
     akeneo_enrichedentity.tests.back.acceptance.context.edit_attribute_context:
         class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditAttributeContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.attribute'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
             - '@__symfony__.akeneo_enrichedentity.application.factory.edit_attribute_command_factory'
             - '@__symfony__.akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler'
             - '@__symfony__.validator'

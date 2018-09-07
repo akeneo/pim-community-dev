@@ -61,4 +61,9 @@ class EnrichedEntityIdentifier
     {
         return $this->identifier === (string) $identifier;
     }
+
+    public function normalize(): string
+    {
+        return $this->identifier;
+    }
 }

@@ -2,10 +2,10 @@ akeneo_enriched_entities_enriched_entity_index:
     path: '/enriched_entity'
 
 akeneo_enriched_entities_enriched_entity_edit:
-    path: '/enriched_entity/{identifier}'
+    path: '/enriched_entity/{identifier}/{tab}'
 
 akeneo_enriched_entities_record_edit:
-    path: '/enriched_entity/{enrichedEntityIdentifier}/record/{identifier}'
+    path: '/enriched_entity/{enrichedEntityIdentifier}/record/{recordCode}/{tab}'
 
 akeneo_enriched_entities_enriched_entity_index_rest:
     path: '/rest/enriched_entity'
@@ -43,12 +43,12 @@ akeneo_enriched_entities_record_create_rest:
     methods: [POST]
 
 akeneo_enriched_entities_records_get_rest:
-    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordCode}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.get }
     methods: [GET]
 
 akeneo_enriched_entities_record_edit_rest:
-    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordCode}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.edit }
     methods: [POST]
 

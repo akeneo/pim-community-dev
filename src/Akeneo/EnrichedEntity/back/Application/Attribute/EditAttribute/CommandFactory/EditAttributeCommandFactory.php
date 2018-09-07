@@ -20,8 +20,7 @@ class EditAttributeCommandFactory implements EditAttributeCommandFactoryInterfac
 
     public function supports(array $normalizedCommand): bool
     {
-        return isset($normalizedCommand['identifier']['identifier'])
-            && isset($normalizedCommand['identifier']['enriched_entity_identifier']);
+        return array_key_exists('identifier', $normalizedCommand);
     }
 
     public function create(array $normalizedCommand): AbstractEditAttributeCommand

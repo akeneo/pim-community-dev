@@ -146,3 +146,29 @@ Optionnaly, the identifier could be duplicated in the value itself or the values
 ##### Boundaries
 
 For the external API, import and exports we will need to map the code and enriched entity code because it's not used by the end users. Indeed the identifier will not be exposed
+
+## 03/09/2018
+
+### Record identifiers:
+
+#### Problem:
+
+In almost all cases, we identify the record with it's code and enriched entity (import/export, api, urls, rules, product values, etc). We also did a refactor to use a unique identifier (not the composite key) on the record.
+
+So we have a situation where, we almost always have to do a mapping step to convert this composite key to the unique identifier.
+
+#### Proposed solution:
+
+We don't touch anything in database and in models. But we use the composite key (code and enriched entity identifier) to fetch the record instead of doing a pre-mapping.
+
+##### In database and in models:
+
+We keep the technical unique identifier
+
+##### for import/export, api, product value, record screen
+
+We use the couple record code and enriched entity identifier to fetch the record.
+
+##### for indexation:
+
+We use the unique identifier to fetch the result of the elastic search query

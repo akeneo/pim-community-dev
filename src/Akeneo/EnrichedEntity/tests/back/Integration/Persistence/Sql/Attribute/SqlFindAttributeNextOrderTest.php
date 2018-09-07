@@ -74,19 +74,24 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 
     private function loadEnrichedEntitiesAndAttributes(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
+        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
 
         $enrichedEntityFull = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntityFull);
 
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = $attributesRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name')
+        );
+
         $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
@@ -107,7 +112,8 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntityEmpty);
     }

@@ -3,11 +3,11 @@
 namespace spec\Akeneo\Pim\EnrichedEntity\Component\Normalizer;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\Pim\EnrichedEntity\Component\Normalizer\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 
 class RecordNormalizerSpec extends ObjectBehavior {
     function it_is_initializable()
@@ -16,10 +16,10 @@ class RecordNormalizerSpec extends ObjectBehavior {
         $this->shouldHaveType(RecordNormalizer::class);
     }
 
-    function it_normalize_a_record(Record $starck, RecordIdentifier $starckIdentifier)
+    function it_normalize_a_record(Record $starck, RecordCode $starckCode)
     {
-        $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->getIdentifier()->willReturn('starck');
+        $starck->getCode()->willReturn($starckCode);
+        $starckCode->__toString()->willReturn('starck');
 
         $this->normalize($starck, 'standard')->shouldReturn('starck');
     }

@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
@@ -34,14 +32,11 @@ class EditRecordHandler
 
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
-        $identifier = RecordIdentifier::create(
-            $editRecordCommand->identifier['enriched_entity_identifier'],
-            $editRecordCommand->identifier['identifier']
-        );
+        $identifier = RecordIdentifier::fromString($editRecordCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
 
         $record = $this->recordRepository->getByIdentifier($identifier);
-        $record->updateLabels($labelCollection);
+        $record->setLabels($labelCollection);
         $this->recordRepository->update($record);
     }
 }

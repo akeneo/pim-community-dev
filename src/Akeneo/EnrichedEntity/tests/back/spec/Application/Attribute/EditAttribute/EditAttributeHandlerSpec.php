@@ -36,7 +36,7 @@ class EditAttributeHandlerSpec extends ObjectBehavior
         AttributeUpdaterInterface $editMaxFileSizeAdapter
     ) {
         $editAttributeCommand = $this->getEditCommand();
-        $attributeRepository->getByIdentifier(AttributeIdentifier::create('designer', 'name'))->willReturn($attribute);
+        $attributeRepository->getByIdentifier(AttributeIdentifier::fromString($editAttributeCommand->identifier))->willReturn($attribute);
         $editAttributeAdapterRegistry->getUpdater($attribute, Argument::type(EditIsRequiredCommand::class))->willReturn($editRequiredAdapter);
         $editAttributeAdapterRegistry->getUpdater($attribute, Argument::type(EditMaxFileSizeCommand::class))->willReturn($editMaxFileSizeAdapter);
         $editRequiredAdapter->__invoke($attribute, Argument::type(EditIsRequiredCommand::class))->willReturn($attribute);
@@ -49,15 +49,15 @@ class EditAttributeHandlerSpec extends ObjectBehavior
     private function getEditCommand(): EditAttributeCommand
     {
         $editRequiredAttribute = new EditIsRequiredCommand();
-        $editRequiredAttribute->identifier = ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'];
+        $editRequiredAttribute->identifier = 'designer_name_fingerprint';
         $editRequiredAttribute->isRequired = true;
 
         $editMaxFileSize = new EditMaxFileSizeCommand();
-        $editMaxFileSize->identifier = ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'];
+        $editMaxFileSize->identifier = 'designer_name_fingerprint';
         $editMaxFileSize->maxFileSize = '154';
 
         $editAttributeCommand = new EditAttributeCommand();
-        $editAttributeCommand->identifier = ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'];
+        $editAttributeCommand->identifier = 'designer_name_fingerprint';
         $editAttributeCommand->editCommands = [$editRequiredAttribute, $editMaxFileSize];
 
         return $editAttributeCommand;

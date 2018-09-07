@@ -40,6 +40,8 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $repository->getByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
             ->willReturn($enrichedEntity);
 
+        $enrichedEntity->getImage()->willReturn(null);
+
         $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 

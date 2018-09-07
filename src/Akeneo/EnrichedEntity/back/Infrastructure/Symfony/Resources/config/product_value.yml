@@ -16,7 +16,7 @@ services:
         class: Akeneo\Pim\EnrichedEntity\Component\Factory\EnrichedEntityCollectionValueFactory
         public: false
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.record'
+            - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
         tags:
             - { name: pim_catalog.factory.value }
 

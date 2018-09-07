@@ -59,11 +59,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_a_text_attribute_properties()
     {
+        $attributeIdentifier = sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint'));
+
         $updateAllProperties = [
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer', // not udpated
-                'identifier'                 => 'name', // not updated
-            ],
+            'identifier'                 => $attributeIdentifier,
             'enriched_entity_identifier' => 'manufacturer',
             'code'                       => 'A magic name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
@@ -78,7 +77,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'name'],
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'attributeIdentifier' => $attributeIdentifier
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -95,11 +97,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_edits_an_image_attribute_properties()
     {
+        $attributeIdentifier = sprintf('%s_%s_%s', 'portrait', 'designer', md5('fingerprint'));
+
         $updateAllProperties = [
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer', // not updated
-                'identifier'                 => 'portrait', // not updated
-            ],
+            'identifier'                 => $attributeIdentifier,
             'enriched_entity_identifier' => 'designer2',
             'code'                       => 'new_name',
             'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
@@ -115,7 +116,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'portrait'],
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'attributeIdentifier' => $attributeIdentifier
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -127,17 +131,13 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertFromFile($this->client->getResponse(), self::RESPONSES_DIR . 'ok.json');
 
         $repository = $this->getAttributeRepository();
-        $updatedPortrait = $repository->getByIdentifier(AttributeIdentifier::create(
-            $updateAllProperties['identifier']['enriched_entity_identifier'],
-            $updateAllProperties['identifier']['identifier']
+        $updatedPortrait = $repository->getByIdentifier(AttributeIdentifier::fromString(
+            sprintf('%s_%s_%s', 'portrait', 'designer', md5('fingerprint'))
         ));
 
         Assert::assertEquals(
             [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'portrait',
-                ],
+                'identifier'                 => sprintf('%s_%s_%s', 'portrait', 'designer', md5('fingerprint')),
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'portrait',
                 'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'], // updated
@@ -156,16 +156,15 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_does_not_edit_if_the_attribute_does_not_exist()
     {
+        $attributeIdentifier = 'unknown';
+
         $updateUnkownAttribute = [
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'unknown_attribute_code',
-            ],
+            'identifier'                 => $attributeIdentifier,
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'unknown_attribute_code',
             'labels'                     => ['fr_FR' => 'Uknown'],
             'order'                      => 0,
-            'is_required'                   => false,
+            'is_required'                => false,
             'value_per_channel'          => false,
             'value_per_locale'           => false,
             'type'                       => 'wrong_type',
@@ -176,7 +175,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'unknown_attribute_code'],
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'attributeIdentifier' => $attributeIdentifier
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -196,11 +198,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_does_not_edit_if_the_max_file_size_property_is_invalid()
     {
+        $attributeIdentifier = sprintf('%s_%s_%s', 'portrait', 'designer', md5('fingerprint'));
+
         $invalidMaxFileSize = [
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'portrait',
-            ],
+            'identifier'                 => $attributeIdentifier,
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'portrait',
             'labels'                     => ['fr_FR' => 'Uknown'],
@@ -216,7 +217,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'portrait'],
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'attributeIdentifier' => $attributeIdentifier
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -236,11 +240,10 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_does_not_edit_if_the_allowed_extensions_is_invalid()
     {
+        $attributeIdentifier = sprintf('%s_%s_%s', 'portrait', 'designer', md5('fingerprint'));
+
         $invalidAllowedExtensions = [
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'portrait',
-            ],
+            'identifier'                 => $attributeIdentifier,
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'portrait',
             'labels'                     => ['fr_FR' => 'Image autobiographique', 'en_US' => 'Name'], // updated
@@ -256,7 +259,10 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'attributeIdentifier' => 'portrait'],
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'attributeIdentifier' => $attributeIdentifier
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -277,24 +283,23 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body(
         string $enrichedEntityIdentifierUrl,
-        string $enrichedEntityIdentifierBody,
-        string $attributeCodeUrl,
-        string $attributeCodeBody
+        string $attributeIdentifierUrl,
+        string $attributeIdentifierBody
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
-            ['enrichedEntityIdentifier' => $enrichedEntityIdentifierUrl, 'attributeIdentifier' => $attributeCodeUrl],
+            [
+                'enrichedEntityIdentifier' => $enrichedEntityIdentifierUrl,
+                'attributeIdentifier' => $attributeIdentifierUrl
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => $enrichedEntityIdentifierBody,
-                    'identifier'                 => $attributeCodeBody,
-                ]
+                'identifier' => $attributeIdentifierBody
             ]
         );
 
@@ -310,13 +315,15 @@ class EditActionTest extends ControllerIntegrationTestCase
      */
     public function it_redirects_if_not_xmlhttp_request(): void
     {
+        $attributeIdentifier = sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint'));
+
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
-                'attributeIdentifier'      => 'name',
+                'attributeIdentifier'      => $attributeIdentifier,
             ],
             'POST'
         );
@@ -325,15 +332,17 @@ class EditActionTest extends ControllerIntegrationTestCase
     }
 
     /** @test */
-    public function it_returns_an_error_when_the_user_do_not_have_the_rights()
+    public function it_returns_an_error_when_the_user_does_not_have_the_rights()
     {
+        $attributeIdentifier = sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint'));
+
         $this->revokeCreationRights();
         $this->webClientHelper->callRoute(
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
             [
                 'enrichedEntityIdentifier' => 'designer',
-                'attributeIdentifier'      => 'name',
+                'attributeIdentifier'      => $attributeIdentifier,
             ],
             'POST',
             [
@@ -341,10 +350,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier'                 => [
-                    'enriched_entity_identifier' => 'designer',
-                    'identifier'                 => 'name',
-                ],
+                'identifier'                 => $attributeIdentifier,
                 'enriched_entity_identifier' => 'designer',
                 'code'                       => 'name',
                 'labels'                     => ['fr_FR' => 'LABEL UPDATED', 'en_US' => 'Name'],
@@ -365,13 +371,13 @@ class EditActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub = $this->get('oro_security.security_facade');
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_edit', true);
 
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), []));
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), []));
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [], null));
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [], null));
 
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $name = TextAttribute::createText(
-            AttributeIdentifier::create('designer', 'name'),
+            AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
@@ -384,7 +390,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             AttributeRegularExpression::createEmpty()
         );
         $portrait = ImageAttribute::create(
-            AttributeIdentifier::create('designer', 'portrait'),
+            AttributeIdentifier::create('designer', 'portrait', md5('fingerprint')),
             EnrichedEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
@@ -401,7 +407,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function getAttributeRepository(): AttributeRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.attribute');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
     }
 
     private function revokeCreationRights(): void
@@ -413,14 +419,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function invalidIdentifierForUrlAndBody()
     {
         return [
-            'enriched_entity_identifier is not the same' => [
-                'not_the_same_enriched_entity_identifier_url',
-                'not_the_same_enriched_entity_identifier_body',
-                'portrait',
-                'portrait',
-            ],
-            'attribute code is not the same' => [
-                'designer',
+            'attribute identifier is not the same' => [
                 'designer',
                 'not_the_same_attribute_code_url',
                 'not_the_same_attribute_code_body',

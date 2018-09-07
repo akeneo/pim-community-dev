@@ -27,7 +27,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +46,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
      */
     public function it_creates_an_attribute_and_returns_it()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
@@ -73,7 +72,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
      */
     public function it_throws_when_creating_an_attribute_with_the_same_identifier()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
@@ -99,7 +98,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
      */
     public function it_updates_an_attribute_and_returns_it()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
@@ -128,7 +127,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
      */
     public function it_throws_when_udpating_a_non_existing_attribute()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
             EnrichedEntityIdentifier::fromString('designer'),
@@ -154,7 +153,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
     {
         $this->expectException(AttributeNotFoundException::class);
         $this->attributeRepository->getByIdentifier(
-            $identifier = AttributeIdentifier::create('designer', 'name')
+            $identifier = AttributeIdentifier::create('designer', 'name', 'test')
         );
     }
 
@@ -163,7 +162,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
      */
     public function it_deletes_an_attribute_by_its_identifier()
     {
-        $identifier = AttributeIdentifier::create('designer', 'name');
+        $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = $this->createAttributeWithIdentifier($identifier);
         $this->attributeRepository->create($textAttribute);
 

@@ -16,7 +16,7 @@ export interface SearchFetcher<Entity> {
   search: (query: Query) => Promise<{items: Entity[]; total: number}>;
 }
 
-export default interface Fetcher<Entity> extends SearchFetcher<Entity> {
-  fetch: (identifier: string) => Promise<Entity>;
+export default interface Fetcher<EntityIdentifier, Entity> extends SearchFetcher<Entity> {
+  fetch: (identifier: EntityIdentifier) => Promise<Entity>;
   fetchAll: () => Promise<Entity[]>;
 }

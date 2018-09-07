@@ -17,10 +17,12 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -52,14 +54,15 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_record (identifier, enriched_entity_identifier, labels, data)
-        VALUES (:identifier, :enriched_entity_identifier, :labels, :data);
+        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, data)
+        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :data);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => $record->getIdentifier()->getIdentifier(),
-                'enriched_entity_identifier' => $record->getIdentifier()->getEnrichedEntityIdentifier(),
+                'identifier' => (string) $record->getIdentifier(),
+                'code' => (string) $record->getCode(),
+                'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
                 'labels' => $serializedLabels,
                 'data' => '{}'
             ]
@@ -79,13 +82,12 @@ SQL;
         $insert = <<<SQL
         UPDATE akeneo_enriched_entity_record
         SET labels = :labels, data = :data
-        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => $record->getIdentifier()->getIdentifier(),
-                'enriched_entity_identifier' => $record->getIdentifier()->getEnrichedEntityIdentifier(),
+                'identifier' => $record->getIdentifier(),
                 'labels' => $serializedLabels,
                 'data' => '{}'
             ]
@@ -98,33 +100,54 @@ SQL;
         }
     }
 
-    public function getByIdentifier(RecordIdentifier $identifier): Record
+    public function getByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): Record
     {
         $fetch = <<<SQL
-        SELECT identifier, enriched_entity_identifier, labels
+        SELECT identifier, code, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record
-        WHERE identifier = :identifier
-        AND enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'identifier' => $identifier->getIdentifier(),
-                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
+                'code' => (string) $code,
+                'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
             ]
         );
         $result = $statement->fetch();
-        $statement->closeCursor();
+
+        if (!$result) {
+            throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+        }
+
+        return $this->hydrateRecord($result['identifier'], $result['code'], $result['enriched_entity_identifier'], $result['labels']);
+    }
+
+    public function getByIdentifier(RecordIdentifier $identifier): Record
+    {
+        $fetch = <<<SQL
+        SELECT identifier, code, enriched_entity_identifier, labels
+        FROM akeneo_enriched_entity_record
+        WHERE identifier = :identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $fetch,
+            [
+                'identifier' => (string) $identifier,
+            ]
+        );
+        $result = $statement->fetch();
 
         if (!$result) {
             throw RecordNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateRecord($result['identifier'], $result['enriched_entity_identifier'], $result['labels']);
+        return $this->hydrateRecord($result['identifier'], $result['code'], $result['enriched_entity_identifier'], $result['labels']);
     }
 
     private function hydrateRecord(
         string $identifier,
+        string $code,
         string $enrichedEntityIdentifier,
         string $normalizedLabels
     ): Record {
@@ -135,12 +158,15 @@ SQL;
             ->convertToPHPValue($identifier, $platform);
         $enrichedEntityIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
+        $code = Type::getType(Type::STRING)
+            ->convertToPHPValue($code, $platform);
 
         $record = Record::create(
-            RecordIdentifier::create($enrichedEntityIdentifier, $identifier),
+            RecordIdentifier::fromString($identifier),
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-            RecordCode::fromString($identifier),
-            $labels
+            RecordCode::fromString($code),
+            $labels,
+            ValueCollection::fromValues([])
         );
 
         return $record;
@@ -154,5 +180,14 @@ SQL;
         }
 
         return json_encode($labels);
+    }
+
+    public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): RecordIdentifier
+    {
+        return RecordIdentifier::create(
+            (string) $enrichedEntityIdentifier,
+            (string) $code,
+            Uuid::uuid4()->toString()
+        );
     }
 }

@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Query\Record;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 interface RecordExistsInterface
 {
     public function withIdentifier(RecordIdentifier $recordIdentifier): bool;
+
+    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): bool;
 }

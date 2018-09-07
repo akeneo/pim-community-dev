@@ -42,7 +42,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
         return $command instanceof CreateTextAttributeCommand;
     }
 
-    public function create(AbstractCreateAttributeCommand $command): AbstractAttribute
+    public function create(AbstractCreateAttributeCommand $command, AttributeIdentifier $identifier): AbstractAttribute
     {
         if (!$this->supports($command)) {
             throw new \RuntimeException(
@@ -58,10 +58,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
 
         if ($command->isTextarea) {
             return TextAttribute::createTextarea(
-                AttributeIdentifier::create(
-                    $command->identifier['enriched_entity_identifier'],
-                    $command->identifier['identifier']
-                ),
+                $identifier,
                 EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
                 AttributeCode::fromString($command->code),
                 LabelCollection::fromArray($command->labels),
@@ -75,10 +72,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
         }
 
         return TextAttribute::createText(
-            AttributeIdentifier::create(
-                $command->identifier['enriched_entity_identifier'],
-                $command->identifier['identifier']
-            ),
+            $identifier,
             EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
             AttributeCode::fromString($command->code),
             LabelCollection::fromArray($command->labels),

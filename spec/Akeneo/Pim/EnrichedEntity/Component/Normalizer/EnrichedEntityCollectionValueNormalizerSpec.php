@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Prophecy\Argument;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 
 class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
     function it_is_initializable()
@@ -60,8 +61,8 @@ class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
         AttributeInterface $designer,
         Record $dyson,
         Record $starck,
-        RecordIdentifier $dysonIdentifier,
-        RecordIdentifier $starckIdentifier
+        RecordCode $dysonCode,
+        RecordCode $starckCode
     ) {
         $designerValue->getAttribute()->willReturn($designer);
         $designer->getBackendType()->willReturn(AttributeTypes::BACKEND_TYPE_REF_DATA_OPTIONS);
@@ -71,10 +72,10 @@ class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
 
         $designer->getCode()->willReturn('designer');
 
-        $dyson->getIdentifier()->willReturn($dysonIdentifier);
-        $dysonIdentifier->getIdentifier()->willReturn('dyson');
-        $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->getIdentifier()->willReturn('starck');
+        $dysonCode->__toString()->willReturn('dyson');
+        $dyson->getCode()->willReturn($dysonCode);
+        $starckCode->__toString()->willReturn('starck');
+        $starck->getCode()->willReturn($starckCode);
 
         $designerValue->getData()->willReturn([$starck, $dyson]);
 

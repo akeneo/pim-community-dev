@@ -1,7 +1,3 @@
-import Identifier, {
-  NormalizedAttributeIdentifier,
-  createIdentifier,
-} from 'akeneoenrichedentity/domain/model/attribute/identifier';
 import EnrichedEntityIdentifier, {
   createIdentifier as createEnrichedEntityIdentifier,
 } from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
@@ -17,7 +13,6 @@ export enum AttributeType {
 }
 
 export interface MinimalNormalizedAttribute {
-  identifier: NormalizedAttributeIdentifier;
   enriched_entity_identifier: string;
   type: 'text' | 'image';
   code: string;
@@ -27,7 +22,6 @@ export interface MinimalNormalizedAttribute {
 }
 
 export default interface MinimalAttribute {
-  identifier: Identifier;
   enrichedEntityIdentifier: EnrichedEntityIdentifier;
   code: AttributeCode;
   labelCollection: LabelCollection;
@@ -35,12 +29,10 @@ export default interface MinimalAttribute {
   valuePerLocale: boolean;
   valuePerChannel: boolean;
   getCode: () => AttributeCode;
-  getIdentifier: () => Identifier;
   getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
   getType(): AttributeType;
   getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
-  equals: (attribute: MinimalAttribute) => boolean;
   normalize(): MinimalNormalizedAttribute;
 }
 
@@ -48,7 +40,6 @@ class InvalidArgumentError extends Error {}
 
 export class MinimalConcreteAttribute implements MinimalAttribute {
   protected constructor(
-    readonly identifier: Identifier,
     readonly enrichedEntityIdentifier: EnrichedEntityIdentifier,
     readonly code: AttributeCode,
     readonly labelCollection: LabelCollection,
@@ -56,9 +47,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean
   ) {
-    if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('Attribute expect an AttributeIdentifier argument');
-    }
     if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifier)) {
       throw new InvalidArgumentError('Attribute expect an EnrichedEntityIdentifier argument');
     }
@@ -67,11 +55,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     }
     if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Attribute expect a LabelCollection argument');
-    }
-    if (!createIdentifier(enrichedEntityIdentifier.stringValue(), code.stringValue()).equals(identifier)) {
-      throw new InvalidArgumentError(
-        'Attribute expect an identifier complient to the given enrichedEntityIdentifier and code'
-      );
     }
     if (typeof type !== 'string' && !Object.values(AttributeType).includes(type)) {
       throw new InvalidArgumentError(
@@ -88,10 +71,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalNormalizedAttribute) {
     return new MinimalConcreteAttribute(
-      createIdentifier(
-        minimalNormalizedAttribute.identifier.enriched_entity_identifier,
-        minimalNormalizedAttribute.identifier.identifier
-      ),
       createEnrichedEntityIdentifier(minimalNormalizedAttribute.enriched_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
@@ -99,10 +78,6 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
       minimalNormalizedAttribute.value_per_locale,
       minimalNormalizedAttribute.value_per_channel
     );
-  }
-
-  public getIdentifier(): Identifier {
-    return this.identifier;
   }
 
   public getEnrichedEntityIdentifier(): EnrichedEntityIdentifier {
@@ -129,13 +104,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     return this.labelCollection;
   }
 
-  public equals(attribute: MinimalAttribute): boolean {
-    return attribute.getIdentifier().equals(this.identifier);
-  }
-
   public normalize(): MinimalNormalizedAttribute {
     return {
-      identifier: this.identifier.normalize(),
       enriched_entity_identifier: this.enrichedEntityIdentifier.stringValue(),
       code: this.code.stringValue(),
       type: this.getType(),

@@ -9,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\EventListener;
+namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -22,12 +25,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
+ * This commands reset the database fixtures for the enriched entity.
+ * It also is an event listener used during the PIM isntallation.
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Installer implements EventSubscriberInterface
+class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implements EventSubscriberInterface
 {
+    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:enriched-entity:reset-fixtures';
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
     /** @var Filesystem */
@@ -39,23 +45,39 @@ class Installer implements EventSubscriberInterface
     /** @var Connection */
     private $dbal;
 
-    /**
-     * @var FileStorerInterface
-     */
+    /** @var FileStorerInterface */
     private $storer;
 
-    /**
-     * @param Filesystem $filesystem
-     * @param string $projectDir
-     * @param Connection $dbal
-     * @param FileStorerInterface $storer
-     */
     public function __construct(Filesystem $filesystem, string $projectDir, Connection $dbal, FileStorerInterface $storer)
     {
+        parent::__construct(self::RESET_FIXTURES_COMMAND_NAME);
+
         $this->filesystem = $filesystem;
         $this->projectDir = $projectDir;
         $this->dbal = $dbal;
         $this->storer = $storer;
+
+        parent::__construct();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName(self::RESET_FIXTURES_COMMAND_NAME)
+            ->setDescription('Resets the fixtures of the enriched entity bounded context.')
+            ->setHidden(true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->createSchema();
+        $this->loadFixtures();
     }
 
     /**
@@ -85,7 +107,10 @@ class Installer implements EventSubscriberInterface
     public function createSchema(): void
     {
         $sql = <<<SQL
+DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
+DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 DROP TABLE IF EXISTS `akeneo_enriched_entity_enriched_entity`;
+
 CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
@@ -95,23 +120,21 @@ CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
     UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
 CREATE TABLE `akeneo_enriched_entity_record` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
+    `code` VARCHAR(255) NOT NULL,
     `enriched_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `data` JSON NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE `akeneoenriched_entity_record_identifier_index` (`identifier`, `enriched_entity_identifier`),
     CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
-      ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
 CREATE TABLE `akeneo_enriched_entity_attribute` (
-    `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
+    `code` VARCHAR(255) NOT NULL,
     `enriched_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `attribute_type` VARCHAR(255) NOT NULL,
@@ -120,11 +143,10 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     `value_per_channel` BOOLEAN NOT NULL,
     `value_per_locale` BOOLEAN NOT NULL,
     `additional_properties` JSON NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE `attribute_identifier_index` (`identifier`, `enriched_entity_identifier`),
+    PRIMARY KEY (`identifier`),
+    UNIQUE `attribute_identifier_index` (`code`, `enriched_entity_identifier`),
     UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
     CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
-      ON UPDATE CASCADE
       ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
@@ -239,16 +261,16 @@ SQL;
     private function loadRecords(): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `labels`, `data`)
+INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `data`)
 VALUES
-  ('starck',   'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
-  ('dyson',    'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
-  ('newson',   'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
-  ('vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
-  ('arad',     'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
-  ('cogip',    'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
-  ('sbep',     'brand',    '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
-  ('scep',     'brand',    '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
+  ('designer_starck_1', 'starck', 'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
+  ('designer_dyson_2',  'dyson', 'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
+  ('designer_newson_3', 'newson', 'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
+  ('designer_vignelli_4', 'vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
+  ('designer_arad_5', 'arad', 'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
+  ('brand_cogip_6', 'cogip', 'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
+  ('brand_sbep_7', 'sbep', 'brand', '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
+  ('brand_scep_8', 'scep', 'brand', '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
 SQL;
         $affectedRows = $this->dbal->exec($sql);
         if (0 === $affectedRows) {
@@ -261,6 +283,7 @@ SQL;
         $sql = <<<SQL
 INSERT INTO `akeneo_enriched_entity_attribute` (
   `identifier`,
+  `code`,
   `enriched_entity_identifier`,
   `labels`,
   `attribute_type`,
@@ -271,11 +294,11 @@ INSERT INTO `akeneo_enriched_entity_attribute` (
   `additional_properties`
   )
 VALUES
-  ('name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}'),
-  ('name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255, "is_textarea": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}')
+  ('name_designer_16f624b3-0855-4e12-80b6-da077252a194',      'name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('portrait_designer_1781b92b-6785-4bdf-9837-9f0db68902d4',  'portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}'),
+  ('name_brand_90440ddf-109d-4114-8668-e6a1da98dc38',         'name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('description_brand_befbca68-b613-4839-a1aa-5f74f98c438a',  'description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, false, false, '{"max_length": 255, "is_textarea": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
+  ('image_designer_d00e1ee1-6c3d-4280-ae45-b124994491f2',     'image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}')
 SQL;
 
         $affectedRows = $this->dbal->exec($sql);

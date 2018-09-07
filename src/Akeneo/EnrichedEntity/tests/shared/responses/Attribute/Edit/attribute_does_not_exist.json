@@ -2,93 +2,60 @@
   "status": 400,
   "content": [
     {
-      "messageTemplate": "pim_enriched_entity.attribute.validation.identifier.should_exist",
-      "parameters": {
-        "%enriched_entity_identifier%": "designer",
-        "%code%": "unknown_attribute_code"
-      },
+      "messageTemplate":"pim_enriched_entity.attribute.validation.code.should_exist",
+      "parameters":[],
       "plural": null,
-      "message": "The attribute was not found for the enriched entity \u0022designer\u0022 and the attribute code \u0022unknown_attribute_code\u0022",
+      "message": "The attribute was not found",
       "root": {
         "editCommands": [
           {
             "isRequired": false,
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier":"unknown"
           },
           {
             "labels": {
               "fr_FR": "Uknown"
             },
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           },
           {
             "maxFileSize": "500.2",
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           },
           {
             "allowedExtensions": [
               "jpeg"
             ],
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           }
         ],
-        "identifier": {
-          "enriched_entity_identifier": "designer",
-          "identifier": "unknown_attribute_code"
-        }
+        "identifier": "unknown"
       },
-      "propertyPath": "identifier",
+      "propertyPath": "code",
       "invalidValue": {
         "editCommands": [
           {
             "isRequired": false,
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           },
           {
             "labels": {
               "fr_FR": "Uknown"
             },
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           },
           {
             "maxFileSize": "500.2",
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           },
           {
             "allowedExtensions": [
               "jpeg"
             ],
-            "identifier": {
-              "enriched_entity_identifier": "designer",
-              "identifier": "unknown_attribute_code"
-            }
+            "identifier": "unknown"
           }
         ],
-        "identifier": {
-          "enriched_entity_identifier": "designer",
-          "identifier": "unknown_attribute_code"
-        }
+        "identifier": "unknown"
       },
       "constraint": {
         "targets": "class",

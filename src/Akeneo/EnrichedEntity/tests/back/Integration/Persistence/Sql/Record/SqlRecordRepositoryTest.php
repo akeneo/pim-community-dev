@@ -19,6 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
@@ -33,7 +34,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $this->resetDB();
         $this->insertEnrichedEntity();
     }
@@ -43,11 +44,15 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_a_record_and_returns_it()
     {
-        $identifier = RecordIdentifier::create('designer', 'starck');
+        $recordCode = RecordCode::fromString('starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create(
-            $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
 
         $this->repository->create($record);
@@ -61,11 +66,15 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_creating_a_record_with_the_same_identifier()
     {
-        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create(
-            $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
         $this->repository->create($record);
 
@@ -73,20 +82,23 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->create($record);
     }
 
-
     /**
      * @test
      */
     public function it_updates_a_record_and_returns_it()
     {
-        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create(
-            $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
         $this->repository->create($record);
-        $record->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
+        $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
 
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);
@@ -99,11 +111,15 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_updating_a_non_existing_record()
     {
-        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create(
-            $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck']
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
         );
 
         $this->expectException(\RuntimeException::class);
@@ -119,29 +135,42 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
 
-        $identifier = RecordIdentifier::create('designer', 'record_identifier');
+        $recordCode = RecordCode::fromString('record_identifier');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
-            RecordCode::fromString('record_identifier'),
-            []
+            $recordCode,
+            [],
+            ValueCollection::fromValues([])
         );
 
         $this->repository->create($record);
 
         $this->assertEquals(1, $this->repository->count());
 
-        $identifier = RecordIdentifier::create('designer', 'record_identifier2');
+        $recordCode = RecordCode::fromString('record_identifier2');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
-            RecordCode::fromString('record_identifier2'),
-            []
+            $recordCode,
+            [],
+            ValueCollection::fromValues([])
         );
 
         $this->repository->create($record);
 
         $this->assertEquals(2, $this->repository->count());
+    }
+
+    public function it_retrieve_the_next_identifier()
+    {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $nextIdentifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
+        $this->assertNotEmpty($nextIdentifier);
     }
 
     /**
@@ -151,8 +180,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         $this->expectException(RecordNotFoundException::class);
 
-        $identifier = RecordIdentifier::create('designer', 'unknown_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('unknown_identifier');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
 
         $this->repository->getByIdentifier($identifier);
     }
@@ -180,13 +210,14 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     private function insertEnrichedEntity(): void
     {
-        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer'
-            ]
+            ],
+            null
         );
         $repository->create($enrichedEntity);
     }

@@ -66,6 +66,7 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
         $query = <<<SQL
         SELECT
             identifier,
+            code,
             enriched_entity_identifier,
             labels,
             attribute_type,
@@ -93,7 +94,8 @@ SQL;
     {
         $recordDetails = [];
         foreach ($results as $result) {
-            $code = $result['identifier'];
+            $identifier = $result['identifier'];
+            $code = $result['code'];
             $enrichedEntityIdentifier = $result['enriched_entity_identifier'];
             $labels = json_decode($result['labels'], true);
             $order = (int) $result['attribute_order'];
@@ -110,7 +112,7 @@ SQL;
                 $regularExpression = $additionnalProperties['regular_expression'];
 
                 $textAttributeDetails = new TextAttributeDetails();
-                $textAttributeDetails->identifier = AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']);
+                $textAttributeDetails->identifier = AttributeIdentifier::fromString($identifier);
                 $textAttributeDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
                 $textAttributeDetails->code = AttributeCode::fromString($code);
                 $textAttributeDetails->order = AttributeOrder::fromInteger($order);
@@ -130,7 +132,7 @@ SQL;
                 $extensions = $additionnalProperties['allowed_extensions'];
 
                 $imageAttributeDetails = new ImageAttributeDetails();
-                $imageAttributeDetails->identifier = AttributeIdentifier::create($result['enriched_entity_identifier'], $result['identifier']);
+                $imageAttributeDetails->identifier = AttributeIdentifier::fromString($identifier);
                 $imageAttributeDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
                 $imageAttributeDetails->code = AttributeCode::fromString($code);
                 $imageAttributeDetails->order = AttributeOrder::fromInteger($order);

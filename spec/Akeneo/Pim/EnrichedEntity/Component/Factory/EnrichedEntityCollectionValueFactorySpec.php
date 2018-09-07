@@ -4,6 +4,7 @@ namespace spec\Akeneo\Pim\EnrichedEntity\Component\Factory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\Factory\EnrichedEntityCollectionValueFactory;
@@ -100,10 +101,11 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $starckIdentifier = RecordIdentifier::create('designer', 'starck');
-        $recordRepository->getByIdentifier($starckIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::create('designer', 'dyson');
-        $recordRepository->getByIdentifier($dysonIdentifier)->willReturn($dyson);
+        $designerIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $starckCode = RecordCode::fromString('starck');
+        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
+        $dysonCode = RecordCode::fromString('dyson');
+        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
 
         $productValue = $this->create(
             $attribute,
@@ -133,10 +135,11 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $starckIdentifier = RecordIdentifier::create('designer', 'starck');
-        $recordRepository->getByIdentifier($starckIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::create('designer', 'dyson');
-        $recordRepository->getByIdentifier($dysonIdentifier)->willReturn($dyson);
+        $designerIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $starckCode = RecordCode::fromString('starck');
+        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
+        $dysonCode = RecordCode::fromString('dyson');
+        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
 
         $productValue = $this->create(
             $attribute,

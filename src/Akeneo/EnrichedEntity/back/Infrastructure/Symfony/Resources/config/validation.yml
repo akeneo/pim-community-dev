@@ -1,7 +1,5 @@
 Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
         image:
@@ -12,20 +10,18 @@ Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnri
         - CreateEnrichedEntityCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+        code:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityIdentifierShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityCodeShouldBeUnique: { groups: [other_constraints] }
 
 Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand:
     group_sequence:
         - DeleteEnrichedEntityCommand
         - other_constraints
-    properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+    properties: []
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldHaveNoRecord: { groups: [other_constraints] }
         - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
@@ -41,26 +37,22 @@ Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
         - CreateRecordCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Identifier: ~
         enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordIdentifierShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
 
 
 Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Identifier: ~
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
         enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
 
@@ -69,10 +61,8 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeC
         - CreateTextAttributeCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -103,10 +93,8 @@ Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttribute
         - CreateImageAttributeCommand
         - other_constraints
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
         code:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
@@ -131,73 +119,56 @@ Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAtt
         - EditAttributeCommand
         - primary_constraints
         - secondary_constraints
-    properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+    properties: []
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [primary_constraints] }
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: { groups: [primary_constraints] }
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [secondary_constraints] }
 
+Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand:
+    properties: []
+
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         isRequired:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         maxLength:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         maxFileSize:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         allowedExtensions:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         isTextarea:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         validationRule:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         regularExpression:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
         isRichTextEditor:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~

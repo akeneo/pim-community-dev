@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeF
 
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -24,5 +25,5 @@ interface AttributeFactoryInterface
 {
     public function supports(AbstractCreateAttributeCommand $command): bool;
 
-    public function create(AbstractCreateAttributeCommand $command): AbstractAttribute;
+    public function create(AbstractCreateAttributeCommand $command, AttributeIdentifier $identifier): AbstractAttribute;
 }

@@ -59,10 +59,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $expectedContent = json_encode([
             'items' => [
                 [
-                    'identifier'                 => [
-                        'enriched_entity_identifier' => 'designer',
-                        'identifier' => 'starck',
-                    ],
+                    'identifier'                 => 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
                     'enriched_entity_identifier' => 'designer',
                     'code' => 'starck',
                     'labels'                     => [
@@ -70,10 +67,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                     ],
                 ],
                 [
-                    'identifier'                 => [
-                        'enriched_entity_identifier' => 'designer',
-                        'identifier' => 'coco',
-                    ],
+                    'identifier'                 => 'designer_coco_a1677570-a278-444b-ab46-baa1db199392',
                     'enriched_entity_identifier' => 'designer',
                     'code' => 'coco',
                     'labels'                     => [
@@ -90,10 +84,20 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $findRecordItems = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
         $findRecordItems->save(
-            $this->createRecordItem('starck', 'designer', [ 'en_US' => 'Philippe Starck'])
+            $this->createRecordItem(
+                'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
+                'designer',
+                'starck',
+                [ 'en_US' => 'Philippe Starck']
+            )
         );
         $findRecordItems->save(
-            $this->createRecordItem('coco', 'designer', ['en_US' => 'Coco'])
+            $this->createRecordItem(
+                'designer_coco_a1677570-a278-444b-ab46-baa1db199392',
+                'designer',
+                'coco',
+                ['en_US' => 'Coco']
+            )
         );
 
         $user = new User();
@@ -104,12 +108,13 @@ class IndexActionTest extends ControllerIntegrationTestCase
     private function createRecordItem(
         string $recordIdentifier,
         string $enrichedEntityIdentifier,
+        string $code,
         array $labels
     ): RecordItem {
         $recordItem = new RecordItem();
-        $recordItem->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $recordIdentifier);
+        $recordItem->identifier = RecordIdentifier::fromString($recordIdentifier);
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
-        $recordItem->code = RecordCode::fromString($recordIdentifier);
+        $recordItem->code = RecordCode::fromString($code);
         $recordItem->labels = LabelCollection::fromArray($labels);
 
         return $recordItem;

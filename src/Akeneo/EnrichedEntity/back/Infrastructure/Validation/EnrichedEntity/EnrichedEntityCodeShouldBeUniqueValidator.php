@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityIdentifierShouldBeUniqueValidator extends ConstraintValidator
+class EnrichedEntityCodeShouldBeUniqueValidator extends ConstraintValidator
 {
     /** @var EnrichedEntityExistsInterface */
     private $enrichedEntityExists;
@@ -59,21 +59,21 @@ class EnrichedEntityIdentifierShouldBeUniqueValidator extends ConstraintValidato
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EnrichedEntityIdentifierShouldBeUnique) {
+        if (!$constraint instanceof EnrichedEntityCodeShouldBeUnique) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
     private function validateCommand(CreateEnrichedEntityCommand $command): void
     {
-        $enrichedEntityIdentifier = $command->identifier;
+        $enrichedEntityIdentifier = $command->code;
         $alreadyExists = $this->enrichedEntityExists->withIdentifier(
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier)
         );
         if ($alreadyExists) {
-            $this->context->buildViolation(EnrichedEntityIdentifierShouldBeUnique::ERROR_MESSAGE)
+            $this->context->buildViolation(EnrichedEntityCodeShouldBeUnique::ERROR_MESSAGE)
                 ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
-                ->atPath('identifier')
+                ->atPath('code')
                 ->addViolation();
         }
     }

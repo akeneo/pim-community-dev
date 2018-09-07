@@ -18,19 +18,17 @@
 - add keyboard shortcuts
 - rework the record identifier to have one identifier
 - Extract the buttons of the edit enriched entity view so it comes from each of the tabs
-- Rename "AttributeRequired" by "AttributeIsRequired"
-- remove index in model constructor
 - switch to view models
 - Change read models to enforce properties are coherent (front)
 - remove index in error throw by the model constructor (front)
 - switch the rest of entities to models for the views (like attribute edit) (front)
 - switch from image to files
-- open quick edit after attribute create
 - split create and edit model in files
 - add acceptance test for attribute edit validation (front)
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
   (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
-
+- rework constructors to receive domain models (label collection)
+- fix the enriched entity field on the pef to be able to search when the search will work (front)
 
 DONE:
 
@@ -46,3 +44,5 @@ DONE:
 - enforce getState type [DONE]
 - enforce html event type [DONE]
 - locale switcher to be able to edit all locales [DONE]
+- open quick edit after attribute create [DONE]
+- Rename "AttributeRequired" by "AttributeIsRequired" [DONE]

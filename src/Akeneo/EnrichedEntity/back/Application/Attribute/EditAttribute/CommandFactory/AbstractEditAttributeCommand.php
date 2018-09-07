@@ -10,6 +10,6 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFacto
  */
 class AbstractEditAttributeCommand
 {
-    /** @var array */
+    /** @var string */
     public $identifier;
 }

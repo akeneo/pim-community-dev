@@ -51,14 +51,12 @@ script:
     - yarn unit
     - yarn integration
     - yarn acceptance src/Akeneo/EnrichedEntity/tests/features
-    - yarn acceptance tests/features
-    - yarn acceptance vendor/akeneo/pim-community-dev/tests/features
     - yarn lint
-    - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/EnrichedEntity/.php_cd.php src/Akeneo/EnrichedEntity/back
-    - vendor/bin/behat -p acceptance --no-interaction
-    - vendor/bin/phpunit -c app src/Akeneo/EnrichedEntity/tests/back/Integration/
+    - vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/EnrichedEntity/tests/back/.php_cd.php src/Akeneo/EnrichedEntity/back
+    - vendor/bin/behat --config src/Akeneo/EnrichedEntity/tests/back/behat.yml.dist --no-interaction
+    - vendor/bin/phpunit -c src/Akeneo/EnrichedEntity/tests/back
     - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-    - vendor/bin/phpspec run --no-interaction
+    - vendor/bin/phpspec run -c src/Akeneo/EnrichedEntity/tests/back/phpspec.yml.dist --no-interaction
 
 notifications:
   email: false

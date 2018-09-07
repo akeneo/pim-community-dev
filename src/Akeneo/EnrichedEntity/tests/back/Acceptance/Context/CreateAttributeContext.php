@@ -16,7 +16,9 @@ namespace Akeneo\EnrichedEntity\tests\back\Acceptance\Context;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -101,11 +103,13 @@ class CreateAttributeContext implements Context
         string $enrichedEntityIdentifier,
         TableNode $attributeData
     ) {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+
         $expected = current($attributeData->getHash());
-        $expected['identifier'] = [
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
-            'identifier' => $attributeCode,
-        ];
+        $expected['identifier'] = (string) $attributeIdentifier;
         $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
@@ -119,9 +123,7 @@ class CreateAttributeContext implements Context
         $expected['regular_expression'] = '' === $expected['regular_expression'] ? null : $expected['regular_expression'];
         ksort($expected);
 
-        $attribute = $this->attributeRepository->getByIdentifier(
-            AttributeIdentifier::create($enrichedEntityIdentifier, $attributeCode)
-        );
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $actual = $attribute->normalize();
         ksort($actual);
 
@@ -136,11 +138,13 @@ class CreateAttributeContext implements Context
         string $enrichedEntityIdentifier
     ) {
         $attribute = null;
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
 
         try {
-            $attribute = $this->attributeRepository->getByIdentifier(
-                AttributeIdentifier::create($enrichedEntityIdentifier, $attributeCode)
-            );
+            $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
             Assert::assertTrue(false);
         } catch (AttributeNotFoundException $e) {
             Assert::assertNull($attribute);
@@ -158,8 +162,7 @@ class CreateAttributeContext implements Context
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'image';
-        $attributeData['identifier']['identifier'] = $attributeData['code'];
-        $attributeData['identifier']['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
         $attributeData['enriched_entity_identifier'] = $enrichedEntityIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = (bool) $attributeData['is_required'];
@@ -186,11 +189,14 @@ class CreateAttributeContext implements Context
         string $enrichedEntityIdentifier,
         TableNode $attributeData
     ) {
+        $attributeIdentifier = $this->attributeRepository->nextIdentifier(
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            AttributeCode::fromString($attributeCode)
+        );
+
         $expected = current($attributeData->getHash());
-        $expected['identifier'] = [
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
-            'identifier' => $attributeCode,
-        ];
+        $expected['identifier'] = (string) $attributeIdentifier;
+        $expected['code'] = $attributeCode;
         $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
@@ -200,9 +206,7 @@ class CreateAttributeContext implements Context
         $expected['allowed_extensions'] = json_decode($expected['allowed_extensions']);
         ksort($expected);
 
-        $attribute = $this->attributeRepository->getByIdentifier(
-            AttributeIdentifier::create($enrichedEntityIdentifier, $attributeCode)
-        );
+        $attribute = $this->attributeRepository->getByIdentifier($attributeIdentifier);
         $actual = $attribute->normalize();
         ksort($actual);
 

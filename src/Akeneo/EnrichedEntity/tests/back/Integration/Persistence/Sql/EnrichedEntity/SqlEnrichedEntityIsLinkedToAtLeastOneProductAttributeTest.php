@@ -60,13 +60,14 @@ class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInteg
 
     private function loadEnrichedEntity(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }

@@ -48,9 +48,16 @@ class EditEnrichedEntityHandler
         $enrichedEntity->updateLabels($labelCollection);
 
         if (null !== $editEnrichedEntityCommand->image) {
-            $file = $this->storeFile($editEnrichedEntityCommand->image);
-            $image = Image::fromFileInfo($file);
-            $enrichedEntity->updateImage($image);
+            $existingImage = $enrichedEntity->getImage();
+            // If we want to update the image and it's not already in file storage, we store it
+            if (
+                null === $existingImage ||
+                $existingImage->getKey() !== $editEnrichedEntityCommand->image['filePath']
+            ) {
+                $storedFile = $this->storeFile($editEnrichedEntityCommand->image);
+                $image = Image::fromFileInfo($storedFile);
+                $enrichedEntity->updateImage($image);
+            }
         }
 
         $this->enrichedEntityRepository->update($enrichedEntity);

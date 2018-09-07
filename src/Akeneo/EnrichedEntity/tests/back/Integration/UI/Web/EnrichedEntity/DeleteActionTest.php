@@ -10,6 +10,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
@@ -90,9 +91,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $expectedResponse = '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022des igner\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"des igner"},"propertyPath":"identifier","invalidValue":"des igner","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]';
-
-        $this->webClientHelper->assertResponse($this->client->getResponse(), 400, $expectedResponse);
+        $this->webClientHelper->assert500ServerError($this->client->getResponse());
     }
 
     /**
@@ -155,12 +154,12 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
     private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
     }
 
     private function getRecordRepository(): RecordRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
     }
 
     private function resetDB(): void
@@ -176,23 +175,26 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
-        ]);
+        ], null);
         $enrichedEntityRepository->create($entityItem);
 
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [
             'en_US' => 'Brand',
             'fr_FR' => 'Marque',
-        ]);
+        ], null);
         $enrichedEntityRepository->create($entityItem);
 
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');
+        $recordCode = RecordCode::fromString('asus');
         $recordItem = Record::create(
-            RecordIdentifier::create('brand', 'asus'),
-            EnrichedEntityIdentifier::fromString('brand'),
-            RecordCode::fromString('asus'),
+            $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode),
+            $enrichedEntityIdentifier,
+            $recordCode,
             [
                 'en_US' => 'ASUS',
                 'fr_FR' => 'ASUS',
-            ]
+            ],
+            ValueCollection::fromValues([])
         );
         $recordRepository->create($recordItem);
 

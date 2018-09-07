@@ -52,14 +52,14 @@ class GetActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::RECORD_DETAIL_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'recordIdentifier' => 'starck']
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'recordCode' => 'starck'
+            ]
         );
 
         $expectedContent = json_encode([
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'starck',
-            ],
+            'identifier'                 => 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'starck',
             'labels'                     => [
@@ -72,26 +72,15 @@ class GetActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_404_not_found_when_the_enriched_entity_identifier_does_not_exist()
-    {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::RECORD_DETAIL_ROUTE,
-            ['enrichedEntityIdentifier' => 'wrong_enriched_entity', 'recordIdentifier' => 'starck'],
-            'GET'
-        );
-        $this->webClientHelper->assert404NotFound($this->client->getResponse());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_404_not_found_when_the_record_identifier_does_not_exist()
     {
         $this->webClientHelper->callRoute(
             $this->client,
             self::RECORD_DETAIL_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer', 'recordIdentifier' => 'wrong_record_identifier'],
+            [
+                'enrichedEntityIdentifier' => 'designer',
+                'recordCode' => 'wrong_record_code'
+            ],
             'GET'
         );
         $this->webClientHelper->assert404NotFound($this->client->getResponse());
@@ -100,7 +89,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $starck = new RecordDetails();
-        $starck->identifier = RecordIdentifier::create('designer', 'starck');
+        $starck->identifier = RecordIdentifier::fromString('designer_starck_a1677570-a278-444b-ab46-baa1db199392');
         $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $starck->code = RecordCode::fromString('starck');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);

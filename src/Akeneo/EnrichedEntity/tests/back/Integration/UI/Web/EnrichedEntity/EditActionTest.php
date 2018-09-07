@@ -128,7 +128,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
     }
 
     private function loadFixtures(): void
@@ -138,7 +138,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
-        ]);
+        ], null);
         $enrichedEntityRepository->create($entityItem);
 
         $user = new User();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -25,7 +26,9 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
  */
 interface AttributeExistsInterface
 {
-    public function withIdentifier(AttributeIdentifier $attributeIdentifier): bool;
+    public function withIdentifier(AttributeIdentifier $identifier): bool;
+
+    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $identifier, AttributeCode $attributeCode): bool;
 
     public function withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeOrder $order): bool;
 }

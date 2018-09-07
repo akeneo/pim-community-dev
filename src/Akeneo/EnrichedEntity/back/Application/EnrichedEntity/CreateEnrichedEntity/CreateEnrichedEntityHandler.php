@@ -34,8 +34,9 @@ class CreateEnrichedEntityHandler
     public function __invoke(CreateEnrichedEntityCommand $createEnrichedEntityCommand): void
     {
         $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString($createEnrichedEntityCommand->identifier),
-            $createEnrichedEntityCommand->labels
+            EnrichedEntityIdentifier::fromString($createEnrichedEntityCommand->code),
+            $createEnrichedEntityCommand->labels,
+            null
         );
 
         $this->enrichedEntityRepository->create($enrichedEntity);

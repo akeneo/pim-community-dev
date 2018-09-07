@@ -25,7 +25,7 @@ class CreateEnrichedEntityHandlerSpec extends ObjectBehavior
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
         CreateEnrichedEntityCommand $createEnrichedEntityCommand
     ) {
-        $createEnrichedEntityCommand->identifier = 'brand';
+        $createEnrichedEntityCommand->code = 'brand';
         $createEnrichedEntityCommand->labels = [
             'en_US' => 'Intel',
             'fr_FR' => 'Intel',

@@ -1,9 +1,13 @@
 const Modal = async (nodeElement, createElementDecorator, page) => {
   const fillField = async (id, value) => {
     const field = await nodeElement.$(`.AknTextField[id="${id}"]`);
-    await page.evaluate((properties, id) => {
-      return (properties.querySelector(`.AknTextField[id="${id}"]`).value = '');
-    }, nodeElement, id);
+    await page.evaluate(
+      (properties, id) => {
+        return (properties.querySelector(`.AknTextField[id="${id}"]`).value = '');
+      },
+      nodeElement,
+      id
+    );
 
     await field.type(value);
   };

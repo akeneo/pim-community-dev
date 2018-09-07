@@ -216,4 +216,4 @@ Feature: Edit a text attribute of an enriched entity
   @acceptance-back
   Scenario: Cannot update the attribute if it does not exist
     When the user updates the 'name' attribute label with '"Bio"' on the locale '"en_US"'
-    Then there should be a validation error with message 'The attribute was not found for the enriched entity "dummy_identifier" and the attribute code "name"'
+    Then there should be a validation error with message 'The attribute was not found'

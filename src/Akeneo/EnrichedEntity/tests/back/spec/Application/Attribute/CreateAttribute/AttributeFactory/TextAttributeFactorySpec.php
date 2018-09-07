@@ -5,6 +5,7 @@ namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Attri
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
@@ -23,10 +24,9 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $this->supports(new CreateImageAttributeCommand())->shouldReturn(false);
     }
 
-    function it_creates_a_simple_text_attribute_with_a_command()
+    function it_creates_a_simple_text_attribute_with_a_command(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->identifier = ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
@@ -39,11 +39,10 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'name',
-            ],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier'                 => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
@@ -60,10 +59,9 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_having_no_validation_with_a_command()
+    function it_creates_a_simple_text_attribute_having_no_validation_with_a_command(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->identifier = ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
@@ -76,8 +74,10 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier'                 => ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier'                 => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
@@ -94,13 +94,9 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_with_no_max_length_limit()
+    function it_creates_a_simple_text_attribute_with_no_max_length_limit(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->identifier = [
-            'identifier' => 'name',
-            'enriched_entity_identifier' => 'designer'
-        ];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
@@ -114,11 +110,10 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::NONE;
         $command->regularExpression = AttributeRegularExpression::EMPTY;
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'name',
-            ],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier'                 => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
@@ -135,13 +130,9 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_simple_text_attribute_with_a_regular_expression_validation()
+    function it_creates_a_simple_text_attribute_with_a_regular_expression_validation(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->identifier = [
-            'identifier' => 'name',
-            'enriched_entity_identifier' => 'designer'
-        ];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
@@ -156,11 +147,10 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->validationRule = AttributeValidationRule::REGULAR_EXPRESSION;
         $command->regularExpression = '/\w+/';
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier'                 => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier'                 => 'name',
-            ],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier'                 => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
@@ -177,10 +167,9 @@ class TextAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_textarea_with_rich_editor()
+    function it_creates_a_textarea_with_rich_editor(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->identifier = ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
@@ -192,8 +181,10 @@ class TextAttributeFactorySpec extends ObjectBehavior
         $command->isTextarea = true;
         $command->isRichTextEditor = true;
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier'                 => ['enriched_entity_identifier' => 'designer', 'identifier' => 'name'],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier'                 => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],

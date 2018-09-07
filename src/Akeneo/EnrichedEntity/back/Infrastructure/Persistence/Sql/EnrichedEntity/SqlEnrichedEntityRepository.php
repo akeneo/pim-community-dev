@@ -15,8 +15,10 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -92,8 +94,12 @@ SQL;
     public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $fetch = <<<SQL
-        SELECT identifier, labels
-        FROM akeneo_enriched_entity_enriched_entity
+        SELECT ee.identifier, ee.labels, fi.image
+        FROM akeneo_enriched_entity_enriched_entity ee
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -107,7 +113,11 @@ SQL;
             throw EnrichedEntityNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
+        return $this->hydrateEnrichedEntity(
+            $result['identifier'],
+            $result['labels'],
+            null !== $result['image'] ? json_decode($result['image'], true) : null
+        );
     }
 
     public function all(): array
@@ -147,18 +157,28 @@ SQL;
         }
     }
 
-    private function hydrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
-    {
+    private function hydrateEnrichedEntity(
+        string $identifier,
+        string $normalizedLabels,
+        ?array $image
+    ): EnrichedEntity {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
+        if (null !== $image) {
+            $file = new FileInfo();
+            $file->setKey($image['file_key']);
+            $file->setOriginalFilename($image['original_filename']);
+        }
+
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString(
                 $identifier
             ),
-            $labels
+            $labels,
+            (null !== $image) ? Image::fromFileInfo($file) : null
         );
 
         return $enrichedEntity;

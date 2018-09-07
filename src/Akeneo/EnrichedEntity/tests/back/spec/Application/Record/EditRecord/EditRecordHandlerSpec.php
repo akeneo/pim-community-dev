@@ -40,10 +40,7 @@ class EditRecordHandlerSpec extends ObjectBehavior
         EditRecordCommand $editRecordCommand,
         Record $record
     ) {
-        $editRecordCommand->identifier = [
-            'identifier' => 'sony',
-            'enriched_entity_identifier' => 'brand'
-        ];
+        $editRecordCommand->identifier = 'brand_sony_a1677570-a278-444b-ab46-baa1db199392';
         $editRecordCommand->code = 'sony';
         $editRecordCommand->enrichedEntityIdentifier = 'brand';
         $editRecordCommand->labels = [
@@ -53,7 +50,7 @@ class EditRecordHandlerSpec extends ObjectBehavior
 
         $recordRepository->getByIdentifier(Argument::type(RecordIdentifier::class))->willReturn($record);
 
-        $record->updateLabels(Argument::type(LabelCollection::class))->shouldBeCalled();
+        $record->setLabels(Argument::type(LabelCollection::class))->shouldBeCalled();
         $recordRepository->update($record)->shouldBeCalled();
 
         $this->__invoke($editRecordCommand);

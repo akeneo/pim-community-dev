@@ -26,26 +26,26 @@ class AttributeCode
     /** @var string */
     private $code;
 
-    private function __construct(string $identifier)
+    private function __construct(string $code)
     {
-        Assert::stringNotEmpty($identifier, 'Attribute code cannot be empty');
+        Assert::stringNotEmpty($code, 'Attribute code cannot be empty');
         Assert::maxLength(
-            $identifier,
+            $code,
             255,
-            sprintf('Attribute code cannot be longer than 255 characters, %d string long given', strlen($identifier))
+            sprintf('Attribute code cannot be longer than 255 characters, %d string long given', strlen($code))
         );
         Assert::regex(
-            $identifier,
+            $code,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf('Attribute code may contain only letters, numbers and underscores. "%s" given', $identifier)
+            sprintf('Attribute code may contain only letters, numbers and underscores. "%s" given', $code)
         );
 
-        $this->code = $identifier;
+        $this->code = $code;
     }
 
-    public static function fromString(string $identifier): self
+    public static function fromString(string $code): self
     {
-        return new self($identifier);
+        return new self($code);
     }
 
     public function __toString(): string

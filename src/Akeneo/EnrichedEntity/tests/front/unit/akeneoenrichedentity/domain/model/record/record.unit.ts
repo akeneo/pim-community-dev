@@ -1,15 +1,15 @@
-import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
-import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
+import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import {createRecord, denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
 
-const michelIdentifier = createRecordIdentifier('designer', 'michel');
+const michelIdentifier = createRecordIdentifier('michel');
 const designerIdentifier = createEnrichedEntityIdentifier('designer');
 const michelCode = createCode('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
 const sofaIdentifier = createEnrichedEntityIdentifier('sofa');
-const didierIdentifier = createRecordIdentifier('designer', 'didier');
+const didierIdentifier = createRecordIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
@@ -23,28 +23,25 @@ describe('akeneo > record > domain > model --- record', () => {
   test('I cannot create a malformed record', () => {
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier);
-    }).toThrow('Record expect an EnrichedEntityIdentifier as second argument');
+    }).toThrow('Record expect an EnrichedEntityIdentifier as argument');
     expect(() => {
       createRecord();
-    }).toThrow('Record expect a RecordIdentifier as first argument');
+    }).toThrow('Record expect a RecordIdentifier as argument');
     expect(() => {
       createRecord(12);
-    }).toThrow('Record expect a RecordIdentifier as first argument');
+    }).toThrow('Record expect a RecordIdentifier as argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier, designerIdentifier, didierCode, 52);
-    }).toThrow('Record expect a LabelCollection as fourth argument');
-    expect(() => {
-      createRecord(michelIdentifier, sofaIdentifier, didierCode, michelLabels);
-    }).toThrow('Record expect an identifier complient to the given enrichedEntityIdentifier and code');
+    }).toThrow('Record expect a LabelCollection as argument');
     expect(() => {
       createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels);
-    }).toThrow('Record expect a RecordCode as third argument');
+    }).toThrow('Record expect a RecordCode as argument');
   });
 
   test('I can compare two record', () => {
@@ -59,12 +56,6 @@ describe('akeneo > record > domain > model --- record', () => {
         createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels)
       )
     ).toBe(false);
-    const weirdIdentifier = createRecordIdentifier('sofa', 'didier');
-    expect(
-      createRecord(weirdIdentifier, sofaIdentifier, didierCode, didierLabels).equals(
-        createRecord(didierIdentifier, designerIdentifier, didierCode, michelLabels)
-      )
-    ).toBe(false);
   });
 
   test('I can get the collection of labels', () => {
@@ -77,14 +68,23 @@ describe('akeneo > record > domain > model --- record', () => {
     expect(createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels).getCode()).toBe(didierCode);
   });
 
+  test('I can create the record from normalized', () => {
+    expect(
+      denormalizeRecord({
+        identifier: 'didier',
+        code: 'didier',
+        labels: {},
+        image: null,
+        enrichedEntityIdentifier: 'designer',
+      }).getCode()
+    ).toEqual(didierCode);
+  });
+
   test('I can normalize an record', () => {
     const michelRecord = createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels);
 
     expect(michelRecord.normalize()).toEqual({
-      identifier: {
-        identifier: 'didier',
-        enrichedEntityIdentifier: 'designer',
-      },
+      identifier: 'designer_didier_1',
       enrichedEntityIdentifier: 'designer',
       code: 'didier',
       labels: {en_US: 'Didier'},

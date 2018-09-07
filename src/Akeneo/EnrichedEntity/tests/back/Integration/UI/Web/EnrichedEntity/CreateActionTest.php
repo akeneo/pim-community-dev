@@ -56,7 +56,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier' => 'designer',
+                'code' => 'designer',
                 'labels'     => [
                     'fr_FR' => 'Concepteur',
                     'en_US' => 'Designer',
@@ -81,7 +81,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier' => 'designer',
+                'code' => 'designer',
             ]
         );
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
@@ -93,7 +93,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
      *
      * @param mixed $invalidIdentifier
      */
-    public function it_returns_an_error_when_the_identifier_is_not_valid(
+    public function it_returns_an_error_when_the_code_is_not_valid(
         $invalidIdentifier,
         string $expectedResponse
     ): void {
@@ -107,7 +107,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE'          => 'application/json',
             ],
             [
-                'identifier' => $invalidIdentifier,
+                'code' => $invalidIdentifier,
                 'labels'     => [
                     'fr_FR' => 'Concepteur',
                     'en_US' => 'Designer',
@@ -124,14 +124,14 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_enriched_entity_identifier_is_not_unique()
+    public function it_returns_an_error_when_the_enriched_entity_code_is_not_unique()
     {
         $headers = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
             'CONTENT_TYPE'          => 'application/json',
         ];
         $content = [
-            'identifier' => 'designer',
+            'code' => 'designer',
             'labels'     => [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
@@ -143,7 +143,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer"},"plural":null,"message":"An enriched entity already exists with identifier \u0022designer\u0022","root":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":{"identifier":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.code.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer"},"plural":null,"message":"An enriched entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+        );
     }
 
     /**
@@ -155,7 +156,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     public function it_returns_an_error_when_the_labels_are_not_valid($invalidLabels, string $expectedResponse): void
     {
         $postContent = [
-            'identifier' => 'designer',
+            'code' => 'designer',
         ];
         $postContent = array_merge($postContent, $invalidLabels);
 
@@ -187,7 +188,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::CREATE_ENRICHED_ENTITY_ROUTE,
             [
-                'identifier' => 'celine_dion',
+                'code' => 'celine_dion',
             ],
             'POST'
         );
@@ -235,19 +236,19 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'Identifier is null'              => [
                 null,
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"identifier":null,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"code":null,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Identifier is an integer'        => [
                 1234123,
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"identifier":1234123,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"code":1234123,"labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Identifier has a dash character' => [
-                'invalid-identifier',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"invalid-identifier","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                'invalid-code',
+                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"code":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Identifier is 256 characters'    => [
                 str_repeat('a', 256),
-                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"identifier","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"code":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
         ];
     }
@@ -257,11 +258,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         return [
             'label as an integer'           => [
                 ['labels' => ['fr_FR' => 1]],
-                '[{"messageTemplate":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","root":{"identifier":"designer","labels":{"fr_FR":1}},"propertyPath":"labels","invalidValue":{"fr_FR":1},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid label for locale code \u0022fr_FR\u0022: This value should be of type string., \u00221\u0022 given","root":{"code":"designer","labels":{"fr_FR":1}},"propertyPath":"labels","invalidValue":{"fr_FR":1},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'The locale code as an integer' => [
                 ['labels' => [1 => 'Designer']],
-                '[{"messageTemplate":"invalid locale code: This value should be of type string.","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid locale code: This value should be of type string.","root":{"identifier":"designer","labels":{"1":"Designer"}},"propertyPath":"labels","invalidValue":{"1":"Designer"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"invalid locale code: This value should be of type string.","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid locale code: This value should be of type string.","root":{"code":"designer","labels":{"1":"Designer"}},"propertyPath":"labels","invalidValue":{"1":"Designer"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
         ];
     }

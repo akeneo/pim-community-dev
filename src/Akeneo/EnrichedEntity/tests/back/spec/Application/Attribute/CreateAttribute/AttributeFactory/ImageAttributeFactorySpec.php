@@ -6,6 +6,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use PhpSpec\ObjectBehavior;
 
@@ -22,13 +23,9 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $this->supports(new CreateTextAttributeCommand())->shouldReturn(false);
     }
 
-    function it_creates_an_image_attribute_with_command()
+    function it_creates_an_image_attribute_with_command(AttributeIdentifier $identifier)
     {
         $command = new CreateImageAttributeCommand();
-        $command->identifier = [
-            'identifier' => 'name',
-            'enriched_entity_identifier' => 'designer'
-        ];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
@@ -41,11 +38,10 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->maxFileSize = '30.0';
         $command->allowedExtensions = ['pdf', 'png'];
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier' => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier' => 'name'
-            ],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier' => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
@@ -59,13 +55,9 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_an_image_attribute_with_no_max_file_size_limit()
+    function it_creates_an_image_attribute_with_no_max_file_size_limit(AttributeIdentifier $identifier)
     {
         $command = new CreateImageAttributeCommand();
-        $command->identifier = [
-            'identifier' => 'name',
-            'enriched_entity_identifier' => 'designer'
-        ];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
@@ -78,11 +70,10 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->maxFileSize = null;
         $command->allowedExtensions = ['pdf', 'png'];
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier' => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier' => 'name'
-            ],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier' => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
@@ -96,13 +87,9 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_an_image_attribute_with_extensions_all_allowed()
+    function it_creates_an_image_attribute_with_extensions_all_allowed(AttributeIdentifier $identifier)
     {
         $command = new CreateImageAttributeCommand();
-        $command->identifier = [
-            'identifier' => 'name',
-            'enriched_entity_identifier' => 'designer'
-        ];
         $command->enrichedEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
@@ -115,11 +102,10 @@ class ImageAttributeFactorySpec extends ObjectBehavior
         $command->maxFileSize = null;
         $command->allowedExtensions = AttributeAllowedExtensions::ALL_ALLOWED;
 
-        $this->create($command)->normalize()->shouldReturn([
-            'identifier' => [
-                'enriched_entity_identifier' => 'designer',
-                'identifier' => 'name'
-            ],
+        $identifier->__toString()->willReturn('name_designer_test');
+
+        $this->create($command, $identifier)->normalize()->shouldReturn([
+            'identifier' => 'name_designer_test',
             'enriched_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],

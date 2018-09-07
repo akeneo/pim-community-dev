@@ -4,14 +4,13 @@ describe('akeneo > enriched entity > application > hydrator --- record', () => {
   test('I can hydrate a new record', () => {
     const hydrate = hydrator(
       (identifier, enrichedEntityIdentifier, code, labelCollection) => {
-        expect(identifier).toEqual('starck');
+        expect(identifier).toEqual('designer_starck_fingerprint');
         expect(code).toEqual('starck');
         expect(enrichedEntityIdentifier).toEqual('designer');
         expect(labelCollection).toEqual({en_US: 'Stark'});
       },
-      (enrichedEntityIdentifier, identifier) => {
-        expect(enrichedEntityIdentifier).toEqual('designer');
-        expect(identifier).toEqual('starck');
+      identifier => {
+        expect(identifier).toEqual('designer_starck_fingerprint');
 
         return identifier;
       },
@@ -34,7 +33,7 @@ describe('akeneo > enriched entity > application > hydrator --- record', () => {
 
     expect(
       hydrate({
-        identifier: {identifier: 'starck', enriched_entity_identifier: 'designer'},
+        identifier: 'designer_starck_fingerprint',
         enriched_entity_identifier: 'designer',
         code: 'starck',
         labels: {en_US: 'Stark'},

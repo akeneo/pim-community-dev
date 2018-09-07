@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
@@ -29,6 +30,9 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
 {
     /** @var RecordExistsInterface */
     private $recordExists;
+
+    /** @var RecordIdentifier */
+    private $recordIdentifier;
 
     public function setUp()
     {
@@ -45,8 +49,13 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_is_a_corresponding_record_identifier()
     {
-        $this->assertTrue($this->recordExists->withIdentifier(RecordIdentifier::create('designer', 'starck')));
-        $this->assertFalse($this->recordExists->withIdentifier(RecordIdentifier::create('designer', 'Coco')));
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('Coco');
+        $recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
+        $this->assertTrue($this->recordExists->withIdentifier($this->recordIdentifier));
+        $this->assertFalse($this->recordExists->withIdentifier($recordIdentifier));
     }
 
     private function resetDB(): void
@@ -56,24 +65,32 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
 
     private function loadEnrichedEntityDesigner(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
-            ]
+            ],
+            null
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }
 
     public function loadRecordStarck(): void
     {
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $this->recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
         $recordRepository->create(
             Record::create(
-                RecordIdentifier::create('designer', 'starck'), EnrichedEntityIdentifier::fromString('designer'),
-                RecordCode::fromString('starck'), ['fr_FR' => 'Philippe Starck']
+                $this->recordIdentifier,
+                $enrichedEntityIdentifier,
+                $recordCode,
+                ['fr_FR' => 'Philippe Starck'],
+                ValueCollection::fromValues([])
             )
         );
     }

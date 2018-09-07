@@ -1,10 +1,10 @@
-import * as React from 'react';
 import ItemView from 'akeneoenrichedentity/application/component/record/index/item';
-import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
+import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import * as React from 'react';
 
 interface TableState {
   locale: string;
@@ -36,11 +36,11 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     onRedirectToRecord: (record: Record) => void
   ): JSX.Element | JSX.Element[] {
     if (0 === records.length && isLoading) {
-      const recordIdentifier = createIdentifier('', '');
+      const recordIdentifier = createIdentifier('');
       const enrichedEntityIdentifier = createEnrichedEntityIdentifier('');
       const code = createCode('');
       const labelCollection = createLabelCollection({});
-      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, code, labelCollection);
+      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, code, labelCollection, null);
 
       return (
         <ItemView
