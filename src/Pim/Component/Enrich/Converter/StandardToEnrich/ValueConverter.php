@@ -3,6 +3,7 @@
 namespace Pim\Component\Enrich\Converter\StandardToEnrich;
 
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 
@@ -58,10 +59,10 @@ class ValueConverter implements ConverterInterface
      */
     public function convert(array $productValues)
     {
-        $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($productValues));
 
         foreach ($productValues as $code => $values) {
-            if (in_array($code, $mediaAttributes)) {
+            if ($attributeTypes[$code] === AttributeTypes::IMAGE || $attributeTypes[$code] === AttributeTypes::FILE) {
                 foreach ($values as $index => $value) {
                     $file = $this->fileInfoRepository->findOneByIdentifier($value['data']);
                     $data = [
