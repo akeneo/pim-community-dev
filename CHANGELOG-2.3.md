@@ -4,6 +4,10 @@
 
 - PIM-7628: Fix the initialization of the product datagrid identifier filter.
 
+## Enhancements
+
+- PIM-7612: Add the media/cache/{filter}/{path} route support in order to handle scalable frontend architecture for media content delivering
+
 # 2.3.6 (2018-09-06)
 
 ## Enhancements
