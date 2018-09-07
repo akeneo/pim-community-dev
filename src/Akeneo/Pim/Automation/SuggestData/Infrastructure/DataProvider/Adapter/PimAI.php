@@ -152,7 +152,7 @@ class PimAI implements DataProviderInterface
      *
      * @return ProductSubscriptionResponse
      */
-    private function buildSubscriptionResponse(Subscription $subscription)
+    private function buildSubscriptionResponse(Subscription $subscription): ProductSubscriptionResponse
     {
         return new ProductSubscriptionResponse(
             $subscription->getTrackerId(),
