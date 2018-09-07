@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\EventListener;
+namespace spec\Oro\Bundle\PimDataGridBundle\EventListener;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\RepositoryDatasource;
+use Oro\Bundle\PimDataGridBundle\Datasource\RepositoryDatasource;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

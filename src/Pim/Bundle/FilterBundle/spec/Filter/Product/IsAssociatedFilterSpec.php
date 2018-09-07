@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;

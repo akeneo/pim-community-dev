@@ -1,8 +1,0 @@
-parameters:
-    pim_datagrid.updater.datagrid_view.class: Pim\Bundle\DataGridBundle\Updater\DatagridViewUpdater
-
-services:
-    pim_datagrid.updater.datagrid_view:
-        class: '%pim_datagrid.updater.datagrid_view.class%'
-        arguments:
-            - '@pim_user.repository.user'

@@ -11,7 +11,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
