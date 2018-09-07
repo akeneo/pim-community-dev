@@ -54,7 +54,7 @@ class ValueCollectionSpec extends ObjectBehavior
                 'locale'    => null,
                 'data'      => 'Philippe Starck',
             ],
-            'image_designer_fingerprintmobilefr_FR' => [
+            'image_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
@@ -83,7 +83,7 @@ class ValueCollectionSpec extends ObjectBehavior
                 'locale'    => null,
                 'data'      => 'Updated name',
             ],
-            'image_designer_fingerprintmobilefr_FR' => [
+            'image_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
@@ -112,7 +112,7 @@ class ValueCollectionSpec extends ObjectBehavior
                 'locale'    => null,
                 'data'      => 'Philippe Starck',
             ],
-            'image_designer_fingerprintmobilefr_FR' => [
+            'image_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
@@ -121,7 +121,7 @@ class ValueCollectionSpec extends ObjectBehavior
                     'original_filename' => 'my_file.png',
                 ],
             ],
-            'name_designer_fingerprintmobilefr_FR' => [
+            'name_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'name_designer_fingerprint',
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',

@@ -163,7 +163,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);
 
-        $this->assertRecord($record, $recordFound);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 
     /**

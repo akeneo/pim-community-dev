@@ -51,9 +51,12 @@ services:
             - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
 
     akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_is_linked_to_at_least_one_product_attribute:
-        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityIsLinkedToProductAttributes
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute
         arguments:
             - '@pim_catalog.repository.attribute'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.expected_attributes:
-        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryExpectedAttributes
+    akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindValueKeyCollection
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributesIndexedByIdentifier

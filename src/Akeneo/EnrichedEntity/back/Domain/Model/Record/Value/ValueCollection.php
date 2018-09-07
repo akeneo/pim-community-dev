@@ -19,12 +19,6 @@ class ValueCollection
 
     private function __construct(array $values)
     {
-        Assert::allIsInstanceOf(
-            $values,
-            Value::class,
-            sprintf('All values should be instance of %s', Value::class)
-        );
-
         $this->values = $values;
     }
 
@@ -50,6 +44,11 @@ class ValueCollection
      */
     public static function fromValues(array $values): ValueCollection
     {
+        Assert::allIsInstanceOf(
+            $values,
+            Value::class,
+            sprintf('All values should be instance of %s', Value::class)
+        );
         $indexedValues = [];
         foreach ($values as $value) {
             $indexedValues[(string) $value->getValueKey()] = $value;
