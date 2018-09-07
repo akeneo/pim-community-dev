@@ -1,5 +1,5 @@
 pim_catalog_volume:
-  product_values: "Vous avez <span>{{values}}</span> valeurs de produit dans votre PIM ! En moyenne, chaque produit contient <span>{{average}}</span> valeurs ! 💪"
+  product_values: "Vous avez <span class=\"AknDescriptionHeader-title--highlight\">{{values}}</span> valeurs de produit dans votre PIM ! La moyenne est de <span class=\"AknDescriptionHeader-title--highlight\">{{average}}</span> valeurs par produit ! 💪"
   product_values_description: 'Plus vous aurez de valeurs de produit, plus votre PIM prendra de la valeur et donc, plus vous boosterez votre ROI ! Plus de détails <a href="#">ici</a>.'
   section:
     product_values:
