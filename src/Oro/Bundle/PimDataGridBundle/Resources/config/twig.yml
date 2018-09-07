@@ -1,0 +1,11 @@
+parameters:
+    pim_datagrid.twig.filter_extension.class: Oro\Bundle\PimDataGridBundle\Twig\FilterExtension
+
+services:
+    # Twig extensions
+    pim_datagrid.twig.filter_extension:
+        class: '%pim_datagrid.twig.filter_extension.class%'
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }

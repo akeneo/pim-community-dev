@@ -1,0 +1,14 @@
+parameters:
+    pim_datagrid.adapter.oro_to_pim_grid_filter.class: Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter
+    pim_datagrid.adapter.items_counter.class: Oro\Bundle\PimDataGridBundle\Adapter\ItemsCounter
+
+services:
+    pim_datagrid.adapter.oro_to_pim_grid_filter:
+        class: '%pim_datagrid.adapter.oro_to_pim_grid_filter.class%'
+        arguments:
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+
+    pim_datagrid.adapter.items_counter:
+        class: '%pim_datagrid.adapter.items_counter.class%'
+        arguments:
+            - '@pim_enrich.doctrine.query.count_impacted_products'

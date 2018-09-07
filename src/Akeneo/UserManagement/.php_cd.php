@@ -16,7 +16,7 @@ $rules = [
         'Doctrine\Common',
         'Akeneo\Tool',
         'Akeneo\UserManagement\Component',
-        'Pim\Bundle\DataGridBundle\Entity\DatagridView', // TODO: The locale is linked by reference instead of id
+        'Oro\Bundle\PimDataGridBundle\Entity\DatagridView', // TODO: The locale is linked by reference instead of id
         'Akeneo\UserManagement\Bundle\Manager\UserManager', // TODO: We use it to encode the user's password
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager', // TODO: This dependency should be removed
         'Akeneo\Channel\Component\Model\LocaleInterface', // TODO: The locale is linked by reference instead of id

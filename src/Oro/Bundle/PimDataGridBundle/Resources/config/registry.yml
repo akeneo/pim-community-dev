@@ -1,0 +1,6 @@
+parameters:
+    pim_datagrid.datagrid.configuration.product.configuration_registry.class: Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry
+
+services:
+    pim_datagrid.datagrid.configuration.product.configuration_registry:
+        class: '%pim_datagrid.datagrid.configuration.product.configuration_registry.class%'

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
-use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
+use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 

@@ -1,0 +1,24 @@
+parameters:
+    pim_datagrid.datasource.result_record.hydrator.default.class:       Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ResultRecordHydrator
+    pim_datagrid.datasource.result_record.hydrator.orm.object.class:    Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ObjectHydrator
+    pim_datagrid.datasource.result_record.hydrator.orm.object_id.class: Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ObjectIdHydrator
+    pim_datagrid.datasource.result_record.hydrator.product.class:            Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
+    pim_datagrid.datasource.result_record.hydrator.associated_product.class: Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
+    pim_datagrid.datasource.result_record.hydrator.object_id.class:          Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ObjectIdHydrator
+    pim_datagrid.datasource.result_record.hydrator.object.class:             Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\Orm\ObjectHydrator
+
+services:
+    pim_datagrid.datasource.result_record.hydrator.object_id:
+        class: '%pim_datagrid.datasource.result_record.hydrator.object_id.class%'
+
+    pim_datagrid.datasource.result_record.hydrator.object:
+        class: '%pim_datagrid.datasource.result_record.hydrator.object.class%'
+
+    pim_datagrid.datasource.result_record.hydrator.default:
+        class: '%pim_datagrid.datasource.result_record.hydrator.default.class%'
+
+    pim_datagrid.datasource.result_record.hydrator.orm.object:
+        class: '%pim_datagrid.datasource.result_record.hydrator.orm.object.class%'
+
+    pim_datagrid.datasource.result_record.hydrator.orm.object_id:
+        class: '%pim_datagrid.datasource.result_record.hydrator.orm.object_id.class%'

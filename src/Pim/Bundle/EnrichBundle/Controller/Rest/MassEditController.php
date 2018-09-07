@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
-use Pim\Bundle\DataGridBundle\Adapter\ItemsCounter;
+use Oro\Bundle\PimDataGridBundle\Adapter\GridFilterAdapterInterface;
+use Oro\Bundle\PimDataGridBundle\Adapter\ItemsCounter;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperation;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationJobLauncher;
 use Pim\Component\Enrich\Converter\ConverterInterface;
