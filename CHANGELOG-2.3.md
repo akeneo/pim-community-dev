@@ -4,6 +4,7 @@
 
 - PIM-7638: The edit profile button must not be shown if the user have no right to edit his own information
 - PIM-7617: Disable Manage Assets button if user has no permission to show the asset categories
+- PIM-7564: When a user have rights to edit but is not owner, the "save" label on the save button must be "save draft"
 
 # 2.3.6 (2018-09-06)
 
