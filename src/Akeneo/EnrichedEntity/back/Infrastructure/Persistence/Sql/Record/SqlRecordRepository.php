@@ -107,7 +107,10 @@ SQL;
             [
                 'identifier' => $record->getIdentifier(),
                 'labels' => $serializedLabels,
-                'value_collection' => '{}'
+                'value_collection' => $record->getValues()->normalize()
+            ],
+            [
+                'value_collection' => Type::JSON_ARRAY
             ]
         );
 

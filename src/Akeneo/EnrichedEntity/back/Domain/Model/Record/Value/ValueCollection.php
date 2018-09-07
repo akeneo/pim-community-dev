@@ -24,6 +24,7 @@ class ValueCollection
 
     public function normalize(): array
     {
+        ksort($this->values);
         return array_map(function (Value $value) {
             return $value->normalize();
         }, $this->values);
@@ -38,10 +39,6 @@ class ValueCollection
         return new self($values);
     }
 
-    // TODO SPEC IT
-    /**
-     * @param Value $values
-     */
     public static function fromValues(array $values): ValueCollection
     {
         Assert::allIsInstanceOf(

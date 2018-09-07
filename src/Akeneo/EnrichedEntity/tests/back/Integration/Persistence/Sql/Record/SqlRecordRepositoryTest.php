@@ -150,15 +150,46 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $fileInfo = new FileInfo();
+        $fileInfo
+            ->setOriginalFilename('image.png')
+            ->setKey('/a/file/image');
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_designer_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('An old description')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($fileInfo)
+                )
+            ])
         );
         $this->repository->create($record);
         $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
+        $valueToUpdate = Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('An completely new and updated description')
+        );
+        $valueToAdd = Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
+        );
+        $record->setValue($valueToUpdate);
+        $record->setValue($valueToAdd);
 
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);

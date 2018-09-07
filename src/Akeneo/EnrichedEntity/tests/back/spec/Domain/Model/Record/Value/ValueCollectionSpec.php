@@ -48,12 +48,6 @@ class ValueCollectionSpec extends ObjectBehavior
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([
-            'name_designer_fingerprint' => [
-                'attribute' => 'name_designer_fingerprint',
-                'channel'   => null,
-                'locale'    => null,
-                'data'      => 'Philippe Starck',
-            ],
             'image_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
@@ -62,6 +56,12 @@ class ValueCollectionSpec extends ObjectBehavior
                     'file_key'              => '/a/file/key',
                     'original_filename' => 'my_file.png',
                 ],
+            ],
+            'name_designer_fingerprint' => [
+                'attribute' => 'name_designer_fingerprint',
+                'channel'   => null,
+                'locale'    => null,
+                'data'      => 'Philippe Starck',
             ],
         ]);
     }
@@ -77,12 +77,6 @@ class ValueCollectionSpec extends ObjectBehavior
             )
         );
         $newValueCollection->normalize()->shouldReturn([
-            'name_designer_fingerprint' => [
-                'attribute' => 'name_designer_fingerprint',
-                'channel'   => null,
-                'locale'    => null,
-                'data'      => 'Updated name',
-            ],
             'image_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
@@ -91,6 +85,12 @@ class ValueCollectionSpec extends ObjectBehavior
                     'file_key'              => '/a/file/key',
                     'original_filename' => 'my_file.png',
                 ],
+            ],
+            'name_designer_fingerprint' => [
+                'attribute' => 'name_designer_fingerprint',
+                'channel'   => null,
+                'locale'    => null,
+                'data'      => 'Updated name',
             ],
         ]);
     }
@@ -106,12 +106,6 @@ class ValueCollectionSpec extends ObjectBehavior
             )
         );
         $values->normalize()->shouldReturn([
-            'name_designer_fingerprint' => [
-                'attribute' => 'name_designer_fingerprint',
-                'channel'   => null,
-                'locale'    => null,
-                'data'      => 'Philippe Starck',
-            ],
             'image_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'image_designer_fingerprint',
                 'channel'   => 'mobile',
@@ -120,6 +114,12 @@ class ValueCollectionSpec extends ObjectBehavior
                     'file_key'              => '/a/file/key',
                     'original_filename' => 'my_file.png',
                 ],
+            ],
+            'name_designer_fingerprint' => [
+                'attribute' => 'name_designer_fingerprint',
+                'channel'   => null,
+                'locale'    => null,
+                'data'      => 'Philippe Starck',
             ],
             'name_designer_fingerprint_mobile_fr_FR' => [
                 'attribute' => 'name_designer_fingerprint',
