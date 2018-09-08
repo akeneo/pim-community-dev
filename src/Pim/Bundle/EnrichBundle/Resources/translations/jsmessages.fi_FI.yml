@@ -766,8 +766,8 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform.label: Muokkaa attribuutteja
   move_to_category:
-    label: Siirrä kategoriaan
-    perform.label: Siirrä kategoriaan
+    label: Siirrä kategorioihin
+    perform.label: Siirrä kategorioihin
   update_product_value:
     label: Päivitä tuotteen arvo
     perform.label: Päivitä tuotteen arvo

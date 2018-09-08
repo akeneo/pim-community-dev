@@ -350,11 +350,17 @@ pim_mass_edit:
       error: La exportació ràpida <strong>%label%</strong> ha fallat
       warning: La exportació ràpida <strong>%label%</strong> finalitzat amb alguns avisos
       success: La exportació ràpida <strong>%label%</strong> finalitzat
+    mass_delete:
+      error: Esborrat massiu <strong>%label%</strong> ha fallat
+      warning: Esborrat massiu <strong>%label%</strong> finalitzat amb alguns avisos
+      success: Esborrat massiu <strong>%label%</strong> ha acabat
 job_execution.summary:
   mass_edited: Editat en massa
   skip: Omès
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
+  deleted_products: Productes suprimits
+  deleted_product_models: Models de productes suprimits
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte

@@ -92,6 +92,7 @@ pim_datagrid:
   empty_results:
     associated_product:
       hint: No hay productos asociados
+      subHint: 'Haga clic en el botón "Agregar las asociaciones" para asociar estos productos'
   filters:
     label: Filtros
 error:
@@ -606,6 +607,7 @@ pim_enrich.mass_edit.product:
       description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
     add_attribute_value:
       label: Añadir valores de atributos
+      description: Sólo los atributos de valor múltiple pertenecientes a las familias de los productos serán editados con la siguiente data para la local {{ locale }} y el canal {{ scope }}. Los valores de atributos son mantenidos, lo valores previos no.
     change_family:
       label: Cambiar familia
       description: La familia de los productos seleccionados se cambiará a la familia elegida
@@ -615,7 +617,7 @@ pim_enrich.mass_edit.product:
       field: Grupos
     add_to_category:
       label: Agregar a categorias
-      description: El producto será clasificado en las siguientes categorías, la clasificación actual se mantendrá.
+      description: Los productos serán clasificados en las siguientes categorías, la clasificación actual se mantendrá.
     move_to_category:
       label: Mover entre categorias
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual no se mantendrá.
@@ -627,6 +629,8 @@ pim_enrich.mass_edit.product:
       description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
     associate_to_product_and_product_model:
       label: Asociar
+      description: Los productos seleccionados en las cuadrícula serán asociados con los productos seleccionados y modelos del producto para el tipo de asociación escogido
+      validate: Por favor agregue una asociación antes de continuar con el siguiente espacio
     change_parent_product_model:
       label: Cambiar el modelo de producto de padre
       description: El padre de los productos variantes o modelos de sub-productos seleccionados en la cuadrícula serán modificados al modelo de producto seleccionado.
