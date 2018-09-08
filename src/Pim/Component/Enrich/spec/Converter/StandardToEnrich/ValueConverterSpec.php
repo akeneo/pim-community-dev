@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Enrich\Converter\StandardToEnrich;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 class ValueConverterSpec extends ObjectBehavior
@@ -16,7 +17,10 @@ class ValueConverterSpec extends ObjectBehavior
 
     function it_converts_media($attributeRepository, $fileInfoRepository, FileInfoInterface $fileInfo)
     {
-        $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
+        $attributeRepository->getAttributeTypeByCodes(['picture', 'text'])->willReturn([
+            'picture' => AttributeTypes::IMAGE,
+            'text' => AttributeTypes::TEXT
+        ]);
         $fileInfoRepository->findOneByIdentifier('/a/b/c/my_picture.jpg')->willReturn($fileInfo);
         $fileInfo->getOriginalFilename()->willReturn('My picture.jpg');
 

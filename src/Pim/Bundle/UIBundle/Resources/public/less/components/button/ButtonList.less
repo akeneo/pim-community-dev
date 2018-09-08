@@ -58,4 +58,13 @@
   &--single {
     margin-top: @marginSpace;
   }
+
+  &--vertical {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &--vertical &-item:not(:first-child) {
+    margin-top: 10px;
+  }
 }

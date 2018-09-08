@@ -116,7 +116,7 @@ define(
                     }));
 
                     this.$el.empty();
-                    if (!_.isEmpty(this.getElements())) {
+                    if (this.shouldBeDisplayed(this.getElements())) {
                         this.$el.html(this.template({
                             current: this.getCurrent(),
                             elements: _.sortBy(this.getElements(), 'sort_order'),
@@ -134,6 +134,19 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Don't display the dropdown if there is no elements or if the only element is the "All" group.
+             *
+             * @param {Object} elements
+             *
+             * @returns {Boolean}
+             */
+            shouldBeDisplayed: function (elements) {
+                const length = Object.keys(elements).length;
+
+                return length > 1 || (1 === length && this.all.code !== Object.values(elements)[0].code);
             },
 
             /**

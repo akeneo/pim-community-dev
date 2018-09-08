@@ -1,3 +1,24 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7639: Fix the "forgot password" title visibility 
+
+# 2.0.36 (2018-09-05)
+
+## Bug fixes
+
+- PIM-7605: Fix error when a tree is removed
+
+# 2.0.35 (2018-08-24)
+
+## Bug fixes
+
+- PIM-7595: Add missing acl on family variant managment 
+- PIM-7557: Don't display attribute group filter if no attribute is chosen in "edit common attributes" action
+
+# 2.0.34 (2018-08-17)
+
 # 2.0.33 (2018-08-16)
 
 ## Bug fixes
