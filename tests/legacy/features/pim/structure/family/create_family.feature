@@ -10,6 +10,7 @@ Feature: Family creation
     And I am on the families grid
     And I create a new family
 
+  @critical
   Scenario: Successfully create a family
     Then I should see the Code field
     When I fill in the following information in the popin:

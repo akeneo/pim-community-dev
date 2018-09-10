@@ -8,6 +8,7 @@ Feature: Edit family variant
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully edit a family variant's attribute sets by removing an attribute
     When the product "1111111270" should have the following values:
       | weight | 800.0000 GRAM |
