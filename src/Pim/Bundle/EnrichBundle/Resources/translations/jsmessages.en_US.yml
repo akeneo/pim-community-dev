@@ -864,8 +864,8 @@ pim_notification:
 # Background jobs & steps labels
 batch_jobs:
     add_association:
-        label: Associate to products
-        perform.label: Associate to products
+        label: Associate
+        perform.label: Associate
     add_attribute_value:
         label: Add attributes value
         perform.label: Add attributes value
@@ -887,12 +887,19 @@ batch_jobs:
         quick_export_product_model.label: CSV product model quick export
         perform.label: Csv product quick export
     delete_products_and_product_models:
-        delete_products_and_product_models.label: Mass delete products
+        label: Mass delete products
+        perform.label: Mass delete products
+    change_parent_product:
+        label: Change parent product model
+        perform.label: Change parent product model
     edit_common_attributes:
         label: Edit attributes
         perform.label: Edit attributes
         clean.label: Clean files for attributes
         cleaner.label: Clean files for attributes
+    compute_completeness_of_products_family:
+        label: Compute completeness
+        perform.label: Compute completeness
     move_to_category:
         label: Move to category
         perform.label: Move to category

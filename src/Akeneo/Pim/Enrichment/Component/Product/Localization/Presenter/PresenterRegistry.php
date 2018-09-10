@@ -66,6 +66,14 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
+    public function getPresenterByAttributeType($attributeType)
+    {
+        return $this->getPresenter($attributeType, self::TYPE_PRODUCT_VALUE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAttributeOptionPresenter($optionName)
     {
         return $this->getPresenter($optionName, self::TYPE_ATTRIBUTE_OPTION);

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
@@ -36,22 +37,30 @@ class VersionNormalizer implements NormalizerInterface
     /** @var PresenterInterface */
     protected $datetimePresenter;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    const ATTRIBUTE_HEADER_SEPARATOR = "-";
+
     /**
-     * @param UserManager                $userManager
-     * @param TranslatorInterface        $translator
-     * @param PresenterInterface         $datetimePresenter
-     * @param PresenterRegistryInterface $presenterRegistry
+     * @param UserManager                  $userManager
+     * @param TranslatorInterface          $translator
+     * @param PresenterInterface           $datetimePresenter
+     * @param PresenterRegistryInterface   $presenterRegistry
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
-        PresenterRegistryInterface $presenterRegistry
+        PresenterRegistryInterface $presenterRegistry,
+        AttributeRepositoryInterface $attributeRepository = null // TODO on master: remove = null
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -114,21 +123,64 @@ class VersionNormalizer implements NormalizerInterface
      */
     protected function convertChangeset(array $changeset, array $context)
     {
-        foreach ($changeset as $attribute => $changes) {
-            $context['versioned_attribute'] = $attribute;
-            $attributeName = $attribute;
-            if (preg_match('/^(?<attribute>[a-zA-Z0-9_]+)-.+$/', $attribute, $matches)) {
-                $attributeName = $matches['attribute'];
-            }
-
-            $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeName);
-            if (null !== $presenter) {
-                foreach ($changes as $key => $value) {
-                    $changeset[$attribute][$key] = $presenter->present($value, $context);
+        // TODO on master: remove this check and old behavior
+        if (null === $this->attributeRepository) {
+            // TODO on master: remove this behavior (previous behavior kept to avoid BC break)
+            foreach ($changeset as $attribute => $changes) {
+                $context['versioned_attribute'] = $attribute;
+                $attributeName = $attribute;
+                if (preg_match('/^(?<attribute>[a-zA-Z0-9_]+)-.+$/', $attribute, $matches)) {
+                    $attributeName = $matches['attribute'];
+                }
+                $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeName);
+                if (null !== $presenter) {
+                    foreach ($changes as $key => $value) {
+                        $changeset[$attribute][$key] = $presenter->present($value, $context);
+                    }
                 }
             }
-        }
 
-        return $changeset;
+            return $changeset;
+        } else {
+            // TODO on master: keep only this behavior
+            $attributeCodes = [];
+            foreach (array_keys($changeset) as $valueHeader) {
+                $attributeCode = $this->extractAttributeCode($valueHeader);
+
+                $attributeCodes[$attributeCode] = true;
+            }
+
+            $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($attributeCodes));
+
+            foreach ($changeset as $valueHeader => $valueChanges) {
+                $context['versioned_attribute'] = $valueHeader;
+                $attributeCode = $this->extractAttributeCode($valueHeader);
+
+                if (isset($attributeTypes[$attributeCode])) {
+                    $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
+                    if (null !== $presenter) {
+                        foreach ($valueChanges as $key => $value) {
+                            $changeset[$valueHeader][$key] = $presenter->present($value, $context);
+                        }
+                    }
+                }
+            }
+
+            return $changeset;
+        }
+    }
+
+    /**
+     * Extract the attribute code from the versioning value header.
+     * For example, in "price-EUR", the attribute code is "price".
+     * For "desc-ecom-en_US", this is "desc".
+     */
+    protected function extractAttributeCode($valueHeader)
+    {
+        if (($separatorPos = strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
+            return substr($valueHeader, 0, $separatorPos);
+        } else {
+            return $valueHeader;
+        }
     }
 }
