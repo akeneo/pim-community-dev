@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Repository;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -25,27 +25,27 @@ interface ProductSubscriptionRepositoryInterface
      * @param ProductInterface $product
      * @param string $subscriptionId
      *
-     * @return ProductSubscriptionInterface|null
+     * @return ProductSubscription|null
      */
     public function findOneByProductAndSubscriptionId(
         ProductInterface $product,
         string $subscriptionId
-    ): ?ProductSubscriptionInterface;
+    ): ?ProductSubscription;
 
     /**
-     * @param ProductSubscriptionInterface $subscription
+     * @param ProductSubscription $subscription
      */
-    public function save(ProductSubscriptionInterface $subscription): void;
+    public function save(ProductSubscription $subscription): void;
 
     /**
      * @param int $productId
      *
-     * @return ProductSubscriptionInterface|null
+     * @return ProductSubscription|null
      */
-    public function findOneByProductId(int $productId): ?ProductSubscriptionInterface;
+    public function findOneByProductId(int $productId): ?ProductSubscription;
 
     /**
-     * @return ProductSubscriptionInterface[]
+     * @return ProductSubscription[]
      */
     public function findPendingSubscriptions(): array;
 }

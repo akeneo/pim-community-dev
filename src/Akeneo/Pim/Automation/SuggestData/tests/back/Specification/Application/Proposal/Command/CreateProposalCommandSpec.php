@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use PhpSpec\ObjectBehavior;
 
@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  */
 class CreateProposalCommandSpec extends ObjectBehavior
 {
-    public function let(ProductSubscriptionInterface $subscription)
+    public function let(ProductSubscription $subscription)
     {
         $suggestedData = new SuggestedData(['foo' => 'bar']);
         $subscription->getSuggestedData()->willReturn($suggestedData);

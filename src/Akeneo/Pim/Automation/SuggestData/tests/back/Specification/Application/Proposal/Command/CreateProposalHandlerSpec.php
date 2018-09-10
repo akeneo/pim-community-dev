@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\C
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -51,7 +51,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $suggestedDataNormalizer,
         CreateProposalCommand $command,
         ProductInterface $product,
-        ProductSubscriptionInterface $subscription
+        ProductSubscription $subscription
     ) {
         $product->getCategoryCodes()->willReturn([]);
         $subscription->getProduct()->willReturn($product);
@@ -70,7 +70,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $draftSaver,
         $eventDispatcher,
         CreateProposalCommand $command,
-        ProductSubscriptionInterface $subscription,
+        ProductSubscription $subscription,
         ProductInterface $product,
         FamilyInterface $family,
         EntityWithValuesDraftInterface $draft

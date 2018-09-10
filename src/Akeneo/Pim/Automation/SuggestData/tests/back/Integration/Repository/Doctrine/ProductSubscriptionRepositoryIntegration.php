@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Schema\MySqlSchemaManager;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\Assert;
 
@@ -66,7 +64,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
-        Assert::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
         Assert::assertSame($product, $subscription->getProduct());
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());

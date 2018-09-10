@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class CreateProposalCommand
 {
-    /** @var ProductSubscriptionInterface */
+    /** @var ProductSubscription */
     private $productSubscription;
 
     /**
-     * @param ProductSubscriptionInterface $productSubscription
+     * @param ProductSubscription $productSubscription
      */
-    public function __construct(ProductSubscriptionInterface $productSubscription)
+    public function __construct(ProductSubscription $productSubscription)
     {
         if ($productSubscription->getSuggestedData()->isEmpty()) {
             throw new \InvalidArgumentException(
@@ -37,9 +37,9 @@ class CreateProposalCommand
     }
 
     /**
-     * @return ProductSubscriptionInterface
+     * @return ProductSubscription
      */
-    public function getProductSubscription(): ProductSubscriptionInterface
+    public function getProductSubscription(): ProductSubscription
     {
         return $this->productSubscription;
     }
