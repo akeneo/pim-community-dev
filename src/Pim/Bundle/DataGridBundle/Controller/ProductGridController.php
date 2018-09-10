@@ -30,7 +30,7 @@ class ProductGridController
     /** @var ListAttributesQuery */
     private $listAttributesQuery;
 
-    /** @var FiltersConfigurator */
+    /** @var ConfiguratorInterface */
     private $filtersConfigurator;
 
     /** @var FilterExtension */
@@ -47,13 +47,13 @@ class ProductGridController
 
     /**
      * @param ListAttributesUseableInProductGrid $listAttributesQuery
-     * @param FiltersConfigurator                $filtersConfigurator
+     * @param ConfiguratorInterface                $filtersConfigurator
      * @param FilterExtension                    $filterExtension
      * @param UserContext                        $userContext
      */
     public function __construct(
         ListAttributesUseableInProductGrid $listAttributesQuery,
-        FiltersConfigurator $filtersConfigurator,
+        ConfiguratorInterface $filtersConfigurator,
         FilterExtension $filterExtension,
         UserContext $userContext,
         DatagridViewManager $datagridViewManager,
