@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\tests\integration\Repository;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>

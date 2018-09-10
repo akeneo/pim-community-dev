@@ -46,8 +46,6 @@ class ProductBuilder implements ProductBuilderInterface
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param MissingAssociationAdder            $missingAssociationAdder
      * @param array                              $classes Model classes
-     *
-     * @todo @merge Remove unused parameter $valuesResolver in master
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

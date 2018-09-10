@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -14,7 +13,6 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\BulkMediaFetcher;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -45,33 +43,25 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
     /**
      * @param NormalizerInterface                   $normalizer
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
-     * @param EntityManagerClearerInterface         $cacheClearer
-     *
-     * @todo @merge On master : remove $cacheClearer. It is not used anymore. The cache is now cleared in a dedicated subscriber.
      */
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller,
-        EntityManagerClearerInterface $cacheClearer
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
         $this->normalizer          = $normalizer;
         $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher        = $mediaFetcher;
         $this->productValuesFiller = $productValuesFiller;
-        $this->cacheClearer        = $cacheClearer;
     }
 
     /**
