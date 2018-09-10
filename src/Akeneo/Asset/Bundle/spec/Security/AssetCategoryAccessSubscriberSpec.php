@@ -15,7 +15,7 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface as PimDatasource;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 class AssetCategoryAccessSubscriberSpec extends ObjectBehavior
 {

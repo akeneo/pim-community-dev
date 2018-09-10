@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\Product;
 
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
