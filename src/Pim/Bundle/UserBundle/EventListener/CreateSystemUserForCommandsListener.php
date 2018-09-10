@@ -1,24 +1,26 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventSubscriber;
+declare(strict_types=1);
+
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\DBALException;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Security\SystemUserToken;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
- * Create a user system if token is null on CLI command "pim" or "akeneo"
+ * Creates a system user used to run "pim" or "akeneo" commands.
  * This listener is called before each command.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateUserSystemListener
+final class CreateSystemUserForCommandsListener
 {
     /** @var TokenStorageInterface */
     private $tokenStorage;
@@ -50,10 +52,7 @@ class CreateUserSystemListener
         $this->userFactory = $userFactory;
     }
 
-    /**
-     * @param ConsoleCommandEvent $event The event
-     */
-    public function createUserSystem(ConsoleCommandEvent $event)
+    public function createSystemUser(ConsoleCommandEvent $event): void
     {
         if (0 === preg_match('#^pim|akeneo#', $event->getCommand()->getName())) {
             return;
@@ -62,8 +61,8 @@ class CreateUserSystemListener
         try {
             $user = $this->userFactory->create();
             $user->setUsername(UserInterface::SYSTEM_USER_NAME);
-            $groups = $this->groupRepository->findAll();
 
+            $groups = $this->groupRepository->findAll();
             foreach ($groups as $group) {
                 $user->addGroup($group);
             }
@@ -73,7 +72,7 @@ class CreateUserSystemListener
                 $user->addRole($role);
             }
 
-            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+            $token = new SystemUserToken($user);
             $this->tokenStorage->setToken($token);
         } catch (DBALException $e) {
             // do nothing.
