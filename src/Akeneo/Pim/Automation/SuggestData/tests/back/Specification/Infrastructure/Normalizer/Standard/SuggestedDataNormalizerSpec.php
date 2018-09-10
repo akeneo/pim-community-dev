@@ -12,17 +12,17 @@ use PhpSpec\ObjectBehavior;
  */
 class SuggestedDataNormalizerSpec extends ObjectBehavior
 {
-    function let(ArrayConverterInterface $converter)
+    public function let(ArrayConverterInterface $converter)
     {
         $this->beConstructedWith($converter);
     }
 
-    function it_is_a_suggested_data_normalizer()
+    public function it_is_a_suggested_data_normalizer()
     {
         $this->shouldBeAnInstanceOf(SuggestedDataNormalizer::class);
     }
 
-    function it_normalizes_suggested_data($converter)
+    public function it_normalizes_suggested_data($converter)
     {
         $suggestedData = [
             'foo' => 'bar',
@@ -49,7 +49,7 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $this->normalize(new SuggestedData($suggestedData))->shouldReturn($expected);
     }
 
-    function it_does_not_normalize_values_for_scopable_or_localizable_attributes($converter)
+    public function it_does_not_normalize_values_for_scopable_or_localizable_attributes($converter)
     {
         $suggestedData = [
             'localizable-fr_FR' => 'foo',

@@ -26,17 +26,17 @@ use PhpSpec\ObjectBehavior;
  */
 class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    function it_is_a_product_subscription_repository()
+    public function it_is_a_product_subscription_repository()
     {
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
     }
 
-    function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
+    public function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
     {
         $this->shouldBeAnInstanceOf(InMemoryProductSubscriptionRepository::class);
     }
 
-    function it_find_a_subscription_by_its_product_and_subscription_id()
+    public function it_find_a_subscription_by_its_product_and_subscription_id()
     {
         $product = new Product();
         $product->setId(42);
@@ -48,7 +48,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn($subscription);
     }
 
-    function it_find_no_subscription_if_subscription_id_does_not_exists()
+    public function it_find_no_subscription_if_subscription_id_does_not_exists()
     {
         $product = new Product();
         $product->setId(42);
@@ -60,7 +60,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_find_no_subscription_if_product_was_not_subscribed()
+    public function it_find_no_subscription_if_product_was_not_subscribed()
     {
         $product = new Product();
         $product->setId(42);
@@ -70,7 +70,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_saves_a_product_subscription()
+    public function it_saves_a_product_subscription()
     {
         $product = new Product();
         $product->setId(42);

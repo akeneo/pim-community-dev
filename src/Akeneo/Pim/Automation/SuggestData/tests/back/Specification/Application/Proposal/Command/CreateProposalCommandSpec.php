@@ -12,24 +12,24 @@ use PhpSpec\ObjectBehavior;
  */
 class CreateProposalCommandSpec extends ObjectBehavior
 {
-    function let(ProductSubscriptionInterface $subscription)
+    public function let(ProductSubscriptionInterface $subscription)
     {
         $suggestedData = new SuggestedData(['foo' => 'bar']);
         $subscription->getSuggestedData()->willReturn($suggestedData);
         $this->beConstructedWith($subscription);
     }
 
-    function it_is_a_create_proposal_command()
+    public function it_is_a_create_proposal_command()
     {
         $this->shouldBeAnInstanceOf(CreateProposalCommand::class);
     }
 
-    function it_exposes_the_product_subscription($subscription)
+    public function it_exposes_the_product_subscription($subscription)
     {
         $this->getProductSubscription()->shouldReturn($subscription);
     }
 
-    function it_throws_an_exception_if_there_is_no_suggested_data($subscription)
+    public function it_throws_an_exception_if_there_is_no_suggested_data($subscription)
     {
         $suggestedData = new SuggestedData([]);
         $subscription->getSuggestedData()->willReturn($suggestedData);

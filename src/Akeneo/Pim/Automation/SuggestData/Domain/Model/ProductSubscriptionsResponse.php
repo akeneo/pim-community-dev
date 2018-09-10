@@ -45,7 +45,7 @@ class ProductSubscriptionsResponse
     /**
      * @param ProductSubscriptionResponse $response
      */
-    public function add(ProductSubscriptionResponse $response): void 
+    public function add(ProductSubscriptionResponse $response): void
     {
         $this->responses[] = $response;
     }

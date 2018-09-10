@@ -58,7 +58,7 @@ class Subscription
 
     /**
      * @param array $rawSubscription
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     private function validateSubscription(array $rawSubscription): void

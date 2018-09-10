@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class CreateProposalHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SuggestedDataNormalizer $suggestedDataNormalizer,
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
@@ -42,12 +42,12 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_create_proposal_handler()
+    public function it_is_a_create_proposal_handler()
     {
         $this->shouldHaveType(CreateProposalHandler::class);
     }
 
-    function it_does_not_do_anything_if_product_is_not_categorized(
+    public function it_does_not_do_anything_if_product_is_not_categorized(
         $suggestedDataNormalizer,
         CreateProposalCommand $command,
         ProductInterface $product,
@@ -63,7 +63,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $this->handle($command)->shouldReturn(null);
     }
 
-    function it_handles_a_create_proposal_command(
+    public function it_handles_a_create_proposal_command(
         $suggestedDataNormalizer,
         $productUpdater,
         $draftBuilder,
