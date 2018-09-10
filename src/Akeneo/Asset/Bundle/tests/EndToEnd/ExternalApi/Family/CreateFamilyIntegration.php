@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Asset\Bundle\tests\EndToEnd\ExternalApi\Family;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -23,10 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CreateFamilyIntegration extends ApiTestCase
 {
-    /**
-     * @test
-     */
-    public function create_a_family_with_an_asset_as_attribute_as_image()
+    public function testCreateAFamilyWithAnAssetAsAttributeAsImage()
     {
         $client = $this->createAuthenticatedClient();
 

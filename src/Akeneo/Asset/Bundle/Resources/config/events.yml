@@ -23,6 +23,5 @@ services:
         arguments:
             - '@security.token_storage'
             - '@pimee_product_asset.repository.asset_category_access'
-            - '@pimee_product_asset.repository.asset'
         tags:
             - { name: kernel.event_subscriber }
