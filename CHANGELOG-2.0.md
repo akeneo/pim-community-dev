@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7637: Fix computation of completness of variant products when an attribute at product model level is updated on a bulk action
 - PIM-7639: Fix the "forgot password" title visibility 
 
 # 2.0.36 (2018-09-05)
