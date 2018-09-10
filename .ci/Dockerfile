@@ -12,6 +12,8 @@ ENV BEHAT_TMPDIR=/var/www/pim/var/cache/tmp
 WORKDIR /var/www/pim
 
 RUN ln -s /usr/sbin/php-fpm7.2 /usr/local/bin/php-fpm \
+    && sed -i "s/user = docker/user = www-data/" /etc/php/7.2/fpm/pool.d/www.conf \
+    && sed -i "s/group = docker/group = www-data/" /etc/php/7.2/fpm/pool.d/www.conf \
     && apt-get update \
     && curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
