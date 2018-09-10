@@ -4,6 +4,7 @@ Feature: Export families
   As a product manager
   I need to be able to export families in CSV
 
+  @critical
   Scenario: Successfully export catalog families
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_family_export" configuration:
