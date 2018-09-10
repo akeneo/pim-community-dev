@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInter
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
@@ -17,9 +18,10 @@ class ProductValuesFillerSpec extends ObjectBehavior
     function let(
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValuesResolverInterface $valuesResolver,
-        CurrencyRepositoryInterface $currencyRepository
+        CurrencyRepositoryInterface $currencyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($entityWithValuesBuilder, $valuesResolver, $currencyRepository);
+        $this->beConstructedWith($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributeRepository);
     }
 
     function it_fills_missing_product_values_from_family_on_new_product(
@@ -30,12 +32,15 @@ class ProductValuesFillerSpec extends ObjectBehavior
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $desc,
-        ValueInterface $skuValue
+        ValueInterface $skuValue,
+        $attributeRepository
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
 
         $name->getCode()->willReturn('name');
         $name->getType()->willReturn('pim_catalog_text');
@@ -48,7 +53,7 @@ class ProductValuesFillerSpec extends ObjectBehavior
         $desc->isScopable()->willReturn(true);
 
         // get expected attributes
-        $product->getAttributes()->willReturn([$sku]);
+        $product->getUsedAttributeCodes()->willReturn(['sku']);
         $family->getAttributes()->willReturn([$sku, $name, $desc]);
         $product->getFamily()->willReturn($family);
 
@@ -100,9 +105,9 @@ class ProductValuesFillerSpec extends ObjectBehavior
             ]);
 
         // get existing values
-        $skuValue->getAttribute()->willReturn($sku);
-        $skuValue->getLocale()->willReturn(null);
-        $skuValue->getScope()->willReturn(null);
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $skuValue->getLocaleCode()->willReturn(null);
+        $skuValue->getScopeCode()->willReturn(null);
         $product->getValues()->willReturn([$skuValue]);
 
         $entityWithValuesBuilder->addOrReplaceValue(Argument::cetera())->shouldBeCalledTimes(6);

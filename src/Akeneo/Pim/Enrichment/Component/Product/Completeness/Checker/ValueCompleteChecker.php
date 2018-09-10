@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Chained checker that contains all the product value completeness checkers.
@@ -24,6 +25,14 @@ class ValueCompleteChecker implements ValueCompleteCheckerInterface
 {
     /** @var ValueCompleteCheckerInterface[] */
     protected $productValueCheckers = [];
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -50,16 +59,22 @@ class ValueCompleteChecker implements ValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        if (null !== $value->getScope() && $channel !== $value->getScope()) {
+        if (null !== $value->getScopeCode() && $channel->getCode() !== $value->getScopeCode()) {
             return false;
         }
 
-        if (null !== $value->getLocale() && $locale !== $value->getLocale()) {
+        if (null !== $value->getLocaleCode() && $locale->getCode() !== $value->getLocaleCode()) {
             return false;
         }
 
-        if ($value->getAttribute()->isLocaleSpecific() &&
-            !$value->getAttribute()->hasLocaleSpecific($locale)
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        if (null === $attribute) {
+            return false;
+        }
+
+        if ($attribute->isLocaleSpecific() &&
+            !$attribute->hasLocaleSpecific($locale)
         ) {
             return false;
         }

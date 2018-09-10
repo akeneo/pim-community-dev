@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -68,39 +67,31 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         ValueInterface $imageValue,
         ValueInterface $value1,
         ValueInterface $value2,
-        AttributeInterface $description,
-        AttributeInterface $color,
-        AttributeInterface $image,
-        AttributeInterface $attribute,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($rootProductModel);
         $rootProductModel->getValuesForVariation()->willReturn($values);
         $values->toArray()->willReturn([$descriptionValue, $colorValue, $imageValue, $value1, $value2]);
 
-        $attribute->getCode()->willReturn('an_attribute');
-        $attribute->isUnique()->willReturn(false);
-        $value1->getAttribute()->willReturn($attribute);
-        $value2->getAttribute()->willReturn($attribute);
-        $value1->getScope()->willReturn(null);
-        $value1->getLocale()->willReturn(null);
-        $value2->getScope()->willReturn(null);
-        $value2->getLocale()->willReturn(null);
-        $description->getCode()->willReturn('description');
-        $description->isUnique()->willReturn(false);
-        $descriptionValue->getAttribute()->willReturn($description);
-        $descriptionValue->getScope()->willReturn(null);
-        $descriptionValue->getLocale()->willReturn(null);
-        $color->getCode()->willReturn('color');
-        $color->isUnique()->willReturn(false);
-        $colorValue->getAttribute()->willReturn($color);
-        $colorValue->getScope()->willReturn(null);
-        $colorValue->getLocale()->willReturn(null);
-        $image->getCode()->willReturn('image');
-        $image->isUnique()->willReturn(false);
-        $imageValue->getAttribute()->willReturn($image);
-        $imageValue->getScope()->willReturn(null);
-        $imageValue->getLocale()->willReturn(null);
+        $value1->getAttributeCode()->willReturn('an_attribute');
+        $value1->getScopeCode()->willReturn(null);
+        $value1->getLocaleCode()->willReturn(null);
+
+        $value2->getAttributeCode()->willReturn('an_attribute');
+        $value2->getScopeCode()->willReturn(null);
+        $value2->getLocaleCode()->willReturn(null);
+
+        $descriptionValue->getAttributeCode()->willReturn('description');
+        $descriptionValue->getScopeCode()->willReturn(null);
+        $descriptionValue->getLocaleCode()->willReturn(null);
+
+        $colorValue->getAttributeCode()->willReturn('color');
+        $colorValue->getScopeCode()->willReturn(null);
+        $colorValue->getLocaleCode()->willReturn(null);
+
+        $imageValue->getAttributeCode()->willReturn('image');
+        $imageValue->getScopeCode()->willReturn(null);
+        $imageValue->getLocaleCode()->willReturn(null);
 
 
         $serializer->normalize(Argument::type(ValueCollectionInterface::class), 'storage')->willReturn(
@@ -120,39 +111,31 @@ class ComputeEntityRawValuesSubscriberSpec extends ObjectBehavior
         ValueInterface $imageValue,
         ValueInterface $value1,
         ValueInterface $value2,
-        AttributeInterface $description,
-        AttributeInterface $color,
-        AttributeInterface $image,
-        AttributeInterface $attribute,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
         $product->getValuesForVariation()->willReturn($values);
         $values->toArray()->willReturn([$descriptionValue, $colorValue, $imageValue, $value1, $value2]);
 
-        $attribute->getCode()->willReturn('an_attribute');
-        $attribute->isUnique()->willReturn(false);
-        $value1->getAttribute()->willReturn($attribute);
-        $value2->getAttribute()->willReturn($attribute);
-        $value1->getScope()->willReturn(null);
-        $value1->getLocale()->willReturn(null);
-        $value2->getScope()->willReturn(null);
-        $value2->getLocale()->willReturn(null);
-        $description->getCode()->willReturn('description');
-        $description->isUnique()->willReturn(false);
-        $descriptionValue->getAttribute()->willReturn($description);
-        $descriptionValue->getScope()->willReturn(null);
-        $descriptionValue->getLocale()->willReturn(null);
-        $color->getCode()->willReturn('color');
-        $color->isUnique()->willReturn(false);
-        $colorValue->getAttribute()->willReturn($color);
-        $colorValue->getScope()->willReturn(null);
-        $colorValue->getLocale()->willReturn(null);
-        $image->getCode()->willReturn('image');
-        $image->isUnique()->willReturn(false);
-        $imageValue->getAttribute()->willReturn($image);
-        $imageValue->getScope()->willReturn(null);
-        $imageValue->getLocale()->willReturn(null);
+        $value1->getAttributeCode()->willReturn('attribute');
+        $value1->getScopeCode()->willReturn(null);
+        $value1->getLocaleCode()->willReturn(null);
+
+        $value2->getAttributeCode()->willReturn('attribute');
+        $value2->getScopeCode()->willReturn(null);
+        $value2->getLocaleCode()->willReturn(null);
+
+        $descriptionValue->getAttributeCode()->willReturn('description');
+        $descriptionValue->getScopeCode()->willReturn(null);
+        $descriptionValue->getLocaleCode()->willReturn(null);
+
+        $colorValue->getAttributeCode()->willReturn('color');
+        $colorValue->getScopeCode()->willReturn(null);
+        $colorValue->getLocaleCode()->willReturn(null);
+
+        $imageValue->getAttributeCode()->willReturn('image');
+        $imageValue->getScopeCode()->willReturn(null);
+        $imageValue->getLocaleCode()->willReturn(null);
 
 
         $serializer->normalize(Argument::type(ValueCollectionInterface::class), 'storage')->willReturn(

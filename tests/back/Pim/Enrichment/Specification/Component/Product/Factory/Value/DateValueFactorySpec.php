@@ -7,13 +7,13 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 
 class DateValueFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(ScalarValue::class, 'pim_catalog_date');
+        $this->beConstructedWith(DateValue::class, 'pim_catalog_date');
     }
 
     function it_is_initializable()
@@ -43,7 +43,7 @@ class DateValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(DateValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -66,7 +66,7 @@ class DateValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(DateValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -91,7 +91,7 @@ class DateValueFactorySpec extends ObjectBehavior
             '2000-01-01'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(DateValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -114,7 +114,7 @@ class DateValueFactorySpec extends ObjectBehavior
             '2000-01-01'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(DateValue::class);
         $productValue->shouldHaveAttribute('date_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -189,19 +189,19 @@ class DateValueFactorySpec extends ObjectBehavior
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable' => function ($subject) {
-                return null !== $subject->getLocale();
+                return $subject->isLocalizable();
             },
             'haveLocale'    => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable'    => function ($subject) {
-                return null !== $subject->getScope();
+                return $subject->isScopable();
             },
             'haveChannel'   => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty'       => function ($subject) {
                 return null === $subject->getData();

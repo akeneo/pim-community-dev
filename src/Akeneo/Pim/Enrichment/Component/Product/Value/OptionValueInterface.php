@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 /**
  * Interface for option product value
@@ -15,7 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 interface OptionValueInterface extends ValueInterface
 {
     /**
-     * @return AttributeOptionInterface|null
+     * Return option code
      */
-    public function getData();
+    public function getData(): ?string;
 }

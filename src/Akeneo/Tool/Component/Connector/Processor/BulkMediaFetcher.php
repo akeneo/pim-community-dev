@@ -61,12 +61,12 @@ class BulkMediaFetcher
             if ($value instanceof MediaValueInterface && null !== $media = $value->getData()) {
                 $exportPath = $this->fileExporterPath->generate(
                     [
-                        'locale' => $value->getLocale(),
-                        'scope'  => $value->getScope()
+                        'locale' => $value->getLocaleCode(),
+                        'scope'  => $value->getScopeCode()
                     ],
                     [
                         'identifier' => $identifier,
-                        'code'       => $value->getAttribute()->getCode()
+                        'code'       => $value->getAttributeCode()
                     ]
                 );
 

@@ -8,15 +8,16 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer)
+    function let(NormalizerInterface $normalizer, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
-        $this->beConstructedWith($normalizer);
+        $this->beConstructedWith($normalizer, $attributeRepository);
     }
 
     function it_is_initializable()
@@ -40,16 +41,19 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_value_in_standard_format_with_no_locale_and_no_scope(
         $normalizer,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $normalizer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
 
         $value->getData()->willReturn('product_value_data');
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
@@ -65,16 +69,19 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_value_in_standard_format_with_locale_and_no_scope(
         $normalizer,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $normalizer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
 
         $value->getData()->willReturn('product_value_data');
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
@@ -90,16 +97,19 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_value_in_standard_format_with_locale_and_scope(
         $normalizer,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $normalizer->normalize('product_value_data', null, ['is_decimals_allowed' => false])
             ->shouldBeCalled()
             ->willReturn('product_value_data');
 
         $value->getData()->willReturn('product_value_data');
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
@@ -115,15 +125,18 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_number_product_value_with_decimal(
         $normalizer,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $normalizer->normalize('15.50', null, ['is_decimals_allowed' => true])
             ->shouldNotBeCalled();
 
         $value->getData()->willReturn('15.50');
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(true);
         $attribute->getType()->willReturn(AttributeTypes::NUMBER);
         $attribute->isDecimalsAllowed()->willReturn(true);
@@ -140,15 +153,18 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_number_product_value_without_decimal(
         $normalizer,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $normalizer->normalize('15.00', null, [])
             ->shouldNotBeCalled();
 
         $value->getData()->willReturn('15.00');
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->isDecimalsAllowed()->willReturn(false);
         $attribute->getType()->willReturn(AttributeTypes::NUMBER);
         $attribute->isDecimalsAllowed()->willReturn(false);
@@ -166,15 +182,18 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $normalizer,
         ValueInterface $value,
         AttributeInterface $attribute,
-        AttributeOptionInterface $simpleSelect
+        AttributeOptionInterface $simpleSelect,
+        $attributeRepository
     ) {
         $simpleSelect->getCode()->willReturn('optionA');
         $normalizer->normalize($simpleSelect, null, [])->shouldNotBeCalled();
 
-        $value->getData()->willReturn($simpleSelect);
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getData()->willReturn('optionA');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
@@ -191,17 +210,18 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $normalizer,
         OptionsValueInterface $value,
         AttributeInterface $attribute,
-        AttributeOptionInterface $multiSelect
+        AttributeOptionInterface $multiSelect,
+        $attributeRepository
     ) {
         $multiSelect->getCode()->willReturn('optionA');
         $normalizer->normalize($multiSelect, null, [])->shouldNotBeCalled();
 
-        $values = [$multiSelect];
+        $value->getData()->willReturn(['optionA']);
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+        $value->getAttributeCode()->willReturn('attribute');
 
-        $value->getData()->willReturn($values);
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
         $attribute->isDecimalsAllowed()->willReturn(false);
 
@@ -216,12 +236,15 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_scalar(
         ScalarValue $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $value->getData()->willReturn('foo');
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn('ecommerce');
-        $value->getAttribute()->willReturn($attribute);
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getAttributeCode()->willReturn('attribute');
+
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $this->normalize($value)->shouldReturn(

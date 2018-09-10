@@ -23,8 +23,13 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ValueInterface &&
-            AttributeTypes::BACKEND_TYPE_TEXT === $data->getAttribute()->getBackendType() && (
+        if (! $data instanceof ValueInterface) {
+            return false;
+        }
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+
+        return null !== $attribute && AttributeTypes::BACKEND_TYPE_TEXT === $attribute->getBackendType() && (
                 $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
                 $format === ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX ||
                 $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX

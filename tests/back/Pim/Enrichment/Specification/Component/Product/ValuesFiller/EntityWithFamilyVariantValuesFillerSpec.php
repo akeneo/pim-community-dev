@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInter
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -19,9 +20,10 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValuesResolverInterface $valuesResolver,
         CurrencyRepositoryInterface $currencyRepository,
-        EntityWithFamilyVariantAttributesProvider $attributesProvider
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributesProvider);
+        $this->beConstructedWith($entityWithValuesBuilder, $valuesResolver, $currencyRepository, $attributesProvider, $attributeRepository);
     }
 
     function it_throws_an_exception_if_this_is_not_an_entity_with_a_family_variant(
@@ -40,22 +42,29 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         AttributeInterface $color,
         AttributeInterface $sku,
         ValueInterface $skuValue,
-        ValueInterface $colorValue
+        ValueInterface $colorValue,
+        $attributeRepository
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
+
         $name->getCode()->willReturn('name');
         $name->getType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
 
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn('pim_catalog_simpleselect');
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
 
         $expectedParentAttributes = [$name];
         $expectedAttributes = [$sku, $color];
@@ -95,13 +104,13 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
             ]);
 
         // get existing values
-        $skuValue->getAttribute()->willReturn($sku);
-        $skuValue->getLocale()->willReturn(null);
-        $skuValue->getScope()->willReturn(null);
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $skuValue->getLocaleCode()->willReturn(null);
+        $skuValue->getScopeCode()->willReturn(null);
 
-        $colorValue->getAttribute()->willReturn($color);
-        $colorValue->getLocale()->willReturn(null);
-        $colorValue->getScope()->willReturn(null);
+        $colorValue->getAttributeCode()->willReturn('color');
+        $colorValue->getLocaleCode()->willReturn(null);
+        $colorValue->getScopeCode()->willReturn(null);
 
         $entity->getValues()->willReturn([$skuValue, $colorValue]);
 
@@ -163,29 +172,39 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
         ValueInterface $nameFRValue,
         ValueInterface $nameENValue,
         ValueInterface $colorValue,
-        ValueInterface $intCodeValue
+        ValueInterface $intCodeValue,
+        $attributeRepository
     ) {
         $sku->getCode()->willReturn('sku');
         $sku->getType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($sku);
+
         $name->getCode()->willReturn('name');
         $name->getType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
 
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn('pim_catalog_simpleselect');
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
 
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+
         $intCodeAttribute->getCode()->willReturn('1');
         $intCodeAttribute->getType()->willReturn('pim_catalog_text');
         $intCodeAttribute->isLocalizable()->willReturn(false);
         $intCodeAttribute->isScopable()->willReturn(false);
 
+        $attributeRepository->findOneByIdentifier('1')->willReturn($intCodeAttribute);
+
         $expectedParentAttributes = [$name, $intCodeAttribute];
+
         $expectedAttributes = [$sku, $color];
 
         $parentEntity->getParent()->willReturn(null);
@@ -229,25 +248,25 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
             ]);
 
         // get existing values
-        $skuValue->getAttribute()->willReturn($sku);
-        $skuValue->getLocale()->willReturn(null);
-        $skuValue->getScope()->willReturn(null);
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $skuValue->getLocaleCode()->willReturn(null);
+        $skuValue->getScopeCode()->willReturn(null);
 
-        $nameFRValue->getAttribute()->willReturn($name);
-        $nameFRValue->getLocale()->willReturn('fr_FR');
-        $nameFRValue->getScope()->willReturn(null);
+        $nameFRValue->getAttributeCode()->willReturn('name');
+        $nameFRValue->getLocaleCode()->willReturn('fr_FR');
+        $nameFRValue->getScopeCode()->willReturn(null);
 
-        $nameENValue->getAttribute()->willReturn($name);
-        $nameENValue->getLocale()->willReturn('en_US');
-        $nameENValue->getScope()->willReturn(null);
+        $nameENValue->getAttributeCode()->willReturn('name');
+        $nameENValue->getLocaleCode()->willReturn('en_US');
+        $nameENValue->getScopeCode()->willReturn(null);
 
-        $colorValue->getAttribute()->willReturn($color);
-        $colorValue->getLocale()->willReturn(null);
-        $colorValue->getScope()->willReturn(null);
+        $colorValue->getAttributeCode()->willReturn('color');
+        $colorValue->getLocaleCode()->willReturn(null);
+        $colorValue->getScopeCode()->willReturn(null);
 
-        $intCodeValue->getAttribute()->willReturn($intCodeAttribute);
-        $intCodeValue->getLocale()->willReturn(null);
-        $intCodeValue->getScope()->willReturn(null);
+        $intCodeValue->getAttributeCode()->willReturn('1');
+        $intCodeValue->getLocaleCode()->willReturn(null);
+        $intCodeValue->getScopeCode()->willReturn(null);
 
         $entity->getValues()->willReturn([$skuValue, $nameFRValue, $nameENValue, $colorValue, $intCodeValue]);
 

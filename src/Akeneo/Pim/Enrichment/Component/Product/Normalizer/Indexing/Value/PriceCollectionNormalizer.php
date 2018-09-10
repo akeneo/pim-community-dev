@@ -24,8 +24,7 @@ class PriceCollectionNormalizer extends AbstractProductValueNormalizer implement
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof PriceCollectionValue &&
-            AttributeTypes::BACKEND_TYPE_PRICE === $data->getAttribute()->getBackendType() && (
+        return $data instanceof PriceCollectionValue && (
                 $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
                 $format === ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX ||
                 $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX

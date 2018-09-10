@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -12,6 +13,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class BooleanNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(BooleanNormalizer::class);
@@ -26,12 +32,15 @@ class BooleanNormalizerSpec extends ObjectBehavior
         ValueInterface $textValue,
         ValueInterface $booleanValue,
         AttributeInterface $textAttribute,
-        AttributeInterface $booleanAttribute
+        AttributeInterface $booleanAttribute,
+        $attributeRepository
     ) {
-        $textValue->getAttribute()->willReturn($textAttribute);
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
         $textAttribute->getBackendType()->willReturn('text');
 
-        $booleanValue->getAttribute()->willReturn($booleanAttribute);
+        $booleanValue->getAttributeCode()->willReturn('my_boolean_attribute');
+        $attributeRepository->findOneByIdentifier('my_boolean_attribute')->willReturn($booleanAttribute);
         $booleanAttribute->getBackendType()->willReturn('boolean');
 
         $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
@@ -52,18 +61,21 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_no_locale_and_no_channel(
-        ValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $mediaValue->getAttribute()->willReturn($mediaAttribute);
-        $mediaValue->getLocale()->willReturn(null);
-        $mediaValue->getScope()->willReturn(null);
-        $mediaValue->getData()->willReturn(true);
+        $value->getAttributeCode()->willReturn('a_yes_no');
+        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
 
-        $mediaAttribute->getCode()->willReturn('a_yes_no');
-        $mediaAttribute->getBackendType()->willReturn('boolean');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+        $value->getData()->willReturn(true);
 
-        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $attribute->getCode()->willReturn('a_yes_no');
+        $attribute->getBackendType()->willReturn('boolean');
+
+        $this->normalize($value, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => true
@@ -73,18 +85,21 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_locale_and_no_scope(
-        ValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $mediaValue->getAttribute()->willReturn($mediaAttribute);
-        $mediaValue->getLocale()->willReturn('fr_FR');
-        $mediaValue->getScope()->willReturn(null);
-        $mediaValue->getData()->willReturn(true);
+        $value->getAttributeCode()->willReturn('a_yes_no');
+        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
 
-        $mediaAttribute->getCode()->willReturn('a_yes_no');
-        $mediaAttribute->getBackendType()->willReturn('boolean');
+        $value->getLocaleCode()->willReturn('fr_FR');
+        $value->getScopeCode()->willReturn(null);
+        $value->getData()->willReturn(true);
 
-        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $attribute->getCode()->willReturn('a_yes_no');
+        $attribute->getBackendType()->willReturn('boolean');
+
+        $this->normalize($value, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     'fr_FR' => true
@@ -94,18 +109,21 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_scope_and_no_locale(
-        ValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $mediaValue->getAttribute()->willReturn($mediaAttribute);
-        $mediaValue->getLocale()->willReturn(null);
-        $mediaValue->getScope()->willReturn('ecommerce');
-        $mediaValue->getData()->willReturn(true);
+        $value->getAttributeCode()->willReturn('a_yes_no');
+        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
 
-        $mediaAttribute->getCode()->willReturn('a_yes_no');
-        $mediaAttribute->getBackendType()->willReturn('boolean');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getData()->willReturn(true);
 
-        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $attribute->getCode()->willReturn('a_yes_no');
+        $attribute->getBackendType()->willReturn('boolean');
+
+        $this->normalize($value, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 'ecommerce' => [
                     '<all_locales>' => true
@@ -115,18 +133,21 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_boolean_product_value_with_locale_and_scope(
-        ValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $mediaValue->getAttribute()->willReturn($mediaAttribute);
-        $mediaValue->getLocale()->willReturn('fr_FR');
-        $mediaValue->getScope()->willReturn('ecommerce');
-        $mediaValue->getData()->willReturn(true);
+        $value->getAttributeCode()->willReturn('a_yes_no');
+        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
 
-        $mediaAttribute->getCode()->willReturn('a_yes_no');
-        $mediaAttribute->getBackendType()->willReturn('boolean');
+        $value->getLocaleCode()->willReturn('fr_FR');
+        $value->getScopeCode()->willReturn('ecommerce');
+        $value->getData()->willReturn(true);
 
-        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $attribute->getCode()->willReturn('a_yes_no');
+        $attribute->getBackendType()->willReturn('boolean');
+
+        $this->normalize($value, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 'ecommerce' => [
                     'fr_FR' => true
@@ -136,18 +157,21 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_an_empty_boolean_product_value(
-        ValueInterface $mediaValue,
-        AttributeInterface $mediaAttribute
+        ValueInterface $value,
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
-        $mediaValue->getAttribute()->willReturn($mediaAttribute);
-        $mediaValue->getLocale()->willReturn(null);
-        $mediaValue->getScope()->willReturn(null);
-        $mediaValue->getData()->willReturn(null);
+        $value->getAttributeCode()->willReturn('a_yes_no');
+        $attributeRepository->findOneByIdentifier('a_yes_no')->willReturn($attribute);
 
-        $mediaAttribute->getCode()->willReturn('a_yes_no');
-        $mediaAttribute->getBackendType()->willReturn('boolean');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+        $value->getData()->willReturn(null);
 
-        $this->normalize($mediaValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
+        $attribute->getCode()->willReturn('a_yes_no');
+        $attribute->getBackendType()->willReturn('boolean');
+
+        $this->normalize($value, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn([
             'a_yes_no-boolean' => [
                 '<all_channels>' => [
                     '<all_locales>' => null

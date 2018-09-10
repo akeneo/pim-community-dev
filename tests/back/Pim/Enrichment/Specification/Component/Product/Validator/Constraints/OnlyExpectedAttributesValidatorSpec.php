@@ -67,17 +67,16 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         OnlyExpectedAttributes $constraint,
         AttributeInterface $color,
         FamilyInterface $family,
-        Collection $attributes,
         ValueCollection $valuesForVariation
     ) {
+        $color->getCode()->willReturn('color');
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getAttributes()->willReturn([]);
+        $valuesForVariation->getAttributeCodes()->willReturn([]);
         $attributesProvider->getAttributes($entity)->willReturn([$color]);
 
         $familyVariant->getFamily()->willReturn($family);
-        $family->getAttributes()->willReturn($attributes);
-        $attributes->contains($color)->willReturn(true);
+        $family->getAttributeCodes()->willReturn(['color']);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -95,24 +94,20 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         AttributeInterface $price,
         ConstraintViolationBuilderInterface $violation,
         FamilyInterface $family,
-        Collection $attributes,
         ValueCollection $valuesForVariation
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getAttributes()->willReturn([$color, $sku, $price]);
+        $valuesForVariation->getAttributeCodes()->willReturn(['color', 'sku', 'price']);
 
         $familyVariant->getFamily()->willReturn($family);
-        $family->getAttributes()->willReturn($attributes);
+        $family->getAttributeCodes()->willReturn(['sku', 'color']);
         $family->getCode()->willReturn('family');
-
-        $attributes->contains($color)->willReturn(true);
-        $attributes->contains($sku)->willReturn(true);
-        $attributes->contains($price)->willReturn(false);
 
         $attributesProvider->getAttributes($entity)->willReturn([$color]);
         $sku->getCode()->willReturn('sku');
         $price->getCode()->willReturn('price');
+        $color->getCode()->willReturn('color');
 
         $context
             ->buildViolation(

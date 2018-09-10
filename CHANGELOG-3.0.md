@@ -7,14 +7,50 @@
 - GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
 - PIM-7371: Improve the performance to display the category tree in the product grid
 - PIM-7506: Cache default views and columns on the product grid
-- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less efficient utf8
+- TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less complete utf8
 - Centralizes technical requirements checks to reuse them on standard edition
+- TIP-883: In order to have a clean and independant product aggregate, ProductValue only provides attribute code and no more direct attribute access.
 
 ## Enhancements
 
 - TIP-832: Enable regional languages for UI
 
 ## BC breaks
+- `AbstractValue->getAttribute()` has been replaced by `AbstractValue->getAttributeCode()`. You will need to inject the AttributeRepository in your service if you need to access the full Attribute object related to the provided attribute code.
+- `AbstractValue->getLocale()` has been renamed to `AbstractValue->getLocaleCode()` to better represent its behaviour
+- `AbstractValue->getScope()` has been renamed to `AbstractValue->getScopeCode()` to better represent its behaviour
+- MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
+- ProductValue objects must now be instantiated through the named constructor must be called to instantiate a new ProductValue. See `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue`, methods `value()`, `scopableValue()`, `localizablevalue()` and `scopableAndLocalizableValue()`
+- The service `pim_catalog.repository.cached_attribute`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:
+  - `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
+  - `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber`
+  - `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer`
+  - `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MediaCompleteChecker`
+  - `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MetricCompleteChecker`
+  - `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\PriceCompleteChecker`
+  - `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteChecker`
+  - `Akeneo\Pim\Enrichment\Component\Product\Converter\MetricConverter`
+  - `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer`
+  - `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer`
+  - `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer`
+  - `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer`
+  - `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator`
+  - `Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\ProductValueMetadataFactory`
+  - `Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\AbstractEntityWithFamilyValuesFiller`
+  - `Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer`
+  - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
+  - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
+
+- The service `pim_catalog.repository.cached_attribute_option`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:
+  - `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer`
+  - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionNormalizer`
+  - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionsNormalizer`
+
+- The service `pim_reference_data.repository_resolver`, of type `Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface`, has been added to the constructor of the following classes:
+  - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
+  - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
+
+- In `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`, the attribute repository parameter is now defined as `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` instead of ``Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface`
 
 
 - Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Akeneo\Tool\Component\FileStorage\File\FileStorerInterface`
@@ -91,7 +127,6 @@
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\FileNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\MetricNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\MetricNormalizer`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\PriceNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\PriceNormalizer`
-- MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 - Move `Pim\Bundle\LocalizationBundle\Twig\AttributeExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\AttributeExtension`
 - Move `Pim\Bundle\LocalizationBundle\Twig\LocaleExtension` to `Akeneo\Platform\Bundle\UIBundle\Twig\LocaleExtension`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`

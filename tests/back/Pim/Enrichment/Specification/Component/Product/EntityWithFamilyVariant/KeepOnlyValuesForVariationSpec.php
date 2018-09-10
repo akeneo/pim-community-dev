@@ -64,14 +64,14 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         );
         $valuesIterator->next()->shouldBeCalled();
 
-        $descriptionValue->getAttribute()->willReturn($description);
-        $priceValue->getAttribute()->willReturn($price);
-        $widthValue->getAttribute()->willReturn($width);
-        $skuValue->getAttribute()->willReturn($sku);
-        $imageValue->getAttribute()->willReturn($image);
+        $descriptionValue->getAttributeCode()->willReturn('description');
+        $priceValue->getAttributeCode()->willReturn('price');
+        $widthValue->getAttributeCode()->willReturn('width');
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $imageValue->getAttributeCode()->willReturn('image');
 
-        $valueCollection->removeByAttribute($sku)->shouldBeCalled();
-        $valueCollection->removeByAttribute($image)->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('sku')->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('image')->shouldBeCalled();
 
         $rootProductModel->setValues($valueCollection)->shouldBeCalled();
 
@@ -132,15 +132,15 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         );
         $valuesIterator->next()->shouldBeCalled();
 
-        $descriptionValue->getAttribute()->willReturn($description);
-        $priceValue->getAttribute()->willReturn($price);
-        $widthValue->getAttribute()->willReturn($width);
-        $skuValue->getAttribute()->willReturn($sku);
-        $imageValue->getAttribute()->willReturn($image);
-        $colorValue->getAttribute()->willReturn($color);
+        $descriptionValue->getAttributeCode()->willReturn('description');
+        $priceValue->getAttributeCode()->willReturn('price');
+        $widthValue->getAttributeCode()->willReturn('width');
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $imageValue->getAttributeCode()->willReturn('image');
+        $colorValue->getAttributeCode()->willReturn('color');
 
-        $valueCollection->removeByAttribute($sku)->shouldBeCalled();
-        $valueCollection->removeByAttribute($image)->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('sku')->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('image')->shouldBeCalled();
 
         $subProductModel->setValues($valueCollection)->shouldBeCalled();
 
@@ -201,16 +201,16 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
         );
         $valuesIterator->next()->shouldBeCalled();
 
-        $descriptionValue->getAttribute()->willReturn($description);
-        $priceValue->getAttribute()->willReturn($price);
-        $widthValue->getAttribute()->willReturn($width);
-        $skuValue->getAttribute()->willReturn($sku);
-        $imageValue->getAttribute()->willReturn($image);
-        $sizeValue->getAttribute()->willReturn($size);
+        $descriptionValue->getAttributeCode()->willReturn('description');
+        $priceValue->getAttributeCode()->willReturn('price');
+        $widthValue->getAttributeCode()->willReturn('width');
+        $skuValue->getAttributeCode()->willReturn('sku');
+        $imageValue->getAttributeCode()->willReturn('image');
+        $sizeValue->getAttributeCode()->willReturn('size');
 
-        $valueCollection->removeByAttribute($description)->shouldBeCalled();
-        $valueCollection->removeByAttribute($price)->shouldBeCalled();
-        $valueCollection->removeByAttribute($width)->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('description')->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('price')->shouldBeCalled();
+        $valueCollection->removeByAttributeCode('width')->shouldBeCalled();
 
         $variantProduct->setValues($valueCollection)->shouldBeCalled();
 

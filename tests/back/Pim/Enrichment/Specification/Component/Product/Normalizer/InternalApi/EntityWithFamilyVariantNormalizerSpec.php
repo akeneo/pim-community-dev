@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFa
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -29,7 +30,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
         $this->beConstructedWith(
             $imageNormalizer,
@@ -38,7 +40,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $completenessCollectionNormalizer,
             $completenessCalculator,
             $variantProductRatioQuery,
-            $imageAsLabel
+            $imageAsLabel,
+            $attributeOptionRepository
         );
     }
 
@@ -64,7 +67,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         AttributeOptionValueInterface $colorAttributeOptionValue,
         CompletenessInterface $completeness1,
         CompletenessInterface $completeness2,
-        Collection $productCompletenesses
+        Collection $productCompletenesses,
+        $attributeOptionRepository
     ) {
         $context = [
             'locale' => 'en_US'
@@ -90,7 +94,11 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProduct->getValue('color')->willReturn($colorValue);
         $variantProduct->getValue('size')->willReturn($sizeValue);
 
-        $colorValue->getData()->willReturn($colorAttributeOption);
+        $colorValue->getData()->willReturn('white');
+        $colorValue->getAttributeCode()->willReturn('color');
+
+        $attributeOptionRepository->findOneByIdentifier('color.white')->willReturn($colorAttributeOption);
+
         $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
         $colorAttributeOption->setLocale('en_US')->shouldBeCalled();
         $colorAttributeOption->getSortOrder()->willReturn(2);
@@ -136,7 +144,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ValueInterface $colorValue,
         AttributeOptionInterface $colorAttributeOption,
         AttributeOptionValueInterface $colorAttributeOptionValue,
-        CompleteVariantProducts $completeVariantProducts
+        CompleteVariantProducts $completeVariantProducts,
+        $attributeOptionRepository
     ) {
         $context = [
             'locale' => 'en_US'
@@ -155,7 +164,10 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $colorAttribute->getType()->willReturn('pim_catalog_simpleselect');
         $productModel->getValue('color')->willReturn($colorValue);
 
-        $colorValue->getData()->willReturn($colorAttributeOption);
+        $colorValue->getData()->willReturn('white');
+        $colorValue->getAttributeCode()->willReturn('color');
+
+        $attributeOptionRepository->findOneByIdentifier('color.white')->willReturn($colorAttributeOption);
         $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
         $colorAttributeOption->setLocale('en_US')->shouldBeCalled();
         $colorAttributeOption->getSortOrder()->willReturn(2);

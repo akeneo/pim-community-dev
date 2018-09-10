@@ -24,12 +24,13 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
     {
         $queryBuilder = $this->createQueryBuilder('ud')
             ->select('COUNT(ud)')
-            ->where('ud.attribute = :attribute')
+            ->join('ud.attribute', 'a')
+            ->where('a.code = :attribute_code')
             ->andWhere('ud.rawData = :data')
         ;
 
         $parameters = [
-            'attribute' => $value->getAttribute(),
+            'attribute_code' => $value->getAttributeCode(),
             'data' => $value->__toString(),
         ];
 

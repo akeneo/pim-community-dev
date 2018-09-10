@@ -2,9 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Copier;
 
-use Acme\Bundle\AppBundle\Entity\Color;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -56,11 +54,7 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ValueInterface $fromValue,
-        ValueInterface $toValue,
-        ArrayCollection $fromCollection,
-        Color $black,
-        Color $red,
-        \ArrayIterator $referenceDataIterator
+        ValueInterface $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -75,20 +69,11 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromValue->getData()->willReturn($fromCollection);
-        $fromCollection->getIterator()->willReturn($referenceDataIterator);
-        $referenceDataIterator->rewind()->shouldBeCalled();
-        $referenceDataIterator->valid()->willReturn(true, true, false);
-        $referenceDataIterator->current()->willReturn($red, $black);
-        $referenceDataIterator->next()->shouldBeCalled();
-
-        $red->getCode()->willReturn('red');
-        $black->getCode()->willReturn('black');
+        $fromValue->getData()->willReturn(['red','black']);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
             ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['red', 'black'])
-            ->shouldBeCalled()
             ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);

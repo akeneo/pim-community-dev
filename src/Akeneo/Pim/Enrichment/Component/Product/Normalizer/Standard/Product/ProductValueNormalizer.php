@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,12 +25,13 @@ class ProductValueNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /**
-     * @param NormalizerInterface $normalizer
-     */
-    public function __construct(NormalizerInterface $normalizer)
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
+    public function __construct(NormalizerInterface $normalizer, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->normalizer = $normalizer;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -45,8 +47,8 @@ class ProductValueNormalizer implements NormalizerInterface
             $this->getCollectionValue($entity, $format, $context) : $this->getSimpleValue($entity, $format, $context);
 
         return [
-            'locale' => $entity->getLocale(),
-            'scope'  => $entity->getScope(),
+            'locale' => $entity->getLocaleCode(),
+            'scope'  => $entity->getScopeCode(),
             'data'   => $data,
         ];
     }
@@ -59,23 +61,23 @@ class ProductValueNormalizer implements NormalizerInterface
         return $data instanceof ValueInterface && 'standard' === $format;
     }
 
-    /**
-     * @param ValueInterface $value
-     * @param string|null    $format
-     * @param array          $context
-     *
-     * @return array
-     */
     protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array
     {
-        $attributeType = $value->getAttribute()->getType();
-        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+
+        if (null === $attribute) {
+            return [];
+        }
+
+        $attributeType = $attribute->getType();
+        $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         $data = [];
         foreach ($value->getData() as $item) {
             if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
-                $value->getAttribute()->isBackendTypeReferenceData()) {
-                $data[] = $item->getCode();
+                $attribute->isBackendTypeReferenceData()) {
+                $data[] = $item;
             } else {
                 $data[] = $this->normalizer->normalize($item, $format, $context);
             }
@@ -84,25 +86,24 @@ class ProductValueNormalizer implements NormalizerInterface
         return $data;
     }
 
-    /**
-     * @param ValueInterface $value
-     * @param null|string    $format
-     * @param array          $context
-     *
-     * @return mixed
-     */
     protected function getSimpleValue(ValueInterface $value, ?string $format = null, array $context = [])
     {
         if (null === $value->getData()) {
             return null;
         }
 
-        $attributeType = $value->getAttribute()->getType();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        if (null === $attribute) {
+            return null;
+        }
+
+        $attributeType = $attribute->getType();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
         if (AttributeTypes::NUMBER === $attributeType && is_numeric($value->getData())) {
-            return $value->getAttribute()->isDecimalsAllowed()
+            return $attribute->isDecimalsAllowed()
                 ? number_format($value->getData(), static::DECIMAL_PRECISION, '.', '')
                 : (int) $value->getData();
         }
@@ -114,7 +115,7 @@ class ProductValueNormalizer implements NormalizerInterface
         if ($attributeType === AttributeTypes::OPTION_SIMPLE_SELECT ||
             $attributeType === AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
         ) {
-            return $value->getData()->getCode();
+            return $value->getData();
         }
 
         if ($attributeType === AttributeTypes::FILE ||
@@ -123,7 +124,7 @@ class ProductValueNormalizer implements NormalizerInterface
             return $value->getData()->getKey();
         }
 
-        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
+        $context['is_decimals_allowed'] = $attribute->isDecimalsAllowed();
 
         return $this->normalizer->normalize($value->getData(), $format, $context);
     }

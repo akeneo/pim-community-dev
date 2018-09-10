@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Form\Subscriber;
 
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -15,15 +16,16 @@ use Symfony\Component\Form\FormEvents;
  */
 class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     /** @var string $currentLocale */
     protected $currentLocale;
 
-    /**
-     * @param string $currentLocale
-     */
-    public function __construct($currentLocale)
+    public function __construct(?string $currentLocale, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->currentLocale = $currentLocale;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -44,13 +46,15 @@ class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
-        if (null === $data) {
+        if (null === $data || null === $this->currentLocale) {
             return;
         }
 
         foreach ($data as $name => $value) {
-            if ($this->currentLocale && $value->getAttribute()->isLocaleSpecific()) {
-                $availableCodes = $value->getAttribute()->getLocaleSpecificCodes();
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+            if ($attribute->isLocaleSpecific()) {
+                $availableCodes = $attribute->getLocaleSpecificCodes();
                 if (!in_array($this->currentLocale, $availableCodes)) {
                     $form->remove($name);
                 }

@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCh
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
@@ -13,6 +14,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class MetricCompleteCheckerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     public function it_is_a_completeness_checker()
     {
         $this->shouldImplement(ValueCompleteCheckerInterface::class);
@@ -22,9 +28,11 @@ class MetricCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         AttributeInterface $attribute,
         ChannelInterface $channel,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        $attributeRepository
     ) {
-        $value->getAttribute()->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('my_metric')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_metric');
         $attribute->getType()->willReturn(AttributeTypes::METRIC);
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
 

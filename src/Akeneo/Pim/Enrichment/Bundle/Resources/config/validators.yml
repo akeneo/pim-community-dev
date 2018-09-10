@@ -109,6 +109,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product_unique_data'
             - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
@@ -240,6 +241,7 @@ services:
         class: '%pim_catalog.validator.mapping.product_value_metadata_factory.class%'
         arguments:
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.validator.mapping.delegating_class_metadata_factory:
         public: false
@@ -288,6 +290,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator_entity }
 

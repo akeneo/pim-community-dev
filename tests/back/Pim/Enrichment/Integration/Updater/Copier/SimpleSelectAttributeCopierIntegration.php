@@ -39,14 +39,14 @@ class SimpleSelectAttributeCopierIntegration extends AbstractCopierTestCase
 
         $this->assertSame(
             'another_simple_select',
-            $newValue->getAttribute()->getCode()
+            $newValue->getAttributeCode()
         );
         $this->assertSame(
             '[optionA]',
             (string)$newValue
         );
         $this->assertSame(
-            $this->get('pim_catalog.repository.attribute_option')->findOneByIdentifier('another_simple_select.optionA'),
+            $this->get('pim_catalog.repository.attribute_option')->findOneByIdentifier('another_simple_select.optionA')->getCode(),
             $newValue->getData()
         );
     }

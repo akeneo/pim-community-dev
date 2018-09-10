@@ -24,10 +24,10 @@ Feature: Edit common attributes of many products at once
     And I change the "Customer rating" to "5"
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then the unlocalized ecommerce customer_rating of "black_jacket" should be "[1]"
-    And the unlocalized ecommerce customer_rating of "white_jacket" should be "[3]"
-    And the unlocalized print customer_rating of "black_jacket" should be "[5]"
-    And the unlocalized print customer_rating of "white_jacket" should be "[5]"
+    Then the unlocalized ecommerce customer_rating of "black_jacket" should be "1"
+    And the unlocalized ecommerce customer_rating of "white_jacket" should be "3"
+    And the unlocalized print customer_rating of "black_jacket" should be "5"
+    And the unlocalized print customer_rating of "white_jacket" should be "5"
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values

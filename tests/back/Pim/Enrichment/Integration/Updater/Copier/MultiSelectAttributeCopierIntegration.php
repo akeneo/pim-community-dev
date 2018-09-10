@@ -39,19 +39,19 @@ class MultiSelectAttributeCopierIntegration extends AbstractCopierTestCase
 
         $this->assertSame(
             'another_multi_select',
-            $newValue->getAttribute()->getCode()
+            $newValue->getAttributeCode()
         );
         $this->assertSame(
             '[optionA], [optionB]',
             (string)$newValue
         );
 
-        foreach ($newValue->getData() as $actualOption) {
-            $expectedOption = $this
+        foreach ($newValue->getData() as $actualOptionCode) {
+            $expectedOptionCode = $this
                 ->get('pim_catalog.repository.attribute_option')
-                ->findOneByIdentifier(sprintf('another_multi_select.%s', $actualOption->getCode()));
+                ->findOneByIdentifier(sprintf('another_multi_select.%s', $actualOptionCode))->getCode();
 
-            $this->assertSame($expectedOption, $actualOption);
+            $this->assertSame($expectedOptionCode, $actualOptionCode);
         }
     }
 

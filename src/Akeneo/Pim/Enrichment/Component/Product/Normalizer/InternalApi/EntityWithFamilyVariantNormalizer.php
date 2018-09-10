@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormaliz
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -55,16 +56,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
+    /** @var attributeOptionRepository */
+    private $attributeOptionRepository;
 
-    /**
-     * @param ImageNormalizer                           $imageNormalizer
-     * @param LocaleRepositoryInterface                 $localeRepository
-     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
-     * @param NormalizerInterface                       $completenessCollectionNormalizer
-     * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param VariantProductRatioInterface              $variantProductRatioQuery
-     * @param ImageAsLabel                              $imageAsLabel
-     */
     public function __construct(
         ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
@@ -72,7 +66,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
         $this->imageNormalizer                  = $imageNormalizer;
         $this->localeRepository                 = $localeRepository;
@@ -81,6 +76,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->completenessCalculator           = $completenessCalculator;
         $this->variantProductRatioQuery         = $variantProductRatioQuery;
         $this->imageAsLabel                     = $imageAsLabel;
+        $this->attributeOptionRepository        = $attributeOptionRepository;
     }
 
     /**
@@ -170,7 +166,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
                 switch ($axisAttribute->getType()) {
                     case AttributeTypes::OPTION_SIMPLE_SELECT:
-                        $option = $value->getData();
+                        $optionCode = $value->getData();
+                        $option = $this->attributeOptionRepository->findOneByIdentifier($value->getAttributeCode().'.'.$optionCode);
                         $option->setLocale($localeCode);
                         $label = $option->getTranslation()->getLabel();
                         $valuesForLocale[] = empty($label) ? '[' . $option->getCode() . ']' : $label;
@@ -245,7 +242,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             $value = $entity->getValue($axisAttribute->getCode());
 
             if (AttributeTypes::OPTION_SIMPLE_SELECT === $axisAttribute->getType()) {
-                $option = $value->getData();
+                $optionCode = $value->getData();
+                $option = $this->attributeOptionRepository->findOneByIdentifier($value->getAttributeCode().'.'.$optionCode);
                 $orderArray[] = $option->getSortOrder();
                 $orderArray[] = $option->getCode();
             } else {

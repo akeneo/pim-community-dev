@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -18,66 +18,25 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataValueFactory implements ValueFactoryInterface
+class ReferenceDataValueFactory extends AbstractValueFactory
 {
     /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
-    /** @var string */
-    protected $productValueClass;
-
-    /** @var string */
-    protected $supportedAttributeType;
-
-    /**
-     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
-     * @param string                                   $productValueClass
-     * @param string                                   $supportedAttributeType
-     */
     public function __construct(
         ReferenceDataRepositoryResolverInterface $repositoryResolver,
-        $productValueClass,
-        $supportedAttributeType
+        string $productValueClass,
+        string $supportedAttributeType
     ) {
+        parent::__construct($productValueClass, $supportedAttributeType);
+
         $this->repositoryResolver = $repositoryResolver;
-        $this->productValueClass = $productValueClass;
-        $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
-    {
-        $this->checkData($attribute, $data);
-
-        if (null !== $data) {
-            $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-            $data = $this->getReferenceData($attribute, $repository, $data);
-        }
-
-        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return $attributeType === $this->supportedAttributeType;
-    }
-
-    /**
-     * Check if data is valid
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
             return;
@@ -90,24 +49,9 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
                 $data
             );
         }
-    }
 
-    /**
-     * Finds a reference data by code.
-     *
-     * @param AttributeInterface               $attribute
-     * @param ReferenceDataRepositoryInterface $repository
-     * @param string                           $referenceDataCode
-     *
-     * @throws InvalidPropertyException
-     * @return ReferenceDataInterface
-     */
-    protected function getReferenceData(
-        AttributeInterface $attribute,
-        ReferenceDataRepositoryInterface $repository,
-        $referenceDataCode
-    ) {
-        $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+        $referenceData = $repository->findOneBy(['code' => $data]);
 
         if (null === $referenceData) {
             throw InvalidPropertyException::validEntityCodeExpected(
@@ -115,10 +59,10 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
                 'reference data code',
                 sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
                 static::class,
-                $referenceDataCode
+                $data
             );
         }
 
-        return $referenceData;
+        return $referenceData->getCode();
     }
 }

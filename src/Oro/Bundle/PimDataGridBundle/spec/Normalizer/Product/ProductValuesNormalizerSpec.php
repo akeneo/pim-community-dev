@@ -42,7 +42,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('attribute');
         $attribute->setBackendType('text');
-        $realValue = new ScalarValue($attribute, null, null, null);
+        $realValue = ScalarValue::value($attribute, null);
 
         $valuesCollection = new ValueCollection([$realValue]);
         $valuesArray = [$realValue];
@@ -65,9 +65,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $presenterRegistry,
         $userContext,
         ValueInterface $textValue,
-        AttributeInterface $text,
         ValueInterface $priceValue,
-        AttributeInterface $price,
         ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator,
         PresenterInterface $pricePresenter
@@ -78,10 +76,8 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         $valuesIterator->current()->willReturn($textValue, $priceValue);
         $valuesIterator->next()->shouldBeCalled();
 
-        $textValue->getAttribute()->willReturn($text);
-        $priceValue->getAttribute()->willReturn($price);
-        $text->getCode()->willReturn('text');
-        $price->getCode()->willReturn('price');
+        $textValue->getAttributeCode()->willReturn('text');
+        $priceValue->getAttributeCode()->willReturn('price');
 
         $serializer
             ->normalize($textValue, 'datagrid', [])

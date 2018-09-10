@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -20,6 +21,14 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ViolationNormalizer implements NormalizerInterface
 {
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -87,7 +96,10 @@ class ViolationNormalizer implements NormalizerInterface
                 $error = $this->getProductValuesErrors($violation, $matches['attribute']);
 
                 $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
-                $attributeType = $productValue->getAttribute()->getType();
+
+                $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
+
+                $attributeType = $attribute->getType();
 
                 if (AttributeTypes::IDENTIFIER === $attributeType) {
                     $propertyPath = 'identifier';
@@ -160,7 +172,9 @@ class ViolationNormalizer implements NormalizerInterface
     protected function getProductValuesErrors(ConstraintViolationInterface $violation, $productValueKey)
     {
         $productValue = $violation->getRoot()->getValues()->getByKey($productValueKey);
-        $attributeType = $productValue->getAttribute()->getType();
+        $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
+
+        $attributeType = $attribute->getType();
 
         if (AttributeTypes::IDENTIFIER === $attributeType) {
             return [
@@ -172,9 +186,9 @@ class ViolationNormalizer implements NormalizerInterface
         $error = [
             'property'  => 'values',
             'message'   => $violation->getMessage(),
-            'attribute' => $productValue->getAttribute()->getCode(),
-            'locale'    => $productValue->getLocale(),
-            'scope'     => $productValue->getScope()
+            'attribute' => $productValue->getAttributeCode(),
+            'locale'    => $productValue->getLocaleCode(),
+            'scope'     => $productValue->getScopeCode()
         ];
 
         if (AttributeTypes::PRICE_COLLECTION === $attributeType &&

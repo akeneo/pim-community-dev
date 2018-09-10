@@ -6,11 +6,17 @@ use Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Prophecy\Argument;
 
 class OptionNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeOptionRepository)
+    {
+        $this->beConstructedWith($attributeOptionRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(OptionNormalizer::class);
@@ -20,6 +26,7 @@ class OptionNormalizerSpec extends ObjectBehavior
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
+
 
     function it_supports_datagrid_format_and_product_value(OptionValueInterface $value)
     {
@@ -31,15 +38,21 @@ class OptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_simple_select_product_value_with_label(
         OptionValueInterface $value,
-        AttributeOptionInterface $color,
-        AttributeOptionValueInterface $optionValue
+        AttributeOptionInterface $purpleOption,
+        AttributeOptionValueInterface $purpleOptionValue,
+        $attributeOptionRepository
     ) {
-        $value->getData()->willReturn($color);
-        $color->setLocale('fr_FR')->shouldBeCalled();
-        $color->getTranslation()->willReturn($optionValue);
-        $optionValue->getValue()->willReturn('Violet');
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
+        $value->getAttributeCode()->willReturn('color');
+        $value->getData()->willReturn('purple');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+
+        $attributeOptionRepository->findOneByIdentifier('color.purple')->willReturn($purpleOption);
+
+        $purpleOption->setLocale('fr_FR')->shouldBeCalled();
+        $purpleOption->getTranslation()->willReturn($purpleOptionValue);
+        $purpleOptionValue->getValue()->willReturn('Violet');
+
 
         $data =  [
             'locale' => null,
@@ -52,17 +65,22 @@ class OptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_simple_select_product_value_without_label(
         OptionValueInterface $value,
-        AttributeOptionInterface $color,
-        AttributeOptionValueInterface $optionValue
+        AttributeOptionInterface $purpleOption,
+        AttributeOptionValueInterface $purpleOptionValue,
+        $attributeOptionRepository
     ) {
-        $value->getData()->willReturn($color);
-        $color->setLocale('fr_FR')->shouldBeCalled();
-        $color->getTranslation()->willReturn($optionValue);
-        $color->getCode()->willReturn('purple');
-        $optionValue->getValue()->willReturn(null);
-        $optionValue->getValue()->willReturn(null);
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
+        $value->getAttributeCode()->willReturn('color');
+        $value->getData()->willReturn('purple');
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+
+        $attributeOptionRepository->findOneByIdentifier('color.purple')->willReturn($purpleOption);
+
+        $purpleOption->setLocale('fr_FR')->shouldBeCalled();
+        $purpleOption->getTranslation()->willReturn($purpleOptionValue);
+        $purpleOption->getCode()->willReturn('purple');
+        $purpleOptionValue->getValue()->willReturn(null);
+        $purpleOptionValue->getValue()->willReturn(null);
 
         $data =  [
             'locale' => null,
@@ -75,13 +93,15 @@ class OptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_simple_select_product_value_without_data(
         OptionValueInterface $value,
-        AttributeOptionInterface $color
+        AttributeOptionInterface $purpleOption
     ) {
+        $value->getAttributeCode()->willReturn('color');
         $value->getData()->willReturn(null);
-        $color->setLocale(Argument::any())->shouldNotBeCalled();
-        $color->getTranslation()->shouldNotBeCalled();
-        $value->getLocale()->willReturn(null);
-        $value->getScope()->willReturn(null);
+        $value->getLocaleCode()->willReturn(null);
+        $value->getScopeCode()->willReturn(null);
+
+        $purpleOption->setLocale(Argument::any())->shouldNotBeCalled();
+        $purpleOption->getTranslation()->shouldNotBeCalled();
 
         $data =  [
             'locale' => null,

@@ -32,12 +32,12 @@ class ProductValueNormalizer implements NormalizerInterface
     {
         $stdValue = $this->stdNormalizer->normalize($value, $format, $context);
 
-        $attribute = $value->getAttribute()->getCode();
-        $channel = null !== $stdValue['scope'] ? $stdValue['scope'] : '<all_channels>';
-        $locale = null !== $stdValue['locale'] ? $stdValue['locale'] : '<all_locales>';
+        $attributeCode = $value->getAttributeCode();
+        $channelCode = null !== $stdValue['scope'] ? $stdValue['scope'] : '<all_channels>';
+        $localeCode = null !== $stdValue['locale'] ? $stdValue['locale'] : '<all_locales>';
 
         $storageValue = [];
-        $storageValue[$attribute][$channel][$locale] = $stdValue['data'];
+        $storageValue[$attributeCode][$channelCode][$localeCode] = $stdValue['data'];
 
         return $storageValue;
     }

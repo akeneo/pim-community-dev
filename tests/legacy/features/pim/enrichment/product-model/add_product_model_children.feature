@@ -188,7 +188,7 @@ Feature: Add children to product model
       | Code (required)      | apollon_new_blue |
       | Color (variant axis) | Blue             |
     And I confirm the child creation
-    Then I should see the text "Cannot set value \"Blue\" for the attribute axis \"color\" on product model \"apollon_new_blue\", as the product model \"apollon_blue\" already has this value"
+    Then I should see the text "Cannot set value \"[blue]\" for the attribute axis \"color\" on product model \"apollon_new_blue\", as the product model \"apollon_blue\" already has this value"
 
   Scenario: I cannot add a variant product with an already existing axis value combination
     Given I am on the "amor" product model page
@@ -200,4 +200,4 @@ Feature: Add children to product model
       | Color (variant axis) | Blue               |
       | Size (variant axis)  | M                  |
     And I confirm the child creation
-    Then I should see the text "Cannot set value \"Blue,M\" for the attribute axis \"color,size\" on variant product \"apollon_new_blue_m\", as the variant product \"1111111113\" already has this value"
+    Then I should see the text "Cannot set value \"[blue],[m]\" for the attribute axis \"color,size\" on variant product \"apollon_new_blue_m\", as the variant product \"1111111113\" already has this value"

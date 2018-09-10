@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 /**
@@ -16,28 +15,24 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
  */
 class OptionsValue extends AbstractValue implements OptionsValueInterface
 {
-    /** @var AttributeOptionInterface[] */
+    /** @var string[] Options codes */
     protected $data;
 
     /**
-     * @param AttributeInterface         $attribute
-     * @param string                     $channel
-     * @param string                     $locale
-     * @param AttributeOptionInterface[] $data
+     * {@inheritdoc}
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, array $data = [])
+    protected function __construct(string $attributeCode, ?array $data, ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->data = $data;
+        if (null === $data) {
+            $data = [];
+        }
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): ?array
     {
         return $this->data;
     }
@@ -45,77 +40,48 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
     /**
      * {@inheritdoc}
      */
-    public function hasCode($code)
+    public function hasCode(string $code): bool
     {
-        foreach ($this->data as $option) {
-            if ($option->getCode() === $code) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($code, $this->data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getOptionCodes()
+    public function getOptionCodes(): array
     {
-        $options = [];
-        foreach ($this->data as $option) {
-            $options[] = $option->getCode();
-        }
-
-        return $options;
+        return $this->data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        $optionValues = [];
-        foreach ($this->data as $option) {
-            $optionValue = $option->getOptionValue();
-            $optionValues[] = null !== $optionValue ? $optionValue->getValue() : '['.$option->getCode().']';
+        $optionStrings = [];
+
+        foreach ($this->data as $optionCode) {
+            $optionStrings[] = '['.$optionCode.']';
         }
 
-        return implode(', ', $optionValues);
+        return implode(', ', $optionStrings);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value)
+    public function isEqual(ValueInterface $value): bool
     {
         if (!$value instanceof OptionsValueInterface ||
-            $this->getScope() !== $value->getScope() ||
-            $this->getLocale() !== $value->getLocale()) {
+            $this->getScopeCode() !== $value->getScopeCode() ||
+            $this->getLocaleCode() !== $value->getLocaleCode()) {
             return false;
         }
 
         $comparedAttributeOptions = $value->getData();
         $thisAttributeOptions = $this->getData();
 
-        if (count($comparedAttributeOptions) !== count($thisAttributeOptions)) {
-            return false;
-        }
-
-        foreach ($comparedAttributeOptions as $comparedAttributeOption) {
-            $hasEqual = false;
-            foreach ($thisAttributeOptions as $thisAttributeOption) {
-                if ($thisAttributeOption->getCode() === $comparedAttributeOption->getCode()) {
-                    $hasEqual = true;
-
-                    break;
-                }
-            }
-
-            if (!$hasEqual) {
-                return false;
-            }
-        }
-
-        return true;
+        return count(array_diff($thisAttributeOptions, $comparedAttributeOptions)) === 0 &&
+            count(array_diff($comparedAttributeOptions, $thisAttributeOptions)) === 0;
     }
 }

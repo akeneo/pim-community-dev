@@ -16,73 +16,28 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class OptionsValueFactory implements ValueFactoryInterface
+class OptionsValueFactory extends AbstractValueFactory
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
 
-    /** @var string */
-    protected $productValueClass;
-
-    /** @var string */
-    protected $supportedAttributeType;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string $productValueClass
-     * @param $supportedAttributeType
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attrOptionRepository,
-        $productValueClass,
-        $supportedAttributeType
+        string $productValueClass,
+        string $supportedAttributeType
     ) {
+        parent::__construct($productValueClass, $supportedAttributeType);
+
         $this->attrOptionRepository = $attrOptionRepository;
-        $this->productValueClass = $productValueClass;
-        $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        $this->checkData($attribute, $data);
-
         if (null === $data) {
-            $data = [];
-        }
-
-        $value = new $this->productValueClass(
-            $attribute,
-            $channelCode,
-            $localeCode,
-            $this->getOptions($attribute, $data)
-        );
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return $attributeType === $this->supportedAttributeType;
-    }
-
-    /**
-     * Checks if data is valid.
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (null === $data || [] === $data) {
-            return;
+            return [];
         }
 
         if (!is_array($data)) {
@@ -103,45 +58,35 @@ class OptionsValueFactory implements ValueFactoryInterface
                 );
             }
         }
-    }
 
-    /**
-     * Returns an array of attribute options.
-     *
-     * @param AttributeInterface $attribute
-     * @param string[]           $data
-     *
-     * @throws InvalidOptionsException
-     * @return array
-     */
-    protected function getOptions(AttributeInterface $attribute, array $data)
-    {
         sort($data);
 
-        $options = [];
-        $notFoundOptions = [];
+        $notFoundOptionCodes = [];
+        $foundOptionCodes = [];
 
         foreach ($data as $optionCode) {
             $identifier = $attribute->getCode() . '.' . $optionCode;
             $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
             if (null === $option) {
-                $notFoundOptions[] = $optionCode;
+                $notFoundOptionCodes[] = $optionCode;
             } else {
-                $options[] = $option;
+                $foundOptionCodes[] = $option->getCode();
             }
         }
 
-        if (!empty($notFoundOptions)) {
+        if (!empty($notFoundOptionCodes)) {
             throw InvalidOptionsException::validEntityListCodesExpected(
                 $attribute->getCode(),
                 'codes',
                 'The options do not exist',
                 static::class,
-                $notFoundOptions
+                $notFoundOptionCodes
             );
         }
 
-        return $options;
+        sort($foundOptionCodes);
+
+        return $foundOptionCodes;
     }
 }

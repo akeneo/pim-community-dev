@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Index
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
@@ -14,6 +15,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OptionNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(OptionNormalizer::class);
@@ -28,10 +34,14 @@ class OptionNormalizerSpec extends ObjectBehavior
         OptionValueInterface $optionValue,
         ValueInterface $textValue,
         AttributeInterface $optionAttribute,
-        AttributeInterface $textAttribute
+        AttributeInterface $textAttribute,
+        $attributeRepository
     ) {
-        $optionValue->getAttribute()->willReturn($optionAttribute);
-        $textValue->getAttribute()->willReturn($textAttribute);
+        $optionValue->getAttributeCode()->willReturn('my_option_attribute');
+        $textValue->getAttributeCode()->willReturn('my_text_attribute');
+
+        $attributeRepository->findOneByIdentifier('my_option_attribute')->willReturn($optionAttribute);
+        $attributeRepository->findOneByIdentifier('my_text_attribute')->willReturn($textAttribute);
 
         $optionAttribute->getBackendType()->willReturn('option');
         $textAttribute->getBackendType()->willReturn('text');
@@ -55,15 +65,17 @@ class OptionNormalizerSpec extends ObjectBehavior
 
     function it_normalize_an_empty_option_product_value(
         ValueInterface $optionValue,
-        AttributeInterface $optionAttribute
+        AttributeInterface $optionAttribute,
+        $attributeRepository
     ) {
-        $optionValue->getAttribute()->willReturn($optionAttribute);
+        $optionValue->getAttributeCode()->willReturn('color');
         $optionAttribute->getBackendType()->willReturn('option');
 
-        $optionValue->getLocale()->willReturn(null);
-        $optionValue->getScope()->willReturn(null);
+        $optionValue->getLocaleCode()->willReturn(null);
+        $optionValue->getScopeCode()->willReturn(null);
 
         $optionAttribute->getCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($optionAttribute);
 
         $optionValue->getData()->willReturn(null);
 
@@ -81,18 +93,18 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalize_an_option_product_value_with_no_locale_and_no_channel(
         ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $color
+        $attributeRepository
     ) {
-        $optionValue->getAttribute()->willReturn($optionAttribute);
+        $optionValue->getAttributeCode()->willReturn('color');
         $optionAttribute->getBackendType()->willReturn('option');
 
-        $optionValue->getLocale()->willReturn(null);
-        $optionValue->getScope()->willReturn(null);
+        $optionValue->getLocaleCode()->willReturn(null);
+        $optionValue->getScopeCode()->willReturn(null);
 
         $optionAttribute->getCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($optionAttribute);
 
-        $optionValue->getData()->willReturn($color);
-        $color->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn('red');
 
         $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -108,18 +120,18 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_option_product_value_with_locale(
         ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $color
+        $attributeRepository
     ) {
-        $optionValue->getAttribute()->willReturn($optionAttribute);
+        $optionValue->getAttributeCode()->willReturn('color');
         $optionAttribute->getBackendType()->willReturn('option');
 
-        $optionValue->getLocale()->willReturn('en_US');
-        $optionValue->getScope()->willReturn(null);
+        $optionValue->getLocaleCode()->willReturn('en_US');
+        $optionValue->getScopeCode()->willReturn(null);
 
         $optionAttribute->getCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($optionAttribute);
 
-        $optionValue->getData()->willReturn($color);
-        $color->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn('red');
 
         $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -135,18 +147,18 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_option_product_value_with_channel(
         ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $color
+        $attributeRepository
     ) {
-        $optionValue->getAttribute()->willReturn($optionAttribute);
+        $optionValue->getAttributeCode()->willReturn('color');
         $optionAttribute->getBackendType()->willReturn('option');
 
-        $optionValue->getLocale()->willReturn(null);
-        $optionValue->getScope()->willReturn('ecommerce');
+        $optionValue->getLocaleCode()->willReturn(null);
+        $optionValue->getScopeCode()->willReturn('ecommerce');
 
         $optionAttribute->getCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($optionAttribute);
 
-        $optionValue->getData()->willReturn($color);
-        $color->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn('red');
 
         $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
@@ -162,18 +174,18 @@ class OptionNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_option_product_value_with_locale_and_channel(
         ValueInterface $optionValue,
         AttributeInterface $optionAttribute,
-        AttributeOptionInterface $color
+        $attributeRepository
     ) {
-        $optionValue->getAttribute()->willReturn($optionAttribute);
+        $optionValue->getAttributeCode()->willReturn('color');
         $optionAttribute->getBackendType()->willReturn('option');
 
-        $optionValue->getLocale()->willReturn('en_US');
-        $optionValue->getScope()->willReturn('ecommerce');
+        $optionValue->getLocaleCode()->willReturn('en_US');
+        $optionValue->getScopeCode()->willReturn('ecommerce');
 
         $optionAttribute->getCode()->willReturn('color');
+        $attributeRepository->findOneByIdentifier('color')->willReturn($optionAttribute);
 
-        $optionValue->getData()->willReturn($color);
-        $color->getCode()->willReturn('red');
+        $optionValue->getData()->willReturn('red');
 
         $this->normalize($optionValue, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [

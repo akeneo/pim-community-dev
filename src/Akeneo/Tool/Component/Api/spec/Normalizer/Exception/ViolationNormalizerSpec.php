@@ -5,6 +5,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer\Exception;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -15,6 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class ViolationNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_normalizes_an_exception()
     {
         $violationCode = new ConstraintViolation('Not Blank', '', [], '', 'code', '');
@@ -41,11 +47,15 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $values,
         ValueInterface $identifier,
         AttributeInterface $attribute,
-        Constraint $constraint
+        Constraint $constraint,
+        $attributeRepository
     ) {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('identifier');
-        $identifier->getAttribute()->willReturn($attribute);
+
+        $identifier->getAttributeCode()->willReturn('identifier');
+        $attributeRepository->findOneByIdentifier('identifier')->willReturn($attribute);
+
         $product->getValues()->willReturn($values);
         $values->getByKey('sku')->willReturn($identifier);
 
@@ -88,15 +98,19 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $productValues,
         ValueInterface $sku,
         AttributeInterface $attribute,
-        Constraint $lengthConstraint
+        Constraint $lengthConstraint,
+        $attributeRepository
     ) {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('sku');
         $attribute->getMaxCharacters()->willReturn(10);
 
-        $sku->getAttribute()->willReturn($attribute);
-        $sku->getLocale()->willReturn(null);
-        $sku->getScope()->willReturn(null);
+        $sku->getAttributeCode()->willReturn('identifier');
+        $sku->getLocaleCode()->willReturn(null);
+        $sku->getScopeCode()->willReturn(null);
+
+        $attributeRepository->findOneByIdentifier('identifier')->willReturn($attribute);
+
         $product->getValues()->willReturn($productValues);
         $productValues->getByKey('sku')->willReturn($sku);
 
@@ -144,15 +158,19 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $productValues,
         ValueInterface $sku,
         AttributeInterface $attribute,
-        Constraint $regexpConstraint
+        Constraint $regexpConstraint,
+        $attributeRepository
     ) {
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getCode()->willReturn('sku');
         $attribute->getMaxCharacters()->willReturn(10);
 
-        $sku->getAttribute()->willReturn($attribute);
-        $sku->getLocale()->willReturn(null);
-        $sku->getScope()->willReturn(null);
+        $sku->getAttributeCode()->willReturn('sku');
+        $sku->getLocaleCode()->willReturn(null);
+        $sku->getScopeCode()->willReturn(null);
+
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
+
         $product->getValues()->willReturn($productValues);
         $productValues->getByKey('sku')->willReturn($sku);
 
@@ -205,13 +223,17 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $productValues,
         ValueInterface $description,
         AttributeInterface $attribute,
-        Constraint $constraint
+        Constraint $constraint,
+        $attributeRepository
     ) {
         $attribute->getType()->willReturn('pim_catalog_text');
         $attribute->getCode()->willReturn('description');
-        $description->getAttribute()->willReturn($attribute);
-        $description->getLocale()->willReturn('en_US');
-        $description->getScope()->willReturn('ecommerce');
+        $description->getAttributeCode()->willReturn('description');
+        $description->getLocaleCode()->willReturn('en_US');
+        $description->getScopeCode()->willReturn('ecommerce');
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+
         $product->getValues()->willReturn($productValues);
         $productValues->getByKey('description-en_US-ecommerce')->willReturn($description);
 

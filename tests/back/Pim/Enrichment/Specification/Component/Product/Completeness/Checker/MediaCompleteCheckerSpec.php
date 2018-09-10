@@ -6,12 +6,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCh
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class MediaCompleteCheckerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     public function it_is_a_completeness_checker()
     {
         $this->shouldImplement(ValueCompleteCheckerInterface::class);
@@ -21,9 +27,12 @@ class MediaCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $value,
         AttributeInterface $attribute,
         ChannelInterface $channel,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        $attributeRepository
     ) {
-        $value->getAttribute()->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('my_media')->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_media');
+
         $attribute->getBackendType()->willReturn('media');
         $this->supportsValue($value, $channel, $locale)->shouldReturn(true);
 

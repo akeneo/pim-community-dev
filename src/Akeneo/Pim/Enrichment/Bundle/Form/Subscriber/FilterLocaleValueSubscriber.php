@@ -57,7 +57,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
         foreach ($data as $name => $value) {
             if ($this->currentLocale
-                && $this->isLocalizable($value->getAttribute())
+                && $value->isLocalizable()
                 && !$this->isInCurrentLocale($value)
                 && !$this->isInComparisonLocale($value)
             ) {
@@ -80,23 +80,13 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    protected function isLocalizable(AttributeInterface $attribute = null)
-    {
-        return $attribute && $attribute->isLocalizable();
-    }
-
-    /**
      * @param ValueInterface $value
      *
      * @return bool
      */
     protected function isInCurrentLocale(ValueInterface $value)
     {
-        return $value->getLocale() && $value->getLocale() === $this->currentLocale;
+        return $value->isLocalizable() && $value->getLocaleCode() === $this->currentLocale;
     }
 
     /**
@@ -106,6 +96,6 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      */
     protected function isInComparisonLocale(ValueInterface $value)
     {
-        return $value->getLocale() && $value->getLocale() === $this->comparisonLocale;
+        return $value->isLocalizable() && $value->getLocaleCode() === $this->comparisonLocale;
     }
 }

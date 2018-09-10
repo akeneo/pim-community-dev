@@ -17,65 +17,25 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class MediaValueFactory implements ValueFactoryInterface
+class MediaValueFactory extends AbstractValueFactory
 {
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
-    /** @var string */
-    protected $productValueClass;
-
-    /** @var string */
-    protected $supportedAttributeType;
-
-    /**
-     * @param FileInfoRepositoryInterface $fileInfoRepository
-     * @param string                      $productValueClass
-     * @param string                      $supportedAttributeType
-     */
     public function __construct(
         FileInfoRepositoryInterface $fileInfoRepository,
-        $productValueClass,
-        $supportedAttributeType
+        string $productValueClass,
+        string $supportedAttributeType
     ) {
+        parent::__construct($productValueClass, $supportedAttributeType);
+
         $this->fileInfoRepository = $fileInfoRepository;
-        $this->productValueClass = $productValueClass;
-        $this->supportedAttributeType = $supportedAttributeType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
-    {
-        $this->checkData($attribute, $data);
-
-        if (null !== $data) {
-            $data = $this->getFileInfo($attribute, $data);
-        }
-
-        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return $attributeType === $this->supportedAttributeType;
-    }
-
-    /**
-     * Checks that data is a valid file path.
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $data
-     *
-     * @throws InvalidPropertyException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
             return;
@@ -88,20 +48,10 @@ class MediaValueFactory implements ValueFactoryInterface
                 $data
             );
         }
-    }
 
-    /**
-     * @param AttributeInterface $attribute
-     * @param string                                                   $data
-     *
-     * @throws InvalidPropertyException
-     * @return FileInfoInterface
-     */
-    protected function getFileInfo(AttributeInterface $attribute, $data)
-    {
-        $file = $this->fileInfoRepository->findOneByIdentifier($data);
+        $fileInfo = $this->fileInfoRepository->findOneByIdentifier($data);
 
-        if (null === $file) {
+        if (null === $fileInfo) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'fileinfo key',
@@ -111,6 +61,6 @@ class MediaValueFactory implements ValueFactoryInterface
             );
         }
 
-        return $file;
+        return $fileInfo;
     }
 }

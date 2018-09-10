@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-
 /**
  * This interface wears the responsibility of having values.
  * A value is defined by an attribute, a locale, a scope and a data.
@@ -72,25 +70,12 @@ interface EntityWithValuesInterface
     public function removeValue(ValueInterface $value);
 
     /**
-     * Get the attributes of the product
-     *
-     * @return AttributeInterface[] the attributes of the current product
+     * Get whether or not an attribute is part of a product from its attribute code
      */
-    public function getAttributes();
-
-    /**
-     * Get whether or not an attribute is part of a product
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttribute(AttributeInterface $attribute);
+    public function hasAttribute(string $attributeCode): bool;
 
     /**
      * Get the list of used attribute codes from the indexed values
-     *
-     * @return array
      */
-    public function getUsedAttributeCodes();
+    public function getUsedAttributeCodes(): array;
 }

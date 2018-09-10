@@ -11,6 +11,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -22,9 +24,10 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
     function let(
         ExecutionContextInterface $context,
         IdentifiableObjectRepositoryInterface $objectRepository,
+        AttributeRepositoryInterface $attributeRepository,
         UniqueValuesSet $uniqueValuesSet
     ) {
-        $this->beConstructedWith($objectRepository, $uniqueValuesSet);
+        $this->beConstructedWith($objectRepository, $uniqueValuesSet, $attributeRepository);
 
         $this->initialize($context);
     }
@@ -38,19 +41,21 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $context,
         $objectRepository,
         $uniqueValuesSet,
+        $attributeRepository,
         ProductInterface $product,
         ProductInterface $productInDatabase,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         ValueCollectionInterface $values,
-        ValueInterface $identifierValue
+        ValueInterface $identifierValue,
+        AttributeInterface $identifierAttribute
     ) {
         $constraint = new UniqueProductEntity();
 
         $product->getValues()->willReturn($values);
-        $values->filter(Argument::any())->willReturn($values);
-        $values->isEmpty()->willReturn(false);
-        $values->first()->willReturn($identifierValue);
         $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(true);
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $identifierAttribute->getCode()->willReturn('identifier');
+        $values->getByCodes('identifier')->willReturn($identifierValue);
 
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn($productInDatabase);
@@ -70,17 +75,19 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $context,
         $objectRepository,
         $uniqueValuesSet,
+        $attributeRepository,
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         ValueCollectionInterface $values,
-        ValueInterface $identifierValue
+        ValueInterface $identifierValue,
+        AttributeInterface $identifierAttribute
     ) {
         $constraint = new UniqueProductEntity();
-
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $identifierAttribute->getCode()->willReturn('identifier');
+        $values->getByCodes('identifier')->willReturn($identifierValue);
         $product->getValues()->willReturn($values);
-        $values->filter(Argument::any())->willReturn($values);
-        $values->isEmpty()->willReturn(false);
-        $values->first()->willReturn($identifierValue);
+
         $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(false);
 
         $product->getIdentifier()->willReturn('identifier');

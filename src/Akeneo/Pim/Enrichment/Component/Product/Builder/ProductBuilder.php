@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Builder;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductEvents;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -110,10 +111,10 @@ class ProductBuilder implements ProductBuilderInterface
     public function addOrReplaceValue(
         EntityWithValuesInterface $values,
         AttributeInterface $attribute,
-        $locale,
-        $scope,
+        ?string $localeCode,
+        ?string $scopeCode,
         $data
-    ) {
-        $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
+    ) :ValueInterface {
+        return $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $localeCode, $scopeCode, $data);
     }
 }

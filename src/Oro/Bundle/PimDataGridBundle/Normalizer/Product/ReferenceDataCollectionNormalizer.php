@@ -3,7 +3,9 @@
 namespace Oro\Bundle\PimDataGridBundle\Normalizer\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,21 +15,47 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ReferenceDataCollectionNormalizer implements NormalizerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ReferenceDataRepositoryResolverInterface */
+    protected $repositoryResolver;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ReferenceDataRepositoryResolverInterface $repositoryResolver
+    ) {
+        $this->attributeRepository = $attributeRepository;
+        $this->repositoryResolver = $repositoryResolver;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function normalize($referenceDataCollection, $format = null, array $context = [])
+    public function normalize($referenceDataCollectionValue, $format = null, array $context = [])
     {
+        $attribute = $this->attributeRepository->findOneByIdentifier($referenceDataCollectionValue->getAttributeCode());
+
+        if (null === $attribute) {
+            return null;
+        }
+
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+
         $labels = [];
-        foreach ($referenceDataCollection->getData() as $referenceData) {
-            $labels[] = $this->getLabel($referenceData);
+        foreach ($referenceDataCollectionValue->getData() as $referenceDataCode) {
+            $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
+
+            if (null !== $referenceData) {
+                $labels[] = $this->getLabel($referenceData);
+            }
         }
 
         sort($labels);
 
         return [
-            'locale' => $referenceDataCollection->getLocale(),
-            'scope'  => $referenceDataCollection->getScope(),
+            'locale' => $referenceDataCollectionValue->getLocaleCode(),
+            'scope'  => $referenceDataCollectionValue->getScopeCode(),
             'data'   => implode(', ', $labels),
         ];
     }

@@ -8,14 +8,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\MetricValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Prophecy\Argument;
 
 class MetricValueFactorySpec extends ObjectBehavior
 {
     function let(MetricFactory $metricFactory)
     {
-        $this->beConstructedWith($metricFactory, ScalarValue::class, 'pim_catalog_metric');
+        $this->beConstructedWith($metricFactory, MetricValue::class, 'pim_catalog_metric');
     }
 
     function it_is_initializable()
@@ -55,7 +55,7 @@ class MetricValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MetricValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -88,7 +88,7 @@ class MetricValueFactorySpec extends ObjectBehavior
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MetricValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -122,7 +122,7 @@ class MetricValueFactorySpec extends ObjectBehavior
             ['amount' => 42, 'unit' => 'GRAM']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MetricValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -154,7 +154,7 @@ class MetricValueFactorySpec extends ObjectBehavior
             ['amount' => 42, 'unit' => 'GRAM']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(MetricValue::class);
         $productValue->shouldHaveAttribute('metric_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -238,19 +238,19 @@ class MetricValueFactorySpec extends ObjectBehavior
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable' => function ($subject) {
-                return null !== $subject->getLocale();
+                return $subject->isLocalizable();
             },
             'haveLocale'    => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable'    => function ($subject) {
-                return null !== $subject->getScope();
+                return $subject->isScopable();
             },
             'haveChannel'   => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty'       => function ($subject, $expectedUnit) {
                 $metric = $subject->getData();

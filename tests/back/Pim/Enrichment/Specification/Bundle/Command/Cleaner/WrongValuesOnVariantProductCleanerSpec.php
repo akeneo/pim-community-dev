@@ -31,11 +31,11 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
         $variantProductImpacted->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getAttributesKeys()->willReturn(['bool_attribute']);
+        $valuesForVariation->getAttributeCodes()->willReturn(['bool_attribute']);
 
         $variantProductImpacted->getValuesForVariation()->willReturn($values);
-        $values->removeByAttribute($booleanAttribute)->shouldBeCalled();
-        $values->getAttributesKeys()->willReturn(['bool_attribute']);
+        $values->removeByAttributeCode('bool_attribute')->shouldBeCalled();
+        $values->getAttributeCodes()->willReturn(['bool_attribute']);
         $variantProductImpacted->setValues($values)->shouldBeCalled();
 
         $this->cleanProduct($variantProductImpacted)->shouldReturn(true);
@@ -55,7 +55,7 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $textAttribute->getCode()->willReturn('text_attribute');
 
         $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getAttributesKeys()->willReturn(['bool_attribute']);
+        $valuesForVariation->getAttributeCodes()->willReturn(['bool_attribute']);
         $variantProductNotImpacted->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('text_attribute')->willReturn(1);
         $familyVariant->getNumberOfLevel()->willReturn(1);
@@ -80,7 +80,7 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
 
         $variantProductNotImpacted->getFamilyVariant()->willReturn($familyVariant);
         $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getAttributesKeys()->willReturn(['bool_attribute']);
+        $valuesForVariation->getAttributeCodes()->willReturn(['bool_attribute']);
         $familyVariant->getLevelForAttributeCode('bool_attribute')->willReturn(1);
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
@@ -107,7 +107,7 @@ class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
         $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getAttributesKeys()->willReturn(['text_attribute']);
+        $valuesForVariation->getAttributeCodes()->willReturn(['text_attribute']);
 
         $variantProductNotImpacted->getValues()->shouldNotBeCalled();
 

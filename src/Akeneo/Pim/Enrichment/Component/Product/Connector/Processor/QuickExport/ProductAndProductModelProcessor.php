@@ -239,7 +239,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     protected function filterValues(ValueCollectionInterface $values, array $selectedAttributes)
     {
         return $values->filter(function ($productValue) use ($selectedAttributes) {
-            $attributeCode = $productValue->getAttribute()->getCode();
+            $attributeCode = $productValue->getAttributeCode();
 
             return in_array($attributeCode, $selectedAttributes);
         });

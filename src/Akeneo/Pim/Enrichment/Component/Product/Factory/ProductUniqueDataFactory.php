@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Creates and configures a product unique data.
@@ -18,22 +19,13 @@ class ProductUniqueDataFactory
     /** @var string */
     protected $productUniqueDataClass;
 
-    /**
-     * @param string $productUniqueDataClass
-     */
-    public function __construct($productUniqueDataClass)
+    public function __construct(string $productUniqueDataClass)
     {
         $this->productUniqueDataClass = $productUniqueDataClass;
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param ValueInterface   $value
-     *
-     * @return ProductUniqueDataInterface
-     */
-    public function create(ProductInterface $product, ValueInterface $value)
+    public function create(ProductInterface $product, AttributeInterface $attribute, string $rawData): ProductUniqueDataInterface
     {
-        return new $this->productUniqueDataClass($product, $value);
+        return new $this->productUniqueDataClass($product, $attribute, $rawData);
     }
 }

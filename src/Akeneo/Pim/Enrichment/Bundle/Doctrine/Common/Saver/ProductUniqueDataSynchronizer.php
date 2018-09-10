@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -26,12 +27,13 @@ class ProductUniqueDataSynchronizer
     /** @var ProductUniqueDataFactory */
     protected $factory;
 
-    /**
-     * @param ProductUniqueDataFactory $factory
-     */
-    public function __construct(ProductUniqueDataFactory $factory)
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(ProductUniqueDataFactory $factory, IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->factory = $factory;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -49,9 +51,7 @@ class ProductUniqueDataSynchronizer
         // We get the actual unique data from the product that just got updated
         $actualUniqueDataCollection = $this->createUniqueDataFromProduct($product);
         // We also extract the attribute code list from this collection
-        $actualAttributeCodes = $this->getAttributeCodes(
-            $product->getValues()->getUniqueValues()
-        );
+        $actualAttributeCodes = $this->getAttributeCodes($actualUniqueDataCollection);
 
         // We substract from the original collection the new attributes to have the attribute codes to remove
         $attributeCodeToRemoveFromUniqueCollection = array_diff(
@@ -130,7 +130,9 @@ class ProductUniqueDataSynchronizer
 
         // We now iterate over the collection to update the UniqueData of the original collection
         foreach ($uniqueDataCollectionToUpdateValue as $uniqueData) {
-            $uniqueData->setProductValue($product->getValue($uniqueData->getAttribute()->getCode()));
+            $uniqueData->setAttribute($uniqueData->getAttribute());
+            $value = $product->getValue($uniqueData->getAttribute()->getCode());
+            $uniqueData->setRawData($value->__toString());
         }
     }
 
@@ -156,11 +158,15 @@ class ProductUniqueDataSynchronizer
 
     private function createUniqueDataFromProduct(ProductInterface $product)
     {
-        return array_map(
-            function (ValueInterface $value) use ($product) {
-                return $this->factory->create($product, $value);
-            },
-            $product->getValues()->getUniqueValues()
-        );
+        $uniqueData = [];
+
+        foreach ($product->getValues() as $value) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+            if (null !== $attribute && $attribute->isUnique()) {
+                $uniqueData[] = $this->factory->create($product, $attribute, $value->__toString());
+            }
+        }
+
+        return $uniqueData;
     }
 }

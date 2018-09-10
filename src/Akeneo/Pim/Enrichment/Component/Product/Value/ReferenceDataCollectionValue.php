@@ -20,25 +20,18 @@ class ReferenceDataCollectionValue extends AbstractValue implements
     /** @var ReferenceDataInterface[] */
     protected $data;
 
-    /**
-     * @param AttributeInterface       $attribute
-     * @param string                   $channel
-     * @param string                   $locale
-     * @param ReferenceDataInterface[] $data
-     */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, array $data = [])
+    protected function __construct(string $attributeCode, ?array $data = [], ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->data = $data;
+        if (null === $data) {
+            $data = [];
+        }
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): ?array
     {
         return $this->data;
     }
@@ -46,60 +39,39 @@ class ReferenceDataCollectionValue extends AbstractValue implements
     /**
      * {@inheritdoc}
      */
-    public function getReferenceDataCodes()
+    public function getReferenceDataCodes() : array
     {
-        $options = [];
-        foreach ($this->data as $option) {
-            $options[] = $option->getCode();
+        return $this->data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString(): string
+    {
+        $refCodeStrings = [];
+
+        foreach ($this->data as $refCode) {
+            $refCodeStrings[] = '['.$refCode.']';
         }
-
-        return $options;
+        return implode(', ', $refCodeStrings);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __toString()
-    {
-        $codes = array_map(function ($option) {
-            return (string) $option;
-        }, $this->data);
-
-        return implode(', ', $codes);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEqual(ValueInterface $value)
+    public function isEqual(ValueInterface $value): bool
     {
         if (!$value instanceof ReferenceDataCollectionValueInterface ||
-            $this->getScope() !== $value->getScope() ||
-            $this->getLocale() !== $value->getLocale()) {
+            $this->getScopeCode() !== $value->getScopeCode() ||
+            $this->getLocaleCode() !== $value->getLocaleCode()) {
             return false;
         }
 
         $comparedRefDataCollection = $value->getData();
         $thisRefDataCollection = $this->getData();
 
-        if (count($comparedRefDataCollection) !== count($thisRefDataCollection)) {
-            return false;
-        }
-
-        foreach ($comparedRefDataCollection as $comparedRefData) {
-            $refDataFound = false;
-            foreach ($thisRefDataCollection as $thisRefData) {
-                if ($comparedRefData->getCode() === $thisRefData->getCode()) {
-                    $refDataFound = true;
-                    break;
-                }
-            }
-
-            if (!$refDataFound) {
-                return false;
-            }
-        }
-
-        return true;
+        return count(array_diff($thisRefDataCollection, $comparedRefDataCollection)) === 0 &&
+            count(array_diff($comparedRefDataCollection, $thisRefDataCollection)) === 0;
     }
 }

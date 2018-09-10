@@ -4,8 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Stora
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
@@ -34,10 +32,7 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
 
     function it_supports_storage_format_and_collection_values()
     {
-        $attribute = new Attribute();
-        $attribute->setCode('attribute');
-        $attribute->setBackendType('text');
-        $realValue = new ScalarValue($attribute, null, null, null);
+        $realValue = ScalarValue::value('attribute', null);
 
         $valuesCollection = new ValueCollection([$realValue]);
         $valuesArray = [$realValue];
@@ -62,11 +57,9 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     function it_normalizes_collection_of_product_values_in_storage_format(
         $normalizer,
         ValueInterface $textValue,
-        AttributeInterface $textAttribute,
         ValueInterface $descriptionEcommerceFrValue,
         ValueInterface $descriptionEcommerceEnValue,
         ValueInterface $descriptionPrintFrValue,
-        AttributeInterface $descriptionAttribute,
         ValueCollectionInterface $values,
         \ArrayIterator $valuesIterator
     ) {
@@ -81,13 +74,10 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
         );
         $valuesIterator->next()->shouldBeCalled();
 
-        $textValue->getAttribute()->willReturn($textAttribute);
-        $descriptionEcommerceFrValue->getAttribute()->willReturn($descriptionAttribute);
-        $descriptionEcommerceEnValue->getAttribute()->willReturn($descriptionAttribute);
-        $descriptionPrintFrValue->getAttribute()->willReturn($descriptionAttribute);
-
-        $textAttribute->getCode()->willReturn('text');
-        $descriptionAttribute->getCode()->willReturn('description');
+        $textValue->getAttributeCode()->willReturn('text');
+        $descriptionEcommerceFrValue->getAttributeCode()->willReturn('description');
+        $descriptionEcommerceEnValue->getAttributeCode()->willReturn('description');
+        $descriptionPrintFrValue->getAttributeCode()->willReturn('description');
 
         $rawTextValue = [];
         $rawTextValue['text']['<all_channels>']['<all_locales>'] = 'foo';
@@ -144,14 +134,9 @@ class ProductValuesNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_collection_of_product_values_with_numeric_attribute_code($normalizer) {
-        $textAttribute = new Attribute();
-        $textAttribute->setCode('123');
-        $textAttribute->setLocalizable(true);
-        $textAttribute->setScopable(true);
-        $textAttribute->setUnique(false);
+        $textValueEn = ScalarValue::scopableLocalizableValue('123', 'ecommerce', 'en_US', 'foo');
+        $textValueFr = ScalarValue::scopableLocalizableValue('123', 'ecommerce', 'fr_FR', 'foo');
 
-        $textValueEn = new ScalarValue($textAttribute, 'ecommerce', 'en_US', 'foo');
-        $textValueFr = new ScalarValue($textAttribute, 'ecommerce', 'fr_FR', 'foo');
         $values = new ValueCollection([$textValueEn, $textValueFr]);
 
         $normalizer

@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Check if a metric collection data is complete or not.
@@ -20,6 +21,14 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class MetricCompleteChecker implements ValueCompleteCheckerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -57,6 +66,8 @@ class MetricCompleteChecker implements ValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::METRIC === $value->getAttribute()->getType();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        return (null !== $attribute && AttributeTypes::METRIC === $attribute->getType());
     }
 }

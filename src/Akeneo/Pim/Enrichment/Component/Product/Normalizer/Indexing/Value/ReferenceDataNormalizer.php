@@ -31,11 +31,6 @@ class ReferenceDataNormalizer extends AbstractProductValueNormalizer implements 
      */
     protected function getNormalizedData(ValueInterface $value)
     {
-        $data = $value->getData();
-        if (null !== $data) {
-            return $data->getCode();
-        }
-
-        return null;
+        return $value->getData();
     }
 }

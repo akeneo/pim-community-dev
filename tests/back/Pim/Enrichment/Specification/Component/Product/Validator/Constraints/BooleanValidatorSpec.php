@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\BooleanValidator;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
 use Prophecy\Argument;
@@ -103,12 +102,9 @@ class BooleanValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_boolean_product_value(
         $context,
         Boolean $constraint,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ValueInterface $value
     ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('boolean');
+        $value->getAttributeCode()->willReturn('foo');
         $value->getData()->willReturn(true);
 
         $context
@@ -121,12 +117,9 @@ class BooleanValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validates_null_product_value(
         $context,
         Boolean $constraint,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ValueInterface $value
     ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('integer');
+        $value->getAttributeCode()->willReturn('foo');
         $value->getData()->willReturn(null);
 
         $context
@@ -140,12 +133,9 @@ class BooleanValidatorSpec extends ObjectBehavior
         $context,
         Boolean $constraint,
         ValueInterface $value,
-        AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('integer');
+        $value->getAttributeCode()->willReturn('foo');
         $value->getData()->willReturn(666);
 
         $context

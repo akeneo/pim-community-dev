@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Value\DateValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -23,8 +24,7 @@ class DateNormalizer extends AbstractProductValueNormalizer implements Normalize
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ValueInterface &&
-            AttributeTypes::BACKEND_TYPE_DATE === $data->getAttribute()->getBackendType() && (
+        return $data instanceof DateValueInterface && (
                 $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
                 $format === ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX ||
                 $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX

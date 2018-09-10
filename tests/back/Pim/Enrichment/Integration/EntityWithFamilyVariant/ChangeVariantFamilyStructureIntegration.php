@@ -270,8 +270,8 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $value = $product->getValuesForVariation()->getByCodes('material');
 
         $this->assertInstanceOf(ValueInterface::class, $value);
-        $this->assertInstanceOf(AttributeOptionInterface::class, $value->getData());
-        $this->assertSame('[leather]', $value->getData()->__toString());
+        $this->assertThat($value->getData(), $this->isType('string'));
+        $this->assertSame('leather', $value->getData());
 
         $this->assertCount(
             1,

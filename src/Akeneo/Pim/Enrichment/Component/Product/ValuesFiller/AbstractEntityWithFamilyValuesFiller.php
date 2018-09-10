@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Abstract values filler for entities with a family.
@@ -33,19 +34,19 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /**
-     * @param EntityWithValuesBuilderInterface          $entityWithValuesBuilder
-     * @param AttributeValuesResolverInterface          $valuesResolver
-     * @param CurrencyRepositoryInterface               $currencyRepository
-     */
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     public function __construct(
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValuesResolverInterface $valuesResolver,
-        CurrencyRepositoryInterface $currencyRepository
+        CurrencyRepositoryInterface $currencyRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
         $this->valuesResolver = $valuesResolver;
         $this->currencyRepository = $currencyRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -91,12 +92,16 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
         $existingValues = [];
         $values = $entity->getValues();
         foreach ($values as $value) {
-            $existingValues[] = [
-                'attribute' => $value->getAttribute()->getCode(),
-                'type'      => $value->getAttribute()->getType(),
-                'locale'    => $value->getLocale(),
-                'scope'     => $value->getScope()
-            ];
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+            if (null !== $attribute) {
+                $existingValues[] = [
+                    'attribute' => $attribute->getCode(),
+                    'type'      => $attribute->getType(),
+                    'locale'    => $value->getLocaleCode(),
+                    'scope'     => $value->getScopeCode()
+                ];
+            }
         }
 
         return $existingValues;
@@ -112,8 +117,8 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
         $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
 
         foreach ($entity->getValues() as $value) {
-            $attribute = $value->getAttribute();
-            if (AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+            if (null !== $attribute && AttributeTypes::PRICE_COLLECTION === $attribute->getType()) {
                 $prices = [];
 
                 foreach ($value->getData() as $price) {
@@ -128,7 +133,7 @@ abstract class AbstractEntityWithFamilyValuesFiller implements EntityWithFamilyV
                     }
                 }
 
-                $this->entityWithValuesBuilder->addOrReplaceValue($entity, $attribute, $value->getLocale(), $value->getScope(), $prices);
+                $this->entityWithValuesBuilder->addOrReplaceValue($entity, $attribute, $value->getLocaleCode(), $value->getScopeCode(), $prices);
             }
         }
     }

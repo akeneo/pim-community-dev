@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductUniqueDataRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -24,14 +25,17 @@ class UniqueValueValidator extends ConstraintValidator
     /** @var UniqueValuesSet */
     protected $uniqueValuesSet;
 
-    /**
-     * @param ProductUniqueDataRepositoryInterface $repository
-     * @param UniqueValuesSet                      $uniqueValueSet
-     */
-    public function __construct(ProductUniqueDataRepositoryInterface $repository, UniqueValuesSet $uniqueValueSet)
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(
+        ProductUniqueDataRepositoryInterface $repository,
+        UniqueValuesSet $uniqueValueSet,
+        IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->repository = $repository;
         $this->uniqueValuesSet = $uniqueValueSet;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -53,11 +57,13 @@ class UniqueValueValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (empty($value)) {
+        if (empty($value) || !$value instanceof ValueInterface) {
             return;
         }
 
-        if ($value instanceof ValueInterface && $value->getAttribute()->isUnique()) {
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        if (null !== $attribute && $attribute->isUnique()) {
             $root = $this->context->getRoot();
             // during the validation of variant groups, $root is not a product but a product value
             // we don't have to check if the value already exists in this case
@@ -72,7 +78,7 @@ class UniqueValueValidator extends ConstraintValidator
 
             if ($valueAlreadyExists || $valueAlreadyProcessed) {
                 $valueData = $value->__toString();
-                $attributeCode = $value->getAttribute()->getCode();
+                $attributeCode = $value->getAttributeCode();
                 if (null !== $valueData && '' !== $valueData) {
                     $this->context->buildViolation(
                         $constraint->message,

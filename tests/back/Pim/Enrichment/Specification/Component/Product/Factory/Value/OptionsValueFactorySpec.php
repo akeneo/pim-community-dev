@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOptionsException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\OptionsValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
@@ -16,7 +16,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
 {
     function let(AttributeOptionRepositoryInterface $attributeOptionRepository)
     {
-        $this->beConstructedWith($attributeOptionRepository, ScalarValue::class, 'pim_catalog_multiselect');
+        $this->beConstructedWith($attributeOptionRepository, OptionsValue::class, 'pim_catalog_multiselect');
     }
 
     function it_is_initializable()
@@ -50,7 +50,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
             []
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
@@ -77,7 +77,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
             []
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -99,6 +99,9 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
+        $option1->getCode()->willReturn('foo');
+        $option2->getCode()->willReturn('bar');
+
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
 
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar')->willReturn($option2);
@@ -110,11 +113,11 @@ class OptionsValueFactorySpec extends ObjectBehavior
             ['foo', 'bar']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveTheOptions([$option1, $option2]);
+        $productValue->shouldHaveTheOptionCodes(['foo', 'bar']);
     }
 
     function it_sorts_options_in_a_multi_select_product_value(
@@ -130,8 +133,10 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
+        $option1->getCode()->willReturn('foo');
+        $option2->getCode()->willReturn('bar');
 
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar')->willReturn($option2);
 
         $productValue = $this->create(
@@ -141,11 +146,11 @@ class OptionsValueFactorySpec extends ObjectBehavior
             ['foo', 'bar']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveTheOptionsSorted([$option2, $option1]);
+        $productValue->shouldHaveTheOptionCodesSorted(['bar', 'foo']);
     }
 
     function it_creates_a_localizable_and_scopable_multi_select_product_value(
@@ -161,8 +166,10 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
+        $option1->getCode()->willReturn('foo');
+        $option2->getCode()->willReturn('bar');
 
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar') ->willReturn($option2);
 
         $productValue = $this->create(
@@ -172,13 +179,13 @@ class OptionsValueFactorySpec extends ObjectBehavior
             ['foo', 'bar']
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
         $productValue->shouldHaveAttribute('multi_select_attribute');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
         $productValue->shouldBeScopable();
         $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldHaveTheOptions([$option1, $option2]);
+        $productValue->shouldHaveTheOptionCodes(['foo', 'bar']);
     }
 
     function it_throws_an_exception_if_provided_data_is_not_an_array(
@@ -203,6 +210,39 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $this
             ->shouldThrow($exception)
             ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
+    }
+
+    function it_creates_a_multi_select_product_value_even_if_provided_code_has_a_different_case(
+        $attributeOptionRepository,
+        AttributeInterface $attribute,
+        AttributeOptionInterface $option1,
+        AttributeOptionInterface $option2
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('multi_select_attribute');
+        $attribute->getType()->willReturn('pim_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('options');
+        $attribute->isBackendTypeReferenceData()->willReturn(false);
+
+        $option1->getCode()->willReturn('foo');
+        $option2->getCode()->willReturn('bar');
+
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.FOO')->willReturn($option1);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.BAR')->willReturn($option2);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            ['FOO', 'BAR']
+        );
+
+        $productValue->shouldReturnAnInstanceOf(OptionsValue::class);
+        $productValue->shouldHaveAttribute('multi_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHaveTheOptionCodes(['foo', 'bar']);
     }
 
     function it_throws_an_exception_if_provided_data_is_not_an_array_of_strings(
@@ -263,40 +303,35 @@ class OptionsValueFactorySpec extends ObjectBehavior
     {
         return [
             'haveAttribute'  => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable'  => function ($subject) {
-                return null !== $subject->getLocale();
+                return $subject->isLocalizable();
             },
             'haveLocale'     => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable'     => function ($subject) {
-                return null !== $subject->getScope();
+                return $subject->isScopable();
             },
             'haveChannel'    => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty'        => function ($subject) {
                 return is_array($subject->getData()) && empty($subject->getData());
             },
-            'haveTheOptions' => function ($subject, $expectedOptions) {
-                $result = false;
-                $data = $subject->getData();
-                foreach ($data as $option) {
-                    $result = in_array($option, $expectedOptions);
-                }
-
-                return $result && count($data) === count($expectedOptions);
+            'haveTheOptionCodes' => function ($subject, $expectedOptionCodes) {
+                return empty(array_diff($subject->getData(), $expectedOptionCodes))
+                    && empty(array_diff($expectedOptionCodes, $subject->getData()));
             },
-            'haveTheOptionsSorted' => function ($subject, $expectedOptions) {
+            'haveTheOptionCodesSorted' => function ($subject, $expectedOptionCodes) {
                 $data = $subject->getData();
-                if (count($data) !== count($expectedOptions)) {
+                if (count($data) !== count($expectedOptionCodes)) {
                     return false;
                 }
 
-                for ($i = 0; $i < count($expectedOptions); $i++) {
-                    if ($expectedOptions[$i] !== $data[$i]) {
+                for ($i = 0; $i < count($expectedOptionCodes); $i++) {
+                    if ($expectedOptionCodes[$i] !== $data[$i]) {
                         return false;
                     }
                 }

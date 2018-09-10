@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\PriceFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -56,23 +57,28 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      */
     public function create(
         AttributeInterface $attribute,
-        $channelCode,
-        $localeCode,
+        ?string $channelCode,
+        ?string $localeCode,
         $data,
         bool $ignoreUnknownData = false
-    ) {
-        $this->checkData($attribute, $data);
-
+    ): ValueInterface {
         if (null === $data) {
             $data = [];
         }
 
-        $value = new $this->productValueClass(
-            $attribute,
-            $channelCode,
-            $localeCode,
-            $this->getPrices($attribute, $data, $channelCode)
-        );
+        $data = $this->prepareData($attribute, $data, $channelCode);
+
+        if ($attribute->isScopable() && $attribute->isLocalizable()) {
+            $value = $this->productValueClass::scopableLocalizableValue($attribute->getCode(), $data, $channelCode, $localeCode);
+        } else {
+            if ($attribute->isScopable()) {
+                $value = $this->productValueClass::scopablevalue($attribute->getCode(), $data, $channelCode);
+            } elseif ($attribute->isLocalizable()) {
+                $value = $this->productValueClass::localizableValue($attribute->getCode(), $data, $localeCode);
+            } else {
+                $value = $this->productValueClass::value($attribute->getCode(), $data);
+            }
+        }
 
         return $value;
     }
@@ -80,25 +86,18 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports(string $attributeType): bool
     {
         return $attributeType === $this->supportedAttributeType;
     }
 
     /**
-     * Checks if data are valid.
+     * Prepare the data and check if everything is correct
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
+     * @throws Exception
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function prepareData(AttributeInterface $attribute, $data, ?string $channelCode)
     {
-        if (null === $data || [] === $data) {
-            return;
-        }
-
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
@@ -134,6 +133,9 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
                 );
             }
         }
+
+
+        return $this->getPrices($attribute, $data, $channelCode);
     }
 
     /**

@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-
 /**
  * Business collection interface to handle product values.
  * It does not extends \ArrayAccess as indexation could be performed internally
@@ -15,7 +13,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface, \Countable, \IteratorAggregate
+interface ValueCollectionInterface extends \Countable, \IteratorAggregate
 {
     /**
      * @param ValueCollectionInterface $collection
@@ -76,11 +74,9 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
     /**
      * Removes all product values related to a specified attribute (if any).
      *
-     * @param AttributeInterface $attribute
-     *
      * @return bool TRUE if this collection contained values for the specified attribute, FALSE otherwise.
      */
-    public function removeByAttribute(AttributeInterface $attribute);
+    public function removeByAttributeCode(string $attributeCode);
 
     /**
      * Checks whether the collection contains a value with the specified key/index.
@@ -125,16 +121,9 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
     /**
      * Get the attributes used in the collection.
      *
-     * @return AttributeInterface[]
+     * @return string[]
      */
-    public function getAttributes();
-
-    /**
-     * Get the attribute codes used in the collection.
-     *
-     * @return array
-     */
-    public function getAttributesKeys();
+    public function getAttributeCodes();
 
     /**
      * Gets all keys/indices of the collection.

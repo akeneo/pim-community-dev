@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Mappin
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping\ClassMetadataFactory;
@@ -22,9 +23,10 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
 
     function let(
         ConstraintGuesserInterface $guesser,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ClassMetadataFactory $factory
     ) {
-        $this->beConstructedWith($guesser, $factory);
+        $this->beConstructedWith($guesser, $attributeRepository, $factory);
     }
 
     function its_getMetadataFor_method_throws_exception_when_argument_if_not_a_product_value($object)
@@ -51,11 +53,13 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         ValueInterface $value,
         AttributeInterface $attribute,
         Constraint $unique,
-        Constraint $validNumber
+        Constraint $validNumber,
+        $attributeRepository
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('myCode');
+        $attributeRepository->findOneByIdentifier('myCode')->willReturn($attribute);
         $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$unique, $validNumber]);
 
@@ -74,12 +78,14 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         ClassMetadata $metadata,
         ValueInterface $value,
         AttributeInterface $attribute,
-        Constraint $property
+        Constraint $property,
+        $attributeRepository
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('myCode');
         $attribute->getCode()->willReturn('myCode');
+        $attributeRepository->findOneByIdentifier('myCode')->willReturn($attribute);
         $guesser->guessConstraints($attribute)->willReturn([$property]);
 
         $property->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
@@ -93,12 +99,14 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         ClassMetadata $metadata,
         ValueInterface $value,
         AttributeInterface $attribute,
-        Constraint $class
+        Constraint $class,
+        $attributeRepository
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('myCode');
         $attribute->getCode()->willReturn('myCode');
+        $attributeRepository->findOneByIdentifier('myCode')->willReturn($attribute);
         $guesser->guessConstraints($attribute)->willReturn([$class]);
 
         $class->getTargets()->willReturn(Constraint::CLASS_CONSTRAINT);
@@ -112,12 +120,14 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
         ClassMetadata $metadata,
         ValueInterface $value,
         AttributeInterface $attribute,
-        Constraint $multiTargets
+        Constraint $multiTargets,
+        $attributeRepository
     ) {
         $factory->createMetadata(Argument::any())->willReturn($metadata);
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('myCode');
         $attribute->getCode()->willReturn('myCode');
+        $attributeRepository->findOneByIdentifier('myCode')->willReturn($attribute);
         $guesser->guessConstraints($attribute)->willReturn([$multiTargets]);
 
         $multiTargets->getTargets()->willReturn([Constraint::PROPERTY_CONSTRAINT, Constraint::CLASS_CONSTRAINT]);

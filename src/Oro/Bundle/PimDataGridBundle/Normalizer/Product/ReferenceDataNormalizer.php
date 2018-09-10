@@ -3,7 +3,9 @@
 namespace Oro\Bundle\PimDataGridBundle\Normalizer\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -13,15 +15,42 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ReferenceDataNormalizer implements NormalizerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ReferenceDataRepositoryResolverInterface */
+    protected $repositoryResolver;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ReferenceDataRepositoryResolverInterface $repositoryResolver
+    ) {
+        $this->attributeRepository = $attributeRepository;
+        $this->repositoryResolver = $repositoryResolver;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function normalize($referenceData, $format = null, array $context = [])
+    public function normalize($referenceDataValue, $format = null, array $context = [])
     {
+        $attribute = $this->attributeRepository->findOneByIdentifier($referenceDataValue->getAttributeCode());
+
+        if (null === $attribute) {
+            return null;
+        }
+
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+        $referenceData = $repository->findOneBy(['code' => $referenceDataValue->getData()]);
+
+        if (null === $referenceData) {
+            return null;
+        }
+
         return [
-            'locale' => $referenceData->getLocale(),
-            'scope'  => $referenceData->getScope(),
-            'data'   => $this->getReferenceDataLabel($referenceData->getData()),
+            'locale' => $referenceDataValue->getLocaleCode(),
+            'scope'  => $referenceDataValue->getScopeCode(),
+            'data'   => $this->getReferenceDataLabel($referenceData),
         ];
     }
 

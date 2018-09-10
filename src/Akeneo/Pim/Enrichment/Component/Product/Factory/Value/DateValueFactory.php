@@ -15,60 +15,15 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DateValueFactory implements ValueFactoryInterface
+class DateValueFactory extends AbstractValueFactory
 {
-    /** @var string */
-    protected $productValueClass;
-
-    /** @var string */
-    protected $supportedAttributeType;
-
-    /**
-     * @param string $productValueClass
-     * @param string $supportedAttributeType
-     */
-    public function __construct($productValueClass, $supportedAttributeType)
-    {
-        $this->productValueClass = $productValueClass;
-        $this->supportedAttributeType = $supportedAttributeType;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false)
-    {
-        $this->checkData($attribute, $data);
-
-        if (null !== $data) {
-            $data = new \DateTime($data);
-        }
-
-        $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType)
-    {
-        return $attributeType === $this->supportedAttributeType;
-    }
-
-    /**
-     * Checks the data.
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
-            return;
+            return null;
         }
 
         if (!is_string($data)) {
@@ -79,8 +34,9 @@ class DateValueFactory implements ValueFactoryInterface
             );
         }
 
+
         try {
-            new \DateTime($data);
+            $date = new \DateTime($data);
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
                 $this->throwsInvalidDateException($attribute, $data);
@@ -88,6 +44,8 @@ class DateValueFactory implements ValueFactoryInterface
         } catch (\Exception $e) {
             $this->throwsInvalidDateException($attribute, $data);
         }
+
+        return $date;
     }
 
     /**

@@ -18,35 +18,17 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 interface ProductUniqueDataInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId():int;
 
-    /**
-     * @return ProductInterface
-     */
-    public function getProduct();
+    public function getProduct(): ProductInterface;
 
-    /**
-     * @return AttributeInterface
-     */
-    public function getAttribute();
+    public function getAttribute(): AttributeInterface;
 
-    /**
-     * @return string
-     */
-    public function getRawData();
+    public function getRawData(): string;
 
-    /**
-     * @param ValueInterface $value
-     */
-    public function setProductValue(ValueInterface $value);
+    public function setAttribute(AttributeInterface $attribute): void;
 
-    /**
-     * @param ProductUniqueDataInterface $uniqueValue
-     *
-     * @return bool
-     */
-    public function isEqual(ProductUniqueDataInterface $uniqueValue);
+    public function setRawData(string $rawData): void;
+
+    public function isEqual(ProductUniqueDataInterface $uniqueValue):bool;
 }

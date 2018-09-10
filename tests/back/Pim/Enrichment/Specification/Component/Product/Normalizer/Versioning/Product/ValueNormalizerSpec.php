@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,15 +19,15 @@ class ValueNormalizerSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeOptionRepository,
         AttributeInterface $simpleAttribute
     ) {
-        $this->beConstructedWith(4);
+        $this->beConstructedWith($attributeRepository, $attributeOptionRepository, 4);
 
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
 
-        $simpleAttribute->isLocalizable()->willReturn(false);
-        $simpleAttribute->isScopable()->willReturn(false);
         $simpleAttribute->getCode()->willReturn('simple');
     }
 
@@ -53,11 +54,15 @@ class ValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_null_data(
         ValueInterface $value,
-        AttributeInterface $simpleAttribute
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $value->getData()->willReturn(null);
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '']);
@@ -66,7 +71,8 @@ class ValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_value_with_a_integer_data(
         NumberLocalizer $numberLocalizer,
         ValueInterface $value,
-        AttributeInterface $simpleAttribute
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
@@ -74,7 +80,11 @@ class ValueNormalizerSpec extends ObjectBehavior
         $numberLocalizer->localize('12', $context)->willReturn(12);
 
         $value->getData()->willReturn(12);
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
         $this->normalize($value, 'flat', $context)->shouldReturn(['simple' => '12']);
@@ -82,13 +92,18 @@ class ValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_allowed(
         ValueInterface $value,
-        AttributeInterface $simpleAttribute
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(true);
 
         $value->getData()->willReturn('12.2500');
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
         $simpleAttribute->isDecimalsAllowed()->willReturn(true);
@@ -97,13 +112,18 @@ class ValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_a_float_data_with_decimals_not_allowed(
         ValueInterface $value,
-        AttributeInterface $simpleAttribute
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::NUMBER);
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
 
         $value->getData()->willReturn('12.0000');
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('decimal');
         $simpleAttribute->isDecimalsAllowed()->willReturn(false);
@@ -112,12 +132,17 @@ class ValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_a_string_data(
         ValueInterface $value,
-        AttributeInterface $simpleAttribute
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('my data');
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('text');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'my data']);
@@ -125,11 +150,16 @@ class ValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_value_with_a_boolean_data(
         ValueInterface $value,
-        AttributeInterface $simpleAttribute
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
 
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('boolean');
 
@@ -143,7 +173,8 @@ class ValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_value_with_a_collection_data(
         ValueInterface $value,
         AttributeInterface $simpleAttribute,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
@@ -151,7 +182,11 @@ class ValueNormalizerSpec extends ObjectBehavior
         $itemTwo = new \stdClass();
         $collection = new ArrayCollection([$itemOne, $itemTwo]);
         $value->getData()->willReturn($collection);
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('prices');
 
@@ -162,7 +197,8 @@ class ValueNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_value_with_an_array_data(
         ValueInterface $value,
         AttributeInterface $simpleAttribute,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        $attributeRepository
     ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
@@ -170,7 +206,11 @@ class ValueNormalizerSpec extends ObjectBehavior
         $itemTwo = new \stdClass();
         $array = [$itemOne, $itemTwo];
         $value->getData()->willReturn($array);
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('prices');
 
@@ -184,15 +224,22 @@ class ValueNormalizerSpec extends ObjectBehavior
         SerializerInterface $serializer,
         AttributeOptionInterface $redOption,
         AttributeOptionInterface $blueOption,
-        ArrayCollection $collection
+        $attributeRepository,
+        $attributeOptionRepository
     ) {
         $multiColorAttribute->getType()->willReturn(AttributeTypes::OPTION_MULTI_SELECT);
 
-        $collection->toArray()->willReturn([$redOption, $blueOption]);
-        $collection->isEmpty()->willReturn(false);
+        $collection = new ArrayCollection(['red', 'blue']);
+
         $value->getData()->willReturn($collection);
-        $value->getAttribute()->willReturn($multiColorAttribute);
-        $value->getLocale()->willReturn('en_US');
+        $value->getAttributeCode()->willReturn('colors');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeOptionRepository->findOneByIdentifier('colors.red')->willReturn($redOption);
+        $attributeOptionRepository->findOneByIdentifier('colors.blue')->willReturn($blueOption);
+
+        $attributeRepository->findOneByIdentifier('colors')->willReturn($multiColorAttribute);
         $multiColorAttribute->getCode()->willReturn('colors');
         $multiColorAttribute->isLocaleSpecific()->willReturn(false);
         $multiColorAttribute->isLocalizable()->willReturn(false);
@@ -201,36 +248,45 @@ class ValueNormalizerSpec extends ObjectBehavior
         $redOption->getSortOrder()->willReturn(10)->shouldBeCalled();
         $blueOption->getSortOrder()->willReturn(11)->shouldBeCalled();
 
-        // phpspec raises this php bug https://bugs.php.net/bug.php?id=50688,
-        // warning: usort(): Array was modified by the user comparison function in ValueNormalizer.php line 178
-        $previousReporting = error_reporting();
-        error_reporting(0);
         $serializer->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'flat', ['field_name' => 'colors'])
             ->shouldBeCalled()
             ->willReturn(['colors' => 'red, blue']);
 
         $this->normalize($value, 'flat', [])->shouldReturn(['colors' => 'red, blue']);
-        error_reporting($previousReporting);
     }
 
-    function it_normalizes_a_value_with_a_date_data(ValueInterface $value, AttributeInterface $simpleAttribute)
-    {
+    function it_normalizes_a_value_with_a_date_data(
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::DATE);
 
         $value->getData()->willReturn('2000-10-28');
-        $value->getAttribute()->willReturn($simpleAttribute);
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('date');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '2000-10-28']);
     }
 
-    function it_normalizes_a_scopable_product_value(ValueInterface $value, AttributeInterface $simpleAttribute)
-    {
+    function it_normalizes_a_scopable_product_value(
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('12');
-        $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getScope()->willReturn('mobile');
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(false);
+        $value->isScopable()->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
+        $value->getScopeCode()->willReturn('mobile');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('text');
         $simpleAttribute->isScopable()->willReturn(true);
@@ -238,13 +294,20 @@ class ValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-mobile' => '12']);
     }
 
-    function it_normalizes_a_localizable_product_value(ValueInterface $value, AttributeInterface $simpleAttribute)
-    {
+    function it_normalizes_a_localizable_product_value(
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('12');
-        $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('fr_FR');
+        $value->getAttributeCode()->willReturn('simple');
+        $value->isLocalizable()->willReturn(true);
+        $value->isScopable()->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
+        $value->getLocaleCode()->willReturn('fr_FR');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('text');
         $simpleAttribute->isLocalizable()->willReturn(true);
@@ -252,14 +315,21 @@ class ValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple-fr_FR' => '12']);
     }
 
-    function it_normalizes_a_scopable_and_localizable_product_value(ValueInterface $value, AttributeInterface $simpleAttribute)
-    {
+    function it_normalizes_a_scopable_and_localizable_product_value(
+        ValueInterface $value,
+        AttributeInterface $simpleAttribute,
+        $attributeRepository
+    ) {
         $simpleAttribute->getType()->willReturn(AttributeTypes::TEXT);
 
         $value->getData()->willReturn('12');
-        $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('fr_FR');
-        $value->getScope()->willReturn('mobile');
+        $value->getAttributeCode()->willReturn('simple');
+        $attributeRepository->findOneByIdentifier('simple')->willReturn($simpleAttribute);
+        $value->getLocaleCode()->willReturn('fr_FR');
+        $value->getScopeCode()->willReturn('mobile');
+        $value->isLocalizable()->willReturn(true);
+        $value->isScopable()->willReturn(true);
+
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('text');
         $simpleAttribute->isLocalizable()->willReturn(true);

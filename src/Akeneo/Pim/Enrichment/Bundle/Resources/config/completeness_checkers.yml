@@ -8,22 +8,30 @@ parameters:
 services:
     pim_catalog.completeness.checker:
         class: '%pim_catalog.completeness.checker.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.completeness.checker.media:
         class: '%pim_catalog.completeness.checker.media.class%'
         public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
 
     pim_catalog.completeness.checker.metric:
         class: '%pim_catalog.completeness.checker.metric.class%'
         public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
 
     pim_catalog.completeness.checker.price:
         class: '%pim_catalog.completeness.checker.price.class%'
         public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
 

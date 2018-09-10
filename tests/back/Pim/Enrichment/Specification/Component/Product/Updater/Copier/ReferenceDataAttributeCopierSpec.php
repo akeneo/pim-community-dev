@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInter
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValueInterface;
 use Prophecy\Argument;
 
@@ -55,8 +54,7 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ReferenceDataValueInterface $fromValue,
-        ReferenceDataValueInterface $toValue,
-        ReferenceDataInterface $referenceData
+        ReferenceDataValueInterface $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -71,8 +69,7 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromValue->getData()->willReturn($referenceData);
-        $referenceData->getCode()->willReturn('black');
+        $fromValue->getData()->willReturn('black');
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder

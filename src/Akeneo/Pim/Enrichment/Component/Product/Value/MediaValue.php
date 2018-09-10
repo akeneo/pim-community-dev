@@ -4,7 +4,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
@@ -22,24 +21,17 @@ class MediaValue extends AbstractValue implements MediaValueInterface
     protected $data;
 
     /**
-     * @param AttributeInterface     $attribute
-     * @param string                 $channel
-     * @param string                 $locale
-     * @param FileInfoInterface|null $data
+     * {@inheritdoc}
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, FileInfoInterface $data = null)
+    protected function __construct(string $attributeCode, ?FileInfoInterface $data, ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->data = $data;
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): ?FileInfoInterface
     {
         return $this->data;
     }
@@ -47,7 +39,7 @@ class MediaValue extends AbstractValue implements MediaValueInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
         return null !== $this->data ? $this->data->getKey() : '';
     }
@@ -55,11 +47,11 @@ class MediaValue extends AbstractValue implements MediaValueInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ValueInterface $value)
+    public function isEqual(ValueInterface $value): bool
     {
         if (!$value instanceof MediaValueInterface ||
-            $this->getScope() !== $value->getScope() ||
-            $this->getLocale() !== $value->getLocale()) {
+            $this->getScopeCode() !== $value->getScopeCode() ||
+            $this->getLocaleCode() !== $value->getLocaleCode()) {
             return false;
         }
 

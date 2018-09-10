@@ -28,6 +28,9 @@ services:
     pim_versioning.serializer.normalizer.flat.value:
         public: false
         class: '%pim_serializer.normalizer.flat.value.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_attribute_option'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

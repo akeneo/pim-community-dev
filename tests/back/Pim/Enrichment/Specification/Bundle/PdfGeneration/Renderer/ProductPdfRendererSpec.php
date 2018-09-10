@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -24,7 +25,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,
-        FilterManager $filterManager
+        FilterManager $filterManager,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->beConstructedWith(
             $templating,
@@ -32,6 +34,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $dataManager,
             $cacheManager,
             $filterManager,
+            $attributeRepository,
             self::TEMPLATE_NAME,
             '/tmp/'
         );
@@ -51,15 +54,18 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $templating,
         ProductInterface $blender,
         AttributeGroupInterface $design,
-        AttributeInterface $color
+        AttributeInterface $color,
+        $attributeRepository
     ) {
-        $blender->getAttributes()->willReturn([$color]);
+        $blender->getUsedAttributeCodes()->willReturn(['color']);
 
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
 
         $color->getCode()->willReturn('color');
         $color->getType()->willReturn('pim_catalog_text');
+
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
 
         $renderingDate = new \DateTime();
 
@@ -88,12 +94,13 @@ class ProductPdfRendererSpec extends ObjectBehavior
         AttributeInterface $mainImage,
         ValueInterface $value,
         FileInfoInterface $fileInfo,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        $attributeRepository
     ) {
         $mainImage->isLocalizable()->willReturn(true);
         $mainImage->isScopable()->willReturn(true);
 
-        $blender->getAttributes()->willReturn([$mainImage]);
+        $blender->getUsedAttributeCodes()->willReturn(['main_image']);
         $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($value);
 
         $value->getData()->willReturn($fileInfo);
@@ -106,6 +113,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
 
         $mainImage->getCode()->willReturn('main_image');
         $mainImage->getType()->willReturn('pim_catalog_image');
+
+        $attributeRepository->findOneByIdentifier('main_image')->willReturn($mainImage);
 
         $renderingDate = new \DateTime();
 

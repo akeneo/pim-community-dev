@@ -9,7 +9,6 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
@@ -41,19 +40,16 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         ValueCollectionInterface $valuesCollection,
         \ArrayIterator $valuesIterator,
         MediaValueInterface $value,
-        AttributeInterface $attribute,
         FilesystemInterface $filesystem
     ) {
         $fileInfo->getStorage()->willReturn('storageAlias');
         $fileInfo->getKey()->willReturn('a/b/c/d/product.jpg');
         $fileInfo->getOriginalFilename()->willReturn('my product.jpg');
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_picture');
         $value->getData()->willReturn($fileInfo);
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn(null);
-        $attribute->getType()->willReturn('pim_catalog_image');
-        $attribute->getCode()->willReturn('my_picture');
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn(null);
 
         $valuesCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();
@@ -82,7 +78,6 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         \ArrayIterator $valuesIterator,
         MediaValueInterface $value,
         MediaValueInterface $value2,
-        AttributeInterface $attribute,
         FilesystemInterface $filesystem
     ) {
         $fileInfo->getStorage()->willReturn('storageAlias');
@@ -93,18 +88,15 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $fileInfo2->getKey()->willReturn('wrong-path.jpg');
         $fileInfo2->getOriginalFilename()->willReturn('my-second-media.jpg');
 
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('my_picture');
         $value->getData()->willReturn($fileInfo);
-        $value->getLocale()->willReturn('en_US');
-        $value->getScope()->willReturn(null);
+        $value->getLocaleCode()->willReturn('en_US');
+        $value->getScopeCode()->willReturn(null);
 
-        $value2->getAttribute()->willReturn($attribute);
+        $value2->getAttributeCode()->willReturn('my_picture');
         $value2->getData()->willReturn($fileInfo2);
-        $value2->getLocale()->willReturn('fr_FR');
-        $value2->getScope()->willReturn('ecommerce');
-
-        $attribute->getType()->willReturn('pim_catalog_image');
-        $attribute->getCode()->willReturn('my_picture');
+        $value2->getLocaleCode()->willReturn('fr_FR');
+        $value2->getScopeCode()->willReturn('ecommerce');
 
         $valuesCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();

@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -24,20 +24,15 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var ValueFactory */
     private $valueFactory;
 
-    /** @var CachedObjectRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $attributeRepository;
 
     /** @var LoggerInterface */
     private $logger;
 
-    /**
-     * @param ValueFactory                    $valueFactory
-     * @param CachedObjectRepositoryInterface $attributeRepository
-     * @param LoggerInterface                 $logger
-     */
     public function __construct(
         ValueFactory $valueFactory,
-        CachedObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger
     ) {
         $this->valueFactory = $valueFactory;

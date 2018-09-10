@@ -5,139 +5,93 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValueInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceDataValueSpec extends ObjectBehavior
 {
-    function it_returns_data(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+    function it_returns_data() {
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
-        $this->getData()->shouldReturn($referenceData);
+        $this->getData()->shouldReturn('ref_data');
     }
 
-    function it_returns_data_as_string(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+    function it_returns_data_as_string() {
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
-        $referenceData->__toString()->willReturn('ref_data');
-
-        $this->__toString()->shouldReturn('ref_data');
+        $this->__toString()->shouldReturn('[ref_data]');
     }
 
-    function it_returns_null_data_as_string(AttributeInterface $attribute)
+    function it_returns_null_data_as_string()
     {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', null);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', null, 'ecommerce', 'en_US']);
 
         $this->__toString()->shouldReturn('');
     }
 
     function it_compares_itself_to_the_same_reference_data(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData,
-        ReferenceDataInterface $sameReferenceData,
         ReferenceDataValueInterface $sameRefDataValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
-        $sameRefDataValue->getLocale()->willReturn('en_US');
-        $sameRefDataValue->getScope()->willReturn('ecommerce');
-        $sameRefDataValue->getData()->willReturn($sameReferenceData);
-
-        $sameReferenceData->getCode()->willReturn('ref_data');
-        $referenceData->getCode()->willReturn('ref_data');
+        $sameRefDataValue->getLocaleCode()->willReturn('en_US');
+        $sameRefDataValue->getScopeCode()->willReturn('ecommerce');
+        $sameRefDataValue->getData()->willReturn('ref_data');
 
         $this->isEqual($sameRefDataValue)->shouldReturn(true);
     }
 
     function it_compares_itself_with_null_reference_data_to_a_reference_data_value_with_null_reference_data(
-        AttributeInterface $attribute,
         ReferenceDataValueInterface $sameRefDataValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', null);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', null, 'ecommerce', 'en_US']);
 
-        $sameRefDataValue->getLocale()->willReturn('en_US');
-        $sameRefDataValue->getScope()->willReturn('ecommerce');
+        $sameRefDataValue->getLocaleCode()->willReturn('en_US');
+        $sameRefDataValue->getScopeCode()->willReturn('ecommerce');
         $sameRefDataValue->getData()->willReturn(null);
 
         $this->isEqual($sameRefDataValue)->shouldReturn(true);
     }
 
     function it_compares_itself_to_a_reference_data_value_with_null_reference_data(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData,
-        ReferenceDataValueInterface $sameRefDataValue
+        ReferenceDataValueInterface $otherRefDataValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
-        $sameRefDataValue->getLocale()->willReturn('en_US');
-        $sameRefDataValue->getScope()->willReturn('ecommerce');
-        $sameRefDataValue->getData()->willReturn(null);
+        $otherRefDataValue->getLocaleCode()->willReturn('en_US');
+        $otherRefDataValue->getScopeCode()->willReturn('ecommerce');
+        $otherRefDataValue->getData()->willReturn(null);
 
-        $this->isEqual($sameRefDataValue)->shouldReturn(false);
+        $this->isEqual($otherRefDataValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_a_different_reference_data_value(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData,
         ReferenceDataValueInterface $differentRefDataValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
-        $differentRefDataValue->getLocale()->willReturn('fr_FR');
-        $differentRefDataValue->getScope()->willReturn('ecommerce');
+        $differentRefDataValue->getLocaleCode()->willReturn('fr_FR');
+        $differentRefDataValue->getScopeCode()->willReturn('ecommerce');
 
         $this->isEqual($differentRefDataValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_a_different_value(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData,
         MetricValueInterface $metricValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
         $this->isEqual($metricValue)->shouldReturn(false);
     }
 
     function it_compares_itself_to_a_different_reference_data(
-        AttributeInterface $attribute,
-        ReferenceDataInterface $referenceData,
-        ReferenceDataInterface $differentReferenceData,
-        ReferenceDataValueInterface $sameRefDataValue
+        ReferenceDataValueInterface $otherRefDataValue
     ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($attribute, 'ecommerce', 'en_US', $referenceData);
+        $this->beConstructedThrough('scopableLocalizableValue',['my_ref_data_value', 'ref_data', 'ecommerce', 'en_US']);
 
-        $sameRefDataValue->getLocale()->willReturn('en_US');
-        $sameRefDataValue->getScope()->willReturn('ecommerce');
-        $sameRefDataValue->getData()->willReturn($differentReferenceData);
+        $otherRefDataValue->getLocaleCode()->willReturn('en_US');
+        $otherRefDataValue->getScopeCode()->willReturn('ecommerce');
+        $otherRefDataValue->getData()->willReturn('other_ref_data');
 
-        $differentReferenceData->getCode()->willReturn('different_reference_data');
-        $referenceData->getCode()->willReturn('ref_data');
-
-        $this->isEqual($sameRefDataValue)->shouldReturn(false);
+        $this->isEqual($otherRefDataValue)->shouldReturn(false);
     }
 }

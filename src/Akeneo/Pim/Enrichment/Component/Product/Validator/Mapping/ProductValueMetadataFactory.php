@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Mapping;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
@@ -30,15 +31,16 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /** @var array */
     protected $attrConstraintsCache;
 
-    /**
-     * Constructor
-     *
-     * @param ConstraintGuesserInterface $guesser
-     * @param ClassMetadataFactory|null  $factory
-     */
-    public function __construct(ConstraintGuesserInterface $guesser, ClassMetadataFactory $factory = null)
-    {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    public function __construct(
+        ConstraintGuesserInterface $guesser,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ClassMetadataFactory $factory = null
+    ) {
         $this->guesser = $guesser;
+        $this->attributeRepository = $attributeRepository;
         $this->factory = $factory ?: new ClassMetadataFactory();
         $this->attrConstraintsCache = [];
     }
@@ -77,7 +79,12 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     protected function createMetadata(ValueInterface $value)
     {
         $class = ClassUtils::getClass($value);
-        $attribute = $value->getAttribute();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        if (null === $attribute) {
+            return;
+        }
+
         $cacheKey = $attribute->getCode();
         if (!isset($this->attrConstraintsCache[$cacheKey])) {
             $metadata = $this->factory->createMetadata($class);
