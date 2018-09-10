@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7638: The edit profile button must not be shown if the user have no right to edit his own information
+- PIM-7617: Disable Manage Assets button if user has no permission to show the asset categories
 
 # 2.3.6 (2018-09-06)
 
