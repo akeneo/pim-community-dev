@@ -166,6 +166,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             );
 
             this._updateDOMValue();
+
             this._initializeSelectWidget();
 
             return this;

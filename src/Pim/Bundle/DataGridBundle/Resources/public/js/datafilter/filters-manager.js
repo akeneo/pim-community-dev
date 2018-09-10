@@ -104,6 +104,7 @@ define(
             if (options.filters) {
                 this.filters = options.filters;
             }
+
             this.displayAsPanel = options.displayAsPanel;
 
             _.each(this.filters, function (filter) {

@@ -68,6 +68,8 @@ define(
          */
         criteriaSelector: '.filter-criteria',
 
+        choiceListSelector: '.choicefilter',
+
         /**
          * Selectors for filter criteria elements
          *
@@ -200,6 +202,7 @@ define(
                     canDisable: this.canDisable
                 })
             );
+
             this._renderCriteria(this.$(this.criteriaSelector));
 
             return this;
@@ -213,6 +216,8 @@ define(
          * @return {*}
          */
         _renderCriteria: function(el) {
+            this.$(this.choiceListSelector).remove()
+
             $(el).append(
                 this.popupCriteriaTemplate({
                     label: this.label,
@@ -224,6 +229,7 @@ define(
                     updateLabel: __('pim_common.update')
                 })
             );
+
             return this;
         },
 
@@ -253,6 +259,7 @@ define(
          * @protected
          */
         _showCriteria: function() {
+            this._renderCriteria(this.$(this.criteriaSelector));
             this.$(this.criteriaSelector).show();
             this._updateCriteriaSelectorPosition();
             this._focusCriteria();
