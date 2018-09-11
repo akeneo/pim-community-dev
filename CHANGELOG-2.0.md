@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.37 (2018-09-11)
+
 ## Improvements
 
 - GITHUB-4571: Remove pim-community-dev github repository from `composer.json`
