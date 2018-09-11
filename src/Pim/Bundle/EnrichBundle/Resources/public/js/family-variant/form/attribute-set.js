@@ -32,19 +32,22 @@ define([
         attributeGroupTemplate
     ) {
         const sortOrdered = (first, second) => first.sort_order - second.sort_order;
+        const sortAlphabetical = (first, second) => first.code.localeCompare(second.code);
 
         /**
          * Group attributes by attribute group
          */
         const groupAttributes = (attributes, attributeGroups) => (attributeCodes, lockedAttributes) => {
             return Object.values(attributeGroups)
+                .sort(sortAlphabetical)
                 .sort(sortOrdered)
                 .map(attributeGroup => {
                     const groupAttributes = attributes.filter(
                         attribute =>
                             attribute.group === attributeGroup.code &&
                             attributeCodes.indexOf(attribute.code) !== -1
-                    ).sort(sortOrdered);
+                    ).sort(sortAlphabetical)
+                    .sort(sortOrdered);
 
                     const locked = groupAttributes.filter(
                         attribute => !lockedAttributes.includes(attribute.code)

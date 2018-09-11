@@ -2,16 +2,19 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Product and product model writer for mass edit
@@ -37,26 +40,49 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /** @var EntityManagerClearerInterface */
     protected $cacheClearer;
 
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    /** @var JobLauncherInterface */
+    private $jobLauncher;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $jobInstanceRepository;
+
+    /** @var string */
+    private $jobName;
+
     /**
      * Constructor
      *
-     * @param VersionManager                $versionManager
-     * @param BulkSaverInterface            $productSaver
-     * @param BulkSaverInterface            $productModelSaver
-     * @param EntityManagerClearerInterface $cacheClearer
-     *
+     * @param VersionManager                        $versionManager
+     * @param BulkSaverInterface                    $productSaver
+     * @param BulkSaverInterface                    $productModelSaver
+     * @param EntityManagerClearerInterface         $cacheClearer
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param JobLauncherInterface                  $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param string                                $jobName
      * @todo @merge On master : remove $cacheClearer. It is not used anymore. The cache is now cleared in a dedicated subscriber.
      */
     public function __construct(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        TokenStorageInterface $tokenStorage = null, //TODO @merge remove following nullable before merge on 3.x
+        JobLauncherInterface $jobLauncher = null,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository = null,
+        string $jobName = null
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
         $this->productModelSaver = $productModelSaver;
         $this->cacheClearer = $cacheClearer;
+        $this->tokenStorage = $tokenStorage;
+        $this->jobLauncher = $jobLauncher;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->jobName = $jobName;
     }
 
     /**
@@ -77,6 +103,10 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
 
         $this->productSaver->saveAll($products);
         $this->productModelSaver->saveAll($productModels);
+
+        if (!empty($productModels)) {
+            $this->computeProductModelDescendants($productModels);
+        }
     }
 
     /**
@@ -107,5 +137,29 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }
+    }
+
+    private function computeProductModelDescendants(array $productModels)
+    {
+        //TODO remove before merge in 3.x
+        if (null === $this->tokenStorage
+        || null === $this->jobInstanceRepository
+        || null === $this->jobLauncher
+        || null === $this->jobName
+        ) {
+            return;
+        }
+
+        $user = $this->tokenStorage->getToken()->getUser();
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+
+        $productModelCodes = array_map(
+            function ($productModel) {
+                return $productModel->getCode();
+            },
+            $productModels
+        );
+
+        $this->jobLauncher->launch($jobInstance, $user, ['product_model_codes' => $productModelCodes]);
     }
 }
