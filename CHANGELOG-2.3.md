@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.7 (2018-09-11)
+
 ## Bug fixes
 
 - PIM-7628: Fix the initialization of the product datagrid identifier filter.
