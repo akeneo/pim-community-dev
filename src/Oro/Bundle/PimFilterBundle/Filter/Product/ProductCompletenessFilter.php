@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\PImFilterBundle\Filter\Product;
+namespace Oro\Bundle\PimFilterBundle\Filter\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

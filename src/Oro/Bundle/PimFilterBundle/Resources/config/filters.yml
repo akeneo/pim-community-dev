@@ -7,7 +7,7 @@ parameters:
     pim_filter.product_scope_filter.class:               Oro\Bundle\PimFilterBundle\Filter\Product\ScopeFilter
     pim_filter.product_groups_filter.class:              Oro\Bundle\PimFilterBundle\Filter\Product\GroupsFilter
     pim_filter.product_family_filter.class:              Oro\Bundle\PimFilterBundle\Filter\Product\FamilyFilter
-    pim_filter.product_completeness_filter.class:        Oro\Bundle\PimFilterBundle\Filter\ProductCompletenessFilter
+    pim_filter.product_completeness_filter.class:        Oro\Bundle\PimFilterBundle\Filter\Product\ProductCompletenessFilter
     pim_filter.product_date_filter.class:                Oro\Bundle\PimFilterBundle\Filter\ProductValue\DateTimeRangeFilter
     pim_filter.category_filter.class:                    Oro\Bundle\PimFilterBundle\Filter\CategoryFilter
     pim_filter.product_enabled_filter.class:             Oro\Bundle\PimFilterBundle\Filter\Product\EnabledFilter
