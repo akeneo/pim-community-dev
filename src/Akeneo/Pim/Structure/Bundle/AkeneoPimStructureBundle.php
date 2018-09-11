@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle;
 
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterReferenceDataConfigurationsPass;
 use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,6 +24,7 @@ class AkeneoPimStructureBundle extends Bundle
     {
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new RegisterReferenceDataConfigurationsPass())
         ;
 
         $productMappings = [
@@ -36,5 +38,6 @@ class AkeneoPimStructureBundle extends Bundle
                 false
             )
         );
+
     }
 }

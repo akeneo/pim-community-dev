@@ -13,6 +13,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\DependencyInjection\Compiler\RegisterConfigurationsPass` to `Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterReferenceDataConfigurationsPass`
 - Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue\ReferenceDataEmptyValueProvider` to `Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider`
 - Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field\ReferenceDataFieldProvider` to `Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider`
 - Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter\ReferenceDataFilterProvider` to `Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider`

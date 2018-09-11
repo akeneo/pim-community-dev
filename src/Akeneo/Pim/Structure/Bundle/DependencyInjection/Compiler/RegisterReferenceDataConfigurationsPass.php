@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\DependencyInjection\Compiler;
+namespace Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterConfigurationsPass implements CompilerPassInterface
+class RegisterReferenceDataConfigurationsPass implements CompilerPassInterface
 {
     const REFERENCE_DATA_REGISTRY = 'pim_reference_data.registry';
 
