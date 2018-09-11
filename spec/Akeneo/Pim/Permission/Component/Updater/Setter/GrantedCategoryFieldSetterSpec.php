@@ -196,6 +196,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
             ->willReturn(true);
 
         $categoryB->getCode()->willReturn('categoryB');
+        $fullProduct->getCategoryCodes()->willReturn([]);
 
         $entityManager->getRepository(Argument::any())->willReturn($productRepository);
         $productRepository->find(1)->willReturn($fullProduct);
