@@ -22,15 +22,12 @@ class PimReferenceDataExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('attribute_types.yml');
-        $loader->load('controllers.yml');
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/normalizers.yml');
         $loader->load('datagrid/query_builders.yml');
         $loader->load('datagrid/sorters.yml');
         $loader->load('factories.yml');
         $loader->load('product_values.yml');
-        $loader->load('providers.yml');
         $loader->load('query_builders.yml');
         $loader->load('serializers.yml');
         $loader->load('serializers_indexing.yml');
