@@ -91,6 +91,7 @@ akeneo_suggest_data:
             operation:
                 suggest_data:
                     label: 'Franklin Insights Subscriptions'
-                    label_count: "{1}Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-                    description: 'The selected products will be subscribed to data enrichment from Franklin'
-                    warning: 'The {{ itemsCount }} selected products will be sent.'
+                    label_count: "{1}Manage Franklin Insights subscriptions for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Subscribe to Franklin Insights for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    description: Please select the action you want to apply on the products selected on the grid
+                    subscribe_label: Subscribe
+                    unsubscribe_label: Unsubscribe
