@@ -32,6 +32,8 @@ pim_datagrid:
       remove: Er du sikker på du vil slette denne visning?
   display_selector:
     label: Vis
+    gallery: Galleri
+    list: Liste
   mass_action:
     delete:
       empty_selection: Du har ikke valgt et produkt

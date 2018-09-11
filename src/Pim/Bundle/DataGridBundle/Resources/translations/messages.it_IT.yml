@@ -14,3 +14,4 @@ pim_datagrid:
       import: Importa
       export: Esporta
       mass_edit: Modifica di massa
+      mass_delete: Eliminazione di massa

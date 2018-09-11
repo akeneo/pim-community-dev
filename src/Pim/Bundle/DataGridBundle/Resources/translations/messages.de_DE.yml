@@ -14,3 +14,4 @@ pim_datagrid:
       import: Import
       export: Export
       mass_edit: Massenbearbeitung
+      mass_delete: Mehrfachauswahl löschen

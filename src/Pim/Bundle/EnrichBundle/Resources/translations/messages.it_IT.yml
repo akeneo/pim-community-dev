@@ -349,12 +349,18 @@ pim_mass_edit:
       error: Esportazione rapida <strong>%label%</strong> non riuscita
       warning: Esportazione rapida <strong>%label%</strong> completata con alcuni avvisi
       success: Esportazione rapida <strong>%label%</strong> completata
+    mass_delete:
+      error: Eliminazione di massa di <strong>%label%</strong> non riuscita
+      warning: Eliminazione di massa di <strong>%label%</strong> completata con alcuni avvisi
+      success: Eliminazione di massa di <strong>%label%</strong> completata
 job_execution.summary:
   mass_edited: Azione di massa modificata
   skip: Saltato
   skipped_products: Prodotti saltati
   skipped_attributes: Attributi saltati
   skipped_families: Famiglie saltate
+  deleted_products: Prodotti eliminati
+  deleted_product_models: Modelli di prodotto eliminati
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare gli attributi
 update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
