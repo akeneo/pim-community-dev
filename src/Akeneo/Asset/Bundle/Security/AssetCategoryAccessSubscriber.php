@@ -11,10 +11,10 @@
 
 namespace Akeneo\Asset\Bundle\Security;
 
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -33,22 +33,16 @@ class AssetCategoryAccessSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessRepository */
     protected $accessRepository;
 
-    /** @var AssetRepositoryInterface */
-    protected $assetRepository;
-
     /**
      * @param TokenStorageInterface    $tokenStorage
      * @param CategoryAccessRepository $accessRepository
-     * @param AssetRepositoryInterface $assetRepository
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $accessRepository,
-        AssetRepositoryInterface $assetRepository
+        CategoryAccessRepository $accessRepository
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->accessRepository = $accessRepository;
-        $this->assetRepository = $assetRepository;
     }
 
     /**
@@ -78,15 +72,36 @@ class AssetCategoryAccessSubscriber implements EventSubscriberInterface
             ));
         }
 
-        $grantedCategories = $this->accessRepository->getGrantedCategoryCodes(
-            $this->tokenStorage->getToken()->getUser(),
-            Attributes::VIEW_ITEMS
+        $this->applyFilterByCategoryIdsOrUnclassified(
+            $dataSource->getQueryBuilder(),
+            $this->tokenStorage->getToken()->getUser()
+        );
+    }
+
+    /**
+     * @param QueryBuilder  $qb
+     * @param UserInterface $user
+     */
+    private function applyFilterByCategoryIdsOrUnclassified(QueryBuilder $qb, UserInterface $user)
+    {
+        $qb->leftJoin($qb->getRootAlias() . '.categories', 'asset_categories');
+        $qb->leftJoin(
+            $this->accessRepository->getClassName(),
+            'access',
+            Join::WITH,
+            'asset_categories.id = access.category'
         );
 
-        $this->assetRepository->applyCategoriesFilter(
-            $dataSource->getQueryBuilder(),
-            Operators::IN_LIST_OR_UNCLASSIFIED,
-            $grantedCategories
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->isNull('asset_categories.id'),
+                $qb->expr()->andX(
+                    $qb->expr()->in('access.userGroup', ':groups'),
+                    $qb->expr()->eq('access.viewItems', true)
+                )
+            )
         );
+
+        $qb->setParameter('groups', $user->getGroups()->toArray());
     }
 }

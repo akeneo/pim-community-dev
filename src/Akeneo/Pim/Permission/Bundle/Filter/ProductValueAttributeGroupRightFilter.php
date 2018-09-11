@@ -26,6 +26,10 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
     CollectionFilterInterface,
     ObjectFilterInterface
 {
+
+    /** @var array */
+    protected $attributeGroupAccess = [];
+
     /**
      * {@inheritdoc}
      */
@@ -49,10 +53,16 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
             throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
-        return !$this->authorizationChecker->isGranted(
-            Attributes::VIEW_ATTRIBUTES,
-            $value->getAttribute()->getGroup()
-        );
+        $groupId = $value->getAttribute()->getGroup()->getId();
+
+        if (!isset($this->attributeGroupAccess[$groupId])) {
+            $this->attributeGroupAccess[$groupId] = $this->authorizationChecker->isGranted(
+                Attributes::VIEW_ATTRIBUTES,
+                $value->getAttribute()->getGroup()
+            );
+        }
+
+        return !$this->attributeGroupAccess[$groupId];
     }
 
     /**

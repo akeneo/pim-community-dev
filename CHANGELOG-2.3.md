@@ -1,3 +1,16 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7638: The edit profile button must not be shown if the user have no right to edit his own information
+
+# 2.3.6 (2018-09-06)
+
+## Bug fixes
+
+- PIM-7611: Fix issue with download of assets
+- PIM-7599: Fix an issue preventing the asset datagrid to load when having a huge number of asset categories
+
 # 2.3.5 (2018-08-22)
 
 ## Bug fixes
