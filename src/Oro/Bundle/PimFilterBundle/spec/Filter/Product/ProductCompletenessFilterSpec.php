@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\FilterBundle\Filter;
+namespace spec\Oro\Bundle\PimFilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Form\FormFactoryInterface;

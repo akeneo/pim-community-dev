@@ -821,4 +821,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ImportExportBundle
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\AnalyticsBundle/Akeneo\\Platform\\Bundle\\AnalyticsBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogVolumeMonitoringBundle/Akeneo\\Platform\\Bundle\\CatalogVolumeMonitoringBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle/Oro\\Bundle\\PimDataGridBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\FilterBundle\\Filter\\CompletenessFilter/Oro\\Bundle\\PimFilterBundle\\Filter\\ProductCompletenessFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\FilterBundle/Oro\\Bundle\\PimFilterBundle/g'
