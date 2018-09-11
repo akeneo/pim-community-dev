@@ -27,10 +27,9 @@ class VersionProvider implements VersionProviderInterface
      */
     public function __construct(string $versionClass)
     {
-        $versionClass = new \ReflectionClass($versionClass);
-        $this->version = $versionClass->getConstant('VERSION');
-        $this->edition = $versionClass->getConstant('EDITION');
-        $this->codeName = $versionClass->getConstant('VERSION_CODENAME');
+        $this->version = constant(sprintf('%s::VERSION', $versionClass));
+        $this->edition = constant(sprintf('%s::EDITION', $versionClass));
+        $this->codeName = constant(sprintf('%s::VERSION_CODENAME', $versionClass));
     }
 
     /**
@@ -90,6 +89,6 @@ class VersionProvider implements VersionProviderInterface
      */
     public function getFullVersion(): string
     {
-        return $this->version . ' ' . $this->codeName;
+        return sprintf('%s %s %s', $this->edition, $this->version, $this->codeName);
     }
 }
