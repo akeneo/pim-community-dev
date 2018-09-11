@@ -1,8 +1,0 @@
-pimee_dashboard:
-  widget:
-    product_drafts:
-      date: Fecha
-      author: Autor
-      product: Producto
-      review: Revisar 	
-      empty: Ninguna propuesta a revisar

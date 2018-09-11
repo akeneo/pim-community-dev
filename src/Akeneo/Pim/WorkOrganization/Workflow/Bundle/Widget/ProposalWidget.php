@@ -80,7 +80,7 @@ class ProposalWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimEnterpriseDashboardBundle:Widget:proposal.html.twig';
+        return 'AkeneoPimWorkflowBundle:Proposal/Widget:proposal.html.twig';
     }
 
     /**

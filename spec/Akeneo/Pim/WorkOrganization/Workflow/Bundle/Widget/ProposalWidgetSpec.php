@@ -50,7 +50,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_proposal_widget_template()
     {
-        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:proposal.html.twig');
+        $this->getTemplate()->shouldReturn('AkeneoPimWorkflowBundle:Proposal/Widget:proposal.html.twig');
     }
 
     function it_exposes_the_proposal_widget_template_parameters($authorizationChecker)
