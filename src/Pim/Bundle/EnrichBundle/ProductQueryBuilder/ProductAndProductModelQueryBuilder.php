@@ -164,7 +164,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             function (array $filter) {
                 return 'field' === $filter['type'] &&
                     'categories' === $filter['field'] &&
-                    (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator']);
+                    Operators::IN_LIST === $filter['operator'];
             }
         ));
 

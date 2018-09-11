@@ -471,7 +471,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $this->execute()->shouldReturn($cursor);
     }
 
-    function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN_CHILDREN(
+    function it_does_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN_CHILDREN(
         $pqb,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
@@ -488,7 +488,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $pqb->addFilter('parent', Argument::cetera())->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
 

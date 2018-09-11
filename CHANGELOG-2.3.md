@@ -30,6 +30,7 @@
 - PIM-7572: Cross to remove associations displayed at PV level whereas association is done at PM level
 - PIM-7618: Hide the "Process tracker" link in the Dashboard if the user does not have the permission 
 - PIM-7626: Fix attribute groups order in the product grid's column configurator
+- PIM-7629: Fix product model and its children products both displayed in the product grid on upper categories
 - PIM-7631: Fix API filter product and product model on date with between operator
 - PIM-7613: Fix translations of boolean attributes
 - PIM-7609: Handle 'empty' and 'not empty' filter types in string filter
