@@ -5,6 +5,7 @@
 - PIM-7628: Fix the initialization of the product datagrid identifier filter.
 - PIM-7594: Fix memory leak in `pim:versioning:purge` command
 - PIM-7635: Fix elasticsearch config override
+- PIM-7598: Fix locale change on reference data on simple and multi select
 
 ## BC breaks
 
