@@ -87,7 +87,7 @@ class CreateProposalHandler
         );
 
         if (empty($suggestedValues)) {
-            // TODO APAI-244: handle error?
+            // TODO APAI-244: handle error
             return;
         }
 
@@ -103,7 +103,13 @@ class CreateProposalHandler
      */
     private function getSuggestedValues(SuggestedData $suggestedData, FamilyInterface $family): array
     {
-        $normalizedData = $this->suggestedDataNormalizer->normalize($suggestedData);
+        try {
+            $normalizedData = $this->suggestedDataNormalizer->normalize($suggestedData);
+        } catch (\InvalidArgumentException $e) {
+            // TODO APAI-244: handle error
+            return [];
+        }
+
         $availableAttributeCodes = $family->getAttributeCodes();
 
         return array_filter(

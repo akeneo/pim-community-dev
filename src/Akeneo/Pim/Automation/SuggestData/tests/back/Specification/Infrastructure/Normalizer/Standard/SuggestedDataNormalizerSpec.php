@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Normali
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard\SuggestedDataNormalizer;
-use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -12,9 +12,9 @@ use PhpSpec\ObjectBehavior;
  */
 class SuggestedDataNormalizerSpec extends ObjectBehavior
 {
-    public function let(ArrayConverterInterface $converter)
+    public function let(AttributeRepositoryInterface $attributeRepository)
     {
-        $this->beConstructedWith($converter);
+        $this->beConstructedWith($attributeRepository);
     }
 
     public function it_is_a_suggested_data_normalizer()
@@ -22,72 +22,75 @@ class SuggestedDataNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(SuggestedDataNormalizer::class);
     }
 
-    public function it_normalizes_suggested_data($converter)
+    public function it_throws_an_exception_if_attribute_does_not_exist($attributeRepository)
     {
         $suggestedData = [
             'foo' => 'bar',
             'bar' => 'baz',
         ];
-        $expected = [
-            'foo' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => 'bar',
-                ],
-            ],
-            'bar' => [
-                [
-                    'scope' => null,
-                    'locale' => null,
-                    'data' => 'baz',
-                ],
-            ],
-        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+            ]
+        );
 
-        $converter->convert($suggestedData)->willReturn($expected);
-        $this->normalize(new SuggestedData($suggestedData))->shouldReturn($expected);
+        $this->shouldThrow(new \InvalidArgumentException('Attribute with code "bar" does not exist'))
+             ->during('normalize', [new SuggestedData($suggestedData)]);
     }
 
-    public function it_does_not_normalize_values_for_scopable_or_localizable_attributes($converter)
+    public function it_throws_an_exception_for_unsupported_attribute_types($attributeRepository)
     {
         $suggestedData = [
-            'localizable-fr_FR' => 'foo',
-            'scopable-ecommerce' => 'bar',
-            'baz' => '42',
+            'foo' => 'bar',
+            'bar' => 'baz',
         ];
-        $converter->convert($suggestedData)->willReturn(
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar'])->willReturn(
             [
-                'localizable' => [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_price_collection',
+            ]
+        );
+
+        $this->shouldThrow(new \InvalidArgumentException('Unsupported attribute type "pim_catalog_price_collection"'))
+             ->during('normalize', [new SuggestedData($suggestedData)]);
+    }
+
+    public function it_normalizes_suggested_data($attributeRepository)
+    {
+        $suggestedData = [
+            'foo' => 'bar',
+            'bar' => '0',
+            'baz' => 'option1,option2',
+        ];
+        $attributeRepository->getAttributeTypeByCodes(['foo', 'bar', 'baz'])->willReturn(
+            [
+                'foo' => 'pim_catalog_text',
+                'bar' => 'pim_catalog_boolean',
+                'baz' => 'pim_catalog_multiselect',
+            ]
+        );
+
+        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
+            [
+                'foo' => [
                     [
                         'scope' => null,
-                        'locale' => 'fr_FR',
-                        'data' => 'foo',
-                    ],
-                ],
-                'scopable' => [
-                    [
-                        'scope' => 'ecommerce',
                         'locale' => null,
                         'data' => 'bar',
                     ],
                 ],
-                'baz' => [
+                'bar' => [
                     [
                         'scope' => null,
                         'locale' => null,
-                        'data' => '42',
+                        'data' => false,
                     ],
                 ],
-            ]
-        );
-        $this->normalize(new SuggestedData($suggestedData))->shouldReturn(
-            [
                 'baz' => [
                     [
                         'scope' => null,
                         'locale' => null,
-                        'data' => '42',
+                        'data' => ['option1', 'option2'],
                     ],
                 ],
             ]

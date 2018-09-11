@@ -14,42 +14,97 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class SuggestedDataNormalizer
 {
-    /** @var ArrayConverterInterface */
-    private $valueConverter;
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
 
     /**
-     * @param ArrayConverterInterface $valueConverter
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(ArrayConverterInterface $valueConverter)
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
-        $this->valueConverter = $valueConverter;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
+     * Returns suggested values in standard format
+     *
      * @param SuggestedData $suggestedData
      *
      * @return array
      */
     public function normalize(SuggestedData $suggestedData): array
     {
-        $normalizedValues = $this->valueConverter->convert($suggestedData->getValues());
+        $normalized = [];
+        $suggestedValues = $suggestedData->getValues();
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($suggestedValues));
 
-        foreach ($normalizedValues as $code => $value) {
-            foreach ($value as $data) {
-                if (null !== $data['scope'] || null !== $data['locale']) {
-                    unset($normalizedValues[$code]);
-                    break;
-                }
+        foreach ($suggestedValues as $attrCode => $value) {
+            if (!isset($attributeTypes[$attrCode])) {
+                throw new \InvalidArgumentException(sprintf('Attribute with code "%s" does not exist', $attrCode));
             }
+
+            $normalized[$attrCode] = $this->normalizeValue($attributeTypes[$attrCode], $value);
         }
 
-        return $normalizedValues;
+        return $normalized;
+    }
+
+    /**
+     * @param string $attributeType
+     * @param mixed $value
+     *
+     * @return array
+     */
+    private function normalizeValue(string $attributeType, $value): array
+    {
+        $data = null;
+
+        switch ($attributeType) {
+            case AttributeTypes::IDENTIFIER:
+            case AttributeTypes::TEXT:
+            case AttributeTypes::TEXTAREA:
+            case AttributeTypes::NUMBER:
+            case AttributeTypes::OPTION_SIMPLE_SELECT:
+            case AttributeTypes::DATE:
+                $data = $value;
+                break;
+            case AttributeTypes::BOOLEAN:
+                if (in_array($value, ['1', '0'])) {
+                    $data = (bool)$value;
+                } elseif ('' !== $value) {
+                    $data = $value;
+                } else {
+                    $data = null;
+                }
+                break;
+            case AttributeTypes::OPTION_MULTI_SELECT:
+                if (is_array($value)) {
+                    $data = $value;
+                } else {
+                    $data = array_filter(explode(',', $value));
+                    array_walk($data, 'trim');
+                }
+                break;
+            default:
+                throw new \InvalidArgumentException(
+                    sprintf('Unsupported attribute type "%s"', $attributeType)
+                );
+        }
+
+        return [
+            [
+                'scope' => null,
+                'locale' => null,
+                'data' => '' === $data ? null : $data,
+            ],
+        ];
     }
 }
