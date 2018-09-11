@@ -45,7 +45,7 @@ class FiltersColumn extends BaseView {
   readonly filterGroupTemplate: string = `
     <ul class="ui-multiselect-checkboxes ui-helper-reset">
         <li class="ui-multiselect-optgroup-label">
-            <a href="#"><%- groupName %></a>
+            <a><%- groupName %></a>
         </li>
         <% filters.forEach(filter => { %>
         <li>
@@ -77,6 +77,7 @@ class FiltersColumn extends BaseView {
 
     if (this.opened) {
        $(this.filterList).css({ left: 360, display: 'block' })
+       $('input[type="search"]', this.filterList).focus();
     } else {
        $(this.filterList).css({ left: 59, display: 'none' })
     }
@@ -200,6 +201,7 @@ class FiltersColumn extends BaseView {
   }
 
   triggerFiltersUpdated() {
+      console.log('triggerFiltersUpdated from filters-column')
     mediator.trigger('filters-column:update-filters', this.loadedFilters, this.gridCollection)
   }
 
