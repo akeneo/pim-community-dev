@@ -105,7 +105,7 @@ class EditView extends BaseView {
         this.renderUnactivatedConnection(data.token);
       })
       .done((response: any) => {
-        Messenger.notify('success', __(response.message), {flash: false});
+        Messenger.notify('success', __(response.message));
 
         this.storedToken = data.token;
         this.isConnectionActivated = true;
