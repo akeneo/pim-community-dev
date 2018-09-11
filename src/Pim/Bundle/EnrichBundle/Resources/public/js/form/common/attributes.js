@@ -98,6 +98,8 @@ define(
             });
 
             const container = fieldCollection.fields.sort(
+                (firstField, secondField) => firstField.attribute.code.localeCompare(secondField.attribute.code)
+            ).sort(
                 (firstField, secondField) => firstField.attribute.sort_order - secondField.attribute.sort_order
             ).reduce((container, field) => {
                 _.defer(field.render.bind(field));
@@ -204,6 +206,8 @@ define(
 
                             const sections = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
+                            ).sort((firstSection, secondSection) =>
+                                firstSection.attributeGroup.code.localeCompare(secondSection.attributeGroup.code)
                             ).sort((firstSection, secondSection) =>
                                 firstSection.attributeGroup.sort_order - secondSection.attributeGroup.sort_order
                             );
