@@ -34,3 +34,8 @@ pim_enrich_associationtype_edit:
     defaults: { _controller: pim_enrich.controller.association_type:editAction }
     requirements:
         code: '[a-zA-Z0-9_]+'
+
+pim_reference_data_configuration_rest_get:
+    path: /
+    defaults: { _controller: pim_reference_data.controller.configuration_rest:indexAction }
+    methods: [GET]

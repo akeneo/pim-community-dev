@@ -1,4 +1,0 @@
-pim_reference_data_configuration_rest_get:
-    path: /
-    defaults: { _controller: pim_reference_data.controller.configuration_rest:indexAction }
-    methods: [GET]
