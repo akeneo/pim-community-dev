@@ -168,6 +168,7 @@ define(
                     async: false
                 });
 
+                console.log('select2 get results', results)
                 return results;
             },
 
