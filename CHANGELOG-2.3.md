@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.7 (2018-09-11)
+
 ## Bug fixes
 
 - PIM-7638: The edit profile button must not be shown if the user have no right to edit his own information
