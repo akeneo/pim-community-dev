@@ -8,5 +8,5 @@ services:
     akeneo.pim.automation.suggest_data.pimai_client.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionFake'
 
-    akeneo.pim.automation.suggest_data.pimai_client.identifiers:
+    akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake'

@@ -3,7 +3,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.authentication'
-            - '@akeneo.pim.automation.suggest_data.pimai_client.subscribe'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.subscription'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping'
             - '@akeneo.pim.automation.suggest_data.normalizers.identifiers_mapping'

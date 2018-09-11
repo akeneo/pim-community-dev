@@ -16,7 +16,7 @@ services:
         arguments:
             - 'https://pim-ai.cloud2.akeneo.com/api'
 
-    akeneo.pim.automation.suggest_data.pimai_client.subscribe:
+    akeneo.pim.automation.suggest_data.pimai_client.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
