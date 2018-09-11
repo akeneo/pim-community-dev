@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Repository;
 
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Version repository interface
@@ -51,7 +51,7 @@ interface VersionRepositoryInterface
      *
      * @param array $resourceNames
      *
-     * @return Version|null
+     * @return array|null
      */
     public function getNewestLogEntryForRessources($resourceNames);
 
@@ -88,7 +88,7 @@ interface VersionRepositoryInterface
      *
      * @param array $options
      *
-     * @return Paginator
+     * @return CursorInterface
      */
     public function findPotentiallyPurgeableBy(array $options = []);
 

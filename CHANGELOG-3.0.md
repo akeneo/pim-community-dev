@@ -864,3 +864,9 @@
 - Move `Pim\Bundle\InstallerBundle` to `Akeneo\Platform\Bundle\InstallerBundle`
 - Move `Pim\Bundle\AnalyticsBundle` to `Akeneo\Platform\Bundle\AnalyticsBundle`
 - Move `Pim\Bundle\CatalogVolumeMonitoringBundle` to `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelDescendantsWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue`, remove `Doctrine\ORM\EntityManagerInterface` argument
+- Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Pim\Bundle\FilterBundle\Filter\ProductCompletenessFilter`

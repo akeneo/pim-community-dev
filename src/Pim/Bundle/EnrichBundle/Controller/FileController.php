@@ -12,6 +12,8 @@ use Pim\Bundle\EnrichBundle\File\FileTypes;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -92,6 +94,25 @@ class FileController
         }
 
         return $result;
+    }
+
+    /**
+     * In case of multiple frontend architecture, the request that ask the cache generation on one frontend and
+     * the request that ask the generated media could be on another frontend. This action is a "last chance" to get the
+     * media generated in cache and delivered.
+     *
+     * @param Request $request
+     * @param string  $path
+     * @param string  $filter
+     *
+     * @throws \RuntimeException
+     * @throws BadRequestHttpException
+     *
+     * @return RedirectResponse
+     */
+    public function cacheAction(Request $request, $path, $filter)
+    {
+        return $this->imagineController->filterAction($request, $path, $filter);
     }
 
     /**

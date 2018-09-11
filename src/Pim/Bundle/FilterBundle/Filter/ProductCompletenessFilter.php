@@ -14,9 +14,8 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO @merge master rename in ProductCompletenessFilter
  */
-class CompletenessFilter extends BooleanFilter
+class ProductCompletenessFilter extends BooleanFilter
 {
     /**
      * {@inheritdoc}

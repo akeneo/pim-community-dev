@@ -5,19 +5,14 @@ namespace spec\Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 
 class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 {
     function let(
-        EntityManagerInterface $entityManager,
-        Connection $connection,
         JobExecutionMessageRepository $jobExecutionMessageRepository
     ) {
-        $entityManager->getConnection()->willReturn($connection);
-        $this->beConstructedWith($entityManager, $jobExecutionMessageRepository);
+        $this->beConstructedWith($jobExecutionMessageRepository);
     }
 
     function it_is_initializable()

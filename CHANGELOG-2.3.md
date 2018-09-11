@@ -1,8 +1,24 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7628: Fix the initialization of the product datagrid identifier filter.
+- PIM-7594: Fix memory leak in `pim:versioning:purge` command
+
+## BC breaks
+
+- PIM-7594: Method `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface::findPotentiallyPurgeableBy` returns now an CursorInterface
+
+## Enhancements
+
+- PIM-7612: Add the media/cache/{filter}/{path} route support in order to handle scalable frontend architecture for media content delivering
+
+# 2.3.6 (2018-09-06)
+
 ## Enhancements
 
 - PIM-7610: Add a command to create users
+- PIM-7635: Fix elasticsearch config override
 
 ## Bug fixes
 
@@ -10,6 +26,10 @@
 - PIM-7572: Cross to remove associations displayed at PV level whereas association is done at PM level
 - PIM-7618: Hide the "Process tracker" link in the Dashboard if the user does not have the permission 
 - PIM-7626: Fix attribute groups order in the product grid's column configurator
+- PIM-7631: Fix API filter product and product model on date with between operator
+- PIM-7613: Fix translations of boolean attributes
+- PIM-7609: Handle 'empty' and 'not empty' filter types in string filter
+- PIM-7484: Search families and family variants regardless of the current locale
 
 # 2.3.5 (2018-08-22)
 

@@ -1135,6 +1135,7 @@ config:
         pim/template/product/form/variant-navigation/product-item: pimenrich/templates/product/form/variant-navigation/product-item.html
         pim/template/product/form/variant-navigation/product-model-item: pimenrich/templates/product/form/variant-navigation/product-model-item.html
         pim/template/product/form/variant-navigation/add-child-button: pimenrich/templates/product/form/variant-navigation/add-child-button.html
+        pim/template/product/form/mass-edit/attributes:      pimenrich/templates/product/form/mass-edit/attributes.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html
         pim/template/attribute-option/index:                 pimenrich/templates/attribute-option/index.html

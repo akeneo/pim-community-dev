@@ -10,10 +10,7 @@ use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\
  */
 class DeleteByQueryIntegration extends AbstractPimCatalogTestCase
 {
-    /**
-     * @test
-     */
-    public function it_deletes_by_query()
+    public function testItDeletesByQuery()
     {
         $this->get('akeneo_elasticsearch.client.product')->deleteByQuery([
             'query' => [

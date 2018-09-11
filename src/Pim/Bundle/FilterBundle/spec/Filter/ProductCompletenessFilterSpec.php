@@ -10,7 +10,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class CompletenessFilterSpec extends ObjectBehavior
+class ProductCompletenessFilterSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {

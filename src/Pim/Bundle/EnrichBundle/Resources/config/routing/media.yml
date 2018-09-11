@@ -15,3 +15,10 @@ pim_enrich_default_thumbnail:
     requirements:
         mimeType: "[a-z-]+/[a-z0-9.-]+"
 
+pim_enrich_media_cache:
+    path: /cache/{filter}/{path}
+    defaults: { _controller: pim_enrich.controller.file:cacheAction}
+    methods: [GET]
+    requirements:
+        filter: '[A-z0-9_-]*'
+        path: .+

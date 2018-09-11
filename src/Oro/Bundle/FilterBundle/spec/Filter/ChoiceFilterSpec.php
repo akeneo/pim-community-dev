@@ -4,6 +4,7 @@ namespace spec\Oro\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
@@ -28,8 +29,8 @@ class ChoiceFilterSpec extends ObjectBehavior
     {
         $builder->get('type')->willReturn($builder);
         $builder->getOption('choices')->willReturn(['foo', 'bar']);
-        $factory->createBuilder('oro_type_choice_filter', [], ['csrf_protection' => false])->willReturn($builder);
-        $factory->create('oro_type_choice_filter', [], ['csrf_protection' => false])->willReturn($form);
+        $factory->createBuilder(ChoiceFilterType::class, [], ['csrf_protection' => false])->willReturn($builder);
+        $factory->create(ChoiceFilterType::class, [], ['csrf_protection' => false])->willReturn($form);
         $util->getExcludeParams()->willReturn([]);
         $util->getParamMap()->willReturn([]);
 

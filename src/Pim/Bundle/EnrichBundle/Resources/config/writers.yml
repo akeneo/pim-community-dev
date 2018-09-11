@@ -8,4 +8,3 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'
-            - '@pim_connector.doctrine.cache_clearer'

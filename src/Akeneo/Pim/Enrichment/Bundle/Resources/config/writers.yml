@@ -11,13 +11,11 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product_model'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_model_descendants:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelDescendantsWriter'
         arguments:
             - '@pim_catalog.saver.product_model_descendants'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_association:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductAssociationWriter'
