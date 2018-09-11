@@ -1,5 +1,7 @@
 # 2.0.x
 
+# 2.0.37 (2018-09-11)
+
 ## Bug fixes
 
 - PIM-7637: Fix computation of completness of variant products when an attribute at product model level is updated on a bulk action
