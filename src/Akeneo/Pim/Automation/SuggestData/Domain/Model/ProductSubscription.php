@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class ProductSubscription implements ProductSubscriptionInterface
+class ProductSubscription
 {
     /** @var int */
     private $id;
@@ -80,7 +80,7 @@ class ProductSubscription implements ProductSubscriptionInterface
      *
      * @return ProductSubscription
      */
-    public function setSuggestedData(SuggestedData $suggestedData): ProductSubscriptionInterface
+    public function setSuggestedData(SuggestedData $suggestedData): self
     {
         $this->suggestedData = $suggestedData;
         $this->rawSuggestedData = ($suggestedData->isEmpty()) ? null : $suggestedData->getValues();

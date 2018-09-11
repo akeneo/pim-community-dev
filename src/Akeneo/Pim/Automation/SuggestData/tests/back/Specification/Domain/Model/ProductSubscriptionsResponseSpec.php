@@ -21,12 +21,13 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
  */
 class ProductSubscriptionsResponseSpec
 {
-    function it_is_a_product_subscriptions_response() {
+    public function it_is_a_product_subscriptions_response()
+    {
         $this->beConstructedWith([]);
         $this->shouldHaveType(ProductSubscriptionsResponse::class);
     }
 
-    function it_contains_a_product_subscription_response_collection(
+    public function it_contains_a_product_subscription_response_collection(
         ProductSubscriptionResponse $response1,
         ProductSubscriptionResponse $response2
     ) {

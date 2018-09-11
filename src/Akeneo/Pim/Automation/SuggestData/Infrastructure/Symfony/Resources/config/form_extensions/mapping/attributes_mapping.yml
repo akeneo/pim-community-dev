@@ -89,12 +89,6 @@ extensions:
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: akeneo_sugggest_data_attributes_mapping_list
 
-    pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
-        module: pimee/settings/front-search-filter
-        parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
-        position: 20
-        targetZone: mapping
-
     pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
         parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
@@ -108,3 +102,15 @@ extensions:
                 pim_ai_attribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
                 catalog_attribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
                 suggest_data: akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data
+
+    pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
+        module: pimee/settings/front-search-filter
+        parent: pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping
+        position: 10
+        targetZone: filters
+
+    pim-suggest-data-settings-attributes-mapping-index-status-filter:
+        module: pimee/settings/mapping/status-filter
+        parent: pim-suggest-data-settings-attributes-mapping-index-attribute-attributes-mapping
+        position: 20
+        targetZone: filters

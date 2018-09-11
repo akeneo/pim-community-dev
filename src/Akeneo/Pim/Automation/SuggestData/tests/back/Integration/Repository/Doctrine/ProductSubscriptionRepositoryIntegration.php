@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Schema\MySqlSchemaManager;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\Assert;
 
@@ -63,24 +61,10 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'an_attribute'      => 'some data',
             'another_attribute' => 'some other data',
         ];
-
-        $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
-VALUES (:productId, :subscriptionId, :suggestedData)
-SQL;
-
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->prepare($query);
-        $statement->execute(
-            [
-                'productId'      => $product->getId(),
-                'subscriptionId' => $subscriptionId,
-                'suggestedData'  => json_encode($suggestedData),
-            ]
-        );
+        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
-        Assert::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
         Assert::assertSame($product, $subscription->getProduct());
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
@@ -94,22 +78,10 @@ SQL;
             'an_attribute'      => 'some data',
             'another_attribute' => 'some other data',
         ];
-
-        $query = <<<SQL
-INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
-VALUES (:productId, :subscriptionId, :suggestedData)
-SQL;
-
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $statement = $entityManager->getConnection()->prepare($query);
-        $statement->execute([
-            'productId'      => $product->getId(),
-            'subscriptionId' => $subscriptionId,
-            'suggestedData'  => json_encode($suggestedData),
-        ]);
+        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
-        Assert::assertTrue($subscription instanceof ProductSubscriptionInterface);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
         Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
         Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
     }
@@ -119,6 +91,79 @@ SQL;
         $result = $this->getRepository()->findOneByProductId(42);
 
         Assert::assertTrue(null === $result);
+    }
+
+    public function test_it_saves_empty_suggested_data_as_null()
+    {
+        $subscription1 = new ProductSubscription($this->createProduct('a_product'), 'subscription-1');
+        $subscription1->setSuggestedData(new SuggestedData(null));
+        $this->getRepository()->save($subscription1);
+
+        $subscription2 = new ProductSubscription($this->createProduct('another_product'), 'subscription-2');
+        $this->getRepository()->save($subscription2);
+
+        $subscription3 = new ProductSubscription($this->createProduct('a_third_product'), 'subscription-3');
+        $subscription3->setSuggestedData(new SuggestedData([]));
+        $this->getRepository()->save($subscription3);
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->query(
+            'SELECT raw_suggested_data from pim_suggest_data_product_subscription;'
+        );
+
+        $subscriptionRows = $statement->fetchAll();
+
+        Assert::assertCount(3, $subscriptionRows);
+
+        foreach ($subscriptionRows as $subscriptionRow) {
+            Assert::isNull($subscriptionRow['raw_suggested_data']);
+        }
+    }
+
+    public function test_it_fetches_a_null_raw_suggested_data_as_empty_array()
+    {
+        $product = $this->createProduct('a_product');
+
+        $query = <<<SQL
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
+VALUES (:productId, :subscriptionId, :suggestedData)
+SQL;
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute(
+            [
+                'productId'      => $product->getId(),
+                'subscriptionId' => uniqid(),
+                'suggestedData'  => null,
+            ]
+        );
+
+        $subscription = $this->getRepository()->findOneByProductId($product->getId());
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
+        Assert::assertInstanceOf(SuggestedData::class, $subscription->getSuggestedData());
+        Assert::assertTrue($subscription->getSuggestedData()->isEmpty());
+    }
+
+    public function test_it_finds_pending_product_subscriptions()
+    {
+        $product = $this->createProduct('a_product');
+        $subscriptionId = uniqid();
+        $suggestedData = [
+            'an_attribute' => 'some data',
+            'another_attribute' => 'some other data',
+        ];
+        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
+
+        $otherProduct = $this->createProduct('another_product');
+        $otherSubscriptionId = uniqid();
+        $this->insertSuggestedData($otherProduct->getId(), $otherSubscriptionId, []);
+
+        $pendingSubscriptions = $this->getRepository()->findPendingSubscriptions();
+        Assert::assertCount(1, $pendingSubscriptions);
+        Assert::assertSame($product, $pendingSubscriptions[0]->getProduct());
+        Assert::assertSame($subscriptionId, $pendingSubscriptions[0]->getSubscriptionId());
+        Assert::assertSame($suggestedData, $pendingSubscriptions[0]->getSuggestedData()->getValues());
     }
 
     /**
@@ -141,6 +186,28 @@ SQL;
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    /**
+     * @param int $productId
+     * @param string $subscriptionId
+     * @param array|null $suggestedData
+     */
+    private function insertSuggestedData(int $productId, string $subscriptionId, array $suggestedData): void
+    {
+        $query = <<<SQL
+INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
+VALUES (:productId, :subscriptionId, :suggestedData)
+SQL;
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->prepare($query);
+        $statement->execute(
+            [
+                'productId' => $productId,
+                'subscriptionId' => $subscriptionId,
+                'suggestedData' => empty($suggestedData) ? null: json_encode($suggestedData),
+            ]
+        );
     }
 
     /**

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
@@ -24,21 +26,21 @@ use PhpSpec\ObjectBehavior;
  */
 class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    function it_is_a_product_subscription_repository()
+    public function it_is_a_product_subscription_repository()
     {
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
     }
 
-    function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
+    public function it_is_the_in_memory_implementation_of_the_product_subscription_repository()
     {
         $this->shouldBeAnInstanceOf(InMemoryProductSubscriptionRepository::class);
     }
 
-    function it_find_a_subscription_by_its_product_and_subscription_id()
+    public function it_find_a_subscription_by_its_product_and_subscription_id()
     {
         $product = new Product();
         $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription', []);
+        $subscription = new ProductSubscription($product, 'a-fake-subscription');
         $this->save($subscription);
 
         $this
@@ -46,11 +48,11 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn($subscription);
     }
 
-    function it_find_no_subscription_if_subscription_id_does_not_exists()
+    public function it_find_no_subscription_if_subscription_id_does_not_exists()
     {
         $product = new Product();
         $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription', []);
+        $subscription = new ProductSubscription($product, 'a-fake-subscription');
         $this->save($subscription);
 
         $this
@@ -58,7 +60,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_find_no_subscription_if_product_was_not_subscribed()
+    public function it_find_no_subscription_if_product_was_not_subscribed()
     {
         $product = new Product();
         $product->setId(42);
@@ -68,11 +70,11 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
             ->shouldReturn(null);
     }
 
-    function it_saves_a_product_subscription()
+    public function it_saves_a_product_subscription()
     {
         $product = new Product();
         $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription', []);
+        $subscription = new ProductSubscription($product, 'a-fake-subscription');
         $this->save($subscription);
 
         $this->shouldHaveProductSubscription($subscription);
@@ -82,7 +84,7 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     {
         $product = new Product();
         $product->setId(42);
-        $subscription = new ProductSubscription($product, 'a-fake-subscription', []);
+        $subscription = new ProductSubscription($product, 'a-fake-subscription');
         $this->save($subscription);
 
         $this->findOneByProductId(42)->shouldReturn($subscription);
@@ -91,6 +93,22 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
     public function it_returns_null_if_you_asked_for_a_product_without_subscription()
     {
         $this->findOneByProductId(42)->shouldReturn(null);
+    }
+
+    public function it_finds_product_subscriptions_with_suggested_data()
+    {
+        $product = new Product();
+        $product->setId(42);
+        $subscription = new ProductSubscription($product, 'a-fake-subscription');
+        $subscription->setSuggestedData(new SuggestedData(['foo' => 'bar']));
+        $this->save($subscription);
+
+        $otherProduct = new Product();
+        $otherProduct->setId(44);
+        $otherSubscription = new ProductSubscription($otherProduct, 'another-fake-subscription');
+        $this->save($otherSubscription);
+
+        $this->findPendingSubscriptions()->shouldReturn([$subscription]);
     }
 
     /**

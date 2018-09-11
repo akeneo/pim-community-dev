@@ -26,7 +26,7 @@ interface SubscriptionApiInterface
      *
      * @return ApiResponse
      */
-    public function subscribeProduct(array $identifiers): ApiResponse;
+    public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse;
 
     /**
      * @return ApiResponse

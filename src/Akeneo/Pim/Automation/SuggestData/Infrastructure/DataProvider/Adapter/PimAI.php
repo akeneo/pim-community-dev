@@ -24,6 +24,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientExce
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -86,18 +87,23 @@ class PimAI implements DataProviderInterface
             );
         }
 
+        $productId = $request->getProduct()->getId();
+        $family = $request->getProduct()->getFamily();
+        $familyInfos = [
+            'code' => $family->getCode(),
+            'label' => [
+                $family->getTranslation()->getLocale() => $family->getLabel()
+            ]
+        ];
+
         try {
-            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped);
+            $clientResponse = $this->subscriptionApi->subscribeProduct($mapped, $productId, $familyInfos);
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
-        $subscriptions = $clientResponse->content();
+        $subscription = $clientResponse->content()->getFirst();
 
-        return new ProductSubscriptionResponse(
-            $request->getProduct()->getId(),
-            $subscriptions->getFirst()->getSubscriptionId(),
-            $subscriptions->getFirst()->getAttributes()
-        );
+        return $this->buildSubscriptionResponse($subscription);
     }
 
     /**
@@ -117,11 +123,20 @@ class PimAI implements DataProviderInterface
      */
     public function fetch(): ProductSubscriptionsResponse
     {
-        $clientResponse = $this->subscriptionApi->fetchProducts();
+        try {
+            $clientResponse = $this->subscriptionApi->fetchProducts();
+        } catch (ClientException $e) {
+            throw new ProductSubscriptionException($e->getMessage());
+        }
 
-        return new ProductSubscriptionsResponse(
-            $clientResponse->content()->getSubscriptions()
-        );
+        $subscriptions = $clientResponse->content()->getSubscriptions();
+
+        $subscriptionsResponse = new ProductSubscriptionsResponse();
+        foreach ($subscriptions as $subscription) {
+            $subscriptionResponse = $this->buildSubscriptionResponse($subscription);
+            $subscriptionsResponse->add($subscriptionResponse);
+        }
+        return $subscriptionsResponse;
     }
 
     /**
@@ -130,5 +145,19 @@ class PimAI implements DataProviderInterface
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void
     {
         $this->identifiersMappingApi->update($this->identifiersMappingNormalizer->normalize($identifiersMapping));
+    }
+
+    /**
+     * @param Subscription $subscription
+     *
+     * @return ProductSubscriptionResponse
+     */
+    private function buildSubscriptionResponse(Subscription $subscription): ProductSubscriptionResponse
+    {
+        return new ProductSubscriptionResponse(
+            $subscription->getTrackerId(),
+            $subscription->getSubscriptionId(),
+            $subscription->getAttributes()
+        );
     }
 }

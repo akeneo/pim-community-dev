@@ -44,7 +44,7 @@ final class ProductFetchingContext implements Context
     }
 
     /**
-     * @param $lastFetchDate
+     * @param mixed $lastFetchDate
      *
      * @Given last fetch of subscribed products has been done :lastFetchDate
      */

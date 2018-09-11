@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,7 +42,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function save(ProductSubscriptionInterface $subscription): void
+    public function save(ProductSubscription $subscription): void
     {
         $this->em->persist($subscription);
         $this->em->flush();
@@ -54,7 +54,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     public function findOneByProductAndSubscriptionId(
         ProductInterface $product,
         string $subscriptionId
-    ): ?ProductSubscriptionInterface {
+    ): ?ProductSubscription {
         $repository = $this->em->getRepository($this->className);
 
         return $repository->findOneBy(
@@ -68,8 +68,21 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findOneByProductId(int $productId): ?ProductSubscriptionInterface
+    public function findOneByProductId(int $productId): ?ProductSubscription
     {
         return $this->em->getRepository($this->className)->findOneByProduct($productId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findPendingSubscriptions(): array
+    {
+        $qb = $this->em->createQueryBuilder()->select('subscription')->from($this->className, 'subscription');
+        $qb->where(
+            $qb->expr()->isNotNull('subscription.rawSuggestedData')
+        );
+
+        return $qb->getQuery()->getResult();
     }
 }

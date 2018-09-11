@@ -72,6 +72,7 @@ config:
         pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping.ts
         pimee/settings/mapping/index: akeneosuggestdata/js/settings/mapping/index.ts
         pimee/settings/mapping/state: akeneosuggestdata/js/settings/mapping/state.ts
+        pimee/settings/mapping/status-filter: akeneosuggestdata/js/settings/mapping/status-filter.ts
         pimee/settings/front-search-filter: akeneosuggestdata/js/settings/front-search-filter.ts
 
         # Templates
@@ -85,3 +86,4 @@ config:
         pimee/template/settings/mapping/family-mapping: akeneosuggestdata/templates/settings/mapping/family-mapping.html
         pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html
         pimee/template/settings/mapping/family-line: akeneosuggestdata/templates/settings/mapping/family-line.html
+        pimee/template/settings/mapping/status-filter: akeneosuggestdata/templates/settings/mapping/status-filter.html

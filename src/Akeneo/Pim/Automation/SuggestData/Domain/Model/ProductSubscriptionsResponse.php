@@ -19,32 +19,34 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class ProductSubscriptionsResponse implements \Countable
+class ProductSubscriptionsResponse
 {
     /**
-     * @var ProductSubscriptionResponse
+     * @var ProductSubscriptionResponse[]
      */
-    private $collection = [];
+    private $responses = [];
 
     /**
-     * @param array $subscriptions
+     * @param ProductSubscriptionResponse[]
      */
-    public function __construct(array $subscriptions)
+    public function __construct(array $responses = [])
     {
-        foreach ($subscriptions as $subscription) {
-            $this->collection[] = new ProductSubscriptionResponse(
-                42, // @TODO: Use tracker id (See APAI-153)
-                $subscription->getSubscriptionId(),
-                $subscription->getAttributes()
-            );
-        }
+        $this->responses = $responses;
     }
 
     /**
-     * @return int
+     * @return ProductSubscriptionResponse[]
      */
-    public function count()
+    public function responses(): array
     {
-        return count($this->collection);
+        return $this->responses;
+    }
+
+    /**
+     * @param ProductSubscriptionResponse $response
+     */
+    public function add(ProductSubscriptionResponse $response): void
+    {
+        $this->responses[] = $response;
     }
 }
