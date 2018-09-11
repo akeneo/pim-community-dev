@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Component\Command;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsCommand;
 use PhpSpec\ObjectBehavior;
