@@ -470,3 +470,37 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\ExternalApi\ProductModelUpdater'
         arguments:
             - '@pim_catalog.updater.product_model'
+
+    pim_reference_data.updater.setter.reference_data_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_reference_data.updater.setter.reference_data_collection_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_reference_data.updater.copier.reference_data_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataAttributeCopier'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_reference_data_simpleselect']
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_reference_data.updater.copier.reference_data_collection_value:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\ReferenceDataCollectionAttributeCopier'
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_reference_data_multiselect']
+            - ['pim_reference_data_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
