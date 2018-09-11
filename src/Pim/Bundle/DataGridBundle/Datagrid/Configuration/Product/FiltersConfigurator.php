@@ -62,7 +62,8 @@ class FiltersConfigurator implements ConfiguratorInterface
                 'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
                 'order'                             => $attribute['sortOrder'],
                 'group'                             => $attribute['group'],
-                'groupOrder'                        => $attribute['groupOrder']
+                'groupOrder'                        => $attribute['groupOrder'],
+                'id'                                => $attribute['id'],
             ];
 
             if (AttributeTypes::METRIC === $attributeType) {

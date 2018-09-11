@@ -74,32 +74,10 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * Load the attribute for this filter
-     * Required to prepare choice url params and filter configuration
-     *
-     * @throws \LogicException
-     *
-     * @return AttributeInterface
-     */
-    protected function getAttribute()
-    {
-        $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
-        $attribute = $this->attributeRepository->findOneByCode($fieldName);
-
-        if (!$attribute) {
-            throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
-        }
-
-        return $attribute;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getFormOptions()
     {
-        $attribute = $this->getAttribute();
-
         return array_merge(
             parent::getFormOptions(),
             [
@@ -107,7 +85,7 @@ class ChoiceFilter extends AjaxChoiceFilter
                 'choice_url_params' => [
                     'class'        => $this->optionRepoClass,
                     'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-                    'collectionId' => $attribute->getId(),
+                    'collectionId' => $this->params['id'],
                     'options'      => [
                         'type' => 'code',
                     ],
