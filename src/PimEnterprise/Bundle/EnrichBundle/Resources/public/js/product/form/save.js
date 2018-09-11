@@ -21,7 +21,7 @@ define(
 
                     if (this.parent.getExtension('save-buttons')) {
                         var buttons = this.parent.getExtension('save-buttons').model.get('buttons');
-                        var saveButton = _.findWhere(buttons, {className: 'save-product'});
+                        var saveButton = _.findWhere(buttons, {className: 'save'});
                         if (saveButton) {
                             saveButton.label = _.__('pimee_enrich.entity.product.btn.save_draft');
                         }
