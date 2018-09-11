@@ -58,41 +58,36 @@ class PimAiConnectionController
     }
 
     /**
-     * @param string $code
-     *
      * @return Response
      */
-    public function getAction(string $code): Response
+    public function getAction(): Response
     {
-        $normalizedConfiguration = $this->getNormalizedConfiguration->fromCode($code);
+        $normalizedConfiguration = $this->getNormalizedConfiguration->retrieve();
 
         return new JsonResponse($normalizedConfiguration);
     }
 
     /**
-     * @param string $code
-     *
      * @return Response
      */
-    public function isActiveAction(string $code): Response
+    public function isActiveAction(): Response
     {
-        $isActive = $this->getSuggestDataConnectionStatus->forCode($code);
+        $isActive = $this->getSuggestDataConnectionStatus->isActive();
 
         return new JsonResponse($isActive);
     }
 
     /**
      * @param Request $request
-     * @param string  $code
      *
      * @return Response
      */
-    public function postAction(Request $request, string $code): Response
+    public function postAction(Request $request): Response
     {
         $configurationFields = json_decode($request->getContent(), true);
 
         try {
-            $this->activateSuggestDataConnection->activate($code, $configurationFields);
+            $this->activateSuggestDataConnection->activate($configurationFields);
         } catch (InvalidConnectionConfigurationException $invalidConnection) {
             return new JsonResponse([
                 'message' => 'akeneo_suggest_data.pim_ai.module.activation.invalid',

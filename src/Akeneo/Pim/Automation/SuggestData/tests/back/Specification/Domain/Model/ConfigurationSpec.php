@@ -23,17 +23,12 @@ class ConfigurationSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('foobar', ['token' => 'value']);
+        $this->beConstructedWith(['token' => 'value']);
     }
 
     public function it_is_configuration()
     {
         $this->shouldHaveType(Configuration::class);
-    }
-
-    public function it_gets_the_configuration_code()
-    {
-        $this->getCode()->shouldReturn('foobar');
     }
 
     public function it_gets_the_values()
@@ -56,7 +51,7 @@ class ConfigurationSpec extends ObjectBehavior
     public function it_is_normalizable()
     {
         $this->normalize()->shouldReturn([
-            'code' => 'foobar',
+            'code' => Configuration::PIM_AI_CODE,
             'values' => ['token' => 'value'],
         ]);
     }

@@ -41,12 +41,12 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
 
     public function it_updates_an_existing_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
     {
-        $command = new SaveConfigurationCommand('foobar', ['token' => 'bar']);
-        $configuration = new Configuration('foobar', ['token' => 'bar']);
+        $command = new SaveConfigurationCommand(['token' => 'bar']);
+        $configuration = new Configuration(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
-        $repository->findOneByCode('foobar')->willReturn($configuration);
+        $repository->find()->willReturn($configuration);
 
         $repository->save($configuration)->shouldBeCalled();
 
@@ -55,20 +55,20 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
 
     public function it_saves_a_new_connector_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
     {
-        $command = new SaveConfigurationCommand('foobar', ['token' => 'bar']);
+        $command = new SaveConfigurationCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
-        $repository->findOneByCode('foobar')->willReturn(null);
+        $repository->find()->willReturn(null);
 
-        $repository->save(new Configuration('foobar', ['token' => 'bar']))->shouldBeCalled();
+        $repository->save(new Configuration(['token' => 'bar']))->shouldBeCalled();
 
         $this->handle($command);
     }
 
     public function it_throws_an_exception_if_configuration_is_invalid(DataProviderInterface $dataProvider, $dataProviderFactory)
     {
-        $command = new SaveConfigurationCommand('foobar', ['token' => 'bar']);
+        $command = new SaveConfigurationCommand(['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);

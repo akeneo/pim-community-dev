@@ -15,7 +15,6 @@ interface EditConfig {
   token_field_placeholder: string;
   token_save_pre_activation_title: string;
   token_save_post_activation_title: string;
-  code: string;
 }
 
 /**
@@ -35,7 +34,6 @@ class EditView extends BaseView {
     token_field_placeholder: '',
     token_save_pre_activation_title: '',
     token_save_post_activation_title: '',
-    code: '',
   };
 
   private storedToken: string = '';
@@ -65,7 +63,7 @@ class EditView extends BaseView {
    */
   public configure(): JQueryPromise<any> {
     return $.when(
-      getConfiguration(this.config.code).then((configuration: any) => {
+      getConfiguration().then((configuration: any) => {
         const data = {token: ''};
         if (configuration.hasOwnProperty('values')) {
           data.token = configuration.values.token;
@@ -82,7 +80,7 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    isConnectionActivated(this.config.code).then((isConnectionActivated: any) => {
+    isConnectionActivated().then((isConnectionActivated: any) => {
       const formData = this.getFormData();
 
       this.isConnectionActivated = isConnectionActivated;
@@ -101,7 +99,7 @@ class EditView extends BaseView {
     const data = this.getFormData();
 
     ConnectionSaver
-      .save(this.config.code, data)
+      .save(null, data)
       .fail((xhr: any) => {
         Messenger.notify('error', __(xhr.responseJSON.message));
         this.renderUnactivatedConnection(data.token);

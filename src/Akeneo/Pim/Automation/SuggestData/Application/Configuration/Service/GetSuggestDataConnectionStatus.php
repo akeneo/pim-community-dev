@@ -42,13 +42,11 @@ class GetSuggestDataConnectionStatus
     }
 
     /**
-     * @param string $code
-     *
      * @return bool
      */
-    public function forCode(string $code): bool
+    public function isActive(): bool
     {
-        $configuration = $this->configurationRepository->findOneByCode($code);
+        $configuration = $this->configurationRepository->find();
         if (null === $configuration) {
             return false;
         }

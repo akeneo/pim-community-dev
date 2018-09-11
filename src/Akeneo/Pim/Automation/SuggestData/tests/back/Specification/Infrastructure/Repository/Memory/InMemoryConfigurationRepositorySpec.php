@@ -25,35 +25,26 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
 {
     public function it_is_an_in_memory_configuration_repository()
     {
-        $this->beConstructedWith([]);
+        $this->beConstructedWith();
 
         $this->shouldHaveType(InMemoryConfigurationRepository::class);
         $this->shouldImplement(ConfigurationRepositoryInterface::class);
     }
 
-    public function it_findOneByCodes_a_configuration_by_its_code()
+    public function it_finds_a_configuration()
     {
-        $configuration = new Configuration('foobar', ['field' => 'value']);
-        $this->beConstructedWith([$configuration]);
+        $configuration = new Configuration(['field' => 'value']);
+        $this->beConstructedWith($configuration);
 
-        $this->findOneByCode('foobar')->shouldReturn($configuration);
-    }
-
-    public function it_findOneByCodes_no_configuration_if_there_is_no_configuration_for_the_provided_code()
-    {
-        $configuration = new Configuration('foobar', ['field' => 'value']);
-        $this->beConstructedWith([$configuration]);
-
-        $this->findOneByCode('another_code')->shouldReturn(null);
+        $this->find()->shouldReturn($configuration);
     }
 
     public function it_saves_a_configuration()
     {
-        $configuration = new Configuration('foobar', ['field' => 'value']);
-        $this->beConstructedWith([]);
+        $configuration = new Configuration(['field' => 'value']);
 
         $this->save($configuration);
 
-        $this->findOneByCode('foobar')->shouldReturn($configuration);
+        $this->find()->shouldReturn($configuration);
     }
 }

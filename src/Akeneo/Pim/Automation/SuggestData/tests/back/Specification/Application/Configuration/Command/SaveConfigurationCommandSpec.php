@@ -23,37 +23,21 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
 {
     public function it_is_a_save_configuration_command()
     {
-        $this->beConstructedWith('foobar', ['foo' => 'bar']);
+        $this->beConstructedWith(['foo' => 'bar']);
 
         $this->shouldHaveType(SaveConfigurationCommand::class);
     }
 
-    public function it_returns_a_configuration_code()
-    {
-        $this->beConstructedWith('foobar', ['foo' => 'bar']);
-
-        $this->getCode()->shouldReturn('foobar');
-    }
-
     public function it_returns_a_values()
     {
-        $this->beConstructedWith('foobar', ['foo' => 'bar']);
+        $this->beConstructedWith(['foo' => 'bar']);
 
         $this->getValues()->shouldReturn(['foo' => 'bar']);
     }
 
-    public function it_throws_an_exception_during_instantiation_if_code_is_emtpy()
-    {
-        $this->beConstructedWith('', ['value' => 'value']);
-
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Configuration code cannot be empty.'))
-            ->duringInstantiation();
-    }
-
     public function it_throws_an_exception_during_instantiation_if_values_are_emtpy()
     {
-        $this->beConstructedWith('foobar', []);
+        $this->beConstructedWith([]);
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Configuration values cannot be empty.'))
@@ -62,7 +46,7 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
 
     public function it_throws_an_exception_during_instantiation_if_configuration_value_key_is_not_a_string()
     {
-        $this->beConstructedWith('foobar', [42 => 'value']);
+        $this->beConstructedWith([42 => 'value']);
 
         $this
             ->shouldThrow(new \InvalidArgumentException(
@@ -73,7 +57,7 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
 
     public function it_throws_an_exception_during_instantiation_if_configuration_value_value_is_not_a_string()
     {
-        $this->beConstructedWith('foobar', ['value' => 42]);
+        $this->beConstructedWith(['value' => 42]);
 
         $this
             ->shouldThrow(new \InvalidArgumentException(
@@ -84,7 +68,7 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
 
     public function it_throws_an_exception_during_instantiation_if_configuration_value_value_is_empty()
     {
-        $this->beConstructedWith('foobar', ['value' => '']);
+        $this->beConstructedWith(['value' => '']);
 
         $this
             ->shouldThrow(new \InvalidArgumentException('The value of a configuration value cannot be empty.'))

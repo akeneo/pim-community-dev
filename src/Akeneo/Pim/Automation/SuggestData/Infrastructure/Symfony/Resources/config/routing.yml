@@ -9,25 +9,25 @@ akeneo_suggest_data_franklin_subscription_status:
     methods: [GET]
 
 akeneo_suggest_data_connection_index:
-    path: /suggest-data/connection
+    path: /suggest-data/pim-ai/configuration
     methods: [GET]
 
 akeneo_suggest_data_connection_get:
-    path: /suggest-data/connection/{code}
+    path: /suggest-data/connection
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:getAction }
     requirements:
         code: '[\w._-]+'
     methods: [GET]
 
 akeneo_suggest_data_connection_post:
-    path: /suggest-data/connection/{code}
+    path: /suggest-data/connection
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:postAction }
     requirements:
         code: '[\w._-]+'
     methods: [POST]
 
 akeneo_suggest_data_is_connection_activated:
-    path: /suggest-data/connection/{code}/is-activated
+    path: /suggest-data/connection/is-activated
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
     requirements:
         code: '[\w._-]+'

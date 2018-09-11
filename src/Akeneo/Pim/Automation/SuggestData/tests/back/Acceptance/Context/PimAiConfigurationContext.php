@@ -31,8 +31,6 @@ class PimAiConfigurationContext implements Context
 
     private const PIM_AI_INVALID_TOKEN = 'invalid-token';
 
-    private const PIM_AI_CONFIGURATION_CODE = 'pim-ai';
-
     /** @var ActivateSuggestDataConnection */
     private $pimAiConnection;
 
@@ -46,7 +44,8 @@ class PimAiConfigurationContext implements Context
     private $getConnectionStatus;
 
     /**
-     * @var array Makes this context stateful. Useful for testing configuration retrieval.
+     * Make this context statefull. Useful for testing configuration retrieval.
+     * @var null|Configuration
      */
     private $retrievedConfiguration;
 
@@ -66,24 +65,24 @@ class PimAiConfigurationContext implements Context
         $this->configurationRepository = $configurationRepository;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->getConnectionStatus = $getConnectionStatus;
-        $this->retrievedConfiguration = [];
+        $this->retrievedConfiguration = null;
     }
 
     /**
      * @Given PIM.ai has not been configured
      */
-    public function pimAiHasNotBeenConfigured(): void
+    public function pimAiHasNotBeenConfigured()
     {
-        $configuration = $this->configurationRepository->findOneByCode(static::PIM_AI_CONFIGURATION_CODE);
-        Assert::assertNull($configuration);
+        $configuration = $this->configurationRepository->find(Configuration::PIM_AI_CODE);
+        Assert::isNull($configuration);
     }
 
     /**
      * @Given PIM.ai is configured with a valid token
      */
-    public function pimAiIsConfiguredWithAValidToken(): void
+    public function pimAiIsConfiguredWithAValidToken()
     {
-        $configuration = new Configuration(static::PIM_AI_CONFIGURATION_CODE, ['token' => static::PIM_AI_VALID_TOKEN]);
+        $configuration = new Configuration(['token' => static::PIM_AI_VALID_TOKEN]);
         $this->configurationRepository->save($configuration);
     }
 
@@ -92,10 +91,7 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiIsConfiguredWithAnExpiredToken(): void
     {
-        $configuration = new Configuration(
-            static::PIM_AI_CONFIGURATION_CODE,
-            ['token' => static::PIM_AI_INVALID_TOKEN]
-        );
+        $configuration = new Configuration(['token' => static::PIM_AI_INVALID_TOKEN]);
         $this->configurationRepository->save($configuration);
     }
 
@@ -120,33 +116,33 @@ class PimAiConfigurationContext implements Context
     /**
      * @When a system administrator retrieves the PIM.ai configuration
      */
-    public function retrievesTheConfiguration(): void
+    public function retrievesTheConfiguration()
     {
-        $this->retrievedConfiguration = $this->getNormalizedConfiguration->fromCode(static::PIM_AI_CONFIGURATION_CODE);
+        $this->retrievedConfiguration = $this->getNormalizedConfiguration->retrieve(Configuration::PIM_AI_CODE);
     }
 
     /**
      * @Then PIM.ai is activated
      */
-    public function pimAiIsActivated(): void
+    public function pimAiIsActivated()
     {
-        $isActive = $this->getConnectionStatus->forCode(static::PIM_AI_CONFIGURATION_CODE);
+        $isActive = $this->getConnectionStatus->isActive();
         Assert::assertTrue($isActive);
     }
 
     /**
      * @Then PIM.ai is not activated
      */
-    public function pimAiIsNotActivated(): void
+    public function pimAiIsNotActivated()
     {
-        $isActive = $this->getConnectionStatus->forCode(static::PIM_AI_CONFIGURATION_CODE);
+        $isActive = $this->getConnectionStatus->isActive();
         Assert::assertFalse($isActive);
     }
 
     /**
      * @Then PIM.ai valid token is retrieved
      */
-    public function aValidTokenIsRetrieved(): void
+    public function aValidTokenIsRetrieved()
     {
         $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_VALID_TOKEN, $this->retrievedConfiguration);
     }
@@ -154,19 +150,19 @@ class PimAiConfigurationContext implements Context
     /**
      * @Then PIM.ai expired token is retrieved
      */
-    public function anExpiredTokenIsRetrieved(): void
+    public function anExpiredTokenIsRetrieved()
     {
         $this->assertPimAiConfigurationEqualsTo(static::PIM_AI_INVALID_TOKEN, $this->retrievedConfiguration);
     }
 
     /**
      * @param string $expectedToken
-     * @param array  $expectedConfiguration
+     * @param array $expectedConfiguration
      */
-    private function assertPimAiConfigurationEqualsTo(string $expectedToken, array $expectedConfiguration): void
+    private function assertPimAiConfigurationEqualsTo(string $expectedToken, array $expectedConfiguration)
     {
         Assert::assertSame([
-            'code' => static::PIM_AI_CONFIGURATION_CODE,
+            'code' => Configuration::PIM_AI_CODE,
             'values' => [
                 'token' => $expectedToken,
             ],
@@ -174,14 +170,14 @@ class PimAiConfigurationContext implements Context
     }
 
     /**
-     * @param string $activationCode
+     * @param string $token
      *
      * @return bool
      */
-    private function activatePimAiConnection(string $activationCode): bool
+    private function activatePimAiConnection(string $token): bool
     {
         try {
-            $this->pimAiConnection->activate(static::PIM_AI_CONFIGURATION_CODE, ['token' => $activationCode]);
+            $this->pimAiConnection->activate(['token' => $token]);
         } catch (InvalidConnectionConfigurationException $exception) {
             return false;
         }

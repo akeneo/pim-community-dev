@@ -20,34 +20,17 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Configuration\Command;
  */
 class SaveConfigurationCommand
 {
-    /** @var string */
-    private $code;
-
     /** @var array */
     private $values;
 
     /**
-     * @param string $code
      * @param array  $configurationValues
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $code, array $configurationValues)
+    public function __construct(array $configurationValues)
     {
-        if (empty($code)) {
-            throw new \InvalidArgumentException('Configuration code cannot be empty.');
-        }
-        $this->code = $code;
-
         $this->addValues($configurationValues);
-    }
-
-    /**
-     * @return string
-     */
-    public function getCode(): string
-    {
-        return $this->code;
     }
 
     /**
