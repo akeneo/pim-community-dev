@@ -1,17 +1,25 @@
 import * as _ from 'underscore';
 import BaseForm = require('pimenrich/js/view/base');
+import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+
 const __ = require('oro/translator');
-const SimpleSelectAttribute = require('pimee/settings/mapping/simple-select-attribute');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
 const noDataTemplate = require('pim/template/common/no-data');
 
-/**
- * This module will allow user to map the attributes from PIM.ai to the catalog attributes.
- * It displays a grid with all the attributes to map.
- *
- * @author Pierre Allard <pierre.allard@akeneo.com>
- */
-interface Config {
+interface NormalizedAttributeMappingInterface {
+  mapping: {
+    [key: string] : {
+      pim_ai_attribute: {
+        label: string,
+        type: string
+      },
+      attribute: string,
+      status: number
+    }
+  };
+}
+
+interface AttributeMappingConfig {
   labels: {
     pending: string,
     mapped: string,
@@ -22,50 +30,44 @@ interface Config {
   }
 }
 
-/* Defined in Akeneo/Pim/Automation/SuggestData/Infrastructure/Controller/AttributeMappingController.php */
-const ATTRIBUTE_PENDING: number = 0;
-const ATTRIBUTE_MAPPED: number = 1;
-const ATTRIBUTE_UNMAPPED: number = 2;
-
-const VALID_MAPPING: { [key: string]: string[] } = {
-  'metric': [ 'pim_catalog_metric' ],
-  'select': [ 'pim_catalog_simpleselect' ],
-  'multiselect': [ 'pim_catalog_multiselect' ],
-  'number': [ 'pim_catalog_number' ],
-  'text': [ 'pim_catalog_text' ],
-};
-
-class InterfaceNormalizedAttributeMapping {
-    mapping: {
-      [key: string] : {
-        pim_ai_attribute: {
-          label: string,
-          type: string
-        },
-        attribute: string,
-        status: number
-      }
-    };
-}
-
+/**
+ * This module will allow user to map the attributes from PIM.ai to the catalog attributes.
+ * It displays a grid with all the attributes to map.
+ *
+ * The attribute types authorized for the mapping are defined in
+ * Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeMappingController
+ *
+ * @author Pierre Allard <pierre.allard@akeneo.com>
+ */
 class AttributeMapping extends BaseForm {
+  private static readonly ATTRIBUTE_PENDING: number = 0;
+  private static readonly ATTRIBUTE_MAPPED: number = 1;
+  private static readonly ATTRIBUTE_UNMAPPED: number = 2;
+  private static readonly VALID_MAPPING: { [key: string]: string[] } = {
+    'metric': [ 'pim_catalog_metric' ],
+    'select': [ 'pim_catalog_simpleselect' ],
+    'multiselect': [ 'pim_catalog_multiselect' ],
+    'number': [ 'pim_catalog_number' ],
+    'text': [ 'pim_catalog_text' ],
+  };
+
   readonly template = _.template(template);
   readonly noDataTemplate = _.template(noDataTemplate);
-  readonly config: Config = {
+  readonly config: AttributeMappingConfig = {
     labels: {
       pending: '',
       mapped: '',
       unmapped: '',
       pim_ai_attribute: '',
       catalog_attribute: '',
-      suggest_data: ''
+      suggest_data: '',
     }
   };
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: Config}) {
+  constructor(options: {config: AttributeMappingConfig}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -85,26 +87,28 @@ class AttributeMapping extends BaseForm {
    */
   public render(): BaseForm {
     this.$el.html('');
-    const familyMapping: InterfaceNormalizedAttributeMapping = this.getFormData();
+    const familyMapping: NormalizedAttributeMappingInterface = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
     const statuses: { [key: number]: string } = {};
-    statuses[ATTRIBUTE_PENDING] = __(this.config.labels.pending);
-    statuses[ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
-    statuses[ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
+    statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
+    statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
+    statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
+
     this.$el.html(this.template({
       mapping,
       statuses,
       pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
       catalog_attribute: __(this.config.labels.catalog_attribute),
-      suggest_data: __(this.config.labels.suggest_data)
+      suggest_data: __(this.config.labels.suggest_data),
     }) + this.noDataTemplate({
       __,
       imageClass: '',
       hint: __('pim_datagrid.no_results', {
         entityHint: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute')
       }),
-      subHint: 'pim_datagrid.no_results_subtitle'
+      subHint: 'pim_datagrid.no_results_subtitle',
     }));
+
     Object.keys(mapping).forEach((pim_ai_attribute_code) => {
       const $dom = this.$el.find(
         '.attribute-selector[data-pim-ai-attribute-code="' + pim_ai_attribute_code + '"]'
@@ -121,7 +125,7 @@ class AttributeMapping extends BaseForm {
           fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
           label: '',
           choiceRoute: 'pim_enrich_attribute_rest_index',
-          types: VALID_MAPPING[mapping[pim_ai_attribute_code].pim_ai_attribute.type],
+          types: AttributeMapping.VALID_MAPPING[mapping[pim_ai_attribute_code].pim_ai_attribute.type],
         },
         className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
       });
@@ -175,7 +179,7 @@ class AttributeMapping extends BaseForm {
   /**
    * Toggle the "there is no data" message regarding the number of visible rows.
    */
-  private toggleNoDataMessage() {
+  private toggleNoDataMessage(): void {
     this.$el.find('.searchable-row:visible').length ?
       this.$el.find('.no-data').hide() :
       this.$el.find('.no-data').show();
