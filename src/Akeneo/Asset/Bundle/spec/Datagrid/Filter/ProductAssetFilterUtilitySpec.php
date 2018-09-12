@@ -4,7 +4,7 @@ namespace spec\Akeneo\Asset\Bundle\Datagrid\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Asset\Bundle\Datagrid\Filter\TagFilterAwareInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;

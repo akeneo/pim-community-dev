@@ -1,5 +1,4 @@
 import * as _ from "underscore";
-import * as $ from 'jquery';
 import {EventsHash} from 'backbone';
 import BaseForm = require('pimenrich/js/view/base');
 const __ = require('oro/translator');
@@ -20,7 +19,7 @@ class FrontSearchFilter extends BaseForm {
    * {@inheritdoc}
    */
   constructor(options: { config: Object }) {
-    super({...options, ...{ className: 'AknTitleContainer-search' }});
+    super({...options, ...{ className: 'AknFilterBox-searchContainer' }});
   };
 
   /**
@@ -65,19 +64,14 @@ class FrontSearchFilter extends BaseForm {
   };
 
   /**
-   * Filter the items by words. If the user types 'foo bar', it will look for every row containing the strings
-   * 'foo' and 'bar', no matter the order of the words.
+   * Trigger an event to the grid to execute the search.
    */
   private doSearch() {
-    const search: string = (<string> this.$el.find('input').val());
-    const words: string[] = search.split(' ');
-
-    $('.searchable-row').each((_i: number, row: any) => {
-      const value = $(row).find('.searchable-value').html().trim();
-      const match = words.reduce((acc, word) => {
-        return acc && value.indexOf(word) >= 0;
-      }, true);
-      match ? $(row).show() : $(row).hide();
+    const value = (<string> this.$el.find('input').val());
+    this.trigger('pim_datagrid:filter-front', {
+      value,
+      type: 'search',
+      field: 'pim_ai_attribute'
     });
   }
 }

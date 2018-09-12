@@ -43,10 +43,10 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findOneByCode(string $code): ?Configuration
+    public function find(): ?Configuration
     {
         $oroConfig = $this->getOroConfigRepository()->findOneBy([
-            'scopedEntity' => $code,
+            'scopedEntity' => Configuration::PIM_AI_CODE,
             'recordId' => static::ORO_CONFIG_RECORD_ID,
         ]);
 
@@ -59,7 +59,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
             $configurationValues[$oroConfigValue->getName()] = $oroConfigValue->getValue();
         }
 
-        return new Configuration($oroConfig->getEntity(), $configurationValues);
+        return new Configuration($configurationValues);
     }
 
     /**
@@ -91,16 +91,14 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
      */
     private function findOrCreateOroConfig(Configuration $configuration): Config
     {
-        $code = $configuration->getCode();
-
         $oroConfig = $this->getOroConfigRepository()->findOneBy([
-            'scopedEntity' => $code,
+            'scopedEntity' => Configuration::PIM_AI_CODE,
             'recordId' => static::ORO_CONFIG_RECORD_ID,
         ]);
 
         if (null === $oroConfig) {
             $oroConfig = new Config();
-            $oroConfig->setEntity($code);
+            $oroConfig->setEntity(Configuration::PIM_AI_CODE);
             $oroConfig->setRecordId(static::ORO_CONFIG_RECORD_ID);
         }
 

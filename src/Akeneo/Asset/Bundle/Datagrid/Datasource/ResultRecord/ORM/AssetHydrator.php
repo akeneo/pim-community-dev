@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Datagrid\Datasource\ResultRecord\ORM;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Hydrate results of Doctrine ORM query as ResultRecord array

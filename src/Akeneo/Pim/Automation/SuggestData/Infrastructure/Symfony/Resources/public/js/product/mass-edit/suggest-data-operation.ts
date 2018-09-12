@@ -1,4 +1,5 @@
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 
 const __ = require('oro/translator');
 const Operation = require('pim/mass-edit-form/product/operation');
@@ -11,9 +12,10 @@ interface SuggestDataOperationConfig {
   description: string;
   code: string;
   jobInstanceCode: string;
-  warning: string;
   icon: string;
   illustration: string;
+  subscribeLabel: string;
+  unsubscribeLabel: string;
 }
 
 /**
@@ -30,16 +32,21 @@ class SuggestDataOperation extends Operation {
     description: '',
     code: '',
     jobInstanceCode: '',
-    warning: '',
     icon: '',
     illustration: '',
+    subscribeLabel: '',
+    unsubscribeLabel: '',
   };
 
   /**
    * {@inheritdoc}
    */
   constructor(options: { config: SuggestDataOperationConfig }) {
-    super(options);
+    super({
+      ...options, ...{
+        className: 'AknButtonList AknButtonList--single'
+      }
+    });
 
     this.config = {...this.config, ...options.config};
   };
@@ -47,12 +54,54 @@ class SuggestDataOperation extends Operation {
   /**
    * {@inheritdoc}
    */
+  configure(): void {
+    this.setAction('subscribe');
+
+    Operation.prototype.configure.apply(this, arguments);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public events(): Backbone.EventsHash {
+    return {
+      'click .AknButton': 'switchAction',
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public render() {
     this.$el.html(this.template({
-      warning: __(this.config.warning, {itemsCount: this.getFormData().itemsCount})
+      subscribeLabel: __(this.config.subscribeLabel),
+      unsubscribeLabel: __(this.config.unsubscribeLabel)
     }));
 
     return this;
+  }
+
+  /**
+   * @param event
+   */
+  protected switchAction(event: any): void {
+    const action: string = <string> $(event.target).attr('data-value');
+    const $button = $(event.target).parent().find('.AknButton--apply');
+
+    this.setAction(action);
+    $button.removeClass('AknButton--apply');
+    $(event.target).addClass('AknButton--apply');
+  }
+
+  /**
+   * @param {string} action
+   */
+  protected setAction(action: string): void {
+    let data = this.getFormData();
+
+    data.jobInstanceCode = this.config.jobInstanceCode.replace('%s', action);
+
+    this.setData(data);
   }
 }
 

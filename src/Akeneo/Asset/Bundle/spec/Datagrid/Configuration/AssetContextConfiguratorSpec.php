@@ -5,8 +5,8 @@ namespace spec\Akeneo\Asset\Bundle\Datagrid\Configuration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Locale;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 
@@ -22,7 +22,7 @@ class AssetContextConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
+        $this->shouldImplement('Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
     }
 
     function it_returns_locale_from_request($configuration, $paramsExtractor)

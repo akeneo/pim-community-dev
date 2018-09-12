@@ -16,7 +16,7 @@ namespace Akeneo\Asset\Bundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
+use Oro\Bundle\PimFilterBundle\Filter\AjaxChoiceFilter;
 
 /**
  * Tag filter

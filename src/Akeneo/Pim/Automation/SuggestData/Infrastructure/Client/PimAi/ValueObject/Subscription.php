@@ -35,7 +35,7 @@ class Subscription
     /**
      * @return string
      */
-    public function getSubscriptionId()
+    public function getSubscriptionId(): string
     {
         return $this->rawSubscription['id'];
     }
@@ -43,21 +43,31 @@ class Subscription
     /**
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->rawSubscription['identifiers'] + $this->rawSubscription['attributes'];
     }
 
     /**
+     * @return int
+     */
+    public function getTrackerId(): int
+    {
+        return $this->rawSubscription['tracker_id'];
+    }
+
+    /**
      * @param array $rawSubscription
+     *
      * @throws \InvalidArgumentException
      */
-    private function validateSubscription(array $rawSubscription)
+    private function validateSubscription(array $rawSubscription): void
     {
         $expectedKeys = [
             'id',
             'identifiers',
             'attributes',
+            'tracker_id'
         ];
 
         foreach ($expectedKeys as $key) {

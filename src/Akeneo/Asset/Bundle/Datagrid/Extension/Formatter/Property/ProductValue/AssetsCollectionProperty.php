@@ -12,8 +12,8 @@
 namespace Akeneo\Asset\Bundle\Datagrid\Extension\Formatter\Property\ProductValue;
 
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
-use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
 
 /**
  * Assets collection property for a product

@@ -24,15 +24,15 @@
             </div>
         </div>
     {% endif %}
-    {% if editRoute is defined %}
-        {{ UI.button({
-            'path' : path(editRoute),
-            'iClass' : 'icon-pencil ',
-            'label' : 'pim_common.edit',
-            'aClass' : 'AknButtonList-item AknButton--action edit-user'
-        }) }}
-    {% else %}
-        {% if resource_granted('pim_user_user_edit') %}
+    {% if resource_granted('pim_user_user_edit') %}
+        {% if editRoute is defined %}
+            {{ UI.button({
+                'path' : path(editRoute),
+                'iClass' : 'icon-pencil ',
+                'label' : 'pim_common.edit',
+                'aClass' : 'AknButtonList-item AknButton--action edit-user'
+            }) }}
+        {% else %}
             {{ UI.button({
                 'path' : path('pim_user_update', { id: entity.id }),
                 'iClass' : 'icon-pencil ',

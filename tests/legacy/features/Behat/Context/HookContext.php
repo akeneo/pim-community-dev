@@ -3,7 +3,6 @@
 namespace PimEnterprise\Behat\Context;
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Pim\Behat\Context\DBALPurger;
 use Pim\Behat\Context\HookContext as BaseHookContext;
 
 class HookContext extends BaseHookContext

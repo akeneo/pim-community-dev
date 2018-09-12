@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
-use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
@@ -42,11 +42,11 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_APPROVE_PRE_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type('Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent')
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_APPROVE_POST_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type('Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent')
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);

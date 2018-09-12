@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * In memory implementation of the configuration repository.
@@ -24,29 +23,23 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 final class InMemoryConfigurationRepository implements ConfigurationRepositoryInterface
 {
-    /** @var ArrayCollection */
-    private $configurations;
+    /** @var Configuration */
+    private $configuration;
 
     /**
-     * @param Configuration[] $configurations
+     * @param Configuration|null $configuration
      */
-    public function __construct(array $configurations = [])
+    public function __construct(Configuration $configuration = null)
     {
-        $this->configurations = new ArrayCollection($configurations);
+        $this->configuration = $configuration;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findOneByCode(string $code): ?Configuration
+    public function find(): ?Configuration
     {
-        foreach ($this->configurations as $configuration) {
-            if ($configuration->getCode() ===  $code) {
-                return $configuration;
-            }
-        }
-
-        return null;
+        return $this->configuration;
     }
 
     /**
@@ -54,6 +47,6 @@ final class InMemoryConfigurationRepository implements ConfigurationRepositoryIn
      */
     public function save(Configuration $configuration): void
     {
-        $this->configurations->add($configuration);
+        $this->configuration = $configuration;
     }
 }

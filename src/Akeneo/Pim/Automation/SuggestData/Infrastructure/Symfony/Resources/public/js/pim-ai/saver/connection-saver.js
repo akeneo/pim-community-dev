@@ -18,8 +18,8 @@ define([
         /**
          * {@inheritdoc}
          */
-        getUrl: function (code) {
-            return Routing.generate(__moduleConfig.url, {code: code});
+        getUrl: function () {
+            return Routing.generate(__moduleConfig.url);
         }
     });
 });

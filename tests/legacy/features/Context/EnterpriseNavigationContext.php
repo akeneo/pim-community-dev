@@ -23,6 +23,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         'asset edit'         => 'Asset edit',
         'asset mass upload'  => 'Asset massUpload',
         'assets categories'  => 'Asset Category tree index',
+        'PIM.ai configuration' => 'PimAi configuration index',
     ];
 
     /**

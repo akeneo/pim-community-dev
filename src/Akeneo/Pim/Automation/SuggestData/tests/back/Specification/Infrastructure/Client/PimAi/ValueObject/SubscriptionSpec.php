@@ -19,6 +19,7 @@ class SubscriptionSpec extends ObjectBehavior
             'attributes' => [
                 'Memory' => 'RAM (Installed): 256 MB',
             ],
+            'tracker_id' => 42
         ]);
     }
 

@@ -36,9 +36,9 @@ class ActivateSuggestDataConnectionSpec extends ObjectBehavior
     public function it_activates_a_valid_connection($saveConnectorConfigurationHandler)
     {
         $saveConnectorConfigurationHandler
-            ->handle(new SaveConfigurationCommand('foobar', ['foo' => 'bar']))
+            ->handle(new SaveConfigurationCommand(['foo' => 'bar']))
             ->shouldBeCalled();
 
-        $this->activate('foobar', ['foo' => 'bar']);
+        $this->activate(['foo' => 'bar']);
     }
 }

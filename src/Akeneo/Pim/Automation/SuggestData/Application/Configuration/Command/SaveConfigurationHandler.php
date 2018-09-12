@@ -58,15 +58,14 @@ class SaveConfigurationHandler
         $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
         if ($isAuthenticated !== true) {
             throw new InvalidConnectionConfigurationException(
-                sprintf('Provided configuration for connection to "%s" is invalid.', $saveConfiguration->getCode())
+                sprintf('Provided configuration is invalid.')
             );
         }
 
-        $configuration = $this->repository->findOneByCode($saveConfiguration->getCode());
+        $configuration = $this->repository->find();
 
         if (null === $configuration) {
             $configuration = new Configuration(
-                $saveConfiguration->getCode(),
                 $saveConfiguration->getValues()
             );
         } else {

@@ -33,30 +33,30 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
 
     public function it_checks_that_a_connection_is_active(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository)
     {
-        $configuration = new Configuration('foobar', ['token' => 'bar']);
+        $configuration = new Configuration(['token' => 'bar']);
 
-        $configurationRepository->findOneByCode('foobar')->willReturn($configuration);
+        $configurationRepository->find()->willReturn($configuration);
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
 
-        $this->forCode('foobar')->shouldReturn(true);
+        $this->isActive()->shouldReturn(true);
     }
 
     public function it_checks_that_a_connection_is_inactive(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository)
     {
-        $configuration = new Configuration('foobar', ['token' => 'bar']);
+        $configuration = new Configuration(['token' => 'bar']);
 
-        $configurationRepository->findOneByCode('foobar')->willReturn($configuration);
+        $configurationRepository->find()->willReturn($configuration);
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);
 
-        $this->forCode('foobar')->shouldReturn(false);
+        $this->isActive()->shouldReturn(false);
     }
 
     public function it_checks_that_a_connection_does_not_exist($configurationRepository)
     {
-        $configurationRepository->findOneByCode('foobar')->willReturn(null);
+        $configurationRepository->find()->willReturn(null);
 
-        $this->forCode('foobar')->shouldReturn(false);
+        $this->isActive()->shouldReturn(false);
     }
 }

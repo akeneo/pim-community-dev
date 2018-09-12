@@ -41,9 +41,9 @@ class ActivateSuggestDataConnection
      *
      * @throws \InvalidArgumentException
      */
-    public function activate(string $code, array $configuration): void
+    public function activate(array $configuration): void
     {
-        $saveConfiguration = new SaveConfigurationCommand($code, $configuration);
+        $saveConfiguration = new SaveConfigurationCommand($configuration);
         $this->saveConfigurationHandler->handle($saveConfiguration);
     }
 }

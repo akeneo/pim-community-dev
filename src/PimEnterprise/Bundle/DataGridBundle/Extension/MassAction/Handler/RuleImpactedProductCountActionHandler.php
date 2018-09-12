@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

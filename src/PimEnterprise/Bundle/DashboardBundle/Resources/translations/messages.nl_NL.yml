@@ -1,8 +1,0 @@
-pimee_dashboard:
-  widget:
-    product_drafts:
-      title: Voorstellen te recenseren
-      date: Datum
-      author: Auteur
-      review: Recensie
-      empty: Geen product concepten te recenseren
