@@ -59,8 +59,25 @@ final class ProductSubscriptionRequest
 
             $value = $this->product->getValue($mappedAttribute->getCode());
             if (null !== $value && $value->hasData()) {
-                $mapped[$pimAiCode] = $value->__toString();
+                $mapped[$pimAiCode] = (string) $value;
             }
+        }
+
+        return $this->doNotKeepMpnOrBrandAlone($mapped);
+    }
+
+    /**
+     * For PIM.ai, MPN and Brand form one identifier.
+     * As a result, we should never subscribe a product if it has a value for only one of them.
+     *
+     * @param array $mapped
+     *
+     * @return array
+     */
+    private function doNotKeepMpnOrBrandAlone(array $mapped): array
+    {
+        if (!array_key_exists('mpn', $mapped) || !array_key_exists('brand', $mapped)) {
+            unset($mapped['mpn'], $mapped['brand']);
         }
 
         return $mapped;
