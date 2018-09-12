@@ -100,6 +100,11 @@ class FiltersColumn extends BaseView {
       return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`)
   }
 
+  // @TODO add uniq
+  mergeAddedFilters(addedFilters: GridFilter[]) {
+    return [ ...this.loadedFilters, ...addedFilters]
+  }
+
   fetchNextFilters(event: JQueryMouseEventObject) {
       const list: any = event.currentTarget
       const scrollPosition = Math.max(0, list.scrollTop - 15)
@@ -114,7 +119,7 @@ class FiltersColumn extends BaseView {
                 return this.stopListeningToListScroll()
             }
 
-            this.loadedFilters = [ ...this.loadedFilters, ...loadedFilters ]
+            this.loadedFilters = this.mergeAddedFilters(loadedFilters)
             return this.renderFilters()
         })
       }
@@ -142,10 +147,14 @@ class FiltersColumn extends BaseView {
      return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
         const filters: GridFilter[] = this.defaultFilters.concat(loadedFilters)
 
+        this.loadedFilters = this.mergeAddedFilters(filters)
+
         return this.renderFilters(filters.filter((filter: GridFilter) => {
             const label: string = filter.label.toLowerCase()
+            const name: string = filter.name.toLowerCase()
+            const search: string = searchValue.toLowerCase()
 
-            return label.includes(searchValue.toLowerCase())
+            return label.includes(search) || name.includes(search)
         }))
       })
   }
@@ -201,7 +210,7 @@ class FiltersColumn extends BaseView {
   }
 
   triggerFiltersUpdated() {
-      console.log('triggerFiltersUpdated from filters-column')
+    console.log('triggerFiltersUpdated from filters-column')
     mediator.trigger('filters-column:update-filters', this.loadedFilters, this.gridCollection)
   }
 
