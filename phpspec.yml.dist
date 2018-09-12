@@ -193,11 +193,6 @@ suites:
         psr4_prefix: Pim\Bundle\LocalizationBundle
         spec_path: src/Pim/Bundle/LocalizationBundle
         src_path: src/Pim/Bundle/LocalizationBundle
-    ReferenceDataBundle:
-        namespace: Pim\Bundle\ReferenceDataBundle
-        psr4_prefix: Pim\Bundle\ReferenceDataBundle
-        spec_path: src/Pim/Bundle/ReferenceDataBundle
-        src_path: src/Pim/Bundle/ReferenceDataBundle
     UserBundle:
         namespace: Akeneo\UserManagement\Bundle
         psr4_prefix: Akeneo\UserManagement\Bundle
