@@ -9,6 +9,7 @@ Feature: Family creation
     And I am logged in as "Peter"
     And I am on the "Accessories" family page
 
+  @critical
   Scenario: Successfully create a new family variant
     Given I visit the "Variants" tab
     When I open the family variant creation form
@@ -22,6 +23,7 @@ Feature: Family creation
     Then I should see the text "Family variant successfully created"
     Then I should see the text "Drag & drop attributes to the selected variant level"
 
+  @critical
   Scenario: Successfully validate a family variant
     Given I visit the "Variants" tab
     When I open the family variant creation form

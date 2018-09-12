@@ -8,6 +8,7 @@ Feature: Add attribute to a family
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
+  @critical
   @info https://akeneo.atlassian.net/browse/PIM-355
   Scenario: Successfully list available grouped attributes
     Given I am on the "sandals" family page
@@ -16,6 +17,7 @@ Feature: Add attribute to a family
     And I should see available attribute Lace color in group "Colors"
     And I should see available attribute Top view in group "Media"
 
+  @critical
   @info https://akeneo.atlassian.net/browse/PIM-355
   Scenario: Successfully display all grouped family's attributes
     Given I am on the "sneakers" family page
@@ -26,6 +28,7 @@ Feature: Add attribute to a family
     And I should see attribute "Size" in group "Sizes"
     And I should see attributes "Color and Lace color" in group "Colors"
 
+  @critical
   @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
     Given I am on the "sandals" family page
