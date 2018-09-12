@@ -14,17 +14,24 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionWebservice;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * TODO: There are lot of spec to add.
  */
 class SubscriptionWebserviceSpec extends ObjectBehavior
 {
@@ -48,7 +55,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/' . $subscriptionId)
+            ->generate('/api/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient->request('DELETE', 'unsubscription-route')->shouldBeCalled();
@@ -61,7 +68,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/' . $subscriptionId)
+            ->generate('/api/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient
@@ -80,7 +87,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/' . $subscriptionId)
+            ->generate('/api/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient
@@ -92,5 +99,132 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
                 new BadRequestException('Something went wrong during product subscription: ')
             )
             ->during('unsubscribeProduct', [$subscriptionId]);
+    }
+
+    // Next specs are about fetchProducts() and nothing is needed more about this method.
+    public function it_fetches_product_subscriptions(
+        $uriGenerator,
+        $httpClient,
+        ResponseInterface $response,
+        StreamInterface $stream
+    ) {
+        $uriGenerator->generate('/api/subscriptions/updated-since/yesterday')->willReturn('route')->shouldBeCalled();
+        $httpClient->request('GET', 'route')->willReturn($response)->shouldBeCalled();
+
+        $data = <<<JSON
+            {
+              "_links": {
+                "subscription": []
+              },
+              "_embedded": {
+                "subscription": []
+              },
+              "total": 0,
+              "limit": 100
+            }
+JSON;
+
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn($data);
+
+        $subscriptionsPage = $this->fetchProducts();
+        $subscriptionsPage->shouldReturnAnInstanceOf(SubscriptionsCollection::class);
+    }
+
+    public function it_fetches_product_subscriptions_from_an_uri(
+        $uriGenerator,
+        $httpClient,
+        ResponseInterface $response,
+        StreamInterface $stream
+    ) {
+        $uriGenerator->getBaseUri()->willReturn('BASE_URI')->shouldBeCalled();
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willReturn($response)->shouldBeCalled();
+
+        $data = <<<JSON
+            {
+              "_links": {
+                "subscription": []
+              },
+              "_embedded": {
+                "subscription": []
+              },
+              "total": 0,
+              "limit": 100
+            }
+JSON;
+
+        $response->getBody()->willReturn($stream);
+        $stream->getContents()->willReturn($data);
+
+        $subscriptionsPage = $this->fetchProducts('/my/uri');
+        $subscriptionsPage->shouldReturnAnInstanceOf(SubscriptionsCollection::class);
+    }
+
+    public function it_throws_a_pim_ai_server_exception_if_something_went_wrong_with_pim_ai(
+        $uriGenerator,
+        $httpClient
+    ) {
+        $request = new Request('GET', '/my/uri');
+        $response = new Response(500);
+        $clientException = new ServerException('An exception message', $request, $response);
+
+        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
+
+        $this
+            ->shouldThrow(
+                new PimAiServerException(
+                    'Something went wrong on PIM.ai side during product subscription: An exception message.'
+                )
+            )
+            ->during('fetchProducts', ['/my/uri']);
+    }
+
+    public function it_throws_an_insufficient_credit_exception($uriGenerator, $httpClient)
+    {
+        $request = new Request('GET', '/my/uri');
+        $response = new Response(402);
+        $clientException = new ClientException('An exception message', $request, $response);
+
+        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
+
+        $this
+            ->shouldThrow(
+                new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe.')
+            )
+            ->during('fetchProducts', ['/my/uri']);
+    }
+
+    public function it_throws_an_invalid_token_exception($uriGenerator, $httpClient)
+    {
+        $request = new Request('GET', '/my/uri');
+        $response = new Response(403);
+        $clientException = new ClientException('An exception message', $request, $response);
+
+        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
+
+        $this
+            ->shouldThrow(
+                new InvalidTokenException('The PIM.ai token is missing or invalid.')
+            )
+            ->during('fetchProducts', ['/my/uri']);
+    }
+
+    public function it_throws_a_bad_request_exception($uriGenerator, $httpClient)
+    {
+        $request = new Request('GET', '/my/uri');
+        $response = new Response(400);
+        $clientException = new ClientException('You did something wrong', $request, $response);
+
+        $uriGenerator->getBaseUri()->willReturn('BASE_URI');
+        $httpClient->request('GET', 'BASE_URI/my/uri')->willThrow($clientException);
+
+        $this
+            ->shouldThrow(
+                new BadRequestException('Something went wrong during product subscription: You did something wrong.')
+            )
+            ->during('fetchProducts', ['/my/uri']);
     }
 }

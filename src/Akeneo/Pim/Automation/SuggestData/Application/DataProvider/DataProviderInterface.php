@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -39,9 +39,11 @@ interface DataProviderInterface
     public function authenticate(string $token): bool;
 
     /**
-     * @return ProductSubscriptionsResponse
+     * @return \Iterator
+     *
+     * @throws ProductSubscriptionException
      */
-    public function fetch(): ProductSubscriptionsResponse;
+    public function fetch(): \Iterator;
 
     /**
      * Updates the identifiers mapping.

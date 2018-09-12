@@ -42,7 +42,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $httpClient
     ): void {
         $familyCode = 'router';
-        $route = sprintf('/mapping/%s/attributes', $familyCode);
+        $route = sprintf('/api/mapping/%s/attributes', $familyCode);
         $uriGenerator->generate($route)->willReturn('/my_route');
 
         $apiResponse->getBody()->willReturn($stream);
@@ -59,7 +59,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $familyCode = 'router';
         $mapping = ['foo' => 'bar'];
 
-        $route = sprintf('/mapping/%s/attributes', $familyCode);
+        $route = sprintf('/api/mapping/%s/attributes', $familyCode);
         $uriGenerator->generate($route)->willReturn('/my_route');
 
         $httpClient->request('PUT', '/my_route', ['form_params' => $mapping]);

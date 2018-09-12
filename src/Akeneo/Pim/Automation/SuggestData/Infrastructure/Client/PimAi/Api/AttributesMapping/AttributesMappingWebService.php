@@ -52,7 +52,7 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
      */
     public function fetchByFamily(string $familyCode): AttributesMapping
     {
-        $route = $this->uriGenerator->generate(sprintf('/mapping/%s/attributes', $familyCode));
+        $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
 
         try {
             $response = $this->httpClient->request('GET', $route);
@@ -90,7 +90,7 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
      */
     public function update(string $familyCode, array $mapping): void
     {
-        $route = $this->uriGenerator->generate(sprintf('/mapping/%s/attributes', $familyCode));
+        $route = $this->uriGenerator->generate(sprintf('/api/mapping/%s/attributes', $familyCode));
 
         $this->httpClient->request('PUT', $route, [
             'form_params' => $mapping,

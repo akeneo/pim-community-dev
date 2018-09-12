@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
@@ -24,11 +25,13 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attributes
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionsCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -36,6 +39,9 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * TODO: There are lot of spec to add. Half of the class is not spec.
+ */
 class PimAISpec extends ObjectBehavior
 {
     public function let(
@@ -61,6 +67,7 @@ class PimAISpec extends ObjectBehavior
     public function it_is_pim_ai_adapter(): void
     {
         $this->shouldHaveType(PimAI::class);
+        $this->shouldImplement(DataProviderInterface::class);
     }
 
     public function it_throws_an_exception_if_no_mapping_has_been_defined(
@@ -75,7 +82,6 @@ class PimAISpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_product_has_no_mapped_value(
         $identifiersMappingRepository,
-        $subscriptionApi,
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue
@@ -269,7 +275,24 @@ class PimAISpec extends ObjectBehavior
         $attributesMappingResponse->shouldHaveCount(2);
     }
 
-    public function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
+    // Next specs are about `fetch()` method and don't need more spec.
+    public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page)
+    {
+        $subscriptionApi->fetchProducts()->willReturn($page);
+
+        $cursor = $this->fetch();
+        $cursor->shouldBeAnInstanceOf(SubscriptionsCursor::class);
+    }
+
+    public function it_throws_product_subscription_exception_if_something_went_wrong_during_fetch($subscriptionApi)
+    {
+        $clientException = new ClientException('An exception message');
+        $subscriptionApi->fetchProducts()->willThrow($clientException);
+
+        $this->shouldThrow(new ProductSubscriptionException('An exception message'))->during('fetch');
+    }
+
+    function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
     {
         $familyCode = 'foobar';
         $attributesMapping = ['foo' => 'bar'];

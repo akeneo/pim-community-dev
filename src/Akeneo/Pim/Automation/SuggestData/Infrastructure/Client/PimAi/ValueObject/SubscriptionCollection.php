@@ -33,9 +33,9 @@ class SubscriptionCollection implements \Countable
     }
 
     /**
-     * @return iterable
+     * @return array
      */
-    public function getSubscriptions(): iterable
+    public function getSubscriptions(): array
     {
         return $this->collection;
     }

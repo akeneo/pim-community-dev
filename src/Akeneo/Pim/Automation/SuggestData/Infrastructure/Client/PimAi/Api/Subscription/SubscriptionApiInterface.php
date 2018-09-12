@@ -15,6 +15,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subs
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 
 /**
@@ -30,9 +32,18 @@ interface SubscriptionApiInterface
     public function subscribeProduct(array $identifiers, int $trackerId, array $familyInfos): ApiResponse;
 
     /**
-     * @return ApiResponse
+     * TODO: Rename this method. It does not fetch products.
+     *
+     * @param string|null $uri In case you have a pre-encoded uri.
+     *
+     * @return SubscriptionsCollection
+     *
+     * @throws BadRequestException
+     * @throws InsufficientCreditsException
+     * @throws InvalidTokenException
+     * @throws PimAiServerException
      */
-    public function fetchProducts(): ApiResponse;
+    public function fetchProducts(string $uri = null): SubscriptionsCollection;
 
     /**
      * @param string $subscriptionId
