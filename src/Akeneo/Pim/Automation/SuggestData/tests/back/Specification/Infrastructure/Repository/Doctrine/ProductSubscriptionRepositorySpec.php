@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Reposit
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -24,7 +24,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionRepositorySpec extends ObjectBehavior
 {
-    public function let(EntityManager $em)
+    public function let(EntityManagerInterface $em)
     {
         $this->beConstructedWith($em);
     }
