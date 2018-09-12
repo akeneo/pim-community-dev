@@ -4,7 +4,7 @@ namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductAssociationNormalizer;
-use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductAssociationNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, ImageNormalizer $imageNormalizer)
+    function let(SerializerInterface $serializer, \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer)
     {
         $this->beConstructedWith($imageNormalizer);
 

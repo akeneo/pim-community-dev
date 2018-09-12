@@ -5,7 +5,7 @@ namespace spec\Oro\Bundle\PimDataGridBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductModelNormalizer;
-use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
@@ -28,7 +28,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $findVariantProductCompletenessQuery,
         ImageAsLabel $imageAsLabel,
-        ImageNormalizer $imageNormalizer
+        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
     ) {
         $this->beConstructedWith($filter, $findVariantProductCompletenessQuery, $imageAsLabel, $imageNormalizer);
 

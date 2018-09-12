@@ -8,9 +8,9 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\ImageAsLabel;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\VariantProductRatioInterface;
-use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -35,20 +35,20 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
-    /** @var ImageNormalizer */
+    /** @var \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer */
     private $imageNormalizer;
 
     /**
-     * @param CollectionFilterInterface    $filter
-     * @param VariantProductRatioInterface $variantProductRatioQuery
-     * @param ImageAsLabel                 $imageAsLabel
-     * @param ImageNormalizer              $imageNormalizer
+     * @param CollectionFilterInterface                                                       $filter
+     * @param VariantProductRatioInterface                                                    $variantProductRatioQuery
+     * @param ImageAsLabel                                                                    $imageAsLabel
+     * @param \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
      */
     public function __construct(
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
-        ImageNormalizer $imageNormalizer
+        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
     ) {
         $this->filter                   = $filter;
         $this->variantProductRatioQuery = $variantProductRatioQuery;

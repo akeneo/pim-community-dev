@@ -3,7 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Normalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -23,7 +23,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     protected $imageNormalizer;
 
     /**
-     * @param ImageNormalizer           $imageNormalizer
+     * @param \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
      */
     public function __construct(ImageNormalizer $imageNormalizer)
     {
