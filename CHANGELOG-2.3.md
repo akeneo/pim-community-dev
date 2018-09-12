@@ -1,5 +1,7 @@
 # 2.3.x
 
+- PIM-7647: Fix completeness filter on the product export builder
+
 # 2.3.7 (2018-09-11)
 
 ## Bug fixes

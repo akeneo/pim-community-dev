@@ -283,21 +283,41 @@ define(
              * Updates the form model by iterating over filter views
              */
             updateModel: function () {
-                var data = this.getFormData();
+                const data = this.getFormData();
                 if (_.isEmpty(data)) {
                     return;
                 }
 
-                var dataFilterCollection = [];
+                let dataFilterCollection = PropertyAccessor.accessProperty(data, 'configuration.filters.data', []);
 
+                // Remove deleted filters
+                dataFilterCollection = dataFilterCollection.filter((filter) => {
+                    return this.filterViews.findIndex((filterView) => {
+                        return !filterView.isEmpty() && filterView.getFormData().field === filter.field;
+                    }) !== -1;
+                });
+
+                // Update or add new filters
                 _.each(this.filterViews, function (filterView) {
                     if (!filterView.isEmpty()) {
-                        dataFilterCollection.push(filterView.getFormData());
+                        const field = filterView.getFormData().field;
+                        const index = dataFilterCollection.findIndex((data) => {
+                            return data.field === field;
+                        });
+                        if (index === -1) {
+                            dataFilterCollection.push(filterView.getFormData());
+                        } else {
+                            dataFilterCollection[index] = filterView.getFormData();
+                        }
                     }
                 });
-                data = PropertyAccessor.updateProperty(data, 'configuration.filters.data', dataFilterCollection);
+                const newData = PropertyAccessor.updateProperty(
+                    data,
+                    'configuration.filters.data',
+                    dataFilterCollection
+                );
 
-                this.setData(data);
+                this.setData(newData);
             },
 
             /**
