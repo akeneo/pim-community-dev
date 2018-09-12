@@ -104,6 +104,13 @@ final class SubscriptionFake implements SubscriptionApiInterface
      */
     public function unsubscribeProduct(string $subscriptionId): void
     {
+        switch ($this->status) {
+            case self::STATUS_EXPIRED_TOKEN:
+                throw new InvalidTokenException();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
