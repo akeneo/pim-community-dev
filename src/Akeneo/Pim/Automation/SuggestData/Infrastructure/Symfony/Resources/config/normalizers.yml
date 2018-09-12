@@ -3,6 +3,6 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer'
 
     akeneo.pim.automation.suggest_data.normalizers.suggested_data:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard\SuggestedDataNormalizer'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute'
