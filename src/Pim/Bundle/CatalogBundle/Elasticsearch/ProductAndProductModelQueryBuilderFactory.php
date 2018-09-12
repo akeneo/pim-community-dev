@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
@@ -21,18 +20,14 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     /** @var ProductQueryBuilderFactoryInterface */
     private $factory;
 
-    /** @var CategoryRepositoryInterface */
-    private $categoryRepository;
-
     /**
      * @param string                              $pqbClass
      * @param ProductQueryBuilderFactoryInterface $factory
      */
-    public function __construct(string $pqbClass, ProductQueryBuilderFactoryInterface $factory, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(string $pqbClass, ProductQueryBuilderFactoryInterface $factory)
     {
         $this->pqbClass = $pqbClass;
         $this->factory = $factory;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -42,6 +37,6 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     {
         $basePqb = $this->factory->create($options);
 
-        return new $this->pqbClass($basePqb, $this->categoryRepository);
+        return new $this->pqbClass($basePqb);
     }
 }

@@ -31,7 +31,6 @@ services:
         arguments:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
-            - '@pim_catalog.repository.category'
 
     pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
         public: false

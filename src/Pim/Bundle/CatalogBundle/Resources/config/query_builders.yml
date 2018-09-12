@@ -22,6 +22,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
     pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
     pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
+    pim_catalog.query.elasticsearch.filter.category_of_ancestors.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryOfAncestorsFilter
     pim_catalog.query.elasticsearch.filter.group.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
     pim_catalog.query.elasticsearch.filter.status.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\StatusFilter
     pim_catalog.query.elasticsearch.filter.datetime.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\DateTimeFilter
@@ -116,7 +117,6 @@ services:
         arguments:
             - '%pim_catalog.query.product_and_product_model_query_builder.class%'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
-            - '@pim_catalog.repository.category'
 
     pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
         public: false
@@ -283,6 +283,15 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.category_of_ancestors:
+        class: '%pim_catalog.query.elasticsearch.filter.category_of_ancestors.class%'
+        arguments:
+        - '@pim_catalog.repository.category'
+        - ['categories_of_ancestors']
+        - ['IN CHILDREN']
+        tags:
+        - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
     pim_catalog.query.elasticsearch.filter.status:
         class: '%pim_catalog.query.elasticsearch.filter.status.class%'
