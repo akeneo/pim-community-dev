@@ -46,13 +46,17 @@ final class PimAiConfigurationContext extends PimContext
      */
     public function pimAiHasNotBeenConfigured(): void
     {
-        $configuration = $this->configurationRepository->findOneByCode('pim-ai');
+        $configuration = $this->configurationRepository->find();
 
         Assert::null($configuration);
     }
 
     /**
      * @When a system administrator configures PIM.ai using a valid token
+     *
+     * @throws \Behat\Mink\Exception\ElementNotFoundException
+     * @throws \Context\Spin\TimeoutException
+     * @throws \Exception
      */
     public function pimAiIsConfiguredWithAValidToken(): void
     {
@@ -63,6 +67,8 @@ final class PimAiConfigurationContext extends PimContext
 
     /**
      * @Then PIM.ai is activated
+     *
+     * @throws \Context\Spin\TimeoutException
      */
     public function pimAiIsActivated(): void
     {
@@ -70,6 +76,9 @@ final class PimAiConfigurationContext extends PimContext
         $this->checkActivationButtonIsGreen();
     }
 
+    /**
+     * @throws \Exception
+     */
     private function loadDefaultCatalog(): void
     {
         $this
@@ -83,6 +92,10 @@ final class PimAiConfigurationContext extends PimContext
         $this->getNavigationContext()->iAmLoggedInAs('admin', 'admin');
     }
 
+    /**
+     * @throws \Behat\Mink\Exception\ElementNotFoundException
+     * @throws \Context\Spin\TimeoutException
+     */
     private function configureValidToken(): void
     {
         $this->getNavigationContext()->iAmOnThePage('PIM.ai configuration');
@@ -100,10 +113,13 @@ final class PimAiConfigurationContext extends PimContext
         $this->getCurrentPage()->pressButton('Activate');
     }
 
+    /**
+     * @throws \Context\Spin\TimeoutException
+     */
     private function checkPimAiConfigurationIsSaved(): void
     {
         $this->spin(function (): bool {
-            $configuration = $this->configurationRepository->findOneByCode('pim-ai');
+            $configuration = $this->configurationRepository->find();
 
             if (!$configuration instanceof Configuration) {
                 return false;
@@ -113,6 +129,9 @@ final class PimAiConfigurationContext extends PimContext
         }, 'There is no PIM.ai configuration saved.');
     }
 
+    /**
+     * @throws \Context\Spin\TimeoutException
+     */
     private function checkActivationButtonIsGreen()
     {
         $activationButton = $this->spin(function (): ?NodeElement {
