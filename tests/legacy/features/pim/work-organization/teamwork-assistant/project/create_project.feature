@@ -4,6 +4,7 @@ Feature: Create enrichment project
   As a project creator
   I need to be able to create an enrichment project
 
+  @critical
   Scenario: A project creator can create an enrichment project
     Given a "footwear" catalog configuration
     And the following products:
