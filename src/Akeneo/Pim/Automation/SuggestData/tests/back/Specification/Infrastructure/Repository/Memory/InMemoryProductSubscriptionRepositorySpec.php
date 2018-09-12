@@ -19,7 +19,9 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepos
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -109,6 +111,20 @@ class InMemoryProductSubscriptionRepositorySpec extends ObjectBehavior
         $this->save($otherSubscription);
 
         $this->findPendingSubscriptions()->shouldReturn([$subscription]);
+    }
+
+    public function it_deletes_a_product_susbcription(
+        ProductSubscription $subscription,
+        ProductInterface $product
+    ) {
+        $product->getId()->willReturn(42);
+        $subscription->getProduct()->willReturn($product);
+
+        $this->save($subscription);
+        $this->findOneByProductId(42)->shouldReturn($subscription);
+
+        $this->delete($subscription);
+        $this->findOneByProductId(42)->shouldReturn(null);
     }
 
     /**

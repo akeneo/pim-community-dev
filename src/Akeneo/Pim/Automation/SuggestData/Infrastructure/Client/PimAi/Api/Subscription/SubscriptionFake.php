@@ -97,6 +97,16 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * Fake implementation just takes the subscription id
+     * It does not return anything but can throw some exceptions
+     */
+    public function unsubscribeProduct(string $subscriptionId): void
+    {
+    }
+
+    /**
      * Fakes an expired token
      */
     public function expireToken(): void

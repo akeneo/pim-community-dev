@@ -21,6 +21,12 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
+    akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+
     akeneo.pim.automation.suggest_data.product_subscription.handler.fetch_products:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\FetchProductsHandler'
         arguments:

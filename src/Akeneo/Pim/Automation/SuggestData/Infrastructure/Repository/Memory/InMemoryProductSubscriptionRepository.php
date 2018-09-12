@@ -27,6 +27,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
 
     /**
      * {@inheritdoc}
+     * @deprecated
      */
     public function findOneByProductAndSubscriptionId(
         ProductInterface $product,
@@ -82,6 +83,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
 
     /**
      * {@inheritdoc}
+     * @deprecated
      */
     public function getSubscriptionStatusForProductId(int $productId): array
     {
@@ -90,5 +92,13 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
         }
 
         return ['subscription_id' => $this->subscriptions[$productId]->getSubscriptionId()];
+    }
+
+    /**
+     * @param ProductSubscription $subscription
+     */
+    public function delete(ProductSubscription $subscription): void
+    {
+        unset($this->subscriptions[$subscription->getProduct()->getId()]);
     }
 }

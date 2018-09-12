@@ -148,6 +148,20 @@ class PimAI implements DataProviderInterface
     }
 
     /**
+     * @param string $subscriptionId
+     *
+     * @throws ProductSubscriptionException
+     */
+    public function unsubscribe(string $subscriptionId): void
+    {
+        try {
+            $this->subscriptionApi->unsubscribeProduct($subscriptionId);
+        } catch (ClientException $e) {
+            throw new ProductSubscriptionException($e->getMessage());
+        }
+    }
+
+    /**
      * @param Subscription $subscription
      *
      * @return ProductSubscriptionResponse

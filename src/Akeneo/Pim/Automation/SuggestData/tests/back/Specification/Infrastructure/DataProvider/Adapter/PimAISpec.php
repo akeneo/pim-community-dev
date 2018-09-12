@@ -211,6 +211,26 @@ class PimAISpec extends ObjectBehavior
         $this->updateIdentifiersMapping($mapping);
     }
 
+    public function it_unsubscribes_a_subscription_id_from_pim_ai($subscriptionApi)
+    {
+        $subscriptionApi->unsubscribeProduct('foo-bar')->shouldBeCalled();
+
+        $this->unsubscribe('foo-bar')->shouldReturn(null);
+    }
+
+    public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi)
+    {
+        $clientException = new ClientException('exception-message');
+        $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
+
+        $this
+            ->shouldThrow(new ProductSubscriptionException('exception-message'))
+            ->during(
+                'unsubscribe',
+                ['foo-bar']
+            );
+    }
+
     /**
      * @return SubscriptionCollection
      */
