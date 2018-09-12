@@ -22,9 +22,9 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
     /** @var User[] */
     private $users;
 
-    public function __construct()
+    public function __construct(array $users = [])
     {
-        $this->users = new ArrayCollection();
+        $this->users = new ArrayCollection($users);
     }
 
     public function save($user, array $options = [])
@@ -80,7 +80,22 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException(__METHOD__);
+        $users = [];
+        foreach ($this->users as $user) {
+            $keepThisUser = true;
+            foreach ($criteria as $key => $value) {
+                $getter = sprintf('get%s', ucfirst($key));
+                if ($user->$getter() !== $value) {
+                    $keepThisUser = false;
+                }
+            }
+
+            if ($keepThisUser) {
+                $users[] = $user;
+            }
+        }
+
+        return $users;
     }
 
     /**
