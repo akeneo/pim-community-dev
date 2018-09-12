@@ -74,7 +74,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         );
     }
 
-    function it_is_thrown_if_it_miss_a_mandatory_attribute()
+    public function it_is_thrown_if_it_miss_a_mandatory_attribute()
     {
         $this->beConstructedThrough('mandatoryAttributeMapping', ['foo', 'brand']);
 
@@ -84,7 +84,7 @@ class InvalidMappingExceptionSpec extends ObjectBehavior
         $this->getPath()->shouldReturn('brand');
     }
 
-    function it_is_thrown_in_case_of_wrong_attribute_type()
+    public function it_is_thrown_in_case_of_wrong_attribute_type()
     {
         $this->beConstructedThrough('attributeType', ['foo', 'brand']);
 

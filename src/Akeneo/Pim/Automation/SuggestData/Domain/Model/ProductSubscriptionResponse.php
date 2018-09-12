@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-
 /**
  * Represents a standard response from a subscription request
  * Holds a subscription id and optional suggested data

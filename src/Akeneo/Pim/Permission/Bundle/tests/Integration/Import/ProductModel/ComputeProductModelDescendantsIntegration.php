@@ -39,11 +39,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 class ComputeProductModelDescendantsIntegration extends AbstractProductModelImportTestCase
 {
     /**
-     * @test
-     *
      * Checks that non viewable values/categories are still indexed after a product model import
      */
-    function it_correctly_indexes_product_models_after_an_import_with_restricted_permissions()
+    function testItCorrectlyIndexesProductModelsAfterAnImportWithRestrictedPermissions()
     {
         $content = <<<CSV
 code;family_variant;parent;categories;a_localized_and_scopable_text_area-en_US-ecommerce;a_text

@@ -12,12 +12,11 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
 use Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand;
 use Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand;
-use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -52,11 +51,11 @@ class MassUploadAssetsSubscriber implements EventSubscriberInterface
     }
 
     /***
-     * @param GenericEvent $event
+     * @param InstallerEvent $event
      *
      * @throws \Exception
      */
-    public function massUploadAssets(GenericEvent $event)
+    public function massUploadAssets(InstallerEvent $event)
     {
         if ('fixtures_asset_csv' !== $event->getSubject()) {
             return;
@@ -67,18 +66,7 @@ class MassUploadAssetsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (
-            !$event->hasArgument('command_executor') ||
-            !$event->getArgument('command_executor') instanceof CommandExecutor
-        ) {
-            throw new \Exception(sprintf(
-                '%s expects $event parameter to have a \'command_executor\' argument of type %s',
-                __METHOD__,
-                CommandExecutor::class
-            ));
-        }
-
-        $commandExecutor = $event->getArgument('command_executor');
+        $commandExecutor = $event->getCommandExecutor();
         $commandExecutor->runCommand(
             CopyAssetFilesCommand::NAME,
             [

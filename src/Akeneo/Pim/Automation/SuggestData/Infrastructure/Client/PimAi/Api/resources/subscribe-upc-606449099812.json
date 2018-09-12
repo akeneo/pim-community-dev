@@ -53,6 +53,7 @@
           "UNII Maximum Frequency": "5 GHz",
           "Wireless Transmission Speed": "1300 Mbit/s"
         },
+        "tracker_id": 42,
         "extra": null,
         "created_at": "2018-08-03T09:57:36+00:00",
         "refreshed_at": "2018-07-31T15:26:56+00:00",

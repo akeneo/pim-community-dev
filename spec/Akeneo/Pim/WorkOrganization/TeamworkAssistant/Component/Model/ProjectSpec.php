@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model;
 
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;

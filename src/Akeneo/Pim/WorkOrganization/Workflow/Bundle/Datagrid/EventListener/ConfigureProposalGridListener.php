@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Grid listener to configure proposal grid

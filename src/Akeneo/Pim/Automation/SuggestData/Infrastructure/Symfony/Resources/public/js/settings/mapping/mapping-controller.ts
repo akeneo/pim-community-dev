@@ -20,7 +20,7 @@ class MappingController extends BaseController {
    * {@inheritdoc}
    */
   renderForm() {
-    return isConnectionActivated(this.options.config.connectionCode)
+    return isConnectionActivated()
       .then(connectionIsActivated => {
         const entity = this.options.config.entity;
         let formToBuild = 'pimee-' + entity + '-index-inactive-connection';

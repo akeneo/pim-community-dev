@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
@@ -29,7 +31,7 @@ class FetchProductsHandler
     private $dataProviderFactory;
 
     /** @var ProductSubscriptionRepositoryInterface */
-    private $productSusbcriptionRepository;
+    private $productSubscriptionRepository;
 
     /**
      * @param DataProviderFactory $dataProviderFactory
@@ -54,9 +56,15 @@ class FetchProductsHandler
         $dataProvider = $this->dataProviderFactory->create();
         $subscribedResponses = $dataProvider->fetch();
 
-        // TODO: Store fetched data in DB (APAI-142)
-        foreach ($subscribedResponses as $subscriptionResponse) {
-            //TODO: Waiting APAI-142 + tracker id
+        foreach ($subscribedResponses->responses() as $subscriptionResponse) {
+            $subscription = $this->productSubscriptionRepository->findOneByProductId(
+                $subscriptionResponse->getProductId()
+            );
+
+            $suggestedData = new SuggestedData($subscriptionResponse->getSuggestedData());
+            $subscription->setSuggestedData($suggestedData);
+
+            $this->productSubscriptionRepository->save($subscription);
         }
     }
 }

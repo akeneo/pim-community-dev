@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
+use Oro\Bundle\PimFilterBundle\Filter\AjaxChoiceFilter;
 
 /**
  * Extends ChoiceFilter in order to use a different operator that check an attribute code exists in the values

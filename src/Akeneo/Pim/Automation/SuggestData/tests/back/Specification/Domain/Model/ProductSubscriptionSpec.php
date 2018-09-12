@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use PhpSpec\ObjectBehavior;
@@ -38,7 +37,7 @@ class ProductSubscriptionSpec extends ObjectBehavior
     public function it_is_a_product_subscription()
     {
         $this->shouldBeAnInstanceOf(ProductSubscription::class);
-        $this->shouldImplement(ProductSubscriptionInterface::class);
+        $this->shouldImplement(ProductSubscription::class);
     }
 
     public function it_gets_the_product()

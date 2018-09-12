@@ -2,33 +2,25 @@
 
 namespace spec\Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber;
 use Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand;
 use Akeneo\Asset\Bundle\Command\ProcessMassUploadCommand;
+use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber;
+use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Filesystem\Filesystem;
 
 class MassUploadAssetsSubscriberSpec extends ObjectBehavior
 {
-    function let(
-        FixturePathProvider $pathProvider,
-        Filesystem $filesystem,
-        GenericEvent $event,
-        CommandExecutor $commandExecutor
-    ) {
+    function let(FixturePathProvider $pathProvider, Filesystem $filesystem)
+    {
         $pathProvider->getFixturesPath()->willReturn('/path/to/fixtures/');
         $filesystem->exists('/path/to/fixtures/assets')->willReturn(true);
-        $event->getSubject()->willReturn('fixtures_asset_csv');
-        $event->hasArgument('command_executor')->willReturn(true);
-        $event->getArgument('command_executor')->willReturn($commandExecutor);
-
         $this->beConstructedWith($pathProvider, $filesystem);
     }
 
@@ -42,60 +34,35 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    function it_subscribes_to_events()
+    function it_subscribes_to_installer_post_load_fixture_event()
     {
-        $this::getSubscribedEvents()->shouldReturn(
-            [
-                InstallerEvents::PRE_LOAD_FIXTURE => 'massUploadAssets',
-            ]
-        );
+        $this::getSubscribedEvents()->shouldHaveKey(InstallerEvents::PRE_LOAD_FIXTURE);
     }
 
-    function it_only_triggers_before_fixtures_asset_csv(GenericEvent $event)
+    function it_only_triggers_before_fixtures_asset_csv(CommandExecutor $commandExecutor)
     {
-        $event->getSubject()->willReturn('foo');
-        $event->hasArgument(Argument::any())->shouldNotBeCalled();
+        $commandExecutor->runCommand(Argument::any())->shouldNotBeCalled();
 
-        $this->massUploadAssets($event);
+        $this->massUploadAssets(new InstallerEvent($commandExecutor->getWrappedObject(), 'foo'));
     }
 
-    function it_does_not_do_anything_if_assets_path_does_not_exist(GenericEvent $event, $filesystem)
+    function it_does_not_do_anything_if_assets_path_does_not_exist($filesystem, CommandExecutor $commandExecutor)
     {
         $filesystem->exists('/path/to/fixtures/assets')->willReturn(false);
+        $commandExecutor->runCommand(Argument::any())->shouldNotBeCalled();
 
-        $event->getSubject()->willReturn('fixtures_asset_csv');
-        $event->hasArgument(Argument::any())->shouldNotBeCalled();
-
-        $this->massUploadAssets($event);
+        $this->massUploadAssets(new InstallerEvent($commandExecutor->getWrappedObject(), 'fixtures_asset_csv'));
     }
 
-    function it_throws_an_exception_if_no_command_executor_argument_is_provided(GenericEvent $event)
+    function it_launches_copy_asset_files_and_mass_upload_assets_commands($filesystem, CommandExecutor $commandExecutor)
     {
-        $event->getSubject()->willReturn('fixtures_asset_csv');
-        $event->hasArgument('command_executor')->willReturn(false);
+        $filesystem->exists('/path/to/fixtures/assets')->willReturn(true);
 
-        $this->shouldThrow(\Exception::class)->during('massUploadAssets', [$event]);
-    }
-
-    function it_throws_an_exception_if_argument_is_not_a_command_executor(GenericEvent $event)
-    {
-        $event->getSubject()->willReturn('fixtures_asset_csv');
-        $event->hasArgument('command_executor')->willReturn(true);
-        $event->getArgument('command_executor')->willReturn(new \stdClass());
-
-        $this->shouldThrow(\Exception::class)->during('massUploadAssets', [$event]);
-    }
-
-    function it_launches_copy_asset_files_and_mass_upload_assets_commands
-    (
-        GenericEvent $event,
-        CommandExecutor $commandExecutor
-    ) {
         $commandExecutor->runCommand(
             CopyAssetFilesCommand::NAME,
             [
-                '--from' => '/path/to/fixtures/assets',
-                '--user' => UserInterface::SYSTEM_USER_NAME,
+                '--from'  => '/path/to/fixtures/assets',
+                '--user'  => UserInterface::SYSTEM_USER_NAME,
                 '--quiet' => true,
             ]
         )->willReturn($commandExecutor);
@@ -108,6 +75,6 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
             ]
         )->willReturn($commandExecutor);
 
-        $this->massUploadAssets($event);
+        $this->massUploadAssets(new InstallerEvent($commandExecutor->getWrappedObject(), 'fixtures_asset_csv'));
     }
 }

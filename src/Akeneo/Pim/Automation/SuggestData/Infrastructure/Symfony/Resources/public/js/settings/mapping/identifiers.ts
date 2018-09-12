@@ -1,6 +1,7 @@
 import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+
 const fetcherRegistry = require('pim/fetcher-registry');
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/identifiers');
@@ -8,20 +9,28 @@ const template = require('pimee/template/settings/mapping/identifiers');
 /**
  * Maps pim.ai identifiers with akeneo attributes.
  *
+ * The attribute types authorized for the identifiers mapping are defined in
+ * Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler::ALLOWED_ATTRIBUTE_TYPES_AS_IDENTIFIER
+ *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class EditIdentifiersMappingView extends BaseView {
-  readonly template = _.template(template);
+  private static readonly VALID_MAPPING: string[] = [
+    'pim_catalog_identifier',
+    'pim_catalog_number',
+    'pim_catalog_simpleselect',
+    'pim_catalog_text',
+  ];
 
+  private identifiersStatuses: { [key: string]: string } = {};
+
+  readonly template = _.template(template);
+  readonly config: Object = {};
   readonly headers = {
     'identifiersLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.label'),
     'attributeLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute'),
     'suggestDataLabel': __('akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data'),
   };
-
-  private identifiersStatuses: { [key: string]: string } = {};
-
-  readonly config: Object = {};
 
   /**
    * {@inheritdoc}
@@ -40,7 +49,7 @@ class EditIdentifiersMappingView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  configure() {
+  configure(): JQueryPromise<any> {
     return $.when(
       fetcherRegistry.getFetcher('identifiers-mapping')
         .fetchAll()
@@ -86,7 +95,8 @@ class EditIdentifiersMappingView extends BaseView {
         config: {
           fieldName: pimAiAttributeCode,
           label: '',
-          choiceRoute: 'pim_enrich_attribute_rest_index'
+          choiceRoute: 'pim_enrich_attribute_rest_index',
+          types: EditIdentifiersMappingView.VALID_MAPPING,
         },
         className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
       });

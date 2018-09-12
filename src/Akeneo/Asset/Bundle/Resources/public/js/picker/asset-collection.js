@@ -251,13 +251,13 @@ define(
                         modal.$('.asset-thumbnail-item').addClass('AknAssetCollectionField-listItem--transparent');
                         assetThumbnail.removeClass('AknAssetCollectionField-listItem--transparent');
                         modal.$('.main-preview').attr('src', '');
-                        modal.$('.main-preview').attr('src', assetThumbnail.data('url'));
+                        modal.$('.main-preview').attr('src', assetThumbnail.data('preview-url'));
                         modal.$('.buttons').stop(true, true).animate({
                             scrollLeft: assetThumbnail.position().left
                             - (modal.$('.buttons').width() - 140) / 2
                         }, 400);
                         modal.$('.description').html(assetThumbnail.data('description'));
-                        modal.$('.download').attr('href', assetThumbnail.data('url'));
+                        modal.$('.download').attr('href', assetThumbnail.data('download-url'));
                     };
                     const navigateToNeighbor = function (side, isCurrentElementDestroyed) {
                         let thumbnails = modal.$('.asset-thumbnail-item');

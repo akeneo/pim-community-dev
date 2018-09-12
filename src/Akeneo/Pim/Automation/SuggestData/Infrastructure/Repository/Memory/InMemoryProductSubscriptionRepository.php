@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
@@ -27,22 +26,12 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     private $subscriptions = [];
 
     /**
-     * @param ProductSubscriptionInterface[] $subscriptions
-     */
-    public function __construct(array $subscriptions = [])
-    {
-        foreach ($subscriptions as $subscription) {
-            $this->save($subscription);
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findOneByProductAndSubscriptionId(
         ProductInterface $product,
         string $subscriptionId
-    ): ?ProductSubscriptionInterface {
+    ): ?ProductSubscription {
         if (!isset($this->subscriptions[$product->getId()])) {
             return null;
         }
@@ -58,7 +47,7 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /**
      * {@inheritdoc}
      */
-    public function save(ProductSubscriptionInterface $subscription): void
+    public function save(ProductSubscription $subscription): void
     {
         $productId = $subscription->getProduct()->getId();
         $this->subscriptions[$productId] = $subscription;
@@ -67,13 +56,28 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     /**
      * {@inheritdoc}
      */
-    public function findOneByProductId(int $productId): ?ProductSubscriptionInterface
+    public function findOneByProductId(int $productId): ?ProductSubscription
     {
         if (!isset($this->subscriptions[$productId])) {
             return null;
         }
 
         return $this->subscriptions[$productId];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findPendingSubscriptions(): array
+    {
+        return array_values(
+            array_filter(
+                $this->subscriptions,
+                function (ProductSubscription $subscription) {
+                    return !$subscription->getSuggestedData()->isEmpty();
+                }
+            )
+        );
     }
 
     /**

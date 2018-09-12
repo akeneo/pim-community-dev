@@ -1,5 +1,5 @@
 parameters:
-    pimee_datagrid.datasource.product_history.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pimee_datagrid.datasource.product_history.class: Oro\Bundle\PimDataGridBundle\Datasource\Datasource
 
 services:
     pim_catalog.product_history.product:

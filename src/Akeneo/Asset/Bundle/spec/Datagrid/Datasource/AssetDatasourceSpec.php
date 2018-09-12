@@ -9,7 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 class AssetDatasourceSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class AssetDatasourceSpec extends ObjectBehavior
 
     function it_is_an_hydrator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $this->shouldImplement('Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface');
     }
 
     function it_returns_results_with_locale(

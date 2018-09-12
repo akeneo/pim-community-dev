@@ -65,7 +65,7 @@ class Client
     private function getToken(): ?string
     {
         if (empty($this->token)) {
-            $config = $this->configurationRepository->findOneByCode('pim-ai');
+            $config = $this->configurationRepository->find();
             if ($config instanceof Configuration) {
                 $this->token = $config->getToken();
             }

@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -21,7 +21,7 @@ class ExecuteMassActionHandlerSpec extends ObjectBehavior
 
     function it_is_a_mass_action_handler()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
+        $this->shouldHaveType('Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
     }
 
     function it_handles_datagrid_results(

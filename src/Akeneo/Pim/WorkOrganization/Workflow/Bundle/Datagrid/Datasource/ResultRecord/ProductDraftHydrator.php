@@ -13,8 +13,8 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\Result
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

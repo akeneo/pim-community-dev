@@ -25,17 +25,17 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionRequestSpec extends ObjectBehavior
 {
-    public function let(ProductInterface $product)
+    function let(ProductInterface $product)
     {
         $this->beConstructedWith($product);
     }
 
-    public function it_is_a_product_subscription_request()
+    function it_is_a_product_subscription_request()
     {
         $this->shouldHaveType(ProductSubscriptionRequest::class);
     }
 
-    public function it_does_not_take_missing_values_into_account(
+    function it_does_not_take_missing_values_into_account(
         $product,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
@@ -65,8 +65,12 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_handles_incomplete_mapping($product, IdentifiersMapping $mapping, AttributeInterface $ean, ValueInterface $eanValue)
-    {
+    function it_handles_incomplete_mapping(
+        $product,
+        IdentifiersMapping $mapping,
+        AttributeInterface $ean,
+        ValueInterface $eanValue
+    ) {
         $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('123456789123');
@@ -87,5 +91,163 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
                 'upc' => '123456789123',
             ]
         );
+    }
+
+    function it_handles_mpn_and_brand_as_one_identifier(
+        $product,
+        IdentifiersMapping $mapping,
+        AttributeInterface $brand,
+        AttributeInterface $mpn,
+        ValueInterface $brandValue,
+        ValueInterface $mpnValue
+    ) {
+        $brand->getCode()->willReturn('brand');
+        $brandValue->hasData()->willReturn(true);
+        $brandValue->__toString()->willReturn('qwertee');
+
+        $mpn->getCode()->willReturn('mpn');
+        $mpnValue->hasData()->willReturn(true);
+        $mpnValue->__toString()->willReturn('tshirt-the-witcher');
+
+        $product->getValue('brand')->willReturn($brandValue);
+        $product->getValue('mpn')->willReturn($mpnValue);
+
+        $mapping->getIterator()->willReturn(
+            new \ArrayIterator([
+                'upc' => null,
+                'asin' => null,
+                'brand' => $brand->getWrappedObject(),
+                'mpn' => $mpn->getWrappedObject(),
+            ])
+        );
+
+        $this->getMappedValues($mapping)->shouldReturn([
+            'brand' => 'qwertee',
+            'mpn' => 'tshirt-the-witcher',
+        ]);
+    }
+
+    function it_does_not_handle_mpn_data_without_brand_data(
+        $product,
+        IdentifiersMapping $mapping,
+        AttributeInterface $brand,
+        AttributeInterface $mpn,
+        ValueInterface $brandValue,
+        ValueInterface $mpnValue
+    ) {
+        $brand->getCode()->willReturn('brand');
+        $brandValue->hasData()->willReturn(true);
+        $brandValue->__toString()->willReturn('qwertee');
+
+        $mpn->getCode()->willReturn('mpn');
+        $mpnValue->hasData()->willReturn(false);
+
+        $product->getValue('brand')->willReturn($brandValue);
+        $product->getValue('mpn')->willReturn($mpnValue);
+
+        $mapping->getIterator()->willReturn(
+            new \ArrayIterator(
+                [
+                    'upc' => null,
+                    'asin' => null,
+                    'brand' => $brand->getWrappedObject(),
+                    'mpn' => $mpn->getWrappedObject(),
+                ]
+            )
+        );
+
+        $this->getMappedValues($mapping)->shouldReturn([]);
+    }
+
+    function it_does_not_handle_brand_data_without_mpn_data(
+        $product,
+        IdentifiersMapping $mapping,
+        AttributeInterface $brand,
+        AttributeInterface $mpn,
+        ValueInterface $brandValue,
+        ValueInterface $mpnValue
+    ) {
+        $brand->getCode()->willReturn('brand');
+        $brandValue->hasData()->willReturn(false);
+
+        $mpn->getCode()->willReturn('mpn');
+        $mpnValue->hasData()->willReturn(true);
+        $mpnValue->__toString()->willReturn('tshirt-the-witcher');
+
+        $product->getValue('brand')->willReturn($brandValue);
+        $product->getValue('mpn')->willReturn($mpnValue);
+
+        $mapping->getIterator()->willReturn(
+            new \ArrayIterator(
+                [
+                    'upc' => null,
+                    'asin' => null,
+                    'brand' => $brand->getWrappedObject(),
+                    'mpn' => $mpn->getWrappedObject(),
+                ]
+            )
+        );
+
+        $this->getMappedValues($mapping)->shouldReturn([]);
+    }
+
+    function it_does_not_handle_mpn_value_without_brand_value(
+        $product,
+        IdentifiersMapping $mapping,
+        AttributeInterface $brand,
+        AttributeInterface $mpn,
+        ValueInterface $brandValue
+    ) {
+        $brand->getCode()->willReturn('brand');
+        $brandValue->hasData()->willReturn(true);
+        $brandValue->__toString()->willReturn('qwertee');
+
+        $mpn->getCode()->willReturn('mpn');
+
+        $product->getValue('brand')->willReturn($brandValue);
+        $product->getValue('mpn')->willReturn(null);
+
+        $mapping->getIterator()->willReturn(
+            new \ArrayIterator(
+                [
+                    'upc' => null,
+                    'asin' => null,
+                    'brand' => $brand->getWrappedObject(),
+                    'mpn' => $mpn->getWrappedObject(),
+                ]
+            )
+        );
+
+        $this->getMappedValues($mapping)->shouldReturn([]);
+    }
+
+    function it_does_not_handle_brand_value_without_mpn_value(
+        $product,
+        IdentifiersMapping $mapping,
+        AttributeInterface $brand,
+        AttributeInterface $mpn,
+        ValueInterface $mpnValue
+    ) {
+        $brand->getCode()->willReturn('brand');
+
+        $mpn->getCode()->willReturn('mpn');
+        $mpnValue->hasData()->willReturn(true);
+        $mpnValue->__toString()->willReturn('tshirt-the-witcher');
+
+        $product->getValue('brand')->willReturn(null);
+        $product->getValue('mpn')->willReturn($mpnValue);
+
+        $mapping->getIterator()->willReturn(
+            new \ArrayIterator(
+                [
+                    'upc' => null,
+                    'asin' => null,
+                    'brand' => $brand->getWrappedObject(),
+                    'mpn' => $mpn->getWrappedObject(),
+                ]
+            )
+        );
+
+        $this->getMappedValues($mapping)->shouldReturn([]);
     }
 }

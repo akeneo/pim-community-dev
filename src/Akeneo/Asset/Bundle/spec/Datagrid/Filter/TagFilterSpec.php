@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Bundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Akeneo\Asset\Bundle\Datagrid\Filter\ProductAssetFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -23,7 +23,7 @@ class TagFilterSpec extends ObjectBehavior
 
     function it_is_a_pim_ajax_choice_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter');
+        $this->shouldBeAnInstanceOf('Oro\Bundle\PimFilterBundle\Filter\AjaxChoiceFilter');
     }
 
     function it_initializes_filter_with_name()

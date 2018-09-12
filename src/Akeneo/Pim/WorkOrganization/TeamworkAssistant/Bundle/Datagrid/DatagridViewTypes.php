@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid;
 
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

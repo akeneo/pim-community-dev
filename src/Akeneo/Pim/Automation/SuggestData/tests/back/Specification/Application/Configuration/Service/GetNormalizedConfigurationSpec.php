@@ -35,19 +35,19 @@ class GetNormalizedConfigurationSpec extends ObjectBehavior
 
     public function it_queries_a_normalized_configuration($repository)
     {
-        $configuration = new Configuration('foobar', ['foo' => 'bar']);
-        $repository->findOneByCode('foobar')->willReturn($configuration);
+        $configuration = new Configuration(['foo' => 'bar']);
+        $repository->find()->willReturn($configuration);
 
-        $this->fromCode('foobar')->shouldReturn([
-            'code' => 'foobar',
+        $this->retrieve()->shouldReturn([
+            'code' => Configuration::PIM_AI_CODE,
             'values' => ['foo' => 'bar'],
         ]);
     }
 
     public function it_returns_an_empty_array_if_configuration_does_not_exist($repository)
     {
-        $repository->findOneByCode('foobar')->willReturn(null);
+        $repository->find()->willReturn(null);
 
-        $this->fromCode('foobar')->shouldReturn([]);
+        $this->retrieve()->shouldReturn([]);
     }
 }
