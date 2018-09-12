@@ -1,0 +1,25 @@
+parameters:
+    pim_datagrid.event_listener.add_locale_code_to_grid.class:                Oro\Bundle\PimDataGridBundle\EventListener\AddLocaleCodeToGridListener
+    pim_datagrid.event_listener.add_parameters_to_grid.class:                 Oro\Bundle\PimDataGridBundle\EventListener\AddParametersToGridListener
+    pim_datagrid.event_listener.add_parameters_to_product_grid.class:         Oro\Bundle\PimDataGridBundle\EventListener\AddParametersToProductGridListener
+
+    pim_datagrid.event_listener.configure_product_grid_listener.class: Oro\Bundle\PimDataGridBundle\EventListener\ConfigureProductGridListener
+    pim_datagrid.event_listener.configure_sorters_listener.class:      Oro\Bundle\PimDataGridBundle\EventListener\ConfigureSortersListener
+    pim_datagrid.event_listener.configure_product_filters.class:       Oro\Bundle\PimDataGridBundle\EventListener\ConfigureProductFiltersListener
+    pim_datagrid.event_listener.configure_history_grid_listener.class: Oro\Bundle\PimDataGridBundle\EventListener\ConfigureHistoryGridListener
+
+    pim_datagrid.event_listener.add_job_code_to_grid_listener.class: Oro\Bundle\PimDataGridBundle\EventListener\AddJobCodeToGridListener
+    pim_datagrid.event_listener.add_username_to_grid_listener.class: Oro\Bundle\PimDataGridBundle\EventListener\AddUsernameToGridListener
+
+services:
+    pim_datagrid.event_listener.configure_sorters_listener:
+        class: '%pim_datagrid.event_listener.configure_sorters_listener.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: onBuildBefore }
+
+    pim_datagrid.event_listener.configure_product_filters:
+        class: '%pim_datagrid.event_listener.configure_product_filters.class%'
+        arguments:
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }

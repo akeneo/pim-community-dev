@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

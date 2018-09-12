@@ -41,6 +41,11 @@ class VersionProviderSpec extends ObjectBehavior
     {
         $this->getStability()->shouldReturn('BETA');
     }
+
+    function it_provides_full_version()
+    {
+        $this->getFullVersion()->shouldReturn('CE 12.42.20-BETA2 STATIC TEST VERSION');
+    }
 }
 
 class StaticVersion

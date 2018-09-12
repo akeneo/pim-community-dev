@@ -1,0 +1,36 @@
+Oro\Bundle\PimDataGridBundle\Entity\DatagridView:
+    type:  entity
+    table: pim_datagrid_view
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository
+    fields:
+        id:
+            type: integer
+            id:   true
+            generator:
+                strategy: AUTO
+        label:
+            type:     string
+            length:   100
+            unique:   true
+            nullable: false
+        type:
+            type:     string
+            length:   10
+            nullable: true
+        datagridAlias:
+            type:   string
+            column: datagrid_alias
+        columns:
+            type: array
+        filters:
+            type:     text
+            nullable: true
+
+    manyToOne:
+        owner:
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    onDelete:             CASCADE

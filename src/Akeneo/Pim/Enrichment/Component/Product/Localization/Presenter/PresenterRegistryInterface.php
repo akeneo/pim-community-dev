@@ -33,6 +33,15 @@ interface PresenterRegistryInterface
     public function getPresenterByAttributeCode($code);
 
     /**
+     * Get the first presenter supporting an attribute type
+     *
+     * @param string $attributeType
+     *
+     * @return PresenterInterface|null
+     */
+    public function getPresenterByAttributeType($attributeType);
+
+    /**
      * Get the first presenter supporting a field code
      *
      * @param string $code

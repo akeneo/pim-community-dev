@@ -9,7 +9,7 @@ namespace Oro\Bundle\DataGridBundle\Extension\Pager;
  * that case, the pagination is handled internally by Elasticsearch, and we don't need to handle it
  * in the pager.
  * The pager is still necessary though, to be able to store the current page and the current number
- * of items per page. To learn more, {@see Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension::visitDatasource}
+ * of items per page. To learn more, {@see Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension::visitDatasource}
  *
  * #bestCodeEver #soProud
  *

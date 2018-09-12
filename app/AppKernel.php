@@ -73,7 +73,7 @@ class AppKernel extends Kernel
     {
         return [
             // BAP overriden bundles
-            new Pim\Bundle\FilterBundle\PimFilterBundle(),
+            new Oro\Bundle\PimFilterBundle\PimFilterBundle(),
             new Akeneo\UserManagement\Bundle\PimUserBundle(),
 
             // Channel bundles
@@ -87,7 +87,7 @@ class AppKernel extends Kernel
             new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Akeneo\Platform\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
+            new Oro\Bundle\PimDataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Akeneo\Platform\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Akeneo\Platform\Bundle\InstallerBundle\PimInstallerBundle(),

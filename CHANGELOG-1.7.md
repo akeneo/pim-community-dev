@@ -1,3 +1,16 @@
+# 1.7.x
+
+# 1.7.32 (2018-09-07)
+
+## Improvements
+
+- PIM-7614: Reduce SQL queries and loading time on the product edit form
+
+## BC Breaks
+- PIM-7614: New method getPresenterByAttributeType() on PresenterRegistryInterface
+
+# 1.7.31 (2018-08-22)
+
 # 1.7.30 (2018-08-14)
 
 - PIM-7570: Adds 'Locale specific' fields in attribute versioning

@@ -175,7 +175,7 @@ JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $productModels = [];
-        for ($i = 0; $i <= 200; $i++) {
+        for ($i = 0; $i <= 201; $i++) {
             $productModel = $this->get('pim_catalog.factory.product_model')->create();
             $this->get('pim_catalog.updater.product_model')
                 ->update($productModel, [

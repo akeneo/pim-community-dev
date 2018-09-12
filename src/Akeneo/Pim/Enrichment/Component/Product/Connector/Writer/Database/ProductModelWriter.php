@@ -7,7 +7,6 @@ use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
@@ -28,24 +27,16 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var BulkSaverInterface */
     protected $productModelSaver;
 
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
     /**
      * @param VersionManager                $versionManager
      * @param BulkSaverInterface            $productModelSaver
-     * @param EntityManagerClearerInterface $cacheClearer
-     *
-     * @todo @merge Remove $cacheClearer. It's not used anymore.
      */
     public function __construct(
         VersionManager $versionManager,
-        BulkSaverInterface $productModelSaver,
-        EntityManagerClearerInterface $cacheClearer
+        BulkSaverInterface $productModelSaver
     ) {
         $this->versionManager = $versionManager;
         $this->productModelSaver = $productModelSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**

@@ -20,7 +20,8 @@ define(
         'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/user-context',
-        'oro/mediator'
+        'oro/mediator',
+        'pim/template/product/form/mass-edit/attributes'
     ],
     function (
         $,
@@ -31,9 +32,11 @@ define(
         FetcherRegistry,
         AttributeManager,
         UserContext,
-        mediator
+        mediator,
+        template
     ) {
         return BaseAttributes.extend({
+            template: _.template(template),
             locked: false,
 
             /**

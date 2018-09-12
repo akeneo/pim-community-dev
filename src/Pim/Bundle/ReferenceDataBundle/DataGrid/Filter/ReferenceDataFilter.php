@@ -5,8 +5,8 @@ namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter;
+use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
+use Oro\Bundle\PimFilterBundle\Filter\ProductValue\ChoiceFilter;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

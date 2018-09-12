@@ -91,7 +91,11 @@ define(
                     // This method renders a complete PEF page, we need to remove useless elements manually.
                     this.$el.find('.navigation').remove();
                     this.$el.find('.AknDefault-thirdColumnContainer').remove();
-                    this.$el.find('.AknDefault-mainContent').addClass('AknDefault-mainContent--withoutPadding');
+
+                    this.$el.find('.AknDefault-mainContent')
+                        .addClass('AknDefault-mainContent--withoutPadding')
+                        .css({'overflow-x': 'hidden'})
+                    ;
 
                     if (this.errors) {
                         const event = {

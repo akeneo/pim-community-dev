@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Aims to publish and consume job execution messages in a queue stored in database.
@@ -26,13 +25,9 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
     private $jobExecutionMessageRepository;
 
     /**
-     * TODO: @merge delete useless entity manager dependency
-     *
-     * @param EntityManagerInterface        $entityManager
      * @param JobExecutionMessageRepository $jobExecutionMessageRepository
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         JobExecutionMessageRepository $jobExecutionMessageRepository
     ) {
         $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;

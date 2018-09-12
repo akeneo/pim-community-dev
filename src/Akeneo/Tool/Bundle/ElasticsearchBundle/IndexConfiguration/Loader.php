@@ -51,13 +51,13 @@ class Loader
             $configuration = $yaml->parse(file_get_contents($configurationFile));
 
             if (isset($configuration['settings'])) {
-                $settings = array_merge_recursive($settings, $configuration['settings']);
+                $settings = array_replace_recursive($settings, $configuration['settings']);
             }
             if (isset($configuration['mappings'])) {
-                $mappings = array_merge_recursive($mappings, $configuration['mappings']);
+                $mappings = array_replace_recursive($mappings, $configuration['mappings']);
             }
             if (isset($configuration['aliases'])) {
-                $aliases = array_merge_recursive($aliases, $configuration['aliases']);
+                $aliases = array_replace_recursive($aliases, $configuration['aliases']);
             }
         }
 

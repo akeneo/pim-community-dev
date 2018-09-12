@@ -2,9 +2,10 @@
 
 ## Technical improvement
 
-- TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
+- TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
 - GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
 - PIM-7371: Improve the performance to display the category tree in the product grid
+- PIM-7506: Cache default views and columns on the product grid
 
 ## Enhancements
 
@@ -249,8 +250,8 @@
 - Move `Pim\Component\Catalog\Factory\ValueCollectionFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`
 - Move `Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface`
 - Move `Pim\Component\Catalog\Factory\ValueFactory` to `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory`
-- Move `Pim\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver` 
-- Move `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface` 
+- Move `Pim\Component\Catalog\Manager\AttributeValuesResolver` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolver`
+- Move `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` to `Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface`
 - Move `Pim\Component\Catalog\Manager\CompletenessManager` to `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`
 - Move `Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\CompletenessCollectionNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Indexing\DateTimeNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\DateTimeNormalizer`
@@ -299,13 +300,13 @@
 - Move `Pim\Component\Catalog\Normalizer\Storage\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PropertiesNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Storage\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\ProductNormalizer`
 
-- Register standard format normalizers into  `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer 
+- Register standard format normalizers into  `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer
 - Register indexing normalizers into  `pim_indexing_serializer` serializer and untagged them from `pim_serializer` serializer
 - Register datagrid normalizers into  `pim_datagrid_serializer` serializer and untagged them from `pim_serializer` serializer
 - Register storage normalizers into  `pim_storage_serializer` serializer and untagged them from `pim_serializer` serializer
 - Register external API normalizers into  `pim_external_api_serializer` serializer and untagged them from `pim_serializer` serializer
 
-- Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument 
+- Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument
 
 - Move `Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider` to `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\EntityWithFamilyVariantAttributesProvider`
 - Move `Pim\Component\Catalog\Repository\AssociationRepositoryInterface` to `Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface`
@@ -512,10 +513,10 @@
   Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\
   Remove 2 job steps `pim_connector.step.csv_family.compute_data_related_to_family_variants` and `pim_connector.step.xlsx_family.compute_data_related_to_family_variants`
 
-- Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
-- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
-- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
-- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument  
+- Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
+- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
+- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument
 - Change constructor of `Akeneo\UserManagement\Bundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Akeneo\UserManagement\Bundle\Form\Subscriber\UserSubscriber` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` to add `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`, `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` and a `batchSize` parameter.
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber` to add `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindAttributesForFamily` argument
@@ -550,7 +551,7 @@
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` to `Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository`
 - Move `Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber` to `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`
-- Change constructor of `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`, remove `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface` argument  
+- Change constructor of `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`, remove `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface` argument
 - Move `Pim\Bundle\CatalogBundle\Entity\Channel` to `Akeneo\Channel\Component\Model\Channel`
 - Move `Pim\Component\Catalog\Model\ChannelInterface` to `Akeneo\Channel\Component\Model\ChannelInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\ChannelTranslation` to `Akeneo\Channel\Component\Model\ChannelTranslation`
@@ -583,9 +584,9 @@
 - Remove method `getChoiceValue` and `getChoiceLabel` from `Akeneo\Channel\Component\Model\Channel`
 - Change the constructor of `Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer` to replace `Pim\Bundle\VersioningBundle\Manager\VersionManager` by `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
 - Change the constructor of `Akeneo\UserManagement\Bundle\Context\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
-- Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder` 
-- Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface` 
-- Remove class `Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension` 
+- Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder`
+- Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
+- Remove class `Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension`
 - Move `Pim\Bundle\CatalogBundle\Entity\Attribute` to `Akeneo\Pim\Structure\Component\Model\Attribute`
 - Move `Pim\Component\Catalog\Model\AbstractAttribute` to `Akeneo\Pim\Structure\Component\Model\AbstractAttribute`
 - Move `Pim\Component\Catalog\Model\AttributeInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`
@@ -867,7 +868,7 @@
 - Move `Pim\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionAuthenticator`
 - Move `Pim\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber` to `Akeneo\Tool\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber`
 - Move `Pim\Bundle\ConnectorBundle\PimConnectorBundle` to `Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle`
-- Split `pim_connector.job.job_parameters.default_values_provider.simple_csv_import` into `akeneo_channel.job.job_parameters.default_values_provider.simple_csv_import`, `akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import` and `akeneo_pim_structure.job.job_parameters.default_values_provider.simple_csv_import` 
+- Split `pim_connector.job.job_parameters.default_values_provider.simple_csv_import` into `akeneo_channel.job.job_parameters.default_values_provider.simple_csv_import`, `akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_csv_import` and `akeneo_pim_structure.job.job_parameters.default_values_provider.simple_csv_import`
 - Move `Pim\Bundle\NotificationBundle` to `Akeneo\Platform\Bundle\NotificationBundle`
 - Move `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` to `Akeneo\Pim\Enrichment\Bundle\Widget\CompletenessWidget`
 - Move `Pim\Bundle\DashboardBundle\Controller\WidgetController` to `Akeneo\Platform\Bundle\DashboardBundle\Controller\WidgetController`
@@ -883,3 +884,11 @@
 - Move `Pim\Bundle\InstallerBundle` to `Akeneo\Platform\Bundle\InstallerBundle`
 - Move `Pim\Bundle\AnalyticsBundle` to `Akeneo\Platform\Bundle\AnalyticsBundle`
 - Move `Pim\Bundle\CatalogVolumeMonitoringBundle` to `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelDescendantsWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
+- Change constructor of `Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue`, remove `Doctrine\ORM\EntityManagerInterface` argument
+- Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductCompletenessFilter`
+- Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
+- Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
-use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
+use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 
 /**
  * Product mass action repository interface

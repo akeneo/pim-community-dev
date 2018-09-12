@@ -146,6 +146,8 @@ $pullUpOk = $check(
         new ForbiddenDirectory('src/Pim/Bundle/VersioningBundle', new Moved('src/Akeneo/Tool')),
         new ForbiddenDirectory('src/Pim/Bundle/PimUIBundle', new Moved('src/Akeneo/Platform')),
         new ForbiddenDirectory('src/Pim/Bundle/NavigationBundle', new Moved('src/Akeneo/Platform/Bundle/UIBundle')),
+        new ForbiddenDirectory('src/Pim/Bundle/DataGridBundle', new Moved('src/Oro/Bundle/PimDataGridBundle')),
+        new ForbiddenDirectory('src/Pim/Bundle/FilterBundle', new Moved('src/Oro/Bundle/PimFilterBundle')),
 
         // Community Components
         new ForbiddenDirectory('src/Pim/Component/Api', Dispatched::everywhereCommunity()),

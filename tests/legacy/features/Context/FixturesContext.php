@@ -46,7 +46,8 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 
 /**
  * A context for creating entities
