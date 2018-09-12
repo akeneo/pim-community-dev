@@ -13,6 +13,10 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Filter\ReferenceDataFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter`
 - Move `Pim\Bundle\ReferenceDataBundle\DependencyInjection\Compiler\RegisterConfigurationsPass` to `Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterReferenceDataConfigurationsPass`
 - Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue\ReferenceDataEmptyValueProvider` to `Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider`
 - Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field\ReferenceDataFieldProvider` to `Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider`

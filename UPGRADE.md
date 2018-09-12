@@ -6,6 +6,10 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\DataGrid\\Extension\\Sorter\\ReferenceDataSorter/Oro\\Bundle\\PimDataGridBundle\\Extension\\Sorter\\Produc\\ReferenceDataSorter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\DataGrid\\Normalizer\\ReferenceDataCollectionNormalizer/Oro\\Bundle\\PimDataGridBundle\\Normalizer\\Product\\ReferenceDataCollectionNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\DataGrid\\Normalizer\\ReferenceDataNormalizer/Oro\\Bundle\\PimDataGridBundle\\Normalizer\\Product\\ReferenceDataNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\DataGrid\\Filter\\ReferenceDataFilter/Oro\\Bundle\\PimFilterBundle\\Filter\\ProductValue\\ReferenceDataFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\DependencyInjection\\Compiler\\RegisterConfigurationsPass/Akeneo\\Pim\\Structure\\Bundle\\DependencyInjection\\Compiler\\RegisterReferenceDataConfigurationsPass/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Enrich\\Provider\\EmptyValue\\ReferenceDataEmptyValueProvider/Pim\\Bundle\\EnrichBundle\\Provider\\EmptyValue\\ReferenceDataEmptyValueProvider/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ReferenceDataBundle\\Enrich\\Provider\\Field\\ReferenceDataFieldProvider/Pim\\Bundle\\EnrichBundle\\Provider\\Field\\ReferenceDataFieldProvider/g'

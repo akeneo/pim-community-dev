@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer;
+namespace Oro\Bundle\PimDataGridBundle\Normalizer\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -11,17 +11,24 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataNormalizer implements NormalizerInterface
+class ReferenceDataCollectionNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function normalize($referenceData, $format = null, array $context = [])
+    public function normalize($referenceDataCollection, $format = null, array $context = [])
     {
+        $labels = [];
+        foreach ($referenceDataCollection->getData() as $referenceData) {
+            $labels[] = $this->getLabel($referenceData);
+        }
+
+        sort($labels);
+
         return [
-            'locale' => $referenceData->getLocale(),
-            'scope'  => $referenceData->getScope(),
-            'data'   => $this->getReferenceDataLabel($referenceData->getData()),
+            'locale' => $referenceDataCollection->getLocale(),
+            'scope'  => $referenceDataCollection->getScope(),
+            'data'   => implode(', ', $labels),
         ];
     }
 
@@ -31,7 +38,7 @@ class ReferenceDataNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return 'datagrid' === $format && $data instanceof ReferenceDataValueInterface;
+        return 'datagrid' === $format && $data instanceof ReferenceDataCollectionValueInterface;
     }
 
     /**
@@ -41,7 +48,7 @@ class ReferenceDataNormalizer implements NormalizerInterface
      *
      * @return string
      */
-    protected function getReferenceDataLabel(ReferenceDataInterface $referenceData)
+    protected function getLabel(ReferenceDataInterface $referenceData)
     {
         if (null !== $labelProperty = $referenceData::getLabelProperty()) {
             $getter = 'get' . ucfirst($labelProperty);

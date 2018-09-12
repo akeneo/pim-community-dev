@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
+namespace Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
