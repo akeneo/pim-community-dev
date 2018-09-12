@@ -2,14 +2,14 @@
 
 namespace Akeneo\Pim\Structure\Bundle\ReferenceData\Command;
 
-use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
-use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\ReferenceDataUniqueCodeChecker;
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\CheckerInterface;
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataInterfaceChecker;
 use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNameChecker;
+use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
