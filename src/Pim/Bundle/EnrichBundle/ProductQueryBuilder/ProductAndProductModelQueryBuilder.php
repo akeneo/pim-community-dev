@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -25,12 +26,16 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /** @var ProductQueryBuilderInterface */
     private $pqb;
 
+    /** @var CategoryRepositoryInterface */
+    private $categoryRepository;
+
     /**
      * @param ProductQueryBuilderInterface $pqb
      */
-    public function __construct(ProductQueryBuilderInterface $pqb)
+    public function __construct(ProductQueryBuilderInterface $pqb, CategoryRepositoryInterface $categoryRepository)
     {
         $this->pqb = $pqb;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -249,9 +254,33 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $categoryCodes = [];
         foreach ($categoriesFilter as $categoryFilter) {
             $categoryCodes = array_merge($categoryCodes, $categoryFilter['value']);
+            if (Operators::IN_CHILDREN_LIST === $categoryFilter['operator']) {
+                $childrenCategory = $this->getAllChildrenCodes($categoryCodes);
+                $categoryCodes = array_merge($categoryCodes, $childrenCategory);
+            }
         }
 
         return $categoryCodes;
+    }
+
+    /**
+     * Get children category ids
+     *
+     * @param integer[] $categoryCodes
+     *
+     * @return integer[]
+     */
+    private function getAllChildrenCodes(array $categoryCodes)
+    {
+        $allChildrenCodes = [];
+        foreach ($categoryCodes as $categoryCode) {
+            $category = $this->categoryRepository->findOneBy(['code' => $categoryCode]);
+            $childrenCodes = $this->categoryRepository->getAllChildrenCodes($category);
+            $childrenCodes[] = $category->getCode();
+            $allChildrenCodes = array_merge($allChildrenCodes, $childrenCodes);
+        }
+
+        return $allChildrenCodes;
     }
 
     /**

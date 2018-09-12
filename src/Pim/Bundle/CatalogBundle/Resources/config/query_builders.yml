@@ -116,6 +116,7 @@ services:
         arguments:
             - '%pim_catalog.query.product_and_product_model_query_builder.class%'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
+            - '@pim_catalog.repository.category'
 
     pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
         public: false
