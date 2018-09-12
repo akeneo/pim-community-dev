@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Datagrid\Filter;
 
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * Product asset filter utility

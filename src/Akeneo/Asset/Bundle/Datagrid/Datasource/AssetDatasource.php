@@ -13,8 +13,8 @@ namespace Akeneo\Asset\Bundle\Datagrid\Datasource;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\QueryBuilderUtility;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\DataGridBundle\Datasource\Datasource;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\Datasource;
+use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Asset datasource, allows to prepare query builder from repository

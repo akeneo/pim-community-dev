@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 

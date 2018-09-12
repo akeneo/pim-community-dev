@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 

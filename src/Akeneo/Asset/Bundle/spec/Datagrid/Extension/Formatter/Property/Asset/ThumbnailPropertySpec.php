@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;

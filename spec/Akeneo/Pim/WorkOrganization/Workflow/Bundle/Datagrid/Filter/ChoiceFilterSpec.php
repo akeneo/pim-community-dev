@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 

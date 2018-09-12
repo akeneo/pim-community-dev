@@ -21,7 +21,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

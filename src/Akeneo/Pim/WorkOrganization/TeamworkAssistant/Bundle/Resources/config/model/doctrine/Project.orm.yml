@@ -48,7 +48,7 @@ Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project:
                     referencedColumnName: id
     oneToOne:
         datagridView:
-            targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+            targetEntity: Oro\Bundle\PimDataGridBundle\Entity\DatagridView
             joinColumn:
                 name: datagrid_view_id
                 nullable: false

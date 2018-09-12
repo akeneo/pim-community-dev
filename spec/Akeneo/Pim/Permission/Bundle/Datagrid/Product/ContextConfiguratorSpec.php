@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ContextConfiguratorSpec extends ObjectBehavior

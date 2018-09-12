@@ -19,7 +19,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepositor
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

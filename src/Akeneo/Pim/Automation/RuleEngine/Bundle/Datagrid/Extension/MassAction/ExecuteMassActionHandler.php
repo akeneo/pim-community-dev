@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Console\CommandLauncher;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

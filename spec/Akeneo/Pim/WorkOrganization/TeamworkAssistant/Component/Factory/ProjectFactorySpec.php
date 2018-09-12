@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectFactory;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectFactoryInterface;

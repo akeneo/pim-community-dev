@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListene
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\ProjectSubscriber;

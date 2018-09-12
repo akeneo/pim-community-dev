@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Permission\Bundle\Datagrid;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

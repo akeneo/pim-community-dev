@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

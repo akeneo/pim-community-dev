@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Adapter;
 
-use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter as BaseAdapter;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter as BaseAdapter;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 /**
  * Transform Oro filters into Akeneo PIM filters
