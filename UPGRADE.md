@@ -1,5 +1,50 @@
 # UPGRADE FROM 2.3 TO 3.0
 
+## Migrate your standard project
+
+3. Update your **app/config/config.yml**
+
+    * The reference data configuration has been moved in the Pim Structure. Therefore, you must update your reference data configuration. 
+    The key `pim_reference_data` is replaced by `akeneo_pim_structure:reference_data`:
+
+        v2.x
+        ```
+        pim_reference_data:
+            fabrics:
+                class: Acme\Bundle\AppBundle\Entity\Fabric
+                type: multi
+            color:
+                class: Acme\Bundle\AppBundle\Entity\Color
+                type: simple
+
+        ```
+
+        v3.0
+        ```
+        akeneo_pim_structure:
+            reference_data:
+                fabrics:
+                    class: Acme\Bundle\AppBundle\Entity\Fabric
+                    type: multi
+                color:
+                    class: Acme\Bundle\AppBundle\Entity\Color
+                    type: simple
+        ```
+
+4. Update your **app/AppKernel.php**:
+
+    * Remove the following bundles:
+        - TODO
+
+    * For Enterprise Edition, you also need to remove the following bundle:
+        - TODO
+        
+    * Add the following bundles:
+        - TODO
+        
+    * For Enterprise Edition, you also need to add the following bundle:
+        - TODO
+
 ## Migrate your custom code
 
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:

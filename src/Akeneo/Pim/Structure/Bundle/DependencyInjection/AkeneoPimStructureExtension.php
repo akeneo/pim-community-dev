@@ -24,7 +24,7 @@ class AkeneoPimStructureExtension extends Extension
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('pim_reference_data.configurations', $configs[0]);
+        $container->setParameter('pim_reference_data.configurations', $configs[0]['reference_data']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('event_subscribers.yml');

@@ -38,6 +38,5 @@ class AkeneoPimStructureBundle extends Bundle
                 false
             )
         );
-
     }
 }

@@ -20,13 +20,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('pim_reference_data');
+        $rootNode = $treeBuilder->root('akeneo_pim_structure');
 
         $rootNode
-            ->prototype('array')
-                ->children()
-                    ->scalarNode('class')->isRequired()->canNotBeEmpty()->end()
-                    ->enumNode('type')->isRequired()->values(['simple', 'multi'])->end()
+            ->children()
+                ->arrayNode('reference_data')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('class')->isRequired()->canNotBeEmpty()->end()
+                            ->enumNode('type')->isRequired()->values(['simple', 'multi'])->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
