@@ -43,9 +43,9 @@ use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**

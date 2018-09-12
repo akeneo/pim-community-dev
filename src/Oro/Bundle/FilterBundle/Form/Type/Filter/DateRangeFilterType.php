@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
-use Pim\Bundle\FilterBundle\Form\Type\DateRangeType;
+use Oro\Bundle\PimFilterBundle\Form\Type\DateRangeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;

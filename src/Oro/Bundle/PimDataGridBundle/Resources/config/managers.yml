@@ -1,0 +1,9 @@
+parameters:
+    pim_datagrid.manager.datagrid_view.class: Oro\Bundle\PimDataGridBundle\Manager\DatagridViewManager
+
+services:
+    pim_datagrid.manager.datagrid_view:
+        class: '%pim_datagrid.manager.datagrid_view.class%'
+        arguments:
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@oro_datagrid.datagrid.manager'

@@ -1,0 +1,15 @@
+Oro\Bundle\PimDataGridBundle\Entity\DatagridView:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [label]
+            message: pim_datagrid.column_configurator.label.unique_message
+    properties:
+        label:
+            - NotBlank:
+                message: pim_datagrid.column_configurator.not_blank_message
+            - Length:
+                max: 100
+        columns:
+            - Count:
+                minMessage: pim_datagrid.column_configurator.min_message
+                min: 1

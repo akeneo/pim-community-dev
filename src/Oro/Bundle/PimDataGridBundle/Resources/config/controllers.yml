@@ -1,0 +1,54 @@
+parameters:
+    pim_datagrid.controller.datagrid.class:       Oro\Bundle\PimDataGridBundle\Controller\DatagridController
+    pim_datagrid.controller.export.class:         Oro\Bundle\PimDataGridBundle\Controller\ExportController
+    pim_datagrid.controller.product_export.class: Oro\Bundle\PimDataGridBundle\Controller\ProductExportController
+    pim_datagrid.controller.rest.datagrid_view.class:  Oro\Bundle\PimDataGridBundle\Controller\Rest\DatagridViewController
+    pim_datagrid.controller.mass_action.class:    Oro\Bundle\PimDataGridBundle\Controller\MassActionController
+
+services:
+    pim_datagrid.controller.datagrid:
+        class: '%pim_datagrid.controller.datagrid.class%'
+        arguments:
+            - '@templating'
+            - '@oro_datagrid.datagrid.metadata_parser'
+
+    pim_datagrid.controller.export:
+        abstract: false
+        class: '%pim_datagrid.controller.export.class%'
+        arguments:
+            - '@request_stack'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@pim_serializer'
+
+    pim_datagrid.controller.product_export:
+        class: '%pim_datagrid.controller.product_export.class%'
+        arguments:
+            - '@request_stack'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.parameters_parser'
+
+    pim_datagrid.controller.mass_action:
+        class: '%pim_datagrid.controller.mass_action.class%'
+        arguments:
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@oro_datagrid.mass_action.parameters_parser'
+
+    pim_datagrid.controller.rest.datagrid_view:
+        class: '%pim_datagrid.controller.rest.datagrid_view.class%'
+        arguments:
+            - '@pim_internal_api_serializer'
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@security.token_storage'
+            - '@pim_datagrid.manager.datagrid_view'
+            - '@pim_datagrid.saver.datagrid_view'
+            - '@pim_datagrid.remover.datagrid_view'
+            - '@validator'
+            - '@translator'
+            - '@pim_catalog.filter.chained'
+            - '@pim_datagrid.updater.datagrid_view'
+            - '@pim_datagrid.factory.datagrid_view'

@@ -1,0 +1,2 @@
+parameters:
+    pim_datagrid.entity.datagrid_view.class: Oro\Bundle\PimDataGridBundle\Entity\DatagridView

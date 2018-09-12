@@ -188,21 +188,11 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
         src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
-    DataGridBundle:
-        namespace: Pim\Bundle\DataGridBundle
-        psr4_prefix: Pim\Bundle\DataGridBundle
-        spec_path: src/Pim/Bundle/DataGridBundle
-        src_path: src/Pim/Bundle/DataGridBundle
     EnrichBundle:
         namespace: Pim\Bundle\EnrichBundle
         psr4_prefix: Pim\Bundle\EnrichBundle
         spec_path: src/Pim/Bundle/EnrichBundle
         src_path: src/Pim/Bundle/EnrichBundle
-    FilterBundle:
-        namespace: Pim\Bundle\FilterBundle
-        psr4_prefix: Pim\Bundle\FilterBundle
-        spec_path: src/Pim/Bundle/FilterBundle
-        src_path: src/Pim/Bundle/FilterBundle
     LocalizationBundle:
         namespace: Pim\Bundle\LocalizationBundle
         psr4_prefix: Pim\Bundle\LocalizationBundle
@@ -237,3 +227,15 @@ suites:
         psr4_prefix: Akeneo\Test\Common
         spec_path: tests/back/Common
         src_path: tests/back/Common
+
+    ## Misc
+    PimDataGridBundle:
+        namespace: Oro\Bundle\PimDataGridBundle
+        psr4_prefix: Oro\Bundle\PimDataGridBundle
+        spec_path: src/Oro/Bundle/PimDataGridBundle
+        src_path: src/Oro/Bundle/PimDataGridBundle
+    FilterBundle:
+        namespace: Oro\Bundle\PimFilterBundle
+        psr4_prefix: Oro\Bundle\PimFilterBundle
+        spec_path: src/Oro/Bundle/PimFilterBundle
+        src_path: src/Oro/Bundle/PimFilterBundle

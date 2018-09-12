@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
+use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
  * @author    Julien Sanchez <julien@akeneo.com>

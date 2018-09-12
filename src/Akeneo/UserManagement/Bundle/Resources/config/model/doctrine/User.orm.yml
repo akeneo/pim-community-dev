@@ -129,7 +129,7 @@ Akeneo\UserManagement\Component\Model\User:
                         referencedColumnName: id
                         onDelete: CASCADE
         defaultGridViews:
-            targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+            targetEntity: Oro\Bundle\PimDataGridBundle\Entity\DatagridView
             joinTable:
                 name: pim_user_default_datagrid_view
                 joinColumns:

@@ -1,0 +1,6 @@
+parameters:
+    pim_filter.product_utility.class: Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility
+
+services:
+    pim_filter.product_utility:
+        class: '%pim_filter.product_utility.class%'
