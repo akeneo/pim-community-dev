@@ -8,6 +8,11 @@ pim_datagrid_view_rest_default_columns:
     defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:defaultViewColumnsAction }
     methods: [GET]
 
+pim_datagrid_view_list_available_columns:
+    path: /rest/{alias}/available-columns
+    defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:listColumnsAction }
+    methods: [GET]
+
 pim_datagrid_view_rest_default_user_view:
     path: /rest/{alias}/default
     defaults: { _controller: pim_datagrid.controller.rest.datagrid_view:getUserDefaultDatagridViewAction }
