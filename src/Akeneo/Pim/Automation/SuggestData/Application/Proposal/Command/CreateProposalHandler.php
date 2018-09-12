@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\CreateProposalInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
@@ -23,9 +24,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
  */
 class CreateProposalHandler
 {
-    /** @var string */
-    private const PROPOSAL_AUTHOR = 'PIM.ai';
-
     /** @var SuggestedDataNormalizer */
     private $suggestedDataNormalizer;
 
@@ -65,7 +63,7 @@ class CreateProposalHandler
             return;
         }
 
-        $this->createProposal->fromSuggestedData($product, $suggestedValues, static::PROPOSAL_AUTHOR);
+        $this->createProposal->fromSuggestedData($product, $suggestedValues, ProposalAuthor::USERNAME);
         // TODO APAI-240: empty suggested data from subscription
     }
 
