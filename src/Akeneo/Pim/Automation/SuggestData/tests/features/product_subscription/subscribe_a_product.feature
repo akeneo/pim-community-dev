@@ -6,9 +6,9 @@ Feature: Subscribe a product to PIM.ai
 
   Scenario: Successfully subscribe a product to PIM.ai
     Given the following attribute:
-      | code  | type                   |
-      | ean   | pim_catalog_text       |
-      | sku   | pim_catalog_identifier |
+      | code | type                   |
+      | ean  | pim_catalog_text       |
+      | sku  | pim_catalog_identifier |
     And the following family:
       | code   | attributes | label-en_US |
       | tshirt | sku,ean    | T-Shirt     |
@@ -37,9 +37,9 @@ Feature: Subscribe a product to PIM.ai
 
   Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
     Given the following attribute:
-      | code  | type                   |
-      | sku   | pim_catalog_identifier |
-      | ean   | pim_catalog_text       |
+      | code | type                   |
+      | sku  | pim_catalog_identifier |
+      | ean  | pim_catalog_text       |
     And the following family:
       | code   | attributes | label-en_US |
       | tshirt | sku,ean    | T-Shirt     |
@@ -111,7 +111,23 @@ Feature: Subscribe a product to PIM.ai
   #Scenario: Fail to subscribe a product that has an incorrect UPC
   # wrong UPC format
 
-  #Scenario: Fail to subscribe a product that does not have one value on mapped identifiers
-  # Check with MPN + Brand with Brand not filled
+  Scenario: Fail to subscribe a product that does not have MPN and Brand filled together
+    Given the following attribute:
+      | code  | type                   |
+      | mpn   | pim_catalog_text       |
+      | brand | pim_catalog_text       |
+      | sku   | pim_catalog_identifier |
+    And the following family:
+      | code   | attributes    | label-en_US |
+      | tshirt | sku,mpn,brand | T-Shirt     |
+    And the following product:
+      | identifier | family | mpn         |
+      | ts_0013    | tshirt | tshirt-1002 |
+    And a predefined mapping as follows:
+      | pim_ai_code | attribute_code |
+      | mpn         | mpn            |
+      | brand       | brand          |
+    When I subscribe the product "ts_0013" to PIM.ai
+    Then the product "ts_0013" should not be subscribed
 
   #Scenario: Handle a bad request to PIM.ai
