@@ -27,7 +27,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
     akeneo.pim.automation.suggest_data.proposal.create_proposal:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\CreateProposal'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert'
         arguments:
             - '@pim_catalog.updater.product'
             - '@pimee_workflow.product.builder.draft'

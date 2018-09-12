@@ -63,4 +63,14 @@ class ProductSubscriptionSpec extends ObjectBehavior
 
         $this->getSuggestedData()->shouldReturn($suggestedData);
     }
+
+    public function it_can_be_emptied()
+    {
+        $suggestedData = new SuggestedData(['upc' => '42']);
+        $this->setSuggestedData($suggestedData);
+        $this->getSuggestedData()->getValues()->shouldReturn(['upc' => '42']);
+
+        $this->emptySuggestedData();
+        $this->getSuggestedData()->getValues()->shouldReturn([]);
+    }
 }

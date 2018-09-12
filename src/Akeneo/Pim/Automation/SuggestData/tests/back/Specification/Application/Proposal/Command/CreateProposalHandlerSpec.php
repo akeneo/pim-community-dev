@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposa
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
@@ -22,9 +23,10 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 {
     public function let(
         SuggestedDataNormalizer $suggestedDataNormalizer,
-        ProposalUpsertInterface $proposalUpsert
+        ProposalUpsertInterface $proposalUpsert,
+        ProductSubscriptionRepositoryInterface $subscriptionRepository
     ) {
-        $this->beConstructedWith($suggestedDataNormalizer, $proposalUpsert);
+        $this->beConstructedWith($suggestedDataNormalizer, $proposalUpsert, $subscriptionRepository);
     }
 
     public function it_is_a_create_proposal_handler()
@@ -51,6 +53,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
     public function it_handles_a_create_proposal_command(
         $suggestedDataNormalizer,
         $proposalUpsert,
+        $subscriptionRepository,
         CreateProposalCommand $command,
         ProductSubscription $subscription,
         ProductInterface $product,
@@ -85,6 +88,9 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $family->getAttributeCodes()->willReturn(['foo']);
 
         $proposalUpsert->process($product, $normalizedData, 'PIM.ai')->shouldBeCalled();
+
+        $subscription->emptySuggestedData()->shouldBeCalled();
+        $subscriptionRepository->save($subscription)->shouldBeCalled();
 
         $this->handle($command)->shouldReturn(null);
     }

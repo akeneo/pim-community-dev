@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedD
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
+use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
@@ -30,16 +31,22 @@ class CreateProposalHandler
     /** @var ProposalUpsertInterface */
     private $proposalUpsert;
 
+    /** @var ProductSubscriptionRepositoryInterface */
+    private $productSubscriptionRepository;
+
     /**
      * @param SuggestedDataNormalizer $suggestedDataNormalizer
      * @param ProposalUpsertInterface $proposalUpsert
+     * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
         SuggestedDataNormalizer $suggestedDataNormalizer,
-        ProposalUpsertInterface $proposalUpsert
+        ProposalUpsertInterface $proposalUpsert,
+        ProductSubscriptionRepositoryInterface $productSubscriptionRepository
     ) {
         $this->suggestedDataNormalizer = $suggestedDataNormalizer;
         $this->proposalUpsert = $proposalUpsert;
+        $this->productSubscriptionRepository = $productSubscriptionRepository;
     }
 
     /**
@@ -47,14 +54,15 @@ class CreateProposalHandler
      */
     public function handle(CreateProposalCommand $command): void
     {
-        $product = $command->getProductSubscription()->getProduct();
+        $subscription = $command->getProductSubscription();
+        $product = $subscription->getProduct();
         if (0 === count($product->getCategoryCodes())) {
             // TODO APAI-244: handle error
             return;
         }
 
         $suggestedValues = $this->getSuggestedValues(
-            $command->getProductSubscription()->getSuggestedData(),
+            $subscription->getSuggestedData(),
             $product->getFamily()
         );
 
@@ -64,7 +72,9 @@ class CreateProposalHandler
         }
 
         $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
-        // TODO APAI-240: empty suggested data from subscription
+
+        $subscription->emptySuggestedData();
+        $this->productSubscriptionRepository->save($subscription);
     }
 
     /**

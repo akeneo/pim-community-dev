@@ -83,7 +83,18 @@ class ProductSubscription
     public function setSuggestedData(SuggestedData $suggestedData): self
     {
         $this->suggestedData = $suggestedData;
-        $this->rawSuggestedData = ($suggestedData->isEmpty()) ? null : $suggestedData->getValues();
+        $this->rawSuggestedData = $suggestedData->getValues();
+
+        return $this;
+    }
+
+    /**
+     * @return ProductSubscription
+     */
+    public function emptySuggestedData(): self
+    {
+        $this->rawSuggestedData = null;
+        $this->suggestedData = null;
 
         return $this;
     }
