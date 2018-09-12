@@ -61,7 +61,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'an_attribute'      => 'some data',
             'another_attribute' => 'some other data',
         ];
-        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
+        $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
@@ -78,7 +78,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             'an_attribute'      => 'some data',
             'another_attribute' => 'some other data',
         ];
-        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
+        $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
 
         $subscription = $this->getRepository()->findOneByProductId($product->getId());
         Assert::assertInstanceOf(ProductSubscription::class, $subscription);
@@ -153,17 +153,36 @@ SQL;
             'an_attribute' => 'some data',
             'another_attribute' => 'some other data',
         ];
-        $this->insertSuggestedData($product->getId(), $subscriptionId, $suggestedData);
+        $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
 
         $otherProduct = $this->createProduct('another_product');
         $otherSubscriptionId = uniqid();
-        $this->insertSuggestedData($otherProduct->getId(), $otherSubscriptionId, []);
+        $this->insertSubscription($otherProduct->getId(), $otherSubscriptionId, []);
 
         $pendingSubscriptions = $this->getRepository()->findPendingSubscriptions();
         Assert::assertCount(1, $pendingSubscriptions);
         Assert::assertSame($product, $pendingSubscriptions[0]->getProduct());
         Assert::assertSame($subscriptionId, $pendingSubscriptions[0]->getSubscriptionId());
         Assert::assertSame($suggestedData, $pendingSubscriptions[0]->getSuggestedData()->getValues());
+    }
+
+    public function test_it_deletes_a_subscription()
+    {
+        $productId = $this->createProduct('a_product_to_delete')->getId();
+        $subscriptionId = uniqid();
+        $suggestedData = [
+            'an_attribute' => 'some data',
+            'another_attribute' => 'some other data',
+        ];
+        $this->insertSubscription($productId, $subscriptionId, $suggestedData);
+
+        $subscription = $this->getRepository()->findOneByProductId($productId);
+        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
+
+        $this->getRepository()->delete($subscription);
+
+        $subscription = $this->getRepository()->findOneByProductId($productId);
+        Assert::assertNull($subscription);
     }
 
     /**
@@ -193,7 +212,7 @@ SQL;
      * @param string $subscriptionId
      * @param array|null $suggestedData
      */
-    private function insertSuggestedData(int $productId, string $subscriptionId, array $suggestedData): void
+    private function insertSubscription(int $productId, string $subscriptionId, array $suggestedData): void
     {
         $query = <<<SQL
 INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, raw_suggested_data) 
