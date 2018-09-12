@@ -78,6 +78,8 @@ class FiltersColumn extends BaseView {
     this.el.appendChild(list)
     this.hideDisabledFilters(filters)
     this.restoreFilterState(state, filters)
+
+    mediator.trigger('filters-column:init', this.updateDatagridStateWithFilters.bind(this))
   }
 
   hideDisabledFilters(filters: any) {
@@ -100,9 +102,7 @@ class FiltersColumn extends BaseView {
     })
   }
 
-  updateDatagridStateWithFilters() {
-    const filterState: any = {}
-
+  updateDatagridStateWithFilters(filterState: any = {}) {
     for (let filterName in this.modules) {
       const filter = this.modules[filterName]
       const shortName = `__${filterName}`
@@ -133,7 +133,6 @@ class FiltersColumn extends BaseView {
     }
 
     this.loaded = true
-    console.log('updated the loaded', this.loaded)
   }
 }
 

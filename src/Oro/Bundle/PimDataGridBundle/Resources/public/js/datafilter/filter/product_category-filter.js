@@ -64,6 +64,10 @@ define(
                     filtersManager.listenTo(this, 'update', filtersManager._onFilterUpdated);
                 });
 
+                this.listenTo(mediator, 'filters-column:init', updateEvent => {
+                    this.listenTo(this, 'update', filter => updateEvent({ category: filter }))
+                })
+
                 mediator.on('grid_action_execute:product-grid:delete', function() {
                     TreeView.refresh();
                 });
