@@ -22,17 +22,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 interface ProductSubscriptionRepositoryInterface
 {
     /**
-     * @param ProductInterface $product
-     * @param string $subscriptionId
-     *
-     * @return ProductSubscription|null
-     */
-    public function findOneByProductAndSubscriptionId(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ?ProductSubscription;
-
-    /**
      * @param ProductSubscription $subscription
      */
     public function save(ProductSubscription $subscription): void;

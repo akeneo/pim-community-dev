@@ -53,23 +53,6 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         );
     }
 
-    public function test_it_finds_a_subscription_by_product_and_subscription_id()
-    {
-        $product = $this->createProduct('a_product');
-        $subscriptionId = uniqid();
-        $suggestedData = [
-            'an_attribute'      => 'some data',
-            'another_attribute' => 'some other data',
-        ];
-        $this->insertSubscription($product->getId(), $subscriptionId, $suggestedData);
-
-        $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
-        Assert::assertInstanceOf(ProductSubscription::class, $subscription);
-        Assert::assertSame($product, $subscription->getProduct());
-        Assert::assertSame($subscriptionId, $subscription->getSubscriptionId());
-        Assert::assertSame($suggestedData, $subscription->getSuggestedData()->getValues());
-    }
-
     public function test_that_it_gets_a_subscription_from_a_product_id()
     {
         $product = $this->createProduct('a_product');
