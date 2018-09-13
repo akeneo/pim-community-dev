@@ -16,4 +16,3 @@ Feature: Unsubscribe a product to PIM.ai
     And the PIM.ai token is expired
     When I unsubscribe the product "B00F0DD0I6"
     Then the product "B00F0DD0I6" should be subscribed
-
