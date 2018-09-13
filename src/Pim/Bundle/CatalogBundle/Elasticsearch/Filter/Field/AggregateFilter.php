@@ -56,13 +56,15 @@ class AggregateFilter extends AbstractFieldFilter implements FieldFilterInterfac
             ];
         }
 
-        $this->searchQueryBuilder->addMustNot(
-            [
-                'bool' => [
-                    'filter' => $clauses,
-                ],
-            ]
-        );
+        if (!empty($clauses)) {
+            $this->searchQueryBuilder->addMustNot(
+                [
+                    'bool' => [
+                        'filter' => $clauses,
+                    ],
+                ]
+            );
+        }
 
         return $this;
     }
