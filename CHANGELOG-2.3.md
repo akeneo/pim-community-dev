@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7651: Fix history generation of category accesses
+
 # 2.3.8 (2018-09-14)
 
 # 2.3.7 (2018-09-11)

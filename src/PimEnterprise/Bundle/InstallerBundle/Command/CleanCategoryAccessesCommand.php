@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -43,6 +44,7 @@ class CleanCategoryAccessesCommand extends ContainerAwareCommand
         $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
         $this->getProductCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
         $this->getAssetCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
+        $this->getDoctrine()->getManager()->flush();
         $output->writeln('<info>done !</info>');
     }
 
@@ -68,5 +70,13 @@ class CleanCategoryAccessesCommand extends ContainerAwareCommand
     protected function getUserGroupRepository()
     {
         return $this->getContainer()->get('pim_user.repository.group');
+    }
+
+    /**
+     * @return ManagerRegistry
+     */
+    private function getDoctrine()
+    {
+        return $this->getContainer()->get('doctrine');
     }
 }
