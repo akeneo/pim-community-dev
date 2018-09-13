@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\CreateProposalInterface;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\CreateProposal;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\ProposalUpsert;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -29,7 +29,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CreateProposalSpec extends ObjectBehavior
+class ProposalUpsertSpec extends ObjectBehavior
 {
     function let(
         ObjectUpdaterInterface $productUpdater,
@@ -42,14 +42,14 @@ class CreateProposalSpec extends ObjectBehavior
 
     function it_is_a_create_proposal()
     {
-        $this->shouldHaveType(CreateProposal::class);
-        $this->shouldImplement(CreateProposalInterface::class);
+        $this->shouldHaveType(ProposalUpsert::class);
+        $this->shouldImplement(ProposalUpsertInterface::class);
     }
 
     function it_does_not_create_a_proposal_if_suggested_data_is_invalid(
         $productUpdater,
         $draftBuilder,
-        EntityWithValuesInterface $product
+        ProductInterface $product
     ) {
         $suggestedData = [
             'foo' => 'bar',
@@ -59,7 +59,7 @@ class CreateProposalSpec extends ObjectBehavior
         );
         $draftBuilder->build($product, 'PIM.ai')->shouldNotBeCalled();
 
-        $this->fromSuggestedData($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
+        $this->process($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
     }
 
     function it_creates_a_proposal_from_suggested_data(
@@ -67,7 +67,7 @@ class CreateProposalSpec extends ObjectBehavior
         $draftBuilder,
         $draftSaver,
         $eventDispatcher,
-        EntityWithValuesInterface $product,
+        ProductInterface $product,
         EntityWithValuesDraftInterface $productDraft
     ) {
         $suggestedData = ['foo' => 'bar'];
@@ -80,6 +80,7 @@ class CreateProposalSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
+        $productDraft->markAsReady()->shouldBeCalled();
         $draftSaver->save($productDraft)->shouldBeCalled();
 
         $eventDispatcher->dispatch(
@@ -87,6 +88,6 @@ class CreateProposalSpec extends ObjectBehavior
             new GenericEvent($productDraft->getWrappedObject(), ['comment' => null])
         )->shouldBeCalled();
 
-        $this->fromSuggestedData($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
+        $this->process($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
     }
 }

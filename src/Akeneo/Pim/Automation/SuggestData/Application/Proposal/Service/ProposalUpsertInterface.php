@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-interface CreateProposalInterface
+interface ProposalUpsertInterface
 {
     /**
-     * @param EntityWithValuesInterface $product
-     * @param array $suggestedData
+     * Creates or updates a proposal given a set of values
+     *
+     * @param ProductInterface $product
+     * @param array $values
      * @param string $author
      */
-    public function fromSuggestedData(EntityWithValuesInterface $product, array $suggestedData, string $author): void;
+    public function process(ProductInterface $product, array $values, string $author): void;
 }

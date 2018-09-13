@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\CreateProposalInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -27,19 +27,19 @@ class CreateProposalHandler
     /** @var SuggestedDataNormalizer */
     private $suggestedDataNormalizer;
 
-    /** @var CreateProposalInterface */
-    private $createProposal;
+    /** @var ProposalUpsertInterface */
+    private $proposalUpsert;
 
     /**
      * @param SuggestedDataNormalizer $suggestedDataNormalizer
-     * @param CreateProposalInterface $createProposal
+     * @param ProposalUpsertInterface $proposalUpsert
      */
     public function __construct(
         SuggestedDataNormalizer $suggestedDataNormalizer,
-        CreateProposalInterface $createProposal
+        ProposalUpsertInterface $proposalUpsert
     ) {
         $this->suggestedDataNormalizer = $suggestedDataNormalizer;
-        $this->createProposal = $createProposal;
+        $this->proposalUpsert = $proposalUpsert;
     }
 
     /**
@@ -63,7 +63,7 @@ class CreateProposalHandler
             return;
         }
 
-        $this->createProposal->fromSuggestedData($product, $suggestedValues, ProposalAuthor::USERNAME);
+        $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
         // TODO APAI-240: empty suggested data from subscription
     }
 

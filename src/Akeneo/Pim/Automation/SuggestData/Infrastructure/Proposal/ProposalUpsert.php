@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\CreateProposalInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-final class CreateProposal implements CreateProposalInterface
+final class ProposalUpsert implements ProposalUpsertInterface
 {
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
@@ -62,13 +62,13 @@ final class CreateProposal implements CreateProposalInterface
     /**
      * {@inheritdoc}
      */
-    public function fromSuggestedData(EntityWithValuesInterface $product, array $suggestedData, string $author): void
+    public function process(ProductInterface $product, array $values, string $author): void
     {
         try {
             $this->productUpdater->update(
                 $product,
                 [
-                    'values' => $suggestedData,
+                    'values' => $values,
                 ]
             );
             $productDraft = $this->draftBuilder->build($product, $author);
@@ -84,6 +84,7 @@ final class CreateProposal implements CreateProposalInterface
             );
 
             $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
+            $productDraft->markAsReady();
             $this->draftSaver->save($productDraft);
 
             $this->eventDispatcher->dispatch(

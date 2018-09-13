@@ -7,12 +7,11 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\C
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\CreateProposalInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -23,9 +22,9 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 {
     public function let(
         SuggestedDataNormalizer $suggestedDataNormalizer,
-        CreateProposalInterface $createProposal
+        ProposalUpsertInterface $proposalUpsert
     ) {
-        $this->beConstructedWith($suggestedDataNormalizer, $createProposal);
+        $this->beConstructedWith($suggestedDataNormalizer, $proposalUpsert);
     }
 
     public function it_is_a_create_proposal_handler()
@@ -51,12 +50,11 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 
     public function it_handles_a_create_proposal_command(
         $suggestedDataNormalizer,
-        $createProposal,
+        $proposalUpsert,
         CreateProposalCommand $command,
         ProductSubscription $subscription,
         ProductInterface $product,
-        FamilyInterface $family,
-        EntityWithValuesDraftInterface $draft
+        FamilyInterface $family
     ) {
         $product->getCategoryCodes()->willReturn(['category_1']);
         $product->getFamily()->willReturn($family);
@@ -86,7 +84,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(['foo']);
 
-        $createProposal->fromSuggestedData($product, $normalizedData, 'PIM.ai')->shouldBeCalled();
+        $proposalUpsert->process($product, $normalizedData, 'PIM.ai')->shouldBeCalled();
 
         $this->handle($command)->shouldReturn(null);
     }
