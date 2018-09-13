@@ -81,26 +81,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-
-        $sqb->addFilter([
-            'bool' => [
-                'must_not' => [
-                    'bool' => [
-                        'filter' => [
-                            [
-                                'terms' => [ 'attributes_of_ancestors' => ['foo']]
-                            ],
-                            [
-                                'terms' => [ 'attributes_of_ancestors' => ['baz']]
-                            ]
-                        ],
-                    ],
-                ]
-            ]
-        ])->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }
@@ -133,22 +116,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-        $sqb->addFilter([
-            'bool' => [
-                'must_not' => [
-                    'bool' => [
-                        'filter' => [
-                            [
-                                'terms' => [ 'attributes_of_ancestors' => ['foo']]
-                            ]
-                        ],
-                    ],
-                ]
-            ]
-        ])->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }
@@ -168,7 +138,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -189,7 +159,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -237,28 +207,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-        $sqb->addFilter([
-            'bool' => [
-                'must_not' => [
-                    'bool' => [
-                        'filter' => [
-                            [
-                                'terms' => ['attributes_of_ancestors' => ['foo']],
-                            ],
-                            [
-                                'terms' => ['attributes_of_ancestors' => ['foo_currency1']],
-                            ],
-                            [
-                                'terms' => ['attributes_of_ancestors' => ['foo_currency2']],
-                            ]
-                        ],
-                    ],
-                ],
-            ],
-        ])->shouldBeCalled();
         $sqb->addFilter([
             'terms' => ['attributes_for_this_level' => ['foo', 'foo_currency1', 'foo_currency2']],
         ])->shouldBeCalled();
@@ -284,22 +235,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-        $sqb->addFilter([
-            'bool' => [
-                'must_not' => [
-                    'bool' => [
-                        'filter' => [
-                            [
-                                'terms' => [ 'attributes_of_ancestors' => ['bar']]
-                            ]
-                        ],
-                    ],
-                ]
-            ]
-        ])->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }
@@ -360,7 +298,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -380,7 +318,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -401,7 +339,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -422,7 +360,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -443,7 +381,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
@@ -467,7 +405,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
 
@@ -492,7 +430,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('categories_of_ancestors', Operators::IN_CHILDREN_LIST, [], ['rawFilters' => $rawFilters])->shouldBeCalled();
+        $pqb->addFilter('aggregate', Operators::AGGREGATE, null, ['rawFilters' => $rawFilters])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
 
