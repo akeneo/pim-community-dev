@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\CreateProposalInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -28,18 +23,9 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 {
     public function let(
         SuggestedDataNormalizer $suggestedDataNormalizer,
-        ObjectUpdaterInterface $productUpdater,
-        EntityWithValuesDraftBuilderInterface $draftBuilder,
-        SaverInterface $draftSaver,
-        EventDispatcherInterface $eventDispatcher
+        CreateProposalInterface $createProposal
     ) {
-        $this->beConstructedWith(
-            $suggestedDataNormalizer,
-            $productUpdater,
-            $draftBuilder,
-            $draftSaver,
-            $eventDispatcher
-        );
+        $this->beConstructedWith($suggestedDataNormalizer, $createProposal);
     }
 
     public function it_is_a_create_proposal_handler()
@@ -65,10 +51,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 
     public function it_handles_a_create_proposal_command(
         $suggestedDataNormalizer,
-        $productUpdater,
-        $draftBuilder,
-        $draftSaver,
-        $eventDispatcher,
+        $createProposal,
         CreateProposalCommand $command,
         ProductSubscription $subscription,
         ProductInterface $product,
@@ -86,7 +69,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
                 'foo' => 'Lorem ipsum dolor sit amet',
             ]
         );
-        $normlizedData = [
+        $normalizedData = [
             'foo' => [
                 [
                     'scope' => null,
@@ -96,23 +79,14 @@ class CreateProposalHandlerSpec extends ObjectBehavior
             ],
         ];
 
-        $suggestedDataNormalizer->normalize($suggestedData)->willReturn($normlizedData);
+        $suggestedDataNormalizer->normalize($suggestedData)->willReturn($normalizedData);
 
         $subscription->getSuggestedData()->willReturn($suggestedData);
         $subscription->getProduct()->willReturn($product);
         $product->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(['foo']);
 
-        $productUpdater->update($product, ['values' => $normlizedData])->shouldBeCalled();
-        $draftBuilder->build($product, Argument::cetera())->willReturn($draft);
-
-        $eventDispatcher->dispatch(
-            EntityWithValuesDraftEvents::PRE_READY,
-            Argument::type(GenericEvent::class)
-        )->shouldBeCalled();
-
-        $draft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
-        $draftSaver->save($draft)->shouldBeCalled();
+        $createProposal->fromSuggestedData($product, $normalizedData, 'PIM.ai')->shouldBeCalled();
 
         $this->handle($command)->shouldReturn(null);
     }

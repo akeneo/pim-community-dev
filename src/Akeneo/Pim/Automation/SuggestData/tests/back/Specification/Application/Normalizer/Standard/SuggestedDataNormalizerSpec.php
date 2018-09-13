@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\Standard\SuggestedDataNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
