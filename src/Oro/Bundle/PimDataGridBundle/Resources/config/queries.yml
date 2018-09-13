@@ -5,6 +5,6 @@ services:
             - '@database_connection'
 
     pim_datagrid.product_grid.query.list_attributes_as_column:
-        class: Pim\Bundle\DataGridBundle\Query\Sql\ListAttributesUseableAsColumnInProductGrid
+        class: Oro\Bundle\PimDataGridBundle\Query\Sql\ListAttributesUseableAsColumnInProductGrid
         arguments:
             - '@database_connection'
