@@ -55,7 +55,7 @@ class SubscriptionWebservice implements SubscriptionApiInterface
     {
         $route = $this->uriGenerator->generate('/subscriptions');
 
-        $params = $identifiers + ['tracker_id' => $trackerId] + $familyInfos;
+        $params = $identifiers + ['tracker_id' => $trackerId] + ['family' => $familyInfos];
 
         try {
             $response = $this->httpClient->request('POST', $route, [
