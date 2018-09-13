@@ -53,7 +53,7 @@ class Subscription
      */
     public function getTrackerId(): int
     {
-        return $this->rawSubscription['tracker_id'];
+        return $this->rawSubscription['extra']['tracker_id'];
     }
 
     /**
@@ -67,13 +67,17 @@ class Subscription
             'id',
             'identifiers',
             'attributes',
-            'tracker_id'
+            'extra'
         ];
 
         foreach ($expectedKeys as $key) {
             if (! array_key_exists($key, $rawSubscription)) {
                 throw new \InvalidArgumentException(sprintf('Missing key "%s" in raw subscription data', $key));
             }
+        }
+
+        if (!isset($rawSubscription['extra']['tracker_id'])) {
+            throw new \InvalidArgumentException('Missing "tracker_id" in raw subscription data');
         }
     }
 }
