@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '2.0.37';
+    const VERSION = '2.0.38';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Rebel Rabbit';
