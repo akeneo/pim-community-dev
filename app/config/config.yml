@@ -58,10 +58,10 @@ swiftmailer:
 akeneo_pim_structure:
     reference_data:
         fabrics:
-            class: Acme\Bundle\AppBundle\Entity\Fabric
+            class: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
             type: multi
         color:
-            class: Acme\Bundle\AppBundle\Entity\Color
+            class: AcmeEnterprise\Bundle\AppBundle\Entity\Color
             type: simple
         assets:
             class: Akeneo\Asset\Component\Model\Asset
