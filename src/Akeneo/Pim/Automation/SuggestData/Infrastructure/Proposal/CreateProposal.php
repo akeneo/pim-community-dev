@@ -86,8 +86,10 @@ final class CreateProposal implements CreateProposalInterface
             $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
             $this->draftSaver->save($productDraft);
 
-            // TODO APAI-252: handle notifications
-            //$this->eventDispatcher->dispatch(EntityWithValuesDraftEvents::POST_READY, new GenericEvent($productDraft));
+            $this->eventDispatcher->dispatch(
+                EntityWithValuesDraftEvents::POST_READY,
+                new GenericEvent($productDraft, ['comment' => null])
+            );
         }
     }
 }

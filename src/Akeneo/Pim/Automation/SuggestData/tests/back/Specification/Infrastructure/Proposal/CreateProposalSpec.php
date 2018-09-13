@@ -82,6 +82,11 @@ class CreateProposalSpec extends ObjectBehavior
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $draftSaver->save($productDraft)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(
+            EntityWithValuesDraftEvents::POST_READY,
+            new GenericEvent($productDraft->getWrappedObject(), ['comment' => null])
+        )->shouldBeCalled();
+
         $this->fromSuggestedData($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
     }
 }
