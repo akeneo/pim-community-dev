@@ -1,0 +1,163 @@
+[
+  {
+    "code": "sku",
+    "type": "pim_catalog_identifier",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "SKU",
+      "fr_FR": "SKU"
+    }
+  },
+  {
+    "code": "asin",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "ASIN",
+      "fr_FR": "ASIN"
+    }
+  },
+  {
+    "code": "pim_upc",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "UPC",
+      "fr_FR": "UPC"
+    }
+  },
+  {
+    "code": "mpn",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "MPN",
+      "fr_FR": "MPN"
+    }
+  },
+  {
+    "code": "pim_brand",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Brand",
+      "fr_FR": "Marque"
+    }
+  },
+  {
+    "code": "description",
+    "type": "pim_catalog_textarea",
+    "group": "other",
+    "localizable": true,
+    "scopable": true,
+    "labels": {
+      "en_US": "Description",
+      "fr_FR": "Description"
+    }
+  },
+  {
+    "code": "memory",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Memory",
+      "fr_FR": "Mémoire"
+    }
+  },
+  {
+    "code": "name",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": true,
+    "scopable": false,
+    "labels": {
+      "en_US": "Name",
+      "fr_FR": "Libellé"
+    }
+  },
+  {
+    "code": "picture",
+    "type": "pim_catalog_image",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Picture",
+      "fr_FR": "Image"
+    }
+  },
+  {
+    "code": "processor",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Processor",
+      "fr_FR": "Processeur"
+    }
+  },
+  {
+    "code": "price",
+    "type": "pim_catalog_price_collection",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Price",
+      "fr_FR": "Prix"
+    }
+  },
+  {
+    "code": "release_date",
+    "type": "pim_catalog_date",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Release date",
+      "fr_FR": "Date de sortie"
+    }
+  },
+  {
+    "code": "power_device",
+    "type": "pim_catalog_text",
+    "group": "other",
+    "localizable": false,
+    "scopable": false
+  },
+  {
+    "code": "color",
+    "type": "pim_catalog_simpleselect",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Color",
+      "fr_FR": "Couleur"
+    }
+  },
+  {
+    "code": "weight",
+    "type": "pim_catalog_number",
+    "group": "other",
+    "localizable": false,
+    "scopable": false,
+    "labels": {
+      "en_US": "Weight",
+      "fr_FR": "Poids"
+    }
+  }
+]

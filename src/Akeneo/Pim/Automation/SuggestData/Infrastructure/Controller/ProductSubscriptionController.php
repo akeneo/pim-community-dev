@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
@@ -31,16 +33,22 @@ class ProductSubscriptionController
     /** @var GetProductSubscriptionStatusHandler */
     private $getProductSubscriptionStatusHandler;
 
+    /** @var UnsubscribeProductHandler */
+    private $unsubscribeProductHandler;
+
     /**
      * @param SubscribeProduct $subscribeProduct
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
+     * @param UnsubscribeProductHandler $unsubscribeProductHandler
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,
-        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
+        GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
+        UnsubscribeProductHandler $unsubscribeProductHandler
     ) {
         $this->subscribeProduct = $subscribeProduct;
         $this->getProductSubscriptionStatusHandler = $getProductSubscriptionStatusHandler;
+        $this->unsubscribeProductHandler = $unsubscribeProductHandler;
     }
 
     /**
@@ -70,5 +78,22 @@ class ProductSubscriptionController
         $productSubscriptionStatus = $this->getProductSubscriptionStatusHandler->handle($getProductSubscriptionStatus);
 
         return new JsonResponse($productSubscriptionStatus->normalize());
+    }
+
+    /**
+     * @param int $productId
+     *
+     * @return Response
+     */
+    public function unsubscribeAction(int $productId): Response
+    {
+        try {
+            $command = new UnsubscribeProductCommand($productId);
+            $this->unsubscribeProductHandler->handle($command);
+
+            return new JsonResponse();
+        } catch (ProductSubscriptionException $e) {
+            return new JsonResponse(['errors' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 }

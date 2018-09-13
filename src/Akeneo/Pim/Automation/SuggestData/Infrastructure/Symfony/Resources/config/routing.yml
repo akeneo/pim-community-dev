@@ -3,6 +3,11 @@ akeneo_suggest_data_push_product:
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:subscribeAction }
     methods: [GET]
 
+akeneo_suggest_data_unsubscribe:
+    path: /suggest-data/subscription/{productId}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:unsubscribeAction }
+    methods: [DELETE]
+
 akeneo_suggest_data_franklin_subscription_status:
     path: /suggest-data/{productId}/subscription-status
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.product_subscription:getProductSubscriptionStatusAction }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\UnsubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Service\SubscribeProduct;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
@@ -44,25 +46,31 @@ class ProductSubscriptionContext implements Context
     /** @var SubscriptionFake */
     private $subscriptionApi;
 
+    /** @var UnsubscribeProductHandler */
+    private $unsubscribeProductHandler;
+
     /**
-     * @param InMemoryProductRepository             $productRepository
+     * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
-     * @param SubscribeProduct                      $subscribeProduct
-     * @param DataFixturesContext                   $dataFixturesContext
-     * @param SubscriptionFake                      $subscriptionApi
+     * @param SubscribeProduct $subscribeProduct
+     * @param DataFixturesContext $dataFixturesContext
+     * @param SubscriptionFake $subscriptionApi
+     * @param UnsubscribeProductHandler $unsubscribeProductHandler
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
         InMemoryProductSubscriptionRepository $productSubscriptionRepository,
         SubscribeProduct $subscribeProduct,
         DataFixturesContext $dataFixturesContext,
-        SubscriptionFake $subscriptionApi
+        SubscriptionFake $subscriptionApi,
+        UnsubscribeProductHandler $unsubscribeProductHandler
     ) {
         $this->productRepository = $productRepository;
         $this->productSubscriptionRepository = $productSubscriptionRepository;
         $this->subscribeProduct = $subscribeProduct;
         $this->dataFixturesContext = $dataFixturesContext;
         $this->subscriptionApi = $subscriptionApi;
+        $this->unsubscribeProductHandler = $unsubscribeProductHandler;
     }
 
     /**
@@ -73,6 +81,24 @@ class ProductSubscriptionContext implements Context
     public function iSubscribeTheProductToPimAi(string $identifier): void
     {
         $this->subscribeProductToPimAi($identifier, false);
+    }
+
+    /**
+     * @When I unsubscribe the product :identifier
+     *
+     * @param string $identifier
+     * @throws ProductSubscriptionException
+     */
+    public function iUnsubscribeTheProduct(string $identifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        Assert::isInstanceOf($product, ProductInterface::class);
+
+        try {
+            $command = new UnsubscribeProductCommand($product->getId());
+            $this->unsubscribeProductHandler->handle($command);
+        } catch (ProductSubscriptionException $e) {
+        }
     }
 
     /**
@@ -100,6 +126,7 @@ class ProductSubscriptionContext implements Context
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+
         if ($not) {
             Assert::null($productSubscription);
         } else {

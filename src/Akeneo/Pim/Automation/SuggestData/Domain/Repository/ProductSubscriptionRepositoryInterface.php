@@ -48,4 +48,9 @@ interface ProductSubscriptionRepositoryInterface
      * @return ProductSubscription[]
      */
     public function findPendingSubscriptions(): array;
+
+    /**
+     * @param ProductSubscription $subscription
+     */
+    public function delete(ProductSubscription $subscription): void;
 }
