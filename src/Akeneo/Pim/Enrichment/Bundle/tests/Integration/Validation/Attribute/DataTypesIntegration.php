@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Validation\Attribute;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Validation\Attribute;
 
 /**
  * NB:

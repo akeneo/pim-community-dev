@@ -1,15 +1,13 @@
 <?php
 
-namespace Akeneo\Channel\Component\tests\integration\Channel;
-
-use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+namespace Akeneo\Channel\Component\Catalog\tests\integration\Channel;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StandardNormalizationIntegration extends AbstractStandardNormalizerTestCase
+class StandardNormalizationIntegration
 {
     public function test_channel_normalization()
     {
@@ -31,5 +29,13 @@ class StandardNormalizationIntegration extends AbstractStandardNormalizerTestCas
         $result = $serializer->normalize($repository->findOneByIdentifier('tablet'), 'standard');
 
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalCatalog();
     }
 }
