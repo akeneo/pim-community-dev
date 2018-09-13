@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\DataGridBundle\Query\Sql;
+namespace Oro\Bundle\PimDataGridBundle\Query\Sql;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Pim\Bundle\DataGridBundle\Query\ListAttributesUseableAsColumnInProductGrid as ListAttributesUseableAsColumnInProductGridQuery;
+use Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableAsColumnInProductGrid as ListAttributesUseableAsColumnInProductGridQuery;
 
 
 /**
@@ -33,13 +33,15 @@ class ListAttributesUseableAsColumnInProductGrid implements ListAttributesUseabl
     public function fetch(string $locale, int $userId = null): array
     {
         $sql = <<<SQL
-SELECT DISTINCT att.code, att.sort_order AS attribute_order, g.sort_order AS group_order,
-  COALESCE(att_trans.label, CONCAT('[', att.code, ']')) AS label
+SELECT DISTINCT att.code, att.sort_order AS attribute_order, g.sort_order, g.sort_order AS groupOrder,
+  COALESCE(att_trans.label, CONCAT('[', att.code, ']')) AS label,
+  COALESCE(group_trans.label, CONCAT('[', g.code, ']')) AS `group`
 FROM pim_catalog_attribute AS att
 INNER JOIN pim_catalog_attribute_group AS g ON att.group_id = g.id
 LEFT JOIN pim_catalog_attribute_translation AS att_trans ON att.id = att_trans.foreign_key AND att_trans.locale = :locale
+LEFT JOIN pim_catalog_attribute_group_translation AS group_trans ON g.id = group_trans.foreign_key AND group_trans.locale = :locale
 WHERE att.useable_as_grid_filter = 1
-ORDER BY group_order ASC, attribute_order ASC
+ORDER BY g.sort_order ASC, att.sort_order ASC
 SQL;
 
         $stmt = $this->connection->prepare($sql);
@@ -52,7 +54,9 @@ SQL;
         foreach ($results as $resultRow) {
             $attributes[$resultRow['code']] = [
                 'code'  => $resultRow['code'],
-                'label' => $resultRow['label']
+                'label' => $resultRow['label'],
+                'group' => $resultRow['group'],
+                'groupOrder' => (int) $resultRow['groupOrder']
             ];
         }
 

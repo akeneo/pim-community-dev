@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\DataGridBundle\Query;
+namespace Oro\Bundle\PimDataGridBundle\Query;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
