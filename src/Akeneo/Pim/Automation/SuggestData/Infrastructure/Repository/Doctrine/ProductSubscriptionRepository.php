@@ -45,24 +45,6 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
 
     /**
      * {@inheritdoc}
-     * @deprecated
-     */
-    public function findOneByProductAndSubscriptionId(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ?ProductSubscription {
-        $repository = $this->em->getRepository(ProductSubscription::class);
-
-        return $repository->findOneBy(
-            [
-                'product'        => $product,
-                'subscriptionId' => $subscriptionId,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {

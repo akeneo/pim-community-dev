@@ -27,26 +27,6 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
 
     /**
      * {@inheritdoc}
-     * @deprecated
-     */
-    public function findOneByProductAndSubscriptionId(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ?ProductSubscription {
-        if (!isset($this->subscriptions[$product->getId()])) {
-            return null;
-        }
-
-        $subscription = $this->subscriptions[$product->getId()];
-        if ($subscriptionId !== $subscription->getSubscriptionId()) {
-            return null;
-        }
-
-        return $subscription;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function save(ProductSubscription $subscription): void
     {
@@ -79,19 +59,6 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
                 }
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     * @deprecated
-     */
-    public function getSubscriptionStatusForProductId(int $productId): array
-    {
-        if (!isset($this->subscriptions[$productId])) {
-            return ['subscription_id' => ''];
-        }
-
-        return ['subscription_id' => $this->subscriptions[$productId]->getSubscriptionId()];
     }
 
     /**
