@@ -59,7 +59,7 @@ class InMemoryUserRepositorySpec extends ObjectBehavior
     {
         $user = new User();
         $user->setUsername('mary');
-        $this->beConstructedWith([$user->getUsername() => $user]);
+        $this->save($user);
 
         $this->findBy(['username' => 'mary'])->shouldReturn([$user]);
     }
@@ -68,7 +68,7 @@ class InMemoryUserRepositorySpec extends ObjectBehavior
     {
         $user = new User();
         $user->setUsername('mary');
-        $this->beConstructedWith([$user->getUsername() => $user]);
+        $this->save($user);
 
         $this->findBy(['username' => 'julia'])->shouldReturn([]);
     }
