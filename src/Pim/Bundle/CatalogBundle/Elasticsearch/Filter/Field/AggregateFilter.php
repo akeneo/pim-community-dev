@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -13,7 +12,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CategoryOfAncestorsFilter extends AbstractFieldFilter implements FieldFilterInterface
+class AggregateFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
@@ -36,41 +35,34 @@ class CategoryOfAncestorsFilter extends AbstractFieldFilter implements FieldFilt
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter($field, $operator, $value = null, $locale = null, $channel = null, $options = [])
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if ($operator !== Operators::UNCLASSIFIED) {
-            if (!isset($options['type_checking']) || $options['type_checking']) {
-                $this->checkValue($field, $value);
-            }
+        $clauses = [];
+        $attributeCodes = $this->getAttributeCodes($options['rawFilters']);
+        foreach ($attributeCodes as $attributeCode) {
+            $clauses[] = [
+                'terms' => ['attributes_of_ancestors' => [$attributeCode]],
+            ];
         }
 
         $categoryCodes = $this->getCategoryCodes($options['rawFilters']);
         if (!empty($categoryCodes)) {
-            switch ($operator) {
-                case Operators::IN_CHILDREN_LIST:
-                    $clause = [
-                        'bool' => [
-                            'must_not' => [
-                                'bool' => [
-                                    'filter' => [
-                                        'terms' => ['categories_of_ancestors' => $categoryCodes],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ];
-
-                    $this->searchQueryBuilder->addFilter($clause);
-                    break;
-
-                default:
-                    throw InvalidOperatorException::notSupported($operator, static::class);
-            }
+            $clauses[] = [
+                'terms' => ['categories_of_ancestors' => $categoryCodes],
+            ];
         }
+
+        $this->searchQueryBuilder->addMustNot(
+            [
+                'bool' => [
+                    'filter' => $clauses,
+                ],
+            ]
+        );
 
         return $this;
     }
@@ -136,6 +128,23 @@ class CategoryOfAncestorsFilter extends AbstractFieldFilter implements FieldFilt
         }
 
         return $categoryCodes;
+    }
+
+    /**
+     * Returns the attribute codes for which there is a filter on.
+     *
+     * @return string[]
+     */
+    private function getAttributeCodes(array $rawFilters): array
+    {
+        $attributeFilters = array_filter(
+            $rawFilters,
+            function ($filter) {
+                return 'attribute' === $filter['type'];
+            }
+        );
+
+        return array_column($attributeFilters, 'field');
     }
 }
 

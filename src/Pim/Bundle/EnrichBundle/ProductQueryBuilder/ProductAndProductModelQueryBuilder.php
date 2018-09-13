@@ -176,32 +176,12 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function aggregateResults(): void
     {
-        $clauses = [];
-        $attributeCodes = $this->getAttributeCodes();
-        foreach ($attributeCodes as $attributeCode) {
-            $clauses[] = [
-                'terms' => ['attributes_of_ancestors' => [$attributeCode]],
-            ];
-        }
-
         $this->addFilter(
-            'categories_of_ancestors',
-            Operators::IN_CHILDREN_LIST,
-            [],
+            'aggregate',
+            Operators::AGGREGATE,
+            null,
             ['rawFilters' => $this->getRawFilters()]
         );
-
-        if (!empty($clauses)) {
-            $this->getQueryBuilder()->addFilter([
-                'bool' => [
-                    'must_not' => [
-                        'bool' => [
-                            'filter' => $clauses,
-                        ],
-                    ],
-                ],
-            ]);
-        }
 
         $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator();
         if (!empty($attributeCodesWithIsEmptyOperator)) {
@@ -211,23 +191,6 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
                 ],
             ]);
         }
-    }
-
-    /**
-     * Returns the attribute codes for which there is a filter on.
-     *
-     * @return string[]
-     */
-    private function getAttributeCodes(): array
-    {
-        $attributeFilters = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                return 'attribute' === $filter['type'];
-            }
-        );
-
-        return array_column($attributeFilters, 'field');
     }
 
     /**

@@ -56,4 +56,5 @@ class Operators
     public const AT_LEAST_INCOMPLETE = 'AT LEAST INCOMPLETE';
     public const ALL_COMPLETE = 'ALL COMPLETE';
     public const ALL_INCOMPLETE = 'ALL INCOMPLETE';
+    public const AGGREGATE = 'AGGREGATE';
 }
