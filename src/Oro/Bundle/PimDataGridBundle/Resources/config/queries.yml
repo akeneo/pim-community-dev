@@ -3,3 +3,8 @@ services:
         class: Oro\Bundle\PimDataGridBundle\Query\Sql\ListAttributesUseableInProductGrid
         arguments:
             - '@database_connection'
+
+    pim_datagrid.product_grid.query.list_attributes_as_column:
+        class: Pim\Bundle\DataGridBundle\Query\Sql\ListAttributesUseableAsColumnInProductGrid
+        arguments:
+            - '@database_connection'

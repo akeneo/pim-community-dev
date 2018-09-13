@@ -11,8 +11,10 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
+use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\DataGridBundle\Query\ListAttributesQuery;
 use Pim\Bundle\DataGridBundle\Query\ListAttributesUseableInProductGrid;
+use Pim\Bundle\DataGridBundle\Query\Sql\ListAttributesUseableAsColumnInProductGrid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,6 +39,12 @@ class ProductGridController
     /** @var UserContext */
     private $userContext;
 
+    /** @var DatagridViewManager */
+    private $datagridViewManager;
+
+    /** @var ListAttributesUseableAsColumnInProductGrid */
+    private $listAttributesUseableAsColumnQuery;
+
     /**
      * @param ListAttributesUseableInProductGrid $listAttributesQuery
      * @param FiltersConfigurator                $filtersConfigurator
@@ -47,12 +55,16 @@ class ProductGridController
         ListAttributesUseableInProductGrid $listAttributesQuery,
         FiltersConfigurator $filtersConfigurator,
         FilterExtension $filterExtension,
-        UserContext $userContext
+        UserContext $userContext,
+        DatagridViewManager $datagridViewManager,
+        ListAttributesUseableAsColumnInProductGrid $listAttributesUseableAsColumnQuery
     ) {
         $this->listAttributesQuery = $listAttributesQuery;
         $this->filtersConfigurator = $filtersConfigurator;
         $this->filterExtension = $filterExtension;
         $this->userContext = $userContext;
+        $this->datagridViewManager = $datagridViewManager;
+        $this->listAttributesUseableAsColumnQuery = $listAttributesUseableAsColumnQuery;
     }
 
     /**
@@ -80,16 +92,14 @@ class ProductGridController
     }
 
     /**
-     * Get a paginated list of the attributes usable as columns for the product grid.
+     * Get the list of the available columns for the product grid.
      *
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function getAttributesColumnsAction(Request $request): JsonResponse
+    public function getAvailableColumnsAction(Request $request): JsonResponse
     {
-        $page = (int) $request->get('page', 1);
-        $search = (string) $request->get('search', '');
         $locale = $request->get('locale', null);
         $user = $this->userContext->getUser();
 
@@ -97,9 +107,10 @@ class ProductGridController
             $locale = $user->getCatalogLocale()->getCode();
         }
 
-        $attributes = $this->listAttributesQuery->fetch($locale, $page, $search, $user->getId());
+        $systemColumns = $this->datagridViewManager->getColumnChoices('product-grid');
+        $attributesAsColumn = $this->listAttributesUseableAsColumnQuery->fetch($locale, $user->getId());
 
-        return new JsonResponse($attributes);
+        return new JsonResponse(array_merge($systemColumns, $attributesAsColumn));
     }
 
     /**
