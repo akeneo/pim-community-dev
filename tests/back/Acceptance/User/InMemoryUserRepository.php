@@ -22,9 +22,9 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
     /** @var User[] */
     private $users;
 
-    public function __construct(array $users = [])
+    public function __construct()
     {
-        $this->users = new ArrayCollection($users);
+        $this->users = new ArrayCollection();
     }
 
     public function save($user, array $options = [])
