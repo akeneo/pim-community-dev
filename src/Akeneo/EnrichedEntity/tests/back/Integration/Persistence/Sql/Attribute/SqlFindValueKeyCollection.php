@@ -51,31 +51,7 @@ class SqlFindValueKeyCollection extends SqlIntegrationTestCase
      */
     public function it_returns_all_attributes()
     {
-        $resetLocale = <<<SQL
-        INSERT INTO `pim_catalog_locale` (`code`, `is_activated`)
-        VALUES
-            ('de_DE', 1),
-            ('en_US', 1),
-            ('fr_FR', 1);
-SQL;
-        $resetCategory = <<<SQL
-INSERT INTO `pim_catalog_category` (`id`, `parent_id`, `code`, `created`, `root`, `lvl`, `lft`, `rgt`)
-        VALUES
-            (1, NULL, 'master', '2018-09-04 20:00:54', 1, 0, 1, 2);
-SQL;
-        $resetChannel = <<<SQL
-        INSERT INTO `pim_catalog_channel` (`category_id`, `code`, `conversionUnits`)
-        VALUES
-            (1, 'mobile', 'a:0:{}'),
-            (1, 'print', 'a:0:{}'),
-            (1, 'ecommerce', 'a:0:{}');
-SQL;
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_locale;');
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_channel;');
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_category;');
-        $this->get('database_connection')->executeQuery($resetLocale);
-        $this->get('database_connection')->executeQuery($resetCategory);
-        $this->get('database_connection')->executeQuery($resetChannel);
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetCategoryChannelAndLocale();
 
         $designer = EnrichedEntityIdentifier::fromString('designer');
         $image = $this->loadAttribute('designer', 'image', false, false);

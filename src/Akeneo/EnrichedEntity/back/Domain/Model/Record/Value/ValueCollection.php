@@ -24,7 +24,6 @@ class ValueCollection
 
     public function normalize(): array
     {
-        ksort($this->values);
         return array_map(function (Value $value) {
             return $value->normalize();
         }, $this->values);

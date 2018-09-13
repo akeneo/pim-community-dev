@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Record;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -108,6 +110,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_a_record_with_values_and_returns_it()
     {
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetCategoryChannelAndLocale();
+
         $recordCode = RecordCode::fromString('starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
@@ -210,7 +214,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
             TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
         );
-        $updatedValueCollection = ValueCollection::fromValues([$valueToAdd, $valueToUpdate]);
+        $updatedValueCollection = ValueCollection::fromValues([$valueToUpdate, $valueToAdd]);
         $record->setValues($updatedValueCollection);
 
         $this->repository->update($record);

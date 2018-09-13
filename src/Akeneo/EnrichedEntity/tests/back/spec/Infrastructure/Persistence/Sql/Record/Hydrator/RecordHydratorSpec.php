@@ -150,9 +150,9 @@ class RecordHydratorSpec extends ObjectBehavior
         );
 
         $record->getValues()->normalize()->shouldReturn([
-                'boximage_game_fingerprint-mobile' => $gameBoxImageMobileNormalized,
-                'description_game_finger-en_US'    => $gameDescriptionEnUSNormalized,
                 'description_game_finger-fr_FR'    => $gameDescriptionFrFrNormalized,
+                'description_game_finger-en_US'    => $gameDescriptionEnUSNormalized,
+                'boximage_game_fingerprint-mobile' => $gameBoxImageMobileNormalized,
             ]
         );
     }

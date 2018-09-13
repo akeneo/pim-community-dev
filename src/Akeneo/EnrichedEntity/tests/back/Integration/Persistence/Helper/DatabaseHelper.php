@@ -43,4 +43,34 @@ SQL;
 
         $this->sqlConnection->executeQuery($resetQuery);
     }
+
+    public function resetCategoryChannelAndLocale()
+    {
+        $resetCategory = <<<SQL
+INSERT INTO `pim_catalog_category` (`id`, `parent_id`, `code`, `created`, `root`, `lvl`, `lft`, `rgt`)
+        VALUES
+            (1, NULL, 'master', '2018-09-04 20:00:54', 1, 0, 1, 2);
+SQL;
+        $resetChannel = <<<SQL
+        INSERT INTO `pim_catalog_channel` (`category_id`, `code`, `conversionUnits`)
+        VALUES
+            (1, 'mobile', 'a:0:{}'),
+            (1, 'print', 'a:0:{}'),
+            (1, 'ecommerce', 'a:0:{}');
+SQL;
+
+        $resetLocale = <<<SQL
+        INSERT INTO `pim_catalog_locale` (`code`, `is_activated`)
+        VALUES
+            ('de_DE', 1),
+            ('en_US', 1),
+            ('fr_FR', 1);
+SQL;
+        $this->sqlConnection->executeQuery('DELETE FROM pim_catalog_locale;');
+        $this->sqlConnection->executeQuery('DELETE FROM pim_catalog_channel;');
+        $this->sqlConnection->executeQuery('DELETE FROM pim_catalog_category;');
+        $this->sqlConnection->executeQuery($resetLocale);
+        $this->sqlConnection->executeQuery($resetCategory);
+        $this->sqlConnection->executeQuery($resetChannel);
+    }
 }
