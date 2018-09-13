@@ -60,3 +60,5 @@ services:
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
             - '@pim_datagrid.extension.filter'
             - '@pim_user.context.user'
+            - '@pim_datagrid.manager.datagrid_view'
+            - '@pim_datagrid.product_grid.query.list_attributes_as_column'
