@@ -1,9 +1,9 @@
 import Saver from 'akeneoenrichedentity/domain/saver/attribute';
-import Attribute from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import MinimalAttribute from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import handleError from 'akeneoenrichedentity/infrastructure/saver/error-handler';
+import handleError from 'akeneoenrichedentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -32,12 +32,7 @@ export class AttributeSaverImplementation implements AttributeSaver {
   }
 
   async create(attribute: MinimalAttribute): Promise<ValidationError[] | null> {
-    const normalizedAttribute = attribute.normalize() as any;
-    //Todo: remove
-    normalizedAttribute.identifier = {
-      identifier: normalizedAttribute.identifier,
-      enriched_entity_identifier: normalizedAttribute.enriched_entity_identifier,
-    };
+    const normalizedAttribute = attribute.normalize() as NormalizedAttribute;
 
     return await postJSON(
       routing.generate('akeneo_enriched_entities_attribute_create_rest', {

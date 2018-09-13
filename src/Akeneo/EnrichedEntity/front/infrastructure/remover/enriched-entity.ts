@@ -2,6 +2,7 @@ import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched
 import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import Remover from 'akeneoenrichedentity/domain/remover/remover';
+import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -17,13 +18,7 @@ export class EnrichedEntityRemoverImplementation implements EnrichedEntityRemove
       routing.generate('akeneo_enriched_entities_enriched_entity_delete_rest', {
         identifier: attributeIdentifier.stringValue(),
       })
-    ).catch(error => {
-      if (500 === error.status) {
-        throw new Error('Internal Server error');
-      }
-
-      return error.responseJSON;
-    });
+    ).catch(errorHandler);
   }
 }
 

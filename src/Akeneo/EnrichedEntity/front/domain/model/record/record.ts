@@ -56,6 +56,9 @@ class RecordImplementation implements Record {
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('Record expect a File as image argument');
     }
+    if (undefined === image) {
+      throw new InvalidArgumentError('Record expect an image or null as argument');
+    }
 
     Object.freeze(this);
   }

@@ -50,10 +50,12 @@ interface DispatchProps {
 interface CreateProps extends StateProps, DispatchProps {}
 
 const AttributeTypeItemView = ({
+  isOpen,
   element,
   isActive,
   onClick,
 }: {
+  isOpen: boolean;
   element: DropdownElement;
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
@@ -70,7 +72,7 @@ const AttributeTypeItemView = ({
       onKeyPress={event => {
         if (' ' === event.key) onClick(element);
       }}
-      tabIndex={0}
+      tabIndex={isOpen ? 0 : -1}
     >
       <img
         className="AknDropdown-menuLinkImage"

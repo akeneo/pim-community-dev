@@ -8,6 +8,25 @@ const {
   tools: {convertDataTable, convertItemTable, answerJson},
 } = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
+const responses = {};
+const listening = false;
+const answered = {};
+
+const handleRequest = (page, url, method, response, code) => {
+  responses[url] = {
+    method,
+    response,
+  };
+
+  page.once('request', request => {
+    debugger;
+    const response = responses[request.url()];
+    if (undefined !== response && 'GET' === request.method()) {
+      answerJson(request, response.response, response.code);
+    }
+  });
+};
+
 module.exports = async function(cucumber) {
   const {When, Then, Given} = cucumber;
   const assert = require('assert');
@@ -67,14 +86,15 @@ module.exports = async function(cucumber) {
       ) {
         answerJson(request, {}, 204);
       }
-
-      if (
-        `http://pim.com/rest/enriched_entity/${enrichedEntityIdentifier}/record/${recordCode}` === request.url() &&
-        'GET' === request.method()
-      ) {
-        answerJson(request, convertItemTable(updates)[0], 200);
-      }
     });
+
+    handleRequest(
+      page,
+      `http://pim.com/rest/enriched_entity/${enrichedEntityIdentifier}/record/${recordCode}`,
+      'GET',
+      convertDataTable(updates)[0],
+      200
+    );
   };
 
   const answerLocaleList = function() {
@@ -115,15 +135,13 @@ module.exports = async function(cucumber) {
     });
 
     recordResponse.forEach(record => {
-      this.page.on('request', request => {
-        if (
-          `http://pim.com/rest/enriched_entity/${record['enriched_entity_identifier']}/record/${record.code}` ===
-            request.url() &&
-          'GET' === request.method()
-        ) {
-          answerJson(request, record);
-        }
-      });
+      handleRequest(
+        this.page,
+        `http://pim.com/rest/enriched_entity/${record.enriched_entity_identifier}/record/${record.code}`,
+        'GET',
+        record,
+        200
+      );
     });
   };
   Given('the following record:', givenRecords);

@@ -10,7 +10,7 @@ const DefaultButtonView = ({
   selectedElement,
   onClick,
 }: {
-  label: string;
+  open: boolean;
   selectedElement: DropdownElement;
   onClick: () => void;
 }) => (
@@ -30,10 +30,12 @@ const DefaultButtonView = ({
 );
 
 const DefaultItemView = ({
+  isOpen,
   element,
   isActive,
   onClick,
 }: {
+  isOpen: boolean;
   element: DropdownElement;
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
@@ -48,7 +50,7 @@ const DefaultItemView = ({
       onKeyPress={event => {
         if (' ' === event.key) onClick(element);
       }}
-      tabIndex={0}
+      tabIndex={isOpen ? 0 : -1}
     >
       {element.label}
     </div>
@@ -63,10 +65,11 @@ interface Props {
   ) => JSX.Element;
   ItemView?: (
     {
+      isOpen,
       element,
       isActive,
       onClick,
-    }: {element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
+    }: {isOpen: boolean, element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
   ) => JSX.Element;
   label: string;
   className?: string;
@@ -124,6 +127,7 @@ class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement:
           element={element}
           onClick={(element: DropdownElement) => this.elementSelected(element)}
           isActive={element.identifier === this.state.selectedElement}
+          isOpen={this.state.isOpen}
         />
       );
     });

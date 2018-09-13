@@ -42,7 +42,6 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
   dispatch(recordEditionSucceeded());
   dispatch(notifyRecordWellSaved());
-
   const savedRecord: Record = await recordFetcher.fetch(record.getEnrichedEntityIdentifier(), record.getCode());
 
   dispatch(recordEditionReceived(savedRecord));
