@@ -1,0 +1,20 @@
+config:
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                reference-data-configuration:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_reference_data_configuration_rest_get
+        pim/attribute-edit-form/type-specific-form-registry:
+            formNames:
+                pim_reference_data_multiselect:
+                    create: pim-attribute-form-ref-data-multi
+                    edit:   pim-attribute-form-ref-data-multi
+                pim_reference_data_simpleselect:
+                    create: pim-attribute-form-ref-data-simple
+                    edit:   pim-attribute-form-ref-data-simple
+
+    paths:
+        pim/attribute-edit-form/properties/ref-data-name: akeneopimstructure/js/attribute/form/properties/ref-data-name

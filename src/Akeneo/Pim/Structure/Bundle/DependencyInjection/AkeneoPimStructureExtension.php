@@ -21,6 +21,11 @@ class AkeneoPimStructureExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = new Configuration();
+        $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('pim_reference_data.configurations', $configs[0]['reference_data']);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');

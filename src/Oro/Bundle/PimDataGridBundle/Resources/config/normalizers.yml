@@ -88,3 +88,13 @@ services:
         class: '%pim_datagrid.normalizer.family_variant.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
+
+    pim_reference_data.datagrid.normalizer.reference_data:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }
+
+    pim_reference_data.datagrid.normalizer.reference_data_collection:
+        class: 'Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer'
+        tags:
+            - { name: pim_datagrid_serializer.normalizer }

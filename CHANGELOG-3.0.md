@@ -13,8 +13,28 @@
 
 ## BC breaks
 
-- Move `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer`
-- Move `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Filter\ReferenceDataFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter`
+- Move `Pim\Bundle\ReferenceDataBundle\DependencyInjection\Compiler\RegisterConfigurationsPass` to `Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterReferenceDataConfigurationsPass`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue\ReferenceDataEmptyValueProvider` to `Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field\ReferenceDataFieldProvider` to `Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter\ReferenceDataFilterProvider` to `Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider`
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver`
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\ReferenceDataUniqueCodeChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository`
+- Move `Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter`
+- Move `Pim\Bundle\ReferenceDataBundle\Controller\ConfigurationRestController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\ReferenceDataConfigurationRestController`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractReferenceDataUniqueCodeChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\AbstractReferenceDataUniqueCodeChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\CheckerInterface`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataInterfaceChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker` to `Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNameChecker`
+- Move `Pim\Bundle\ReferenceDataBundle\Normalizer\ReferenceDataConfigurationNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\ReferenceDataConfigurationNormalizer`
+- Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataSimpleSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataSimpleSelectType`
+- Move `Pim\Bundle\ReferenceDataBundle\AttributeType\ReferenceDataMultiSelectType` to `Akeneo\Pim\Structure\Component\AttributeType\ReferenceDataMultiSelectType`
+- Move `Pim\Component\ReferenceData\LabelRenderer` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\LabelRenderer`
+- Move `Pim\Component\ReferenceData\MethodNameGuesser` to `Akeneo\Pim\Enrichment\Component\Product\ReferenceData\MethodNameGuesser`
 - Move `Pim\Component\ReferenceData\ConfigurationRegistry` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry`
 - Move `Pim\Component\ReferenceData\ConfigurationRegistryInterface` to `Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface`
 - Move `Pim\Component\ReferenceData\Normalizer\Indexing\ProductValue\ReferenceDataNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ReferenceDataNormalizer`

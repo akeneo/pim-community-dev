@@ -44,3 +44,6 @@ services:
             - '%pim_catalog.entity.attribute_option.class%'
         tags:
             - { name: form.type, alias: pim_enrich_attribute_option }
+
+    pim_reference_data.registry:
+        class: 'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistry'
