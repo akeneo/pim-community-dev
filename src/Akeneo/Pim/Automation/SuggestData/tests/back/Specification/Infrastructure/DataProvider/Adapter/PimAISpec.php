@@ -244,7 +244,13 @@ class PimAISpec extends ObjectBehavior
                             'id'          => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
                             'identifiers' => [],
                             'attributes'  => [],
-                            'tracker_id' => 42
+                            'extra' => [
+                                'tracker_id' => 42,
+                                'family' => [
+                                    'code' => 'laptop',
+                                    'label' => ['en_US' => 'Laptop']
+                                ]
+                            ]
                         ],
                     ],
                 ],
