@@ -46,7 +46,7 @@ final class InitPimAiUserCommand extends Command
     ];
 
     /** @var IdentifiableObjectRepositoryInterface */
-    private $userRespository;
+    private $userRepository;
 
     /** @var SimpleFactoryInterface */
     private $userFactory;
@@ -61,20 +61,20 @@ final class InitPimAiUserCommand extends Command
     private $validator;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $userRespository
+     * @param IdentifiableObjectRepositoryInterface $userRepository
      * @param SimpleFactoryInterface $userFactory
      * @param ObjectUpdaterInterface $userUpdater
      * @param SaverInterface $userSaver
      * @param ValidatorInterface $validator
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $userRespository,
+        IdentifiableObjectRepositoryInterface $userRepository,
         SimpleFactoryInterface $userFactory,
         ObjectUpdaterInterface $userUpdater,
         SaverInterface $userSaver,
         ValidatorInterface $validator
     ) {
-        $this->userRespository = $userRespository;
+        $this->userRepository = $userRepository;
         $this->userFactory = $userFactory;
         $this->userUpdater = $userUpdater;
         $this->userSaver = $userSaver;
@@ -86,7 +86,7 @@ final class InitPimAiUserCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Initializes the PIM.ai user');
     }
@@ -96,7 +96,7 @@ final class InitPimAiUserCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (null !== $this->userRespository->findOneByIdentifier(ProposalAuthor::USERNAME)) {
+        if (null !== $this->userRepository->findOneByIdentifier(ProposalAuthor::USERNAME)) {
             $output->writeln(
                 sprintf(
                     '<info>User "%s" already exists. Aborting.</info>',
@@ -111,7 +111,7 @@ final class InitPimAiUserCommand extends Command
         $this->userUpdater->update($user, array_merge($this->userData, ['password' => uniqid()]));
         $violations = $this->validator->validate($user);
 
-        if (count($violations) > 0) {
+        if (0 < count($violations)) {
             throw new \InvalidArgumentException($violations);
         }
 
