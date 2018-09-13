@@ -51,7 +51,33 @@ var E = w(window), u, f, F = -1, n, x, D, v, y, L, r, m = !window.XMLHttpRequest
         F = M;n = f[F][0];x = (F || (u.loop ? f.length : 0)) - 1;D = ((F + 1) % f.length) || (u.loop ? 0 : -1);q();a.className = "lbLoading";k = new Image();k.onload = i;k.src = n
     }return false
 }function i() {
-    a.className = "";w(g).css({backgroundImage: "url(" + n + ")", visibility: "hidden", display: ""});w(p).width(k.width);w([p, I, d]).height(k.height);w(A).html(f[F][1] || "");w(K).html((((f.length > 1) && u.counterText) || "").replace(/{x}/, F + 1).replace(/{y}/, f.length));if (x >= 0) {
+    a.className = "";
+
+    // https://stackoverflow.com/questions/3257059/limit-slimbox-lightbox-image-to-window-size
+    const winWidth = w(window).width() - 20;
+    const winHeight = w(window).height() - 20;
+    const maxSize = (winWidth > winHeight) ? winHeight : winWidth;
+    let my_w = k.width;
+    let my_h = k.height;
+    if (my_w > my_h)
+    {
+        my_h = maxSize * my_h / my_w;
+        my_w = maxSize;
+    } else {
+        my_w = maxSize * my_w / my_h;
+        my_h = maxSize;
+    }
+    if (k.width > my_w || k.height > my_h) {
+        w(g).css({backgroundImage: "url(" + n + ")", backgroundSize: my_w + "px " + my_h + "px", visibility: "hidden", display: ""});
+        w(p).width(my_w);
+        w([p, I, d]).height(my_h);
+    } else {
+        w(g).css({backgroundImage: "url(" + n + ")", visibility: "hidden", display: ""});
+        w(p).width(k.width);
+        w([p, I, d]).height(k.height);
+    }
+
+    w(A).html(f[F][1] || "");w(K).html((((f.length > 1) && u.counterText) || "").replace(/{x}/, F + 1).replace(/{y}/, f.length));if (x >= 0) {
         t.src = f[x][0]
     }if (D >= 0) {
         J.src = f[D][0]
