@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Filter;
 
-use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
+use Akeneo\Pim\Enrichment\Bundle\tests\fixture\EntityBuilder;
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
