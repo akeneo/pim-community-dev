@@ -18,7 +18,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class PimRequirements extends SymfonyRequirements
 {
-    const REQUIRED_PHP_VERSION = '7.1.0';
+    const REQUIRED_PHP_VERSION = '7.2.0';
     const REQUIRED_GD_VERSION = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
     const REQUIRED_ICU_VERSION = '4.2';
