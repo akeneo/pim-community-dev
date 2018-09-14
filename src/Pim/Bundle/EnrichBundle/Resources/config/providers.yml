@@ -42,6 +42,22 @@ services:
         tags:
             - { name: pim_enrich.provider.filter, priority: 100 }
 
+    pim_reference_data.enrich.provider.field.reference_data:
+        class: 'Pim\Bundle\EnrichBundle\Provider\Field\ReferenceDataFieldProvider'
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
+
+    pim_reference_data.enrich.provider.empty_value.reference_data:
+        class: 'Pim\Bundle\EnrichBundle\Provider\EmptyValue\ReferenceDataEmptyValueProvider'
+        tags:
+            - { name: pim_enrich.provider.empty_value, priority: 90 }
+
+    pim_reference_data.enrich.provider.filter.reference_data:
+        class: 'Pim\Bundle\EnrichBundle\Provider\Filter\ReferenceDataFilterProvider'
+        tags:
+            - { name: pim_enrich.provider.filter, priority: 100 }
+
+
     # Empty value registry
     pim_enrich.provider.empty_value.chained:
         class: '%pim_enrich.provider.empty_value.chained.class%'

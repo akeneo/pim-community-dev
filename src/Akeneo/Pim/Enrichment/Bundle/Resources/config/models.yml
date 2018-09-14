@@ -10,3 +10,4 @@ parameters:
     pim_catalog.model.product_price.interface:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface
     pim_catalog.model.category_translation.interface:         Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface
     pim_catalog.model.group_translation.interface:            Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface
+    pim_reference_data.model.reference_data.interface: Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface

@@ -36,9 +36,6 @@ pim_notification:
 pim_localization:
     resource: "@PimLocalizationBundle/Resources/config/routing.yml"
 
-pim_reference_data:
-    resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
-
 pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
     prefix: /api

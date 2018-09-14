@@ -21,14 +21,6 @@ swiftmailer:
 assetic:
     use_controller: false
 
-pim_reference_data:
-    fabrics:
-        class: Acme\Bundle\AppBundle\Entity\Fabric
-        type: multi
-    color:
-        class: Acme\Bundle\AppBundle\Entity\Color
-        type: simple
-
 parameters:
     max_products_category_removal: 20
     installer_data:       PimInstallerBundle:minimal

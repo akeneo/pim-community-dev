@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigur
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;

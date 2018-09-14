@@ -213,3 +213,9 @@ services:
             - '@pim_catalog.normalizer.standard.association_type'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    # Reference data configuration
+    pim_reference_data.normalizer.configuration:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\ReferenceDataConfigurationNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

@@ -1,3 +1,0 @@
-parameters:
-    pim_reference_data.model.abstract_reference_data.class: Pim\Component\ReferenceData\Model\AbstractReferenceData
-    pim_reference_data.model.reference_data.interface: Pim\Component\ReferenceData\Model\ReferenceDataInterface
