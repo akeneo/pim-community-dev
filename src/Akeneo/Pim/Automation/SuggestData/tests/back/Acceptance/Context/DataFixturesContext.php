@@ -17,10 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
-use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
-use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
-use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
@@ -63,7 +60,7 @@ class DataFixturesContext implements Context
     /** @var InMemoryAttributeGroupRepository */
     private $attributeGroupRepository;
 
-    /** @var AttributeGroupBuilder */
+    /** @var EntityBuilder */
     private $attributeGroupBuilder;
 
     /** @var InMemoryProductSubscriptionRepository */
@@ -109,6 +106,9 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @param string $identifier
+     * @param string $familyCode
+     *
      * @Given the product ":identifier" of the family ":familyCode"
      */
     public function theProductOfTheFamily(string $identifier, string $familyCode): void
@@ -117,9 +117,11 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @param string $identifier
+     *
      * @Given the product ":identifier" is subscribed to PIM.ai
      */
-    public function theProductIsSubscribedToPimAi($identifier): void
+    public function theProductIsSubscribedToPimAi(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
@@ -135,7 +137,7 @@ class DataFixturesContext implements Context
      */
     private function loadFamilyAttributes(string $familyCode): void
     {
-        $data = $this->loadJsonFileAsArray(sprintf('attributes/attributes-family-%s.yml', $familyCode));
+        $data = $this->loadJsonFileAsArray(sprintf('attributes/attributes-family-%s.json', $familyCode));
 
         $attributeGroup = $this->attributeGroupBuilder->build(['code' => 'other']);
         $this->attributeGroupRepository->save($attributeGroup);
@@ -156,7 +158,7 @@ class DataFixturesContext implements Context
     {
         $this->loadFamilyAttributes($familyCode);
 
-        $data = $this->loadJsonFileAsArray(sprintf('families/family-%s.yml', $familyCode));
+        $data = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
 
         $family = $this->familyBuilder->build($data);
         $this->familyRepository->save($family);
@@ -173,7 +175,7 @@ class DataFixturesContext implements Context
     {
         $this->loadFamily($familyCode);
 
-        $data = $this->loadJsonFileAsArray(sprintf('products/product-%s-%s.yml', $familyCode, $identifier));
+        $data = $this->loadJsonFileAsArray(sprintf('products/product-%s-%s.json', $familyCode, $identifier));
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $rawValues = [];
@@ -194,11 +196,11 @@ class DataFixturesContext implements Context
     /**
      * Loads a file containing json content and return it as a PHP array
      *
-     * @param $filepath
+     * @param string $filepath
      *
      * @return array
      */
-    private function loadJsonFileAsArray($filepath)
+    private function loadJsonFileAsArray(string $filepath)
     {
         $filepath = realpath(sprintf(__DIR__ .'/../Resources/fixtures/%s', $filepath));
         Assert::true(file_exists($filepath));
