@@ -9,14 +9,10 @@
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
 - add normalizer for enriched entity
-- add session storage for tab situation
-- rework acceptance tests when the locale switcher will work
 - fix the form to take into account what the backend answered
 - test integration controller edit
 - add pqb filter, grid filter and peb filter for the enriched entity value
 - Add remaining ACLs
-- add keyboard shortcuts
-- rework the record identifier to have one identifier
 - Extract the buttons of the edit enriched entity view so it comes from each of the tabs
 - switch to view models
 - Change read models to enforce properties are coherent (front)
@@ -46,3 +42,6 @@ DONE:
 - locale switcher to be able to edit all locales [DONE]
 - open quick edit after attribute create [DONE]
 - Rename "AttributeRequired" by "AttributeIsRequired" [DONE]
+- add keyboard shortcuts [DONE]
+- rework acceptance tests when the locale switcher will work [DONE]
+- add session storage for tab situation [FIXED BY URL]

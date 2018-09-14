@@ -17,7 +17,7 @@ class RecordBuilder {
   }
 
   withEnrichedEntityIdentifier(enrichedEntityIdentifier) {
-    this.record['enriched_entity_identifier'] = enrichedEntityIdentifier;
+    this.record.enriched_entity_identifier = enrichedEntityIdentifier;
 
     return this;
   }

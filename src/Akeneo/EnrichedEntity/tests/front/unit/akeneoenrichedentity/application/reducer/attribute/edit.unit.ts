@@ -35,7 +35,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
   });
 
   expect(newState).toEqual({
-    active: false,
+    isActive: false,
     data: {
       identifier: '',
       enriched_entity_identifier: '',
@@ -49,8 +49,8 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
       max_length: null,
       is_textarea: false,
       is_rich_text_editor: false,
-      validation_rule: ValidationRuleOption.Email,
-      regular_expression: '',
+      validation_rule: ValidationRuleOption.None,
+      regular_expression: null,
     },
     isDirty: false,
     isSaving: false,
@@ -60,7 +60,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can start the edition of an attribute', () => {
     const state = {
-      active: false,
+      isActive: false,
       data: {},
       errors: [],
     };
@@ -70,7 +70,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: normalizedDescription,
       isDirty: false,
       originalData: JSON.stringify(normalizedDescription),
@@ -80,7 +80,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('the list of attributes can be updated without effect', () => {
     const state = {
-      active: false,
+      isActive: false,
       data: {},
       errors: [],
     };
@@ -90,7 +90,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: false,
+      isActive: false,
       data: {},
       errors: [],
     });
@@ -99,7 +99,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
   test('the list of attributes can be updated', () => {
     const newAttribute = {...normalizedDescription, labels: {en_US: 'new description'}};
     const state = {
-      active: true,
+      isActive: true,
       data: normalizedDescription,
       errors: [],
     };
@@ -109,7 +109,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: newAttribute,
       isDirty: false,
       originalData: JSON.stringify(newAttribute),
@@ -120,7 +120,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
   test('the list of attributes does not have any effect', () => {
     const newAttribute = {...normalizedDescription, identifier: 'new_description_1234'};
     const state = {
-      active: true,
+      isActive: true,
       data: normalizedDescription,
       errors: [],
     };
@@ -130,7 +130,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: normalizedDescription,
       originalData: '',
       isDirty: false,
@@ -140,7 +140,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the label of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         labels: {},
       },
@@ -153,7 +153,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         labels: {
           en_US: 'label testé-/$',
@@ -166,7 +166,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("It doesn't update the label if it's the same", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         labels: {
           en_US: 'nice',
@@ -182,7 +182,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         labels: {
           en_US: 'nice',
@@ -195,7 +195,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("It doesn't update the is required if it's the same", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         is_required: false,
       },
@@ -208,7 +208,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         is_required: false,
       },
@@ -219,7 +219,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the is_required property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         is_required: true,
       },
@@ -231,7 +231,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         is_required: false,
       },
@@ -242,7 +242,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the is_required property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         is_required: true,
       },
@@ -254,7 +254,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         is_required: false,
       },
@@ -265,7 +265,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the textarea property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_rich_text_editor: false,
@@ -279,7 +279,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: true,
@@ -294,7 +294,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the textarea property of the attribute to false', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_rich_text_editor: false,
@@ -308,7 +308,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: true,
@@ -323,7 +323,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the textarea property of the attribute to true', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_rich_text_editor: true,
@@ -337,7 +337,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -350,7 +350,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the is rich text editor property of the attribute to true', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_rich_text_editor: false,
@@ -364,7 +364,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_rich_text_editor: true,
@@ -376,7 +376,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("I can't update the is rich text editor property of the attribute to true without textarea", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -391,7 +391,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -403,7 +403,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the max length property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         max_length: null,
@@ -417,7 +417,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         max_length: 120,
@@ -429,7 +429,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the validation rule property of the attribute to none', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -443,7 +443,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -457,7 +457,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the validation rule property of the attribute to regular expression', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -471,7 +471,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -484,7 +484,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("I can't update the validation rule property of the attribute to regular expression", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: true,
@@ -498,7 +498,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: true,
@@ -509,7 +509,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the regular expression property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -524,7 +524,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -538,7 +538,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("I can't update the regular expression property of the attribute", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -553,7 +553,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
         is_textarea: false,
@@ -565,7 +565,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("I can't update the max file size property of the attribute", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
       },
@@ -578,7 +578,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'text',
       },
@@ -588,7 +588,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the max file size property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'image',
       },
@@ -601,7 +601,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'image',
         max_file_size: '12.3',
@@ -613,7 +613,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can update the allowed extensions property of the attribute', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'image',
       },
@@ -626,7 +626,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'image',
         allowed_extensions: ['gif', 'png'],
@@ -638,7 +638,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("I can't update the label property of the attribute", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'image',
       },
@@ -651,7 +651,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'image',
       },
@@ -661,7 +661,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test("I can't update the max length property of the attribute type custom entity", () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {
         type: 'custom_entity',
       },
@@ -674,7 +674,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {
         type: 'custom_entity',
       },
@@ -684,7 +684,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can cancel the attribute edition', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {},
       errors: [],
     };
@@ -693,7 +693,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: false,
+      isActive: false,
       data: {},
       errors: [],
       isDirty: false,
@@ -702,7 +702,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can submit the attribute edition', () => {
     const state = {
-      active: false,
+      isActive: false,
       data: {},
       errors: [
         {
@@ -720,7 +720,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: false,
+      isActive: false,
       isSaving: true,
       data: {},
       errors: [],
@@ -729,7 +729,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I can succeed the attribute edition', () => {
     const state = {
-      active: true,
+      isActive: true,
       data: {},
       errors: [],
     };
@@ -739,7 +739,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: true,
+      isActive: true,
       data: {},
       errors: [],
       isDirty: false,
@@ -749,7 +749,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
 
   test('I get errors on the attribute edition', () => {
     const state = {
-      active: false,
+      isActive: false,
       data: {
         code: '',
         labels: {},
@@ -773,7 +773,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
 
     expect(newState).toEqual({
-      active: false,
+      isActive: false,
       isSaving: false,
       data: {
         code: '',

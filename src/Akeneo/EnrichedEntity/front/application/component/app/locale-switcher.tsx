@@ -10,7 +10,7 @@ const LocaleItemView = ({
   isActive,
   onClick,
 }: {
-  isOpen: boolean,
+  isOpen: boolean;
   element: DropdownElement;
   isActive: boolean;
   onClick: (element: DropdownElement) => void;

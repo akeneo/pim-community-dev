@@ -38,11 +38,11 @@ config:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
-                        view: '@your_view_path_here'
-      `;
+                        view: '@your_view_path_here'`;
 
       throw new SibebarMissConfigurationError(
-        `Cannot get the tabs configured. The configuration path should be ${confPath}?
+        `Cannot get the tabs configured. The configuration path should be ${confPath}
+
 Actual conf: ${JSON.stringify(this.configuration)}`
       );
     }
@@ -65,11 +65,11 @@ config:
             ${sidebarIdentifier}:
                 tabs:
                     ${code}:
-                        view: '@your_view_path_here'
-      `;
+                        view: '@your_view_path_here'`;
 
       throw new SibebarMissConfigurationError(
-        `Cannot load view configuration for tab "${code}". The configuration path should be ${confPath}?
+        `Cannot load view configuration for tab "${code}". The configuration path should be ${confPath}
+
 Actual conf: ${JSON.stringify(this.configuration)}`
       );
     }

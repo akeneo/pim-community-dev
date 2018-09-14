@@ -69,7 +69,7 @@ interface Props {
       element,
       isActive,
       onClick,
-    }: {isOpen: boolean, element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
+    }: {isOpen: boolean; element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
   ) => JSX.Element;
   label: string;
   className?: string;

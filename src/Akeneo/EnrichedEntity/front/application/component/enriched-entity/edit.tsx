@@ -116,7 +116,10 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
     const label = this.props.enrichedEntity.getLabel(this.props.context.locale);
-    const TabView = sidebarProvider.getView('akeneo_enriched_entities_enriched_entity_edit', this.props.sidebar.currentTab);
+    const TabView = sidebarProvider.getView(
+      'akeneo_enriched_entities_enriched_entity_edit',
+      this.props.sidebar.currentTab
+    );
 
     return (
       <div className="AknDefault-contentWithColumn">

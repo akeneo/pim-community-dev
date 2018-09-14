@@ -80,7 +80,6 @@ describe('akeneo > record > domain > model --- record', () => {
         labels: {},
         image: null,
         enriched_entity_identifier: 'designer',
-        image: null,
       }).getCode()
     ).toEqual(didierCode);
   });
