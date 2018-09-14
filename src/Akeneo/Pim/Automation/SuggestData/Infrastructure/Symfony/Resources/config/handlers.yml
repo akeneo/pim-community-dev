@@ -38,6 +38,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
             - '@akeneo.pim.automation.suggest_data.proposal.create_proposal'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
