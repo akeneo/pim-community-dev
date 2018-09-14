@@ -1,5 +1,9 @@
 # 2.0.x
 
+# 2.0.38 (2018-09-13)
+
+- PIM-7645: Fix media field drop zone access
+
 # 2.0.37 (2018-09-11)
 
 ## Bug fixes
