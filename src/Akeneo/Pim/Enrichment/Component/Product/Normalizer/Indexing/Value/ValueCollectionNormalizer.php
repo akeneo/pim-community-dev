@@ -28,11 +28,12 @@ class ValueCollectionNormalizer implements NormalizerInterface, SerializerAwareI
      */
     public function normalize($values, $format = null, array $context = [])
     {
-        $result = [];
+        $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValue = $this->serializer->normalize($value, $format, $context);
-            $result = array_merge_recursive($result, $normalizedValue);
+            $normalizedValues[] = $this->serializer->normalize($value, $format, $context);
         }
+
+        $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
 
         return $result;
     }

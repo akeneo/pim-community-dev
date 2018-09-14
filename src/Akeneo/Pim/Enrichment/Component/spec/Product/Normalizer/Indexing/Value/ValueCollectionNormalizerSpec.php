@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
@@ -40,6 +41,10 @@ class ValueCollectionNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
         $this->supportsNormalization($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
+    }
+
+    function it_normalizes_an_empty_value_collection() {
+        $this->normalize(new ValueCollection(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,[])->shouldReturn([]);
     }
 
     function it_normalizes_product_value_collection(
