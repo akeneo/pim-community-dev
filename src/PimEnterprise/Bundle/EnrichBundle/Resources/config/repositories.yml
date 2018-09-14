@@ -13,7 +13,7 @@ services:
             - '%pimee_security.entity.attribute_group_access.class%'
 
     pimee_enrich.repository.asset_category_choices:
-        class: '%pim_enrich.repository.category.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository'
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
