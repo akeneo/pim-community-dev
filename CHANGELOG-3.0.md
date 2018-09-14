@@ -6,6 +6,7 @@
 
 ## Technical improvement
 
+- Set PHP 7.2 as minimal required version
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
 - PAV3-4: Regroup PAM Classes
 - Composer use Packagist to retrieve pim-community-dev
