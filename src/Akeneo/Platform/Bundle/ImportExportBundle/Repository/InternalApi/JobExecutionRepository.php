@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

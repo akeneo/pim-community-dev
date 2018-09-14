@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Query;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\CountImpactedProducts;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;

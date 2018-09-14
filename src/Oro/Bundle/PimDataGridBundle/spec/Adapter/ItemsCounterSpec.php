@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Oro\Bundle\PimDataGridBundle\Adapter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\CountImpactedProducts;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts;
 
 class ItemsCounterSpec extends ObjectBehavior
 {

@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Channel\Component\Repository\InternalApi;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
- * Currency repository
+ * Locale repository
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyRepository extends EntityRepository implements DatagridRepositoryInterface
+class LocaleRepository extends EntityRepository implements DatagridRepositoryInterface
 {
     /**
      * @param EntityManager $em
@@ -29,7 +29,7 @@ class CurrencyRepository extends EntityRepository implements DatagridRepositoryI
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('l');
 
         return $qb;
     }

@@ -9,3 +9,9 @@ services:
         arguments: ['%pim_datagrid.entity.datagrid_view.class%']
         tags:
             - { name: 'pim_repository' }
+
+    pim_enrich.repository.client:
+        class: 'Oro\Bundle\PimDataGridBundle\Repository\ClientRepository'
+        arguments:
+            - '@fos_oauth_server.entity_manager'
+            - '%fos_oauth_server.model.client.class%'

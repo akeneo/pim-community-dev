@@ -8,7 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 
 class JobExecutionRepositoryIntegration extends TestCase
 {

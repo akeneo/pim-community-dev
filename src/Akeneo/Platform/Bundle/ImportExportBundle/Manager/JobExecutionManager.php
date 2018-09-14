@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Manager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class JobExecutionManager
 {
-    /** @var JobExecutionRepository */
+    /** @var \Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository */
     protected $repository;
 
     /** @var SecurityFacade */

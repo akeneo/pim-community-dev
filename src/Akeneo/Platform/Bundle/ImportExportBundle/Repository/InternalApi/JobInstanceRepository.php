@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
- * Locale repository
+ * Job instance repository
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleRepository extends EntityRepository implements DatagridRepositoryInterface
+class JobInstanceRepository extends EntityRepository implements DatagridRepositoryInterface
 {
     /**
      * @param EntityManager $em
@@ -29,7 +29,13 @@ class LocaleRepository extends EntityRepository implements DatagridRepositoryInt
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('l');
+        $qb = $this->createQueryBuilder('j');
+        $qb
+            ->addSelect("j.jobName as jobName")
+            ->addSelect(
+                "CONCAT('pim_import_export.status.', j.status) as statusLabel"
+            )
+            ->andWhere('j.type = :jobType');
 
         return $qb;
     }
