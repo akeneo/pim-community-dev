@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Classification;
 
-use Akeneo\Test\Integration\Configuration;
+use Akeneo\Pim\Enrichment\Bundle\tests\fixture\EntityBuilder;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
 
 class ClassifyProductModelIntegration extends TestCase
 {
