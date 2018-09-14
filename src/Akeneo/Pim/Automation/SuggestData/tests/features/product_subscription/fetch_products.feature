@@ -12,20 +12,14 @@ Feature: Fetch products from PIM.ai
 
   Scenario: Successfully fetch products from PIM.ai
     Given PIM.ai is configured with a valid token
-    Given the following attribute:
-      | code | type                   |
-      | ean  | pim_catalog_text       |
-      | sku  | pim_catalog_identifier |
-    And the following family:
-      | code   | attributes | label-en_US |
-      | tshirt | sku,ean    | T-Shirt     |
+    And the product "B00EYZY6AC" of the family "router"
+    And the product "606449099812" of the family "router"
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
-      | upc         | ean            |
-    And the following product subscribed to pim.ai:
-      | identifier | family | ean          |
-      | ts_0013    | tshirt | 606449099812 |
-      | ts_0042    | tshirt | 730870200933 |
+      | upc         | pim_upc        |
+      | asin        | asin           |
+    And the product "B00EYZY6AC" is subscribed to PIM.ai
+    And the product "606449099812" is subscribed to PIM.ai
     And last fetch of subscribed products has been done yesterday
     #When the subscribed products are fetched from PIM.ai
     #Then 2 suggested data should have been added (APAI-153)
@@ -43,4 +37,3 @@ Feature: Fetch products from PIM.ai
   #Scenario: Successfully fetch products from PIM.ai from a specific date
 
   #Scenario: Successfully fetch products from PIM.ai from last launched time
-
