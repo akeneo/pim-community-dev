@@ -899,12 +899,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $accessClass = str_replace(' ', '', ucwords($accessType));
         $getterAccessType = sprintf('get%s', $accessClass);
+        $registry = $this->getEntityManager();
 
         $accessManager = $this->getAccessManager($accessType);
         foreach ($table->getHash() as $data) {
             $access = $this->$getterAccessType($data[$accessType]);
             $accessManager->revokeAccess($access);
         }
+        $registry->flush();
 
         foreach ($table->getHash() as $data) {
             $access = $this->$getterAccessType($data[$accessType]);
@@ -915,8 +917,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $accessManager->grantAccess($access, $userGroup, $accessLevel);
             }
         }
-
-        $registry = $this->getEntityManager();
         $registry->flush();
     }
 
