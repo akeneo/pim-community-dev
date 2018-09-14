@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -40,7 +40,7 @@ class CategoryRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CategoryRepository::class);
+        $this->shouldHaveType(\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository::class);
     }
 
     function it_provides_translated_data()

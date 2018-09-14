@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\GroupRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -25,7 +25,7 @@ class GroupRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(GroupRepository::class);
+        $this->shouldHaveType(\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\GroupRepository::class);
     }
 
     function it_provides_translated_data()

@@ -1,7 +1,6 @@
 parameters:
     ## Default UI repositories
-    pim_enrich.repository.category.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository
-    pim_enrich.repository.group.class:                   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository
+    pim_enrich.repository.group.class:
     pim_enrich.repository.locale.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository
     pim_enrich.repository.channel.class:                 Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_enrich.repository.currency.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository
@@ -12,20 +11,6 @@ parameters:
 
 services:
     ## Default UI repositories
-    pim_enrich.repository.category:
-        class: '%pim_enrich.repository.category.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.category.class%'
-
-    pim_enrich.repository.group:
-        class: '%pim_enrich.repository.group.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.group.class%'
-
     pim_enrich.repository.locale:
         class: '%pim_enrich.repository.locale.class%'
         arguments:
