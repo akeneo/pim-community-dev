@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductAssociationNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer)
+    function let(SerializerInterface $serializer, ImageNormalizer $imageNormalizer)
     {
         $this->beConstructedWith($imageNormalizer);
 

@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, CollectionFilterInterface $filter, \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer)
+    function let(NormalizerInterface $normalizer, CollectionFilterInterface $filter, ImageNormalizer $imageNormalizer)
     {
         $this->beConstructedWith($filter, $imageNormalizer);
 

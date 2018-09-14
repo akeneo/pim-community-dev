@@ -23,7 +23,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     protected $imageNormalizer;
 
     /**
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
+     * @param ImageNormalizer $imageNormalizer
      */
     public function __construct(ImageNormalizer $imageNormalizer)
     {

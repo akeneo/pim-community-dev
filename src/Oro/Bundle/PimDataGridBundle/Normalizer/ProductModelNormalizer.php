@@ -35,20 +35,20 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer */
+    /** @var ImageNormalizer */
     private $imageNormalizer;
 
     /**
-     * @param CollectionFilterInterface                                                       $filter
-     * @param VariantProductRatioInterface                                                    $variantProductRatioQuery
-     * @param ImageAsLabel                                                                    $imageAsLabel
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
+     * @param CollectionFilterInterface    $filter
+     * @param VariantProductRatioInterface $variantProductRatioQuery
+     * @param ImageAsLabel                 $imageAsLabel
+     * @param ImageNormalizer              $imageNormalizer
      */
     public function __construct(
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
-        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
+        ImageNormalizer $imageNormalizer
     ) {
         $this->filter                   = $filter;
         $this->variantProductRatioQuery = $variantProductRatioQuery;

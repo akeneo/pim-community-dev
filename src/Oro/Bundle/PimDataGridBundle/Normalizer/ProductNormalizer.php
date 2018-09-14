@@ -30,12 +30,12 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     protected $imageNormalizer;
 
     /**
-     * @param CollectionFilterInterface                                                       $filter
-     * @param \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
+     * @param CollectionFilterInterface $filter
+     * @param ImageNormalizer           $imageNormalizer
      */
     public function __construct(
         CollectionFilterInterface $filter,
-        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
+        ImageNormalizer $imageNormalizer
     ) {
         $this->filter = $filter;
         $this->imageNormalizer = $imageNormalizer;

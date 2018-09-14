@@ -28,7 +28,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $findVariantProductCompletenessQuery,
         ImageAsLabel $imageAsLabel,
-        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer $imageNormalizer
+        ImageNormalizer $imageNormalizer
     ) {
         $this->beConstructedWith($filter, $findVariantProductCompletenessQuery, $imageAsLabel, $imageNormalizer);
 
