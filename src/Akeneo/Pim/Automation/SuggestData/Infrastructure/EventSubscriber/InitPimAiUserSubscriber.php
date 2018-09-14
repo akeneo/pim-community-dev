@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\EventSubscriber;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\InitPimAIUserCommand;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\InitPimAiUserCommand;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -42,7 +42,7 @@ class InitPimAiUserSubscriber implements EventSubscriberInterface
     {
         $commandExecutor = $event->getCommandExecutor();
         $commandExecutor->runCommand(
-            InitPimAIUserCommand::getDefaultName(),
+            InitPimAiUserCommand::getDefaultName(),
             [
                 '--quiet' => true,
             ]
