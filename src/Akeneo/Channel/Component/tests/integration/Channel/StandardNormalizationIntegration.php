@@ -1,13 +1,15 @@
 <?php
 
-namespace Akeneo\Channel\Component\Catalog\tests\integration\Channel;
+namespace Akeneo\Channel\Component\tests\integration\Channel;
+
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StandardNormalizationIntegration
+class StandardNormalizationIntegration extends TestCase
 {
     public function test_channel_normalization()
     {

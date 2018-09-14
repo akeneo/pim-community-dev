@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Channel\Component\Catalog\tests\integration\Normalizer\Standard;
+namespace Akeneo\Channel\Component\tests\integration\Normalizer\Standard;
 
 use Akeneo\Test\Integration\TestCase;
 

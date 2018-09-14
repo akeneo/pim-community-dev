@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Doctrine\Common\Saver;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\TestCase;
