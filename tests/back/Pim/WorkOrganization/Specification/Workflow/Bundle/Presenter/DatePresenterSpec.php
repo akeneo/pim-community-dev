@@ -3,18 +3,22 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
-use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as LocalizationPresenter;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class DatePresenterSpec extends ObjectBehavior
 {
-    function let(LocalizationPresenter $datePresenter, LocaleResolver $localeResolver)
-    {
-        $this->beConstructedWith($datePresenter, $localeResolver);
+    function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        BasePresenterInterface $datePresenter,
+        LocaleResolver $localeResolver
+    ) {
+        $this->beConstructedWith($attributeRepository, $datePresenter, $localeResolver);
     }
 
     function it_is_a_presenter()
@@ -29,6 +33,7 @@ class DatePresenterSpec extends ObjectBehavior
     }
 
     function it_presents_date_change_using_the_injected_renderer(
+        $attributeRepository,
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
@@ -40,7 +45,8 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('01/20/2012');
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn($date);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('update');
+        $attributeRepository->findOneByIdentifier('update')->willReturn($attribute);
         $attribute->getCode()->willReturn('update');
 
         $renderer->renderDiff('01/20/2012', '04/25/2012')->willReturn('diff between two dates');
@@ -50,6 +56,7 @@ class DatePresenterSpec extends ObjectBehavior
     }
 
     function it_presents_only_new_date_when_no_previous_date_is_set(
+        $attributeRepository,
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
@@ -60,7 +67,8 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
         $value->getData()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('update');
+        $attributeRepository->findOneByIdentifier('update')->willReturn($attribute);
         $attribute->getCode()->willReturn('update');
 
         $renderer->renderDiff('', '04/25/2012')->willReturn('diff between two dates');
@@ -70,6 +78,7 @@ class DatePresenterSpec extends ObjectBehavior
     }
 
     function it_presents_only_old_date_when_no_new_date_is_set(
+        $attributeRepository,
         $datePresenter,
         $localeResolver,
         RendererInterface $renderer,
@@ -81,7 +90,8 @@ class DatePresenterSpec extends ObjectBehavior
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('2012/20/01');
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
         $value->getData()->willReturn($date);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('update');
+        $attributeRepository->findOneByIdentifier('update')->willReturn($attribute);
         $attribute->getCode()->willReturn('update');
 
         $renderer->renderDiff('2012/20/01', '')->willReturn('diff between two dates');

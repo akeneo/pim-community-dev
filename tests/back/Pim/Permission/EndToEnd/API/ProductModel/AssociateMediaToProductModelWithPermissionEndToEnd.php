@@ -127,14 +127,14 @@ JSON;
         // check if product model value has been created
         $this->getFromTestContainer('doctrine')->getManager()->clear();
         $productModel = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByCode('root_product_model');
-        $attributes = $productModel->getAttributes();
-        $attribute = current(array_filter($attributes, function($attribute){
-            return $attribute->getCode() == 'root_product_model_edit_attribute_media';
+        $attributeCodes = $productModel->getUsedAttributeCodes();
+        $mediaAttributeCode = current(array_filter($attributeCodes, function($attributeCode){
+            return $attributeCode == 'root_product_model_edit_attribute_media';
         }));
 
-        $propertie = $productModel->getValues()->getByCodes('root_product_model_edit_attribute_media', null, 'en_US');
-        $this->assertEquals('root_product_model_edit_attribute_media', $attribute->getCode());
-        $this->assertEquals($fileInfo->getOriginalFilename(), $propertie->getData()->getOriginalFilename());
+        $property = $productModel->getValues()->getByCodes('root_product_model_edit_attribute_media', null, 'en_US');
+        $this->assertEquals('root_product_model_edit_attribute_media', $mediaAttributeCode);
+        $this->assertEquals($fileInfo->getOriginalFilename(), $property->getData()->getOriginalFilename());
 
     }
 

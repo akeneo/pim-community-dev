@@ -20,11 +20,18 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         LocaleRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $cachedLocaleRepository,
-        TokenInterface $token
+        TokenInterface $token,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $tokenStorage->getToken()->willReturn($token);
 
-        $this->beConstructedWith($tokenStorage, $authorizationChecker, $localeRepository, $cachedLocaleRepository);
+        $this->beConstructedWith(
+            $tokenStorage,
+            $authorizationChecker,
+            $localeRepository,
+            $cachedLocaleRepository,
+            $attributeRepository
+        );
     }
 
     function it_does_not_filter_a_product_value_if_the_user_is_granted_to_see_its_locale(
@@ -32,12 +39,16 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         $cachedLocaleRepository,
         ValueInterface $price,
         AttributeInterface $priceAttribute,
-        LocaleInterface $enUS
+        LocaleInterface $enUS,
+        $attributeRepository
     ) {
-        $price->getAttribute()->willReturn($priceAttribute);
-        $price->getLocale()->willReturn('en_US');
-        $priceAttribute->isLocalizable()->willReturn(true);
+        $price->getAttributeCode()->willReturn('price');
+        $price->getLocaleCode()->willReturn('en_US');
+        $price->isLocalizable()->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
         $priceAttribute->isLocaleSpecific()->willReturn(false);
+
         $cachedLocaleRepository->findOneByIdentifier('en_US')->willReturn($enUS);
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUS)->willReturn(true);
@@ -50,11 +61,14 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         $cachedLocaleRepository,
         ValueInterface $price,
         AttributeInterface $priceAttribute,
-        LocaleInterface $enUS
+        LocaleInterface $enUS,
+        $attributeRepository
     ) {
-        $price->getAttribute()->willReturn($priceAttribute);
-        $price->getLocale()->willReturn('en_US');
-        $priceAttribute->isLocalizable()->willReturn(true);
+        $price->getAttributeCode()->willReturn('price');
+        $price->getLocaleCode()->willReturn('en_US');
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+
+        $price->isLocalizable()->willReturn(true);
         $priceAttribute->isLocaleSpecific()->willReturn(false);
         $cachedLocaleRepository->findOneByIdentifier('en_US')->willReturn($enUS);
 
@@ -65,10 +79,13 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
 
     function it_does_not_filter_a_product_value_if_the_attribute_is_not_localizable(
         ValueInterface $price,
-        AttributeInterface $priceAttribute
+        AttributeInterface $priceAttribute,
+        $attributeRepository
     ) {
-        $price->getAttribute()->willReturn($priceAttribute);
-        $priceAttribute->isLocalizable()->willReturn(false);
+        $price->getAttributeCode()->willReturn('price');
+        $price->isLocalizable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+
         $priceAttribute->isLocaleSpecific()->willReturn(false);
 
         $this->filterObject($price, 'pim:product_value:view', [])->shouldReturn(false);
@@ -80,11 +97,14 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         ValueInterface $price,
         AttributeInterface $priceAttribute,
         LocaleInterface $enUS,
-        LocaleInterface $frFR
+        LocaleInterface $frFR,
+        $attributeRepository
     ) {
-        $price->getAttribute()->willReturn($priceAttribute);
+        $price->getAttributeCode()->willReturn('price');
+        $price->isLocalizable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+
         $priceAttribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
-        $priceAttribute->isLocalizable()->willReturn(false);
         $priceAttribute->isLocaleSpecific()->willReturn(true);
         $cachedLocaleRepository->findOneByIdentifier('en_US')->willReturn($enUS);
         $cachedLocaleRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
@@ -101,11 +121,14 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         ValueInterface $price,
         AttributeInterface $priceAttribute,
         LocaleInterface $enUS,
-        LocaleInterface $frFR
+        LocaleInterface $frFR,
+        $attributeRepository
     ) {
-        $price->getAttribute()->willReturn($priceAttribute);
+        $price->getAttributeCode()->willReturn('price');
+        $price->isLocalizable()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+
         $priceAttribute->getLocaleSpecificCodes()->willReturn(['en_US', 'fr_FR']);
-        $priceAttribute->isLocalizable()->willReturn(false);
         $priceAttribute->isLocaleSpecific()->willReturn(true);
         $cachedLocaleRepository->findOneByIdentifier('en_US')->willReturn($enUS);
         $cachedLocaleRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);

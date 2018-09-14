@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer as BaseImageNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Image Normalizer for Enterprise Edition.
@@ -21,17 +22,18 @@ class ImageNormalizer extends BaseImageNormalizer
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /**
-     * @param FileNormalizer            $fileNormalizer
-     * @param LocaleRepositoryInterface $localeRepository
-     */
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     public function __construct(
         FileNormalizer $fileNormalizer,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         parent::__construct($fileNormalizer);
 
         $this->localeRepository = $localeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -59,9 +61,13 @@ class ImageNormalizer extends BaseImageNormalizer
 
     private function isAssetCollection($value)
     {
-        return (
-            ($value instanceof ReferenceDataCollectionValue) &&
-            $value->getAttribute()->getReferenceDataName() === 'assets'
-        );
+        if (!$value instanceof ReferenceDataCollectionValue) {
+            return false;
+        }
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        return (null !== $attribute &&
+            $attribute()->getReferenceDataName() === 'assets');
     }
 }

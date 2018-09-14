@@ -82,12 +82,12 @@ Feature: Update a single product by applying rules
       """
     Given the product rule "rule_set_heels " is executed
     Then the product "red-heels" should have the following values:
-      | sole_color               | [orange]                        |
-      | sole_fabric              | [chiffon], [leather], [satin]   |
-      | cap_color-en_US-mobile   | [red]                           |
-      | lace_fabric-fr_FR-tablet | [cashmere]                      |
-      | lace_fabric-en_US-tablet | [cashmere], [toile]             |
-      | lace_fabric-en_US-mobile | [cashmere], [gore-tex], [toile] |
+      | sole_color               | [orange]                         |
+      | sole_fabric              | [chiffon], [leather], [satin]    |
+      | cap_color-en_US-mobile   | [red]                            |
+      | lace_fabric-fr_FR-tablet | [cashmere]                       |
+      | lace_fabric-en_US-tablet | [cashmere], [toile]              |
+      | lace_fabric-en_US-mobile | [cashmere], [gore-tex], [toile]  |
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on reference data attributes
     Given the family "heels" has the attributes "cap_color"

@@ -34,7 +34,7 @@ Feature: Create a draft with a simple reference data fields
       | product       | username | result                                                                                                                                                                 |
       | akeneo_tshirt | Mary     | {"values": {"lace_color": [{"locale": null, "scope": null, "data": "Blue"}]}, "review_statuses": {"lace_color": [{"locale": null, "scope": null, "status": "draft"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | lace_color | Green |
+      | lace_color | [Green] |
 
   Scenario: Do not create a draft with same values as product
     Given the following product values:

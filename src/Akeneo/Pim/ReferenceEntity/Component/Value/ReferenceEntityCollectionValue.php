@@ -14,7 +14,7 @@ namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 /**
  * Product value for reference entity
@@ -24,30 +24,20 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
  */
 class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceEntityCollectionValueInterface
 {
-    /** @var Record[] */
-    protected $records;
-
     /**
-     * @param AttributeInterface          $attribute
-     * @param string                      $channel
-     * @param string                      $locale
-     * @param Record|null                 $records
+     * {@inheritdoc}
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, $records = null)
+    protected function __construct(string $attributeCode, ?array $recordCodes, ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->records = $records;
+        parent::__construct($attributeCode, $recordCodes, $scopeCode, $localeCode);
     }
 
     /**
-     * @return Record[]
+     * @return RecordCode[]
      */
-    public function getData(): array
+    public function getData(): ?array
     {
-        return $this->records;
+        return $this->data;
     }
 
     /**
@@ -56,8 +46,8 @@ class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceE
     public function isEqual(ValueInterface $value): bool
     {
         return $this->getData() === $value->getData() &&
-            $this->scope === $value->getScope() &&
-            $this->locale === $value->getLocale();
+            $this->scope === $value->getScopeCode() &&
+            $this->locale === $value->getLocaleCode();
     }
 
     /**
@@ -65,8 +55,8 @@ class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceE
      */
     public function __toString(): string
     {
-        return null !== $this->records ? implode(array_map(function (Record $record) {
-            return $record->getIdentifier()->__toString();
-        }, $this->records), ', ') : '';
+        return null !== $this->data ? implode(array_map(function (RecordCode $recordCode) {
+            return $recordCode->__toString();
+        }, $this->data), ', ') : '';
     }
 }

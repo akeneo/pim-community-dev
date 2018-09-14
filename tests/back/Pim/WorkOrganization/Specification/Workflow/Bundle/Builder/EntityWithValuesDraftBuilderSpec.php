@@ -101,10 +101,12 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
         $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
-        $newTextValue->getAttribute()->willReturn($textAttribute);
+
+        $newTextValue->getAttributeCode()->willReturn('text');
+
         $newTextValue->getData()->willReturn('product');
-        $newTextValue->getScope()->willReturn(null);
-        $newTextValue->getLocale()->willReturn(null);
+        $newTextValue->getScopeCode()->willReturn(null);
+        $newTextValue->getLocaleCode()->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
@@ -158,10 +160,10 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
         $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
-        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getAttributeCode()->willReturn('text');
         $newTextValue->getData()->willReturn('product');
-        $newTextValue->getScope()->willReturn(null);
-        $newTextValue->getLocale()->willReturn(null);
+        $newTextValue->getScopeCode()->willReturn(null);
+        $newTextValue->getLocaleCode()->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
@@ -316,10 +318,10 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
         $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
-        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getAttributeCode()->willReturn('text');
         $newTextValue->getData()->willReturn('product');
-        $newTextValue->getScope()->willReturn(null);
-        $newTextValue->getLocale()->willReturn(null);
+        $newTextValue->getScopeCode()->willReturn(null);
+        $newTextValue->getLocaleCode()->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
@@ -409,10 +411,10 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
         $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
-        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getAttributeCode()->willReturn('text');
         $newTextValue->getData()->willReturn('product');
-        $newTextValue->getScope()->willReturn(null);
-        $newTextValue->getLocale()->willReturn(null);
+        $newTextValue->getScopeCode()->willReturn(null);
+        $newTextValue->getLocaleCode()->willReturn(null);
 
         $colorAttribute->getCode()->willReturn('color');
         $colorAttribute->getType()->willReturn('simpleselect');

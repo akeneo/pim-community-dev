@@ -37,22 +37,21 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
     /** @var IdentifiableObjectRepositoryInterface */
     protected $cachedLocaleRepository;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param IdentifiableObjectRepositoryInterface $cachedLocaleRepository
-     */
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         LocaleRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $cachedLocaleRepository
+        IdentifiableObjectRepositoryInterface $cachedLocaleRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         parent::__construct($tokenStorage, $authorizationChecker);
 
         $this->localeRepository = $localeRepository;
         $this->cachedLocaleRepository = $cachedLocaleRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -80,17 +79,19 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
 
         $localeRepository = $this->cachedLocaleRepository ?: $this->localeRepository;
 
-        if ($value->getAttribute()->isLocalizable() &&
+        if ($value->isLocalizable() &&
             !$this->authorizationChecker->isGranted(
                 Attributes::VIEW_ITEMS,
-                $localeRepository->findOneByIdentifier($value->getLocale())
+                $localeRepository->findOneByIdentifier($value->getLocaleCode())
             )
         ) {
             return true;
         }
 
-        if ($value->getAttribute()->isLocaleSpecific()) {
-            $localeCodes = $value->getAttribute()->getLocaleSpecificCodes();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        if (null !== $attribute && $attribute->isLocaleSpecific()) {
+            $localeCodes = $attribute->getLocaleSpecificCodes();
 
             $authorizedLocaleCodes = array_filter(
                 $localeCodes,

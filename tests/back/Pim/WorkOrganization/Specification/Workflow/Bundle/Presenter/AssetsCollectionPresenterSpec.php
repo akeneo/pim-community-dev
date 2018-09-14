@@ -14,12 +14,16 @@ use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class AssetsCollectionPresenterSpec extends ObjectBehavior
 {
-    function let(AssetRepositoryInterface $assetRepository, RouterInterface $router)
-    {
-        $this->beConstructedWith($assetRepository, $router);
+    function let(
+        AssetRepositoryInterface $assetRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        RouterInterface $router
+    ) {
+        $this->beConstructedWith($assetRepository, $attributeRepository, $router);
     }
 
     function it_is_a_presenter()
@@ -27,22 +31,31 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(PresenterInterface::class);
     }
 
-    function it_supports_an_assets_collection(ValueInterface $productValue, AttributeInterface $frontView)
-    {
-        $productValue->getAttribute()->willReturn($frontView);
+    function it_supports_an_assets_collection(
+        $attributeRepository,
+        ValueInterface $productValue,
+        AttributeInterface $frontView
+    ) {
+        $productValue->getAttributeCode()->willReturn('front_view');
+        $attributeRepository->findOneByIdentifier('front_view')->willReturn($frontView);
         $frontView->getType()->willReturn(AssetAttributeType::ASSETS_COLLECTION);
         $this->supports($productValue)->shouldBe(true);
     }
 
-    function it_does_not_support_other_attribute_types(ValueInterface $productValue, AttributeInterface $frontView)
-    {
-        $productValue->getAttribute()->willReturn($frontView);
+    function it_does_not_support_other_attribute_types(
+        $attributeRepository,
+        ValueInterface $productValue,
+        AttributeInterface $frontView
+    ) {
+        $productValue->getAttributeCode()->willReturn('front_view');
+        $attributeRepository->findOneByIdentifier('front_view')->willReturn($frontView);
         $frontView->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
         $this->supports($productValue)->shouldBe(false);
     }
 
     function it_presents_assets_collection_changes(
         $assetRepository,
+        $attributeRepository,
         ValueInterface $productValue,
         AttributeInterface $attribute,
         AssetInterface $leather,
@@ -100,8 +113,9 @@ class AssetsCollectionPresenterSpec extends ObjectBehavior
             'localeCode' => 'en_US'
         ])->willReturn('kevlar/assetUrl');
 
-        $productValue->getData()->willReturn([$leather, $neoprene]);
-        $productValue->getAttribute()->willReturn($attribute);
+        $productValue->getData()->willReturn(['leather', 'neoprene']);
+        $productValue->getAttributeCode()->willReturn('media');
+        $attributeRepository->findOneByIdentifier('media')->willReturn($attribute);
         $attribute->getCode()->willReturn('media');
         $this->present($productValue, ['data' => ['leather', 'kevlar']])->shouldReturn(
             [

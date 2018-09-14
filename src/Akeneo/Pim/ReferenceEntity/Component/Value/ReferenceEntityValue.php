@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -14,7 +15,7 @@ namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 /**
  * Product value for a reference entity
@@ -24,30 +25,20 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
  */
 class ReferenceEntityValue extends AbstractValue implements ReferenceEntityValueInterface
 {
-    /** @var Record|null */
-    protected $record;
-
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $channel
-     * @param string             $locale
-     * @param Record|null        $record
+     * {@inheritdoc}
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, $record = null)
+    protected function __construct(string $attributeCode, $data = null, ?string $scopeCode, ?string $localeCode)
     {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-
-        $this->record = $record;
+        parent::__construct($attributeCode, $data, $scopeCode, $localeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getData(): ?Record
+    public function getData(): ?RecordCode
     {
-        return $this->record;
+        return $this->data;
     }
 
     /**
@@ -62,8 +53,8 @@ class ReferenceEntityValue extends AbstractValue implements ReferenceEntityValue
         }
 
         return $areEqual
-            && $this->scope === $value->getScope()
-            && $this->locale === $value->getLocale();
+            && $this->getScopeCode() === $value->getScopeCode()
+            && $this->getLocaleCode() === $value->getLocaleCode();
     }
 
     /**
@@ -71,6 +62,6 @@ class ReferenceEntityValue extends AbstractValue implements ReferenceEntityValue
      */
     public function __toString(): string
     {
-        return (null !== $this->record) ? (string) $this->record->getIdentifier() : '';
+        return (null !== $this->data) ? (string) $this->data : '';
     }
 }

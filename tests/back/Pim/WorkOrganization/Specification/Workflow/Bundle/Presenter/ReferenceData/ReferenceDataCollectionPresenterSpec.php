@@ -11,12 +11,15 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 {
-    function let(ReferenceDataRepositoryResolver $repositoryResolver)
-    {
-        $this->beConstructedWith($repositoryResolver);
+    function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ReferenceDataRepositoryResolver $repositoryResolver
+    ) {
+        $this->beConstructedWith($attributeRepository, $repositoryResolver);
     }
 
     function it_is_a_presenter()
@@ -40,7 +43,6 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         ReferenceDataConfigurationInterface $configuration,
         RendererInterface $renderer,
         CustomValuePresenterCollection $value,
-        AttributeInterface $attribute,
         CustomValuePresenterCollection $leather,
         CustomValuePresenterCollection $neoprene,
         CustomValuePresenterCollection $kevlar
@@ -60,8 +62,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn([$leather, $neoprene]);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('fabric');
+        $value->getAttributeCode()->willReturn('fabric');
         $this->present($value, ['data' => ['Leather', 'Neoprene']])->shouldReturn('diff between two reference data');
     }
 }

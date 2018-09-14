@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 /**
  * Product value interface for a reference entity
@@ -22,8 +22,5 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
  */
 interface ReferenceEntityValueInterface extends ValueInterface
 {
-    /**
-     * @return Record|null
-     */
-    public function getData();
+    public function getData(): ?RecordCode;
 }

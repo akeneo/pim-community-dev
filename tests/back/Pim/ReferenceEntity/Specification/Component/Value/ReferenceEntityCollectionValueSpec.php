@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\ReferenceEntity\Component\Value;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
@@ -13,15 +13,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ReferenceEntityCollectionValueSpec extends ObjectBehavior {
     function let(
-        AttributeInterface $designer,
-        LocaleInterface $locale,
-        ChannelInterface $channel,
-        Record $starck,
-        Record $dyson
+        RecordCode $starckCode,
+        RecordCode $dysonCode
     ) {
-        $designer->isScopable()->willReturn(true);
-        $designer->isLocalizable()->willReturn(true);
-        $this->beConstructedWith($designer, $locale, $channel, [$starck, $dyson]);
+        $this->beConstructedThrough(
+            'scopableLocalizableValue',
+            ['designer', [$starckCode, $dysonCode], 'ecommerce', 'en_US']
+        );
     }
 
     function it_is_initializable()
@@ -30,17 +28,16 @@ class ReferenceEntityCollectionValueSpec extends ObjectBehavior {
         $this->shouldHaveType(ValueInterface::class);
     }
 
-    function it_gets_a_list_of_record($starck, $dyson)
+    function it_gets_a_list_of_record($starckCode, $dysonCode)
     {
-        $this->getData()->shouldReturn([$starck, $dyson]);
+        $this->getData()->shouldReturn([$starckCode, $dysonCode]);
     }
 
-    function it_is_castable_into_a_string(Record $starck, Record $dyson, RecordIdentifier $starckIdentifier, RecordIdentifier $dysonIdentifier)
+    function it_is_castable_into_a_string(RecordCode $starckCode, RecordCode $dysonCode)
     {
-        $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->__toString()->willReturn('starck');
-        $dyson->getIdentifier()->willReturn($dysonIdentifier);
-        $dysonIdentifier->__toString()->willReturn('dyson');
+        $starckCode->__toString()->willReturn('starck');
+        $dysonCode->__toString()->willReturn('dyson');
+
         $this->__toString()->shouldReturn('starck, dyson');
     }
 }

@@ -27,9 +27,9 @@ Feature: Import products with an assets collection
     And I wait for the "csv_clothing_product_import" job to finish
     Then there should be 3 products
     And the product "pant-1" should have the following values:
-      | gallery | dog, tiger |
+      | gallery | [dog], [tiger] |
     And the product "pant-2" should have the following values:
-      | gallery | minivan |
+      | gallery | [minivan] |
     And the product "pant-3" should have the following values:
       | gallery |  |
 
@@ -53,4 +53,4 @@ Feature: Import products with an assets collection
     And I should see the text "Property \"gallery\" expects a valid reference data code. The code of the reference data \"assets\" does not exist, \"bar\" given."
     Then there should be 1 products
     And the product "pant-2" should have the following values:
-      | gallery | minivan |
+      | gallery | [minivan] |

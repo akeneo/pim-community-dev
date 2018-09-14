@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -30,19 +30,20 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var CachedObjectRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     private $localeRepository;
 
-    /**
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param CachedObjectRepositoryInterface $localeRepository
-     */
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        CachedObjectRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->localeRepository = $localeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -64,17 +65,19 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
         }
 
         foreach ($values as $value) {
-            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $value->getAttribute())) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+            if (null === $attribute || !$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute)) {
                 $values->remove($value);
 
                 continue;
             }
 
-            if (null === $value->getLocale()) {
+            if (null === $value->getLocaleCode()) {
                 continue;
             }
 
-            $locale = $this->localeRepository->findOneByIdentifier($value->getLocale());
+            $locale = $this->localeRepository->findOneByIdentifier($value->getLocaleCode());
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
                 $values->remove($value);
             }

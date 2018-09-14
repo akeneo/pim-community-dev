@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Asset\Component\Upload\MassUpload;
 
-use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -53,13 +52,11 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         $entityWithValueSaver,
         EntityWithValuesInterface $entityWithValues,
         ReferenceDataCollectionValueInterface $previousValue,
-        AssetInterface $assetC,
         ConstraintViolationListInterface $violations
     ) {
         $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn($previousValue);
-        $previousValue->getData()->willReturn([$assetC]);
-        $assetC->getCode()->willReturn('asset_c');
+        $previousValue->getData()->willReturn(['asset_c']);
 
         $entityWithValueUpdater->update($entityWithValues, [
             'values' => [
@@ -146,7 +143,6 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         $entityWithValueSaver,
         EntityWithValuesInterface $entityWithValues,
         ReferenceDataCollectionValueInterface $previousValue,
-        AssetInterface $assetC,
         ConstraintViolationList $violations,
         \IteratorAggregate $violationIteratorAggregate,
         \Iterator $violationIterator,
@@ -155,8 +151,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
     ) {
         $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn($previousValue);
-        $previousValue->getData()->willReturn([$assetC]);
-        $assetC->getCode()->willReturn('asset_c');
+        $previousValue->getData()->willReturn(['asset_c']);
 
         $entityWithValueUpdater->update($entityWithValues, [
             'values' => [

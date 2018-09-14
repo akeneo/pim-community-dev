@@ -127,34 +127,4 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $this->addPresenter($presenter, 0);
         $this->presentChange($productDraft, $change, 'description');
     }
-
-    function it_injects_twig_in_twig_aware_presenter(
-        $attributePresenter,
-        $valuePresenter,
-        ValueInterface $value,
-        ProductInterface $product,
-        PresenterInterface $presenter,
-        \Twig_Environment $twig,
-        EntityWithValuesDraftInterface $productDraft
-    ) {
-        $presenter->implement('Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TwigAwareInterface');
-        $productDraft->getEntityWithValue()->willReturn($product);
-        $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
-        $change = [
-            'attribute' => 'description',
-            'locale' => 'en_US',
-            'scope' => 'ecommerce',
-        ];
-
-        $attributePresenter->supports($value)->willReturn(false);
-        $valuePresenter->supports($value)->willReturn(false);
-        $presenter->supports($value)->willReturn(true);
-        $presenter->present($value, $change)->willReturn('<b>changes</b>');
-
-        $presenter->setTwig($twig)->shouldBeCalled();
-
-        $this->initRuntime($twig);
-        $this->addPresenter($presenter, 0);
-        $this->presentChange($productDraft, $change, 'description');
-    }
 }

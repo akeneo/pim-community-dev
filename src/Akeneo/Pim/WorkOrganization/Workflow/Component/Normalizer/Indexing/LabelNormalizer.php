@@ -15,6 +15,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,13 +25,27 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class LabelNormalizer implements NormalizerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ValueInterface &&
-            AttributeTypes::BACKEND_TYPE_TEXT === $data->getAttribute()->getBackendType() && (
+        if (! $data instanceof ValueInterface) {
+            return false;
+        }
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
+
+        return  null !== $attribute && AttributeTypes::BACKEND_TYPE_TEXT === $attribute->getBackendType() && (
                 $format === ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX ||
                 $format === ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX
             );
@@ -49,13 +64,19 @@ class LabelNormalizer implements NormalizerInterface
      */
     public function normalize($proposalValue, $format = null, array $context = []): array
     {
-        $locale = (null === $proposalValue->getLocale()) ? '<all_locales>' : $proposalValue->getLocale();
-        $channel = (null === $proposalValue->getScope()) ? '<all_channels>' : $proposalValue->getScope();
+        $locale = (null === $proposalValue->getLocaleCode()) ? '<all_locales>' : $proposalValue->getLocaleCode();
+        $channel = (null === $proposalValue->getScopeCode()) ? '<all_channels>' : $proposalValue->getScopeCode();
 
-        $key = $proposalValue->getAttribute()->getCode() . '-' . $proposalValue->getAttribute()->getBackendType();
-        $structure = [];
-        $structure[$key][$channel][$locale] = $this->getNormalizedData($proposalValue);
+        $attribute = $this->attributeRepository->findOneByIdentifier($proposalValue->getAttributeCode());
 
-        return $structure;
+        if ($attribute !== null) {
+            $key = $proposalValue->getAttributeCode() . '-' . $attribute->getBackendType();
+            $structure = [];
+            $structure[$key][$channel][$locale] = $this->getNormalizedData($proposalValue);
+
+            return $structure;
+        } else {
+            return null;
+        }
     }
 }

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\ReferenceEntity\Component\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
@@ -31,7 +31,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @author    Julien Sanchez (julien@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  */
-class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
+class ReferenceEntityCollectionValueFactory extends AbstractValueFactory
 {
     /** @var RecordRepositoryInterface */
     private $recordRepository;
@@ -41,47 +41,21 @@ class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
      */
     public function __construct(RecordRepositoryInterface $recordRepository)
     {
+        parent::__construct(
+            ReferenceEntityCollectionValue::class,
+            ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION
+        );
+
         $this->recordRepository = $recordRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false): ValueInterface
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
-        $this->checkData($attribute, $data);
-
         if (null === $data) {
             $data = [];
-        }
-
-        $value = new ReferenceEntityCollectionValue(
-            $attribute,
-            $channelCode,
-            $localeCode,
-            $this->getRecordCollection($attribute, $data)
-        );
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType): bool
-    {
-        return $attributeType === ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION;
-    }
-
-    /**
-     * Checks if data is valid.
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    private function checkData(AttributeInterface $attribute, $data)
-    {
-        if (null === $data || [] === $data) {
-            return;
         }
 
         if (!is_array($data)) {
@@ -102,14 +76,16 @@ class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
                 );
             }
         }
+
+        return $this->getRecordCodeCollection($attribute, $data);
     }
 
     /**
-     * Gets a collection of reference data from an array of codes.
+     * Gets a collection of record code object from an array of string codes
      *
      * @throws InvalidPropertyTypeException
      */
-    private function getRecordCollection(AttributeInterface $attribute, array $recordCodes): array
+    protected function getRecordCodeCollection(AttributeInterface $attribute, array $recordCodes): array
     {
         $collection = [];
 
@@ -126,10 +102,11 @@ class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
                 continue;
             }
 
-            if (!in_array($record, $collection, true)) {
-                $collection[] = $record;
+            if (!in_array($record->getCode(), $collection, true)) {
+                $collection[] = $record->getCode();
             }
         }
+
 
         return $collection;
     }

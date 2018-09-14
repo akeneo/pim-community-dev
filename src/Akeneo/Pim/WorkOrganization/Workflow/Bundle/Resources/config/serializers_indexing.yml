@@ -32,5 +32,7 @@ services:
 
     pimee_workflow.normalizer.indexing_product_proposal.label:
         class: '%pimee_workflow.normalizer.indexing_product_proposal.label.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
         tags:
             - { name: pim_indexing_serializer.normalizer, priority: 90 }

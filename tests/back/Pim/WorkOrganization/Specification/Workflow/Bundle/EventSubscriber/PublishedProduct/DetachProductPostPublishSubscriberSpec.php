@@ -36,14 +36,14 @@ class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXTAREA);
 
-        $value = new ScalarValue($attribute, null, null, null);
+        $value = ScalarValue::value($attribute, null);
 
         $product->getValues()->willReturn([$value]);
         $product->getCompletenesses()->willReturn(new ArrayCollection());
         $product->getAssociations()->willReturn(new ArrayCollection());
         $event->getProduct()->willReturn($product);
 
-        $publishedValue = new ScalarValue($attribute, null, null, null);
+        $publishedValue = ScalarValue::value($attribute, null);
 
         $publishedProduct->getValues()->willReturn([$publishedValue]);
         $publishedProduct->getCompletenesses()->willReturn(new ArrayCollection());

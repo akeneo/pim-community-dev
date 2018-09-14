@@ -13,16 +13,31 @@ namespace Akeneo\Pim\Asset\Component\Completeness\Checker;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class AssetCollectionCompleteChecker implements ValueCompleteCheckerInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var AssetRepositoryInterface */
+    protected $assetRepository;
+
+
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository, AssetRepositoryInterface $assetRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+        $this->assetRepository = $assetRepository;
+    }
+
     /**
      * @param ValueInterface        $productValue
      * @param ChannelInterface|null $channel
@@ -35,14 +50,17 @@ class AssetCollectionCompleteChecker implements ValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $assets = $productValue->getData();
+        $assetCodes = $productValue->getData();
 
-        if (null === $assets) {
+        if (null === $assetCodes) {
             return false;
         }
 
-        foreach ($assets as $asset) {
-            if (true === $this->checkAssetByLocaleAndChannel($asset, $channel, $locale)) {
+        foreach ($assetCodes as $assetCode) {
+            $asset = $this->assetRepository->findOneByCode($assetCode);
+
+            if (null !== $asset &&
+                true === $this->checkAssetByLocaleAndChannel($asset, $channel, $locale)) {
                 return true;
             }
         }
@@ -83,6 +101,8 @@ class AssetCollectionCompleteChecker implements ValueCompleteCheckerInterface
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        return AttributeTypes::ASSETS_COLLECTION === $productValue->getAttribute()->getType();
+        $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());
+
+        return null !== $attribute && AttributeTypes::ASSETS_COLLECTION === $attribute->getType();
     }
 }

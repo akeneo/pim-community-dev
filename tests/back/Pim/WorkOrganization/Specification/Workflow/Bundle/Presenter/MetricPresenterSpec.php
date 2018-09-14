@@ -5,9 +5,9 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as LocalizationPresenter;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
@@ -17,6 +17,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class MetricPresenterSpec extends ObjectBehavior
 {
     function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         TranslatorInterface $translator,
         LocalizationPresenter $metricPresenter,
         LocaleResolver $localeResolver
@@ -24,7 +25,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $translator->trans(Argument::type('string'))->will(function ($args) {
             return 'trans_'.strtolower($args[0]);
         });
-        $this->beConstructedWith($metricPresenter, $localeResolver);
+        $this->beConstructedWith($attributeRepository, $metricPresenter, $localeResolver);
     }
 
     function it_is_a_translator_aware_presenter()
@@ -44,12 +45,10 @@ class MetricPresenterSpec extends ObjectBehavior
         $localeResolver,
         RendererInterface $renderer,
         ValueInterface $value,
-        AttributeInterface $attribute,
         Metric $metric
     ) {
         $value->getData()->willReturn($metric);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('size');
+        $value->getAttributeCode()->willReturn('size');
         $metric->getData()->willReturn(50.123);
         $metric->getUnit()->willReturn('KILOGRAM');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
@@ -75,12 +74,10 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ValueInterface $value
     ) {
         $value->getData()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('size');
+        $value->getAttributeCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $metricPresenter->present(null, ['locale' => 'en_US'])->willReturn(null);
         $metricPresenter
@@ -100,12 +97,10 @@ class MetricPresenterSpec extends ObjectBehavior
         $metricPresenter,
         $localeResolver,
         RendererInterface $renderer,
-        ValueInterface $value,
-        AttributeInterface $attribute
+        ValueInterface $value
     ) {
         $value->getData()->willReturn(null);
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getCode()->willReturn('size');
+        $value->getAttributeCode()->willReturn('size');
         $localeResolver->getCurrentLocale()->willReturn('fr_FR');
         $renderer->renderDiff('', '150,123456 trans_kilogram')->willReturn("150,123456 trans_kilogram");
         $metricPresenter

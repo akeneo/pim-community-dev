@@ -22,14 +22,32 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class OptionPresenter extends AbstractProductValuePresenter
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $repository;
+    protected $optionRepository;
+
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $optionRepository
+    ) {
+        parent::__construct($attributeRepository);
+
+        $this->optionRepository = $optionRepository;
+    }
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
+     * {@inheritdoc}
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    public function present($value, array $change)
     {
-        $this->repository = $repository;
+        $change = array_merge($change, ['attribute' => $value->getAttributeCode()]);
+
+        $option = $this->optionRepository->findOneByIdentifier(
+            $value->getAttributeCode().'.'.$value->getData()
+        );
+
+        return $this->renderer->renderDiff(
+            $this->normalizeData($option),
+            $this->normalizeChange($change)
+        );
     }
 
     /**
@@ -59,6 +77,6 @@ class OptionPresenter extends AbstractProductValuePresenter
 
         $identifier = sprintf('%s.%s', $change['attribute'], $change['data']);
 
-        return (string) $this->repository->findOneByIdentifier($identifier);
+        return (string) $this->optionRepository->findOneByIdentifier($identifier);
     }
 }

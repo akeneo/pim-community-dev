@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -12,12 +11,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\ReferenceEntity\Component\Factory;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\AbstractValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
@@ -32,50 +30,22 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ReferenceEntityValueFactory implements ValueFactoryInterface
+class ReferenceEntityValueFactory extends AbstractValueFactory
 {
     /** @var RecordRepositoryInterface */
     private $recordRepository;
 
-    /**
-     * @param RecordRepositoryInterface $recordRepository
-     */
     public function __construct(RecordRepositoryInterface $recordRepository)
     {
+        parent::__construct(ReferenceEntityValue::class, ReferenceEntityType::REFERENCE_ENTITY);
+
         $this->recordRepository = $recordRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data, bool $ignoreUnknownData = false): ValueInterface
-    {
-        $this->checkData($attribute, $data);
-
-        $value = new ReferenceEntityValue(
-            $attribute,
-            $channelCode,
-            $localeCode,
-            $this->getRecord($attribute, $data)
-        );
-
-        return $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($attributeType): bool
-    {
-        return $attributeType === ReferenceEntityType::REFERENCE_ENTITY;
-    }
-
-    /**
-     * Checks if data is valid.
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    private function checkData(AttributeInterface $attribute, $data)
+    protected function prepareData(AttributeInterface $attribute, $data, bool $ignoreUnknownData)
     {
         if (null === $data) {
             return;
@@ -88,12 +58,14 @@ class ReferenceEntityValueFactory implements ValueFactoryInterface
                 $data
             );
         }
+
+        return $this->getRecordCode($attribute, $data);
     }
 
     /**
-     * Gets the Record (or null) for the given $code
+     * Gets the Record code (or null) for the given $code
      */
-    private function getRecord(AttributeInterface $attribute, $code): ?Record
+    private function getRecordCode(AttributeInterface $attribute, $code): ?RecordCode
     {
         if (null === $code) {
             return null;
@@ -110,6 +82,10 @@ class ReferenceEntityValueFactory implements ValueFactoryInterface
             $record = null;
         }
 
-        return $record;
+        if (null === $record) {
+            return null;
+        }
+
+        return $record->getCode();
     }
 }

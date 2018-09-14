@@ -32,7 +32,7 @@ Feature: Mass uploads assets and add them to asset collection
     And I import assets mass upload
     And I wait for the "apply_assets_mass_upload_into_asset_collection" job to finish
     Then the product "basic_jacket" should have the following values:
-      | asset_collection | akeneo, akeneo2, logo_akeneo |
+      | asset_collection | [akeneo], [akeneo2], [logo_akeneo] |
 
   Scenario: Mass upload assets from product model edit form
     Given the following family variants:
@@ -54,4 +54,4 @@ Feature: Mass uploads assets and add them to asset collection
     And I wait for the "apply_assets_mass_upload_into_asset_collection" job to finish
     Then there should be the following product model:
       | code       | family_variant | asset_collection             |
-      | jacket_uni | jacket_unisize | akeneo, akeneo2, logo_akeneo |
+      | jacket_uni | jacket_unisize | [akeneo], [akeneo2], [logo_akeneo] |

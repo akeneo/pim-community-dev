@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Abstract Present changes of reference data
@@ -27,11 +28,12 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
     /** @var string */
     protected $referenceDataName;
 
-    /**
-     * @param ReferenceDataRepositoryResolver $repositoryResolver
-     */
-    public function __construct(ReferenceDataRepositoryResolver $repositoryResolver)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        ReferenceDataRepositoryResolver $repositoryResolver
+    ) {
+        parent::__construct($attributeRepository);
+
         $this->repositoryResolver = $repositoryResolver;
     }
 
@@ -42,9 +44,13 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
     {
         $supports = parent::supports($data);
         if ($supports) {
-            $this->referenceDataName = $data->getAttribute()->getReferenceDataName();
+            $attribute = $this->attributeRepository->findOneByIdentifier($data->getAttributeCode());
 
-            return true;
+            if (null !== $attribute) {
+                $this->referenceDataName = $attribute->getReferenceDataName();
+
+                return true;
+            }
         }
 
         return false;

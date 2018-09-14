@@ -7,10 +7,16 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class BooleanPresenterSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
+    {
+        $this->beConstructedWith($attributeRepository);
+    }
+
     function it_is_a_translator_aware_presenter()
     {
         $this->shouldBeAnInstanceOf(PresenterInterface::class);
@@ -26,13 +32,15 @@ class BooleanPresenterSpec extends ObjectBehavior
         RendererInterface $renderer,
         TranslatorInterface $translator,
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $translator->trans('Yes')->willReturn('Yes');
         $translator->trans('No')->willReturn('No');
 
         $value->getData()->willReturn(false);
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('enabled');
+        $attributeRepository->findOneByIdentifier('enabled')->willReturn($attribute);
         $attribute->getCode()->willReturn('enabled');
 
         $renderer->renderDiff('No', 'Yes')->willReturn('diff between two booleans');

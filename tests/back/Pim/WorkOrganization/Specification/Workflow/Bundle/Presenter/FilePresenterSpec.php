@@ -9,12 +9,16 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class FilePresenterSpec extends ObjectBehavior
 {
-    function let(UrlGeneratorInterface $generator, FileInfoRepositoryInterface $repository)
-    {
-        $this->beConstructedWith($generator, $repository);
+    function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        UrlGeneratorInterface $generator,
+        FileInfoRepositoryInterface $repository
+    ) {
+        $this->beConstructedWith($attributeRepository, $generator, $repository);
     }
 
     function it_is_a_presenter()
@@ -24,10 +28,12 @@ class FilePresenterSpec extends ObjectBehavior
 
     function it_supports_file(
         ValueInterface $value,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        $attributeRepository
     ) {
         $attribute->getType()->willReturn('pim_catalog_file');
-        $value->getAttribute()->willReturn($attribute);
+        $value->getAttributeCode()->willReturn('file_attribute');
+        $attributeRepository->findOneByIdentifier('file_attribute')->willReturn($attribute);
 
         $this->supports($value)->shouldBe(true);
     }

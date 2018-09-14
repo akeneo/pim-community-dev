@@ -94,7 +94,8 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
     function it_creates_a_reference_entity_product_value(
         RecordRepositoryInterface $recordRepository,
         AttributeInterface $attribute,
-        Record $dyson
+        Record $dyson,
+        RecordCode $dysonCode
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
@@ -105,8 +106,11 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier,
+            RecordCode::fromString('dyson')
+        )->willReturn($dyson);
+        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -119,13 +123,14 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
-        $productValue->shouldHaveRecord($dyson);
+        $productValue->shouldHaveRecordCode($dysonCode);
     }
 
     function it_creates_a_localizable_and_scopable_reference_entity_product_value(
         RecordRepositoryInterface $recordRepository,
         AttributeInterface $attribute,
-        Record $dyson
+        Record $dyson,
+        RecordCode $dysonCode
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -136,8 +141,11 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier,
+            RecordCode::fromString('dyson')
+        )->willReturn($dyson);
+        $dyson->getCode()->willReturn($dysonCode);
 
         $productValue = $this->create(
             $attribute,
@@ -150,7 +158,7 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldBeLocalizable();
         $productValue->shouldBeScopable();
-        $productValue->shouldHaveRecord($dyson);
+        $productValue->shouldHaveRecordCode($dysonCode);
     }
 
     function it_throws_an_exception_when_provided_data_is_not_a_string(AttributeInterface $attribute)
@@ -185,8 +193,10 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
-        $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn(null);
+        $recordRepository->getByReferenceEntityAndCode(
+            $designerIdentifier,
+            RecordCode::fromString('dyson')
+        )->willReturn(null);
 
         $productValue = $this->create(
             $attribute,
@@ -206,27 +216,27 @@ class ReferenceEntityValueFactorySpec extends ObjectBehavior
     {
         return [
             'haveAttribute' => function ($subject, $attributeCode) {
-                return $subject->getAttribute()->getCode() === $attributeCode;
+                return $subject->getAttributeCode() === $attributeCode;
             },
             'beLocalizable' => function ($subject) {
-                return null !== $subject->getLocale();
+                return $subject->isLocalizable();
             },
             'haveLocale' => function ($subject, $localeCode) {
-                return $localeCode === $subject->getLocale();
+                return $localeCode === $subject->getLocaleCode();
             },
             'beScopable' => function ($subject) {
-                return null !== $subject->getScope();
+                return $subject->isScopable();
             },
             'haveChannel' => function ($subject, $channelCode) {
-                return $channelCode === $subject->getScope();
+                return $channelCode === $subject->getScopeCode();
             },
             'beEmpty' => function ($subject) {
                 return null === $subject->getData();
             },
-            'haveRecord' => function ($subject, $expected) {
-                $record = $subject->getData();
+            'haveRecordCode' => function ($subject, $expected) {
+                $recordIdentifier = $subject->getData();
 
-                return $record === $expected;
+                return $recordIdentifier === $expected;
             },
         ];
     }

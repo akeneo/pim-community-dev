@@ -9,9 +9,18 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
 {
+    function let(
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AssetRepositoryInterface $assetRepository
+    ) {
+        $this->beConstructedWith($attributeRepository, $assetRepository);
+    }
+
     public function it_is_a_completeness_checker()
     {
         $this->shouldImplement(ValueCompleteCheckerInterface::class);
@@ -21,9 +30,12 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $productValue,
         AttributeInterface $attribute,
         ChannelInterface $channel,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        $attributeRepository
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $productValue->getAttributeCode()->willReturn('attribute');
+        $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
+
         $attribute->getType()->willReturn('pim_assets_collection');
         $this->supportsValue($productValue, $channel, $locale)->shouldReturn(true);
 
@@ -48,10 +60,12 @@ class AssetCollectionCompleteCheckerSpec extends ObjectBehavior
         ValueInterface $productValue,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        AssetInterface $asset1
+        AssetInterface $asset1,
+        $assetRepository
     ) {
         $asset1->getVariations()->willReturn([]);
-        $productValue->getData()->willReturn([$asset1]);
+        $productValue->getData()->willReturn(['asset1']);
+        $assetRepository->findOneByCode('asset1')->willReturn($asset1);
         $this->isComplete($productValue, $channel, $locale)->shouldReturn(false);
     }
 }

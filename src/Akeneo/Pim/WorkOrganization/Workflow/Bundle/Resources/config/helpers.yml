@@ -7,6 +7,7 @@ services:
     pimee_workflow.helper.filter_product_values:
         class: '%pimee_workflow.helper.filter_product_values.class%'
         arguments:
+            - '@pim_catalog.repository.cached_attribute'
             - '@security.authorization_checker'
 
     pimee_workflow.helper.product_draft_changes_permission:
@@ -16,3 +17,5 @@ services:
 
     pimee_workflow.helper.sort_product_values:
         class: '%pimee_workflow.helper.sort_product_values.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'

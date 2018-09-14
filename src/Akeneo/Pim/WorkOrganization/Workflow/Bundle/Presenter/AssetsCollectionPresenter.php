@@ -15,6 +15,7 @@ use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -34,16 +35,17 @@ class AssetsCollectionPresenter implements PresenterInterface
     /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @param AssetRepositoryInterface $repository
-     * @param RouterInterface          $router
-     */
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
     public function __construct(
         AssetRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         RouterInterface $router
     ) {
         $this->repository = $repository;
-        $this->router     = $router;
+        $this->attributeRepository = $attributeRepository;
+        $this->router = $router;
     }
 
     /**
@@ -51,8 +53,8 @@ class AssetsCollectionPresenter implements PresenterInterface
      */
     public function present($data, array $change)
     {
-        $beforeCodes = array_map(function (AssetInterface $asset) {
-            return $asset->getCode();
+        $beforeCodes = array_map(function (string $assetCode) {
+            return $assetCode;
         }, $data->getData());
         $afterCodes = $change['data'];
 
@@ -100,6 +102,8 @@ class AssetsCollectionPresenter implements PresenterInterface
      */
     public function supports($value)
     {
-        return AttributeTypes::ASSETS_COLLECTION === $value->getAttribute()->getType();
+        $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+
+        return null !== $attribute && AttributeTypes::ASSETS_COLLECTION === $attribute->getType();
     }
 }

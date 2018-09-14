@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -247,9 +248,9 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsedAttributeCodes()
+    public function getUsedAttributeCodes(): array
     {
-        return $this->values->getAttributesKeys();
+        return $this->values->getAttributeCodes();
     }
 
     /**
@@ -257,7 +258,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        return $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
     }
 
     /**
@@ -281,9 +282,9 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttribute(AttributeInterface $attribute)
+    public function hasAttribute(string $attributeCode): bool
     {
-        return in_array($attribute, $this->values->getAttributes(), true);
+        return in_array($attributeCode, $this->getValues()->getAttributeCodes(), true);
     }
 
     /**
@@ -358,7 +359,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $this->identifier = $identifier->getData();
 
-        $this->values->removeByAttribute($identifier->getAttribute());
+        $this->values->removeByAttributeCode($identifier->getAttributeCode());
         $this->values->add($identifier);
 
         return $this;
@@ -367,15 +368,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes()
-    {
-        return $this->values->getAttributes();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValues()
+    public function getValues(): ValueCollectionInterface
     {
         if (!$this->isVariant()) {
             return $this->values;
@@ -399,40 +392,19 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrderedGroups()
-    {
-        $groups = [];
-
-        foreach ($this->getAttributes() as $attribute) {
-            $group = $attribute->getGroup();
-            $groups[$group->getId()] = $group;
-        }
-
-        $sortGroup = function (AttributeGroupInterface $fst, AttributeGroupInterface $snd) {
-            return $fst->getSortOrder() - $snd->getSortOrder();
-        };
-
-        @usort($groups, $sortGroup);
-
-        return $groups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getImage()
     {
-        if ($this->family) {
-            $attributeAsImage = $this->family->getAttributeAsImage();
-            if (null !== $attributeAsImage) {
-                $value = $this->getValue($attributeAsImage->getCode());
-                if (null !== $value) {
-                    return $value;
-                }
-            }
+        if (null === $this->family) {
+            return null;
         }
 
-        return null;
+        $attributeAsImage = $this->family->getAttributeAsImage();
+
+        if (null === $attributeAsImage) {
+            return null;
+        }
+
+        return $this->getValue($attributeAsImage->getCode());
     }
 
     /**
@@ -440,25 +412,33 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function getLabel($locale = null, $scope = null)
     {
-        if ($this->family) {
-            if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
-                if (!$attributeAsLabel->isLocalizable()) {
-                    $locale = null;
-                }
-                if (!$attributeAsLabel->isScopable()) {
-                    $scope = null;
-                }
+        $identifier = (string) $this->getIdentifier();
 
-                if ($value = $this->getValue($attributeAsLabel->getCode(), $locale, $scope)) {
-                    $data = $value->getData();
-                    if (!empty($data)) {
-                        return (string) $data;
-                    }
-                }
-            }
+        if (null === $this->family) {
+            return $identifier;
         }
 
-        return (string) $this->getIdentifier();
+        $attributeAsLabel = $this->family->getAttributeAsLabel();
+
+        if (null === $attributeAsLabel) {
+            return $identifier;
+        }
+
+        $locale = $attributeAsLabel->isLocalizable() ? $locale : null;
+        $scope = $attributeAsLabel->isScopable() ? $scope : null;
+        $value = $this->getValue($attributeAsLabel->getCode(), $locale, $scope);
+
+        if (null === $value) {
+            return $identifier;
+        }
+
+        $data = $value->getData();
+
+        if (empty($data)) {
+            return $identifier;
+        }
+
+        return (string) $data;
     }
 
     /**
@@ -667,6 +647,17 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     public function getAssociations()
     {
         return $this->associations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllAssociations()
+    {
+        $associations = new ArrayCollection($this->associations->toArray());
+        $allAssociations = $this->getAncestryAssociations($this, $associations);
+
+        return $allAssociations;
     }
 
     /**
@@ -906,11 +897,11 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * Does the ancestry of the entity already has the $category?
      *
-     * @param BaseCategoryInterface $category
+     * @param CategoryInterface $category
      *
      * @return bool
      */
-    private function hasAncestryCategory(BaseCategoryInterface $category): bool
+    private function hasAncestryCategory(CategoryInterface $category): bool
     {
         $parent = $this->getParent();
         if (null === $parent) {
@@ -928,25 +919,12 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getAllAssociations()
-    {
-        $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->mergeAncestryAssociations($this, $associations);
-
-        return $allAssociations;
-    }
-
-    /**
-     * Merge entity own associations with its ancestry associations
-     *
      * @param EntityWithFamilyVariantInterface $entity
      * @param Collection                       $associationsCollection
      *
      * @return Collection
      */
-    private function mergeAncestryAssociations(
+    private function getAncestryAssociations(
         EntityWithFamilyVariantInterface $entity,
         Collection $associationsCollection
     ): Collection {
@@ -998,9 +976,8 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
             foreach ($association->getGroups() as $group) {
                 $foundInCollection->addGroup($group);
             }
-        } else {
-            $associationsCollection->add($association);
         }
+        $associationsCollection->add($association);
 
         return $associationsCollection;
     }
