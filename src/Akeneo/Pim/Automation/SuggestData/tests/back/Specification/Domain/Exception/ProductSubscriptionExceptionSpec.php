@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\SuggestDataException;
 use PhpSpec\ObjectBehavior;
 
 /**
