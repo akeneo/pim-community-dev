@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -125,6 +126,16 @@ class Record
     public function updateImage(Image $image): void
     {
         $this->image = $image;
+    }
+
+    public function setValue(Value $value): void
+    {
+        $this->valueCollection->setValue($value);
+    }
+
+    public function getValue(ValueKey $valueKey): ?Value
+    {
+        return $this->valueCollection->getValue($valueKey);
     }
 
     public function normalize(): array

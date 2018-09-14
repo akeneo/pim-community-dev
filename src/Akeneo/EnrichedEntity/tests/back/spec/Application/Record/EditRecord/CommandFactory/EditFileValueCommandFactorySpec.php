@@ -1,0 +1,46 @@
+<?php
+declare(strict_types=1);
+
+namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommandFactory;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
+use PhpSpec\ObjectBehavior;
+
+class EditFileValueCommandFactorySpec extends ObjectBehavior
+{
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(EditFileValueCommandFactory::class);
+    }
+
+    function it_only_supports_create_value_of_image_attribute(ImageAttribute $image, TextAttribute $text)
+    {
+        $this->supports($image)->shouldReturn(true);
+        $this->supports($text)->shouldReturn(false);
+    }
+
+    function it_creates_file_value(ImageAttribute $imageAttribute)
+    {
+        $normalizedValue = [
+            'channel' => 'ecommerce',
+            'locale'  => 'fr_FR',
+            'data'    => [
+                'file_key'          => '/a/file/key',
+                'original_filename' => 'my_image.png',
+            ]
+        ];
+        $command = $this->create($normalizedValue, $imageAttribute);
+
+        $command->shouldBeAnInstanceOf(EditFileValueCommand::class);
+        $command->attribute->shouldBeEqualTo($imageAttribute);
+        $command->channel->shouldBeEqualTo('ecommerce');
+        $command->locale->shouldBeEqualTo('fr_FR');
+        $command->data->shouldBeEqualTo([
+            'file_key'          => '/a/file/key',
+            'original_filename' => 'my_image.png',
+        ]);
+    }
+}

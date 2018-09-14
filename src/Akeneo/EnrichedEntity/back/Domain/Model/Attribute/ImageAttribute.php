@@ -101,4 +101,14 @@ class ImageAttribute extends AbstractAttribute
     {
         $this->allowedExtensions = $newAllowedExtensions;
     }
+
+    public function getMaxFileSize(): AttributeMaxFileSize
+    {
+        return $this->maxFileSize;
+    }
+
+    public function getAllowedExtensions(): AttributeAllowedExtensions
+    {
+        return $this->allowedExtensions;
+    }
 }

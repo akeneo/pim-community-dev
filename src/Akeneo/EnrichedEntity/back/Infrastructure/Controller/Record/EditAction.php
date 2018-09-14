@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
+    /** @var EditRecordCommandFactory  */
+    private $editRecordCommandFactory;
+
     /** @var EditRecordHandler */
     private $editRecordHandler;
 
@@ -36,9 +40,11 @@ class EditAction
     private $validator;
 
     public function __construct(
+        EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
         ValidatorInterface $validator
     ) {
+        $this->editRecordCommandFactory = $editRecordCommandFactory;
         $this->editRecordHandler = $editRecordHandler;
         $this->validator = $validator;
     }
@@ -88,12 +94,7 @@ class EditAction
     private function getEditCommand(Request $request): EditRecordCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
-
-        $command = new EditRecordCommand();
-        $command->identifier = $normalizedCommand['identifier'] ?? null;
-        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
-        $command->code = $normalizedCommand['code'] ?? null;
-        $command->labels = $normalizedCommand['labels'] ?? [];
+        $command = $this->editRecordCommandFactory->create($normalizedCommand);
         $command->image = $normalizedCommand['image'] ?? null;
 
         return $command;

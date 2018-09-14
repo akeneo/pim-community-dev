@@ -68,3 +68,13 @@ services:
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
             - { name: fob.context_service }
+
+    akeneo_enrichedentity.tests.back.acceptance.context.edit_record_context:
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditRecordContext
+        arguments:
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.record'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
+        tags:
+            - { name: fob.context_service }

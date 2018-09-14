@@ -36,11 +36,10 @@ class AkeneoEnrichedEntityExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
-        $loader->load('product_value.yml');
         $loader->load('persistence.yml');
-        $loader->load('validators.yml');
-        $loader->load('services.yml');
+        $loader->load('product_value.yml');
         $loader->load('serializer.yml');
+        $loader->load('services.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
     }

@@ -164,11 +164,6 @@ class TextAttribute extends AbstractAttribute
         );
     }
 
-    public function setMaxLength(AttributeMaxLength $newMaxLength): void
-    {
-        $this->maxLength = $newMaxLength;
-    }
-
     public function normalize(): array
     {
         return array_merge(
@@ -218,12 +213,27 @@ class TextAttribute extends AbstractAttribute
         $this->regularExpression = $regularExpression;
     }
 
+    public function getRegularExpression(): AttributeRegularExpression
+    {
+        return $this->regularExpression;
+    }
+
     public function setIsRichTextEditor(AttributeIsRichTextEditor $isRichTextEditor): void
     {
         if (!$this->isTextarea->isYes() && $isRichTextEditor->isYes()) {
             throw new \LogicException('Cannot update the is rich text editor flag when the text area flag is false');
         }
         $this->isRichTextEditor = $isRichTextEditor;
+    }
+
+    public function setMaxLength(AttributeMaxLength $newMaxLength): void
+    {
+        $this->maxLength = $newMaxLength;
+    }
+
+    public function getMaxLength(): AttributeMaxLength
+    {
+        return $this->maxLength;
     }
 
     public function isTextarea(): bool

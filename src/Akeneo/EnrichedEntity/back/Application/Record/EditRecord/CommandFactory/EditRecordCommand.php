@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
+namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
 /**
  * It represents the intent to edit a record
@@ -20,9 +20,6 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
  */
 class EditRecordCommand
 {
-    /** @var string */
-    public $identifier;
-
     /** @var string */
     public $enrichedEntityIdentifier;
 
@@ -34,4 +31,7 @@ class EditRecordCommand
 
     /** @var string[]|null */
     public $image;
+
+    /** @var array */
+    public $editRecordValueCommands = [];
 }

@@ -12,9 +12,13 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
 
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -27,6 +31,9 @@ class EditRecordHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
+    /** @var ValueUpdaterRegistryInterface  */
+    private $valueUpdaterRegistry;
+
     /** @var RecordRepositoryInterface */
     private $recordRepository;
 
@@ -34,20 +41,20 @@ class EditRecordHandler
     private $storer;
 
     public function __construct(
+        ValueUpdaterRegistryInterface $valueUpdaterRegistry,
         RecordRepositoryInterface $recordRepository,
         FileStorerInterface $storer
     ) {
+        $this->valueUpdaterRegistry = $valueUpdaterRegistry;
         $this->recordRepository = $recordRepository;
         $this->storer = $storer;
     }
 
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
-        $identifier = RecordIdentifier::fromString($editRecordCommand->identifier);
-        $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
-
-        $record = $this->recordRepository->getByIdentifier($identifier);
-        $record->setLabels($labelCollection);
+        $record = $this->getRecord($editRecordCommand);
+        $this->editLabels($record, $editRecordCommand);
+        $this->editValues($record, $editRecordCommand);
 
         if (null !== $editRecordCommand->image) {
             $existingImage = $record->getImage();
@@ -66,5 +73,28 @@ class EditRecordHandler
         }
 
         $this->recordRepository->update($record);
+    }
+
+    private function getRecord(EditRecordCommand $editRecordCommand): Record
+    {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($editRecordCommand->enrichedEntityIdentifier);
+        $code = RecordCode::fromString($editRecordCommand->code);
+        $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+
+        return $record;
+    }
+
+    private function editLabels(Record $record, EditRecordCommand $editRecordCommand): void
+    {
+        $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
+        $record->setLabels($labelCollection);
+    }
+
+    private function editValues(Record $record, EditRecordCommand $editRecordCommand): void
+    {
+        foreach ($editRecordCommand->editRecordValueCommands as $editRecordValueCommand) {
+            $editValueUpdater = $this->valueUpdaterRegistry->getUpdater($editRecordValueCommand);
+            ($editValueUpdater)($record, $editRecordValueCommand);
+        }
     }
 }

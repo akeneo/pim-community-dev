@@ -42,6 +42,11 @@ class FileData implements ValueDataInterface
         ];
     }
 
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
     public static function createFromFileinfo(FileInfoInterface $fileInfo): ValueDataInterface
     {
         return new self($fileInfo->getKey(), $fileInfo->getOriginalFilename());
