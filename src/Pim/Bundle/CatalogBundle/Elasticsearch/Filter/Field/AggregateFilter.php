@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -39,6 +41,14 @@ class AggregateFilter extends AbstractFieldFilter implements FieldFilterInterfac
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
+        }
+
+        if (Operators::AGGREGATE !== $operator) {
+            throw InvalidOperatorException::notSupported($operator, static::class);
+        }
+
+        if (!isset($options['rawFilters'])) {
+            throw InvalidPropertyTypeException::validArrayStructureExpected('aggregate', 'rawFilter missing', static::class, $options);
         }
 
         $clauses = [];
@@ -96,9 +106,11 @@ class AggregateFilter extends AbstractFieldFilter implements FieldFilterInterfac
         $allChildrenCodes = [];
         foreach ($categoryCodes as $categoryCode) {
             $category = $this->categoryRepository->findOneBy(['code' => $categoryCode]);
-            $childrenCodes = $this->categoryRepository->getAllChildrenCodes($category);
-            $childrenCodes[] = $category->getCode();
-            $allChildrenCodes = array_merge($allChildrenCodes, $childrenCodes);
+            if (null !== $category) {
+                $childrenCodes = $this->categoryRepository->getAllChildrenCodes($category);
+                $childrenCodes[] = $category->getCode();
+                $allChildrenCodes = array_merge($allChildrenCodes, $childrenCodes);
+            }
         }
 
         return $allChildrenCodes;
@@ -149,4 +161,3 @@ class AggregateFilter extends AbstractFieldFilter implements FieldFilterInterfac
         return array_column($attributeFilters, 'field');
     }
 }
-
