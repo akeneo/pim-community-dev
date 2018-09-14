@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Filter;
 
 use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**

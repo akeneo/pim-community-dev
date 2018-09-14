@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Filter;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\CatalogBundle\tests\assert\AssertEntityWithValues;
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**

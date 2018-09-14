@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
