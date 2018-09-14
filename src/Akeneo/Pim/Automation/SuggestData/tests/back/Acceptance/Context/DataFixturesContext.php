@@ -182,7 +182,7 @@ class DataFixturesContext implements Context
         foreach ($data['values'] as $attrCode => $value) {
             $rawValues[$attrCode] =[
                 '<all_channels>' => [
-                    '<all_locales>' => $value
+                    '<all_locales>' => $value[0]['data']
                 ]
             ];
         }
