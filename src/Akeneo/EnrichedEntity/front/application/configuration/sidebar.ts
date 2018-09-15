@@ -41,7 +41,7 @@ config:
                         view: '@your_view_path_here'`;
 
       throw new SibebarMissConfigurationError(
-        `Cannot get the tabs configured. The configuration path should be ${confPath}
+        `Cannot get the tabs for "${sidebarIdentifier}". The configuration path should be ${confPath}
 
 Actual conf: ${JSON.stringify(this.configuration)}`
       );
@@ -68,7 +68,7 @@ config:
                         view: '@your_view_path_here'`;
 
       throw new SibebarMissConfigurationError(
-        `Cannot load view configuration for tab "${code}". The configuration path should be ${confPath}
+        `Cannot load view for tab "${code}". The configuration should look like this ${confPath}
 
 Actual conf: ${JSON.stringify(this.configuration)}`
       );

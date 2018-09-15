@@ -1,11 +1,7 @@
 import ItemView from 'akeneoenrichedentity/application/component/record/index/item';
-import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
 import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import * as React from 'react';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
 
 interface TableState {
   locale: string;
@@ -37,17 +33,14 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     onRedirectToRecord: (record: Record) => void
   ): JSX.Element | JSX.Element[] {
     if (0 === records.length && isLoading) {
-      const recordIdentifier = createIdentifier('');
-      const enrichedEntityIdentifier = createEnrichedEntityIdentifier('');
-      const code = createCode('');
-      const labelCollection = createLabelCollection({});
-      const record = createRecord(
-        recordIdentifier,
-        enrichedEntityIdentifier,
-        code,
-        labelCollection,
-        createEmptyFile()
-      );
+      const record = denormalizeRecord({
+        identifier: '',
+        enriched_entity_identifier: '',
+        code: '',
+        labels: {},
+        image: null,
+        values: []
+      });
 
       return (
         <ItemView

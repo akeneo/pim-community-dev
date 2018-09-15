@@ -12,7 +12,7 @@ import {
   notifyRecordDeleteFailed,
   notifyRecordDeletionErrorOccured,
 } from 'akeneoenrichedentity/application/action/record/notify';
-import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import Record from 'akeneoenrichedentity/domain/model/record/record';
 import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
 import recordRemover from 'akeneoenrichedentity/infrastructure/remover/record';
 import recordFetcher from 'akeneoenrichedentity/infrastructure/fetcher/record';
@@ -20,6 +20,7 @@ import ValidationError, {createValidationError} from 'akeneoenrichedentity/domai
 import File from 'akeneoenrichedentity/domain/model/file';
 import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
 import {redirectToRecordIndex} from 'akeneoenrichedentity/application/action/record/router';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
 
 export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const record = denormalizeRecord(getState().form.data);

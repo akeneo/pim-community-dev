@@ -16,6 +16,7 @@ import {updateActivatedLocales} from 'akeneoenrichedentity/application/action/lo
 import {updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -35,6 +36,7 @@ class RecordEditController extends BaseController {
       .fetch(createEnrichedEntityIdentifier(route.params.enrichedEntityIdentifier), createCode(route.params.recordCode))
       .then((record: Record) => {
         this.store = createStore(true)(recordReducer);
+        this.store.dispatch(updateAttributeList() as any);
         this.store.dispatch(recordEditionReceived(record));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));

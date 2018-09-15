@@ -8,7 +8,7 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import Record, {NormalizedRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import {saveRecord, deleteRecord, recordImageUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 const securityContext = require('pim/security-context');
@@ -16,6 +16,7 @@ import File from 'akeneoenrichedentity/domain/model/file';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
 
 interface StateProps {
   sidebar: {
@@ -32,7 +33,7 @@ interface StateProps {
     create: boolean;
     delete: boolean;
   };
-  record: Record;
+  record: NormalizedRecord;
   structure: {
     locales: Locale[];
   };
@@ -52,13 +53,13 @@ interface EditProps extends StateProps, DispatchProps {}
 class RecordEditView extends React.Component<EditProps> {
   public props: EditProps;
 
-  private onClickDelete = () => {
+  private onClickDelete = (record: Record) => {
     if (confirm(__('pim_enriched_entity.record.module.delete.confirm'))) {
-      this.props.events.onDelete(this.props.record);
+      this.props.events.onDelete(record);
     }
   };
 
-  private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
+  private getSecondaryActions = (record: Record, canDelete: boolean): JSX.Element | JSX.Element[] | null => {
     if (canDelete) {
       return (
         <div className="AknSecondaryActions AknDropdown AknButtonList-item">
@@ -66,7 +67,7 @@ class RecordEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={this.onClickDelete}>
+              <button className="AknDropdown-menuLink" onClick={() => this.onClickDelete(record)}>
                 {__('pim_enriched_entity.record.module.delete.button')}
               </button>
             </div>
@@ -80,9 +81,9 @@ class RecordEditView extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-    const label = this.props.record.getLabel(this.props.context.locale);
+    const record = denormalizeRecord(this.props.record);
+    const label = record.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_enriched_entities_record_edit', this.props.sidebar.currentTab);
-
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
@@ -94,7 +95,7 @@ class RecordEditView extends React.Component<EditProps> {
               <div className="AknTitleContainer-line">
                 <Image
                   alt={__('pim_enriched_entity.record.img', {'{{ label }}': label})}
-                  image={this.props.record.getImage()}
+                  image={record.getImage()}
                   onImageChange={this.props.events.onImageUpdated}
                 />
                 <div className="AknTitleContainer-mainContainer">
@@ -115,7 +116,7 @@ class RecordEditView extends React.Component<EditProps> {
                                 type: 'redirect',
                                 route: 'akeneo_enriched_entities_enriched_entity_edit',
                                 parameters: {
-                                  identifier: this.props.record.getEnrichedEntityIdentifier().stringValue(),
+                                  identifier: record.getEnrichedEntityIdentifier().stringValue(),
                                   tab: 'record',
                                 },
                               },
@@ -132,7 +133,7 @@ class RecordEditView extends React.Component<EditProps> {
                           />
                         </div>
                         <div className="AknButtonList">
-                          {this.getSecondaryActions(this.props.acls.delete)}
+                          {this.getSecondaryActions(record, this.props.acls.delete)}
                           <div className="AknTitleContainer-rightButton">
                             <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
                               {__('pim_enriched_entity.record.button.save')}
@@ -173,7 +174,6 @@ class RecordEditView extends React.Component<EditProps> {
 
 export default connect(
   (state: State): StateProps => {
-    const record = denormalizeRecord(state.form.data);
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
@@ -189,7 +189,7 @@ export default connect(
       context: {
         locale,
       },
-      record,
+      record: state.form.data,
       structure: {
         locales: state.structure.locales,
       },

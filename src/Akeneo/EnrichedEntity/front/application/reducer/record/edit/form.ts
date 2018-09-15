@@ -13,7 +13,14 @@ export interface EditionFormState {
 const stateReducer = formState('record', 'RECORD_EDITION_UPDATED', 'RECORD_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: NormalizedRecord = {identifier: '', enriched_entity_identifier: '', code: '', labels: {}, image: null},
+  state: NormalizedRecord = {
+    identifier: '',
+    enriched_entity_identifier: '',
+    code: '',
+    labels: {},
+    image: null,
+    values: [],
+  },
   {
     type,
     record,

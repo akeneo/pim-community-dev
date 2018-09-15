@@ -13,7 +13,7 @@ export interface NormalizedEnrichedEntity {
 
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
-  getLabel: (locale: string) => string;
+  getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
@@ -52,10 +52,12 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.identifier;
   }
 
-  public getLabel(locale: string) {
-    return this.labelCollection.hasLabel(locale)
-      ? this.labelCollection.getLabel(locale)
-      : `[${this.getIdentifier().stringValue()}]`;
+  public getLabel(locale: string, defaultValue: boolean = true) {
+    if (!this.labelCollection.hasLabel(locale)) {
+      return defaultValue ? `[${this.getIdentifier().stringValue()}]` : '';
+    }
+
+    return this.labelCollection.getLabel(locale);
   }
 
   public getLabelCollection(): LabelCollection {
