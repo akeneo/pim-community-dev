@@ -123,3 +123,12 @@ pim_analytics:
   info_type:
     nb_published_products: Antal publicerade produkter
     nb_product_drafts: Antal produkt utkast
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Förslag att granska
+      date: Datum
+      author: Upphovsman
+      product: Produkt
+      review: Granska
+      empty: Inga produktutkast att granska

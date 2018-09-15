@@ -9,8 +9,6 @@ pim_enriched_entity:
     properties:
       identifier: Id
       label: Etiket
-    attribute:
-      title: Egenskaber
     module:
       delete:
         button: Slet
@@ -24,13 +22,22 @@ pim_enriched_entity:
     button:
       save: Gem
       create: Tilføj ny
+    enrich:
+      code: Kode
+      label: Etiket
     create:
       header:
         title: Opret
       input:
         label: Etiket
       confirm: bekræft
+    tab:
+      enrich: Berige
   attribute:
+    default:
+      code: Kode
+      label: Etiket
+      image: Billede
     type:
       text: Tekst
       image: Billede
@@ -43,6 +50,24 @@ pim_enriched_entity:
         value_per_locale: Værdi pr. landestandard
         value_per_channel: Værdi pr. kanal
       confirm: bekræft
+    edit:
+      input:
+        label: Etiket
+        type: Attributtype
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+        max_length: Maks. tegn
+        textarea: Tekstområde
+        max_file_size: Maks. filstørrelse (MB)
+        allowed_extensions: Tilladte filendelser
+        validation_rule: Valideringsregel
+        regular_expression: Regulære udtryk
+        options:
+          validation_rule:
+            none: Ingen
+            email: E-mail
+            regular_expression: Regulære udtryk
+            url: URL
     notification:
       save:
         success: Atributten blev opdateret.

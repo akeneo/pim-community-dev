@@ -81,9 +81,13 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Produktimport in CSV mit Regeln
     import.label: Produkt import
+  csv_product_model_import_with_rules:
+    label: Produktmodell-Import in CSV mit Regeln
   xlsx_product_import_with_rules:
     label: Produktimport in XLSX mit Regeln
     import.label: Produkt import
+  xlsx_product_model_import_with_rules:
+    label: Produktmodell-Import in XLSX mit Regeln
 pim_notification:
   types:
     rule: Regeleinstellungen

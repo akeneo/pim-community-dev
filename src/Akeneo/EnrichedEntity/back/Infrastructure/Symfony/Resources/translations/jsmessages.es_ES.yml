@@ -14,8 +14,6 @@ pim_enriched_entity:
       title: Propiedades de la entidad
       identifier: Identificador
       label: Etiqueta
-    attribute:
-      title: Atributos
     module:
       delete:
         button: Eliminar
@@ -41,6 +39,10 @@ pim_enriched_entity:
     button:
       save: Guardar
       create: Añadir nuevo
+    enrich:
+      code: Código
+      label: Etiqueta
+    title: Registros
     create:
       header:
         title: Crear
@@ -49,6 +51,8 @@ pim_enriched_entity:
         label: Etiqueta
         code: Código (requerido)
       confirm: confirmar
+    tab:
+      enrich: Enriquecer
     notification:
       save:
         success: Registro actualizado correctamente.
@@ -57,6 +61,10 @@ pim_enriched_entity:
         success: Registro creado correctamente.
         fail: Un error ha ocurrido durante la creación del registro
   attribute:
+    default:
+      code: Código
+      label: Etiqueta
+      image: Imagen
     type:
       text: Texto
       image: Imagen
@@ -71,6 +79,25 @@ pim_enriched_entity:
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
       confirm: confirmar
+    edit:
+      input:
+        code: Código (requerido)
+        label: Etiqueta
+        type: Tipo de atributo
+        value_per_locale: Valor por local
+        value_per_channel: Valor por canal
+        max_length: Caracteres Max
+        textarea: Área de Texto
+        max_file_size: Tamaño máximo de archivo (MB)
+        allowed_extensions: Extensiones permitidas
+        validation_rule: Regla de validación
+        regular_expression: Expresión regular
+        options:
+          validation_rule:
+            none: Ninguno
+            email: Correo electrónico
+            regular_expression: Expresión regular
+            url: URL
     notification:
       save:
         success: Atributo exitosamente actualizado.

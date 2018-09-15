@@ -66,3 +66,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Förslaget godkändes
     pimee_workflow_product_draft_notification_refuse: Förslag avvisat
     pimee_workflow_product_draft_notification_remove: Förslag tas bort
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Upphovsman
+      product: Produkt
+      review: Granska
+      empty: Inga förslag att granska

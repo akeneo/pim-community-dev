@@ -11,8 +11,6 @@ pim_enriched_entity:
       title: Propriétés de l'entité
       identifier: Identifiant
       label: Libellé
-    attribute:
-      title: Attributs
     module:
       delete:
         button: Supprimer
@@ -30,6 +28,9 @@ pim_enriched_entity:
     button:
       save: Enregistrer
       create: Créer
+    enrich:
+      code: Code
+      label: Libellé
     create:
       header:
         title: Créer
@@ -37,27 +38,59 @@ pim_enriched_entity:
       input:
         label: Libellé
       confirm: Confirmer
+    tab:
+      enrich: Enrichir
   attribute:
+    default:
+      code: Code
+      label: Libellé
+      image: Image
     type:
       text: Texte
       image: Image
+    button:
+      add: Ajouter un attribut
     create:
       header:
         title: Créer
       subtitle: Entités
+      title: Ajouter un nouvel attribut
       input:
         label: Libellé
         type: Type d'attribut
         value_per_locale: Valeur par locale
         value_per_channel: Valeur par canal
       confirm: Confirmer
+    edit:
+      input:
+        label: Libellé
+        type: Type d'attribut
+        value_per_locale: Valeur par locale
+        value_per_channel: Valeur par canal
+        max_length: Nombre maximum de caractères
+        textarea: Zone de texte
+        max_file_size: Taille de fichier maximale (MB)
+        allowed_extensions: Extensions autorisées
+        validation_rule: Règle de validation
+        regular_expression: Expression régulière
+        options:
+          validation_rule:
+            none: Aucun
+            email: E-mail
+            regular_expression: Expression régulière
+            url: URL
+    delete:
+      confirm: L'attribut sera supprimé. Confirmer ?
     notification:
       save:
         success: Attribut mis à jour avec succès.
+        fail: Une erreur s'est produite pendant la sauvegarde de l'attribut
       create:
         success: Attribut créé avec succès.
+        fail: Une erreur s'est produite pendant la création de l'attribut
       delete:
         success: Attribut supprimé avec succès.
+        fail: Une erreur s'est produite pendant la suppression de l'attribut
 pim_enrich:
   confirmation:
     discard_changes: 'Vous perdrez les modifications effectuées sur l''entité "{{ entity }}" si vous quittez la page.'

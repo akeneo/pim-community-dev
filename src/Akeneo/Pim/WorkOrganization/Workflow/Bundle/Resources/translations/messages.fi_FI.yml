@@ -93,3 +93,12 @@ job_execution.summary:
   proposal_created: ehdotus luotu
   proposal_skipped: ehdotus ohitettu (ei eroja)
 published products: Julkaistut tuotteet
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Tarkastettavat ehdotukset
+      date: Päivämäärä
+      author: Tekijä
+      product: Tuote
+      review: Tarkastus
+      empty: Ei tuoteluonnoksia tarkastettavaksi
