@@ -350,6 +350,8 @@ pim_mass_edit:
       error: Exportación rápida <strong>%label%</strong> fallida
       warning: Exportación rápida <strong>%label%</strong> finalizada con algunas alertas
       success: Exportación rápida <strong>%label%</strong> finalizada
+    mass_delete:
+      error: Eliminación en masa <strong>%label%</strong> fallida
 job_execution.summary:
   mass_edited: Editado en masa
   skip: Omitido

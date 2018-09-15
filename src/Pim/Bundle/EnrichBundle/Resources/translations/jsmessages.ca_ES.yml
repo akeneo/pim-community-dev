@@ -688,6 +688,9 @@ pim_notification:
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
 batch_jobs:
+  add_association:
+    label: Associa
+    perform.label: Associa
   add_attribute_value:
     label: Afegir valor dels atributs
     perform.label: Afegir valor dels atributs
@@ -707,7 +710,11 @@ batch_jobs:
     quick_export.label: Exportació ràpida de producte en CSV
     perform.label: Exportació ràpida de producte en CSV
   delete_products_and_product_models:
-    delete_products_and_product_models.label: Esborrat massiu de productes
+    label: Esborrat massiu de productes
+    perform.label: Esborrat massiu de productes
+  change_parent_product:
+    label: Canviar el model de producte del pare
+    perform.label: Canviar el model de producte del pare
   edit_common_attributes:
     label: Editar atributs
     perform.label: Editar atributs

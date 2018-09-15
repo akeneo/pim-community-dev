@@ -738,8 +738,8 @@ pim_notification:
     mass_edit: Massamuokkaus
 batch_jobs:
   add_association:
-    label: Luo assosiaatio tuotteisiin
-    perform.label: Luo assosiaatio tuotteisiin
+    label: Liitä
+    perform.label: Liitä
   add_attribute_value:
     label: Lisää attribuutin arvoja
     perform.label: Lisää attribuutin arvoja
@@ -761,13 +761,17 @@ batch_jobs:
     quick_export_product_model.label: Tuotemallin nopea vienti CSV-muodossa
     perform.label: Tuotteen nopea vienti CSV:nä
   delete_products_and_product_models:
-    delete_products_and_product_models.label: Massapoista tuotteet
+    label: Massapoista tuotteet
+    perform.label: Massapoista tuotteet
+  change_parent_product:
+    label: Vaihda ylätason tuotemalli
+    perform.label: Vaihda ylätason tuotemalli
   edit_common_attributes:
     label: Muokkaa attribuutteja
     perform.label: Muokkaa attribuutteja
   move_to_category:
-    label: Siirrä kategoriaan
-    perform.label: Siirrä kategoriaan
+    label: Siirrä kategorioihin
+    perform.label: Siirrä kategorioihin
   update_product_value:
     label: Päivitä tuotteen arvo
     perform.label: Päivitä tuotteen arvo

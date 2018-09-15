@@ -10,5 +10,3 @@ pim_catalog_volume:
     average_max_options_per_attribute: Opcions per atribut
     count_categories: Categories
     count_category_trees: Arbres de categories
-    count_variant_products: Variant de productes
-    count_product_models: Models de producte

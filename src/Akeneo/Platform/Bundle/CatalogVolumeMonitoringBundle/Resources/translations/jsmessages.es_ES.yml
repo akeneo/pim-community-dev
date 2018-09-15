@@ -17,6 +17,6 @@ pim_catalog_volume:
     average_max_options_per_attribute: Opciones por atributo
     count_categories: Categorías
     count_category_trees: Árbol de categoría
-    count_variant_products: Productos variantes
+    count_variant_products: Variante de productos
     count_product_models: Modelos de producto
     warning: '¡Wow, ha alcanzado un récord con este eje! No dude en contactarnos si necesita ayuda con estos volúmenes.'
