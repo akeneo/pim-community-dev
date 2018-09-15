@@ -26,3 +26,4 @@ pim_dashboard:
         mass_edit: Edició massiva
         quick_export: Exportació ràpida
         compute_product_models_descendants: Calcular descendents dels models de producte
+        mass_delete: Esborrat massiu de productes
