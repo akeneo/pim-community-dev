@@ -17,6 +17,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -68,7 +69,6 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     {
         $qb = $this->createQueryBuilder('a');
         $qb
-            ->delete()
             ->where('a.category = :category')
             ->setParameter('category', $category);
 
@@ -78,7 +78,12 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
                 ->setParameter('excludedGroups', $excludedGroups);
         }
 
-        return $qb->getQuery()->execute();
+        $entities = $qb->getQuery()->execute();
+        foreach ($entities as $categoryAccess) {
+            $this->_em->remove($categoryAccess);
+        }
+
+        return count($entities);
     }
 
     /**
@@ -93,11 +98,15 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $qb = $this->createQueryBuilder('a');
 
         $qb
-            ->delete()
             ->where($qb->expr()->in('a.userGroup', ':groups'))
             ->setParameter('groups', $groups);
 
-        return $qb->getQuery()->execute();
+        $entities = $qb->getQuery()->execute();
+        foreach ($entities as $categoryAccess) {
+            $this->_em->remove($categoryAccess);
+        }
+
+        return count($entities);
     }
 
     /**
