@@ -802,8 +802,8 @@ pim_notification:
     mass_edit: Edition en masse
 batch_jobs:
   add_association:
-    label: Associer aux produits
-    perform.label: Associer aux produits
+    label: Associer
+    perform.label: Associer
   add_attribute_value:
     label: Ajouter une valeur d’attribut
     perform.label: Ajouter une valeur d’attribut
@@ -825,12 +825,19 @@ batch_jobs:
     quick_export_product_model.label: Export rapide de modèles de produit en CSV
     perform.label: Export rapide de produits en CSV
   delete_products_and_product_models:
-    delete_products_and_product_models.label: Suppression massive de produits
+    label: Suppression massive de produits
+    perform.label: Suppression massive de produits
+  change_parent_product:
+    label: Changer le parent de produits
+    perform.label: Changer le parent de produits
   edit_common_attributes:
     label: Modifier des attributs
     perform.label: Modifier des attributs
     clean.label: Nettoyer les fichiers pour les attributs
     cleaner.label: Nettoyer les fichiers pour les attributs
+  compute_completeness_of_products_family:
+    label: Calcul de la complétude
+    perform.label: Calcul de la complétude
   move_to_category:
     label: Déplacer dans la catégorie
     perform.label: Déplacer dans la catégorie

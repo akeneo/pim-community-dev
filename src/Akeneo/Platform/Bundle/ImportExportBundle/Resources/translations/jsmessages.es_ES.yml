@@ -136,7 +136,7 @@ confirmation:
     job_instance: '¿Está seguro que desea borrar esta instancia de trabajo?'
 pim_title:
   pim_importexport_export_profile_index: Gestión de perfiles de exportación
-  pim_importexport_export_profile_edit: Perfil de exportación {{ job.label }} | Editar
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
   pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Historial de ejecuciones de exportación
   pim_importexport_export_execution_show: Ejecuciones de importación | Detalles

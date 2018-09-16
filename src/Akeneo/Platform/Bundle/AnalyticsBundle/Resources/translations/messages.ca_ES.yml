@@ -23,8 +23,6 @@ pim_analytics:
     nb_variant_products: Nombre de variants de productes
     nb_family_variants: Nombre de variants de la família
     nb_attributes: Nombre d'atributs
-    nb_scopable_attributes: Nombre d'atributs assolits
-    nb_scopable_localizable_attributes: Nombre d'atributs localitzables i assolits
     nb_locales: Nombre de configuracions regionals
     nb_families: Nombre de famílies
     nb_users: Nombre d'usuaris

@@ -76,6 +76,7 @@ pim_datagrid:
       xlsx_grid_context: Excel (Contesto di griglia)
     mass_edit: Azioni di massa
     sequential_edit: Modifica sequenziale
+    mass_delete: Eliminazione di massa
     selected:
       family: famiglie selezionate
       product: risultati selezionati
@@ -88,6 +89,10 @@ pim_datagrid:
     change_status: Modificare lo stato
     toggle_status: Stato di conversione
     other: Altre azioni
+  empty_results:
+    associated_product:
+      hint: Non ci sono prodotti associati
+      subHint: 'Fai clic sul pulsante "Aggiungi associazioni" per associare questo prodotto'
   filters:
     label: Filtri
 error:
@@ -188,8 +193,12 @@ pim_enrich.entity.product:
       none_exist: Nessun tipo di associazione esistente.
       show_products: Visualizza i prodotti
       show_groups: Mostra gruppi
+      number_of_associations: "{{ productCount }} prodotto(i), {{ productModelCount }} modello(i) di prodotto e {{ groupCount }} gruppo(i)"
       association_type_selector: Tipi di associazione
       target: Target
+      manage: Aggiungi associazioni {{ associationType }}
+      manage_description: Seleziona i prodotti che vuoi associare al prodotto corrente
+      add_associations: Aggiungi associazioni
     attribute_filter:
       display: Mostra
       all: Tutti gli attributi
@@ -227,12 +236,16 @@ pim_enrich.entity.product_model:
     create:
       title: Crea un modello di prodotto
       content: Un modello di prodotto raccoglie prodotti varianti e facilita l'arricchimento delle proprietà in comune.
+    attribute:
+      read_only_parent_attribute_from_common: Questo attributo può essere aggiornato negli attributi comuni.
+      read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato negli attributi per {{ axes }}"
     variant_axis:
       create: Aggiungi nuovo
       create_label: "Aggiungi un nuovo {{ axes }}"
       required_label: '(asse variante)'
     delete:
       confirm: Sei sicuro di voler cancellare questo modello di prodotto? Anche tutti i suoi figli, modelli di prodotto e varianti di prodotto, saranno cancellati.
+      confirm_for_products_and_product_models: Sei sicuro di voler eliminare i prodotti selezioni e i modelli di prodotto? Anche tutti i figli dei modelli di prodotto saranno eliminati.
 pim_enrich.entity.channel:
   label: canale
   uppercase_label: Canale
@@ -545,6 +558,8 @@ pim_enrich.export.product:
         ">=": Completa almeno una delle impostazioni internazionali selezionate
         "GREATER OR EQUALS THAN ON ALL LOCALES": Completo su tutte le impostazione internazionali selezionate
         LOWER THAN ON ALL LOCALES: Non completo su tutte le impostazione internazionali selezionate
+        AT LEAST COMPLETE: Almeno un prodotto figlio completo in una impostazione locale selezionata
+        ALL COMPLETE: Tutti i prodotti figli completo in un'unica impostazione locale selezionata
       empty_selection: Seleziona una famiglia
     category:
       title: Categoria
@@ -587,7 +602,11 @@ pim_enrich.mass_edit.product:
       description: Gli articoli selezionati saranno attivati o disattivati.
       field: Per attivare
     edit_common:
+      label: Modifica valori degli attributi
       description: Solo gli attributi appartenenti alle famiglie dei prodotti selezionati saranno modificati con i seguenti dati per le impostazioni internazionali {{ locale }} e il canale {{ scope }}.
+    add_attribute_value:
+      label: Aggiungi valori di attributi
+      description: Solo gli attributi multivalore appartenenti alle famiglie di prodotti saranno modificati con i dati seguenti per le impostazioni locali {{ locale }} e per il canale {{ scope }}. I valori degli attributi sono aggiunti, i valori precedenti sono mantenuti.
     change_family:
       label: Cambia famiglia
       description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
@@ -597,8 +616,10 @@ pim_enrich.mass_edit.product:
       field: Gruppi
     add_to_category:
       label: Aggiungi alle categorie
+      description: I prodotti saranno classificati nelle seguenti categorie, la classificazione esistente sarà mantenuta.
     move_to_category:
       label: Sposta tra categorie
+      description: I prodotti saranno classificati nelle seguenti categorie, la classificazione esistente sarà persa.
     remove_from_category:
       label: Rimuovi dalle categorie
       description: I prodotti verranno rimossi dalle seguenti categorie.
@@ -607,6 +628,8 @@ pim_enrich.mass_edit.product:
       description: Il modello di prodotto selezionato raccoglierà i prodotti e permetterà l'arricchimento delle loro proprietà comuni.
     associate_to_product_and_product_model:
       label: Associa
+      description: I prodotti selezionati nella griglia saranno associati ai prodotti e modelli di prodotto selezionati per il tipo di associazione scelta
+      validate: Aggiungere l'associazione prima di procedere al passaggio successivo
     change_parent_product_model:
       label: Modifica il modello di prodotto padre
       description: Il padre dei prodotti varianti o sotto-modelli di prodotto selezionati nella griglia saranno modificati al modello di prodotto scelto.
@@ -715,9 +738,18 @@ pim_notification:
     quick_export: Esportazione rapida
     mass_edit: Modifica di massa
 batch_jobs:
+  add_association:
+    label: Associa
+    perform.label: Associa
+  add_attribute_value:
+    label: Aggiungi valore attributi
+    perform.label: Aggiungi valore attributi
   add_product_value:
     label: Aggiungi un valore di prodotto
     perform.label: Aggiungi un valore di prodotto
+  add_to_category:
+    label: Aggiungi a categoria
+    perform.label: Aggiungi a categoria
   add_to_existing_product_model:
     label: Aggiungere ad un modello di prodotto esistente
     perform.label: Aggiungere ad un modello di prodotto esistente
@@ -729,11 +761,20 @@ batch_jobs:
     quick_export.label: Esportazione rapida prodotti in Csv
     quick_export_product_model.label: Esportazione rapida modelli di prodotto in CSV
     perform.label: Esportazione rapida prodotti in Csv
+  delete_products_and_product_models:
+    label: Eliminazione in massa prodotti
+    perform.label: Eliminazione in massa prodotti
+  change_parent_product:
+    label: Modifica il modello di prodotto padre
+    perform.label: Modifica il modello di prodotto padre
   edit_common_attributes:
     label: Modificare gli attributi
     perform.label: Modificare gli attributi
     clean.label: Pulisci i file per gli attributi
     cleaner.label: Pulisci i file per gli attributi
+  move_to_category:
+    label: Sposta a categoria
+    perform.label: Sposta a categoria
   update_product_value:
     label: Modifica un valore di prodotto
     perform.label: Modifica un valore di prodotto
