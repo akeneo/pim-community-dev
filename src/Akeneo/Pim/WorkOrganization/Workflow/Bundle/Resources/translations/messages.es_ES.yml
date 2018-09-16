@@ -123,3 +123,12 @@ pim_analytics:
   info_type:
     nb_published_products: Número de productos publicados
     nb_product_drafts: Número de borradores de productos
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propuesta a revisar
+      date: Fecha
+      author: Autor
+      product: Producto
+      review: Revisar 	
+      empty: No hay borradores de producto para revisar

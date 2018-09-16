@@ -123,3 +123,12 @@ pim_analytics:
   info_type:
     nb_published_products: Antallet af offentliggjorte produkt
     nb_product_drafts: Antallet af produkt kladder
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Forslag til gennemgang
+      date: Dato
+      author: Forfatter
+      product: Produkt
+      review: Gennemgang
+      empty: Ingen produkt kladder til gennemgang

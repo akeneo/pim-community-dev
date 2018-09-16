@@ -70,3 +70,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposta aprovada
     pimee_workflow_product_draft_notification_refuse: Proposta rebutjada
     pimee_workflow_product_draft_notification_remove: Proposta esborrada
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Data
+      author: Autor/a
+      product: Producte
+      review: Revisar
+      empty: No hi ha propostes per revisar

@@ -1,7 +1,7 @@
 pim_title:
   akeneo_suggest_data_connection_index: 'Connexió PIM.ai'
   akeneo_suggest_data_identifiers_mapping_edit: 'Configuració PIM.ai'
-  akeneo_suggest_data_attributes_mapping_index: 'Configuració PIM.ai'
+  akeneo_suggest_data_attributes_mapping_edit: 'Configuració PIM.ai'
 pim_menu:
   item:
     pim_ai: PIM.ai
@@ -19,12 +19,12 @@ akeneo_suggest_data:
         status:
           active: Actiu
           inactive: Inactiu
-    family_mapping:
+    attributes_mapping:
       fields:
         pim_ai_attribute: 'Atribut PIM.ai'
         suggest_data:
-          active: Actiu
-          inactive: Inactiu
+          mapped: Actiu
+          unmapped: Inactiu
       module:
         subscribe:
           subscribe: 'Família subscrita a PIM.ai'
@@ -32,8 +32,6 @@ akeneo_suggest_data:
   pim_ai:
     page_title: 'Connexió PIM.ai'
     module:
-      title:
-        sub_title: 'Benvingut a <span class="AknSubTitleContainer-subTitle--main">Assistent IA d''Informació de Producte!</span>'
       activation:
         label: 'Connector PIM.ai'
         activation_code: 'Codi d''activació'

@@ -14,8 +14,6 @@ pim_enriched_entity:
       title: Propietats de l'entitat
       identifier: Identificador
       label: Etiqueta
-    attribute:
-      title: Atributs
     module:
       delete:
         button: Suprimir
@@ -34,6 +32,10 @@ pim_enriched_entity:
   record:
     button:
       save: Desar
+    enrich:
+      code: Codi
+      label: Etiqueta
+    title: Registres
     create:
       header:
         title: Crear
@@ -42,12 +44,18 @@ pim_enriched_entity:
         label: Etiqueta
         code: Codi (requerit)
       confirm: confirmar
+    tab:
+      enrich: Enriquir
     notification:
       save:
         success: Registre actualitzat correctament.
       create:
         success: Registre creat correctament.
   attribute:
+    default:
+      code: Codi
+      label: Etiqueta
+      image: Imatge
     type:
       text: Texte
       image: Imatge
@@ -60,6 +68,23 @@ pim_enriched_entity:
         label: Etiqueta
         type: Tipus d'atribut
       confirm: confirmar
+    edit:
+      input:
+        code: Codi (requerit)
+        label: Etiqueta
+        type: Tipus d'atribut
+        max_length: Màxim de caràcters
+        textarea: Àrea de Text
+        max_file_size: Mida màxima de l'arxiu (MB)
+        allowed_extensions: Extensions permeses
+        validation_rule: Regla de validació
+        regular_expression: Expressió regular
+        options:
+          validation_rule:
+            none: Cap
+            email: Correu electrònic
+            regular_expression: Expressió regular
+            url: URL
 pim_enrich:
   confirmation:
     discard_changes: 'Perdreu els canvis a la "{{ entity }}" entitat si sortiu de la pàgina.'

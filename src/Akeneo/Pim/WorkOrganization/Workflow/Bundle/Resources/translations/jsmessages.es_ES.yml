@@ -70,3 +70,11 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Propuesta aprobada
     pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
     pimee_workflow_product_draft_notification_remove: Propuesta eliminada
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Fecha
+      author: Autor
+      product: Producto
+      review: Revisar 	
+      empty: Ninguna propuesta a revisar

@@ -82,6 +82,8 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Importació de productes amb regles a CSV
     import.label: Importar productes
+  csv_product_model_import_with_rules:
+    label: Importació de productes amb regles a CSV
   xlsx_product_import_with_rules:
     label: Importació de productes amb regles a XLSX
     import.label: Importar productes

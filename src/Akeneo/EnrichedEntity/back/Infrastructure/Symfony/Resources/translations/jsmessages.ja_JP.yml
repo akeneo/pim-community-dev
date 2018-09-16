@@ -9,8 +9,6 @@ pim_enriched_entity:
     properties:
       identifier: 識別子
       label: ラベル
-    attribute:
-      title: 属性
     module:
       delete:
         button: 削除
@@ -24,13 +22,22 @@ pim_enriched_entity:
     button:
       save: 保存
       create: 新しく追加
+    enrich:
+      code: コード
+      label: ラベル
     create:
       header:
         title: 作成
       input:
         label: ラベル
       confirm: 確認
+    tab:
+      enrich: マスタ
   attribute:
+    default:
+      code: コード
+      label: ラベル
+      image: イメージ
     type:
       text: テキスト
       image: イメージ
@@ -43,6 +50,24 @@ pim_enriched_entity:
         value_per_locale: ロケールごとの値
         value_per_channel: チャンネルごとの値
       confirm: 確認
+    edit:
+      input:
+        label: ラベル
+        type: 属性タイプ
+        value_per_locale: ロケールごとの値
+        value_per_channel: チャンネルごとの値
+        max_length: 最大文字数
+        textarea: テキスト エリア
+        max_file_size: 最大ファイル サイズ (MB)
+        allowed_extensions: 利用できる拡張子
+        validation_rule: 値チェックルール
+        regular_expression: 正規表現
+        options:
+          validation_rule:
+            none: なし
+            email: 電子メール
+            regular_expression: 正規表現
+            url: URL
     notification:
       save:
         success: 属性を更新しました
