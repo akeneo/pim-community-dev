@@ -228,6 +228,8 @@ pim_enrich:
         title: Crear un model de producte
       info:
         field_not_ready: "El model de producte no es pot desar ara mateix. No estan preparats els següents camps: {{ fields }}"
+      read_only_parent_attribute_from_common: Aquest atribut pot ser actualitzat en els atributs comuns.
+      read_only_parent_attribute_from_model: "Aquest atribut pot ser actualitzat en els atributs per {{ axes }}"
       title: models de producte
       add_child:
         create: Afegir nou
