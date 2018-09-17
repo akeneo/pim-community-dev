@@ -4,6 +4,7 @@ Feature: Subscribe a product to PIM.ai
   As Julia
   I want to subscribe a product to PIM.ai
 
+  @end-to-end @javascript
   Scenario: Successfully subscribe a product to PIM.ai
     Given the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
