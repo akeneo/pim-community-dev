@@ -15,6 +15,8 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateIdentifiersMappingHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
@@ -43,6 +45,9 @@ class ProductSubscriptionContext extends PimContext
     /** @var UpdateIdentifiersMappingHandler */
     private $updateIdentifiersMappingHandler;
 
+    /** @var SubscribeProductHandler */
+    private $subscribeProductHandler;
+
     /** @var EntityBuilder */
     private $attributeBuilder;
 
@@ -70,6 +75,7 @@ class ProductSubscriptionContext extends PimContext
     /**
      * @param string                                 $mainContextClass
      * @param UpdateIdentifiersMappingHandler        $updateIdentifiersMappingHandler
+     * @param SubscribeProductHandler                $subscribeProductHandler
      * @param EntityBuilder                          $attributeBuilder
      * @param BulkSaverInterface                     $attributeSaver
      * @param EntityBuilder                          $familyBuilder
@@ -82,6 +88,7 @@ class ProductSubscriptionContext extends PimContext
     public function __construct(
         string $mainContextClass,
         UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
+        SubscribeProductHandler $subscribeProductHandler,
         EntityBuilder $attributeBuilder,
         BulkSaverInterface $attributeSaver,
         EntityBuilder $familyBuilder,
@@ -94,6 +101,7 @@ class ProductSubscriptionContext extends PimContext
         parent::__construct($mainContextClass);
 
         $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
+        $this->subscribeProductHandler = $subscribeProductHandler;
         $this->attributeBuilder = $attributeBuilder;
         $this->attributeSaver = $attributeSaver;
         $this->familyBuilder = $familyBuilder;
@@ -111,6 +119,8 @@ class ProductSubscriptionContext extends PimContext
      * @param string $familyCode
      *
      * @throws \Exception
+     *
+     * @todo APAI-286: Extract in its own FixtureContext
      */
     public function theProductOfTheFamily(string $identifier, string $familyCode): void
     {
@@ -124,17 +134,33 @@ class ProductSubscriptionContext extends PimContext
      * @param TableNode $table
      *
      * @throws InvalidMappingException
+     *
+     * @todo APAI-286: Extract in its own FixtureContext
      */
     public function aPredefinedMapping(TableNode $table): void
     {
-        $mapped = $this->getTableNodeAsArrayWithoutHeaders($table);
-        $identifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+        $mappedIdentifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
-        $emptyMappedIdentifiers = array_fill_keys($identifiers, null);
-        $mappedIdentifiers = array_merge($emptyMappedIdentifiers, $mapped);
+        $this->updateIdentifiersMapping($mappedIdentifiers);
+    }
 
-        $updateIdentifierCommand = new UpdateIdentifiersMappingCommand($mappedIdentifiers);
-        $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
+    /**
+     * @Given the product ":identifier" is subscribed to PIM.ai
+     *
+     * @param string $identifier
+     *
+     * @throws InvalidMappingException
+     *
+     * @todo APAI-286: Extract in its own FixtureContext
+     */
+    public function theProductIsSubscribedToPimAi(string $identifier): void
+    {
+        $this->updateIdentifiersMapping(['asin' => 'asin']);
+
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+
+        $command = new SubscribeProductCommand($product->getId());
+        $this->subscribeProductHandler->handle($command);
     }
 
     /**
@@ -151,7 +177,20 @@ class ProductSubscriptionContext extends PimContext
     }
 
     /**
-     * @Then /^the product "([^"]*)" should be subscribed$/
+     * @When I unsubscribe the product :identifier
+     *
+     * @param string $identifier
+     *
+     * @throws TimeoutException
+     */
+    public function iUnsubscribeTheProductToPimAi(string $identifier): void
+    {
+        $this->loginAsAdmin();
+        $this->unsubscribeProductFromPimAi($identifier);
+    }
+
+    /**
+     * @Then the product :identifier should be subscribed
      *
      * @param string $identifier
      *
@@ -161,6 +200,19 @@ class ProductSubscriptionContext extends PimContext
     {
         $this->checkSubscriptionIsSaved($identifier);
         $this->checkStatusIsEnable();
+    }
+
+    /**
+     * @Then the product :identifier should not be subscribed
+     *
+     * @param string $identifier
+     *
+     * @throws TimeoutException
+     */
+    public function theProductShouldNotBeSubscribed(string $identifier): void
+    {
+        $this->checkSubscriptionIsNotSaved($identifier);
+        $this->checkStatusIsDisabled();
     }
 
     /**
@@ -177,6 +229,22 @@ class ProductSubscriptionContext extends PimContext
     private function loginAsAdmin(): void
     {
         $this->getNavigationContext()->iAmLoggedInAs('admin', 'admin');
+    }
+
+    /**
+     * @param array $mappedIdentifiers
+     *
+     * @throws InvalidMappingException
+     */
+    private function updateIdentifiersMapping(array $mappedIdentifiers): void
+    {
+        $pimAiIdentifiers = IdentifiersMapping::PIM_AI_IDENTIFIERS;
+
+        $emptyIdentifiersMapping = array_fill_keys($pimAiIdentifiers, null);
+        $identifiersMapping = array_merge($emptyIdentifiersMapping, $mappedIdentifiers);
+
+        $updateIdentifierCommand = new UpdateIdentifiersMappingCommand($identifiersMapping);
+        $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
     }
 
     /**
@@ -276,21 +344,11 @@ class ProductSubscriptionContext extends PimContext
      */
     private function subscribeProductToPimAi(string $identifier): void
     {
-        $this->getNavigationContext()->iAmOnTheEntityEditPage($identifier, 'product');
+        $dropdown = $this->getActivationDropDown($identifier);
 
-        $this->spin(function () use ($identifier): bool {
-            $nodeElement = $this->getCurrentPage()->find('css', '.ask-franklin-subscription-status');
-            if (null === $nodeElement) {
-                return false;
-            }
-
-            $dropDown = $this->getClosest($nodeElement, 'AknDropdown');
-            if (null === $dropDown) {
-                return false;
-            }
-
-            $dropDown->click();
-            $button = $dropDown->find('css', '.AknDropdown-menuLink[data-status="enabled"]');
+        $this->spin(function () use ($identifier, $dropdown): bool {
+            $dropdown->click();
+            $button = $dropdown->find('css', '.franklin-subscription-enabled');
             if (null === $button) {
                 return false;
             }
@@ -305,11 +363,58 @@ class ProductSubscriptionContext extends PimContext
      *
      * @throws TimeoutException
      */
+    private function unsubscribeProductFromPimAi(string $identifier): void
+    {
+        $dropdown = $this->getActivationDropDown($identifier);
+
+        $this->spin(function () use ($identifier, $dropdown): bool {
+            $dropdown->click();
+            $button = $dropdown->find('css', '.franklin-subscription-disabled');
+            if (null === $button) {
+                return false;
+            }
+            $button->click();
+
+            return true;
+        }, sprintf('Cannot unsubscribe product "%s" from PIM.ai.', $identifier));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @throws TimeoutException
+     *
+     * @return NodeElement
+     */
+    private function getActivationDropDown(string $identifier): NodeElement
+    {
+        $this->getNavigationContext()->iAmOnTheEntityEditPage($identifier, 'product');
+
+        return $this->spin(function () use ($identifier): ?NodeElement {
+            $nodeElement = $this->getCurrentPage()->find('css', '.ask-franklin-subscription-status');
+            if (null === $nodeElement) {
+                return null;
+            }
+
+            $dropdown = $this->getClosest($nodeElement, 'AknDropdown');
+            if (null === $dropdown) {
+                return null;
+            }
+
+            return $dropdown;
+        }, sprintf('Cannot find PIM.ai subscription drop-down for product "%s".', $identifier));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @throws TimeoutException
+     */
     private function checkSubscriptionIsSaved(string $identifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        $this->spin(function () use ($product) {
+        $this->spin(function () use ($product): bool {
             $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
 
             return $productSubscription instanceof ProductSubscription;
@@ -317,18 +422,46 @@ class ProductSubscriptionContext extends PimContext
     }
 
     /**
-     * @throws \Context\Spin\TimeoutException
+     * @param string $identifier
+     *
+     * @throws TimeoutException
      */
-    private function checkStatusIsEnable()
+    private function checkSubscriptionIsNotSaved(string $identifier): void
     {
-        $status = $this->spin(function (): ?NodeElement {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+
+        $this->spin(function () use ($product): bool {
+            $productSubscription = $this->productSubscriptionRepository->findOneByProductId($product->getId());
+
+            return null === $productSubscription;
+        }, sprintf('Found a subscription for product "%s" when there should be none.', $product->getIdentifier()));
+    }
+
+    /**
+     * @throws TimeoutException
+     */
+    private function checkStatusIsEnable(): void
+    {
+        $this->spin(function (): bool {
             if (null === $status = $this->getCurrentPage()->find('css', '.ask-franklin-subscription-status')) {
-                return null;
+                return false;
             }
 
-            return $status;
-        }, 'Impossible to find the subscription status.');
+            return 'Enabled' === $status->getText();
+        }, 'The subscription status is not "Enabled".');
+    }
 
-        Assert::same('Enabled', $status->getText());
+    /**
+     * @throws TimeoutException
+     */
+    private function checkStatusIsDisabled(): void
+    {
+        $this->spin(function (): bool {
+            if (null === $status = $this->getCurrentPage()->find('css', '.ask-franklin-subscription-status')) {
+                return false;
+            }
+
+            return 'Disabled' === $status->getText();
+        }, 'The subscription status is not "Disabled".');
     }
 }

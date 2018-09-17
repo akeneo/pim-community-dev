@@ -11,12 +11,12 @@
     <ul class="AknDropdown-menu">
         <li class="AknDropdown-menuTitle"><%- subscriptionStatusTitle %></li>
         <li>
-            <div class="AknDropdown-menuLink <% hasSubscribed ? '' : 'AknDropdown-menuLink--active' %>" data-status="disabled">
+            <div class="AknDropdown-menuLink <% hasSubscribed ? '' : 'AknDropdown-menuLink--active' %> franklin-subscription-disabled" data-status="disabled">
                 <span class="label"><%- disabledLabel %></span>
             </div>
         </li>
         <li>
-            <div class="AknDropdown-menuLink <% hasSubscribed ? 'AknDropdown-menuLink--active' : '' %>" data-status="enabled">
+            <div class="AknDropdown-menuLink <% hasSubscribed ? 'AknDropdown-menuLink--active' : '' %> franklin-subscription-enabled" data-status="enabled">
                 <span class="label"><%- enabledLabel %></span>
             </div>
         </li>

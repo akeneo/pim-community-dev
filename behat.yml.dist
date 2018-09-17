@@ -172,6 +172,7 @@ legacy:
                 -   Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\ProductSubscriptionContext:
                     - 'Akeneo\Test\Pim\Automation\SuggestData\EndToEnd\Context\FeatureContext'
                     - '@akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping'
+                    - '@akeneo.pim.automation.suggest_data.handler.subscribe_product'
                     - '@akeneo_e2e.context.suggest_data.builder.attribute'
                     - '@pim_catalog.saver.attribute'
                     - '@akeneo_e2e.context.suggest_data.builder.family'

@@ -47,13 +47,18 @@ akeneo_suggest_data:
                 subscribe:
                     subscribe: 'Subscribe family to PIM.ai'
                     subscribed: 'Subscribed to PIM.ai'
+        product_subscription:
+            flash:
+                create:
+                    success: 'Product successfully subscribed to PIM.ai'
+                    fail: 'Impossible to subscribe product to PIM.ai'
+                delete:
+                    success: 'Product successfully unsubscribed from PIM.ai'
+                    fail: 'Impossible to unsubscribe product from PIM.ai'
 
     product:
         edit:
             btn.push: Suggest data
-            flash:
-                success: Product successfully subscribed to Franklin Insights.
-                error: Error during suggest data
             subscription_status_title: 'Franklin Subscription'
 
     pim_ai:
