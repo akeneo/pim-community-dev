@@ -7,8 +7,8 @@ namespace spec\Akeneo\Asset\Bundle\Persistence\Query\Sql;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 use Akeneo\Asset\Bundle\Persistence\Query\Sql\CountAssetCategoryTrees;
 use Prophecy\Argument;
 

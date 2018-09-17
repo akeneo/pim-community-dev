@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Asset\Bundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
