@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Bundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Type\CategoryType as BaseCategoryType;
+use Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType as BaseCategoryType;
 
 /**
  * Type for an asset category form

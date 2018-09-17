@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType as BaseProductGridFilterChoiceType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType as BaseProductGridFilterChoiceType;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\Form\EventListener;
 
-use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

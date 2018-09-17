@@ -65,7 +65,7 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\SwitchType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\AjaxEntityType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory', // Related to the front end (symfony form type)
-        'Pim\Bundle\EnrichBundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
+        'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', // Related to the front end (symfony form type)
         'Pim\Bundle\EnrichBundle\Form\Type\LightEntityType', // Related to the front end (symfony form type)
         'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\DateType', // Related to the front end (symfony form type)
