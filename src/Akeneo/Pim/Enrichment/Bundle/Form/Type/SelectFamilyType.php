@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;

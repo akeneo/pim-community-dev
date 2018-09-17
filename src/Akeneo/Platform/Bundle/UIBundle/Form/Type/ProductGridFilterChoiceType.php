@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;

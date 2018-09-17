@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Subscriber;
 
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use Akeneo\UserManagement\Bundle\Context\UserContext;

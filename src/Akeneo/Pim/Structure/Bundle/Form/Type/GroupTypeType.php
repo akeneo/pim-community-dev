@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 use Akeneo\Pim\Structure\Component\Model\GroupType as EntityGroupType;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

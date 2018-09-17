@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use Akeneo\Pim\Structure\Component\Model;
 use Doctrine\ORM\EntityRepository;

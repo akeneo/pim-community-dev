@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;

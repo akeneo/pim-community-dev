@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

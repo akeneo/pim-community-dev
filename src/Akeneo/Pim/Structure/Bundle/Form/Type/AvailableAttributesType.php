@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

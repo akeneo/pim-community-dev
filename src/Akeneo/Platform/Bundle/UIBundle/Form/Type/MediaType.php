@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -1,31 +1,30 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer;
-use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Light entity form type
- * It prevents hydrating all the entity choices
+ * Object identifier form type. Provides an hidden field to store
+ * single or multiple ids of linked objects
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Benoit Jacquemont <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LightEntityType extends AbstractType
+class ObjectIdentifierType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return ChoiceType::class;
+        return HiddenType::class;
     }
 
     /**
@@ -33,7 +32,7 @@ class LightEntityType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'light_entity';
+        return 'pim_object_identifier';
     }
 
     /**
@@ -46,7 +45,7 @@ class LightEntityType extends AbstractType
                 $options['repository'],
                 $options['multiple'],
                 null,
-                null,
+                $options['delimiter'],
                 $options['identifier']
             ),
             true
@@ -62,17 +61,18 @@ class LightEntityType extends AbstractType
             ->setDefined([
                 'repository_options',
                 'identifier',
+                'multiple'
             ])
             ->setRequired(['repository'])
             ->setDefaults([
                 'repository_options' => [],
-                'identifier'         => 'code',
+                'multiple'           => true,
+                'delimiter'          => ',',
+                'identifier'         => 'id',
             ])
-            ->setNormalizer('choices', function (Options $options, $value) {
-                return $options['repository']->findTranslatedLabels($options['repository_options']);
-            })
+            ->setAllowedValues('multiple', [true, false])
             ->setAllowedValues('repository', function ($repository) {
-                return $repository instanceof TranslatedLabelsProviderInterface;
+                return $repository instanceof ObjectRepository;
             });
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Type\CategoryType;
-use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
+use Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
