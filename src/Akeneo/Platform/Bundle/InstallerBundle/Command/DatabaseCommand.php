@@ -125,18 +125,19 @@ class DatabaseCommand extends ContainerAwareCommand
         // TODO: Should be in an event subscriber
         $this->createNotMappedTables($output);
 
-        $this->getEventDispatcher()->dispatch(
-            InstallerEvents::PRE_LOAD_FIXTURES,
-            new InstallerEvent($this->commandExecutor)
-        );
-
         if (false === $input->getOption('withoutFixtures')) {
+            $this->getEventDispatcher()->dispatch(
+                InstallerEvents::PRE_LOAD_FIXTURES,
+                new InstallerEvent($this->commandExecutor)
+            );
+
             $this->loadFixturesStep($input, $output);
+
+            $this->getEventDispatcher()->dispatch(
+                InstallerEvents::POST_LOAD_FIXTURES,
+                new InstallerEvent($this->commandExecutor)
+            );
         }
-        $this->getEventDispatcher()->dispatch(
-            InstallerEvents::POST_LOAD_FIXTURES,
-            new InstallerEvent($this->commandExecutor)
-        );
 
         // TODO: Should be in an event subscriber
         $this->launchCommands();
