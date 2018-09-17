@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AttributeType;
 
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Completeness\AbstractCompletenessTestCase;

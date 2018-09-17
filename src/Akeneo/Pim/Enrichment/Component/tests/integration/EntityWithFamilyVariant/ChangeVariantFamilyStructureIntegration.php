@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\EntityWithFamilyVariant;
+namespace Akeneo\Pim\Enrichment\Component\tests\integration\EntityWithFamilyVariant;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;

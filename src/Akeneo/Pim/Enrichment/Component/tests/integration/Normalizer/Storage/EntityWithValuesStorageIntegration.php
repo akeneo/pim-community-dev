@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Normalizer\Storage;
+namespace Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Storage;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;

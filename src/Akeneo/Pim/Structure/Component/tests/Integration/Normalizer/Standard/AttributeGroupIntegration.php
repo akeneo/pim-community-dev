@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\tests\Integration\Normalizer\Standard;
 
-use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+use Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

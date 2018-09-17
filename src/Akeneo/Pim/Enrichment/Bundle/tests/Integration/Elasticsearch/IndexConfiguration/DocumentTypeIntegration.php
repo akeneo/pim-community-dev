@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

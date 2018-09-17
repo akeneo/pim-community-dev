@@ -1,9 +1,8 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\Elasticsearch\IndexConfiguration;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
-use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\TestData\VeryLongText;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration\TestData\VeryLongText;
 
 /**
  * This integration tests checks that given an index configuration and some products indexed

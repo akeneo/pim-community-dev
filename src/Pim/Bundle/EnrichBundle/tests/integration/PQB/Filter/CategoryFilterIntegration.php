@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\tests\integration\PQB\Filter;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
+use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

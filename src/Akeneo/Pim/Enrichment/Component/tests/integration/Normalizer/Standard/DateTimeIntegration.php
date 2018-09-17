@@ -1,8 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
-
-use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+namespace Akeneo\Pim\Enrichment\Component\tests\integration\Normalizer\Standard;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

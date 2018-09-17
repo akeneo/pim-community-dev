@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Elasticsearch\IndexConfiguration;
 
 /**
  * This integration tests checks that given an index configuration with number (float and integer) values

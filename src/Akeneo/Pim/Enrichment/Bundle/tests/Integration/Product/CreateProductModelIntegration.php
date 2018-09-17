@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\Product;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\Product;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Test\Integration\Configuration;
