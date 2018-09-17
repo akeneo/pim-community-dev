@@ -17,7 +17,7 @@ import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
 import recordRemover from 'akeneoenrichedentity/infrastructure/remover/record';
 import recordFetcher from 'akeneoenrichedentity/infrastructure/fetcher/record';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
 import {redirectToRecordIndex} from 'akeneoenrichedentity/application/action/record/router';
 
@@ -72,6 +72,6 @@ export const recordLabelUpdated = (value: string, locale: string) => (dispatch: 
   dispatch(recordEditionLabelUpdated(value, locale));
 };
 
-export const recordImageUpdated = (image: Image | null) => (dispatch: any) => {
+export const recordImageUpdated = (image: File) => (dispatch: any) => {
   dispatch(recordEditionImageUpdated(image));
 };

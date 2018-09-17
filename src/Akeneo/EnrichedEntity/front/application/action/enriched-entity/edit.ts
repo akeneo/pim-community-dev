@@ -20,7 +20,7 @@ import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enric
 import enrichedEntityRemover from 'akeneoenrichedentity/infrastructure/remover/enriched-entity';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import {redirectToEnrichedEntityIndex} from 'akeneoenrichedentity/application/action/enriched-entity/router';
 
@@ -79,7 +79,7 @@ export const enrichedEntityLabelUpdated = (value: string, locale: string) => (
   dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };
 
-export const enrichedEntityImageUpdated = (image: Image | null) => (dispatch: any, getState: () => EditState) => {
+export const enrichedEntityImageUpdated = (image: File) => (dispatch: any, getState: () => EditState) => {
   dispatch(enrichedEntityEditionImageUpdated(image));
   dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };

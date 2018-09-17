@@ -1,14 +1,14 @@
 import * as React from 'react';
-import ImageModel from 'akeneoenrichedentity/domain/model/image';
+import FileModel from 'akeneoenrichedentity/domain/model/file';
 import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
 import imageUploader from 'akeneoenrichedentity/infrastructure/uploader/image';
 import loadImage from 'akeneoenrichedentity/tools/image-loader';
 
 class Image extends React.Component<
   {
-    image: ImageModel | null;
+    image: FileModel;
     alt: string;
-    onImageChange: (image: ImageModel | null) => void;
+    onImageChange: (image: FileModel) => void;
   },
   {
     dropping: boolean;
@@ -26,7 +26,7 @@ class Image extends React.Component<
   };
 
   private overStart = () => {
-    if (null !== this.props.image) {
+    if (!this.props.image.isEmpty()) {
       this.setState({removing: true});
     } else {
       this.setState({removing: false, dropping: true});
@@ -60,10 +60,10 @@ class Image extends React.Component<
   };
 
   private click = (event: any) => {
-    if (null !== this.props.image) {
+    if (!this.props.image.isEmpty()) {
       this.stopEvent(event);
       this.setState({removing: false, dropping: true});
-      this.props.onImageChange(null);
+      this.props.onImageChange(FileModel.createEmpty());
     }
   };
 
