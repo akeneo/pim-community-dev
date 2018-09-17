@@ -3,14 +3,10 @@
 namespace spec\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Platform\Bundle\AnalyticsBundle\Doctrine\Query\CountLocalizableAttribute;
-use Akeneo\Platform\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAndLocalizableAttribute;
-use Akeneo\Platform\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAttribute;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 class AttributeDataCollectorSpec extends ObjectBehavior
 {

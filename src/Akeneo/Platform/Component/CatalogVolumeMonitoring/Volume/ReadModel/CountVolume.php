@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel;
 
 /**
  * Represents the volume of an axis of limitation.

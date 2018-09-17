@@ -5,10 +5,10 @@ namespace spec\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 class DBDataCollectorSpec extends ObjectBehavior
 {

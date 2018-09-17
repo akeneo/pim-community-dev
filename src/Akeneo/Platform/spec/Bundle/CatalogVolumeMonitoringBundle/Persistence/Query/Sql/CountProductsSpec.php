@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProducts;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 use Prophecy\Argument;
 
 class CountProductsSpec extends ObjectBehavior

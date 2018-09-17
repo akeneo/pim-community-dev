@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\Query;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query;
 
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

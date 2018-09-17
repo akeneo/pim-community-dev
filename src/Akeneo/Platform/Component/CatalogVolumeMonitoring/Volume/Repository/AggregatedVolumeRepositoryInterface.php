@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\Repository;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository;
 
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
 
 /**
  * Repository for the aggregated volumes.

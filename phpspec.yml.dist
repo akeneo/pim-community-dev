@@ -168,11 +168,6 @@ suites:
         psr4_prefix: Akeneo\UserManagement\Component
         spec_path: src/Akeneo/UserManagement/Component
         src_path: src/Akeneo/UserManagement/Component
-    CatalogVolumeMonitoring:
-        namespace: Pim\Component\CatalogVolumeMonitoring
-        psr4_prefix: Pim\Component\CatalogVolumeMonitoring
-        spec_path: src/Pim/Component/CatalogVolumeMonitoring
-        src_path: src/Pim/Component/CatalogVolumeMonitoring
     ApiBundle:
         namespace: Akeneo\Tool\Bundle\ApiBundle
         psr4_prefix: Akeneo\Tool\Bundle\ApiBundle

@@ -904,6 +904,7 @@
 - Move `Pim\Bundle\InstallerBundle` to `Akeneo\Platform\Bundle\InstallerBundle`
 - Move `Pim\Bundle\AnalyticsBundle` to `Akeneo\Platform\Bundle\AnalyticsBundle`
 - Move `Pim\Bundle\CatalogVolumeMonitoringBundle` to `Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle`
+- Move `Pim\Component\CatalogVolumeMonitoring` to `Akeneo\Platform\Component\CatalogVolumeMonitoring`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelDescendantsWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductModelWriter`, remove `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface\EntityManagerClearerInterface` argument

@@ -8,8 +8,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repository\Sql\AggregatedVolumeRepository;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
 use Prophecy\Argument;
 
 class AggregatedVolumeRepositorySpec extends ObjectBehavior

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\CatalogVolumeMonitoring\Volume\Service;
+namespace spec\Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Service;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Service\VolumeAggregation;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Service\VolumeAggregation;
 use Prophecy\Argument;
 
 class VolumeAggregationSpec extends ObjectBehavior

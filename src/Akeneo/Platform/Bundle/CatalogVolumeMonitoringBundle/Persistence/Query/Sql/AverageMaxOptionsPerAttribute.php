@@ -6,8 +6,8 @@ namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Doctrine\DBAL\Connection;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
 /**
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>

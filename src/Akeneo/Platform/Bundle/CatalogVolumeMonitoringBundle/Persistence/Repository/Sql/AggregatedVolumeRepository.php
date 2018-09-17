@@ -6,8 +6,8 @@ namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repos
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>

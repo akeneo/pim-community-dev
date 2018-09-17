@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

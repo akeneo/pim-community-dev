@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+namespace spec\Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 class CountVolumeNormalizerSpec extends ObjectBehavior
 {

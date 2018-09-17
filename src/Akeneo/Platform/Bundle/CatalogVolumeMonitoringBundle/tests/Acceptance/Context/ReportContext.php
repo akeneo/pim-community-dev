@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
 final class ReportContext implements Context
 {
