@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\DataProvider;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
@@ -54,4 +55,11 @@ interface DataProviderInterface
      * @param string $subscriptionId
      */
     public function unsubscribe(string $subscriptionId): void;
+
+    /**
+     * @param string $familyCode
+     *
+     * @return AttributesMappingResponse
+     */
+    public function getAttributesMapping(string $familyCode): AttributesMappingResponse;
 }

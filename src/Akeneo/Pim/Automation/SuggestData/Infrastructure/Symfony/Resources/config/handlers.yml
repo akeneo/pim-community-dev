@@ -45,3 +45,9 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+
+    akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
+            - '@pim_catalog.repository.family'

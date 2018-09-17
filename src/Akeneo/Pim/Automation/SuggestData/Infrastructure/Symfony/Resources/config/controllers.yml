@@ -23,4 +23,5 @@ services:
     akeneo.pim.automation.suggest_data.controller.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\AttributeMappingController'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.product_subscription.handler.unsubscribe_product'
+            - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.suggest_data.normalizers.attributes_mapping'

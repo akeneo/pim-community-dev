@@ -33,3 +33,9 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'
+
+    akeneo.pim.automation.suggest_data.pimai_client.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingWebService'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.http_client'

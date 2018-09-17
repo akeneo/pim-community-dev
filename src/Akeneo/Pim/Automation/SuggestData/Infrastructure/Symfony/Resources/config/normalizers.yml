@@ -6,3 +6,6 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer'
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    akeneo.pim.automation.suggest_data.normalizers.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\AttributesMappingNormalizer'

@@ -15,15 +15,19 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping as DomainAttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
@@ -46,6 +50,9 @@ class PimAI implements DataProviderInterface
     /** @var IdentifiersMappingApiInterface */
     private $identifiersMappingApi;
 
+    /** @var AttributesMappingApiInterface */
+    private $attributesMappingApi;
+
     /** @var IdentifiersMappingNormalizer */
     private $identifiersMappingNormalizer;
 
@@ -54,6 +61,7 @@ class PimAI implements DataProviderInterface
      * @param SubscriptionApiInterface              $subscriptionApi
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param IdentifiersMappingApiInterface        $identifiersMappingApi
+     * @param AttributesMappingApiInterface         $attributesMappingApi
      * @param IdentifiersMappingNormalizer          $identifiersMappingNormalizer
      */
     public function __construct(
@@ -61,12 +69,14 @@ class PimAI implements DataProviderInterface
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
+        AttributesMappingApiInterface $attributesMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->identifiersMappingApi = $identifiersMappingApi;
+        $this->attributesMappingApi = $attributesMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
     }
 
@@ -162,6 +172,28 @@ class PimAI implements DataProviderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getAttributesMapping(string $familyCode): AttributesMappingResponse
+    {
+        $apiResponse = $this->attributesMappingApi->fetchByFamily($familyCode);
+
+        $attributesMapping = new AttributesMappingResponse();
+        foreach ($apiResponse as $attribute) {
+            $attribute = new DomainAttributeMapping(
+                $attribute->getTargetAttributeCode(),
+                $attribute->getTargetAttributeLabel(),
+                $attribute->getPimAttributeCode(),
+                $this->mapAttributeMappingStatus($attribute->getStatus()),
+                $attribute->getType()
+            );
+            $attributesMapping->addAttribute($attribute);
+        }
+
+        return $attributesMapping;
+    }
+
+    /**
      * @param Subscription $subscription
      *
      * @return ProductSubscriptionResponse
@@ -173,5 +205,25 @@ class PimAI implements DataProviderInterface
             $subscription->getSubscriptionId(),
             $subscription->getAttributes()
         );
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return int
+     */
+    private function mapAttributeMappingStatus(string $status): int
+    {
+        $mapping = [
+            AttributeMapping::STATUS_PENDING => DomainAttributeMapping::ATTRIBUTE_PENDING,
+            AttributeMapping::STATUS_INACTIVE => DomainAttributeMapping::ATTRIBUTE_UNMAPPED,
+            AttributeMapping::STATUS_ACTIVE => DomainAttributeMapping::ATTRIBUTE_MAPPED,
+        ];
+
+        if (! array_key_exists($status, $mapping)) {
+            throw new \InvalidArgumentException(sprintf('Unknown mapping attribute status "%s"', $status));
+        }
+
+        return $mapping[$status];
     }
 }

@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\AttributesMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,14 +35,21 @@ class AttributeMappingController
     /** There is new attributes to map (i.e. it has at least 1 pending attribute) */
     private const MAPPING_PENDING_ATTRIBUTES = 2;
 
-    /* The attribute is not mapped yet */
-    private const ATTRIBUTE_PENDING = 0;
+    /** @var GetAttributesMappingByFamilyHandler */
+    private $attributesMappingByFamilyHandler;
 
-    /** The attribute is mapped */
-    private const ATTRIBUTE_MAPPED = 1;
+    /** @var AttributesMappingNormalizer */
+    private $attributesMappingNormalizer;
 
-    /** The attribute was registered to not be mapped */
-    private const ATTRIBUTE_UNMAPPED = 2;
+    /**
+     * @param GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
+     * @param AttributesMappingNormalizer         $attributesMappingNormalizer
+     */
+    public function __construct(GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler, AttributesMappingNormalizer $attributesMappingNormalizer)
+    {
+        $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
+        $this->attributesMappingNormalizer = $attributesMappingNormalizer;
+    }
 
     /**
      * Mocked return
@@ -102,58 +113,16 @@ class AttributeMappingController
      *
      * @return JsonResponse
      */
-    public function getAction($identifier, Request $request): JsonResponse
+    public function getAction(string $identifier): JsonResponse
     {
-        if ('camcorders' === $identifier) {
-            return new JsonResponse([
-                'code' => 'camcorders',
-                'mapping' => [
-                    'pimaiattributecode1' => [
-                        'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 1',
-                            'type' => 'metric'
-                        ],
-                        'attribute' => 'weight',
-                        'status' => self::ATTRIBUTE_MAPPED
-                    ],
-                    'pimaiattributecode3' => [
-                        'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 3',
-                            'type' => 'select'
-                        ],
-                        'attribute' => null,
-                        'status' => self::ATTRIBUTE_UNMAPPED
-                    ]
-                ]
-            ]);
-        } elseif ('clothing' === $identifier) {
-            return new JsonResponse([
-                'code' => 'clothing',
-                'mapping' => []
-            ]);
-        } else {
-            return new JsonResponse([
-                'code' => 'accessories',
-                'mapping' => [
-                    'pimaiattributecode1' => [
-                        'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 1',
-                            'type' => 'metric'
-                        ],
-                        'attribute' => 'weight',
-                        'status' => self::ATTRIBUTE_MAPPED
-                    ],
-                    'pimaiattributecode2' => [
-                        'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 2',
-                            'type' => 'number'
-                        ],
-                        'attribute' => null,
-                        'status' => self::ATTRIBUTE_PENDING
-                    ]
-                ]
-            ]);
-        }
+        $familyAttributesMapping = $this->attributesMappingByFamilyHandler->handle(
+            new GetAttributesMappingByFamilyQuery($identifier)
+        );
+
+        return new JsonResponse([
+            'code' => $identifier,
+            'mapping' => $this->attributesMappingNormalizer->normalize($familyAttributesMapping),
+        ]);
     }
 
     /**

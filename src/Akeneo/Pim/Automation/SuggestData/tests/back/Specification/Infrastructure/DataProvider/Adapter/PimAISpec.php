@@ -14,15 +14,19 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
@@ -40,6 +44,7 @@ class PimAISpec extends ObjectBehavior
         SubscriptionApiInterface $subscriptionApi,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
+        AttributesMappingApiInterface $attributesMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer
     ) {
         $this->beConstructedWith(
@@ -47,6 +52,7 @@ class PimAISpec extends ObjectBehavior
             $subscriptionApi,
             $identifiersMappingRepository,
             $identifiersMappingApi,
+            $attributesMappingApi,
             $identifiersMappingNormalizer
         );
     }
@@ -229,6 +235,37 @@ class PimAISpec extends ObjectBehavior
                 'unsubscribe',
                 ['foo-bar']
             );
+    }
+
+    public function it_gets_attributes_mapping($attributesMappingApi)
+    {
+        $response = new AttributesMapping([
+            [
+                'from' => [
+                    'id' => 'product_weight',
+                    'label' => [
+                        'en_us' => 'Product Weight',
+                    ]
+                ],
+                'to' => null,
+                'type' => 'metric',
+                'summary' => ['23kg',  '12kg'],
+                'status' => 'pending',
+            ],
+            [
+                'from' => [
+                    'id' => 'color',
+                ],
+                'to' => ['id' => 'color'],
+                'type' => 'multiselect',
+                'status' => 'pending',
+                'summary' => ['blue',  'red'],
+            ]
+        ]);
+        $attributesMappingApi->fetchByFamily('camcorders')->willReturn($response);
+
+        $attributesMappingResponse = $this->getAttributesMapping('camcorders');
+        $attributesMappingResponse->shouldHaveCount(2);
     }
 
     /**
