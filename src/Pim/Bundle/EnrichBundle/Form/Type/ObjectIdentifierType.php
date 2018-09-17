@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;

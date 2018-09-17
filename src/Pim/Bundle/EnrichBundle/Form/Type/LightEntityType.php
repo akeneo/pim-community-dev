@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

@@ -1,6 +1,6 @@
 parameters:
     pim_enrich.factory.mass_edit_notification.class: Pim\Bundle\EnrichBundle\Factory\MassEditNotificationFactory
-    pim_enrich.transformer.identifiable_model.class: Pim\Bundle\EnrichBundle\Form\DataTransformer\IdentifiableModelTransformer
+    pim_enrich.transformer.identifiable_model.class: Akeneo\Platform\Bundle\UIBundle\Form\Transformer\IdentifiableModelTransformer
 
 services:
     pim_enrich.factory.transformer.identifiable_model:

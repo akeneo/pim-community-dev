@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\DataTransformer;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
 use PhpSpec\ObjectBehavior;
 

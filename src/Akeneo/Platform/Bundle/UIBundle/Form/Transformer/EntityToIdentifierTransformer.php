@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\DataTransformerInterface;

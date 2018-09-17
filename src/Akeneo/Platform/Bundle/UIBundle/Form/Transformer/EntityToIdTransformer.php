@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;

@@ -4,9 +4,9 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ArrayToStringTransformer;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntitiesToIdsTransformer;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdTransformer;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\ArrayToStringTransformer;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntitiesToIdsTransformer;
+use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdTransformer;
 use Pim\Bundle\EnrichBundle\Form\Exception\FormException;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FixArrayToStringListener;
 use Symfony\Component\Form\AbstractType;

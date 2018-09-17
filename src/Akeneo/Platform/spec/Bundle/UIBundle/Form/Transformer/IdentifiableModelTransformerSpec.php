@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\DataTransformer;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
