@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class JobExecutionManager
 {
-    /** @var \Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository */
+    /** @var JobExecutionRepository */
     protected $repository;
 
     /** @var SecurityFacade */
