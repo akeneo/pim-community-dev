@@ -3,6 +3,7 @@ import ItemView from 'akeneoenrichedentity/application/component/enriched-entity
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
 
 interface TableState {
   locale: string;
@@ -36,7 +37,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     if (0 === enrichedEntities.length && isLoading) {
       const enrichedEntityIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
-      const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection, null);
+      const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection, createEmptyFile());
 
       return Array(4)
         .fill('placeholder')

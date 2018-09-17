@@ -2,7 +2,7 @@ import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enrich
 import formState, {FormState} from 'akeneoenrichedentity/application/reducer/state';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
 
 export interface EditionFormState {
   state: FormState;
@@ -20,7 +20,7 @@ const dataReducer = (
     value,
     locale,
     image,
-  }: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string; image: Image | null}
+  }: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string; image: NormalizedFile}
 ) => {
   switch (type) {
     case 'ENRICHED_ENTITY_EDITION_RECEIVED':

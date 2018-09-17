@@ -1,5 +1,5 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 
 export const recordEditionReceived = (record: Record) => {
@@ -14,8 +14,8 @@ export const recordEditionLabelUpdated = (value: string, locale: string) => {
   return {type: 'RECORD_EDITION_LABEL_UPDATED', value, locale};
 };
 
-export const recordEditionImageUpdated = (image: Image | null) => {
-  return {type: 'RECORD_EDITION_IMAGE_UPDATED', image};
+export const recordEditionImageUpdated = (image: File) => {
+  return {type: 'RECORD_EDITION_IMAGE_UPDATED', image: image.normalize()};
 };
 
 export const recordEditionSubmission = () => {

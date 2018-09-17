@@ -3,49 +3,49 @@ import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
 } from 'akeneoenrichedentity/domain/model/label-collection';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
 
 export interface NormalizedEnrichedEntity {
   identifier: string;
   labels: NormalizedLabelCollection;
-  image: Image | null;
+  image: NormalizedFile;
 }
 
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
-  getImage: () => Image | null;
+  getImage: () => File;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
   normalize: () => NormalizedEnrichedEntity;
 }
 class InvalidArgumentError extends Error {}
 
 class EnrichedEntityImplementation implements EnrichedEntity {
-  private constructor(
-    private identifier: Identifier,
-    private labelCollection: LabelCollection,
-    private image: Image | null
-  ) {
+  private constructor(private identifier: Identifier, private labelCollection: LabelCollection, private image: File) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('EnrichedEntity expect an EnrichedEntityIdentifier as first argument');
+      throw new InvalidArgumentError('EnrichedEntity expect an EnrichedEntityIdentifier as identifier argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('EnrichedEntity expect a LabelCollection as second argument');
+      throw new InvalidArgumentError('EnrichedEntity expect a LabelCollection as labelCollection argument');
+    }
+    if (!(image instanceof File)) {
+      throw new InvalidArgumentError('EnrichedEntity expect a File as image argument');
     }
 
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection, image: Image | null): EnrichedEntity {
+  public static create(identifier: Identifier, labelCollection: LabelCollection, image: File): EnrichedEntity {
     return new EnrichedEntityImplementation(identifier, labelCollection, image);
   }
 
   public static createFromNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
     const identifier = createIdentifier(normalizedEnrichedEntity.identifier);
     const labelCollection = createLabelCollection(normalizedEnrichedEntity.labels);
+    const image = denormalizeFile(normalizedEnrichedEntity.image);
 
-    return EnrichedEntityImplementation.create(identifier, labelCollection, normalizedEnrichedEntity.image);
+    return EnrichedEntityImplementation.create(identifier, labelCollection, image);
   }
 
   public getIdentifier(): Identifier {
@@ -62,7 +62,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.labelCollection;
   }
 
-  public getImage(): Image | null {
+  public getImage(): File {
     return this.image;
   }
 
@@ -74,7 +74,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
       labels: this.getLabelCollection().normalize(),
-      image: this.getImage(),
+      image: this.getImage().normalize(),
     };
   }
 }

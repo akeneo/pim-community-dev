@@ -3,6 +3,7 @@ import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenriched
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
 import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import * as React from 'react';
 
@@ -40,7 +41,13 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
       const enrichedEntityIdentifier = createEnrichedEntityIdentifier('');
       const code = createCode('');
       const labelCollection = createLabelCollection({});
-      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, code, labelCollection, null);
+      const record = createRecord(
+        recordIdentifier,
+        enrichedEntityIdentifier,
+        code,
+        labelCollection,
+        createEmptyFile()
+      );
 
       return (
         <ItemView

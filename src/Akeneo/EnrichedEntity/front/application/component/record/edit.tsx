@@ -12,7 +12,7 @@ import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/recor
 import {saveRecord, deleteRecord, recordImageUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 const securityContext = require('pim/security-context');
-import ImageModel from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
@@ -42,7 +42,7 @@ interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onLocaleChanged: (locale: Locale) => void;
-    onImageUpdated: (image: ImageModel | null) => void;
+    onImageUpdated: (image: File) => void;
     onDelete: (record: Record) => void;
   };
 }
@@ -226,7 +226,7 @@ export default connect(
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
         },
-        onImageUpdated: (image: ImageModel | null) => {
+        onImageUpdated: (image: File) => {
           dispatch(recordImageUpdated(image));
         },
         onDelete: (record: Record) => {

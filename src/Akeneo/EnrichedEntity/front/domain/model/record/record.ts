@@ -10,14 +10,14 @@ import Identifier, {
   NormalizedRecordIdentifier,
   createIdentifier,
 } from 'akeneoenrichedentity/domain/model/record/identifier';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
 
 export interface NormalizedRecord {
   identifier: NormalizedRecordIdentifier;
-  enrichedEntityIdentifier: string;
+  enriched_entity_identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
-  image: Image | null;
+  image: NormalizedFile;
 }
 
 export default interface Record {
@@ -26,7 +26,7 @@ export default interface Record {
   getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
-  getImage: () => Image | null;
+  getImage: () => File;
   equals: (record: Record) => boolean;
   normalize: () => NormalizedRecord;
 }
@@ -39,19 +39,22 @@ class RecordImplementation implements Record {
     private enrichedEntityIdentifier: EnrichedEntityIdentifier,
     private code: RecordCode,
     private labelCollection: LabelCollection,
-    private image: Image | null
+    private image: File
   ) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('Record expect a RecordIdentifier as argument');
+      throw new InvalidArgumentError('Record expect a RecordIdentifier as identifier argument');
     }
     if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifier)) {
-      throw new InvalidArgumentError('Record expect an EnrichedEntityIdentifier as argument');
+      throw new InvalidArgumentError('Record expect an EnrichedEntityIdentifier as enrichedEntityIdentifier argument');
     }
     if (!(code instanceof RecordCode)) {
-      throw new InvalidArgumentError('Record expect a RecordCode as argument');
+      throw new InvalidArgumentError('Record expect a RecordCode as code argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('Record expect a LabelCollection as argument');
+      throw new InvalidArgumentError('Record expect a LabelCollection as labelCollection argument');
+    }
+    if (!(image instanceof File)) {
+      throw new InvalidArgumentError('Record expect a File as image argument');
     }
 
     Object.freeze(this);
@@ -62,7 +65,7 @@ class RecordImplementation implements Record {
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
     recordCode: RecordCode,
     labelCollection: LabelCollection,
-    image: Image | null
+    image: File
   ): Record {
     return new RecordImplementation(identifier, enrichedEntityIdentifier, recordCode, labelCollection, image);
   }
@@ -70,16 +73,11 @@ class RecordImplementation implements Record {
   public static createFromNormalized(normalizedRecord: NormalizedRecord): Record {
     const identifier = createIdentifier(normalizedRecord.identifier);
     const code = createCode(normalizedRecord.identifier);
-    const enrichedEntityIdentifier = createEnrichedEntityIdentifier(normalizedRecord.enrichedEntityIdentifier);
+    const enrichedEntityIdentifier = createEnrichedEntityIdentifier(normalizedRecord.enriched_entity_identifier);
     const labelCollection = createLabelCollection(normalizedRecord.labels);
+    const image = denormalizeFile(normalizedRecord.image);
 
-    return RecordImplementation.create(
-      identifier,
-      enrichedEntityIdentifier,
-      code,
-      labelCollection,
-      normalizedRecord.image
-    );
+    return RecordImplementation.create(identifier, enrichedEntityIdentifier, code, labelCollection, image);
   }
 
   public getIdentifier(): Identifier {
@@ -100,7 +98,7 @@ class RecordImplementation implements Record {
       : `[${this.getCode().stringValue()}]`;
   }
 
-  public getImage(): Image | null {
+  public getImage(): File {
     return this.image;
   }
 
@@ -115,10 +113,10 @@ class RecordImplementation implements Record {
   public normalize(): NormalizedRecord {
     return {
       identifier: this.getIdentifier().normalize(),
-      enrichedEntityIdentifier: this.getEnrichedEntityIdentifier().stringValue(),
+      enriched_entity_identifier: this.getEnrichedEntityIdentifier().stringValue(),
       code: this.code.stringValue(),
       labels: this.getLabelCollection().normalize(),
-      image: this.getImage(),
+      image: this.getImage().normalize(),
     };
   }
 }

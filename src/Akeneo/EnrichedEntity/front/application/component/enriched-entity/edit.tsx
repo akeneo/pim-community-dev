@@ -16,7 +16,7 @@ import EditState from 'akeneoenrichedentity/application/component/app/edit-state
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 const securityContext = require('pim/security-context');
-import ImageModel from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
 import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
@@ -53,7 +53,7 @@ interface DispatchProps {
     onRecordCreationStart: () => void;
     onAttributeCreationStart: () => void;
     onLocaleChanged: (locale: Locale) => void;
-    onImageUpdated: (image: ImageModel | null) => void;
+    onImageUpdated: (image: File) => void;
     onDelete: (enrichedEntity: EnrichedEntity) => void;
   };
 }
@@ -258,7 +258,7 @@ export default connect(
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
         },
-        onImageUpdated: (image: ImageModel | null) => {
+        onImageUpdated: (image: File) => {
           dispatch(enrichedEntityImageUpdated(image));
         },
         onDelete: (enrichedEntity: EnrichedEntity) => {

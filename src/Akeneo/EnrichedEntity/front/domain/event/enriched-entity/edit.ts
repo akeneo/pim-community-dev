@@ -1,6 +1,6 @@
 import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 
 export const enrichedEntityEditionReceived = (enrichedEntity: NormalizedEnrichedEntity) => {
   return {type: 'ENRICHED_ENTITY_EDITION_RECEIVED', enrichedEntity};
@@ -14,8 +14,8 @@ export const enrichedEntityEditionLabelUpdated = (value: string, locale: string)
   return {type: 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED', value, locale};
 };
 
-export const enrichedEntityEditionImageUpdated = (image: Image | null) => {
-  return {type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED', image};
+export const enrichedEntityEditionImageUpdated = (image: File) => {
+  return {type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED', image: image.normalize()};
 };
 
 export const enrichedEntityEditionSubmission = () => {

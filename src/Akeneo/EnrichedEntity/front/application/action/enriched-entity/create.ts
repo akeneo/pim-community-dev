@@ -13,10 +13,15 @@ import {
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
+import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
 
 export const createEnrichedEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
   const {code, labels} = getState().create.data;
-  const enrichedEntity = enrichedEntityFactory(createIdentifier(code), createLabelCollection(labels), null);
+  const enrichedEntity = enrichedEntityFactory(
+    createIdentifier(code),
+    createLabelCollection(labels),
+    createEmptyFile()
+  );
   try {
     let errors = await enrichedEntitySaver.create(enrichedEntity);
 

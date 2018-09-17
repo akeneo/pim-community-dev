@@ -14,7 +14,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204
+          status: 204,
         });
       }
     });
@@ -24,10 +24,12 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         .createEnrichedEntity;
       const createIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
       const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
+      const Image = require('akeneoenrichedentity/domain/model/file').default;
 
       const savedSofa = createEnrichedEntity(
         createIdentifier('sofa'),
-        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'})
+        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
+        Image.createEmpty()
       );
       const saver = require('akeneoenrichedentity/infrastructure/saver/enriched-entity').default;
 
@@ -45,7 +47,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         'sofa' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
         interceptedRequest.respond({
-          status: 204
+          status: 204,
         });
       }
     });
@@ -55,11 +57,13 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         .createEnrichedEntity;
       const createIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
       const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
+      const Image = require('akeneoenrichedentity/domain/model/file').default;
       const saver = require('akeneoenrichedentity/infrastructure/saver/enriched-entity').default;
 
       const sofaCreated = createEnrichedEntity(
         createIdentifier('sofa'),
-        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'})
+        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
+        Image.createEmpty()
       );
 
       return await saver.create(sofaCreated);
@@ -69,55 +73,59 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
   });
 
   it('It returns errors when we create an invalid enriched entity', async () => {
-    const responseMessage = [{
-      messageTemplate: 'This value should not be blank.',
-      parameters: {
-        '{{ value }}': ''
+    const responseMessage = [
+      {
+        messageTemplate: 'This value should not be blank.',
+        parameters: {
+          '{{ value }}': '',
+        },
+        plural: null,
+        message: 'This value should not be blank.',
+        root: {
+          identifier: '',
+          labels: {
+            en_US: 'deefef',
+          },
+        },
+        propertyPath: 'identifier',
+        invalidValue: '',
+        constraint: {
+          defaultOption: null,
+          requiredOptions: [],
+          targets: 'property',
+          payload: null,
+        },
+        cause: null,
+        code: null,
       },
-      plural: null,
-      message: 'This value should not be blank.',
-      root: {
-        identifier: '',
-        labels: {
-          en_US: 'deefef'
-        }
-      },
-      propertyPath: 'identifier',
-      invalidValue: '',
-      constraint: {
-        defaultOption: null,
-        requiredOptions: [],
-        targets: 'property',
-        payload: null
-      },
-      cause: null,
-      code: null
-    }];
+    ];
 
     page.on('request', interceptedRequest => {
       if (
-          'http://pim.com/rest/enriched_entity' === interceptedRequest.url() &&
-          'POST' === interceptedRequest.method() &&
-          'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
+        'http://pim.com/rest/enriched_entity' === interceptedRequest.url() &&
+        'POST' === interceptedRequest.method() &&
+        'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
         interceptedRequest.respond({
           status: 400,
           contentType: 'application/json',
-          body: JSON.stringify(responseMessage)
+          body: JSON.stringify(responseMessage),
         });
       }
     });
 
     const response = await page.evaluate(async () => {
       const createEnrichedEntity = require('akeneoenrichedentity/domain/model/enriched-entity/enriched-entity')
-          .createEnrichedEntity;
+        .createEnrichedEntity;
       const createIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
       const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
+      const Image = require('akeneoenrichedentity/domain/model/file').default;
       const saver = require('akeneoenrichedentity/infrastructure/saver/enriched-entity').default;
 
       const sofaCreated = createEnrichedEntity(
-          createIdentifier('invalid/identifier'),
-          createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'})
+        createIdentifier('invalid/identifier'),
+        createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
+        Image.createEmpty()
       );
 
       return await saver.create(sofaCreated);

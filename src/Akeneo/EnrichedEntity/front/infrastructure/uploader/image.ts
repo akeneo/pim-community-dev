@@ -1,5 +1,5 @@
 import Uploader from 'akeneoenrichedentity/domain/uploader/uploader';
-import Image from 'akeneoenrichedentity/domain/model/image';
+import Image, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
 import * as $ from 'jquery';
 const routing = require('routing');
 
@@ -34,8 +34,8 @@ export class ConcreteImageUploader implements Uploader<Image> {
             return xhr;
           },
         })
-        .then((data: Image) => {
-          resolve(data);
+        .then((normalizedFile: NormalizedFile) => {
+          resolve(denormalizeFile(normalizedFile));
         })
         .fail((response: any) => {
           reject(response.responseJSON);

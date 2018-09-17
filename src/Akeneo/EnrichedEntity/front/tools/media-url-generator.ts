@@ -1,15 +1,15 @@
 const routing = require('routing');
-import Image from 'akeneoenrichedentity/domain/model/image';
+import File from 'akeneoenrichedentity/domain/model/file';
 
-export const getImageShowUrl = (image: Image | null, filter: string): string => {
-  const path = null !== image ? image.filePath : 'undefined';
+export const getImageShowUrl = (image: File, filter: string): string => {
+  const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
   const filename = encodeURIComponent(path);
 
   return routing.generate('pim_enrich_media_show', {filename, filter});
 };
 
-export const getImageDownloadUrl = (image: Image | null): string => {
-  const path = null !== image ? image.filePath : 'undefined';
+export const getImageDownloadUrl = (image: File): string => {
+  const path = !image.isEmpty() ? image.getFilePath() : 'undefined';
   const filename = encodeURIComponent(path);
 
   return routing.generate('pim_enrich_media_download', {filename});
