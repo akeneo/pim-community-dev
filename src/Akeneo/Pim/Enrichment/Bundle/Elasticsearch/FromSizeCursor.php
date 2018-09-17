@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\AbstractCursor;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResults;

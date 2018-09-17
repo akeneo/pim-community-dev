@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch\Sorter;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
-use Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\InGroupSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -89,7 +89,7 @@ class InGroupSorterSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new InvalidArgumentException(
-                InGroupSorter::class,
+                \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\InGroupSorter::class,
                 'Unsupported field "in_group_bad_identifier" for InGroupSorter.'
             )
         )->during('addFieldSorter', ['in_group_bad_identifier', Directions::ASCENDING]);
@@ -122,7 +122,7 @@ class InGroupSorterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidDirectionException::notSupported(
                 'A_BAD_DIRECTION',
-                InGroupSorter::class
+                \Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\InGroupSorter::class
             )
         )->during('addFieldSorter', ['in_group_1', 'A_BAD_DIRECTION']);
     }

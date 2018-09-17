@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Elasticsearch\FromSizeCursorFactory;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursorFactory;
 
 class FromSizeCursorFactorySpec extends ObjectBehavior
 {

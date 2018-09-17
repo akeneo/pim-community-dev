@@ -611,3 +611,19 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
+    pim_enrich.factory.product_and_product_model_from_size_cursor:
+        public: false
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\FromSizeCursorFactory'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_enrich.datagrid.product_batch_size%'
+            - 'pim_catalog_product'
+
+    pim_catalog.query.elasticsearch.sorter.in_group:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\InGroupSorter'
+        arguments:
+            - '@pim_catalog.repository.group'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

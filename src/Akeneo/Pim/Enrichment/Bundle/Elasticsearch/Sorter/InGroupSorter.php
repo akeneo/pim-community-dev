@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Elasticsearch\Sorter;
+namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
