@@ -5,11 +5,11 @@ akeneo_suggest_data:
         status:
           active: Aktiivinen
           inactive: Ei aktiivinen
-    family_mapping:
+    attributes_mapping:
       fields:
         suggest_data:
-          active: Aktiivinen
-          inactive: Ei aktiivinen
+          mapped: Aktiivinen
+          unmapped: Ei aktiivinen
   pim_ai:
     module:
       activation:

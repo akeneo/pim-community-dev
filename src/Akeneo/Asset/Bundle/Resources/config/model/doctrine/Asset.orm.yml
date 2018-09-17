@@ -2,7 +2,7 @@ Akeneo\Asset\Component\Model\Asset:
     type: entity
     table: pimee_product_asset_asset
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ReferenceDataRepository
     fields:
         id:
             type: integer

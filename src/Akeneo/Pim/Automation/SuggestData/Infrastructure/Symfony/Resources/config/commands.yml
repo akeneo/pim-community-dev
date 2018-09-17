@@ -6,3 +6,14 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
         tags:
             - { name: 'console.command' }
+
+    akeneo.pim.automation.suggest_data.command.init-pimai-user:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\InitPimAiUserCommand'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+            - '@validator'
+        tags:
+            - { name: 'console.command' }

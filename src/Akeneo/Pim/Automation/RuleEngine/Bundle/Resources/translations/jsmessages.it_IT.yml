@@ -82,12 +82,12 @@ batch_jobs:
     label: Importazione prodotti in formato CSV con regole
     import.label: Importazione prodotti
   csv_product_model_import_with_rules:
-    label: Importazione del modello di prodotto in CSV con regole
+    label: Importazione modelli di prodotto in formato CSV con regole
   xlsx_product_import_with_rules:
     label: Importazione prodotti in formato XLSX con regole
     import.label: Importazione prodotti
   xlsx_product_model_import_with_rules:
-    label: Importazione del modello di prodotto in XLSX con regole
+    label: Importazione modelli di prodotto in formato XLSX con regole
 pim_notification:
   types:
     rule: Impostazioni delle Regole

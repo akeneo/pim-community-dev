@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadRequestException;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 
 /**
  *
@@ -32,4 +34,12 @@ interface SubscriptionApiInterface
      * @return ApiResponse
      */
     public function fetchProducts(): ApiResponse;
+
+    /**
+     * @param string $subscriptionId
+     *
+     * @throws BadRequestException
+     * @throws PimAiServerException
+     */
+    public function unsubscribeProduct(string $subscriptionId): void;
 }

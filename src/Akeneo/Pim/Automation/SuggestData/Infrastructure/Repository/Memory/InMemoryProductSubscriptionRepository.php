@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -24,25 +23,6 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
 {
     /** @var ProductSubscription[] */
     private $subscriptions = [];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByProductAndSubscriptionId(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ?ProductSubscription {
-        if (!isset($this->subscriptions[$product->getId()])) {
-            return null;
-        }
-
-        $subscription = $this->subscriptions[$product->getId()];
-        if ($subscriptionId !== $subscription->getSubscriptionId()) {
-            return null;
-        }
-
-        return $subscription;
-    }
 
     /**
      * {@inheritdoc}
@@ -81,14 +61,10 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
     }
 
     /**
-     * {@inheritdoc}
+     * @param ProductSubscription $subscription
      */
-    public function getSubscriptionStatusForProductId(int $productId): array
+    public function delete(ProductSubscription $subscription): void
     {
-        if (!isset($this->subscriptions[$productId])) {
-            return ['subscription_id' => ''];
-        }
-
-        return ['subscription_id' => $this->subscriptions[$productId]->getSubscriptionId()];
+        unset($this->subscriptions[$subscription->getProduct()->getId()]);
     }
 }

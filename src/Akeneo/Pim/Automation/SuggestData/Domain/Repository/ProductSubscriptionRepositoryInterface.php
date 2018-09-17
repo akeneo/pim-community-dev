@@ -14,24 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Repository;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 interface ProductSubscriptionRepositoryInterface
 {
-    /**
-     * @param ProductInterface $product
-     * @param string $subscriptionId
-     *
-     * @return ProductSubscription|null
-     */
-    public function findOneByProductAndSubscriptionId(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ?ProductSubscription;
-
     /**
      * @param ProductSubscription $subscription
      */
@@ -48,4 +36,9 @@ interface ProductSubscriptionRepositoryInterface
      * @return ProductSubscription[]
      */
     public function findPendingSubscriptions(): array;
+
+    /**
+     * @param ProductSubscription $subscription
+     */
+    public function delete(ProductSubscription $subscription): void;
 }

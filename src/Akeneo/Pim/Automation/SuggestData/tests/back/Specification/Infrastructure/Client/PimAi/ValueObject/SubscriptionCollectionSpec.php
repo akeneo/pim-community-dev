@@ -80,7 +80,13 @@ class SubscriptionCollectionSpec extends ObjectBehavior
             'attributes' => [
                 'Memory' => 'RAM (Installed): 256 MB',
             ],
-            'tracker_id' => 42
+            'extra' => [
+                'tracker_id' => 42,
+                'family' => [
+                    'code' => 'laptops',
+                    'label' => ['en_US' => 'Laptop']
+                ]
+            ]
         ];
     }
 
@@ -94,7 +100,9 @@ class SubscriptionCollectionSpec extends ObjectBehavior
             'attributes' => [
                 'Processor' => '1 GHz',
             ],
-            'tracker_id' => 50
+            'extra' => [
+                'tracker_id' => 50
+            ]
         ];
     }
 }

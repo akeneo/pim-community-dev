@@ -4,22 +4,14 @@ Feature: Subscribe a product to PIM.ai
   As Julia
   I want to subscribe a product to PIM.ai
 
+  @end-to-end @javascript
   Scenario: Successfully subscribe a product to PIM.ai
-    Given the following attribute:
-      | code | type                   |
-      | ean  | pim_catalog_text       |
-      | sku  | pim_catalog_identifier |
-    And the following family:
-      | code   | attributes | label-en_US |
-      | tshirt | sku,ean    | T-Shirt     |
-    And the following product:
-      | identifier | family | ean          |
-      | ts_0013    | tshirt | 606449099812 |
+    Given the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
-      | upc         | ean            |
-    When I subscribe the product "ts_0013" to PIM.ai
-    Then the product "ts_0013" should be subscribed
+      | asin        | asin           |
+    When I subscribe the product "B00EYZY6AC" to PIM.ai
+    Then the product "B00EYZY6AC" should be subscribed
 
   Scenario: Fail to subscribe a product without family
     Given the following attribute:

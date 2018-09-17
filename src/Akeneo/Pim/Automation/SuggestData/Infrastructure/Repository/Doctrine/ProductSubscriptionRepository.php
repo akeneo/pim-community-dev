@@ -15,7 +15,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -26,17 +25,12 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /** @var EntityManagerInterface */
     private $em;
 
-    /** @var string */
-    private $className;
-
     /**
      * @param EntityManagerInterface $em
-     * @param string $className
      */
-    public function __construct(EntityManagerInterface $em, string $className)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->className = $className;
     }
 
     /**
@@ -51,26 +45,9 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findOneByProductAndSubscriptionId(
-        ProductInterface $product,
-        string $subscriptionId
-    ): ?ProductSubscription {
-        $repository = $this->em->getRepository($this->className);
-
-        return $repository->findOneBy(
-            [
-                'product'        => $product,
-                'subscriptionId' => $subscriptionId,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByProductId(int $productId): ?ProductSubscription
     {
-        return $this->em->getRepository($this->className)->findOneByProduct($productId);
+        return $this->em->getRepository(ProductSubscription::class)->findOneByProduct($productId);
     }
 
     /**
@@ -78,11 +55,20 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
      */
     public function findPendingSubscriptions(): array
     {
-        $qb = $this->em->createQueryBuilder()->select('subscription')->from($this->className, 'subscription');
+        $qb = $this->em->createQueryBuilder()->select('subscription')->from(ProductSubscription::class, 'subscription');
         $qb->where(
             $qb->expr()->isNotNull('subscription.rawSuggestedData')
         );
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param ProductSubscription $subscription
+     */
+    public function delete(ProductSubscription $subscription): void
+    {
+        $this->em->remove($subscription);
+        $this->em->flush();
     }
 }

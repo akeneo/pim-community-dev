@@ -123,3 +123,12 @@ pim_analytics:
   info_type:
     nb_published_products: Numero di prodotti pubblicati
     nb_product_drafts: Numero di bozze di prodotto
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Proposte da rivedere
+      date: Data
+      author: Autore
+      product: Prodotto
+      review: Da rivedere
+      empty: Nessuna bozza da revisionare

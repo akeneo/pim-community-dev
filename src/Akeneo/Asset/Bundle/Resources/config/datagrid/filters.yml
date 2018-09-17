@@ -1,9 +1,6 @@
-parameters:
-    pimee_product_asset.filter.product_asset.class: Pim\Bundle\ReferenceDataBundle\Datagrid\Filter\ReferenceDataFilter
-
 services:
     pimee_product_asset.filter.product_asset:
-        class: '%pimee_product_asset.filter.product_asset.class%'
+        class: 'Oro\Bundle\PimFilterBundle\Filter\ProductValue\ReferenceDataFilter'
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'

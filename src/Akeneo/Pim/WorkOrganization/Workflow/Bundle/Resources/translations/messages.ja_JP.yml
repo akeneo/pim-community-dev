@@ -123,3 +123,12 @@ pim_analytics:
   info_type:
     nb_published_products: 公開済み製品数
     nb_product_drafts: 製品の下書き数
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: レビューに対する提案
+      date: 日付
+      author: 作成者
+      product: 製品
+      review: レビュー
+      empty: 製品の下書きはありません

@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Authentication\AuthenticationApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InsufficientCreditsException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\InvalidTokenException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
@@ -94,6 +92,23 @@ final class SubscriptionFake implements SubscriptionApiInterface
                 )
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Fake implementation just takes the subscription id
+     * It does not return anything but can throw some exceptions
+     */
+    public function unsubscribeProduct(string $subscriptionId): void
+    {
+        switch ($this->status) {
+            case self::STATUS_EXPIRED_TOKEN:
+                throw new InvalidTokenException();
+                break;
+            default:
+                break;
+        }
     }
 
     /**

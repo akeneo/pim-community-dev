@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
 class ReferenceDataPublisherSpec extends ObjectBehavior
 {
@@ -19,6 +19,6 @@ class ReferenceDataPublisherSpec extends ObjectBehavior
 
     function it_publishes_reference_data(ReferenceDataInterface $referenceData)
     {
-        $this->publish($referenceData)->shouldReturnAnInstanceOf('Pim\Component\ReferenceData\Model\ReferenceDataInterface');
+        $this->publish($referenceData)->shouldReturnAnInstanceOf(ReferenceDataInterface::class);
     }
 }

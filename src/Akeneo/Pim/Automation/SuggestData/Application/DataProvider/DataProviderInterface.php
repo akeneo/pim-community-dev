@@ -49,4 +49,9 @@ interface DataProviderInterface
      * @return void
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
+
+    /**
+     * @param string $subscriptionId
+     */
+    public function unsubscribe(string $subscriptionId): void;
 }

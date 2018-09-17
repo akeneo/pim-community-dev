@@ -55,7 +55,7 @@ class SubscriptionWebservice implements SubscriptionApiInterface
     {
         $route = $this->uriGenerator->generate('/subscriptions');
 
-        $params = $identifiers + ['tracker_id' => $trackerId] + $familyInfos;
+        $params = $identifiers + ['tracker_id' => $trackerId] + ['family' => $familyInfos];
 
         try {
             $response = $this->httpClient->request('POST', $route, [
@@ -110,6 +110,32 @@ class SubscriptionWebservice implements SubscriptionApiInterface
             }
 
             throw new BadRequestException(sprintf('Something went wrong during product subscription : ', $e->getMessage()));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unsubscribeProduct(string $subscriptionId): void
+    {
+        $route = $this->uriGenerator->generate(
+            sprintf('/subscriptions/%s', $subscriptionId)
+        );
+
+        try {
+            $this->httpClient->request('DELETE', $route);
+        } catch (ServerException $e) {
+            throw new PimAiServerException(
+                sprintf('Something went wrong on PIM.ai side during product subscription: %s', $e->getMessage())
+            );
+        } catch (ClientException $e) {
+            if ($e->getCode() === Response::HTTP_FORBIDDEN) {
+                throw new InvalidTokenException('The PIM.ai token is missing or invalid');
+            }
+
+            throw new BadRequestException(
+                sprintf('Something went wrong during product subscription: %s', $e->getMessage())
+            );
         }
     }
 }
