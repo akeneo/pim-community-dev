@@ -77,8 +77,8 @@ Feature: Volume statistics of the customers
     Then Akeneo statistics engine stores a number of 487520 product values for this customer
 
   @acceptance-back
-  Scenario: Gather customers statistics about the average potential size of the products
-    The potential size of the products is defined by the average number of product values that it could contain
+  Scenario: Gather customers statistics about the average size of the products
+    The average size of the products is defined by the average number of product values that it contains
     Given a product with 587 product values
     And a product model with 565 product values
     When statistics of the customer's catalog are collected
