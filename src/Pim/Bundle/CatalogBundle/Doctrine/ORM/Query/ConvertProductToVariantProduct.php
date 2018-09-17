@@ -6,6 +6,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
@@ -54,7 +55,9 @@ SQL;
                     $queryBuilder->expr()->literal(VariantProduct::class)
             )
             ->where('version.resourceId = :resource_id')
+            ->andWhere('version.resourceName = :resource_name')
             ->setParameter('resource_id', $variantProduct->getId())
+            ->setParameter('resource_name', Product::class)
             ->getQuery();
 
         $query->execute();

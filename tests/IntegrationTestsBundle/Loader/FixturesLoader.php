@@ -80,8 +80,6 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     public function load(): void
     {
-        $this->systemUserAuthenticator->createSystemUser();
-
         $this->resetElasticsearchIndex();
 
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
@@ -90,10 +88,12 @@ class FixturesLoader implements FixturesLoaderInterface
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
 
         if (file_exists($dumpFile)) {
-            $this->dropDatabase();
-            $this->createDatabase();
+            $this->databaseSchemaHandler->reset();
+
             $this->restoreDatabase($dumpFile);
             $this->clearAclCache();
+
+            $this->systemUserAuthenticator->createSystemUser();
 
             $this->indexProductModels();
             $this->indexProducts();
@@ -102,9 +102,12 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         $this->databaseSchemaHandler->reset();
+        $this->clearAclCache();
 
         $this->loadData();
         $this->dumpDatabase($dumpFile);
+
+        $this->systemUserAuthenticator->createSystemUser();
     }
 
     protected function loadData(): void
@@ -283,28 +286,6 @@ class FixturesLoader implements FixturesLoaderInterface
         return $files;
     }
 
-    protected function dropDatabase(): void
-    {
-        $this->execCommand([
-            'mysql',
-            '-h '.$this->container->getParameter('database_host'),
-            '-u '.$this->container->getParameter('database_user'),
-            '-p'.$this->container->getParameter('database_password'),
-            sprintf('-e "DROP DATABASE IF EXISTS %s;"', $this->container->getParameter('database_name')),
-        ]);
-    }
-
-    protected function createDatabase(): void
-    {
-        $this->execCommand([
-            'mysql',
-            '-h '.$this->container->getParameter('database_host'),
-            '-u '.$this->container->getParameter('database_user'),
-            '-p'.$this->container->getParameter('database_password'),
-            sprintf('-e "CREATE DATABASE %s;"', $this->container->getParameter('database_name')),
-        ]);
-    }
-
     /**
      * @param string $filepath
      */
@@ -320,7 +301,7 @@ class FixturesLoader implements FixturesLoaderInterface
             '-h '.$this->container->getParameter('database_host'),
             '-u '.$this->container->getParameter('database_user'),
             '-p'.$this->container->getParameter('database_password'),
-            '--skip-add-drop-table',
+            '--no-create-info',
             '--quick',
             $this->container->getParameter('database_name'),
             '> '.$filepath,
