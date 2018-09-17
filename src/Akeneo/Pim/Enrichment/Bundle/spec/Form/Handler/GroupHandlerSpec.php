@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Handler;
 
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -24,11 +24,6 @@ class GroupHandlerSpec extends ObjectBehavior
         AttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith($form, $requestStack, $saver, $repository, $localizedConverter);
-    }
-
-    function it_is_a_handler()
-    {
-        $this->shouldImplement(HandlerInterface::class);
     }
 
     function it_saves_a_group_with_a_new_product_when_form_is_valid(

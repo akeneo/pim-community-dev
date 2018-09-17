@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\EnrichBundle\Form\Exception\FormException;
+use Akeneo\Platform\Bundle\UIBundle\Form\Exception\FormException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;

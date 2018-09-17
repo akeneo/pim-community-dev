@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory;
+use Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -27,12 +27,12 @@ class AsyncSelectType extends AbstractType
     /** @var RouterInterface */
     protected $router;
 
-    /** @var IdentifiableModelTransformerFactory */
+    /** @var \Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory */
     protected $transformerFactory;
 
     /**
-     * @param RouterInterface                     $router
-     * @param IdentifiableModelTransformerFactory $transformerFactory
+     * @param RouterInterface                                                                   $router
+     * @param \Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory $transformerFactory
      */
     public function __construct(
         RouterInterface $router,

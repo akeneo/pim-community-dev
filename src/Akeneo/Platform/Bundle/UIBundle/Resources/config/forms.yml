@@ -79,3 +79,9 @@ services:
             - '@doctrine'
             - '@pim_reference_data.label_renderer'
             - '%pim_ui.form.transformer.ajax_reference_data.class%'
+
+    pim_enrich.factory.transformer.identifiable_model:
+        class: Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory
+        public: false
+        arguments:
+            - 'Akeneo\Platform\Bundle\UIBundle\Form\Transformer\IdentifiableModelTransformer'

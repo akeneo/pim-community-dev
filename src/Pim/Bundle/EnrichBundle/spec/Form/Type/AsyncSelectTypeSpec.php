@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Gedmo\Tree\RepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory;
+use Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory;
 use Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;

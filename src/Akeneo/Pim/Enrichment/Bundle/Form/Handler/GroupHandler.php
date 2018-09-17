@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Handler;
+namespace Akeneo\Pim\Enrichment\Bundle\Form\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupHandler implements HandlerInterface
+class GroupHandler
 {
     /** @var FormInterface */
     protected $form;
@@ -50,7 +50,7 @@ class GroupHandler implements HandlerInterface
         AttributeConverterInterface $localizedConverter
     ) {
         $this->form               = $form;
-        $this->requestStack        = $requestStack;
+        $this->requestStack       = $requestStack;
         $this->groupSaver         = $groupSaver;
         $this->productRepository  = $productRepository;
         $this->localizedConverter = $localizedConverter;

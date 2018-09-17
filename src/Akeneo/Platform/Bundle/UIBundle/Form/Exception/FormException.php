@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Exception;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Exception;
 
 use Symfony\Component\Form\Exception\ExceptionInterface;
 
