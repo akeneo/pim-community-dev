@@ -45,8 +45,16 @@ $rules = [
         'Guzzle'
     ])->in('Akeneo\Pim\Automation\SuggestData\Infrastructure'),
     $builder->only([
-        
-    ])
+        'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
+
+        // TODO: Should be remove APAI-179
+        'Akeneo\Pim\Automation\SuggestData\Domain\Model\Configuration',
+        'Akeneo\Pim\Automation\SuggestData\Domain\Repository\ConfigurationRepositoryInterface',
+
+        // External dependencies
+        'Guzzle',
+        'Symfony\Component\HttpFoundation\Response'
+    ])->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Client')
 ];
 
 $config = new Configuration($rules, $finder);
