@@ -37,6 +37,15 @@ class LocaleReference
         return new self(null) ;
     }
 
+    public static function createFromNormalized(?string $normalizedReference): self
+    {
+        if (null === $normalizedReference) {
+            return LocaleReference::noReference();
+        }
+
+        return self::fromLocaleIdentifier(LocaleIdentifier::fromCode($normalizedReference));
+    }
+
     public function equals(LocaleReference $localeReference): bool
     {
         if ($localeReference->isEmpty() && $this->isEmpty()) {
@@ -47,6 +56,11 @@ class LocaleReference
         }
 
         return $this->identifier->equals($localeReference->identifier);
+    }
+
+    public function getIdentifier(): LocaleIdentifier
+    {
+        return $this->identifier;
     }
 
     public function normalize(): ?string

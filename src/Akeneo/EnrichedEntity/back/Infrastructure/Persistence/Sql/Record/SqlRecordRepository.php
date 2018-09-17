@@ -17,9 +17,11 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Ramsey\Uuid\Uuid;
@@ -33,12 +35,25 @@ class SqlRecordRepository implements RecordRepositoryInterface
     /** @var Connection */
     private $sqlConnection;
 
-    /**
-     * @param Connection $sqlConnection
-     */
-    public function __construct(Connection $sqlConnection)
-    {
+    /** @var RecordHydratorInterface */
+    private $recordHydrator;
+
+    /** @var FindValueKeyCollectionInterface */
+    private $findValueKeyCollection;
+
+    /** @var FindAttributesIndexedByIdentifierInterface */
+    private $findAttributesIndexedByIdentifier;
+
+    public function __construct(
+        Connection $sqlConnection,
+        RecordHydratorInterface $recordHydrator,
+        FindValueKeyCollectionInterface $findValueKeyCollection,
+        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+    ) {
         $this->sqlConnection = $sqlConnection;
+        $this->recordHydrator = $recordHydrator;
+        $this->findValueKeyCollection = $findValueKeyCollection;
+        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
     }
 
     public function count(): int
@@ -54,17 +69,20 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, data)
-        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :data);
+        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, value_collection)
+        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :value_collection);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => (string) $record->getIdentifier(),
-                'code' => (string) $record->getCode(),
+                'identifier'                 => (string) $record->getIdentifier(),
+                'code'                       => (string) $record->getCode(),
                 'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
-                'labels' => $serializedLabels,
-                'data' => '{}'
+                'labels'                     => $serializedLabels,
+                'value_collection'           => $record->getValues()->normalize(),
+            ],
+            [
+                'value_collection' => Type::JSON_ARRAY,
             ]
         );
         if ($affectedRows > 1) {
@@ -81,15 +99,18 @@ SQL;
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
         UPDATE akeneo_enriched_entity_record
-        SET labels = :labels, data = :data
+        SET labels = :labels, value_collection = :value_collection
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => $record->getIdentifier(),
-                'labels' => $serializedLabels,
-                'data' => '{}'
+                'identifier'       => $record->getIdentifier(),
+                'labels'           => $serializedLabels,
+                'value_collection' => $record->getValues()->normalize(),
+            ],
+            [
+                'value_collection' => Type::JSON_ARRAY,
             ]
         );
 
@@ -100,17 +121,19 @@ SQL;
         }
     }
 
-    public function getByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): Record
-    {
+    public function getByEnrichedEntityAndCode(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code
+    ): Record {
         $fetch = <<<SQL
-        SELECT identifier, code, enriched_entity_identifier, labels
+        SELECT identifier, code, enriched_entity_identifier, labels, value_collection
         FROM akeneo_enriched_entity_record
         WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'code' => (string) $code,
+                'code'                       => (string) $code,
                 'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
             ]
         );
@@ -120,13 +143,13 @@ SQL;
             throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
         }
 
-        return $this->hydrateRecord($result['identifier'], $result['code'], $result['enriched_entity_identifier'], $result['labels']);
+        return $this->hydrateRecord($result);
     }
 
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
         $fetch = <<<SQL
-        SELECT identifier, code, enriched_entity_identifier, labels
+        SELECT identifier, code, enriched_entity_identifier, labels, value_collection
         FROM akeneo_enriched_entity_record
         WHERE identifier = :identifier;
 SQL;
@@ -142,34 +165,18 @@ SQL;
             throw RecordNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateRecord($result['identifier'], $result['code'], $result['enriched_entity_identifier'], $result['labels']);
+        return $this->hydrateRecord($result);
     }
 
-    private function hydrateRecord(
-        string $identifier,
-        string $code,
-        string $enrichedEntityIdentifier,
-        string $normalizedLabels
-    ): Record {
-        $platform = $this->sqlConnection->getDatabasePlatform();
-
-        $labels = json_decode($normalizedLabels, true);
-        $identifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($identifier, $platform);
-        $enrichedEntityIdentifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($enrichedEntityIdentifier, $platform);
-        $code = Type::getType(Type::STRING)
-            ->convertToPHPValue($code, $platform);
-
-        $record = Record::create(
-            RecordIdentifier::fromString($identifier),
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
-            RecordCode::fromString($code),
-            $labels,
-            ValueCollection::fromValues([])
+    public function nextIdentifier(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code
+    ): RecordIdentifier {
+        return RecordIdentifier::create(
+            (string) $enrichedEntityIdentifier,
+            (string) $code,
+            Uuid::uuid4()->toString()
         );
-
-        return $record;
     }
 
     private function getSerializedLabels(Record $record): string
@@ -182,12 +189,25 @@ SQL;
         return json_encode($labels);
     }
 
-    public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): RecordIdentifier
+    private function getEnrichedEntityIdentifier($result): EnrichedEntityIdentifier
     {
-        return RecordIdentifier::create(
-            (string) $enrichedEntityIdentifier,
-            (string) $code,
-            Uuid::uuid4()->toString()
+        if (!isset($result['enriched_entity_identifier'])) {
+            throw new \LogicException('The record should have an enriched entity identifier');
+        }
+        $normalizedEnrichedEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $result['enriched_entity_identifier'],
+            $this->sqlConnection->getDatabasePlatform()
         );
+
+        return EnrichedEntityIdentifier::fromString($normalizedEnrichedEntityIdentifier);
+    }
+
+    private function hydrateRecord($result): Record
+    {
+        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifier($result);
+        $valueKeyCollection = ($this->findValueKeyCollection)($enrichedEntityIdentifier);
+        $indexedAttributes = ($this->findAttributesIndexedByIdentifier)($enrichedEntityIdentifier);
+
+        return $this->recordHydrator->hydrate($result, $valueKeyCollection, $indexedAttributes);
     }
 }

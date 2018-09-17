@@ -9,12 +9,15 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository
         arguments:
             - '@database_connection'
-            - '@akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
 
     akeneo_enrichedentity.infrastructure.persistence.repository.record:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlRecordRepository
         arguments:
             - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.record.hydrator.record'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
 
     # Enriched entities query functions
     akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
@@ -75,14 +78,20 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.expected_attributes:
-        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlExpectedAttributes
+    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier
         arguments:
             - '@database_connection'
-            - '@akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
 
-    # hydrators
-    akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute_hydrator_registry:
+    akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollection
+        arguments:
+            - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    # attribute hydrators
+    akeneo_enrichedentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry
 
     akeneo_enrichedentity.infrastructure.persistence.hydrator.attribute.text_attribute_hydrator:
@@ -98,3 +107,29 @@ services:
             - '@database_connection'
         tags:
             - { name: akeneo_enrichedentity.attribute_hydrator }
+
+    # value hydrators
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator.data_hydrator_registry:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry
+
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator.record:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.record.hydrator.value'
+
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator.value:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator
+        arguments:
+            - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.record.hydrator.data_hydrator_registry'
+
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator.text_data:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\TextDataHydrator
+        tags:
+            - { name: akeneo_enrichedentity.data_hydrator }
+
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator.file_data:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator
+        tags:
+            - { name: akeneo_enrichedentity.data_hydrator }

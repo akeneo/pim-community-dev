@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
@@ -29,14 +26,14 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ExpectedAttributesInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use PHPUnit\Framework\Assert;
 
-class SqlExpectedAttributesTest extends SqlIntegrationTestCase
+class SqlFindValueKeyCollection extends SqlIntegrationTestCase
 {
-    /** @var ExpectedAttributesInterface */
-    private $expectedAttributes;
+    /** @var FindValueKeyCollectionInterface */
+    private $findValueKeyCollection;
 
     private $order = 0;
 
@@ -44,7 +41,7 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->expectedAttributes = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.expected_attributes');
+        $this->findValueKeyCollection = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection');
         $this->resetDB();
         $this->loadEnrichedEntity();
     }
@@ -54,56 +51,34 @@ class SqlExpectedAttributesTest extends SqlIntegrationTestCase
      */
     public function it_returns_all_attributes()
     {
-        $resetLocale = <<<SQL
-        INSERT INTO `pim_catalog_locale` (`code`, `is_activated`)
-        VALUES
-            ('de_DE', 1),
-            ('en_US', 1),
-            ('fr_FR', 1);
-SQL;
-        $resetCategory = <<<SQL
-INSERT INTO `pim_catalog_category` (`id`, `parent_id`, `code`, `created`, `root`, `lvl`, `lft`, `rgt`)
-        VALUES
-            (1, NULL, 'master', '2018-09-04 20:00:54', 1, 0, 1, 2);
-SQL;
-        $resetChannel = <<<SQL
-        INSERT INTO `pim_catalog_channel` (`category_id`, `code`, `conversionUnits`)
-        VALUES
-            (1, 'mobile', 'a:0:{}'),
-            (1, 'print', 'a:0:{}'),
-            (1, 'ecommerce', 'a:0:{}');
-SQL;
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_locale;');
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_category;');
-        $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_channel;');
-        $this->get('database_connection')->executeQuery($resetLocale);
-        $this->get('database_connection')->executeQuery($resetCategory);
-        $this->get('database_connection')->executeQuery($resetChannel);
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetCategoryChannelAndLocale();
 
         $designer = EnrichedEntityIdentifier::fromString('designer');
         $image = $this->loadAttribute('designer', 'image', false, false);
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
-        $results = ($this->expectedAttributes)($designer);
+        $actualValueKeyCollection = ($this->findValueKeyCollection)($designer);
 
-        $this->assertContains(sprintf('%s', $image->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_en_US', $name->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_de_DE', $name->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_fr_FR', $name->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_ecommerce', $age->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_mobile', $age->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_print', $age->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_mobile_en_US', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_print_en_US', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_ecommerce_de_DE', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_print_de_DE', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_mobile_fr_FR', $weight->getIdentifier()), $results);
-        $this->assertContains(sprintf('%s_print_fr_FR', $weight->getIdentifier()), $results);
-        $this->assertSame(count($results), 16);
+        $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
+        $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
+        $this->assertSame(count($normalizedActualValueKeyCollection), 16);
+        $this->assertContains(sprintf('%s', $image->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_en_US', $name->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_de_DE', $name->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_fr_FR', $name->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_ecommerce', $age->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_mobile', $age->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_print', $age->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_mobile_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_print_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_ecommerce_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_print_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_mobile_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_print_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
     }
 
     private function resetDB(): void

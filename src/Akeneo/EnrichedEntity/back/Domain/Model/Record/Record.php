@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 
 /**
@@ -103,6 +104,11 @@ class Record
     public function setValues(ValueCollection $valueCollection): void
     {
         $this->valueCollection = $valueCollection;
+    }
+
+    public function getValues(): ValueCollection
+    {
+        return $this->valueCollection;
     }
 
     public function normalize(): array

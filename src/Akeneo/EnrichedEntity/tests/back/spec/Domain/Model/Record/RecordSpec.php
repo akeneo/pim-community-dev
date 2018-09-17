@@ -61,6 +61,8 @@ class RecordSpec extends ObjectBehavior
         $this->getEnrichedEntityIdentifier()->shouldBeLike($enrichedEntityIdentifier);
     }
 
+    // TODO Missing specs
+
     public function it_is_comparable()
     {
         $sameIdentifier = RecordIdentifier::fromString('designer_starck_fingerprint');

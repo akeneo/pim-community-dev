@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator;
 
+use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorInterface;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\HydratorInterface;
 use PhpSpec\ObjectBehavior;
 
 class AttributeHydratorRegistrySpec extends ObjectBehavior
@@ -14,8 +14,8 @@ class AttributeHydratorRegistrySpec extends ObjectBehavior
     }
 
     function it_registers_multiple_hydrators_and_returns_them(
-        HydratorInterface $attributeHydrator1,
-        HydratorInterface $attributeHydrator2
+        AttributeHydratorInterface $attributeHydrator1,
+        AttributeHydratorInterface $attributeHydrator2
     ) {
         $attributeHydrator1->supports(['hydrate_1'])->willReturn(true);
         $attributeHydrator1->supports(['hydrate_2'])->willReturn(false);

@@ -13,16 +13,38 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Record;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\FileData;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
 class SqlRecordRepositoryTest extends SqlIntegrationTestCase
@@ -36,13 +58,13 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
         $this->resetDB();
-        $this->insertEnrichedEntity();
+        $this->loadEnrichedEntityWithAttributes();
     }
 
     /**
      * @test
      */
-    public function it_creates_a_record_and_returns_it()
+    public function it_creates_a_record_with_no_values_and_returns_it()
     {
         $recordCode = RecordCode::fromString('starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
@@ -58,7 +80,71 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->create($record);
 
         $recordFound = $this->repository->getByIdentifier($identifier);
-        $this->assertRecord($record, $recordFound);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_record_with_and_finds_it_by_enriched_entity_and_record_code()
+    {
+        $recordCode = RecordCode::fromString('starck');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([])
+        );
+
+        $this->repository->create($record);
+
+        $recordFound = $this->repository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_record_with_values_and_returns_it()
+    {
+        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetCategoryChannelAndLocale();
+
+        $recordCode = RecordCode::fromString('starck');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $fileInfo = new FileInfo();
+        $fileInfo
+            ->setOriginalFilename('image.png')
+            ->setKey('/a/file/image');
+
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_designer_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('Philippe Stark')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($fileInfo)
+                )
+            ])
+        );
+
+        $this->repository->create($record);
+
+        $recordFound = $this->repository->getByIdentifier($identifier);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 
     /**
@@ -90,20 +176,51 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $fileInfo = new FileInfo();
+        $fileInfo
+            ->setOriginalFilename('image.png')
+            ->setKey('/a/file/image');
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            ValueCollection::fromValues([])
+            ValueCollection::fromValues([
+                Value::create(
+                    AttributeIdentifier::fromString('name_designer_fingerprint'),
+                    ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                    LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                    TextData::fromString('An old description')
+                ),
+                Value::create(
+                    AttributeIdentifier::fromString('image_designer_fingerprint'),
+                    ChannelReference::noReference(),
+                    LocaleReference::noReference(),
+                    FileData::createFromFileinfo($fileInfo)
+                )
+            ])
         );
         $this->repository->create($record);
         $record->setLabels(LabelCollection::fromArray(['fr_FR' => 'Coco']));
+        $valueToUpdate = Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+            TextData::fromString('An completely new and updated description')
+        );
+        $valueToAdd = Value::create(
+            AttributeIdentifier::fromString('name_designer_fingerprint'),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+            TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
+        );
+        $updatedValueCollection = ValueCollection::fromValues([$valueToUpdate, $valueToAdd]);
+        $record->setValues($updatedValueCollection);
 
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);
 
-        $this->assertRecord($record, $recordFound);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 
     /**
@@ -187,28 +304,12 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->getByIdentifier($identifier);
     }
 
-    private function assertRecord(
-        Record $expectedRecord,
-        Record $recordFound
-    ): void {
-        $this->assertTrue($expectedRecord->equals($recordFound));
-        $labelCodesExpected = $expectedRecord->getLabelCodes();
-        $labelCodesFound = $recordFound->getLabelCodes();
-        sort($labelCodesExpected);
-        sort($labelCodesFound);
-        $this->assertSame($labelCodesExpected, $labelCodesFound);
-        foreach ($expectedRecord->getLabelCodes() as $localeCode) {
-            $this->assertEquals($expectedRecord->getLabel($localeCode),
-                $recordFound->getLabel($localeCode));
-        }
-    }
-
     private function resetDB(): void
     {
         $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
     }
 
-    private function insertEnrichedEntity(): void
+    private function loadEnrichedEntityWithAttributes(): void
     {
         $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
         $enrichedEntity = EnrichedEntity::create(
@@ -220,5 +321,34 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             null
         );
         $repository->create($enrichedEntity);
+
+        $name = TextAttribute::createText(
+            AttributeIdentifier::create('designer', 'name', 'fingerprint'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('name'),
+            LabelCollection::fromArray(['en_US' => 'Name']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(true),
+            AttributeValuePerLocale::fromBoolean(true),
+            AttributeMaxLength::fromInteger(155),
+            AttributeValidationRule::none(),
+            AttributeRegularExpression::createEmpty()
+        );
+        $image = ImageAttribute::create(
+            AttributeIdentifier::create('designer', 'image', 'fingerprint'),
+            EnrichedEntityIdentifier::fromString('designer'),
+            AttributeCode::fromString('image'),
+            LabelCollection::fromArray(['en_US' => 'Image']),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxFileSize::fromString('250.2'),
+            AttributeAllowedExtensions::fromList(['png'])
+        );
+        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $attributesRepository->create($name);
+        $attributesRepository->create($image);
     }
 }

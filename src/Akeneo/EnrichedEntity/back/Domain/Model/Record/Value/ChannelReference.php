@@ -37,6 +37,15 @@ class ChannelReference
         return new self(null);
     }
 
+    public static function createfromNormalized(?string $normalizedReference): self
+    {
+        if (null === $normalizedReference) {
+            return ChannelReference::noReference();
+        }
+
+        return self::fromChannelIdentifier(ChannelIdentifier::fromCode($normalizedReference));
+    }
+
     public function equals(ChannelReference $channelReference): bool
     {
         if ($channelReference->isEmpty() && $this->isEmpty()) {
@@ -47,6 +56,11 @@ class ChannelReference
         }
 
         return $this->identifier->equals($channelReference->identifier);
+    }
+
+    public function getIdentifier(): ChannelIdentifier
+    {
+        return $this->identifier;
     }
 
     public function normalize(): ?string

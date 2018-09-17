@@ -17,8 +17,13 @@ class AttributeValuePerChannelSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeValuePerChannel::class);
     }
 
-    function it_tells_if_it_is_yes()
+    function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn(true);
+    }
+
+    function it_tells_if_it_is_true()
+    {
+        $this->isTrue()->shouldReturn(true);
     }
 }

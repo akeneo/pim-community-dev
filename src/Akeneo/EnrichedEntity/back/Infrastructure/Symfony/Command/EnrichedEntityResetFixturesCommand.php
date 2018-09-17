@@ -126,7 +126,7 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     `code` VARCHAR(255) NOT NULL,
     `enriched_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
-    `data` JSON NOT NULL,
+    `value_collection` JSON NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE `akeneoenriched_entity_record_identifier_index` (`identifier`, `enriched_entity_identifier`),
     CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
@@ -261,7 +261,7 @@ SQL;
     private function loadRecords(): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `data`)
+INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `value_collection`)
 VALUES
   ('designer_starck_1', 'starck', 'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
   ('designer_dyson_2',  'dyson', 'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),

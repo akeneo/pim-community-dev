@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryExpectedAttributes implements ExpectedAttributesEnrichedEntityInterface
+class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
     /**
      * {@inheritdoc}

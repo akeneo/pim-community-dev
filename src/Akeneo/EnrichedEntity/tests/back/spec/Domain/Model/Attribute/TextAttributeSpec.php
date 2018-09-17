@@ -540,4 +540,14 @@ class TextAttributeSpec extends ObjectBehavior
         $this->setIsRichTextEditor(AttributeIsRichTextEditor::fromBoolean(false));
         $this->normalize()['is_rich_text_editor']->shouldBeEqualTo(false);
     }
+
+    function it_tells_if_it_has_a_value_per_channel()
+    {
+        $this->hasValuePerChannel()->shouldReturn(true);
+    }
+
+    function it_tells_if_it_has_a_value_per_locale()
+    {
+        $this->hasValuePerLocale()->shouldReturn(true);
+    }
 }

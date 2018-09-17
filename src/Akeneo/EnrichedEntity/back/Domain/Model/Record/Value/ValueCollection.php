@@ -6,6 +6,12 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * Values are indexed by value keys.
+ *
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ */
 class ValueCollection
 {
     /** @var array */
@@ -13,38 +19,37 @@ class ValueCollection
 
     private function __construct(array $values)
     {
-        Assert::allIsInstanceOf(
-            $values,
-            Value::class,
-            sprintf('All values should be instance of %s', Value::class)
-        );
-
         $this->values = $values;
     }
 
     public function normalize(): array
     {
-        $valuesNormalized = [];
-        foreach ($this->values as $value) {
-            $valuesNormalized[] = $value->normalize();
-        }
-
-        return $valuesNormalized;
+        return array_map(function (Value $value) {
+            return $value->normalize();
+        }, $this->values);
     }
 
     public function setValue(Value $newValue): ValueCollection
     {
-        $values = array_filter($this->values, function (Value $value) use ($newValue) {
-            return !($newValue->sameChannel($value) && $newValue->sameLocale($value) && $newValue->sameAttribute($value));
-        });
-
-        $values[] = $newValue;
+        $values = $this->values;
+        $key = $newValue->getValueKey()->__toString();
+        $values[$key] = $newValue;
 
         return new self($values);
     }
 
     public static function fromValues(array $values): ValueCollection
     {
-        return new self($values);
+        Assert::allIsInstanceOf(
+            $values,
+            Value::class,
+            sprintf('All values should be instance of %s', Value::class)
+        );
+        $indexedValues = [];
+        foreach ($values as $value) {
+            $indexedValues[(string) $value->getValueKey()] = $value;
+        }
+
+        return new self($indexedValues);
     }
 }
