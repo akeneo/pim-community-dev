@@ -57,7 +57,7 @@ class GetAttributesMappingByFamilyHandler
      */
     private function ensureFamilyExists(string $familyCode): void
     {
-        $family = $this->familyRepository->findOneBy(['code' => $familyCode]);
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
 
         if (! $family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(sprintf(

@@ -54,3 +54,10 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.subscription'
         tags:
             - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context\AttributesMappingContext'
+        arguments:
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+        tags:
+            - { name: 'fob.context_service' }

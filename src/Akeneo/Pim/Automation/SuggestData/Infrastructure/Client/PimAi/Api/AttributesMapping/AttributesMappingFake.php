@@ -27,19 +27,15 @@ class AttributesMappingFake implements AttributesMappingApiInterface
      */
     public function fetchByFamily(string $familyCode): AttributesMapping
     {
-        return new AttributesMapping([
-            [
-                'from' => [
-                    'id' => 'product_weight',
-                    'label' => [
-                        'en_us' => 'Product Weight',
-                    ]
-                ],
-                'to' => null,
-                'type' => 'metric',
-                'summary' => ['23kg',  '12kg'],
-                'status' => 'pending',
-            ],
-        ]);
+        $filename = sprintf('attributes-mapping-family-%s.json', $familyCode);
+
+        return new AttributesMapping(
+            json_decode(
+                file_get_contents(
+                    sprintf(__DIR__ . '/../resources/%s', $filename)
+                ),
+                true
+            )
+        );
     }
 }

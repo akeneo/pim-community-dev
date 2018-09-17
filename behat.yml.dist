@@ -246,6 +246,7 @@ acceptance:
                 - akeneo_acceptance.context.suggest_data.data_fixtures
                 - akeneo_acceptance.context.suggest_data.product_fetching
                 - test.attribute.context
+                - akeneo_acceptance.context.suggest_data.attributes_mapping
             filters:
                 tags: '@acceptance-back'
         platform:

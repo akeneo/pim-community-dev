@@ -106,6 +106,16 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @param string $familyCode
+     *
+     * @Given the family ":familyCode"
+     */
+    public function theFamily(string $familyCode)
+    {
+        $this->loadFamily($familyCode);
+    }
+
+    /**
      * @param string $identifier
      * @param string $familyCode
      *
