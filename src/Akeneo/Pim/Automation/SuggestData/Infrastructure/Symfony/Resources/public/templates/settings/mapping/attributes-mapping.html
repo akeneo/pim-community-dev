@@ -3,6 +3,7 @@
     <tr class="AknGrid-header">
         <th class="AknGrid-headerCell AknGrid-headerCell--sixteen"><%- pim_ai_attribute %></th>
         <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
+        <th class="AknGrid-headerCell"></th>
         <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- suggest_data %></th>
     </tr>
     <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
@@ -15,6 +16,16 @@
                 <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
             </td>
             <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute-code="<%- pim_ai_attribute_code %>"></td>
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
+                <div class="AknButtonList AknButtonList--right">
+                    <div
+                            class="AknIconButton AknIconButton--small AknIconButton--edit AknButtonList-item option-mapping"
+                            data-pim-ai-attribute-code="<%- pim_ai_attribute_code %>"
+                            title="Edit"
+                            style="display: none;"
+                    ></div>
+                </div>
+            </td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">
                 <%- statuses[mapping[pim_ai_attribute_code].status] %>
             </td>

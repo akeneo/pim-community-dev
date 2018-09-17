@@ -3,6 +3,7 @@ import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
+const FetcherRegistry = require('pim/fetcher-registry');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
 const noDataTemplate = require('pim/template/common/no-data');
 
@@ -89,54 +90,36 @@ class AttributeMapping extends BaseForm {
     this.$el.html('');
     const familyMapping: NormalizedAttributeMappingInterface = this.getFormData();
     const mapping = familyMapping.hasOwnProperty('mapping') ? familyMapping.mapping : {};
-    const statuses: { [key: number]: string } = {};
-    statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
-    statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
-    statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
-
-    this.$el.html(this.template({
+    const gridHtml = this.template({
       mapping,
-      statuses,
+      statuses: this.getMappingStatuses(),
       pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
       catalog_attribute: __(this.config.labels.catalog_attribute),
       suggest_data: __(this.config.labels.suggest_data),
-    }) + this.noDataTemplate({
+    });
+    const noDataHtml = this.noDataTemplate({
       __,
       imageClass: '',
       hint: __('pim_datagrid.no_results', {
         entityHint: __('akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute'),
       }),
       subHint: 'pim_datagrid.no_results_subtitle',
-    }));
-
-    Object.keys(mapping).forEach((pimAiAttributeCode) => {
-      const $dom = this.$el.find(
-        '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]',
-      );
-      const attributeSelector = new SimpleSelectAttribute({
-        config: {
-          /**
-           * The normalized managed object looks like:
-           * { mapping: {
-           *     pim_ai_attribute_code_1: { attribute: 'foo' ... },
-           *     pim_ai_attribute_code_2: { attribute: 'bar' ... }
-           * } }
-           */
-          fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
-          label: '',
-          choiceRoute: 'pim_enrich_attribute_rest_index',
-          types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
-        },
-        className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline',
-      });
-      attributeSelector.configure().then(() => {
-        attributeSelector.setParent(this);
-        $dom.html(attributeSelector.render().$el);
-      });
     });
 
-    this.toggleNoDataMessage();
+    this.$el.html(gridHtml + noDataHtml);
 
+    Object.keys(mapping).forEach((pimAiAttributeCode: string) => {
+      this.appendAttributeSelector(mapping, pimAiAttributeCode);
+    });
+
+    this.toggleAttributeOptionButtons(Object.keys(mapping).reduce((acc, pimAiAttributeCode: string) => {
+      acc[pimAiAttributeCode] = mapping[pimAiAttributeCode].attribute;
+
+      return acc;
+    }, <{ [key: string]: string }> {}));
+
+
+    this.toggleNoDataMessage();
     this.renderExtensions();
 
     return this;
@@ -212,6 +195,71 @@ class AttributeMapping extends BaseForm {
     return words.reduce((acc, word) => {
       return acc && rowValue.indexOf(word) >= 0;
     }, true);
+  }
+
+  /**
+   * @param mapping
+   * @param {string} pimAiAttributeCode
+   */
+  private appendAttributeSelector(mapping: any, pimAiAttributeCode: string) {
+    const $dom = this.$el.find(
+      '.attribute-selector[data-pim-ai-attribute-code="' + pimAiAttributeCode + '"]'
+    );
+    const attributeSelector = new SimpleSelectAttribute({
+      config: {
+        fieldName: 'mapping.' + pimAiAttributeCode + '.attribute',
+        label: '',
+        choiceRoute: 'pim_enrich_attribute_rest_index',
+        types: AttributeMapping.VALID_MAPPING[mapping[pimAiAttributeCode].pim_ai_attribute.type],
+      },
+      className: 'AknFieldContainer AknFieldContainer--withoutMargin AknFieldContainer--inline'
+    });
+    attributeSelector.configure().then(() => {
+      attributeSelector.setParent(this);
+      $dom.html(attributeSelector.render().$el);
+    });
+  }
+
+  /**
+   *
+   * @returns {{ [ key: number ]: string }}
+   */
+  private getMappingStatuses() {
+    const statuses: { [key: number]: string } = {};
+    statuses[AttributeMapping.ATTRIBUTE_PENDING] = __(this.config.labels.pending);
+    statuses[AttributeMapping.ATTRIBUTE_MAPPED] = __(this.config.labels.mapped);
+    statuses[AttributeMapping.ATTRIBUTE_UNMAPPED] = __(this.config.labels.unmapped);
+
+    return statuses;
+  }
+
+  /**
+   * This method will show or hide the Attribute Option buttons.
+   * The first parameter is the current mapping, from pimAiAttribute to pimAttribute.
+   *
+   * @param {{ [key: string]: string | null}} mapping
+   */
+  private toggleAttributeOptionButtons(mapping: { [key: string]: string | null }) {
+    const pimAttributes = Object.values(mapping).filter((pimAttribute) => {
+      return '' !== pimAttribute && null !== pimAttribute;
+    });
+
+    FetcherRegistry
+      .getFetcher('attribute')
+      .fetchByIdentifiers(pimAttributes)
+      .then((attributes: { code: string, type: string }[]) => {
+      Object.keys(mapping).forEach((pimAiAttribute) => {
+        const $attributeOptionButton = this.$el.find('.option-mapping[data-pim-ai-attribute-code=' + pimAiAttribute + ']');
+        const attribute = attributes.find((attribute: { code: string, type: string }) => {
+          return attribute.code === mapping[pimAiAttribute];
+        });
+        const type = undefined === attribute ? '' : attribute.type;
+
+        ['pim_catalog_simpleselect', 'pim_catalog_multiselect'].indexOf(type) >= 0 ?
+          $attributeOptionButton.show() :
+          $attributeOptionButton.hide();
+      });
+    });
   }
 }
 
