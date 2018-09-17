@@ -19,7 +19,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Webmozart\Assert\Assert;
 
 /**
- * Each Record value is identified by a single key, composed of
+ * Each Record value is identified by a single key, generated from
  *  - Attribute identifier
  *  - Channel
  *  - Locale
