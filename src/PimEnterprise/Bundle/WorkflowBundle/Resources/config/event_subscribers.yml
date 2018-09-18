@@ -129,3 +129,17 @@ services:
             - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.product_draft.updated_author:
+        class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\UpdateDraftAuthorSubscriber
+        arguments:
+            - '@pimee_workflow.sql.product.update_draft_author'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.product_model_draft.updated_author:
+        class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelDraft\UpdateDraftAuthorSubscriber
+        arguments:
+            - '@pimee_workflow.sql.product_model.update_draft_author'
+        tags:
+            - { name: kernel.event_subscriber }
