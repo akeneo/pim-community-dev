@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ListAttributeEndToEnd extends ApiTestCase
 {
+    /**
+     * @critical
+     */
     public function testAttributes()
     {
         $client = $this->createAuthenticatedClient();
@@ -55,6 +58,9 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+    /**
+     * @critical to merge with the first one to test the pagination
+     */
     public function testAttributesWithLimitAndPage()
     {
         $client = $this->createAuthenticatedClient();
