@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\Service;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Service;
 
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
 
 /**
  * Aggregation of catalog volumes, for the queries too expensive to be executed live.

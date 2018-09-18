@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel;
+namespace spec\Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
 class AverageMaxVolumesSpec extends ObjectBehavior
 {

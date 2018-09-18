@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
 
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
 
 class AggregatedAverageMaxOptionsPerAttributeIntegration extends TestCase
 {

@@ -6,9 +6,9 @@ namespace spec\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller\VolumeMonitoringController;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VolumeMonitoringControllerSpec extends ObjectBehavior

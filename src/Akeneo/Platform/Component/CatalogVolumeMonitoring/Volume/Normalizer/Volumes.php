@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

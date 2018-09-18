@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+namespace spec\Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 class VolumesSpec extends ObjectBehavior
 {

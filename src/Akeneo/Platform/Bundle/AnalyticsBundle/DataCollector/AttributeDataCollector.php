@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Platform\Bundle\AnalyticsBundle\Doctrine\Query;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 
 /**
  * Collect data about attributes:

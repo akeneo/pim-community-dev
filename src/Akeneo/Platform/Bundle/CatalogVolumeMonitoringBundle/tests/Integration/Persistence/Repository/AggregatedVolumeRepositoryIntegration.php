@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Repository;
 
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
 
 class AggregatedVolumeRepositoryIntegration extends TestCase
 {

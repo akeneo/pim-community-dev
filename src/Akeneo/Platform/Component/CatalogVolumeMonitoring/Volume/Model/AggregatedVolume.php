@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\CatalogVolumeMonitoring\Volume\Model;
+namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model;
 
 /**
  * Represents a previously aggregated volume.
