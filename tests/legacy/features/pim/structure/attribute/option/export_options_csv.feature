@@ -4,6 +4,7 @@ Feature: Export options
   As a product manager
   I need to be able to export options
 
+  @critical
   Scenario: Successfully export options in CSV
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_option_export" configuration:

@@ -10,6 +10,7 @@ Feature: Create an attribute
     And I am on the attributes page
     And I create a "Text" attribute
 
+  @critical
   Scenario: Successfully create and validate a text attribute
     Given I fill in the following information:
       | Code            | short_description |
@@ -22,7 +23,7 @@ Feature: Create an attribute
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
-    
+
   @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', 'entity_type' '*_groups' and '*_products' are reserved for grid filters and import/export column names
   Scenario: Fail to create a text attribute with a reserved code
     Given I change the "Code" to "categories"

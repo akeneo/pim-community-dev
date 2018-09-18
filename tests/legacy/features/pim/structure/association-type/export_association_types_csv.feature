@@ -4,6 +4,7 @@ Feature: Export association types
   As a product manager
   I need to be able to export association types
 
+  @critical
   Scenario: Successfully export association types
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_association_type_export" configuration:

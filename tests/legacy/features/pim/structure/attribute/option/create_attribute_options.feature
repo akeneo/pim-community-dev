@@ -8,6 +8,7 @@ Feature: Create attribute options
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
+  @critical
   Scenario: Successfully create some attribute options
     Given I am on the attributes page
     And I create a "Simple select" attribute
