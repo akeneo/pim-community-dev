@@ -4,6 +4,7 @@
         "sku",
         "mpn",
         "pim_brand",
+        "pim_upc",
         "name",
         "picture"
     ],

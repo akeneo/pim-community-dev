@@ -1,0 +1,7 @@
+{
+    "identifier": "product_without_values",
+    "family": "tshirt",
+    "categories": [],
+    "enabled": true,
+    "values": {}
+}

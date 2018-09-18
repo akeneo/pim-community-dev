@@ -22,19 +22,10 @@ Feature: Subscribe a product to PIM.ai
     Then the product "product_without_family" should not be subscribed
 
   Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
-    Given the following attribute:
-      | code | type                   |
-      | sku  | pim_catalog_identifier |
-      | ean  | pim_catalog_text       |
-    And the following family:
-      | code   | attributes | label-en_US |
-      | tshirt | sku,ean    | T-Shirt     |
-    And the following product:
-      | identifier             | family |
-      | product_without_values | tshirt |
+    Given the product "product_without_values" of the family "tshirt"
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
-      | upc         | ean            |
+      | upc         | pim_upc        |
     When I subscribe the product "product_without_values" to PIM.ai
     Then the product "product_without_values" should not be subscribed
 
