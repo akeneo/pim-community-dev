@@ -301,11 +301,15 @@ class AttributeMapping extends BaseForm {
         title: '',
         content: '',
         cancelText: ' ',
-        okText: __('confirmation.title')
+        okText: __('pim_common.confirm')
       });
       modal.open();
 
-      form.setElement(modal.$('.modal-body')).render();
+      form
+        .setFamilyLabel('family')
+        .setPimAiAttributeLabel('Pim Ai Attribute')
+        .setElement(modal.$('.modal-body'))
+        .render();
 
       modal.on('cancel', deferred.reject);
       modal.on('ok', () => {

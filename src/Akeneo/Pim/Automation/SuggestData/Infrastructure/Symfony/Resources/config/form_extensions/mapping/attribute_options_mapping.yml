@@ -2,3 +2,14 @@ extensions:
     pimee-suggest-data-settings-attribute-options-mapping-edit:
         module: pimee/settings/mapping/attribute-options-mapping
         config: {}
+
+    pimee-suggest-data-settings-attribute-options-mapping-edit-description-header:
+        module: pim/common/simple-view
+        parent: pimee-suggest-data-settings-attribute-options-mapping-edit
+        targetZone: header
+        config:
+            template: pim/template/common/description-header
+            templateParams:
+                title: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.sub_title
+                illustration: Helpcenter-settings.svg
+                description: akeneo_suggest_data.entity.attribute_options_mapping.module.edit.description

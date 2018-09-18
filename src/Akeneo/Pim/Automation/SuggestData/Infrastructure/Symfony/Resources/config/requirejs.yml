@@ -82,6 +82,7 @@ config:
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
         pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html
         pimee/template/settings/mapping/attributes-mapping: akeneosuggestdata/templates/settings/mapping/attributes-mapping.html
+        pimee/template/settings/mapping/attribute-options-mapping: akeneosuggestdata/templates/settings/mapping/attribute-options-mapping.html
         pimee/template/settings/mapping/tabs: akeneosuggestdata/templates/settings/mapping/tabs.html
         pimee/template/settings/mapping/family-mapping: akeneosuggestdata/templates/settings/mapping/family-mapping.html
         pimee/template/settings/mapping/attribute-line: akeneosuggestdata/templates/settings/mapping/attribute-line.html

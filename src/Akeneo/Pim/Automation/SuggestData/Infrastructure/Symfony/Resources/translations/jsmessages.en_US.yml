@@ -49,19 +49,25 @@ akeneo_suggest_data:
                     subscribe: 'Subscribe family to PIM.ai'
                     subscribed: 'Subscribed to PIM.ai'
                 index:
-                    error: "You need to create a family in your catalog to access this page."
+                  error: "You need to create a family in your catalog to access this page."
             constraint:
                 missing_target_key: 'Missing target key for mapping'
-                missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{targetKey }}"'
+                missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{ targetKey }}"'
                 invalid_attribute_type_mapping: 'The external attribute type "{{ targetType }}" cannot be mapped to PIM attribute type "{{ pimType }}"'
         product_subscription:
-            flash:
-                create:
-                    success: 'Product successfully subscribed to PIM.ai'
-                    fail: 'Impossible to subscribe product to PIM.ai'
-                delete:
-                    success: 'Product successfully unsubscribed from PIM.ai'
-                    fail: 'Impossible to unsubscribe product from PIM.ai'
+          flash:
+            create:
+              success: 'Product successfully subscribed to PIM.ai'
+              fail: 'Impossible to subscribe product to PIM.ai'
+            delete:
+              success: 'Product successfully unsubscribed from PIM.ai'
+              fail: 'Impossible to unsubscribe product from PIM.ai'
+        attribute_options_mapping:
+            module:
+                edit:
+                    title: '{{ familyLabel }} - {{ pimAiAttributeLabel }} attribute options'
+                    sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
+                    description: 'In order to help enrich your catalog, Franklin will need to know your catalog attribute options that match his. <a href="" target="_blank">Read more</a>'
 
     product:
         edit:
