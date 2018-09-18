@@ -25,7 +25,7 @@ $rules = [
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
         'Akeneo\Tool\Component\Connector',
         'Akeneo\Platform\Bundle\NotificationBundle', // TODO: you should find a way to push notifications to the platform instead of coupling asset to the platform
-        'Pim\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
         'Gedmo\Exception\UnexpectedValueException', // TODO Remove it
         // TODO: We should use id instead of reference
