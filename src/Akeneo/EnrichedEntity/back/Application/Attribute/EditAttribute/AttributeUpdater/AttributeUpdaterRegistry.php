@@ -33,9 +33,8 @@ class AttributeUpdaterRegistry implements AttributeUpdaterRegistryInterface
 
         throw new \RuntimeException(
             sprintf(
-                'There was no updater found to update the attribute "%s" of the enriched entity "%s" with the given command',
-                $command->identifier['identifier'],
-                $command->identifier['enriched_entity_identifier']
+                'There was no updater found to update the attribute "%s" with the given command',
+                $command->identifier
             )
         );
     }

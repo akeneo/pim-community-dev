@@ -63,23 +63,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_lists_all_attributes_for_an_enriched_entity(): void
     {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::INDEX_ATTRIBUTE_ROUTE,
-            [
-                'enrichedEntityIdentifier' => 'designer',
-            ],
-            'GET',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ]
-        );
-
-        $this->webClientHelper->assertFromFile(
-            $this->client->getResponse(),
-            self::RESPONSES_DIR . 'ok.json'
-        );
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
     }
 
     /**
@@ -87,25 +71,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_empty_list_if_the_enriched_entity_does_not_have_any_attributes(): void
     {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::INDEX_ATTRIBUTE_ROUTE,
-            [
-                'enrichedEntityIdentifier' => 'brand',
-            ],
-            'GET',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ]
-        );
-
-        $expectedContent = [];
-
-        $this->webClientHelper->assertFromFile(
-            $this->client->getResponse(),
-            self::RESPONSES_DIR . 'ok_empty.json'
-        );
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'empty_list.json');
     }
 
     /**
@@ -113,20 +79,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
     {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::INDEX_ATTRIBUTE_ROUTE,
-            [
-                'enrichedEntityIdentifier' => 'unknown_enriched_Entity',
-            ],
-            'GET',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ]
-        );
-
-        $this->webClientHelper->assert404NotFound($this->client->getResponse());
+        $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'not_found.json');
     }
 
     private function loadFixtures(): void

@@ -1,70 +1,93 @@
 {
-  "status": 400,
-  "content": [
-    {
-      "messageTemplate":"pim_enriched_entity.attribute.validation.code.should_exist",
-      "parameters":[],
-      "plural": null,
-      "message": "The attribute was not found",
-      "root": {
-        "editCommands": [
-          {
-            "isRequired": false,
-            "identifier":"unknown"
-          },
-          {
-            "labels": {
-              "fr_FR": "Uknown"
-            },
-            "identifier": "unknown"
-          },
-          {
-            "maxFileSize": "500.2",
-            "identifier": "unknown"
-          },
-          {
-            "allowedExtensions": [
-              "jpeg"
-            ],
-            "identifier": "unknown"
-          }
-        ],
-        "identifier": "unknown"
+  "request": {
+    "method": "POST",
+    "relative_url": "/rest/enriched_entity/designer/attribute/unknown",
+    "body": {
+      "identifier": "unknown",
+      "enriched_entity_identifier": "designer",
+      "code": "unknown_attribute_code",
+      "labels": {
+        "fr_FR": "Uknown"
       },
-      "propertyPath": "code",
-      "invalidValue": {
-        "editCommands": [
-          {
-            "isRequired": false,
-            "identifier": "unknown"
-          },
-          {
-            "labels": {
-              "fr_FR": "Uknown"
-            },
-            "identifier": "unknown"
-          },
-          {
-            "maxFileSize": "500.2",
-            "identifier": "unknown"
-          },
-          {
-            "allowedExtensions": [
-              "jpeg"
-            ],
-            "identifier": "unknown"
-          }
-        ],
-        "identifier": "unknown"
-      },
-      "constraint": {
-        "targets": "class",
-        "defaultOption": null,
-        "requiredOptions": [],
-        "payload": null
-      },
-      "cause": null,
-      "code": null
+      "order": 0,
+      "is_required": false,
+      "value_per_channel": false,
+      "value_per_locale": false,
+      "type": "wrong_type",
+      "max_file_size": "500.2",
+      "allowed_extensions": [
+        "jpeg"
+      ]
     }
-  ]
+  },
+  "response": {
+    "status": 400,
+    "body": [
+      {
+        "messageTemplate": "pim_enriched_entity.attribute.validation.code.should_exist",
+        "parameters": [],
+        "plural": null,
+        "message": "The attribute was not found",
+        "root": {
+          "editCommands": [
+            {
+              "isRequired": false,
+              "identifier": "unknown"
+            },
+            {
+              "labels": {
+                "fr_FR": "Uknown"
+              },
+              "identifier": "unknown"
+            },
+            {
+              "maxFileSize": "500.2",
+              "identifier": "unknown"
+            },
+            {
+              "allowedExtensions": [
+                "jpeg"
+              ],
+              "identifier": "unknown"
+            }
+          ],
+          "identifier": "unknown"
+        },
+        "propertyPath": "code",
+        "invalidValue": {
+          "editCommands": [
+            {
+              "isRequired": false,
+              "identifier": "unknown"
+            },
+            {
+              "labels": {
+                "fr_FR": "Uknown"
+              },
+              "identifier": "unknown"
+            },
+            {
+              "maxFileSize": "500.2",
+              "identifier": "unknown"
+            },
+            {
+              "allowedExtensions": [
+                "jpeg"
+              ],
+              "identifier": "unknown"
+            }
+          ],
+          "identifier": "unknown"
+        },
+        "constraint": {
+          "targets": "class",
+          "defaultOption": null,
+          "requiredOptions": [],
+          "payload": null
+        },
+        "cause": null,
+        "code": null
+      }
+    ]
+  }
 }

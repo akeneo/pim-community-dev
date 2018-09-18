@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "GET",
+    "relative_url": "/rest/enriched_entity/brand/attribute"
+  },
+  "response": {
+    "status": 200
+  }
+}

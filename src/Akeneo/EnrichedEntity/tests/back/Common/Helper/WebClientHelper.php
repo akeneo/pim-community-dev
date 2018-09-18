@@ -55,7 +55,9 @@ class WebClientHelper
             $response->getContent()
         );
         Assert::assertSame($statusCode, $response->getStatusCode(), $errorMessage);
-        Assert::assertSame($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
+        if ($expectedContent !== '') {
+            Assert::assertSame($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
+        }
     }
 
     public function assert403Forbidden(Response $response)
@@ -97,24 +99,60 @@ HTML;
         Assert::assertSame(500, $response->getStatusCode());
     }
 
-    public function assertFromFile(Response $response, string $relativeFilePath): void
+    public function assertRequest(Client $client, string $relativeFilePath)
     {
-        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
-        $expectedContent = $this->getContent($expectedResponse);
-        $this->assertResponse($response, $expectedResponse['status'], $expectedContent);
+        $this->callFromFile($client, $relativeFilePath);
+        $this->assertFromFile($client->getResponse(), $relativeFilePath);
     }
 
-    /**
-     */
-    private function getContent($expectedResponse): string
+    private function assertFromFile(Response $response, string $relativeFilePath): void
     {
-        if (is_array($expectedResponse['content'])) {
-            return json_encode($expectedResponse['content'], JSON_HEX_QUOT);
+        $expectedResponse = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        if (null === $expectedResponse) {
+            throw new \RuntimeException(
+                sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
+            );
         }
-        if (!$expectedResponse['content'] || empty($expectedResponse['content'])) {
+        $expectedContent = $this->getBody($expectedResponse['response']);
+        $this->assertResponse($response, $expectedResponse['response']['status'], $expectedContent);
+    }
+
+    private function callFromFile(Client $client, string $relativeFilePath): void
+    {
+        $requestFile = json_decode(file_get_contents(self::SHARED_RESPONSES_FILE_PATH_PREFIX . $relativeFilePath), true);
+        if (null === $requestFile) {
+            throw new \RuntimeException(
+                sprintf('Impossible to load "%s" file, the file is not be present or is malformed', $relativeFilePath)
+            );
+        }
+        $request = $requestFile['request'];
+        $headers = [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'CONTENT_TYPE'          => 'application/json',
+        ];
+        $body = $this->getBody($request);
+        $client->request($request['method'], $request['relative_url'], [], [], $headers, $body);
+    }
+
+    private function getBody(array $expectedResponse): string
+    {
+        $expectedContent = '';
+        if (array_key_exists('body', $expectedResponse)) {
+            $expectedContent = $this->encodeBody($expectedResponse['body']);
+        }
+
+        return $expectedContent;
+    }
+
+    private function encodeBody($expectedBody): string
+    {
+        if (is_array($expectedBody)) {
+            return json_encode($expectedBody, JSON_HEX_QUOT);
+        }
+        if (!$expectedBody || empty($expectedBody)) {
             return '';
         }
 
-        return json_encode($expectedResponse['content'], JSON_HEX_QUOT);
+        return json_encode($expectedBody, JSON_HEX_QUOT);
     }
 }

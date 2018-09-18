@@ -7,7 +7,7 @@
       "enriched_entity_identifier": "designer",
       "code": "A magic name",
       "labels": {
-        "fr_FR": "LABEL UPDATED",
+        "fr_FR": "Nom",
         "en_US": "Name"
       },
       "order": 10,
@@ -19,7 +19,6 @@
     }
   },
   "response": {
-    "status": 204,
-    "body": ""
+    "status": 403
   }
 }

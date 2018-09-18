@@ -87,7 +87,8 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['identifier'] !== $request->get('attributeIdentifier');
+        return $normalizedCommand['identifier'] !== $request->get('attributeIdentifier') ||
+            $normalizedCommand['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier');
     }
 
     private function getEditCommand(Request $request): AbstractEditAttributeCommand
