@@ -4,6 +4,7 @@ import {
   recordEditionImageUpdated,
   recordEditionErrorOccured,
   recordEditionSucceeded,
+  recordEditionValueUpdated,
 } from 'akeneoenrichedentity/domain/event/record/edit';
 import {
   notifyRecordWellSaved,
@@ -21,6 +22,7 @@ import File from 'akeneoenrichedentity/domain/model/file';
 import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
 import {redirectToRecordIndex} from 'akeneoenrichedentity/application/action/record/router';
 import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
+import Value from 'akeneoenrichedentity/domain/model/record/value';
 
 export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const record = denormalizeRecord(getState().form.data);
@@ -74,4 +76,8 @@ export const recordLabelUpdated = (value: string, locale: string) => (dispatch: 
 
 export const recordImageUpdated = (image: File) => (dispatch: any) => {
   dispatch(recordEditionImageUpdated(image));
+};
+
+export const recordValueUpdated = (value: Value) => (dispatch: any) => {
+  dispatch(recordEditionValueUpdated(value));
 };

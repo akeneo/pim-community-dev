@@ -50,10 +50,37 @@ export class RecordFetcherImplementation implements RecordFetcher {
         },
       },
       {
+        attribute: 'image_designer_d00e1ee1-6c3d-4280-ae45-b124994491f2',
+        locale: 'de_DE',
+        channel: null,
+        data: {
+          originalFilename: 'Designer.png',
+          filePath: '7/5/c/f/75cf0be0ab78fa0eb550841ef26c6d8c43ed44cd_designer.jpg',
+        },
+      },
+      {
         attribute: 'name_designer_16f624b3-0855-4e12-80b6-da077252a194',
         locale: 'fr_FR',
         channel: null,
-        data: 'This is his awesome name',
+        data: 'Le nom en français',
+      },
+      {
+        attribute: 'name_designer_16f624b3-0855-4e12-80b6-da077252a194',
+        locale: 'en_US',
+        channel: null,
+        data: 'This is his name in english',
+      },
+      {
+        attribute: 'name_designer_16f624b3-0855-4e12-80b6-da077252a194',
+        locale: 'de_DE',
+        channel: null,
+        data: 'Sein name auf Deutsch',
+      },
+      {
+        attribute: 'portrait_designer_1781b92b-6785-4bdf-9837-9f0db68902d4',
+        locale: null,
+        channel: null,
+        data: null,
       },
     ].map((value: any) => {
       return {

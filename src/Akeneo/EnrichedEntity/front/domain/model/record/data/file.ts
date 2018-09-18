@@ -5,7 +5,7 @@ class InvalidTypeError extends Error {}
 
 export type NormalizedFileData = NormalizedFile;
 
-export default class FileData extends Data {
+class FileData extends Data {
   private constructor(readonly fileData: File) {
     super();
 
@@ -24,10 +24,19 @@ export default class FileData extends Data {
     return new FileData(denormalizeFile(normalizedFileData));
   }
 
+  public getFile() {
+    return this.fileData;
+  }
+
+  public isEmpty(): boolean {
+    return this.fileData.isEmpty();
+  }
+
   public normalize(): NormalizedFileData {
     return this.fileData.normalize();
   }
 }
 
+export default FileData;
 export const create = FileData.create;
 export const denormalize = FileData.createFromNormalized;

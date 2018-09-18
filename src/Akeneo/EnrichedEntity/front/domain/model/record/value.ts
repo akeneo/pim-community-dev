@@ -1,24 +1,32 @@
-import ChannelReference from 'akeneoenrichedentity/domain/model/channel-reference';
-import LocaleReference from 'akeneoenrichedentity/domain/model/locale-reference';
+import ChannelReference, {NormalizedChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
+import LocaleReference, {NormalizedLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
 import Data from 'akeneoenrichedentity/domain/model/record/data';
 import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import {CommonConcreteAttribute} from 'akeneoenrichedentity/domain/model/attribute/common';
+import {NormalizedAttributeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
 
-export interface NormalizedValue {
-  attribute: NormalizedAttribute;
-  channel: string | null;
-  locale: string | null;
-  data: any;
-}
+export type NormalizedValue =
+  | {
+      attribute: NormalizedAttribute;
+      channel: NormalizedChannelReference;
+      locale: NormalizedLocaleReference;
+      data: any;
+    }
+  | {
+      attribute: NormalizedAttributeIdentifier;
+      channel: NormalizedChannelReference;
+      locale: NormalizedLocaleReference;
+      data: any;
+    };
 
 class InvalidTypeError extends Error {}
 
-export default class Value {
+class Value {
   private constructor(
-    private attribute: Attribute,
-    private channel: ChannelReference,
-    private locale: LocaleReference,
-    private data: Data
+    readonly attribute: Attribute,
+    readonly channel: ChannelReference,
+    readonly locale: LocaleReference,
+    readonly data: Data
   ) {
     if (!(attribute instanceof CommonConcreteAttribute)) {
       throw new InvalidTypeError('Value expect CommonConcreteAttribute as argument');
@@ -46,8 +54,18 @@ export default class Value {
     Object.freeze(this);
   }
 
+  setData(data: Data) {
+    return Value.create(this.attribute, this.channel, this.locale, data);
+  }
+
   public isEmpty(): boolean {
     return this.data.isEmpty();
+  }
+
+  public equals(value: Value): boolean {
+    return (
+      this.channel.equals(value.channel) && this.locale.equals(value.locale) && this.attribute.equals(value.attribute)
+    );
   }
 
   getChannel(): ChannelReference {
@@ -74,6 +92,16 @@ export default class Value {
       data: this.data.normalize(),
     };
   }
+
+  public normalizeMinimal(): NormalizedValue {
+    return {
+      attribute: this.attribute.identifier.normalize(),
+      channel: this.channel.normalize(),
+      locale: this.locale.normalize(),
+      data: this.data.normalize(),
+    };
+  }
 }
 
+export default Value;
 export const createValue = Value.create;

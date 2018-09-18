@@ -1,5 +1,7 @@
 class InvalidTypeError extends Error {}
 
+export type NormalizedLocaleReference = string | null;
+
 export default class LocaleReference {
   private constructor(private localeReference: string | null) {
     if (!('string' === typeof localeReference || null === localeReference)) {

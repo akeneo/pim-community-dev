@@ -30,6 +30,10 @@ export default class ValueCollection {
   public normalize(): NormalizedValue[] {
     return this.values.map((value: Value) => value.normalize());
   }
+
+  public normalizeMinimal(): NormalizedValue[] {
+    return this.values.filter((value: Value) => !value.isEmpty()).map((value: Value) => value.normalizeMinimal());
+  }
 }
 
 export const createValueCollection = ValueCollection.create;

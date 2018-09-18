@@ -1,5 +1,6 @@
-import EnrichedEntity, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import EnrichedEntity from 'akeneoenrichedentity/domain/model/record/record';
 import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
 
 export default (backendRecord: any): EnrichedEntity => {
   backendRecord.image = undefined === backendRecord.image ? null : backendRecord.image;

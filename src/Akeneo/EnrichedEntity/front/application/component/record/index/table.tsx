@@ -1,5 +1,5 @@
 import ItemView from 'akeneoenrichedentity/application/component/record/index/item';
-import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import Record from 'akeneoenrichedentity/domain/model/record/record';
 import * as React from 'react';
 import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
 
@@ -39,7 +39,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
         code: '',
         labels: {},
         image: null,
-        values: []
+        values: [],
       });
 
       return (

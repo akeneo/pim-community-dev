@@ -1,9 +1,8 @@
-import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
+import File, {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {NormalizedLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 import Identifier, {NormalizedRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import Image from 'akeneoenrichedentity/domain/model/image';
 import ValueCollection from 'akeneoenrichedentity/domain/model/record/value-collection';
 import {NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
 
@@ -14,6 +13,11 @@ export interface NormalizedRecord {
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
   values: NormalizedValue[];
+}
+
+export enum NormalizeFormat {
+  Standard,
+  Minimal,
 }
 
 export default interface Record {
@@ -126,6 +130,17 @@ class RecordImplementation implements Record {
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
       values: this.valueCollection.normalize(),
+    };
+  }
+
+  public normalizeMinimal(): NormalizedRecord {
+    return {
+      identifier: this.getIdentifier().normalize(),
+      enriched_entity_identifier: this.getEnrichedEntityIdentifier().stringValue(),
+      code: this.code.stringValue(),
+      labels: this.getLabelCollection().normalize(),
+      image: this.getImage().normalize(),
+      values: this.valueCollection.normalizeMinimal(),
     };
   }
 }

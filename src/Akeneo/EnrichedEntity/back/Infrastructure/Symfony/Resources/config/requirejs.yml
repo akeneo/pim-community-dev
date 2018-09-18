@@ -10,8 +10,12 @@ config:
                     module: pim/controller/record/edit
 
         akeneoenrichedentity/application/configuration/data:
-            image: '@akeneoenrichedentity/domain/model/record/data/file'
-            text: '@akeneoenrichedentity/domain/model/record/data/text'
+            image:
+                denormalize: '@akeneoenrichedentity/domain/model/record/data/file'
+                view: '@akeneoenrichedentity/application/component/record/edit/enrich/data/file.tsx'
+            text:
+                denormalize: '@akeneoenrichedentity/domain/model/record/data/text'
+                view: '@akeneoenrichedentity/application/component/record/edit/enrich/data/text.tsx'
 
         akeneoenrichedentity/application/configuration/sidebar:
             akeneo_enriched_entities_enriched_entity_edit:

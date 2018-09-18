@@ -4,7 +4,7 @@ class InvalidTypeError extends Error {}
 
 export type NormalizedTextData = string;
 
-export default class TextData extends Data {
+class TextData extends Data {
   private constructor(private textData: string) {
     super();
 
@@ -23,6 +23,10 @@ export default class TextData extends Data {
     return new TextData(textData);
   }
 
+  public isEmpty(): boolean {
+    return 0 === this.textData.length;
+  }
+
   public stringValue(): string {
     return this.textData;
   }
@@ -32,5 +36,6 @@ export default class TextData extends Data {
   }
 }
 
+export default TextData;
 export const create = TextData.create;
 export const denormalize = TextData.createFromNormalized;

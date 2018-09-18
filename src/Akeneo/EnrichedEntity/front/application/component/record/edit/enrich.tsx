@@ -1,18 +1,17 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
-import {recordLabelUpdated, saveRecord} from 'akeneoenrichedentity/application/action/record/edit';
+import {recordLabelUpdated, saveRecord, recordValueUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import __ from 'akeneoenrichedentity/tools/translator';
 import {EditionFormState} from 'akeneoenrichedentity/application/reducer/record/edit/form';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
-import LocaleReference, {createLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
-import ChannelReference, {createChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
+import {createLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
+import renderValues from 'akeneoenrichedentity/application/component/record/edit/enrich/value';
 import Value from 'akeneoenrichedentity/domain/model/record/value';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
 
 interface StateProps {
   form: EditionFormState;
@@ -27,31 +26,9 @@ interface DispatchProps {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
       onPressEnter: () => void;
+      onValueChange: (value: Value) => void;
     };
   };
-}
-
-const renderValues = (record: Record, channel: ChannelReference, locale: LocaleReference, errors: ValidationError[]) => {
-  const visibleValues = record.getValueCollection().getValuesForChannelAndLocale(channel, locale).sort((firstValue: Value, secondValue: Value) => firstValue.getAttribute().order - secondValue.getAttribute().order);
-
-  return visibleValues.map((value: Value) => {
-    return (
-      <div className="AknFieldContainer" data-code={value.getAttribute().getCode()}>
-        <div className="AknFieldContainer-header">
-          <label
-            title={value.getAttribute().getLabel(locale.stringValue())}
-            className="AknFieldContainer-label"
-            htmlFor={`pim_enriched_entity.record.enrich.${value.getAttribute().getCode()}`}
-          >
-            {value.getAttribute().getLabel(locale.stringValue())}
-          </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-        </div>
-        {getErrorsView(errors, `values.${value.getAttribute().getCode()}`)}
-      </div>
-    )
-  })
 }
 
 class Enrich extends React.Component<StateProps & DispatchProps> {
@@ -110,7 +87,13 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
             </div>
             {getErrorsView(this.props.form.errors, 'labels')}
           </div>
-          {renderValues(record, createChannelReference(this.props.context.channel), createLocaleReference(this.props.context.locale), this.props.form.errors)}
+          {renderValues(
+            record,
+            createChannelReference(this.props.context.channel),
+            createLocaleReference(this.props.context.locale),
+            this.props.form.errors,
+            this.props.events.form.onValueChange
+          )}
         </div>
       </div>
     );
@@ -125,7 +108,7 @@ export default connect(
       form: state.form,
       context: {
         locale,
-        channel: 'ecommerce'
+        channel: 'ecommerce',
       },
     };
   },
@@ -139,6 +122,9 @@ export default connect(
           onPressEnter: () => {
             dispatch(saveRecord());
           },
+          onValueChange: (value: Value) => {
+            dispatch(recordValueUpdated(value));
+          }
         },
       },
     };

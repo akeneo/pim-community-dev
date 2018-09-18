@@ -3,6 +3,7 @@ import formState, {FormState} from 'akeneoenrichedentity/application/reducer/sta
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {combineReducers} from 'redux';
 import {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
+import {NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
 
 export interface EditionFormState {
   state: FormState;
@@ -24,20 +25,44 @@ const dataReducer = (
   {
     type,
     record,
-    value,
+    label,
     locale,
     image,
-  }: {type: string; record: NormalizedRecord; value: string; locale: string; image: NormalizedFile}
+    value,
+  }: {
+    type: string;
+    record: NormalizedRecord;
+    label: string;
+    locale: string;
+    image: NormalizedFile;
+    value: NormalizedValue;
+  }
 ) => {
   switch (type) {
     case 'RECORD_EDITION_RECEIVED':
       state = record;
       break;
     case 'RECORD_EDITION_LABEL_UPDATED':
-      state = {...state, labels: {...state.labels, [locale]: value}};
+      state = {...state, labels: {...state.labels, [locale]: label}};
       break;
     case 'RECORD_EDITION_IMAGE_UPDATED':
       state = {...state, image};
+      break;
+    case 'RECORD_EDITION_VALUE_UPDATED':
+      state = {
+        ...state,
+        values: state.values.map((currentValue: NormalizedValue) => {
+          if (
+            currentValue.channel === value.channel &&
+            currentValue.locale === value.locale &&
+            currentValue.attribute.identifier === value.attribute.identifier
+          ) {
+            return value;
+          }
+
+          return currentValue;
+        }),
+      };
       break;
     default:
       break;

@@ -1,5 +1,7 @@
 class InvalidTypeError extends Error {}
 
+export type NormalizedChannelReference = string | null;
+
 export default class ChannelReference {
   private constructor(private channelReference: string | null) {
     if (!('string' === typeof channelReference || null === channelReference)) {
