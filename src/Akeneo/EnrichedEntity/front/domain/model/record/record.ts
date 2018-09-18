@@ -4,7 +4,7 @@ import LabelCollection, {NormalizedLabelCollection} from 'akeneoenrichedentity/d
 import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 import Identifier, {NormalizedRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
 import ValueCollection from 'akeneoenrichedentity/domain/model/record/value-collection';
-import {NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
+import {NormalizedValue, NormalizedMinimalValue} from 'akeneoenrichedentity/domain/model/record/value';
 
 export interface NormalizedRecord {
   identifier: NormalizedRecordIdentifier;
@@ -13,6 +13,15 @@ export interface NormalizedRecord {
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
   values: NormalizedValue[];
+}
+
+export interface NormalizedMinimalRecord {
+  identifier: NormalizedRecordIdentifier;
+  enriched_entity_identifier: string;
+  code: string;
+  labels: NormalizedLabelCollection;
+  image: NormalizedFile;
+  values: NormalizedMinimalValue[];
 }
 
 export enum NormalizeFormat {
@@ -30,6 +39,7 @@ export default interface Record {
   getValueCollection: () => ValueCollection;
   equals: (record: Record) => boolean;
   normalize: () => NormalizedRecord;
+  normalizeMinimal: () => NormalizedMinimalRecord;
 }
 
 class InvalidArgumentError extends Error {}
@@ -133,7 +143,7 @@ class RecordImplementation implements Record {
     };
   }
 
-  public normalizeMinimal(): NormalizedRecord {
+  public normalizeMinimal(): NormalizedMinimalRecord {
     return {
       identifier: this.getIdentifier().normalize(),
       enriched_entity_identifier: this.getEnrichedEntityIdentifier().stringValue(),

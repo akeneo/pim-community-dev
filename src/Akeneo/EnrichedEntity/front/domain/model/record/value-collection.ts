@@ -1,4 +1,4 @@
-import Value, {NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
+import Value, {NormalizedValue, NormalizedMinimalValue} from 'akeneoenrichedentity/domain/model/record/value';
 import ChannelReference from 'akeneoenrichedentity/domain/model/channel-reference';
 import LocaleReference from 'akeneoenrichedentity/domain/model/locale-reference';
 
@@ -31,7 +31,7 @@ export default class ValueCollection {
     return this.values.map((value: Value) => value.normalize());
   }
 
-  public normalizeMinimal(): NormalizedValue[] {
+  public normalizeMinimal(): NormalizedMinimalValue[] {
     return this.values.filter((value: Value) => !value.isEmpty()).map((value: Value) => value.normalizeMinimal());
   }
 }

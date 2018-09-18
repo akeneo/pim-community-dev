@@ -120,7 +120,13 @@ class RecordEditView extends React.Component<EditProps> {
                                   tab: 'record',
                                 },
                               },
-                              label: __('pim_enriched_entity.record.title'),
+                              label: record.getEnrichedEntityIdentifier().stringValue(),
+                            },
+                            {
+                              action: {
+                                type: 'display'
+                              },
+                              label: record.getCode().stringValue(),
                             },
                           ]}
                         />

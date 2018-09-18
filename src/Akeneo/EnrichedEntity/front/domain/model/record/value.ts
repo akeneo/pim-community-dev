@@ -5,19 +5,19 @@ import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/
 import {CommonConcreteAttribute} from 'akeneoenrichedentity/domain/model/attribute/common';
 import {NormalizedAttributeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
 
-export type NormalizedValue =
-  | {
-      attribute: NormalizedAttribute;
-      channel: NormalizedChannelReference;
-      locale: NormalizedLocaleReference;
-      data: any;
-    }
-  | {
-      attribute: NormalizedAttributeIdentifier;
-      channel: NormalizedChannelReference;
-      locale: NormalizedLocaleReference;
-      data: any;
-    };
+export type NormalizedValue = {
+  attribute: NormalizedAttribute;
+  channel: NormalizedChannelReference;
+  locale: NormalizedLocaleReference;
+  data: any;
+};
+
+export type NormalizedMinimalValue = {
+  attribute: NormalizedAttributeIdentifier;
+  channel: NormalizedChannelReference;
+  locale: NormalizedLocaleReference;
+  data: any;
+};
 
 class InvalidTypeError extends Error {}
 
@@ -93,7 +93,7 @@ class Value {
     };
   }
 
-  public normalizeMinimal(): NormalizedValue {
+  public normalizeMinimal(): NormalizedMinimalValue {
     return {
       attribute: this.attribute.identifier.normalize(),
       channel: this.channel.normalize(),
