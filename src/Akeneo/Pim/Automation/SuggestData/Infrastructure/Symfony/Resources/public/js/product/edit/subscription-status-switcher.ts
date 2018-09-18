@@ -9,9 +9,11 @@ const messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/form/product/subscription-status-switcher');
 
-interface SubscriptionStatusSwitcherConfiguration {
-  default_error_message: string;
-  default_success_message: string;
+interface Configuration {
+  create_product_subscription_fail_message: string;
+  create_product_subscription_success_message: string;
+  delete_product_subscription_fail_message: string;
+  delete_product_subscription_success_message: string;
 }
 
 /**
@@ -22,13 +24,13 @@ interface SubscriptionStatusSwitcherConfiguration {
  */
 class SubscriptionStatusSwitcher extends BaseView {
   readonly template: any = _.template(template);
-  readonly config: SubscriptionStatusSwitcherConfiguration;
+  readonly config: Configuration;
   protected currentStatus: boolean;
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: SubscriptionStatusSwitcherConfiguration }) {
+  constructor(options: { config: Configuration }) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -74,29 +76,65 @@ class SubscriptionStatusSwitcher extends BaseView {
   public updateStatus(event: { [key: string]: any }): void {
     let newStatus = event.currentTarget.dataset.status === 'enabled';
 
-    // TODO APAI-142: For now, we don't manage to unsubscribe, only to subscribe.
     if (true === newStatus && false === this.currentStatus) {
-      $.ajax({
-        method: 'GET',
-        url: Routing.generate('akeneo_suggest_data_push_product', {productId: this.getFormData().meta.id})
-      }).done(() => {
-        messenger.notify(
-            'success',
-            __(this.config.default_success_message)
-        );
-      }).fail((xhr: any) => {
-        const response = xhr.responseJSON;
-        let errorMessage = this.config.default_error_message;
-
-        if (!_.isUndefined(response.error)) {
-          errorMessage = response.error;
-        }
-
-        messenger.notify('error', __(errorMessage));
-      }).always(() => {
-        this.render();
-      });
+      this.subscribeProduct();
     }
+
+    if (false === newStatus && true === this.currentStatus) {
+      this.unsubscribeProduct();
+    }
+  }
+
+  /**
+   * Subscribes the edited product to PIM.ai.
+   */
+  private subscribeProduct(): void {
+    $.ajax({
+      method: 'GET',
+      url: Routing.generate('akeneo_suggest_data_push_product', {productId: this.getFormData().meta.id})
+    }).done(() => {
+      messenger.notify(
+        'success',
+        __(this.config.create_product_subscription_success_message)
+      );
+    }).fail((xhr: any) => {
+      const response = xhr.responseJSON;
+      let errorMessage = this.config.create_product_subscription_fail_message;
+
+      if (!_.isUndefined(response.error)) {
+        errorMessage = response.error;
+      }
+
+      messenger.notify('error', __(errorMessage));
+    }).always(() => {
+      this.render();
+    });
+  }
+
+  /**
+   * Unsubscribe the edited product to PIM.ai.
+   */
+  private unsubscribeProduct(): void {
+    $.ajax({
+      method: 'DELETE',
+      url: Routing.generate('akeneo_suggest_data_unsubscribe', {productId: this.getFormData().meta.id})
+    }).done(() => {
+      messenger.notify(
+        'success',
+        __(this.config.delete_product_subscription_success_message)
+      );
+    }).fail((xhr: any) => {
+      const response = xhr.responseJSON;
+      let errorMessage = this.config.delete_product_subscription_fail_message;
+
+      if (!_.isUndefined(response.error)) {
+        errorMessage = response.error;
+      }
+
+      messenger.notify('error', __(errorMessage));
+    }).always(() => {
+      this.render();
+    });
   }
 }
 

@@ -4,6 +4,7 @@ Feature: Unsubscribe a product to PIM.ai
   As Julia
   I want to unsubscribe a product to PIM.ai
 
+  @end-to-end @javascript
   Scenario: Successfully unsubscribe a product to PIM.ai
     Given the product "B00EYZY6AC" of the family "router"
     And the product "B00EYZY6AC" is subscribed to PIM.ai
