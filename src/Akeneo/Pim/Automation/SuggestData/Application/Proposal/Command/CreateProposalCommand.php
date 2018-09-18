@@ -13,34 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
-
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class CreateProposalCommand
 {
-    /** @var ProductSubscription */
-    private $productSubscription;
-
-    /**
-     * @param ProductSubscription $productSubscription
-     */
-    public function __construct(ProductSubscription $productSubscription)
-    {
-        if ($productSubscription->getSuggestedData()->isEmpty()) {
-            throw new \InvalidArgumentException(
-                sprintf('There is no suggested data for subscription %s', $productSubscription->getSubscriptionId())
-            );
-        }
-        $this->productSubscription = $productSubscription;
-    }
-
-    /**
-     * @return ProductSubscription
-     */
-    public function getProductSubscription(): ProductSubscription
-    {
-        return $this->productSubscription;
-    }
 }

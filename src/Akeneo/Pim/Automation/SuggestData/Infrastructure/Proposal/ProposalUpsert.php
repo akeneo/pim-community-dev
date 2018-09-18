@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -64,18 +63,13 @@ final class ProposalUpsert implements ProposalUpsertInterface
      */
     public function process(ProductInterface $product, array $values, string $author): void
     {
-        try {
-            $this->productUpdater->update(
-                $product,
-                [
-                    'values' => $values,
-                ]
-            );
-            $productDraft = $this->draftBuilder->build($product, $author);
-        } catch (PropertyException $e) {
-            // TODO APAI-244: handle error
-            return;
-        }
+        $this->productUpdater->update(
+            $product,
+            [
+                'values' => $values,
+            ]
+        );
+        $productDraft = $this->draftBuilder->build($product, $author);
 
         if (null !== $productDraft) {
             $this->eventDispatcher->dispatch(

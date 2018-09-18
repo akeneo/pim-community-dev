@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
@@ -54,7 +55,19 @@ class CreateProposalHandler
      */
     public function handle(CreateProposalCommand $command): void
     {
-        $subscription = $command->getProductSubscription();
+        // TODO APAI-242 Paginate/cursorize the subscriptions
+        $subscriptions = $this->productSubscriptionRepository->findPendingSubscriptions();
+
+        foreach ($subscriptions as $subscription) {
+            $this->createProposal($subscription);
+        }
+    }
+
+    /**
+     * @param ProductSubscription $subscription
+     */
+    private function createProposal(ProductSubscription $subscription)
+    {
         $product = $subscription->getProduct();
         if (0 === count($product->getCategoryCodes())) {
             // TODO APAI-244: handle error
@@ -71,7 +84,12 @@ class CreateProposalHandler
             return;
         }
 
-        $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
+        try {
+            $this->proposalUpsert->process($product, $suggestedValues, ProposalAuthor::USERNAME);
+        } catch (\LogicException $e) {
+            // TODO APAI-244: handle error
+            return;
+        }
 
         $subscription->emptySuggestedData();
         $this->productSubscriptionRepository->save($subscription);
