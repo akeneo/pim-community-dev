@@ -26,8 +26,6 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
      *     - ecommerce / fr_FR
      *     - tablet / en_US
      *     - tablet / fr_FR
-     *
-     * @critical
      */
     public function testProjectCalculationOnTshirtSkyrim()
     {
@@ -176,8 +174,6 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
      * 1 created project with the product 'empty-technical-product':
      *     - Channel: ecommerce
      *     - Locale: en_US
-     *
-     * @critical
      */
     public function testProjectCalculationWhenTheProductPropertiesAreEmpties()
     {
@@ -252,9 +248,6 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
         ]);
     }
 
-    /**
-     * @critical
-     */
     public function testTheAllPermissionCategory()
     {
         $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('car');
