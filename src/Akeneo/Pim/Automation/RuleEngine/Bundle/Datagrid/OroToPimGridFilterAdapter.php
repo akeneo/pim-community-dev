@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Adapter;
+namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid;
 
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter as BaseAdapter;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
@@ -17,7 +17,7 @@ use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
 /**
  * Transform Oro filters into Akeneo PIM filters
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Julien Janvier <j.janvier@gmail.com>
  */
 class OroToPimGridFilterAdapter extends BaseAdapter
 {
@@ -34,12 +34,6 @@ class OroToPimGridFilterAdapter extends BaseAdapter
      */
     public function adapt(array $parameters)
     {
-        if (in_array($parameters['gridName'], [self::PRODUCT_GRID_NAME])) {
-            $filters = $this->massActionDispatcher->getRawFilters($parameters);
-        } else {
-            $filters = $this->adaptDefaultGrid($parameters);
-        }
-
-        return $filters;
+        return ['values' => $this->massActionDispatcher->dispatch($parameters)];
     }
 }
