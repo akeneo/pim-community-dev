@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7654: Fix the mass classify when there are more assets than the batch size
 - PIM-7651: Fix history generation of category accesses
 
 # 2.3.8 (2018-09-14)
