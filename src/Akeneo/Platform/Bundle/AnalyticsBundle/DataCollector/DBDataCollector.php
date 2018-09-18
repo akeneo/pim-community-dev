@@ -2,9 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
 /**
  * Collects the structure of the PIM catalog:

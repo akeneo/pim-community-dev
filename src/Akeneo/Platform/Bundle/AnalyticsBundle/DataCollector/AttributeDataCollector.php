@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
 /**
  * Collect data about attributes:

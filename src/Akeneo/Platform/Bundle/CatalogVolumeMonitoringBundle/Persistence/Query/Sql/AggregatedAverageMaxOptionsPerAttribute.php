@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Repository\Sql;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Repository\AggregatedVolumeRepositoryInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
