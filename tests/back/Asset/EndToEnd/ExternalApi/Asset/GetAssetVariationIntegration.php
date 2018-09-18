@@ -20,6 +20,9 @@ use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetVariationController;
  */
 class GetAssetVariationIntegration extends AbstractAssetTestCase
 {
+    /**
+     * @critical
+     */
     public function testGetVariationForNonLocalizableAsset()
     {
         $standardizedAssets = $this->getStandardizedAssets();

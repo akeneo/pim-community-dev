@@ -86,7 +86,8 @@ Feature: Mass uploads assets
     And I should not see the text "akeneo2.jpg"
     And The button "Import" should be disabled
 
-  Scenario: Complete mass upload
+  @critical
+  Scenario: Successfully mass upload assets
     Given I am on the asset mass upload page
     When I select the assets to upload:
       | name                  |

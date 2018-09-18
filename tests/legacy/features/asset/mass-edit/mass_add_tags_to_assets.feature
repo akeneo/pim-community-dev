@@ -19,6 +19,7 @@ Feature: Mass edit assets to add them tags
     And I am logged in as "Pamela"
     And I am on the assets grid
 
+  @critical
   Scenario: Massively add existing tags to all assets with a bulk action from the grid
     Given I select rows asset_one
     And I select all entities

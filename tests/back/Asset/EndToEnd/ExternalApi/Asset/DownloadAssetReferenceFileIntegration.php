@@ -18,6 +18,9 @@ namespace AkeneoTestEnterprise\Asset\EndToEnd\ExternalApi\Asset;
  */
 class DownloadAssetReferenceFileIntegration extends AbstractAssetTestCase
 {
+    /**
+     * @critical
+     */
     public function testGetReferenceForNonLocalizableAsset()
     {
         $client = $this->createAuthenticatedClient();

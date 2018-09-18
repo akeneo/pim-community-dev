@@ -16,6 +16,7 @@ Feature: Mass uploads assets and add them to asset collection
       | code    | requirements-ecommerce | requirements-mobile | attributes                 |
       | jackets | sku                    | sku                 | asset_collection,color,sku |
 
+  @critical
   Scenario: Mass upload assets from product edit form
     Given the following product:
       | sku          | categories | family  |

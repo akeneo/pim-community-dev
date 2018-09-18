@@ -4,6 +4,7 @@ Feature: Import asset channel configurations
   As an admin
   I need to be able to import channel configuration to be able to apply transformations
 
+  @critical
   Scenario: Import and create channel configurations
     Given the "apparel" catalog configuration
     And I am logged in as "Peter"

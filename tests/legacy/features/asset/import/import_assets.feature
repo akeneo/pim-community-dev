@@ -4,6 +4,7 @@ Feature: Import assets
   As a product manager
   I need to be able to import assets
 
+  @critical
   Scenario: Import assets with tags from CSV
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
@@ -241,6 +242,7 @@ Feature: Import assets
     And I should see the text "skipped 1"
     And I should see the text "Property \"categories\" expects a valid category code. The category does not exist, \"nonexistent\" given."
 
+  @critical
   Scenario: Import assets with tags from XLSX
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
