@@ -53,4 +53,18 @@ class ScalarValue extends AbstractValue implements ValueInterface
     {
         return (string) $this->data;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof ScalarValue) {
+            return false;
+        }
+
+        return $this->getScope() === $value->getScope() &&
+            $this->getLocale() === $value->getLocale() &&
+            $value->getData() === $this->getData();
+    }
 }

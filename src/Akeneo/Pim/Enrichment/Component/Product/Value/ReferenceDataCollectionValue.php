@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -65,5 +66,40 @@ class ReferenceDataCollectionValue extends AbstractValue implements
         }, $this->data);
 
         return implode(', ', $codes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof ReferenceDataCollectionValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedRefDataCollection = $value->getData();
+        $thisRefDataCollection = $this->getData();
+
+        if (count($comparedRefDataCollection) !== count($thisRefDataCollection)) {
+            return false;
+        }
+
+        foreach ($comparedRefDataCollection as $comparedRefData) {
+            $refDataFound = false;
+            foreach ($thisRefDataCollection as $thisRefData) {
+                if ($comparedRefData->getCode() === $thisRefData->getCode()) {
+                    $refDataFound = true;
+                    break;
+                }
+            }
+
+            if (!$refDataFound) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
