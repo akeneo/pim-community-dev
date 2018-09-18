@@ -27,12 +27,12 @@ class AsyncSelectType extends AbstractType
     /** @var RouterInterface */
     protected $router;
 
-    /** @var \Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory */
+    /** @var IdentifiableModelTransformerFactory */
     protected $transformerFactory;
 
     /**
-     * @param RouterInterface                                                                   $router
-     * @param \Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory $transformerFactory
+     * @param RouterInterface                     $router
+     * @param IdentifiableModelTransformerFactory $transformerFactory
      */
     public function __construct(
         RouterInterface $router,
