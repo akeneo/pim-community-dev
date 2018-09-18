@@ -14,16 +14,10 @@ Feature: Subscribe a product to PIM.ai
     Then the product "B00EYZY6AC" should be subscribed
 
   Scenario: Fail to subscribe a product without family
-    Given the following attribute:
-      | code | type                   |
-      | ean  | pim_catalog_text       |
-      | sku  | pim_catalog_identifier |
-    And the following product:
-      | identifier             | family | ean          |
-      | product_without_family |        | 606449099812 |
+    Given the product without family "product_without_family"
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
-      | upc         | ean            |
+      | upc         | pim_upc        |
     When I subscribe the product "product_without_family" to PIM.ai
     Then the product "product_without_family" should not be subscribed
 
