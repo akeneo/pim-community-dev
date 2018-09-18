@@ -1,0 +1,4 @@
+extensions:
+    pimee-suggest-data-settings-attribute-options-mapping-edit:
+        module: pimee/settings/mapping/attribute-options-mapping
+        config: {}

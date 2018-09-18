@@ -1,9 +1,12 @@
 import SimpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 import BaseForm = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
+import {EventsHash} from "backbone";
+import BootstrapModal = require('pimui/lib/backbone.bootstrap-modal');
 
 const __ = require('oro/translator');
 const FetcherRegistry = require('pim/fetcher-registry');
+const FormBuilder = require('pim/form-builder');
 const template = require('pimee/template/settings/mapping/attributes-mapping');
 const noDataTemplate = require('pim/template/common/no-data');
 
@@ -121,8 +124,18 @@ class AttributeMapping extends BaseForm {
 
     this.toggleNoDataMessage();
     this.renderExtensions();
+    this.delegateEvents();
 
     return this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public events(): EventsHash {
+    return {
+      'click .option-mapping': this.updateAttributeOptionsMapping,
+    }
   }
 
   /**
@@ -260,6 +273,50 @@ class AttributeMapping extends BaseForm {
           $attributeOptionButton.hide();
       });
     });
+  }
+
+  private updateAttributeOptionsMapping(event: any) {
+    console.log(event);
+    this.manageAttributeOptionsMapping().then(attributeOptionsMapping => {
+      console.log(attributeOptionsMapping);
+      //this.data = assets;
+
+      //this.trigger('collection:change', assets);
+      //this.render();
+    });
+  }
+
+  private manageAttributeOptionsMapping() {
+    const deferred = $.Deferred();
+
+    FormBuilder.build('pimee-suggest-data-settings-attribute-options-mapping-edit').then((form: any) => {
+      let modal = new BootstrapModal({
+        className: 'modal modal--fullPage modal--topButton',
+        modalOptions: {
+          backdrop: 'static',
+          keyboard: false
+        },
+        allowCancel: true,
+        okCloses: false,
+        title: '',
+        content: '',
+        cancelText: ' ',
+        okText: __('confirmation.title')
+      });
+      modal.open();
+
+      form.setElement(modal.$('.modal-body')).render();
+
+      modal.on('cancel', deferred.reject);
+      modal.on('ok', () => {
+        const attributeOptions = _.sortBy(form.getItems(), 'code');
+        modal.close();
+
+        deferred.resolve(attributeOptions);
+      });
+    });
+
+    return deferred.promise();
   }
 }
 
