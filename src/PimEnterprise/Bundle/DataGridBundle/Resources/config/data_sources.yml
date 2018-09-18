@@ -1,25 +1,4 @@
-parameters:
-    pimee_datagrid.datasource.product_history.class: Oro\Bundle\PimDataGridBundle\Datasource\Datasource
-
 services:
-    pim_catalog.product_history.product:
-        class: '%pim_datagrid.datasource.default.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history'
-        tags:
-            - { name: oro_datagrid.datasource, type: pimee_datasource_product_history }
-
-    pim_datagrid.datasource.rule:
-        class: '%pim_datagrid.datasource.default.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_datagrid.datasource.result_record.hydrator.default'
-        calls:
-            - [ setMassActionRepository, ['@pimee_catalog_rule.repository.rule_definition_mass_action' ]]
-        tags:
-            - { name: oro_datagrid.datasource, type: pim_datasource_rule }
-
     pim_datagrid.datasource.adapter_resolver:
         class: '%pim_datagrid.datasource.adapter_resolver.class%'
         arguments:
