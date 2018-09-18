@@ -1,5 +1,4 @@
 parameters:
-    pimee_security.datagrid.configuration.product.filters_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
     pimee_security.datagrid.configuration.product.row_actions_configurator.class: Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator
     pim_datagrid.event_listener.configure_product_grid_listener.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureProductGridListener
     pimee_security.datagrid.event_listener.add_permissions_to_grid.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\AddPermissionsToGridListener
@@ -34,16 +33,6 @@ services:
             - '@pim_catalog.repository.group'
             - '@request_stack'
             - '@pimee_security.repository.attribute_group_access'
-
-    pimee_security.datagrid.configuration.product.filters_configurator:
-        class: '%pimee_security.datagrid.configuration.product.filters_configurator.class%'
-        decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
-        decoration_inner_name: pim_datagrid.datagrid.configuration.product.filters_configurator.ce
-        arguments:
-            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
-            - '@request_stack'
-            - '@pimee_teamwork_assistant.repository.project'
-            - '@security.token_storage'
 
     pimee_security.datagrid.configuration.product.row_actions_configurator:
         class: '%pimee_security.datagrid.configuration.product.row_actions_configurator.class%'

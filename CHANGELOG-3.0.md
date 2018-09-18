@@ -12,6 +12,7 @@
 
 ## BC breaks
 
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Configuration\Product\FiltersConfigurator`
 - Move `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover`
 - Move `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface` to `Akeneo\Pim\Asset\Component\Completeness\CompletenessRemoverInterface`
 - Move `PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker` to `Akeneo\Pim\Asset\Component\Completeness\Checker\AssetCollectionCompleteChecker`
