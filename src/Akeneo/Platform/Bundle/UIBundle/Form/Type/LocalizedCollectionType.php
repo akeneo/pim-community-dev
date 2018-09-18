@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleValueSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;

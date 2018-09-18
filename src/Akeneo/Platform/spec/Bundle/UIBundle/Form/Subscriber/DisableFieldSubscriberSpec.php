@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Form\Subscriber;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Channel;
 use Prophecy\Argument;

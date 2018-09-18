@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Structure\Bundle\Form\Type;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
