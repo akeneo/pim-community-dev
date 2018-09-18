@@ -37,6 +37,7 @@ Feature: Delete an attribute
       | filter | operator | value          | result |
       | name   | contains | My caterpillar |        |
 
+  @critical
   @jira https://akeneo.atlassian.net/browse/PIM-7199
   Scenario: An identifier attribute cannot be deleted
     Given the "default" catalog configuration

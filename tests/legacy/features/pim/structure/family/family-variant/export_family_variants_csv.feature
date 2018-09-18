@@ -4,6 +4,7 @@ Feature: Export family variants in CSV
   As a product manager
   I need to be able to export family variants in CSV
 
+  @critical
   Scenario: Successfully export catalog family variants
     Given a "catalog_modeling" catalog configuration
     And the following job "csv_catalog_modeling_family_variant_export" configuration:
