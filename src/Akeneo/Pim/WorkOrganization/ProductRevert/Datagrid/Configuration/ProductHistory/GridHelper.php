@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory;
+namespace Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;

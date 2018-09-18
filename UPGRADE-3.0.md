@@ -2,6 +2,8 @@
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\ProductHistory\\GridHelper/Akeneo\\Pim\\WorkOrganization\\ProductRevert\\Datagrid\\Configuration\\ProductHistory\\GridHelper/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\Doctrine\\ORM\\CompletenessRemover/Akeneo\\Pim\\Asset\\Bundle\\Doctrine\\ORM\\CompletenessRemover/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\CompletenessRemoverInterface/Akeneo\\Pim\\Asset\\Component\\Completeness\\CompletenessRemoverInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\ProductAsset\\Completeness\\Checker\\AssetCollectionCompleteChecker/Akeneo\\Pim\\Asset\\Component\\Completeness\\Checker\\AssetCollectionCompleteChecker/g'

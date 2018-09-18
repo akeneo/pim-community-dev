@@ -1,0 +1,6 @@
+services:
+    pimee_revert.datagrid.configuration.product_history.grid_helper:
+        class: 'Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory\GridHelper'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
