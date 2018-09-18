@@ -1,5 +1,10 @@
 services:
     akeneoenriched_entity.tests.helper.web_client_helper:
-        class: 'Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper'
+        class: Akeneo\EnrichedEntity\Common\Helper\WebClientHelper
         arguments:
             - '@router'
+
+    akeneoenriched_entity.tests.helper.database_helper:
+        class: Akeneo\EnrichedEntity\Integration\Persistence\Helper\DatabaseHelper
+        arguments:
+            - '@database_connection'

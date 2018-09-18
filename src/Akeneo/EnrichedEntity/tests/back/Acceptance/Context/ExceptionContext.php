@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Acceptance\Context;
+namespace Akeneo\EnrichedEntity\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;

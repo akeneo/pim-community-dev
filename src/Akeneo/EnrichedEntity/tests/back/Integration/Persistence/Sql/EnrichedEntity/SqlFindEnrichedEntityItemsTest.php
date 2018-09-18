@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -22,7 +22,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
-use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
 {
@@ -77,7 +77,7 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadEnrichedEntityAndRecords(): void

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
 
+use Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute;
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;

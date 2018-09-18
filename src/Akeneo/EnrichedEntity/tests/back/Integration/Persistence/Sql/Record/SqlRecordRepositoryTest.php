@@ -11,10 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Record;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -43,7 +41,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
@@ -110,8 +108,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_a_record_with_values_and_returns_it()
     {
-        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetCategoryChannelAndLocale();
-
         $recordCode = RecordCode::fromString('starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
@@ -306,7 +302,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadEnrichedEntityWithAttributes(): void

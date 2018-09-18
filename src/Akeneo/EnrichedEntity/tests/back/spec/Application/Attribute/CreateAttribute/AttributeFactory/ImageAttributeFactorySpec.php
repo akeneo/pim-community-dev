@@ -7,7 +7,6 @@ use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttri
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeFactorySpec extends ObjectBehavior

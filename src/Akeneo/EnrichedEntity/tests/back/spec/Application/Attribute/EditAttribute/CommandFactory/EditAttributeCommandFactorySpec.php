@@ -8,10 +8,7 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Edi
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class EditAttributeCommandFactorySpec extends ObjectBehavior
 {

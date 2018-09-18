@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
 
+use Akeneo\EnrichedEntity\Common\Fake\InMemoryFindAttributesDetails;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
-use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryFindAttributesDetails;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryFindAttributesDetailsTest extends TestCase

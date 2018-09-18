@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\LocaleInterface;
+use PhpSpec\ObjectBehavior;
 
 class LabelCollectionSpec extends ObjectBehavior
 {

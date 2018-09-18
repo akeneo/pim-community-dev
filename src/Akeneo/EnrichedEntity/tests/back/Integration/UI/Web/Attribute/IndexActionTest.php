@@ -11,8 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Attribute;
+namespace Akeneo\EnrichedEntity\Integration\UI\Web\Attribute;
 
+use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -31,9 +33,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ImageAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 

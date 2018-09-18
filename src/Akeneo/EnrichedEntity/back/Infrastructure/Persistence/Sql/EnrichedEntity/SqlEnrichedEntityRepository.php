@@ -132,7 +132,7 @@ SQL;
 
         $enrichedEntities = [];
         foreach ($results as $result) {
-            $enrichedEntities[] = $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
+            $enrichedEntities[] = $this->hydrateEnrichedEntity($result['identifier'], $result['labels'], null);
         }
 
         return $enrichedEntities;
@@ -167,6 +167,7 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
+        $file = null;
         if (null !== $image) {
             $file = new FileInfo();
             $file->setKey($image['file_key']);

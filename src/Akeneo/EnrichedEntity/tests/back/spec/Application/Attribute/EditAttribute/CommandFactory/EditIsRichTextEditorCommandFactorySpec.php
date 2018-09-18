@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommandFactory;
 use PhpSpec\ObjectBehavior;

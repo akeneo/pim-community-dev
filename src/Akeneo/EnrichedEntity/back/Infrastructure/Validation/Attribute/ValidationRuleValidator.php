@@ -29,7 +29,10 @@ class ValidationRuleValidator extends ConstraintValidator
             [
                 new Assert\NotNull(),
                 new Assert\Type('string'),
-                new Assert\Choice(AttributeValidationRule::VALIDATION_RULE_TYPES, ['multiple' => false]),
+                new Assert\Choice([
+                    'choices'  => AttributeValidationRule::VALIDATION_RULE_TYPES,
+                    'multiple' => false,
+                ]),
             ]
         );
 

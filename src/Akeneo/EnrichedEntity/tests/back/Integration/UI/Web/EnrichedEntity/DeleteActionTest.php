@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Integration\UI\Web\EnrichedEntity;
 
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -164,7 +163,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadFixtures(): void

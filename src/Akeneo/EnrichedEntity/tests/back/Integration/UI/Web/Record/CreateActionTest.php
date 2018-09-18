@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Record;
+namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
 
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
+use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -232,7 +232,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'brand',
                 sprintf(
                     '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier
+                    $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],
             'Enriched Entity Identifier has a dash character'                                            => [
@@ -246,7 +246,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 $longIdentifier,
                 sprintf(
                     '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier
+                    $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],
             'Enriched Entity Identifier in the URL is different from the one in the body of the Request' => [

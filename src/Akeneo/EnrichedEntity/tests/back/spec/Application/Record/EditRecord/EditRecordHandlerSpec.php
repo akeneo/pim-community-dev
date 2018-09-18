@@ -15,7 +15,6 @@ namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord;
 
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;

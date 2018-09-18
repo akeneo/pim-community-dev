@@ -24,6 +24,9 @@ use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
  */
 class CreateAttributeHandler
 {
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
     /** @var AttributeFactoryRegistryInterface */
     private $attributeFactoryRegistry;
 

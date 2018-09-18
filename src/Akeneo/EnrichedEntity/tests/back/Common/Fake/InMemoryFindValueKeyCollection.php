@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
+namespace Akeneo\EnrichedEntity\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
  * @author Julien Sanchez <julien@akeneo.com>
@@ -27,6 +28,6 @@ class InMemoryFindValueKeyCollection implements FindValueKeyCollectionInterface
      */
     public function __invoke(EnrichedEntityIdentifier $identifier): array
     {
-        throw \NotImplementedException();
+        throw new NotImplementedException('__invoke');
     }
 }

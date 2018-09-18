@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
+namespace Akeneo\EnrichedEntity\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Acceptance\Context;
+namespace Akeneo\EnrichedEntity\Acceptance\Context;
 
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
@@ -119,7 +119,7 @@ final class EditEnrichedEntityContext implements Context
             array_diff($actualLabels, $expectedLabels)
         );
 
-        Assert::isEmpty(
+        Assert::assertEmpty(
             $differences,
             sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
         );

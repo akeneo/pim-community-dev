@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
@@ -35,7 +35,7 @@ use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ImageAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
-use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 {
@@ -78,7 +78,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function loadEnrichedEntitiesAndAttributes(): void

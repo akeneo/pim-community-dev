@@ -7,7 +7,6 @@ use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\Edi
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class EditAttributeCommandSpec extends ObjectBehavior
 {

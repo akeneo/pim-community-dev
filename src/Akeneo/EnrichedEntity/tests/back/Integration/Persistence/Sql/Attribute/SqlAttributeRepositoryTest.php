@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Attribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
@@ -33,7 +33,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\DBALException;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
@@ -239,7 +239,7 @@ class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneo_ee_integration_tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
     }
 
     private function insertEnrichedEntity(): void

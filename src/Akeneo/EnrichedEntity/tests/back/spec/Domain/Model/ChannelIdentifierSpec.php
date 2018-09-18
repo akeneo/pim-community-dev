@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
 use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
 use PhpSpec\ObjectBehavior;
 
 class ChannelIdentifierSpec extends ObjectBehavior

@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -75,6 +76,7 @@ class AllowedExtensionsValidator extends ConstraintValidator
     private function isNotArrayOfStrings($allowedExtensions): bool
     {
         $validator = Validation::createValidator();
+        $violations = new ConstraintViolationList();
         foreach ($allowedExtensions as $allowedExtension) {
             $violations = $validator->validate($allowedExtension, [new Assert\Type('string')]);
         }

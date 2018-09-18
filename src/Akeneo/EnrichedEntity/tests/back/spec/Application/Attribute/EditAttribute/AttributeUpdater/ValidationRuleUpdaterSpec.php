@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
+use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
 use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\ValidationRuleUpdater;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;

@@ -5,7 +5,6 @@ namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Comma
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryInterface;
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistry;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class CreateAttributeCommandFactoryRegistrySpec extends ObjectBehavior
 {

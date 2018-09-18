@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Common\Fake;
+namespace Akeneo\EnrichedEntity\Common\Fake;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -27,6 +28,6 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
      */
     public function __invoke(EnrichedEntityIdentifier $identifier): array
     {
-        throw \NotImplementedException();
+        throw new NotImplementedException('__invoke');
     }
 }

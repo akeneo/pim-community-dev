@@ -11,8 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
 
+use Akeneo\EnrichedEntity\Common\Fake\InMemoryAttributeRepository;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -27,7 +28,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryAttributeRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Integration\UI\Web\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
+use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;

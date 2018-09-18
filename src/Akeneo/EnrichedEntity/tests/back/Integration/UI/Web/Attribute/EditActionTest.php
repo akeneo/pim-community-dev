@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Attribute;
+namespace Akeneo\EnrichedEntity\Integration\UI\Web\Attribute;
 
+use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -21,9 +23,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\tests\back\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
+use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;

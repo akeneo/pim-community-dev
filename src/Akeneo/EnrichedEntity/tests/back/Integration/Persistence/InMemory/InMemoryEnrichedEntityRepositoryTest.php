@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\Persistence\InMemory;
+namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
 
+use Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\EnrichedEntity\tests\back\Common\Fake\InMemoryEnrichedEntityRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
@@ -43,7 +43,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
         $this->enrichedEntityRepository->create($enrichedEntity);
 
         $enrichedEntityFound = $this->enrichedEntityRepository->getByIdentifier($identifier);
-        Assert::isTrue($enrichedEntity->equals($enrichedEntityFound));
+        Assert::assertTrue($enrichedEntity->equals($enrichedEntityFound));
     }
 
     /**
@@ -72,7 +72,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
         $this->enrichedEntityRepository->update($enrichedEntity);
 
         $enrichedEntityFound = $this->enrichedEntityRepository->getByIdentifier($identifier);
-        Assert::isTrue($enrichedEntity->equals($enrichedEntityFound));
+        Assert::assertTrue($enrichedEntity->equals($enrichedEntityFound));
     }
 
     /**
@@ -100,7 +100,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
         $this->enrichedEntityRepository->update($enrichedEntity);
 
         $enrichedEntityFound = $this->enrichedEntityRepository->getByIdentifier($identifier);
-        Assert::isTrue($enrichedEntity->equals($enrichedEntityFound));
+        Assert::assertTrue($enrichedEntity->equals($enrichedEntityFound));
     }
 
     /**

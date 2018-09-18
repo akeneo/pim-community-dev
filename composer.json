@@ -39,7 +39,8 @@
             "Akeneo\\Test\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData/tests/back",
             "PimEnterprise\\Behat\\": "tests/legacy/features/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
-            "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/"
+            "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
+            "Akeneo\\EnrichedEntity\\": "src/Akeneo/EnrichedEntity/tests/back"
         }
     },
     "require": {
@@ -69,7 +70,8 @@
         "friends-of-behat/context-service-extension": "^1.1",
         "friends-of-behat/cross-container-extension": "^1.0",
         "friends-of-behat/symfony-extension": "^1.0",
-        "liuggio/fastest": "1.6.*"
+        "liuggio/fastest": "1.6.*",
+        "phpstan/phpstan": "0.10.*"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
