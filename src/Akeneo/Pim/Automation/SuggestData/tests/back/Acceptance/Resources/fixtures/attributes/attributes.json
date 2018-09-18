@@ -1,5 +1,5 @@
-[
-  {
+{
+  "sku": {
     "code": "sku",
     "type": "pim_catalog_identifier",
     "group": "other",
@@ -10,7 +10,7 @@
       "fr_FR": "SKU"
     }
   },
-  {
+  "asin": {
     "code": "asin",
     "type": "pim_catalog_text",
     "group": "other",
@@ -21,7 +21,7 @@
       "fr_FR": "ASIN"
     }
   },
-  {
+  "pim_upc": {
     "code": "pim_upc",
     "type": "pim_catalog_text",
     "group": "other",
@@ -32,7 +32,7 @@
       "fr_FR": "UPC"
     }
   },
-  {
+  "mpn": {
     "code": "mpn",
     "type": "pim_catalog_text",
     "group": "other",
@@ -43,7 +43,7 @@
       "fr_FR": "MPN"
     }
   },
-  {
+  "pim_brand": {
     "code": "pim_brand",
     "type": "pim_catalog_text",
     "group": "other",
@@ -54,7 +54,7 @@
       "fr_FR": "Marque"
     }
   },
-  {
+  "description": {
     "code": "description",
     "type": "pim_catalog_textarea",
     "group": "other",
@@ -65,7 +65,7 @@
       "fr_FR": "Description"
     }
   },
-  {
+  "memory": {
     "code": "memory",
     "type": "pim_catalog_text",
     "group": "other",
@@ -76,7 +76,7 @@
       "fr_FR": "Mémoire"
     }
   },
-  {
+  "name": {
     "code": "name",
     "type": "pim_catalog_text",
     "group": "other",
@@ -87,7 +87,7 @@
       "fr_FR": "Libellé"
     }
   },
-  {
+  "picture": {
     "code": "picture",
     "type": "pim_catalog_image",
     "group": "other",
@@ -98,7 +98,7 @@
       "fr_FR": "Image"
     }
   },
-  {
+  "processor": {
     "code": "processor",
     "type": "pim_catalog_text",
     "group": "other",
@@ -109,7 +109,7 @@
       "fr_FR": "Processeur"
     }
   },
-  {
+  "price": {
     "code": "price",
     "type": "pim_catalog_price_collection",
     "group": "other",
@@ -120,7 +120,7 @@
       "fr_FR": "Prix"
     }
   },
-  {
+  "release_date": {
     "code": "release_date",
     "type": "pim_catalog_date",
     "group": "other",
@@ -131,14 +131,14 @@
       "fr_FR": "Date de sortie"
     }
   },
-  {
+  "power_device": {
     "code": "power_device",
     "type": "pim_catalog_text",
     "group": "other",
     "localizable": false,
     "scopable": false
   },
-  {
+  "color": {
     "code": "color",
     "type": "pim_catalog_simpleselect",
     "group": "other",
@@ -149,7 +149,7 @@
       "fr_FR": "Couleur"
     }
   },
-  {
+  "weight": {
     "code": "weight",
     "type": "pim_catalog_number",
     "group": "other",
@@ -160,4 +160,4 @@
       "fr_FR": "Poids"
     }
   }
-]
+}

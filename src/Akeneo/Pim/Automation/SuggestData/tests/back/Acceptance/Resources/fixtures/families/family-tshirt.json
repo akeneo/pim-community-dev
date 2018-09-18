@@ -1,0 +1,16 @@
+{
+    "code": "tshirt",
+    "attributes": [
+        "sku",
+        "mpn",
+        "pim_brand",
+        "name",
+        "picture"
+    ],
+    "attribute_as_label": "name",
+    "attribute_as_image": "picture",
+    "labels": {
+        "en_US": "T-Shirts",
+        "fr_FR": "T-Shirts"
+    }
+}

@@ -78,22 +78,12 @@ Feature: Subscribe a product to PIM.ai
   # wrong UPC format
 
   Scenario: Fail to subscribe a product that does not have MPN and Brand filled together
-    Given the following attribute:
-      | code  | type                   |
-      | mpn   | pim_catalog_text       |
-      | brand | pim_catalog_text       |
-      | sku   | pim_catalog_identifier |
-    And the following family:
-      | code   | attributes    | label-en_US |
-      | tshirt | sku,mpn,brand | T-Shirt     |
-    And the following product:
-      | identifier | family | mpn         |
-      | ts_0013    | tshirt | tshirt-1002 |
+    Given the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | mpn         | mpn            |
-      | brand       | brand          |
-    When I subscribe the product "ts_0013" to PIM.ai
-    Then the product "ts_0013" should not be subscribed
+      | brand       | pim_brand      |
+    When I subscribe the product "B00EYZY6AC" to PIM.ai
+    Then the product "B00EYZY6AC" should not be subscribed
 
   #Scenario: Handle a bad request to PIM.ai

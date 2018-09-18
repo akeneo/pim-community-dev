@@ -140,20 +140,20 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads attributes for a specific family and a default attribute group
-     * Fixture content is in a file in Resources/config/fixtures/attributes/
+     * Loads attributes according to a provided list of attribute codes and a default attribute group.
+     * Fixture content is in a file in "Resources/config/fixtures/attributes/".
      *
-     * @param string $familyCode
+     * @param array $attributeCodes
      */
-    private function loadFamilyAttributes(string $familyCode): void
+    private function loadAttributes(array $attributeCodes): void
     {
-        $data = $this->loadJsonFileAsArray(sprintf('attributes/attributes-family-%s.json', $familyCode));
+        $normalizedAttributes = $this->loadJsonFileAsArray('attributes/attributes.json');
 
         $attributeGroup = $this->attributeGroupBuilder->build(['code' => 'other']);
         $this->attributeGroupRepository->save($attributeGroup);
 
-        foreach ($data as $rowData) {
-            $attribute = $this->attributeBuilder->build($rowData);
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
             $this->attributeRepository->save($attribute);
         }
     }
@@ -166,11 +166,11 @@ class DataFixturesContext implements Context
      */
     private function loadFamily(string $familyCode): void
     {
-        $this->loadFamilyAttributes($familyCode);
+        $normalizedFamily = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
 
-        $data = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
+        $this->loadAttributes($normalizedFamily['attributes']);
 
-        $family = $this->familyBuilder->build($data);
+        $family = $this->familyBuilder->build($normalizedFamily);
         $this->familyRepository->save($family);
     }
 
