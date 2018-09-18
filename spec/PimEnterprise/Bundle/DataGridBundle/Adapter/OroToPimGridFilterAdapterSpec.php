@@ -59,14 +59,4 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
             'value'    => [45, 70],
         ]]);
     }
-
-    function it_returns_object_ids_on_approve_grid($massActionDispatcher)
-    {
-        $massActionDispatcher->dispatch(['gridName' => 'proposal-grid'])->willReturn([1, 2, 5]);
-        $massActionDispatcher->getRawFilters(['gridName' => 'proposal-grid'])->shouldNotBeCalled();
-
-        $result = ['values' => [1, 2, 5]];
-
-        $this->adapt(['gridName' => 'proposal-grid'])->shouldReturn($result);
-    }
 }

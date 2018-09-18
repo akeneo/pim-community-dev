@@ -281,13 +281,18 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }
 
+    pimee_workflow.datagrid.oro_to_pim_grid_filter:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\OroToPimGridFilterAdapter'
+        arguments:
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+
     # Controller
     pimee_workflow.datagrid.controller.published_product_export:
         class: '%pim_datagrid.controller.product_export.class%'
         arguments:
             - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
-            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pimee_workflow.datagrid.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
