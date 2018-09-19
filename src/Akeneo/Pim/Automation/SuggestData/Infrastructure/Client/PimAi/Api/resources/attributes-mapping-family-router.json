@@ -1,0 +1,34 @@
+[
+  {
+    "from": {
+      "id": "product_weight",
+      "label": {
+        "en_us": "Product Weight"
+      }
+    },
+    "to": null,
+    "type": "metric",
+    "summary": [
+      "23kg",
+      "12kg"
+    ],
+    "status": "pending"
+  },
+  {
+    "from": {
+      "id": "color",
+      "label": {
+        "en_us": "Color"
+      }
+    },
+    "to": {
+      "id": "product color"
+    },
+    "type": "multiselect",
+    "summary": [
+      "blue",
+      "red"
+    ],
+    "status": "active"
+  }
+]

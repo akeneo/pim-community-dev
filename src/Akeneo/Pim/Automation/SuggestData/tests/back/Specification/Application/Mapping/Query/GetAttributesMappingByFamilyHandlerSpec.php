@@ -43,7 +43,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_the_family_does_not_exist($familyRepository, $dataProvider)
     {
-        $familyRepository->findOneBy(['code' => 'unknown_family'])->willReturn(null);
+        $familyRepository->findOneByIdentifier('unknown_family')->willReturn(null);
         $dataProvider->getAttributesMapping('unknown_family')->shouldNotBeCalled();
 
         $query = new GetAttributesMappingByFamilyQuery('unknown_family');
@@ -54,7 +54,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
     {
         $attributesMappingResponse = new AttributesMappingResponse();
 
-        $familyRepository->findOneBy(['code' => 'camcorders'])->willReturn($family);
+        $familyRepository->findOneByIdentifier('camcorders')->willReturn($family);
         $dataProvider->getAttributesMapping('camcorders')->willReturn($attributesMappingResponse);
 
         $query = new GetAttributesMappingByFamilyQuery('camcorders');
