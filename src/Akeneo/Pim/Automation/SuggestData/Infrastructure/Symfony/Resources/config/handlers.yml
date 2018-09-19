@@ -34,7 +34,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
     akeneo.pim.automation.suggest_data.handler.create_proposals:
-        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler'
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler'
         arguments:
             - '@akeneo.pim.automation.suggest_data.normalizers.suggested_data'
             - '@akeneo.pim.automation.suggest_data.proposal.create_proposal'

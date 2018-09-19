@@ -26,6 +26,8 @@ interface ProposalUpsertInterface
      * @param ProductInterface $product
      * @param array $values
      * @param string $author
+     *
+     * @throws \LogicException
      */
     public function process(ProductInterface $product, array $values, string $author): void;
 }

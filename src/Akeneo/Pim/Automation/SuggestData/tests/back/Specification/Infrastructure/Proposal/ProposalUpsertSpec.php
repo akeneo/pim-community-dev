@@ -46,22 +46,6 @@ class ProposalUpsertSpec extends ObjectBehavior
         $this->shouldImplement(ProposalUpsertInterface::class);
     }
 
-    function it_does_not_create_a_proposal_if_suggested_data_is_invalid(
-        $productUpdater,
-        $draftBuilder,
-        ProductInterface $product
-    ) {
-        $suggestedData = [
-            'foo' => 'bar',
-        ];
-        $productUpdater->update($product, ['values' => $suggestedData])->willThrow(
-            UnknownPropertyException::unknownProperty('foo')
-        );
-        $draftBuilder->build($product, 'PIM.ai')->shouldNotBeCalled();
-
-        $this->process($product, $suggestedData, 'PIM.ai')->shouldReturn(null);
-    }
-
     function it_creates_a_proposal_from_suggested_data(
         $productUpdater,
         $draftBuilder,

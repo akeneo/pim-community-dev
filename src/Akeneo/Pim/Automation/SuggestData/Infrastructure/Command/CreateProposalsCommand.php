@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand as AppCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,22 +27,16 @@ class CreateProposalsCommand extends Command
     /** @var string */
     protected static $defaultName = 'pimee:suggest-data:create-proposals';
 
-    /** @var CreateProposalHandler */
+    /** @var CreateProposalsHandler */
     private $handler;
 
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $subscriptionRepo;
-
     /**
-     * @param CreateProposalHandler $handler
-     * @param ProductSubscriptionRepositoryInterface $subscriptionRepo
+     * @param CreateProposalsHandler $handler
      */
     public function __construct(
-        CreateProposalHandler $handler,
-        ProductSubscriptionRepositoryInterface $subscriptionRepo
+        CreateProposalsHandler $handler
     ) {
         $this->handler = $handler;
-        $this->subscriptionRepo = $subscriptionRepo;
         parent::__construct();
     }
 
@@ -60,25 +53,7 @@ class CreateProposalsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // TODO APAI-242: paginate/cursorize the subscriptions (perfs)
-        $subscriptions = $this->subscriptionRepo->findPendingSubscriptions();
-        foreach ($subscriptions as $subscription) {
-            $output->write(
-                sprintf(
-                    '<comment>Creating proposal for subscription %s...</comment>',
-                    $subscription->getSubscriptionId()
-                )
-            );
-            $command = new CreateProposalCommand($subscription);
-            // TODO APAI-244: handle errors
-            $this->handler->handle($command);
-            $output->writeln(
-                sprintf(
-                    '<comment> OK</comment>',
-                    $subscription->getSubscriptionId()
-                )
-            );
-        }
+        $this->handler->handle(new AppCommand());
         $output->writeln('<info>Proposals sucessfully created</info>');
     }
 }
