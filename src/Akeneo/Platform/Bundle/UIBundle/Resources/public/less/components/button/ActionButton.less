@@ -28,9 +28,9 @@
     margin-left: 3px;
   }
 
-  &:hover,
-  &:active,
-  &:focus {
+  &:not(&--withoutBorder):hover,
+  &:not(&--withoutBorder):active,
+  &:not(&--withoutBorder):focus {
     background: @AknDefaultHoverBackground;
   }
 

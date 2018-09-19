@@ -24,10 +24,13 @@
 }
 
 .ui-multiselect-menu {
-  padding: 0;
   max-width: 235px;
   border: 1px solid @AknBorderColor;
   background: white;
+  padding: 12px @AknInsideBoxesMargin @AknInsideBoxesMargin @AknInsideBoxesMargin;
+  -webkit-box-shadow: 0 4px 5px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0 4px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 5px rgba(0,0,0,0.15);
 
   &.select-filter-widget {
     .ui-multiselect-header .ui-helper-reset {
@@ -52,9 +55,10 @@
   }
 
   .ui-multiselect-header {
-    padding: 0 2px 2px 2px;
-    margin-bottom: 0;
     border: none;
+    padding: 0;
+    margin-bottom: 12px;
+    height: 40px;
   }
 
   .ui-multiselect-filter input {
@@ -70,7 +74,7 @@
   }
 
   .ui-multiselect-checkboxes {
-    padding: @AknDropdownMenuVerticalPadding 0;
+    padding: 0;
     clear: both;
     background: white;
 
@@ -79,6 +83,8 @@
     }
 
     li {
+      line-height: @AknSelectLineHeight;
+      height: @AknSelectLineHeight;
       padding-right: 0;
     }
 
@@ -89,6 +95,8 @@
 
   .ui-multiselect-checkboxes label {
     padding: 0;
+    line-height: 54px;
+    height: 54px;
   }
 
   .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a {
@@ -109,15 +117,16 @@
   }
 
   .ui-multiselect-checkboxes label {
-    padding: 0;
+    padding: 0 6px;
     cursor: pointer;
     font-weight: normal;
     color: @AknDefaultFontColor;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: ~"calc(100% - 16px)";
+    width: 100%;
     overflow: hidden;
     display: inline-block;
+    line-height: @AknSelectLineHeight;
 
     &:hover {
       background: @AknDefaultHoverBackground;
@@ -183,17 +192,17 @@
 }
 
 .AknFilterBox-filterCriteria.ui-multiselect-menu {
-  padding: 15px 20px 0;
+  margin-top: -6px;
 
   .ui-multiselect-header {
     border-bottom: 1px solid @AknLightPurple;
 
     .ui-multiselect-filter input {
       border: none;
-      color: @AknLightPurple;
+      color: @AknDefaultFontColor;
       height: 30px;
       line-height: 30px;
-      background: url("../../images/icon-search-purple.svg") no-repeat 0 5px;
+      background: url("../../images/icon-search.svg") no-repeat 0 5px;
       background-size: 20px;
       padding-left: 25px;
 
@@ -251,7 +260,7 @@
         width: ~"calc(100% - 25px)" !important;
         color: @AknLightPurple;
         font-size: @AknFontSizeBig;
-        background: url("../../images/icon-search-purple.svg") no-repeat 0 9px;
+        background: url("../../images/icon-search.svg") no-repeat 0 9px;
         background-size: 20px;
         padding: 0 0 0 25px;
 
@@ -272,19 +281,13 @@
       }
     }
 
-    &.select-filter-widget ul {
-      max-height: ~"calc(100% - 100px)";
-    }
-
     .ui-multiselect-checkboxes {
       li.ui-multiselect-optgroup-label {
         border-bottom: 1px solid @AknBorderColor;
-        height: 30px;
-        margin-top: 10px;
+        height: @AknSelectLineHeight;
         font-weight: normal;
         font-size: @AknFontSizeBig;
         color: @AknDarkBlue !important;
-        padding-left: 0;
       }
 
       .ui-helper-reset li {
