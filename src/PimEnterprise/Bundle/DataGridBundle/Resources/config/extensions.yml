@@ -1,6 +1,3 @@
-parameters:
-    pim_datagrid.extension.filter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension
-
 services:
     pim_datagrid.extension.selector.orm_selector:
         class: '%pim_datagrid.extension.selector.orm_selector.class%'
@@ -13,17 +10,3 @@ services:
         tags:
              - { name: oro_datagrid.extension }
 
-    pim_datagrid.extension.filter:
-        class: '%pim_datagrid.extension.filter.class%'
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-            - '@translator'
-            - '@pim_datagrid.datasource.adapter_resolver'
-            - '@pimee_enrich.repository.attribute'
-            - '@pimee_security.repository.attribute_group_access'
-            - '@pim_user.context.user'
-            - '@pim_datagrid.repository.datagrid_view'
-            - '@pimee_teamwork_assistant.repository.project'
-        public: false
-        tags:
-             - { name: oro_datagrid.extension }

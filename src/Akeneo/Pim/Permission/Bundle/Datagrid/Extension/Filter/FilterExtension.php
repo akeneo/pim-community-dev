@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Extension\Filter;
+namespace Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
