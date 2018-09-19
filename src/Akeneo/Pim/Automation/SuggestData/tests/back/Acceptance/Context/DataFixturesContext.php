@@ -134,7 +134,7 @@ class DataFixturesContext implements Context
      */
     public function theProductWithoutFamily(string $identifier): void
     {
-        $this->loadProductWithoutFamily($identifier);
+        $this->loadProduct($identifier, null);
     }
 
     /**
@@ -186,21 +186,28 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads a product with its family and attributes
-     * Fixture content is in a file in Resources/config/fixtures/products/
+     * Loads a product with its family (if any) and attributes.
+     * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
      *
-     * @param string $identifier
-     * @param string $familyCode
+     * @param string      $identifier
+     * @param null|string $familyCode
      */
-    private function loadProduct(string $identifier, string $familyCode): void
+    private function loadProduct(string $identifier, ?string $familyCode = null): void
     {
-        $this->loadFamily($familyCode);
-
-        $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
-            'products/product-%s-%s.json',
-            $familyCode,
-            $identifier
-        ));
+        if (null !== $familyCode) {
+            $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
+                'products/product-%s-%s.json',
+                $familyCode,
+                $identifier
+            ));
+            $this->loadFamily($familyCode);
+        } else {
+            $normalizedProduct = $this->loadJsonFileAsArray(sprintf(
+                'products/product-%s.json',
+                $identifier
+            ));
+            $this->loadProductAttributes($normalizedProduct);
+        }
 
         $product = $this->productBuilder->createProduct($identifier, $familyCode);
         $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
@@ -209,22 +216,14 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads a product without family.
-     * Fixture content is in a file in Resources/config/fixtures/products/
+     * Loads the attributes of a product, using the values of the product.
      *
-     * @param string $identifier
+     * @param array $normalizedProduct
      */
-    private function loadProductWithoutFamily(string $identifier): void
+    private function loadProductAttributes(array $normalizedProduct): void
     {
-        $normalizedProduct = $this->loadJsonFileAsArray(sprintf('products/product-%s.json', $identifier));
-
         $attributeCodes = array_keys($normalizedProduct['values']);
         $this->loadAttributes(array_merge(['sku'], $attributeCodes));
-
-        $product = $this->productBuilder->createProduct($identifier);
-        $this->setValuesFromRawDataToProduct($product, $normalizedProduct);
-
-        $this->productRepository->save($product);
     }
 
     /**
