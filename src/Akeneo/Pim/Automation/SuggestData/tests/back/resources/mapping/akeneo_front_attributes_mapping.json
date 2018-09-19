@@ -1,0 +1,28 @@
+{
+  "code":"camcorders",
+  "mapping":{
+    "pimaiattributecode1":{
+      "target_attribute":{
+        "type":"metric"
+      },
+      "pim_attribute":"weight",
+      "status":1
+    },
+    "pimaiattributecode3":{
+      "pim_ai_attribute":{
+        "label":"the pim.ai attribute label 3",
+        "type":"select"
+      },
+      "attribute":null,
+      "status":2
+    },
+    "pimaiattributecode2":{
+      "pim_ai_attribute":{
+        "label":"the pim.ai attribute label 2",
+        "type":"number"
+      },
+      "attribute":null,
+      "status":0
+    }
+  }
+}

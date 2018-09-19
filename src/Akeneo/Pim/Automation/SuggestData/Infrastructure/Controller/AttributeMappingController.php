@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
@@ -41,14 +43,22 @@ class AttributeMappingController
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
+    /** @var UpdateAttributesMappingByFamilyHandler */
+    private $updateAttributesMappingByFamilyHandler;
+
     /**
      * @param GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
-     * @param AttributesMappingNormalizer         $attributesMappingNormalizer
+     * @param AttributesMappingNormalizer $attributesMappingNormalizer
+     * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
      */
-    public function __construct(GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler, AttributesMappingNormalizer $attributesMappingNormalizer)
-    {
+    public function __construct(
+        GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer/*,
+        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler*/
+    ) {
         $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
+        //$this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
     }
 
     /**
@@ -126,17 +136,26 @@ class AttributeMappingController
     }
 
     /**
+     * @param string $identifier
      * @param Request $request
      *
      * @return Response
      */
-    public function updateAction(Request $request): Response
+    public function updateAction($identifier, Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
         $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['mapping'])) {
+            throw new \Exception('Missing mapping');
+        }
+
+        $command = new UpdateAttributesMappingByFamilyCommand($identifier, $data['mapping']);
+        $this->updateAttributesMappingByFamilyHandler->handle($command);
+
         /*
         $familyMapping = $this->getOrCreateFamilyMapping($data['code'])
         $this->updater->update($familyMapping, $data);
