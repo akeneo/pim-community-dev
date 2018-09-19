@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7651: Fix history generation of category accesses
+- PIM-7649: Change draft author when the username corresponding to the author is modified
 
 # 2.3.8 (2018-09-14)
 
