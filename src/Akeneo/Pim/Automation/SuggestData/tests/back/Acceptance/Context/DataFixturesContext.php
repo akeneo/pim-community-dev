@@ -190,15 +190,15 @@ class DataFixturesContext implements Context
     /**
      * @Given there is suggested data for subscribed product :identifier
      *
-     * @param $identifier
+     * @param string $identifier
      */
-    public function thereIsSuggestedDataForSubscribedProduct($identifier): void
+    public function thereIsSuggestedDataForSubscribedProduct(string $identifier): void
     {
         $this->theProductIsSubscribedToPimAi($identifier);
         $product = $this->productRepository->findOneByIdentifier($identifier);
         $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
 
-        $suggestedData = $this->loadJsonFileAsArray(sprintf('suggested-data/subscription-%s.json', $identifier));
+        $suggestedData = $this->loadJsonFileAsArray(sprintf('suggested-data/suggested_data-%s.json', $identifier));
         $subscription->setSuggestedData(new SuggestedData($suggestedData));
 
         $this->subscriptionRepository->save($subscription);
