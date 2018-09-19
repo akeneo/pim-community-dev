@@ -53,7 +53,7 @@ class Subscription
      */
     public function getTrackerId(): int
     {
-        return $this->rawSubscription['extra']['tracker_id'];
+        return (int) $this->rawSubscription['extra']['tracker_id'];
     }
 
     /**

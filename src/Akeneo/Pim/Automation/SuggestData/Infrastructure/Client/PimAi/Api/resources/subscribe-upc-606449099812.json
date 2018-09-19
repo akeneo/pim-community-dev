@@ -54,7 +54,7 @@
           "Wireless Transmission Speed": "1300 Mbit/s"
         },
         "extra": {
-          "tracker_id": 42,
+          "tracker_id": "42",
           "family": {
             "code": "tshirt",
             "label": {
