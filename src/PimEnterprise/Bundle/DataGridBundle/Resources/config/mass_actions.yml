@@ -1,7 +1,6 @@
 parameters:
     pim_datagrid.extension.mass_action.util.product_fields_builder.class:         Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder
     pim_datagrid.extension.mass_action.handler.mass_refuse.class:                 Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler\MassRefuseActionHandler
-    pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler
 
 services:
     pim_datagrid.extension.mass_action.util.product_fields_builder:
@@ -23,14 +22,6 @@ services:
             - '@pimee_workflow.factory.product_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
-
-    pim_datagrid.extension.mass_action.handler.rule_impacted_product_count:
-        class: '%pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class%'
-        arguments:
-            - '@pim_datagrid.datasource.result_record.hydrator.orm.object_id'
-            - '@event_dispatcher'
-        tags:
-            - { name: pim_datagrid.extension.mass_action.handler, alias: rule_impacted_product_count }
 
     # Dispatchers
     pim_datagrid.extension.mass_action.dispatcher:

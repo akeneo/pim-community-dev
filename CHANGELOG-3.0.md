@@ -12,6 +12,7 @@
 
 ## BC breaks
 
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler` to `Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction\RuleImpactedProductCountActionHandler`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper` to `Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory\GridHelper`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Configuration\Product\FiltersConfigurator`
 - Move `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Asset\Bundle\Doctrine\ORM\CompletenessRemover`

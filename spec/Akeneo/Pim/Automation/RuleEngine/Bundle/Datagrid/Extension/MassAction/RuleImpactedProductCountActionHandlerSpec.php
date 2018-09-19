@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction;
 
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\MassActionEvents;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
+namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction;
 
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\MassActionEvents;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;

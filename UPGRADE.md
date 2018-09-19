@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Handler\\RuleImpactedProductCountActionHandler/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\Datagrid\\Extension\\MassAction\\RuleImpactedProductCountActionHandler/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Manager\\AttributeValuesResolver/Akeneo\\Pim\\Permission\\Component\\Manager\\AttributeValuesResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\ProductModel\\Filter\\GrantedProductAttributeFilter/Akeneo\\Pim\\Permission\\Component\\Filter\\GrantedProductAttributeFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Updater\\Adder\\AssetCollectionAdder/Akeneo\\Pim\\Asset\\Component\\Updater\\Adder\\AssetCollectionAdder/g'
