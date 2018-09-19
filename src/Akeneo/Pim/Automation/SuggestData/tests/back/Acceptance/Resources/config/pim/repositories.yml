@@ -12,3 +12,8 @@ services:
 
     akeneo.pim.automation.suggest_data.repository.product_subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository'
+
+    akeneo.pim.automation.suggest_data.proposal.create_proposal:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert'
+        arguments:
+            - '@pimee_workflow.updater.product_without_permission'
