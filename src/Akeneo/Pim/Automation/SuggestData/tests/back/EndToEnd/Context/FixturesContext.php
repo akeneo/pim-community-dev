@@ -200,30 +200,33 @@ class FixturesContext extends PimContext
      */
     private function loadFamily(string $familyCode): void
     {
-        $this->loadFamilyAttributes($familyCode);
+        $normalizedFamily = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
 
-        $data = $this->loadJsonFileAsArray(sprintf('families/family-%s.json', $familyCode));
-        $family = $this->familyBuilder->build($data);
+        $this->loadAttributes($normalizedFamily['attributes']);
+
+        $family = $this->familyBuilder->build($normalizedFamily);
 
         $this->familySaver->save($family);
     }
 
     /**
-     * Loads attributes for a specific family and a default attribute group
-     * Fixture content is in a file in Resources/config/fixtures/attributes/
+     * Loads attributes according to a provided list of attribute codes.
+     * Fixture content is in a file in "Resources/config/fixtures/attributes/".
      *
-     * @param string $familyCode
+     * SKU is always skipped, as it is already present in the "minimal" catalog, installed before each test.
+     *
+     * @param array $attributeCodes
      */
-    private function loadFamilyAttributes(string $familyCode): void
+    private function loadAttributes(array $attributeCodes): void
     {
-        $data = $this->loadJsonFileAsArray(sprintf('attributes/attributes-family-%s.json', $familyCode));
+        $normalizedAttributes = $this->loadJsonFileAsArray('attributes/attributes.json');
 
         $attributes = [];
-        foreach ($data as $rowData) {
-            if ('sku' === $rowData['code']) {
+        foreach ($attributeCodes as $attributeCode) {
+            if ('sku' === $attributeCode) {
                 continue;
             }
-            $attributes[] = $this->attributeBuilder->build($rowData);
+            $attributes[] = $this->attributeBuilder->build($normalizedAttributes[$attributeCode]);
         }
         $this->attributeSaver->saveAll($attributes);
     }
