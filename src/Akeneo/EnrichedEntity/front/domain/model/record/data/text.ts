@@ -9,7 +9,7 @@ class TextData extends Data {
     super();
 
     if ('string' !== typeof textData) {
-      throw new InvalidTypeError('TextData expect a string or null as parameter to be created');
+      throw new InvalidTypeError('TextData expect a string as parameter to be created');
     }
 
     Object.freeze(this);

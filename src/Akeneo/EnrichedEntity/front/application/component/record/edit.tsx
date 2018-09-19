@@ -124,7 +124,7 @@ class RecordEditView extends React.Component<EditProps> {
                             },
                             {
                               action: {
-                                type: 'display'
+                                type: 'display',
                               },
                               label: record.getCode().stringValue(),
                             },

@@ -76,12 +76,12 @@ export class RecordFetcherImplementation implements RecordFetcher {
         channel: null,
         data: 'Sein name auf Deutsch',
       },
-      {
-        attribute: 'portrait_designer_1781b92b-6785-4bdf-9837-9f0db68902d4',
-        locale: null,
-        channel: null,
-        data: null,
-      },
+      // {
+      //   attribute: 'portrait_designer_1781b92b-6785-4bdf-9837-9f0db68902d4',
+      //   locale: null,
+      //   channel: null,
+      //   data: null,
+      // },
     ].map((value: any) => {
       return {
         ...value,

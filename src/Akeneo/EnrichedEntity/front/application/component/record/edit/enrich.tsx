@@ -124,7 +124,7 @@ export default connect(
           },
           onValueChange: (value: Value) => {
             dispatch(recordValueUpdated(value));
-          }
+          },
         },
       },
     };

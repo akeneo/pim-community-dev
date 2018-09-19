@@ -32,7 +32,7 @@ export default class ValueCollection {
   }
 
   public normalizeMinimal(): NormalizedMinimalValue[] {
-    return this.values.filter((value: Value) => !value.isEmpty()).map((value: Value) => value.normalizeMinimal());
+    return this.values.map((value: Value) => value.normalizeMinimal());
   }
 }
 

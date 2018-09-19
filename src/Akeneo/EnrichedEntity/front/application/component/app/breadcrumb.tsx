@@ -50,17 +50,18 @@ const renderRedirect = (item: BreadcrumbItem, key: number, last: boolean) => {
 
 const renderDisplay = (item: BreadcrumbItem, key: number, last: boolean) => {
   return (
-    <span
-      key={key}
-      className={`AknBreadcrumb-item ${last ? 'AknBreadcrumb-item--final' : ''}`}
-    >
+    <span key={key} className={`AknBreadcrumb-item ${last ? 'AknBreadcrumb-item--final' : ''}`}>
       {item.label}
     </span>
   );
 };
 
 const Breadcrumb = ({items}: {items: BreadcrumbItem[]}) => {
-  return <div className="AknBreadcrumb">{items.map((item: BreadcrumbItem, key: number) => renderItem(item, key, key === items.length - 1))}</div>;
+  return (
+    <div className="AknBreadcrumb">
+      {items.map((item: BreadcrumbItem, key: number) => renderItem(item, key, key === items.length - 1))}
+    </div>
+  );
 };
 
 export default Breadcrumb;

@@ -8,6 +8,7 @@ class Image extends React.Component<
   {
     image: FileModel;
     alt: string;
+    wide?: boolean;
     onImageChange: (image: FileModel) => void;
   },
   {
@@ -16,9 +17,11 @@ class Image extends React.Component<
     loading: boolean;
     focusing: boolean;
     ratio: number;
+    uploadingImage: string;
   }
 > {
-  public state = {dropping: false, removing: false, focusing: false, loading: false, ratio: 0};
+  public state = {dropping: false, removing: false, focusing: false, loading: false, ratio: 0, uploadingImage: ''};
+  public uploadingFile = null;
 
   private stopEvent = (event: any) => {
     event.preventDefault();
@@ -45,7 +48,7 @@ class Image extends React.Component<
     this.setState({focusing: false});
   };
 
-  private drop = (event: any) => {
+  private drop = (event: React.DragEvent<HTMLInputElement>) => {
     this.stopEvent(event);
     this.dragStop();
     this.upload(event.dataTransfer.files[0]);
@@ -59,7 +62,7 @@ class Image extends React.Component<
     this.setState({dropping: false});
   };
 
-  private click = (event: any) => {
+  private click = (event: React.MouseEvent<HTMLInputElement>) => {
     if (!this.props.image.isEmpty()) {
       this.stopEvent(event);
       this.setState({removing: false, dropping: true});
@@ -77,31 +80,47 @@ class Image extends React.Component<
       return;
     }
     this.setState({loading: true, ratio: 0});
+    const fileReader = new FileReader();
+    const afterLoad = (event: any) => {
+      this.setState({uploadingImage: event.target.result});
+    };
+    fileReader.onload = afterLoad.bind(this);
+    fileReader.readAsDataURL(file);
 
     try {
       const image = await imageUploader.upload(file, (ratio: number) => {
         this.setState({ratio});
       });
-      await loadImage(getImageShowUrl(image, 'thumbnail'));
+      await loadImage(getImageShowUrl(image, true === this.props.wide ? 'preview' : 'thumbnail'));
       this.props.onImageChange(image);
     } catch (error) {
       console.error(error);
     }
 
-    this.setState({loading: false, ratio: 0});
+    this.setState({loading: false});
   };
 
   render() {
-    const className = `AknTitleContainer-imageContainer AknTitleContainer-imageContainer--editable
-      ${this.state.dropping && !this.state.loading ? 'AknTitleContainer-imageContainer--dropping' : ''}
-      ${this.state.removing && !this.state.loading ? 'AknTitleContainer-imageContainer--removing' : ''}
-      ${this.state.focusing ? 'AknTitleContainer-imageContainer--focusing' : ''}
+    const wide = undefined === this.props.wide ? false : this.props.wide;
+    const className = `AknImage AknImage--editable
+      ${this.state.dropping && !this.state.loading ? 'AknImage--dropping' : ''}
+      ${this.state.removing && !this.state.loading ? 'AknImage--removing' : ''}
+      ${this.state.focusing ? 'AknImage--focusing' : ''}
+      ${wide ? 'AknImage--wide' : ''}
     `;
 
+    const imageUrl = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
+    const style =
+      0 === this.state.ratio
+        ? {width: `${this.state.ratio * 100}%`, transition: 'width 0s'}
+        : {width: `${this.state.ratio * 100}%`};
     return (
       <div className={className}>
+        {true === this.props.wide && !this.props.image.isEmpty() ? (
+          <div className="AknImage-drop" style={{backgroundImage: `url("${imageUrl}")`}} />
+        ) : null}
         <input
-          className="AknTitleContainer-imageUpdater"
+          className="AknImage-updater"
           onDrag={this.stopEvent}
           onDragStart={this.stopEvent}
           onDragEnd={this.dragStop.bind(this)}
@@ -119,10 +138,13 @@ class Image extends React.Component<
           value=""
         />
         <div
-          className="AknTitleContainer-imageLoader"
-          style={{width: `${this.state.ratio * 100}%`, opacity: this.state.loading ? 1 : 0}}
-        />
-        <img className="AknTitleContainer-image" src={getImageShowUrl(this.props.image, 'thumbnail')} />
+          ref="loader"
+          className={`AknImage-loader ${this.state.loading ? 'AknImage-loader--loading' : ''}`}
+          style={style}
+        >
+          <div className="AknImage-drop" style={{backgroundImage: `url("${this.state.uploadingImage}")`}} />
+        </div>
+        <img className="AknImage-display" src={imageUrl} />
       </div>
     );
   }

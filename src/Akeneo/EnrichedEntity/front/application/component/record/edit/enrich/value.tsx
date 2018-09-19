@@ -7,7 +7,13 @@ import {getErrorsView} from 'akeneoenrichedentity/application/component/app/vali
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 import {getDataView} from 'akeneoenrichedentity/application/configuration/data';
 
-export default (record: Record, channel: ChannelReference, locale: LocaleReference, errors: ValidationError[], onValueChange: (value: Value) => void) => {
+export default (
+  record: Record,
+  channel: ChannelReference,
+  locale: LocaleReference,
+  errors: ValidationError[],
+  onValueChange: (value: Value) => void
+) => {
   const visibleValues = record
     .getValueCollection()
     .getValuesForChannelAndLocale(channel, locale)
@@ -15,12 +21,14 @@ export default (record: Record, channel: ChannelReference, locale: LocaleReferen
       (firstValue: Value, secondValue: Value) => firstValue.getAttribute().order - secondValue.getAttribute().order
     );
 
-
   return visibleValues.map((value: Value) => {
     const DataView = getDataView(value);
     return (
       <div
-        key={value.getAttribute().getIdentifier().stringValue()}
+        key={value
+          .getAttribute()
+          .getIdentifier()
+          .stringValue()}
         className="AknFieldContainer"
         data-code={value.getAttribute().getCode()}
       >
@@ -34,7 +42,7 @@ export default (record: Record, channel: ChannelReference, locale: LocaleReferen
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <DataView value={value} onChange={onValueChange}/>
+          <DataView value={value} onChange={onValueChange} />
         </div>
         {getErrorsView(errors, `values.${value.getAttribute().getCode()}`)}
       </div>

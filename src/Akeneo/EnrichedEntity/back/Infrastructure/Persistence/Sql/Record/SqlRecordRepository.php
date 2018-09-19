@@ -92,8 +92,6 @@ SQL;
         }
     }
 
-    /**
-     */
     public function update(Record $record): void
     {
         $serializedLabels = $this->getSerializedLabels($record);

@@ -98,7 +98,7 @@ class Value {
       attribute: this.attribute.identifier.normalize(),
       channel: this.channel.normalize(),
       locale: this.locale.normalize(),
-      data: this.data.normalize(),
+      data: this.data.isEmpty() ? null : this.data.normalize(),
     };
   }
 }
