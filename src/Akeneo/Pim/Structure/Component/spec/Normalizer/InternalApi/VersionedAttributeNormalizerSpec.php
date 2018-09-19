@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;

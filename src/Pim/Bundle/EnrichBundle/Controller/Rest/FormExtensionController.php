@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider;
+use Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

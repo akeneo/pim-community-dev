@@ -1,0 +1,10 @@
+services:
+    pim_enrich.provider.form.product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductFormProvider'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.provider.form.product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductModelFormProvider'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

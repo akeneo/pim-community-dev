@@ -1,0 +1,62 @@
+services:
+    pim_enrich.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -   csv_association_type_export: pim-job-instance-csv-base-export
+                csv_attribute_export: pim-job-instance-csv-base-export
+                csv_attribute_group_export: pim-job-instance-csv-base-export
+                csv_attribute_option_export: pim-job-instance-csv-base-export
+                csv_category_export: pim-job-instance-csv-base-export
+                csv_channel_export: pim-job-instance-csv-base-export
+                csv_currency_export: pim-job-instance-csv-base-export
+                csv_family_export: pim-job-instance-csv-base-export
+                csv_family_variant_export: pim-job-instance-csv-base-export
+                csv_group_export: pim-job-instance-csv-base-export
+                csv_group_type_export: pim-job-instance-csv-base-export
+                csv_locale_export: pim-job-instance-csv-base-export
+                csv_product_export: pim-job-instance-csv-product-export
+                csv_product_model_export: pim-job-instance-csv-product-model-export
+                xlsx_association_type_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_group_export: pim-job-instance-xlsx-base-export
+                xlsx_attribute_option_export: pim-job-instance-xlsx-base-export
+                xlsx_category_export: pim-job-instance-xlsx-base-export
+                xlsx_channel_export: pim-job-instance-xlsx-base-export
+                xlsx_currency_export: pim-job-instance-xlsx-base-export
+                xlsx_family_export: pim-job-instance-xlsx-base-export
+                xlsx_family_variant_export: pim-job-instance-xlsx-base-export
+                xlsx_group_export: pim-job-instance-xlsx-base-export
+                xlsx_group_type_export: pim-job-instance-xlsx-base-export
+                xlsx_locale_export: pim-job-instance-xlsx-base-export
+                xlsx_product_export: pim-job-instance-xlsx-product-export
+                xlsx_product_model_export: pim-job-instance-xlsx-product-model-export
+                csv_association_type_import: pim-job-instance-csv-base-import
+                csv_attribute_import: pim-job-instance-csv-base-import
+                csv_attribute_group_import: pim-job-instance-csv-base-import
+                csv_attribute_option_import: pim-job-instance-csv-base-import
+                csv_category_import: pim-job-instance-csv-base-import
+                csv_channel_import: pim-job-instance-csv-base-import
+                csv_currency_import: pim-job-instance-csv-base-import
+                csv_family_import: pim-job-instance-csv-base-import
+                csv_family_variant_import: pim-job-instance-csv-base-import
+                csv_group_import: pim-job-instance-csv-base-import
+                csv_group_type_import: pim-job-instance-csv-base-import
+                csv_locale_import: pim-job-instance-csv-base-import
+                csv_product_import: pim-job-instance-csv-product-import
+                csv_product_model_import: pim-job-instance-csv-product-model-import
+                xlsx_association_type_import: pim-job-instance-xlsx-base-import
+                xlsx_attribute_import: pim-job-instance-xlsx-base-import
+                xlsx_attribute_group_import: pim-job-instance-xlsx-base-import
+                xlsx_attribute_option_import: pim-job-instance-xlsx-base-import
+                xlsx_category_import: pim-job-instance-xlsx-base-import
+                xlsx_channel_import: pim-job-instance-xlsx-base-import
+                xlsx_currency_import: pim-job-instance-xlsx-base-import
+                xlsx_family_import: pim-job-instance-xlsx-base-import
+                xlsx_family_variant_import: pim-job-instance-xlsx-base-import
+                xlsx_group_import: pim-job-instance-xlsx-base-import
+                xlsx_group_type_import: pim-job-instance-xlsx-base-import
+                xlsx_locale_import: pim-job-instance-xlsx-base-import
+                xlsx_product_import: pim-job-instance-xlsx-product-import
+                xlsx_product_model_import: pim-job-instance-xlsx-product-model-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
