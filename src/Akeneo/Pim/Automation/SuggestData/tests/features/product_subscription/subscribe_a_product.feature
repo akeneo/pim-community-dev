@@ -22,12 +22,12 @@ Feature: Subscribe a product to PIM.ai
     Then the product "product_without_family" should not be subscribed
 
   Scenario: Fail to subscribe a product that does not have any values on mapped identifiers
-    Given the product "product_without_values" of the family "tshirt"
+    Given the product "B00EYZY6AC" of the family "router"
     And a predefined mapping as follows:
       | pim_ai_code | attribute_code |
       | upc         | pim_upc        |
-    When I subscribe the product "product_without_values" to PIM.ai
-    Then the product "product_without_values" should not be subscribed
+    When I subscribe the product "B00EYZY6AC" to PIM.ai
+    Then the product "B00EYZY6AC" should not be subscribed
 
   Scenario: Fail to subscribe a product that is already subscribed to PIM.ai
     Given the product "B00EYZY6AC" of the family "router"
