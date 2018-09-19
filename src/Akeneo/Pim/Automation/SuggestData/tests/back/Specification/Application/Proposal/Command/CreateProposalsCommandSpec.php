@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CreateProposalCommandSpec extends ObjectBehavior
+class CreateProposalsCommandSpec extends ObjectBehavior
 {
     public function it_is_a_create_proposal_command()
     {
-        $this->shouldBeAnInstanceOf(CreateProposalCommand::class);
+        $this->shouldBeAnInstanceOf(CreateProposalsCommand::class);
     }
 }

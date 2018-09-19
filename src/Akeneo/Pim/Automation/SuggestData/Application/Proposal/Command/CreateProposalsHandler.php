@@ -24,7 +24,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CreateProposalHandler
+class CreateProposalsHandler
 {
     /** @var SuggestedDataNormalizer */
     private $suggestedDataNormalizer;
@@ -51,9 +51,9 @@ class CreateProposalHandler
     }
 
     /**
-     * @param CreateProposalCommand $command
+     * @param CreateProposalsCommand $command
      */
-    public function handle(CreateProposalCommand $command): void
+    public function handle(CreateProposalsCommand $command): void
     {
         // TODO APAI-242 Paginate/cursorize the subscriptions
         $subscriptions = $this->productSubscriptionRepository->findPendingSubscriptions();

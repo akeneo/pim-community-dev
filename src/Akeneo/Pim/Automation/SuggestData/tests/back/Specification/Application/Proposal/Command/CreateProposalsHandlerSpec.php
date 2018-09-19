@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Normalizer\Standard\SuggestedDataNormalizer;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Service\ProposalUpsertInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProposalAuthor;
@@ -20,7 +20,7 @@ use Prophecy\Argument;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CreateProposalHandlerSpec extends ObjectBehavior
+class CreateProposalsHandlerSpec extends ObjectBehavior
 {
     public function let(
         SuggestedDataNormalizer $suggestedDataNormalizer,
@@ -32,7 +32,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 
     public function it_is_a_create_proposal_handler()
     {
-        $this->shouldHaveType(CreateProposalHandler::class);
+        $this->shouldHaveType(CreateProposalsHandler::class);
     }
 
     public function it_does_not_create_proposals_for_uncategorized_products(
@@ -47,7 +47,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
 
         $proposalUpsert->process($product, Argument::type('array'), ProposalAuthor::USERNAME)->shouldNotBeCalled();
 
-        $this->handle(new CreateProposalCommand())->shouldReturn(null);
+        $this->handle(new CreateProposalsCommand())->shouldReturn(null);
     }
 
     public function it_handles_a_create_proposal_command(
@@ -91,7 +91,7 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $subscription->emptySuggestedData()->shouldBeCalled();
         $subscriptionRepository->save($subscription)->shouldBeCalled();
 
-        $this->handle(new CreateProposalCommand())->shouldReturn(null);
+        $this->handle(new CreateProposalsCommand())->shouldReturn(null);
     }
 
     function it_does_not_create_proposal_for_invalid_data(
@@ -135,6 +135,6 @@ class CreateProposalHandlerSpec extends ObjectBehavior
         $subscription->emptySuggestedData()->shouldNotBeCalled();
         $subscriptionRepository->save($subscription)->shouldNotBeCalled();
 
-        $this->handle(new CreateProposalCommand())->shouldReturn(null);
+        $this->handle(new CreateProposalsCommand())->shouldReturn(null);
     }
 }

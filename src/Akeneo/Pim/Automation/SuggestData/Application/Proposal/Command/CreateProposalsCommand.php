@@ -16,6 +16,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class CreateProposalCommand
+class CreateProposalsCommand
 {
 }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalCommand;
-use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand as AppCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,14 +27,14 @@ class CreateProposalsCommand extends Command
     /** @var string */
     protected static $defaultName = 'pimee:suggest-data:create-proposals';
 
-    /** @var CreateProposalHandler */
+    /** @var CreateProposalsHandler */
     private $handler;
 
     /**
-     * @param CreateProposalHandler $handler
+     * @param CreateProposalsHandler $handler
      */
     public function __construct(
-        CreateProposalHandler $handler
+        CreateProposalsHandler $handler
     ) {
         $this->handler = $handler;
         parent::__construct();
@@ -53,7 +53,7 @@ class CreateProposalsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->handler->handle(new CreateProposalCommand());
+        $this->handler->handle(new AppCommand());
         $output->writeln('<info>Proposals sucessfully created</info>');
     }
 }
