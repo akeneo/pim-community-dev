@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer as BaseImageNormalizer;
-use Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 
 /**
@@ -22,11 +22,11 @@ class ImageNormalizer extends BaseImageNormalizer
     protected $localeRepository;
 
     /**
-     * @param \Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer $fileNormalizer
-     * @param LocaleRepositoryInterface                                    $localeRepository
+     * @param FileNormalizer            $fileNormalizer
+     * @param LocaleRepositoryInterface $localeRepository
      */
     public function __construct(
-        \Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer $fileNormalizer,
+        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer $fileNormalizer,
         LocaleRepositoryInterface $localeRepository
     ) {
         parent::__construct($fileNormalizer);
