@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 
 /**
  * This Normalizer will normalize the "image" field, to return paths to get the image to display.

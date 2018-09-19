@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
+namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
