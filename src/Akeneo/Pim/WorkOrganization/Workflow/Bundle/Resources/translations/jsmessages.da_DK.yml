@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: Der er ingen forslag om revision.
   no_results:
     proposal: Der er ingen forslag om revision. Prøv at ændre dine søgkriterier.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Åbn
+      collapse_text: Minimer
 pimee_workflow:
   entity:
     published_product:

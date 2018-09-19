@@ -10,6 +10,11 @@ oro:
       proposal: 没有新的提案待审查
     noresults:
       proposal: 没有新的提案待审查。请尝试改变搜索条件。
+pimee_datagrid:
+  cell:
+    expand:
+      expandText: 展开
+      collapseText: 折叠
 pimee_workflow:
   entity:
     published_product:

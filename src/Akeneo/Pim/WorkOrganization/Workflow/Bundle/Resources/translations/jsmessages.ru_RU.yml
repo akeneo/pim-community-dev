@@ -10,6 +10,11 @@ oro:
       proposal: Нет никаких предложений для рассмотрения.
     noresults:
       proposal: Нет никаких предложений для рассмотрения. Попробуйте изменить критерии поиска.
+pimee_datagrid:
+  cell:
+    expand:
+      expandText: Развернуть
+      collapseText: Свернуть
 pimee_workflow:
   entity:
     published_product:

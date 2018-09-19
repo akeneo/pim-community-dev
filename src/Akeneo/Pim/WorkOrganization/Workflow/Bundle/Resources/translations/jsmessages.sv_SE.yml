@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: Det finns inga förslag att granska.
   no_results:
     proposal: Det finns inga förslag att granska. Prova att ändra dina sökkriterier.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Expandera
+      collapse_text: Fäll ihop
 pimee_workflow:
   entity:
     published_product:
