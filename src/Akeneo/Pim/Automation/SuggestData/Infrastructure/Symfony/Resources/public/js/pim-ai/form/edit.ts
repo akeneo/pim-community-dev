@@ -9,7 +9,6 @@ const Messenger = require('oro/messenger');
 const template = require('pimee/template/pim-ai-connection/edit');
 
 interface EditConfig {
-  token_label_title: string;
   token_label_content: string;
   token_field_title: string;
   token_field_placeholder: string;
@@ -28,7 +27,6 @@ class EditView extends BaseView {
   readonly template: any = _.template(template);
 
   readonly config: EditConfig = {
-    token_label_title: '',
     token_label_content: '',
     token_field_title: '',
     token_field_placeholder: '',
@@ -137,7 +135,6 @@ class EditView extends BaseView {
   private renderUnactivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelTitle: __(this.config.token_label_title),
         tokenLabelContent: __(this.config.token_label_content),
         tokenFieldTitle: __(this.config.token_field_title),
         tokenFieldPlaceholder: __(this.config.token_field_placeholder),
@@ -157,7 +154,6 @@ class EditView extends BaseView {
   private renderActivatedConnection(token: string): void {
     this.$el.html(
       this.template({
-        tokenLabelTitle: __(this.config.token_label_title),
         tokenLabelContent: __(this.config.token_label_content),
         tokenFieldTitle: __(this.config.token_field_title),
         tokenFieldPlaceholder: __(this.config.token_field_placeholder),

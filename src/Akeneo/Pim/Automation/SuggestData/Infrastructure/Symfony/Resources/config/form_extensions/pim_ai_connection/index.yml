@@ -56,7 +56,6 @@ extensions:
         targetZone: content
         position: 90
         config:
-            token_label_title: pim_common.label
             token_label_content: akeneo_suggest_data.connection.module.activation.label
             token_field_title: akeneo_suggest_data.connection.module.activation.activation_code
             token_field_placeholder: akeneo_suggest_data.connection.module.activation.paste_activation_code

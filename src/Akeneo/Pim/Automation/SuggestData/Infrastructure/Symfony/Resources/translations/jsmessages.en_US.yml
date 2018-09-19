@@ -74,7 +74,7 @@ akeneo_suggest_data:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
                     second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
             activation:
-                label: 'PIM.ai connector'
+                label: 'Franklin connector'
                 activation_code: 'Activation code'
                 paste_activation_code: 'Paste Activation Code'
                 activated: 'Activated'
