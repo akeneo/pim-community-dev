@@ -127,7 +127,7 @@ class FiltersColumn extends BaseView {
     console.log('is the state equal ? ', currentState, updatedState)
     console.log('should we update?', !_.isEqual(currentState, updatedState) && true === this.loaded, currentState, updatedState);
 
-    if (!_.isEqual(currentState, updatedState) && true === this.loaded || !_.isEmpty(currentState)) {
+    if (!_.isEqual(currentState, updatedState) && true === this.loaded || !_.isEmpty(updatedState)) {
       this.datagridCollection.state.filters = filterState;
       this.datagridCollection.state.currentPage = 1;
       this.datagridCollection.fetch();
