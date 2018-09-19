@@ -69,7 +69,7 @@ akeneo_suggest_data:
             error: Sorry, an error occured.
         module:
             title:
-                sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant!</span>'
+                sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
                     second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
@@ -81,13 +81,13 @@ akeneo_suggest_data:
                 activate: 'Activate'
 
     settings:
-        page_title: 'PIM.ai settings'
+        page_title: 'Franklin Insights settings'
         module:
             title:
-                sub_title: 'Welcome to the Product Information AI settings'
+                sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
-                    first_step: 'Please select the attributes in your catalog that correspond to the product identifiers of the product information AI assistant.'
-                    second_step: 'Once the mappings are saved, the assistant will be able to collect and suggest product information in your catalog.'
+                    first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers that match his.'
+                    second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#">Read more</a>'
             inactive_connection:
                 title: Sorry, nothing to show here yet
                 sub_title: Please activate your account on System > PIM.ai connection an comme back.
