@@ -12,7 +12,7 @@ extensions:
         config:
             neverEmpty: true
             operators:
-                - ">="
+                - GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
                 - ALL
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
