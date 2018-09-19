@@ -102,7 +102,11 @@ class FiltersColumn extends BaseView {
 
   // @TODO add uniq
   mergeAddedFilters(addedFilters: GridFilter[]) {
-    return [ ...this.loadedFilters, ...addedFilters]
+    const filters = [ ...this.loadedFilters, ...addedFilters]
+
+    return filters.filter((mergedFilter, index) => {
+        return filters.indexOf(mergedFilter) === index
+    })
   }
 
   fetchNextFilters(event: JQueryMouseEventObject) {
