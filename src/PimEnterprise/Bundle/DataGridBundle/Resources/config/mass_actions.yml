@@ -22,13 +22,3 @@ services:
             - '@pimee_workflow.factory.product_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
-
-    # Dispatchers
-    pim_datagrid.extension.mass_action.dispatcher:
-        class: '%pim_datagrid.extension.mass_action.dispatcher.class%'
-        arguments:
-            - '@pim_datagrid.extension.mass_action.handler.registry'
-            - '@oro_datagrid.datagrid.manager'
-            - '@oro_datagrid.datagrid.request_params'
-            - '@oro_datagrid.mass_action.parameters_parser'
-            - ['product-grid', 'proposal-grid', 'published-product-grid']
