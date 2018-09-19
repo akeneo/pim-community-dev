@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscription;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactoryInterface;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository;
+use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityBuilder;
@@ -67,6 +69,12 @@ class DataFixturesContext implements Context
     /** @var InMemoryProductSubscriptionRepository */
     private $subscriptionRepository;
 
+    /** @var EntityBuilder */
+    private $categoryBuilder;
+
+    /** @var InMemoryCategoryRepository */
+    private $categoryRepository;
+
     /**
      * @param InMemoryProductRepository $productRepository
      * @param ProductBuilderInterface $productBuilder
@@ -79,6 +87,8 @@ class DataFixturesContext implements Context
      * @param InMemoryAttributeGroupRepository $attributeGroupRepository
      * @param EntityBuilder $attributeGroupBuilder
      * @param InMemoryProductSubscriptionRepository $subscriptionRepository
+     * @param EntityBuilder $categoryBuilder
+     * @param InMemoryCategoryRepository $categoryRepository
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -91,7 +101,9 @@ class DataFixturesContext implements Context
         EntityBuilder $attributeBuilder,
         InMemoryAttributeGroupRepository $attributeGroupRepository,
         EntityBuilder $attributeGroupBuilder,
-        InMemoryProductSubscriptionRepository $subscriptionRepository
+        InMemoryProductSubscriptionRepository $subscriptionRepository,
+        EntityBuilder $categoryBuilder,
+        InMemoryCategoryRepository $categoryRepository
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
@@ -104,6 +116,8 @@ class DataFixturesContext implements Context
         $this->attributeGroupBuilder = $attributeGroupBuilder;
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->subscriptionRepository = $subscriptionRepository;
+        $this->categoryBuilder = $categoryBuilder;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -138,6 +152,29 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @Given the product :identifier has category :categoryCode
+     *
+     * @param string $identifier
+     * @param string $categoryCode
+     */
+    public function theProductHasCategory(string $identifier, string $categoryCode): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        if (in_array($categoryCode, $product->getCategoryCodes())) {
+            return;
+        }
+
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        if (null === $category) {
+            $category = $this->categoryBuilder->build(['code' => $categoryCode]);
+            $this->categoryRepository->save($category);
+        }
+
+        $product->addCategory($category);
+        $this->productRepository->save($product);
+    }
+
+    /**
      * @param string $identifier
      *
      * @Given the product ":identifier" is subscribed to PIM.ai
@@ -147,6 +184,23 @@ class DataFixturesContext implements Context
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         $subscription = new ProductSubscription($product, uniqid());
+        $this->subscriptionRepository->save($subscription);
+    }
+
+    /**
+     * @Given there is suggested data for subscribed product :identifier
+     *
+     * @param $identifier
+     */
+    public function thereIsSuggestedDataForSubscribedProduct($identifier): void
+    {
+        $this->theProductIsSubscribedToPimAi($identifier);
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $subscription = $this->subscriptionRepository->findOneByProductId($product->getId());
+
+        $suggestedData = $this->loadJsonFileAsArray(sprintf('suggested-data/subscription-%s.json', $identifier));
+        $subscription->setSuggestedData(new SuggestedData($suggestedData));
+
         $this->subscriptionRepository->save($subscription);
     }
 

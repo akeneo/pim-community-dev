@@ -32,6 +32,8 @@ services:
             - '@__symfony__.pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@test.category.builder'
+            - '@__symfony__.pim_catalog.repository.category'
         tags:
             - { name: 'fob.context_service' }
 
@@ -59,5 +61,14 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context\AttributesMappingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
+        tags:
+            - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.proposal:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProposalContext'
+        arguments:
+
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.create_proposals'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.proposal.create_proposal'
         tags:
             - { name: 'fob.context_service' }
