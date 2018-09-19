@@ -95,8 +95,9 @@ class UserController extends Controller
 
         $route = $this->get('router')->generate('oro_user_update', ['id' => $user->getId()]);
 
+        $previousUsername = $user->getUsername();
         if ($this->get('oro_user.form.handler.user')->process($user)) {
-            $this->update($user);
+            $this->update($user, $previousUsername);
 
             return new JsonResponse('', 204);
         }
@@ -149,14 +150,15 @@ class UserController extends Controller
 
     /**
      * @param UserInterface $user
+     * @param null|string   $previousUsername
      *
      * @return UserInterface
      */
-    protected function update(UserInterface $user)
+    protected function update(UserInterface $user, ?string $previousUsername = null)
     {
         $this->get('event_dispatcher')->dispatch(
             UserEvent::POST_UPDATE,
-            new GenericEvent($user, ['current_user' => $this->getUser()])
+            new GenericEvent($user, ['current_user' => $this->getUser(), 'previous_username' => $previousUsername])
         );
 
         $this->get('session')->getFlashBag()->add(
