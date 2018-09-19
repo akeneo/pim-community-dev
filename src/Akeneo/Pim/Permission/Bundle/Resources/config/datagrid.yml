@@ -43,6 +43,8 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.product_model'
 
+
+
     pim_datagrid.extension.filter:
         class: 'Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension'
         arguments:
