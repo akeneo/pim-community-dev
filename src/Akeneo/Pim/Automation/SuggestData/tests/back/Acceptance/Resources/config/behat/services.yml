@@ -15,6 +15,7 @@ services:
             - '@__symfony__.akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
             - '@__symfony__.pim_catalog.repository.attribute'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.pimai_client.identifiers_mapping'
         tags:
             - { name: 'fob.context_service' }
 

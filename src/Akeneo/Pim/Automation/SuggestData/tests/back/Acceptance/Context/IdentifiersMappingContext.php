@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifi
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\IdentifiersMapping\IdentifiersMappingApiFake;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -36,19 +37,25 @@ class IdentifiersMappingContext implements Context
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var IdentifiersMappingApiFake */
+    private $identifiersMappingApiFake;
+
     /**
      * @param ManageIdentifiersMapping              $manageIdentifiersMapping
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      * @param AttributeRepositoryInterface          $attributeRepository
+     * @param IdentifiersMappingApiFake             $identifiersMappingApiFake
      */
     public function __construct(
         ManageIdentifiersMapping $manageIdentifiersMapping,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingApiFake $identifiersMappingApiFake
     ) {
         $this->manageIdentifiersMapping = $manageIdentifiersMapping;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->identifiersMappingApiFake = $identifiersMappingApiFake;
     }
 
     /**
@@ -159,6 +166,10 @@ class IdentifiersMappingContext implements Context
         $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
         Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
+        Assert::assertEquals(
+            $this->convertToApiNormalizedFormat($identifiers),
+            $this->identifiersMappingApiFake->get()
+        );
     }
 
     /**
@@ -168,6 +179,10 @@ class IdentifiersMappingContext implements Context
     {
         $identifiers = $this->identifiersMappingRepository->find();
         Assert::assertFalse($identifiers->isEmpty());
+        Assert::assertArraySubset(
+            $this->identifiersMappingApiFake->get(),
+            $this->convertToApiNormalizedFormat($identifiers->normalize())
+        );
     }
 
     private function assertMappingIsEmpty(): void
@@ -175,6 +190,7 @@ class IdentifiersMappingContext implements Context
         $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
         Assert::assertEquals([], $identifiers);
+        Assert::assertEquals([], $this->identifiersMappingApiFake->get());
     }
 
     /**
@@ -190,5 +206,43 @@ class IdentifiersMappingContext implements Context
         $identifiersMapping = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
 
         return array_merge($identifiersMapping, $extractedData);
+    }
+
+    /**
+     * This method converts a simple array
+     *
+     * [
+     *     'pim_ai_identifier_code' => 'akeneo_pim_attribute_code',
+     * ]
+     *
+     * into the normalized format used by our client
+     *
+     * [
+     *     'pim_ai_identifier_code' => [
+     *         'code' => '',
+     *         'label' => [
+     *             'en_US' => 'Attribute label',
+     *         ],
+     *     ],
+     * ]
+     *
+     * @param array $mappedIdentifiers
+     *
+     * @return array
+     */
+    private function convertToApiNormalizedFormat(array $mappedIdentifiers): array
+    {
+        $normalizedMapping = [];
+
+        foreach ($mappedIdentifiers as $pimAiIdentifierCode => $akeneoIdentifierCode) {
+            $normalizedMapping[$pimAiIdentifierCode] = [
+                'code' => $akeneoIdentifierCode,
+                'label' => [
+                    'en_US' => sprintf('[%s]', $akeneoIdentifierCode),
+                ],
+            ];
+        }
+
+        return $normalizedMapping;
     }
 }
