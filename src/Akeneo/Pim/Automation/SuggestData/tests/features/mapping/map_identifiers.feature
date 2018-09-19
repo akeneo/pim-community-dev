@@ -1,8 +1,8 @@
 @acceptance-back
-Feature: map the pim identifiers with PIM.ai identifiers
+Feature: Map the PIM identifiers with PIM.ai identifiers
   In order to automatically enrich my products
   As a system administrator
-  I want to map my Pim identifiers to the PIM.ai identifiers
+  I want to map my PIM identifiers to the PIM.ai identifiers
 
   Background:
     #Will be useful only when a call to notify PIM.ai about the new mapping will be implemented
@@ -28,7 +28,7 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | upc         | ean            |
       | asin        | asin           |
 
-  Scenario: successfully map PIM.ai attributes to pim attributes for the first time
+  Scenario: Successfully map PIM.ai attributes to PIM attributes for the first time
     Given the following attribute:
       | code  | type                      |
       | brand | pim_catalog_text          |
@@ -49,7 +49,7 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | upc         | ean            |
       | asin        | asin           |
 
-  Scenario: successfully update an already existing mapping
+  Scenario: Successfully update an already existing mapping
     Given the following attribute:
       | code  | type                   |
       | brand | pim_catalog_text       |
@@ -77,7 +77,7 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | upc         | sku            |
       | asin        | id             |
 
-  Scenario Outline: successfully map PIM.ai attributes with valid pim attribute types
+  Scenario Outline: Successfully map PIM.ai attributes with valid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code  | type             |
@@ -94,7 +94,7 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | pim_catalog_identifier   |
       | pim_catalog_number       |
 
-  Scenario Outline: fails to map PIM.ai attributes with invalid pim attribute types
+  Scenario Outline: Fails to map PIM.ai attributes with invalid PIM attribute types
     Given an empty identifiers mapping
     And the following attribute:
       | code  | type             |
@@ -119,7 +119,7 @@ Feature: map the pim identifiers with PIM.ai identifiers
       | pim_catalog_date                  |
       | akeneo_enriched_entity_collection |
 
-  Scenario: fails to map PIM.ai attribute with unexisting pim attribute
+  Scenario: Fails to map PIM.ai attribute with unexisting PIM attribute
     Given an empty identifiers mapping
     When the identifiers are mapped with invalid values as follows:
       | pim_ai_code | attribute_code |
