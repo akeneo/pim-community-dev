@@ -127,6 +127,7 @@ pim_datagrid:
             subHint: 'Click on the button "Add associations" to associate this product'
     filters:
         label: Filters
+        system: System
 
 error:
     exception: Oh snap! A {{ status_code }} error occured...
