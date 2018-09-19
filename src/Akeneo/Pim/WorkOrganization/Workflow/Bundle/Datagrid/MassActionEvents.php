@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid;
 
 /**
  * Mass actions events
@@ -24,7 +24,7 @@ final class MassActionEvents
      * These event are thrown when mass action handlers are called
      *
      * The event listener receives an
-     * PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent instance
+     * Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvent instance
      *
      * @staticvar string
      */

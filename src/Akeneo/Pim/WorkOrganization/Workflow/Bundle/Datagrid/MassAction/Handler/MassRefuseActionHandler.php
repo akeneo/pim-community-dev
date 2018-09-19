@@ -20,7 +20,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
-use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
