@@ -187,11 +187,18 @@
 
 .select2-container.select2-allowclear .select2-choice {
   .select2-search-choice-close {
-    height: 22px;
-    width: 22px;
-    background-size: 70%;
+    height: 18px;
+    width: 18px;
+    background-size: 100%;
     margin-right: 0;
+    margin-top: 2px;
+    opacity: 0;
+    transition: opacity 0.1s ease-in;
   }
+}
+
+.select2-container.select2-allowclear:hover .select2-choice .select2-search-choice-close {
+  opacity: 1;
 }
 
 .select2-container-multi {
