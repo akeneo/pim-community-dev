@@ -38,7 +38,7 @@ class EditIdentifiersMappingView extends BaseView {
   constructor(options: { config: Object }) {
     super({
       ...options, ...{
-        className: 'AknGrid AknGrid--unclickable',
+        className: 'AknGrid AknGrid--unclickable AknFormContainer--withPadding',
         tagName: 'table'
       }
     });
