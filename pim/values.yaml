@@ -49,11 +49,15 @@ google:
 
 certmanager:
   issuer: selfsigning
+  acme:
+    challenge: dns01
+    dns01:
+      provider: clouddns
 
 image:
   pim:
     repository: eu.gcr.io/akeneo-cloud/pim-enterprise-cloud
-    tag: v2.3.5
+    tag: v2.3.8
     pullPolicy: Always
   httpd:
     repository: httpd
