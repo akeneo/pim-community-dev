@@ -100,13 +100,17 @@ class FiltersColumn extends BaseView {
       return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`)
   }
 
-  // @TODO add uniq
-  mergeAddedFilters(addedFilters: GridFilter[]) {
-    const filters = [ ...this.loadedFilters, ...addedFilters]
+  mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]) {
+    const filters = [ ...originalFilters, ...addedFilters]
+    const uniqueFilters: any[] = []
 
-    return filters.filter((mergedFilter, index) => {
-        return filters.indexOf(mergedFilter) === index
+    filters.forEach(mergedFilter => {
+        if (undefined === uniqueFilters.find((searchedFilter) => searchedFilter.name === mergedFilter.name)) {
+            uniqueFilters.push(mergedFilter)
+        }
     })
+
+    return uniqueFilters;
   }
 
   fetchNextFilters(event: JQueryMouseEventObject) {
@@ -123,7 +127,7 @@ class FiltersColumn extends BaseView {
                 return this.stopListeningToListScroll()
             }
 
-            this.loadedFilters = this.mergeAddedFilters(loadedFilters)
+            this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, loadedFilters)
             return this.renderFilters()
         })
       }
@@ -151,7 +155,7 @@ class FiltersColumn extends BaseView {
      return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
         const filters: GridFilter[] = this.defaultFilters.concat(loadedFilters)
 
-        this.loadedFilters = this.mergeAddedFilters(filters)
+        this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, filters)
 
         return this.renderFilters(filters.filter((filter: GridFilter) => {
             const label: string = filter.label.toLowerCase()
@@ -195,8 +199,7 @@ class FiltersColumn extends BaseView {
     this.defaultFilters = metadata.filters
     this.gridCollection = gridCollection
     this.fetchFilters().then((loadedFilters: GridFilter[]) => {
-        // @TODO when you merge defaultFilters make sure that the array is unique and default filters override the loaded ones
-        this.loadedFilters = [ ...this.defaultFilters, ...loadedFilters ]
+        this.loadedFilters = this.mergeAddedFilters(this.defaultFilters, loadedFilters)
         this.renderFilters()
         this.listenToListScroll()
         this.triggerFiltersUpdated()
