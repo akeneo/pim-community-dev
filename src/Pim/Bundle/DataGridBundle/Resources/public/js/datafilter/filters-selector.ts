@@ -48,9 +48,12 @@ class FiltersColumn extends BaseView {
     return cachedFilter
   }
 
-  renderFilters(filters: any, datagridCollection: any) {
-    console.log('renderFilters', filters, datagridCollection)
+  disableFilter(filter: any) {
+      mediator.trigger('filters-selector:disable-filter', filter)
+      this.updateDatagridStateWithFilters
+  }
 
+  renderFilters(filters: any, datagridCollection: any) {
     this.datagridCollection = datagridCollection
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
@@ -58,14 +61,15 @@ class FiltersColumn extends BaseView {
     filters.forEach((filter: any) => {
       const filterModule =  this.getFilterModule(filter)
 
-      // if the filter is enabled or has a value
       if (true === filter.enabled || state[filter.name]) {
         filterModule.render()
-        filterModule.on('update', this.updateDatagridStateWithFilters.bind(this))
-        filterModule.on('disable', (filter: any) => {
-          mediator.trigger('filters-selector:disable-filter', filter)
-          this.updateDatagridStateWithFilters.bind(this)
-        })
+        filterModule.off()
+
+        this.stopListening(filterModule, 'update')
+        this.stopListening(filterModule, 'disable')
+
+        this.listenTo(filterModule, 'update', this.updateDatagridStateWithFilters.bind(this))
+        this.listenTo(filterModule, 'disable', this.disableFilter.bind(this, [filter]))
 
         list.appendChild(filterModule.el)
       }
@@ -96,7 +100,6 @@ class FiltersColumn extends BaseView {
       const filterState = state[filterName]
 
       if (filterState) {
-        // see if it can be silent
         filterModule.setValue(state[filterName])
       }
     })
@@ -124,8 +127,6 @@ class FiltersColumn extends BaseView {
     console.log('is the state equal ? ', currentState, updatedState)
     console.log('should we update?', !_.isEqual(currentState, updatedState) && true === this.loaded, currentState, updatedState);
 
-    // if the state is empty, update it
-    // if it's not empty, and has already loaded once, udpate it
     if (!_.isEqual(currentState, updatedState) && true === this.loaded || _.isEmpty(currentState)) {
       this.datagridCollection.state.filters = filterState;
       this.datagridCollection.state.currentPage = 1;
