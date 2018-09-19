@@ -58,7 +58,6 @@ class AttributeMappingControllerSpec extends ObjectBehavior
      */
     private function loadAttributesMappingRequestContent()
     {
-        $path = realpath(sprintf('%s/%s', __DIR__, '../../../resources/mapping/'));
         $filepath =
             sprintf(
                 '%s/%s',

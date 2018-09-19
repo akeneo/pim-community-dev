@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttribut
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\AttributesMappingNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -48,17 +47,17 @@ class AttributeMappingController
 
     /**
      * @param GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
-     * @param AttributesMappingNormalizer $attributesMappingNormalizer
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler,
-        AttributesMappingNormalizer $attributesMappingNormalizer/*,
-        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler*/
+        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
+        AttributesMappingNormalizer $attributesMappingNormalizer
     ) {
         $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
+        $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
-        //$this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
     }
 
     /**
@@ -72,15 +71,15 @@ class AttributeMappingController
     {
         $RESPONSE = [
             [
-                'code' => 'clothing',
+                'code' => 'router',
                 'status' => self::MAPPING_EMPTY,
                 'labels' => [
-                    'en_US' => 'clothing',
+                    'en_US' => 'Clothing',
                     'fr_FR' => 'vetements',
                     'de_DE' => 'Kartoffeln'
                 ]
             ], [
-                'code' => 'accessories',
+                'code' => 'router',
                 'status' => self::MAPPING_PENDING_ATTRIBUTES,
                 'labels' => [
                     'en_US' => 'accessories',
@@ -88,7 +87,7 @@ class AttributeMappingController
                     'de_DE' => 'Shön'
                 ]
             ], [
-                'code' => 'camcorders',
+                'code' => 'router',
                 'status' => self::MAPPING_FULL,
                 'labels' => [
                     'en_US' => 'camcorders',

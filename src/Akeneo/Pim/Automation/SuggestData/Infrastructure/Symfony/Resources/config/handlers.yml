@@ -40,6 +40,12 @@ services:
             - '@akeneo.pim.automation.suggest_data.proposal.create_proposal'
             - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
 
+    akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
+
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
         class: 'Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Query\GetProductSubscriptionStatusHandler'
