@@ -1,7 +1,7 @@
 pim_title:
-    akeneo_suggest_data_connection_index: 'PIM.ai connection'
-    akeneo_suggest_data_identifiers_mapping_edit: 'PIM.ai settings'
-    akeneo_suggest_data_attributes_mapping_edit: 'PIM.ai settings'
+    akeneo_suggest_data_connection_index: 'Franklin Insights connection'
+    akeneo_suggest_data_identifiers_mapping_edit: 'Franklin Insights settings'
+    akeneo_suggest_data_attributes_mapping_edit: 'Franklin Insights settings'
 
 pim_menu:
     item:
@@ -61,8 +61,12 @@ akeneo_suggest_data:
             btn.push: Suggest data
             subscription_status_title: 'Franklin Subscription'
 
-    pim_ai:
-        page_title: 'PIM.ai connection'
+    connection:
+        page_title: 'Franklin Insights connection'
+        flash:
+            success: Franklin Insights activation code saved successfully.
+            invalid: Sorry, invalid activation code. Please try again with a valid one.
+            error: Sorry, an error occured.
         module:
             title:
                 sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant!</span>'
@@ -75,9 +79,6 @@ akeneo_suggest_data:
                 paste_activation_code: 'Paste Activation Code'
                 activated: 'Activated'
                 activate: 'Activate'
-                success: Franklin Insights activation code saved successfully.
-                invalid: Sorry, invalid activation code. Please try again with a valid one.
-                error: Sorry, an error occured.
 
     settings:
         page_title: 'PIM.ai settings'
