@@ -218,6 +218,14 @@ services:
             - '@pimee_security.repository.attribute_group_access'
             - '@security.token_storage'
 
+    pim_datagrid.extension.mass_action.handler.mass_refuse:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler\MassRefuseActionHandler'
+        arguments:
+            - '@event_dispatcher'
+            - '@pimee_workflow.factory.product_proposal_cursor'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
+
     # Action
     pimee_workflow.datagrid.extension.action.type.approve_proposal:
         class: '%oro_datagrid.extension.action.type.ajax.class%'
