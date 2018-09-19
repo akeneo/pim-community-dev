@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\MassActionEvents;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
-use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

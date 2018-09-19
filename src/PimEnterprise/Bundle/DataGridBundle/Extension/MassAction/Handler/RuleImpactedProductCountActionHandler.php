@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\MassActionEvents;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
-use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
