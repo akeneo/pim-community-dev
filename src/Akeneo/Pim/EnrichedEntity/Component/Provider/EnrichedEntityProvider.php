@@ -14,8 +14,8 @@ namespace Akeneo\Pim\EnrichedEntity\Component\Provider;
 
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 
 /**
  * Field provider for enriched entity
