@@ -69,7 +69,7 @@ class FiltersColumn extends BaseView {
         this.stopListening(filterModule, 'disable')
 
         this.listenTo(filterModule, 'update', this.updateDatagridStateWithFilters.bind(this))
-        this.listenTo(filterModule, 'disable', this.disableFilter.bind(this, [filter]))
+        this.listenTo(filterModule, 'disable', this.disableFilter.bind(this, filter))
 
         list.appendChild(filterModule.el)
       }

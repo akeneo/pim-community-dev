@@ -73,8 +73,6 @@ define(
              * @inheritdoc
              */
             initialize: function (options) {
-                console.log('initialize config', options, options.config.route)
-
                 this.route = options.config.route;
                 this.paginatedSearch = options.config.paginatedSearch;
 
@@ -89,7 +87,6 @@ define(
              * @param  {HTMLElement} gridContainer The datagrid div
              */
             setupOptions: function(collection, gridContainer) {
-                console.log('setupOptions', this, gridContainer)
                 const options = gridContainer.options;
                 this.options = options;
 

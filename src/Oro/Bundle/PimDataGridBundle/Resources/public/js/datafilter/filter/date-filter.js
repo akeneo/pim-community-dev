@@ -160,7 +160,6 @@ function(
          * @inheritDoc
          */
         _renderCriteria: function(el) {
-            console.log('render criteria for date')
             $(el).empty().append(
                 this.popupCriteriaTemplate({
                     label: this.label,

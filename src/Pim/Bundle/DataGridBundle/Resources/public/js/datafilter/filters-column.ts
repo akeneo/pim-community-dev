@@ -210,7 +210,6 @@ class FiltersColumn extends BaseView {
   }
 
   triggerFiltersUpdated() {
-    console.log('triggerFiltersUpdated from filters-column')
     mediator.trigger('filters-column:update-filters', this.loadedFilters, this.gridCollection)
   }
 
