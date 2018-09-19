@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Service\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -62,6 +63,8 @@ class IdentifiersMappingContext implements Context
      * @Given a predefined mapping as follows:
      *
      * @param TableNode $table
+     *
+     * @throws InvalidMappingException
      */
     public function aPredefinedMapping(TableNode $table): void
     {
@@ -128,24 +131,6 @@ class IdentifiersMappingContext implements Context
         } catch (\Exception $e) {
             return true;
         }
-    }
-
-    /**
-     * @Then the identifiers mapping should be defined as follows:
-     *
-     * @param TableNode $table
-     */
-    public function theIdentifiersMappingIsDefined(TableNode $table): void
-    {
-        $databaseIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
-
-        $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
-
-        foreach ($identifiers as $pimAiCode => $attributeCode) {
-            $identifiers[$pimAiCode] = $this->attributeRepository->findOneByIdentifier($attributeCode);
-        }
-
-        Assert::assertEquals($identifiers, $databaseIdentifiers);
     }
 
     /**
