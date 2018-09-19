@@ -20,7 +20,7 @@ class SubscriptionSpec extends ObjectBehavior
                 'Memory' => 'RAM (Installed): 256 MB',
             ],
             'extra' => [
-                'tracker_id' => 42,
+                'tracker_id' => "42",
                 'family' => [
                     'code' => 'laptop',
                     'label' => ['en_US' => 'Laptop']
@@ -45,6 +45,11 @@ class SubscriptionSpec extends ObjectBehavior
             'upc' => '606449099812',
             'Memory' => 'RAM (Installed): 256 MB',
         ]);
+    }
+
+    public function it_returns_the_tracker_id_as_an_integer()
+    {
+        $this->getTrackerId()->shouldReturn(42);
     }
 
     public function it_throws_an_exception_if_the_validation_fails()
