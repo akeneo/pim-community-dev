@@ -64,8 +64,8 @@ define(
                     filtersManager.listenTo(this, 'update', filtersManager._onFilterUpdated);
                 });
 
-                this.listenTo(mediator, 'filters-column:init', updateEvent => {
-                    this.listenTo(this, 'update', filter => updateEvent({ category: filter }))
+                this.listenTo(mediator, 'filters-column:init', () => {
+                    mediator.trigger('filters-column:add-category-filter', this)
                 })
 
                 mediator.on('grid_action_execute:product-grid:delete', function() {
