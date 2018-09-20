@@ -7,8 +7,8 @@ global:
     enabled: false
 common:
   extraLabels: []
-  pimMasterUrl: nil
-  retailerUrl: nil
+  pimMasterDomain: nil
+  retailerDomain: nil
   mailgunPassword: generateme
   phpConfFPM:
   - name: "PHP_CONF_MAX_EXECUTION_TIME"

@@ -18,10 +18,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
+    - {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
     secretName: "{{ .Chart.Name }}-{{ .Release.Name }}"
   rules:
-  - host: {{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
+  - host: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
     http:
       paths:
       - path: /

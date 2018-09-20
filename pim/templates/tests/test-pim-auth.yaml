@@ -10,7 +10,7 @@ spec:
     image: tutum/curl
     env:
       - name: TARGET
-        value: https://{{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
+        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
       - name: LOGIN
         value: {{ .Values.pimUsers.cloudadmin.email}}
       - name: PASSWORD

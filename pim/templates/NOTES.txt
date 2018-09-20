@@ -1,4 +1,10 @@
+###########################################
+#   Akeneo pim release deployed     #
+###########################################
+
 Image deployed: {{ .Values.image.pim.repository}}:{{ .Values.image.pim.tag}}
 Username: {{ .Values.pimUsers.cloudadmin.email }}
 Password: {{ .Values.pimUsers.cloudadmin.password }}
-Url: https://{{ required ".Values.common.pimMasterUrl" .Values.common.pimMasterUrl }}
+Url: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+
+###########################################
