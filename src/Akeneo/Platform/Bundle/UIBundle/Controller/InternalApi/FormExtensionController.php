@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Platform\Bundle\UIBundle\Controller\InternalApi;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;

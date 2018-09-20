@@ -54,3 +54,35 @@ services:
             - '@akeneo_batch.manager.job_execution'
             - '@pim_enrich.repository.job_execution'
             - import
+
+    pim_enrich.controller.rest.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_catalog.normalizer.standard.job_instance'
+            - '@akeneo_batch.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_batch.remover.job_instance'
+            - '@validator'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
+            - '@router'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.violation'
+            - '@akeneo_batch.job_instance_factory'
+            - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'
+            - '%upload_tmp_dir%'
+
+    pim_enrich.controller.rest.job_execution:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobExecutionController'
+        arguments:
+            - '@translator'
+            - '@pim_connector.event_listener.archivist'
+            - '@pim_standard_format_serializer'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@pim_enrich.repository.job_execution'

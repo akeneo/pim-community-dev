@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;

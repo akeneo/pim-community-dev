@@ -1,3 +1,7 @@
 pim_ui_ajaxentity_list:
     path: /list.json
     defaults: { _controller: pim_ui.controller.ajax_option:listAction }
+
+form_extensions_internal_api:
+    resource: '@PimUIBundle/Resources/config/routing/internal_api/form_extensions.yml'
+    prefix: /form

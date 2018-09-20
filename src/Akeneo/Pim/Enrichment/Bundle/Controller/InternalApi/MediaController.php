@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
