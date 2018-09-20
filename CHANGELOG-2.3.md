@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7653: Fix product export builder when completeness should export products complete on at least one locale
+
 # 2.3.8 (2018-09-14)
 
 ## Bug fixes

@@ -78,6 +78,9 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         )) {
             $this->checkOptions($field, $options);
             $localeCodes = $options['locales'];
+        } elseif ($operator === Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE && array_key_exists('locales', $options)) {
+            $this->checkOptions($field, $options);
+            $localeCodes = $options['locales'];
         } else {
             $localeCodes = (null !== $locale) ? [$locale] : $this->getChannelByCode($channel)->getLocaleCodes();
         }

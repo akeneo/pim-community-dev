@@ -888,7 +888,7 @@ pim_enrich:
                     help: Select the products to export by their completeness.
                     operators:
                         ALL: No condition on completeness
-                        ">=": Complete on at least one selected locale
+                        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complete on at least one selected locale
                         "GREATER OR EQUALS THAN ON ALL LOCALES": Complete on all selected locales
                         LOWER THAN ON ALL LOCALES: Not complete on all selected locales
                         AT LEAST COMPLETE: At least one child product complete on one selected locale
