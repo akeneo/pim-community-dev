@@ -112,19 +112,19 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
         ];
 
         $expectedValues = [
-            'description_game_fingerprint-fr_FR' => [
+            [
                 'attribute' => [],
                 'channel' => null,
                 'locale' => 'fr_FR',
                 'data' => 'Le fameux MMORPG PC de Blizzard',
             ],
-            'description_game_fingerprint-en_US' => [
+            [
                 'attribute' => [],
                 'channel' => null,
                 'locale' => 'en_US',
                 'data' => 'The famous MMORPG PC Game by Blizzard',
             ],
-            'boximage_game_fingerprint-mobile' => [
+            [
                 'attribute' => [],
                 'channel' => 'mobile',
                 'locale' => null,
@@ -193,13 +193,13 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
         ];
 
         $expectedValues = [
-            'description_game_fingerprint-fr_FR' => [
+            [
                 'attribute' => [],
                 'channel' => null,
                 'locale' => 'fr_FR',
                 'data' => 'Le fameux MMORPG PC de Blizzard'
             ],
-            'description_game_fingerprint-en_US' => [
+            [
                 'attribute' => [],
                 'channel' => null,
                 'locale' => 'en_US',

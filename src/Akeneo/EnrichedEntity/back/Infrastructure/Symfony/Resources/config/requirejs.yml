@@ -9,7 +9,7 @@ config:
                 akeneo_enriched_entities_record_edit:
                     module: pim/controller/record/edit
 
-        akeneoenrichedentity/application/configuration/data:
+        akeneoenrichedentity/application/configuration/value:
             image:
                 denormalize: '@akeneoenrichedentity/domain/model/record/data/file'
                 view: '@akeneoenrichedentity/application/component/record/edit/enrich/data/file.tsx'

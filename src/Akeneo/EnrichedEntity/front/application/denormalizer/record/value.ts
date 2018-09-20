@@ -2,9 +2,11 @@ import Value, {createValue, NormalizedValue} from 'akeneoenrichedentity/domain/m
 import {denormalizeChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
 import {denormalizeLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
 import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {getDataDenormalizer} from 'akeneoenrichedentity/application/configuration/data';
+import {getDataDenormalizer, Denormalizer} from 'akeneoenrichedentity/application/configuration/value';
 
-const denormalizeValue = (normalizedValue: NormalizedValue): Value => {
+export const getValueDenormalizer = (getDataDenormalizer: (normalizedValue: NormalizedValue) => Denormalizer) => (
+  normalizedValue: NormalizedValue
+): Value => {
   const attribute = denormalizeAttribute(normalizedValue.attribute);
 
   const denormalizeData = getDataDenormalizer(normalizedValue);
@@ -17,4 +19,4 @@ const denormalizeValue = (normalizedValue: NormalizedValue): Value => {
   );
 };
 
-export default denormalizeValue;
+export default getValueDenormalizer(getDataDenormalizer);

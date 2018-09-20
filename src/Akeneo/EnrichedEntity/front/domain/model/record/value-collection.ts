@@ -6,7 +6,7 @@ class InvalidTypeError extends Error {}
 
 export default class ValueCollection {
   private constructor(private values: Value[]) {
-    Object.values(values).forEach((value: Value) => {
+    values.forEach((value: Value) => {
       if (!(value instanceof Value)) {
         throw new InvalidTypeError('ValueCollection expect only Value objects as argument');
       }
@@ -22,8 +22,8 @@ export default class ValueCollection {
   public getValuesForChannelAndLocale(channel: ChannelReference, locale: LocaleReference): Value[] {
     return this.values.filter(
       (value: Value) =>
-        (value.getChannel().isEmpty() || value.getChannel().equals(channel)) &&
-        (value.getLocale().isEmpty() || value.getLocale().equals(locale))
+        (value.channel.isEmpty() || value.channel.equals(channel)) &&
+        (value.locale.isEmpty() || value.locale.equals(locale))
     );
   }
 

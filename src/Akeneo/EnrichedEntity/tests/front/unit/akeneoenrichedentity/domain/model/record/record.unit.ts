@@ -2,8 +2,9 @@ import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenriched
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import {createRecord, denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import File, {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
+import {createValueCollection} from 'akeneoenrichedentity/domain/model/record/value-collection';
 
 const michelIdentifier = createRecordIdentifier('michel');
 const designerIdentifier = createEnrichedEntityIdentifier('designer');
@@ -18,7 +19,14 @@ const emptyFile = createEmptyFile();
 describe('akeneo > record > domain > model --- record', () => {
   test('I can create a new record with a identifier and labels', () => {
     expect(
-      createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile).getIdentifier()
+      createRecord(
+        michelIdentifier,
+        designerIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        createValueCollection([])
+      ).getIdentifier()
     ).toBe(michelIdentifier);
   });
 
@@ -44,48 +52,88 @@ describe('akeneo > record > domain > model --- record', () => {
     expect(() => {
       createRecord(michelIdentifier, sofaIdentifier, '12', michelLabels, emptyFile);
     }).toThrow('Record expect a RecordCode as code argument');
+    expect(() => {
+      createRecord(michelIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile, '');
+    }).toThrow('Record expect a ValueCollection as valueCollection argument');
   });
 
   test('I can compare two record', () => {
     const michelLabels = createLabelCollection({en_US: 'Michel'});
     expect(
-      createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile).equals(
-        createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile)
+      createRecord(
+        didierIdentifier,
+        designerIdentifier,
+        didierCode,
+        didierLabels,
+        emptyFile,
+        createValueCollection([])
+      ).equals(
+        createRecord(
+          didierIdentifier,
+          designerIdentifier,
+          didierCode,
+          didierLabels,
+          emptyFile,
+          createValueCollection([])
+        )
       )
     ).toBe(true);
     expect(
-      createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile).equals(
-        createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile)
+      createRecord(
+        didierIdentifier,
+        designerIdentifier,
+        didierCode,
+        didierLabels,
+        emptyFile,
+        createValueCollection([])
+      ).equals(
+        createRecord(
+          michelIdentifier,
+          designerIdentifier,
+          michelCode,
+          michelLabels,
+          emptyFile,
+          createValueCollection([])
+        )
       )
     ).toBe(false);
   });
 
   test('I can get the collection of labels', () => {
     expect(
-      createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile).getLabelCollection()
+      createRecord(
+        didierIdentifier,
+        designerIdentifier,
+        didierCode,
+        didierLabels,
+        emptyFile,
+        createValueCollection([])
+      ).getLabelCollection()
     ).toBe(didierLabels);
   });
 
   test('I can get the code of the record', () => {
-    expect(createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile).getCode()).toBe(
-      didierCode
-    );
-  });
-
-  test('I can create the record from normalized', () => {
     expect(
-      denormalizeRecord({
-        identifier: 'designer_didier_1',
-        code: 'didier',
-        labels: {},
-        image: null,
-        enriched_entity_identifier: 'designer',
-      }).getCode()
-    ).toEqual(didierCode);
+      createRecord(
+        didierIdentifier,
+        designerIdentifier,
+        didierCode,
+        didierLabels,
+        emptyFile,
+        createValueCollection([])
+      ).getCode()
+    ).toBe(didierCode);
   });
 
   test('I can normalize an record', () => {
-    const michelRecord = createRecord(didierIdentifier, designerIdentifier, didierCode, didierLabels, emptyFile);
+    const michelRecord = createRecord(
+      didierIdentifier,
+      designerIdentifier,
+      didierCode,
+      didierLabels,
+      emptyFile,
+      createValueCollection([])
+    );
 
     expect(michelRecord.normalize()).toEqual({
       identifier: 'designer_didier_1',
@@ -93,15 +141,57 @@ describe('akeneo > record > domain > model --- record', () => {
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},
+      values: [],
+    });
+
+    expect(michelRecord.normalizeMinimal()).toEqual({
+      identifier: 'designer_didier_1',
+      enriched_entity_identifier: 'designer',
+      image: null,
+      code: 'didier',
+      labels: {en_US: 'Didier'},
+      values: [],
     });
   });
 
   test('I can get a label for the given locale', () => {
     expect(
-      createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile).getLabel('en_US')
+      createRecord(
+        michelIdentifier,
+        designerIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        createValueCollection([])
+      ).getLabel('en_US')
     ).toBe('Michel');
     expect(
-      createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile).getLabel('fr_FR')
+      createRecord(
+        michelIdentifier,
+        designerIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        createValueCollection([])
+      ).getLabel('fr_FR')
     ).toBe('[michel]');
+    expect(
+      createRecord(
+        michelIdentifier,
+        designerIdentifier,
+        michelCode,
+        michelLabels,
+        emptyFile,
+        createValueCollection([])
+      ).getLabel('fr_FR', false)
+    ).toBe('');
+  });
+
+  test('I can get the value collection of the record', () => {
+    expect(
+      createRecord(michelIdentifier, designerIdentifier, michelCode, michelLabels, emptyFile, createValueCollection([]))
+        .getValueCollection()
+        .normalize()
+    ).toEqual([]);
   });
 });

@@ -1,9 +1,13 @@
 {
   "request": {
     "method": "GET",
-    "relative_url": "/rest/enriched_entity/brand/attribute"
+    "route": "akeneo_enriched_entities_attribute_index_rest",
+    "query": {
+      "enrichedEntityIdentifier": "brand"
+    }
   },
   "response": {
-    "status": 200
+    "status": 200,
+    "body": []
   }
 }

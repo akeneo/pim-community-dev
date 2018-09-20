@@ -1,7 +1,11 @@
 {
   "request": {
     "method": "GET",
-    "relative_url": "/rest/enriched_entity/designer/record/starck"
+    "route": "akeneo_enriched_entities_records_get_rest",
+    "query": {
+      "enrichedEntityIdentifier": "designer",
+      "recordCode": "starck"
+    }
   },
   "response": {
     "status": 200,
@@ -12,8 +16,8 @@
       "labels": {
         "fr_FR": "Philippe Starck"
       },
-      "values": {
-        "name_designer_fingerprint": {
+      "values": [
+        {
           "attribute": {
             "identifier": "name_designer_fingerprint",
             "enriched_entity_identifier": "designer",
@@ -36,7 +40,7 @@
           "locale": null,
           "data": "Philippe Starck"
         },
-        "description_designer_fingerprint_en_US": {
+        {
           "attribute": {
             "identifier": "description_designer_fingerprint",
             "enriched_entity_identifier": "designer",
@@ -59,7 +63,7 @@
           "locale": "en_US",
           "data": null
         },
-        "description_designer_fingerprint_fr_FR": {
+        {
           "attribute": {
             "identifier": "description_designer_fingerprint",
             "enriched_entity_identifier": "designer",
@@ -82,7 +86,7 @@
           "locale": "fr_FR",
           "data": null
         }
-      }
+      ]
     }
   }
 }

@@ -42,7 +42,7 @@ config:
                         view: '@your_view_path_here'
 
 Actual conf: {\"my_view\":{}}`;
-      expect(error.message).toBe(`Cannot get the tabs configured. The configuration path should be ${confPath}`);
+      expect(error.message).toBe(`Cannot get the tabs for "my_view". The configuration path should be ${confPath}`);
     }
   });
 
@@ -80,7 +80,7 @@ config:
                     first:
                         view: '@your_view_path_here'`;
       expect(error.message).toEqual(
-        `Cannot load view configuration for tab "first". The configuration path should be ${confPath}
+        `Cannot load view for tab "first". The configuration should look like this ${confPath}
 
 Actual conf: {\"my_view\":{\"tabs\":{}}}`
       );

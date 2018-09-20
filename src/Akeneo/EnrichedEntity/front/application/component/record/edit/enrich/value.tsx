@@ -5,7 +5,7 @@ import Value from 'akeneoenrichedentity/domain/model/record/value';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
-import {getDataView} from 'akeneoenrichedentity/application/configuration/data';
+import {getDataView} from 'akeneoenrichedentity/application/configuration/value';
 
 export default (
   record: Record,
@@ -17,34 +17,29 @@ export default (
   const visibleValues = record
     .getValueCollection()
     .getValuesForChannelAndLocale(channel, locale)
-    .sort(
-      (firstValue: Value, secondValue: Value) => firstValue.getAttribute().order - secondValue.getAttribute().order
-    );
+    .sort((firstValue: Value, secondValue: Value) => firstValue.attribute.order - secondValue.attribute.order);
 
   return visibleValues.map((value: Value) => {
     const DataView = getDataView(value);
     return (
       <div
-        key={value
-          .getAttribute()
-          .getIdentifier()
-          .stringValue()}
+        key={value.attribute.getIdentifier().stringValue()}
         className="AknFieldContainer"
-        data-code={value.getAttribute().getCode()}
+        data-code={value.attribute.getCode()}
       >
         <div className="AknFieldContainer-header">
           <label
-            title={value.getAttribute().getLabel(locale.stringValue())}
+            title={value.attribute.getLabel(locale.stringValue())}
             className="AknFieldContainer-label"
-            htmlFor={`pim_enriched_entity.record.enrich.${value.getAttribute().getCode()}`}
+            htmlFor={`pim_enriched_entity.record.enrich.${value.attribute.getCode()}`}
           >
-            {value.getAttribute().getLabel(locale.stringValue())}
+            {value.attribute.getLabel(locale.stringValue())}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <DataView value={value} onChange={onValueChange} />
         </div>
-        {getErrorsView(errors, `values.${value.getAttribute().getCode()}`)}
+        {getErrorsView(errors, `values.${value.attribute.getCode()}`)}
       </div>
     );
   });

@@ -29,25 +29,35 @@ class Value {
     readonly data: Data
   ) {
     if (!(attribute instanceof CommonConcreteAttribute)) {
-      throw new InvalidTypeError('Value expect CommonConcreteAttribute as argument');
+      throw new InvalidTypeError('Value expect CommonConcreteAttribute as attribute argument');
     }
     if (!(channel instanceof ChannelReference)) {
-      throw new InvalidTypeError('Value expect ChannelReference as argument');
+      throw new InvalidTypeError('Value expect ChannelReference as channel argument');
     }
     if (!(locale instanceof LocaleReference)) {
-      throw new InvalidTypeError('Value expect LocaleReference as argument');
+      throw new InvalidTypeError('Value expect LocaleReference as locale argument');
     }
     if (!(data instanceof Data)) {
-      throw new InvalidTypeError('Value expect ValueData as argument');
+      throw new InvalidTypeError('Value expect ValueData as data argument');
     }
     if (channel.isEmpty() && attribute.valuePerChannel) {
       throw new InvalidTypeError(
-        `The value for attribute ${attribute.getCode()} should have a non empty channel reference`
+        `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty channel reference`
+      );
+    }
+    if (!channel.isEmpty() && !attribute.valuePerChannel) {
+      throw new InvalidTypeError(
+        `The value for attribute "${attribute.getCode().stringValue()}" should have an empty channel reference`
       );
     }
     if (locale.isEmpty() && attribute.valuePerLocale) {
       throw new InvalidTypeError(
-        `The value for attribute ${attribute.getCode()} should have a non empty locale reference`
+        `The value for attribute "${attribute.getCode().stringValue()}" should have a non empty locale reference`
+      );
+    }
+    if (!locale.isEmpty() && !attribute.valuePerLocale) {
+      throw new InvalidTypeError(
+        `The value for attribute "${attribute.getCode().stringValue()}" should have an empty locale reference`
       );
     }
 
@@ -66,18 +76,6 @@ class Value {
     return (
       this.channel.equals(value.channel) && this.locale.equals(value.locale) && this.attribute.equals(value.attribute)
     );
-  }
-
-  getChannel(): ChannelReference {
-    return this.channel;
-  }
-
-  getLocale(): LocaleReference {
-    return this.locale;
-  }
-
-  getAttribute(): Attribute {
-    return this.attribute;
   }
 
   public static create(attribute: Attribute, channel: ChannelReference, locale: LocaleReference, data: Data): Value {

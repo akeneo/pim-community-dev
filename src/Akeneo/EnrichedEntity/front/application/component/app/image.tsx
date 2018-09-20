@@ -142,7 +142,12 @@ class Image extends React.Component<
           className={`AknImage-loader ${this.state.loading ? 'AknImage-loader--loading' : ''}`}
           style={style}
         >
-          <div className="AknImage-drop" style={{backgroundImage: `url("${this.state.uploadingImage}")`}} />
+          <div
+            className="AknImage-drop"
+            style={{
+              backgroundImage: 0 !== this.state.uploadingImage.length ? `url("${this.state.uploadingImage}")` : '',
+            }}
+          />
         </div>
         <img className="AknImage-display" src={imageUrl} />
       </div>

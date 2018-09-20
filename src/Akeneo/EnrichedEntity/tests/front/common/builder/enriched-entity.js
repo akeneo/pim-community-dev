@@ -10,7 +10,7 @@ class EnrichedEntityBuilder {
   constructor() {
     this.enrichedEntity = {
       identifier: '',
-      labels: {}
+      labels: {},
     };
   }
 

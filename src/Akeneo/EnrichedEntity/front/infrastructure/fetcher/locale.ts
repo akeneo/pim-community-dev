@@ -7,17 +7,22 @@ import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handle
 
 const routing = require('routing');
 
+let activatedLocales: Locale[] | null = null;
 export class LocaleFetcherImplementation implements LocaleFetcher {
   constructor(private hydrator: (backendLocale: any) => Locale) {
     Object.freeze(this);
   }
 
   async fetchActivated(): Promise<Locale[]> {
-    const backendLocales = await getJSON(routing.generate('pim_enrich_locale_rest_index'), {activated: true}).catch(
-      errorHandler
-    );
+    if (null === activatedLocales) {
+      const backendLocales = await getJSON(routing.generate('pim_enrich_locale_rest_index'), {activated: true}).catch(
+        errorHandler
+      );
 
-    return hydrateAll<Locale>(this.hydrator)(backendLocales);
+      activatedLocales = hydrateAll<Locale>(this.hydrator)(backendLocales);
+    }
+
+    return activatedLocales;
   }
 }
 

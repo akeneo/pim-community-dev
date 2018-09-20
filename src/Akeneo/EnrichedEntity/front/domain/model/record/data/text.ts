@@ -2,7 +2,7 @@ import Data from 'akeneoenrichedentity/domain/model/record/data';
 
 class InvalidTypeError extends Error {}
 
-export type NormalizedTextData = string;
+export type NormalizedTextData = string | null;
 
 class TextData extends Data {
   private constructor(private textData: string) {
@@ -19,8 +19,8 @@ class TextData extends Data {
     return new TextData(textData);
   }
 
-  public static createFromNormalized(textData: string): TextData {
-    return new TextData(textData);
+  public static createFromNormalized(textData: NormalizedTextData): TextData {
+    return new TextData(null === textData ? '' : textData);
   }
 
   public isEmpty(): boolean {
