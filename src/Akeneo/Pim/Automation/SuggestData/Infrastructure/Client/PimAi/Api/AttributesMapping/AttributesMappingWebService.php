@@ -57,9 +57,16 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
         try {
             $response = $this->httpClient->request('GET', $route);
 
-            return new AttributesMapping(
-                json_decode($response->getBody()->getContents(), true)
-            );
+            $attributes = [];
+            $responseContent = $response->getBody()->getContents();
+            /**
+             * TODO: should be removed later. see APAI-302
+             */
+            if (! empty($responseContent)) {
+                $attributes = json_decode($responseContent, true);
+            }
+
+            return new AttributesMapping($attributes);
         } catch (ServerException $e) {
             throw new PimAiServerException(
                 sprintf(
