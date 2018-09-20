@@ -26,7 +26,7 @@ class ImageNormalizer extends BaseImageNormalizer
      * @param LocaleRepositoryInterface $localeRepository
      */
     public function __construct(
-        \Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer $fileNormalizer,
+        FileNormalizer $fileNormalizer,
         LocaleRepositoryInterface $localeRepository
     ) {
         parent::__construct($fileNormalizer);
