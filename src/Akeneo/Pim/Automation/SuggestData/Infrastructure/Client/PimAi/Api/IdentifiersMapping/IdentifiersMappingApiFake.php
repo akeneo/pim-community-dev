@@ -18,10 +18,30 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Iden
  */
 class IdentifiersMappingApiFake implements IdentifiersMappingApiInterface
 {
+    /** @var array */
+    private $identifiersMapping;
+
+    public function __construct()
+    {
+        $this->identifiersMapping = [];
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function update(array $mapping): void
+    public function update(array $identifiersMapping): void
     {
+        $this->identifiersMapping = $identifiersMapping;
+    }
+
+    /**
+     * Returns the stored identifiers mapping.
+     * This method is only used for testing purpose, and so is not present in the interface.
+     *
+     * @return array
+     */
+    public function get(): array
+    {
+        return $this->identifiersMapping;
     }
 }

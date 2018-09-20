@@ -5,7 +5,6 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
   I want to map my PIM identifiers to the PIM.ai identifiers
 
   Background:
-    #Will be useful only when a call to notify PIM.ai about the new mapping will be implemented
     Given PIM.ai is configured with a valid token
 
   Scenario: Successfully retrieve the mapping for the display
@@ -42,7 +41,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
-    Then the identifiers mapping should be defined as follows:
+    Then the retrieved mapping should be the following:
       | pim_ai_code | attribute_code |
       | brand       | brand          |
       | mpn         | mpn            |
@@ -70,7 +69,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | mpn         | mpn            |
       | upc         | sku            |
       | asin        | id           |
-    Then the identifiers mapping should be defined as follows:
+    Then the retrieved mapping should be the following:
       | pim_ai_code | attribute_code |
       | brand       | brand          |
       | mpn         | mpn            |
