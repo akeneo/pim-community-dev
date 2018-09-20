@@ -8,6 +8,7 @@ class FiltersColumn extends BaseView {
   public modules: any
   public datagridCollection: any
   public silent: boolean
+  public categoryFilter: any
 
   public config = {
     filterTypes: {
@@ -26,10 +27,20 @@ class FiltersColumn extends BaseView {
     this.modules = {}
     this.datagridCollection = null;
     this.silent = false;
+    this.categoryFilter = null;
   }
 
   configure() {
     this.listenTo(mediator, 'filters-column:update-filters', this.renderFilters)
+    this.listenTo(mediator, 'filters-column:add-category-filter', (categoryFilter: any) => {
+      this.listenTo(categoryFilter, 'update', (filter: any) => {
+        console.log('updated category filter', filter)
+        this.updateDatagridStateWithFilters( { category: filter })
+      })
+
+      this.categoryFilter = categoryFilter
+      console.log('set category filter', this.categoryFilter, this.categoryFilter._getTreeState())
+    })
 
     return BaseView.prototype.configure.apply(this, arguments)
   }
@@ -114,7 +125,9 @@ class FiltersColumn extends BaseView {
     console.log('finish restore filter state')
   }
 
-  updateDatagridStateWithFilters(filterState: any = {}) {
+  getState() {
+    let filterState: any = {}
+
     for (let filterName in this.modules) {
       const filter = this.modules[filterName]
       const shortName = `__${filterName}`
@@ -130,18 +143,36 @@ class FiltersColumn extends BaseView {
       }
     }
 
-    const currentState = _.omit(this.datagridCollection.state.filters, 'scope');
+    console.log('getState()', filterState)
+    return filterState
+  }
+
+  updateDatagridStateWithFilters(categoryFilter: any = {}) {
+    let categoryFilterValue = {}
+    let filterState = this.getState()
+
+    if (this.categoryFilter) {
+      categoryFilterValue = { category: this.categoryFilter._getTreeState() }
+    }
+
+    filterState = Object.assign(filterState, {...categoryFilterValue }, categoryFilter)
+
+    console.log('filterState', filterState)
+
+    const currentState = _.omit(Object.assign(categoryFilterValue, this.datagridCollection.state.filters), 'scope');
     const updatedState = _.omit(filterState, 'scope')
+
     const stateHasChanged = !_.isEqual(currentState, updatedState)
     const currentStateIsEmpty = _.isEmpty(currentState)
 
     console.log('is the state equal ? ', currentState, updatedState, _.isEqual(currentState, updatedState))
-    console.log('should we update?', (stateHasChanged || currentStateIsEmpty));
+    console.log('should we update?', (stateHasChanged || currentStateIsEmpty) && false === this.silent);
 
     if ((stateHasChanged || currentStateIsEmpty) && false === this.silent) {
       this.datagridCollection.state.filters = filterState;
       this.datagridCollection.state.currentPage = 1;
       this.datagridCollection.fetch();
+      console.log('final state', this.datagridCollection.state.filters)
     }
   }
 }
