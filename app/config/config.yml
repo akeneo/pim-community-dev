@@ -67,6 +67,15 @@ akeneo_pim_structure:
             class: Akeneo\Asset\Component\Model\Asset
             type: multi
 
+monolog:
+    handlers:
+        pimai:
+            level: info
+            type: stream
+            path: '%kernel.logs_dir%/pimai.log'
+            channels: ['pimai']
+    channels: ['pimai']
+
 parameters:
     pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
     pim_ee_dev_src_folder_location: '%kernel.project_dir%'
