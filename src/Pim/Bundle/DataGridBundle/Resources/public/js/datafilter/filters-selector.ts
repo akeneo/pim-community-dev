@@ -7,7 +7,7 @@ const requireContext = require('require-context')
 class FiltersColumn extends BaseView {
   public modules: any
   public datagridCollection: any
-  public loaded: boolean
+  public silent: boolean
 
   public config = {
     filterTypes: {
@@ -25,11 +25,10 @@ class FiltersColumn extends BaseView {
     this.config = {...this.config, ...options.config}
     this.modules = {}
     this.datagridCollection = null;
-    this.loaded = false;
+    this.silent = false;
   }
 
   configure() {
-    //@TODO - filters should already be merged with their values before this
     this.listenTo(mediator, 'filters-column:update-filters', this.renderFilters)
 
     return BaseView.prototype.configure.apply(this, arguments)
@@ -50,13 +49,16 @@ class FiltersColumn extends BaseView {
 
   disableFilter(filter: any) {
       mediator.trigger('filters-selector:disable-filter', filter)
-      this.updateDatagridStateWithFilters
+      this.updateDatagridStateWithFilters()
   }
 
   renderFilters(filters: any, datagridCollection: any) {
     this.datagridCollection = datagridCollection
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
+
+    // filters need to be merged with their values
+    console.log('renderFilters', filters, datagridCollection)
 
     filters.forEach((filter: any) => {
       const filterModule =  this.getFilterModule(filter)
@@ -94,15 +96,22 @@ class FiltersColumn extends BaseView {
   }
 
   restoreFilterState(state: any, filters: any) {
+    console.log('restoreFilterState')
+    this.silent = true
+
     filters.forEach((filter: any) => {
       const filterName = filter.name
       const filterModule = this.modules[filterName]
       const filterState = state[filterName]
 
       if (filterState) {
+        console.log('filterName setValue', filterName, state[filterName], filterModule)
         filterModule.setValue(state[filterName])
       }
     })
+
+    this.silent = false
+    console.log('finish restore filter state')
   }
 
   updateDatagridStateWithFilters(filterState: any = {}) {
@@ -123,17 +132,17 @@ class FiltersColumn extends BaseView {
 
     const currentState = _.omit(this.datagridCollection.state.filters, 'scope');
     const updatedState = _.omit(filterState, 'scope')
+    const stateHasChanged = !_.isEqual(currentState, updatedState)
+    const currentStateIsEmpty = _.isEmpty(currentState)
 
-    console.log('is the state equal ? ', currentState, updatedState)
-    console.log('should we update?', !_.isEqual(currentState, updatedState) && true === this.loaded, currentState, updatedState);
+    console.log('is the state equal ? ', currentState, updatedState, _.isEqual(currentState, updatedState))
+    console.log('should we update?', (stateHasChanged || currentStateIsEmpty));
 
-    if (!_.isEqual(currentState, updatedState) && true === this.loaded || !_.isEmpty(updatedState)) {
+    if ((stateHasChanged || currentStateIsEmpty) && false === this.silent) {
       this.datagridCollection.state.filters = filterState;
       this.datagridCollection.state.currentPage = 1;
       this.datagridCollection.fetch();
     }
-
-    this.loaded = true
   }
 }
 
