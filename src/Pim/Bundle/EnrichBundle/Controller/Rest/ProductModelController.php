@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -84,7 +85,12 @@ class ProductModelController
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
 
+    /** @var ProductModelAttributeFilter */
+    private $productModelAttributeFilter;
+
     /**
+     * TODO: (merge) remove null
+     *
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
      * @param UserContext                       $userContext
@@ -101,6 +107,7 @@ class ProductModelController
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
+     * @param ProductModelAttributeFilter       $productModelAttributeFilter
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -118,7 +125,8 @@ class ProductModelController
         EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
-        FamilyVariantRepositoryInterface $familyVariantRepository
+        FamilyVariantRepositoryInterface $familyVariantRepository,
+        ProductModelAttributeFilter $productModelAttributeFilter = null
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -136,6 +144,7 @@ class ProductModelController
         $this->productModelFactory           = $productModelFactory;
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
+        $this->productModelAttributeFilter = $productModelAttributeFilter;
     }
 
     /**
@@ -454,6 +463,11 @@ class ProductModelController
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
+        }
+
+        // TODO : @merge remove null
+        if (!$productModel->isRoot() && null !== $this->productModelAttributeFilter) {
+            $data = $this->productModelAttributeFilter->filter($data);
         }
 
         $this->productModelUpdater->update($productModel, $data);
