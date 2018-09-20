@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Value;
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for "pim_catalog_simpleselect" attribute type
@@ -15,7 +16,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
  */
 class OptionValue extends AbstractValue implements OptionValueInterface
 {
-    /** @var AttributeOptionInterface */
+    /** @var AttributeOptionInterface|null */
     protected $data;
 
     /**
@@ -57,5 +58,30 @@ class OptionValue extends AbstractValue implements OptionValueInterface
         }
 
         return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof OptionValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedOption = $value->getData();
+        $thisOption = $this->getData();
+
+        if (null === $thisOption && null === $comparedOption) {
+            return true;
+        }
+        if (null === $thisOption || null === $comparedOption) {
+            return false;
+        }
+
+        return $comparedOption->getCode() === $thisOption->getCode() &&
+            $comparedOption->getLocale() === $thisOption->getLocale();
     }
 }

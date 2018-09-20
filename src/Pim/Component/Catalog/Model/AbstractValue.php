@@ -54,6 +54,8 @@ abstract class AbstractValue implements ValueInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO merge master: replace by `abstract public function isEqual(ValueInterface $value);`
      */
     public function isEqual(ValueInterface $value)
     {

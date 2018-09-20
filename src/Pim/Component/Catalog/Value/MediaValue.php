@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Value;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for attribute types:
@@ -17,7 +18,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class MediaValue extends AbstractValue implements MediaValueInterface
 {
-    /** @var FileInfoInterface */
+    /** @var FileInfoInterface|null */
     protected $data;
 
     /**
@@ -49,5 +50,35 @@ class MediaValue extends AbstractValue implements MediaValueInterface
     public function __toString()
     {
         return null !== $this->data ? $this->data->getKey() : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof MediaValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedMedia = $value->getData();
+        $thisMedia = $this->getData();
+
+        if (null === $thisMedia && null === $comparedMedia) {
+            return true;
+        }
+        if (null === $thisMedia || null === $comparedMedia) {
+            return false;
+        }
+
+        return $comparedMedia->getOriginalFilename() === $thisMedia->getOriginalFilename() &&
+            $comparedMedia->getMimeType() === $thisMedia->getMimeType() &&
+            $comparedMedia->getSize() === $thisMedia->getSize() &&
+            $comparedMedia->getExtension() === $thisMedia->getExtension() &&
+            $comparedMedia->getHash() === $thisMedia->getHash() &&
+            $comparedMedia->getKey() === $thisMedia->getKey() &&
+            $comparedMedia->getStorage() === $thisMedia->getStorage();
     }
 }

@@ -4,6 +4,7 @@ namespace Pim\Component\ReferenceData\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -15,7 +16,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  */
 class ReferenceDataValue extends AbstractValue implements ReferenceDataValueInterface
 {
-    /** @var ReferenceDataInterface */
+    /** @var ReferenceDataInterface|null */
     protected $data;
 
     /**
@@ -47,5 +48,29 @@ class ReferenceDataValue extends AbstractValue implements ReferenceDataValueInte
     public function __toString()
     {
         return null !== $this->data ? (string) $this->data : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof ReferenceDataValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $thisData = $this->getData();
+        $comparedData = $value->getData();
+
+        if (null === $comparedData && null === $thisData) {
+            return true;
+        }
+        if (null === $comparedData || null === $thisData) {
+            return false;
+        }
+
+        return $thisData->getCode() === $comparedData->getCode();
     }
 }

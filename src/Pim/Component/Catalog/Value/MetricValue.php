@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Value;
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for "pim_catalog_metric" attribute type
@@ -15,7 +16,7 @@ use Pim\Component\Catalog\Model\MetricInterface;
  */
 class MetricValue extends AbstractValue implements MetricValueInterface
 {
-    /** @var MetricInterface */
+    /** @var MetricInterface|null */
     protected $data;
 
     /**
@@ -75,5 +76,29 @@ class MetricValue extends AbstractValue implements MetricValueInterface
         }
 
         return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof MetricValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedMetric = $value->getData();
+        $thisMetric = $this->getData();
+
+        if (null === $thisMetric && null === $comparedMetric) {
+            return true;
+        }
+        if (null === $thisMetric || null === $comparedMetric) {
+            return false;
+        }
+
+        return $thisMetric->isEqual($comparedMetric);
     }
 }
