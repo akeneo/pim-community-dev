@@ -893,9 +893,9 @@
 - Move `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\VersionedAttributeNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\InternalApi\DatagridViewNormalizer`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Component\Repository\InternalApi\ChannelRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository` to `Akeneo\Channel\Component\Repository\InternalApi\CurrencyRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository` to `Akeneo\Channel\Component\Repository\InternalApi\LocaleRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\ChannelRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\CurrencyRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository` to ` Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\LocaleRepository`
 - Move `Pim\Bundle\EnrichBundle\Cursor\SequentialEditProduct` to `Akeneo\Pim\Enrichment\Bundle\Cursor\SequentialEditProduct`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounter` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounter`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface`

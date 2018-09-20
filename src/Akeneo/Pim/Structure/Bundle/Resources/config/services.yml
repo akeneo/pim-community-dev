@@ -61,3 +61,10 @@ services:
             - '%pim_enrich.entity.available_attributes.class%'
         tags:
             - { name: form.type, alias: pim_available_attributes }
+
+    pim_enrich.form.type.export_select_family:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\SelectFamilyType'
+        arguments:
+            - '@router'
+        tags:
+            - { name: form.type, alias: select_family_type }
