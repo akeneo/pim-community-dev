@@ -27,6 +27,13 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
 
+    pim_volume_monitoring.persistence.query.count_useable_as_grid_filter_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_useable_as_grid_filter_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
     pim_volume_monitoring.persistence.query.count_scopable_attributes:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
         arguments:
@@ -96,6 +103,34 @@ services:
             - 'count_product_models'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.average_max_product_values_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_product_values_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_localizable_attribute_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_scopable_attribute_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_localizable_and_scopable_attribute_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
 
     pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'

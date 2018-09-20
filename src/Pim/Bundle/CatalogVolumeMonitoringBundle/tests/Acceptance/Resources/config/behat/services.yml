@@ -6,6 +6,13 @@ services:
         tags:
             - { name: fob.context_service }
 
+    test.catalog_volume_limits.system_info_attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\SystemInfoAttributeContext'
+        arguments:
+            - '@__symfony__.pim_analytics.data_collector.attribute'
+        tags:
+            - { name: fob.context_service }
+
     test.catalog_volume_limits.report_context:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ReportContext'
         arguments:
@@ -18,6 +25,30 @@ services:
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_attributes_per_family'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.localizable_attribute_per_family_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\LocalizableAttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.scopable_attribute_per_family_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ScopableAttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.localizable_and_scopable_attribute_per_family_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\LocalizableAndScopableAttributePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family'
         tags:
             - { name: fob.context_service }
 
@@ -77,11 +108,27 @@ services:
         tags:
             - { name: fob.context_service }
 
+    test.catalog_volume_limits.product_value_per_family_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ProductValuePerFamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_product_values_per_family'
+        tags:
+            - { name: fob.context_service }
+
     test.catalog_volume_limits.attribute_context:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\AttributeContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@__symfony__.pim_volume_monitoring.persistence.query.count_attributes'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.useable_as_grid_filter_attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\UseableAsGridFilterAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_useable_as_grid_filter_attributes'
         tags:
             - { name: fob.context_service }
 

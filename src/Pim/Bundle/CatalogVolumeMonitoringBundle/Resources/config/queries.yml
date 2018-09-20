@@ -7,6 +7,30 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
+    pim_volume_monitoring.persistence.query.average_max_scopable_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxScopableAttributesPerFamily'
+        arguments:
+            - '@database_connection'
+            # TODO @merge change this line by just passing the parameter %average_max_scopable_attributes_per_family_limit%
+            # WARNING - don't forget to add this new parameter in dev & standard EE & CE
+            - "@=container.hasParameter('average_max_scopable_attributes_per_family_limit') ? parameter('average_max_scopable_attributes_per_family_limit') : -1"
+
+    pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxLocalizableAttributesPerFamily'
+        arguments:
+            - '@database_connection'
+            # TODO @merge change this line by just passing the parameter %average_max_localizable_attributes_per_family_limit%
+            # WARNING - don't forget to add this new parameter in dev & standard EE & CE
+            - "@=container.hasParameter('average_max_localizable_attributes_per_family_limit') ? parameter('average_max_localizable_attributes_per_family_limit') : -1"
+
+    pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxLocalizableAndScopableAttributesPerFamily'
+        arguments:
+            - '@database_connection'
+            # TODO @merge change this line by just passing the parameter %average_max_localizable_and_scopable_attributes_per_family_limit%
+            # WARNING - don't forget to add this new parameter in dev & standard EE & CE
+            - "@=container.hasParameter('average_max_localizable_and_scopable_attributes_per_family_limit') ? parameter('average_max_localizable_and_scopable_attributes_per_family_limit') : -1"
+
     pim_volume_monitoring.persistence.query.average_max_options_per_attribute:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxOptionsPerAttribute'
         arguments:
@@ -47,6 +71,14 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
+    pim_volume_monitoring.persistence.query.average_max_product_values_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValuesPerFamily'
+        arguments:
+            - '@database_connection'
+            # TODO @merge change this line by just passing the parameter %average_max_product_values_per_family_limit%
+            # WARNING - don't forget to add this new parameter in dev & standard EE & CE
+            - "@=container.hasParameter('average_max_product_values_per_family_limit') ? parameter('average_max_product_values_per_family_limit') : -1"
+
     pim_volume_monitoring.persistence.query.average_max_categories_in_one_category:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxCategoriesInOneCategory'
         arguments:
@@ -66,6 +98,14 @@ services:
             - '%count_attributes_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_useable_as_grid_filter_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUseableAsGridFilterAttributes'
+        arguments:
+            - '@database_connection'
+            # TODO @merge change this line by just passing the parameter %count_useable_as_grid_filter_attributes_limit%
+            # WARNING - don't forget to add this new parameter in dev & standard EE & CE
+            - "@=container.hasParameter('count_useable_as_grid_filter_attributes_limit') ? parameter('count_useable_as_grid_filter_attributes_limit') : -1"
 
     pim_volume_monitoring.persistence.query.count_categories:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategories'

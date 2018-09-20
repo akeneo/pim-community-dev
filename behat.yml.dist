@@ -157,10 +157,16 @@ acceptance:
             contexts_services:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.system_info_context
+                - test.catalog_volume_limits.system_info_attribute_context
                 - test.catalog_volume_limits.attribute_per_family_context
                 - test.catalog_volume_limits.product_context
                 - test.catalog_volume_limits.channel_context
                 - test.catalog_volume_limits.locale_context
+                - test.catalog_volume_limits.useable_as_grid_filter_attribute_context
+                - test.catalog_volume_limits.product_value_per_family_context
+                - test.catalog_volume_limits.localizable_attribute_per_family_context
+                - test.catalog_volume_limits.scopable_attribute_per_family_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_per_family_context
                 - test.catalog_volume_limits.scopable_attribute_context
                 - test.catalog_volume_limits.localizable_attribute_context
                 - test.catalog_volume_limits.localizable_and_scopable_attribute_context
