@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "GET",
+    "relative_url": "/rest/enriched_entity/designer/record/wrong_record_code"
+  },
+  "response": {
+    "status": 404
+  }
+}

@@ -34,7 +34,11 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
 
     public function save(RecordDetails $recordDetails)
     {
-        $this->results[sprintf('%s____%s', $recordDetails->enrichedEntityIdentifier, $recordDetails->code)] = $recordDetails;
+        $normalized = $recordDetails->normalize();
+        $enrichedEntityIdentifier = $normalized['enriched_entity_identifier'];
+        $code = $normalized['code'];
+
+        $this->results[sprintf('%s____%s', $enrichedEntityIdentifier, $code)] = $recordDetails;
     }
 
     /**

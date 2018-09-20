@@ -61,6 +61,8 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordDetails
         arguments:
             - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.record.hydrator.record_details'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.generate_empty_values'
 
     # Attributes query functions
     akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
@@ -86,6 +88,12 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeyCollection
+        arguments:
+            - '@database_connection'
+            - '@akeneo_enrichedentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.generate_empty_values:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlGenerateEmptyValues
         arguments:
             - '@database_connection'
             - '@akeneo_enrichedentity.infrastructure.persistence.attribute.hydrator.attribute_hydrator_registry'
@@ -117,6 +125,11 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_enrichedentity.infrastructure.persistence.record.hydrator.value'
+
+    akeneo_enrichedentity.infrastructure.persistence.record.hydrator.record_details:
+        class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydrator
+        arguments:
+            - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.record.hydrator.value:
         class: Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydrator
