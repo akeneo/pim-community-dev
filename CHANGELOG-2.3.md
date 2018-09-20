@@ -10,6 +10,7 @@
 
 - PIM-7663: Fix API endpoint that list products updated since N days
 - PIM-7658: Do not expose disabled locale
+- PIM-7629: Fix category filter in product grid
 - PIM-7653: Fix product export builder when completeness should export products complete on at least one locale
 - PIM-7650: Fix Values comparison. Allows to save a variant product with a metric as variant axe.
   - Please, for this fix, if you implemented `Pim\Component\Catalog\Model\AbstractValue` in specific code be warned that
