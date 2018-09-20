@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7658: Do not expose disabled locale
 - PIM-7653: Fix product export builder when completeness should export products complete on at least one locale
 
 # 2.3.8 (2018-09-14)
