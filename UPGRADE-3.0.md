@@ -2,6 +2,10 @@
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\Filter\\FilterExtension/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\Extension\\Filter\\FilterExtension/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Event\\MassActionEvents/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Datagrid\\MassActionEvents/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Adapter\\OroToPimGridFilterAdapter/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Datagrid\\OroToPimGridFilterAdapter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Handler\\RuleImpactedProductCountActionHandler/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle\\Datagrid\\Extension\\MassAction\\RuleImpactedProductCountActionHandler/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\ProductHistory\\GridHelper/Akeneo\\Pim\\WorkOrganization\\ProductRevert\\Datagrid\\Configuration\\ProductHistory\\GridHelper/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\Doctrine\\ORM\\CompletenessRemover/Akeneo\\Pim\\Asset\\Bundle\\Doctrine\\ORM\\CompletenessRemover/g'
@@ -40,7 +44,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGrid
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\EventListener\\ConfigureProductGridListener/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\EventListener\\ConfigureProductGridListener/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Util\\ProductFieldsBuilder/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\MassAction\\ProductFieldsBuilder/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Extension\\MassAction\\Util\\ProductFieldsBuilder/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\MassAction\\ProductFieldsBuilder/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle\\Datagrid\\Configuration\\Product\\RowActionsConfigurator/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\Product\\RowActionsConfigurator/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\RowActionsConfigurator/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\Product\\RowActionsConfigurator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\Doctrine\\Counter\\GrantedCategoryItemsCounter/Akeneo\\Asset\\Bundle\\Doctrine\\ORM\\Query\\GrantedCategoryItemsCounter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle\\EventSubscriber\\Datagrid\\ProductCategoryAccessSubscriber/Akeneo\\Pim\\Permission\\Bundle\\Datagrid\\EventListener\\ProductCategoryAccessSubscriber/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\EnrichBundle\\EventSubscriber\\SavePermissionsSubscriber/Akeneo\\Pim\\Permission\\Bundle\\EventSubscriber\\SavePermissionsSubscriber/g'

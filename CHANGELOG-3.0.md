@@ -12,6 +12,9 @@
 
 ## BC breaks
 
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension` to `Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents`
+- Move `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\OroToPimGridFilterAdapter`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler` to `Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction\RuleImpactedProductCountActionHandler`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper` to `Akeneo\Pim\WorkOrganization\ProductRevert\Datagrid\Configuration\ProductHistory\GridHelper`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Configuration\Product\FiltersConfigurator`
