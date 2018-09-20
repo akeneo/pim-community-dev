@@ -176,32 +176,12 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function aggregateResults(): void
     {
-        $clauses = [];
-        $attributeCodes = $this->getAttributeCodes();
-        foreach ($attributeCodes as $attributeCode) {
-            $clauses[] = [
-                'terms' => ['attributes_of_ancestors' => [$attributeCode]],
-            ];
-        }
-
-        $categoryCodes = $this->getCategoryCodes();
-        if (!empty($categoryCodes)) {
-            $clauses[] = [
-                'terms' => ['categories_of_ancestors' => $categoryCodes],
-            ];
-        }
-
-        if (!empty($clauses)) {
-            $this->getQueryBuilder()->addFilter([
-                'bool' => [
-                    'must_not' => [
-                        'bool' => [
-                            'filter' => $clauses,
-                        ],
-                    ],
-                ],
-            ]);
-        }
+        $this->addFilter(
+            'aggregate',
+            Operators::AGGREGATE,
+            null,
+            ['rawFilters' => $this->getRawFilters()]
+        );
 
         $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator();
         if (!empty($attributeCodesWithIsEmptyOperator)) {
@@ -211,47 +191,6 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
                 ],
             ]);
         }
-    }
-
-    /**
-     * Returns the attribute codes for which there is a filter on.
-     *
-     * @return string[]
-     */
-    private function getAttributeCodes(): array
-    {
-        $attributeFilters = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                return 'attribute' === $filter['type'];
-            }
-        );
-
-        return array_column($attributeFilters, 'field');
-    }
-
-    /**
-     * Returns the category codes for which there is a filter on.
-     *
-     * @return string[]
-     */
-    private function getCategoryCodes(): array
-    {
-        $categoriesFilter = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                return 'field' === $filter['type'] &&
-                    'categories' === $filter['field'] &&
-                    (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator']);
-            }
-        );
-
-        $categoryCodes = [];
-        foreach ($categoriesFilter as $categoryFilter) {
-            $categoryCodes = array_merge($categoryCodes, $categoryFilter['value']);
-        }
-
-        return $categoryCodes;
     }
 
     /**

@@ -283,6 +283,15 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
+    pim_catalog.query.elasticsearch.filter.category_of_ancestors:
+        class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AggregateFilter'
+        arguments:
+        - '@pim_catalog.repository.category'
+        - ['aggregate']
+        - ['AGGREGATE']
+        tags:
+        - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
     pim_catalog.query.elasticsearch.filter.status:
         class: '%pim_catalog.query.elasticsearch.filter.status.class%'
         arguments:

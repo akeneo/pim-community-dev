@@ -6,6 +6,7 @@
 
 - PIM-7648: Fix preview of huge images in Product Edit Form
 - PIM-7647: Fix completeness filter on the product export builder
+- PIM-7629: Fix category filter in product grid
 
 # 2.3.7 (2018-09-11)
 
