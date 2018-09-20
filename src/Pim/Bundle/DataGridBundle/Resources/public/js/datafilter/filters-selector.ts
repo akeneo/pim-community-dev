@@ -95,6 +95,7 @@ class FiltersColumn extends BaseView {
     this.restoreFilterState(state, filters)
 
     mediator.trigger('filters-column:init', this.updateDatagridStateWithFilters.bind(this))
+    mediator.trigger('datagrid_filters:rendered', datagridCollection)
   }
 
   hideDisabledFilters(filters: any) {
