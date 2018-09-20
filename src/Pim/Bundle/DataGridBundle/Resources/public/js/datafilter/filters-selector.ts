@@ -145,14 +145,16 @@ class FiltersColumn extends BaseView {
     let categoryFilterValue = {}
     let filterState = this.getState()
 
-    if (this.categoryFilter) {
+    console.log('passed categoryFilter', categoryFilter)
+
+    if (_.isEmpty(categoryFilter) && this.categoryFilter) {
       categoryFilterValue = { category: this.categoryFilter._getTreeState() }
     }
 
     filterState = Object.assign(filterState, {...categoryFilterValue }, categoryFilter)
 
-    const currentState = _.omit(Object.assign(categoryFilterValue, this.datagridCollection.state.filters), 'scope');
-    const updatedState = _.omit(filterState, 'scope')
+    const currentState = Object.assign(categoryFilterValue, this.datagridCollection.state.filters)
+    const updatedState = filterState
 
     const stateHasChanged = !_.isEqual(currentState, updatedState)
     const currentStateIsEmpty = _.isEmpty(currentState)
