@@ -28,3 +28,129 @@ services:
             - '@pim_catalog.normalizer.standard.category'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.category:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CategoryNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.group:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.group'
+            - '@pim_enrich.provider.structure_version.group'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.entity_with_family_variant:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
+
+    pim_enrich.normalizer.completeness:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_model:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductModelNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.incomplete_values'
+            - '@pim_user.context.user'
+            - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.normalizer.standard.product.parent_associations'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_violation:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductViolationNormalizer'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_enrich.normalizer.group_violation:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupViolationNormalizer'
+        arguments:
+            - '@pim_internal_api_serializer'
+
+    pim_enrich.normalizer.incomplete_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer'
+        arguments:
+            - '@pim_catalog.entity_with_family.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.completeness_collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer'
+        arguments:
+            - '@pim_enrich.normalizer.completeness'
+
+    pim_enrich.normalizer.collection:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.variant_navigation:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.normalizer.entity_with_family_variant'
+
+    pim_enrich.normalizer.violation:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }
+
+    pim_enrich.normalizer.product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer'
+        arguments:
+            - '@pim_standard_format_serializer'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.provider.structure_version.product'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_user.context.user'
+            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.values_filler.product'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.incomplete_values'
+            - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.normalizer.standard.product.parent_associations'
+            - '@pim_catalog.context.catalog'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
