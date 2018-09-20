@@ -94,3 +94,11 @@ services:
             - '@akeneo_enrichedentity.application.record.edit_record_handler'
             - '@validator'
             - '@serializer'
+
+    akeneo_enrichedentity.infrastructure.action.record.delete:
+        class: Akeneo\EnrichedEntity\Infrastructure\Controller\Record\DeleteAction
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.delete_record_handler'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'

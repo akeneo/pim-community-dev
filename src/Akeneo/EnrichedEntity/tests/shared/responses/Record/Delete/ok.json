@@ -1,0 +1,10 @@
+{
+  "request": {
+    "method": "DELETE",
+    "relative_url": "/rest/enriched_entity/designer/record/starck"
+  },
+  "response": {
+    "status": 204,
+    "body": ""
+  }
+}

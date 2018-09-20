@@ -23,6 +23,12 @@ services:
             - '@akeneo_enrichedentity.application.registry.attribute_factory'
             - '@akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
 
+    akeneo_enrichedentity.application.enriched_entity.create_attribute_handler:
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler
+        arguments:
+            - '@akeneo_enrichedentity.application.registry.attribute_factory'
+            - '@akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
+
     akeneo_enrichedentity.application.attribute.delete_attribute_handler:
         class: Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
         arguments:
@@ -46,3 +52,8 @@ services:
                 - '@akeneo_enrichedentity.application.registry.edit_record.record_value_updater.record_value_updater_registry'
                 - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
                 - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_enrichedentity.application.enriched_entity.delete_record_handler:
+        class: Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'

@@ -14,7 +14,6 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -22,7 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
  */
 class DeleteAttributeHandler
 {
-    /** @var EnrichedEntityRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     public function __construct(AttributeRepositoryInterface $attributeRepository)

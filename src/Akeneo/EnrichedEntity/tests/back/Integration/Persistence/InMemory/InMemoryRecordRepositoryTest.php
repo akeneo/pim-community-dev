@@ -213,4 +213,40 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->recordRepository->getByIdentifier($identifier);
     }
+
+    /**
+     * @test
+     */
+    public function it_deletes_a_record_by_code_and_entity_identifier()
+    {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $recordCode = RecordCode::fromString('record_code');
+        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [],
+            ValueCollection::fromValues([]));
+        $this->recordRepository->create($record);
+
+        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+
+        $this->expectException(RecordNotFoundException::class);
+        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_trying_to_delete_an_unknown_record()
+    {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $recordCode = RecordCode::fromString('record_code');
+        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [],
+            ValueCollection::fromValues([]));
+        $this->recordRepository->create($record);
+
+        $unknownCode = RecordCode::fromString('unknown_code');
+
+        $this->expectException(RecordNotFoundException::class);
+        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $unknownCode);
+    }
 }
