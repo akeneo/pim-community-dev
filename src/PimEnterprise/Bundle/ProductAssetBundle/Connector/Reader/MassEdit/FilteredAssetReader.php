@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Reader\MassEdit;
 
-use Pim\Component\Connector\Reader\Database\AbstractReader;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,10 +26,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FilteredAssetReader extends AbstractReader
+class FilteredAssetReader implements ItemReaderInterface, StepExecutionAwareInterface
 {
+    /** @var StepExecution */
+    private $stepExecution;
+
     /** @var AssetRepositoryInterface */
-    protected $repository;
+    private $repository;
+
+    /** @var ArrayCollection */
+    private $assets;
 
     /**
      * @param AssetRepositoryInterface $repository
@@ -38,32 +47,48 @@ class FilteredAssetReader extends AbstractReader
 
     /**
      * {@inheritdoc}
-     *
-     * In this particular case, we'll only have 1 filter based on ids
-     * (We don't have raw filters yet for asset grid)
      */
-    protected function getResults()
+    public function read()
     {
-        $filters = $this->getConfiguredFilters();
+        if (null === $this->assets) {
+            $this->assets = $this->getAssets();
+        } else {
+            $this->assets->next();
+        }
 
+        $asset = $this->assets->current();
+
+        if (null !== $asset) {
+            $this->stepExecution->incrementSummaryInfo('read');
+        }
+
+        return $asset;
+    }
+
+    /**
+     * @param StepExecution $stepExecution
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    private function getAssets()
+    {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
 
-        $filter = current($filters);
+        $filter = current($this->stepExecution->getJobParameters()->get('filters'));
         $filter = $resolver->resolve($filter);
 
         $assetIds = $filter['value'];
 
-        return new \ArrayIterator($this->repository->findByIds($assetIds));
-    }
+        foreach ($assetIds as $assetId) {
+            $asset = $this->repository->find($assetId);
 
-    /**
-     * @return array|null
-     */
-    protected function getConfiguredFilters()
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-
-        return $jobParameters->get('filters');
+            if (null !== $asset) {
+                yield $asset;
+            }
+        }
     }
 }

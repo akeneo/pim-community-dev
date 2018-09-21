@@ -30,3 +30,4 @@ parameters:
     asset_storage_dir:    '%kernel.root_dir%/../var/cache/file_storage/asset'
     tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
     upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'
+    pimee_mass_edit_asset_batch_size: 5

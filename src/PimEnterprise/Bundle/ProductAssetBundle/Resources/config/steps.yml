@@ -176,6 +176,7 @@ services:
             - '@pimee_product_asset.reader.database.mass_edit_asset'
             - '@pimee_product_asset.processor.classify_assets'
             - '@pimee_product_asset.writer.database.asset'
+            - '%pimee_mass_edit_asset_batch_size%'
 
     pimee_product_asset.step.add_tags_to_assets.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -186,3 +187,4 @@ services:
             - '@pimee_product_asset.reader.database.mass_edit_asset'
             - '@pimee_product_asset.processor.add_tags_to_assets'
             - '@pimee_product_asset.writer.database.asset'
+            - '%pimee_mass_edit_asset_batch_size%'
