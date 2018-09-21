@@ -30,7 +30,7 @@ services:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     pim_enrich.normalizer.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CategoryNormalizer'
+        class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi\CategoryNormalizer'
         arguments:
             - '@pim_standard_format_serializer'
         tags:

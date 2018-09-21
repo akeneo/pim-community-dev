@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType;
-use Akeneo\Pim\Enrichment\Bundle\Form\Type\SelectFamilyType;
+use Akeneo\Pim\Structure\Bundle\Form\Type\SelectFamilyType;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;

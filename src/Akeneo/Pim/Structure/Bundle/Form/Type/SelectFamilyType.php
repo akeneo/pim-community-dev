@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Form\Type;
+namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType;

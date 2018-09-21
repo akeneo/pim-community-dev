@@ -41,6 +41,6 @@ services:
             - '@oneup_flysystem.mount_manager'
 
     pim_enrich.normalizer.file:
-        class: 'Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

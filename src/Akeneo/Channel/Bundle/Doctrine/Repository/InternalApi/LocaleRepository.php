@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Channel\Component\Repository\InternalApi;
+namespace Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

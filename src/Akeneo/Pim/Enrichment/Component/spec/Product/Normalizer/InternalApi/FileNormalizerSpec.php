@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\FileStorage\Normalizer;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

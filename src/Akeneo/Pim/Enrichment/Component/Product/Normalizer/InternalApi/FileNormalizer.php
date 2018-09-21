@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\FileStorage\Normalizer;
+namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

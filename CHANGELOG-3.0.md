@@ -873,7 +873,7 @@
 - Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductCompletenessFilter`
 - Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
 - Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`
-- Move `Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CategoryNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\InternalApi\CategoryNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CollectionNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\CompletenessCollectionNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\CompletenessNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessNormalizer`
@@ -891,12 +891,11 @@
 - Move `Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueCollectionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionValueCollectionNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionValueNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\VersionedAttributeNormalizer`
-- Move `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer` to `Akeneo\Tool\Component\FileStorage\Normalizer\FileNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\InternalApi\DatagridViewNormalizer`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Component\Repository\InternalApi\ChannelRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository` to `Akeneo\Channel\Component\Repository\InternalApi\CurrencyRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository` to `Akeneo\Channel\Component\Repository\InternalApi\LocaleRepository`
-- Move `Pim\Bundle\EnrichBundle\Cursor\SequentialEditProduct` to `Akeneo\Pim\Enrichment\Bundle\Cursor\SequentialEditProduct`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\ChannelRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\CurrencyRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository` to ` Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi\LocaleRepository`
 - Move `Pim\Bundle\EnrichBundle\Cursor\SequentialEditProduct` to `Akeneo\Pim\Enrichment\Bundle\Cursor\SequentialEditProduct`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounter` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounter`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface`
