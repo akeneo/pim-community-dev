@@ -4,7 +4,7 @@
     <th class="AknGrid-headerCell AknGrid-headerCell--tight"><%- headers.suggestDataLabel %></th>
 </tr>
 <% for (pimAiAttributeCode in identifiers) { %>
-<tr class="AknGrid-bodyRow">
+<tr class="AknGrid-bodyRow <%- getRowClass(identifiersStatuses[pimAiAttributeCode]) %> ">
     <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
         <%- __(`akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.values.${pimAiAttributeCode}`) %>
     </td>
