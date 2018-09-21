@@ -178,7 +178,7 @@
   }
 
   &-metaItem {
-    & + & {
+    &:not(:empty) + &:not(:empty) {
       &:before {
         content: ' | ';
       }
