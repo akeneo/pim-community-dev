@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\EnrichBundle\Twig;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
 use Prophecy\Argument;
 
 class CategoryExtensionSpec extends ObjectBehavior

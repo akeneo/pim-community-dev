@@ -95,6 +95,24 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pim_enrich.repository.locale:
+        class: 'Akeneo\Channel\Component\Repository\InternalApi\LocaleRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.locale.class%'
+
+    pim_enrich.repository.currency:
+        class: 'Akeneo\Channel\Component\Repository\InternalApi\CurrencyRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.currency.class%'
+
+    pim_enrich.repository.channel:
+        class: 'Akeneo\Channel\Component\Repository\InternalApi\ChannelRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.channel.class%'
+
     pim_catalog.normalizer.standard.channel:
         class: 'Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer'
         arguments:

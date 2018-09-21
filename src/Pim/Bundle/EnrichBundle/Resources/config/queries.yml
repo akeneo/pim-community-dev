@@ -1,12 +1,8 @@
 parameters:
-    pim_enrich.doctrine.query.ascendant_categories.class: 'Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\AscendantCategories'
-    pim_enrich.doctrine.query.count_impacted_products.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\CountImpactedProducts
+    pim_enrich.doctrine.query.count_impacted_products.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts
 
 services:
-    pim_enrich.doctrine.query.ascendant_categories:
-        class: '%pim_enrich.doctrine.query.ascendant_categories.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
+
 
     pim_enrich.doctrine.query.count_impacted_products:
         class: '%pim_enrich.doctrine.query.count_impacted_products.class%'

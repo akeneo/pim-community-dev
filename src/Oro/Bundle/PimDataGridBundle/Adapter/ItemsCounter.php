@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\CountImpactedProducts;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts;
 
 /**
  * Counts the number of items selected in the grid.

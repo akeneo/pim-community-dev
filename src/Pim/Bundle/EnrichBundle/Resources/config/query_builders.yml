@@ -1,7 +1,5 @@
 parameters:
     pim_enrich.product_query_builder.filter.dummy.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\Filter\DummyFilter
-    pim_enrich.query.elasticsearch.sorter.in_group.class: Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter
-    pim_enrich.elasticsearch.from_size_cursor_factory.class: Pim\Bundle\EnrichBundle\Elasticsearch\FromSizeCursorFactory
     pim_enrich.query.product_and_product_model_query_builder.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
     pim_enrich.datagrid.product_batch_size: 25
 
@@ -16,14 +14,6 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
-
-    # Sorters
-    pim_catalog.query.elasticsearch.sorter.in_group:
-        class: '%pim_enrich.query.elasticsearch.sorter.in_group.class%'
-        arguments:
-            - '@pim_catalog.repository.group'
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
     # Services used by the products and product models' grid
     # here, products and product models should be gathered by the most top level product model
@@ -43,13 +33,3 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
-
-    pim_enrich.factory.product_and_product_model_from_size_cursor:
-        public: false
-        class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
-        arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_model'
-            - '%pim_enrich.datagrid.product_batch_size%'
-            - 'pim_catalog_product'
