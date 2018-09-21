@@ -98,7 +98,7 @@ define(
                                                 .getFetcher('attribute')
                                                 .getIdentifierAttribute()
                                                 .then((identifier) => {
-                                                    return this.createAttributeField(identifier, false).then(
+                                                    return this.createtotofield(identifier).then(
                                                         (identifierField) => fields.concat(identifierField)
                                                     );
                                                 });
@@ -210,6 +210,8 @@ define(
                                 });
                         }
 
+                        if ('pim_catalog_identifier')
+
                         if ('pim_catalog_metric' === attribute.type) {
                             field.setMetricFamily(attribute.metric_family);
                             field.setDefaultMetricUnit(attribute.default_metric_unit);
@@ -236,6 +238,28 @@ define(
                     .then((formMeta) => {
                         const newFormMeta = $.extend(true, {}, formMeta);
                         newFormMeta.config.fieldName = 'code';
+
+                        return FormBuilder.buildForm(newFormMeta);
+                    })
+                    .then((field) => {
+                        return field.configure().then(() => field);
+                    });
+            },
+
+            /**
+             * Instantiates a field view corresponding to the product model code.
+             *
+             * @returns {Promise}
+             */
+            createtotofield(identifier) {
+                const toto = identifier;
+                return FormBuilder
+                    .getFormMeta(this.config.identifierFieldModule)
+                    .then((formMeta, identifier) => {
+                        const newFormMeta = $.extend(true, {}, formMeta);
+                        newFormMeta.config.fieldName = 'identifier';
+                        // newFormMeta.config.label = identifier.label;
+                        newFormMeta.config.label = i18n.getLabel(identifier.labels, UserContext.get('uiLocale'), identifier.code);
 
                         return FormBuilder.buildForm(newFormMeta);
                     })

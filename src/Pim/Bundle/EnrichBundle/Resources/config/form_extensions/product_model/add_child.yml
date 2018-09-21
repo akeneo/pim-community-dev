@@ -19,6 +19,7 @@ extensions:
                 akeneo-simple-select-reference-data-field: pim-product-model-add-child-field-simple-select-reference-data
                 akeneo-text-field: pim-product-model-add-child-field-text
             codeFieldModule: pim-product-model-add-child-field-code
+            identifierFieldModule: pim-product-model-add-child-field-identifier
 
     pim-product-model-add-child-field-simple-select:
         module: pim/form/common/fields/values/simple-select-async
@@ -42,6 +43,11 @@ extensions:
 
     pim-product-model-add-child-field-text:
         module: pim/form/common/fields/values/text
+        config:
+            required: true
+
+    pim-product-model-add-child-field-identifier:
+        module: pim/form/common/fields/text
         config:
             required: true
 
