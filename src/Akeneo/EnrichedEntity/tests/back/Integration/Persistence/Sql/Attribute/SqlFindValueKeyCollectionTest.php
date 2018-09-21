@@ -30,7 +30,7 @@ use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
 use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
 
-class SqlFindValueKeyCollection extends SqlIntegrationTestCase
+class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 {
     /** @var FindValueKeyCollectionInterface */
     private $findValueKeyCollection;
@@ -60,7 +60,7 @@ class SqlFindValueKeyCollection extends SqlIntegrationTestCase
 
         $this->assertInstanceOf(ValueKeyCollection::class, $actualValueKeyCollection);
         $normalizedActualValueKeyCollection = $actualValueKeyCollection->normalize();
-        $this->assertSame(count($normalizedActualValueKeyCollection), 16);
+        $this->assertSame(count($normalizedActualValueKeyCollection), 11);
         $this->assertContains(sprintf('%s', $image->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_en_US', $name->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_de_DE', $name->getIdentifier()), $normalizedActualValueKeyCollection);
@@ -68,15 +68,10 @@ class SqlFindValueKeyCollection extends SqlIntegrationTestCase
         $this->assertContains(sprintf('%s_ecommerce', $age->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_mobile', $age->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_print', $age->getIdentifier()), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s_mobile_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_print_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s_ecommerce_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s_print_de_DE', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
         $this->assertContains(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s_mobile_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
-        $this->assertContains(sprintf('%s_print_fr_FR', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
+        $this->assertContains(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $normalizedActualValueKeyCollection);
     }
 
     private function resetDB(): void

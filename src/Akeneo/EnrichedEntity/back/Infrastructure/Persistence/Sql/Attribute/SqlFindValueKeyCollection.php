@@ -31,30 +31,40 @@ class SqlFindValueKeyCollection implements FindValueKeyCollectionInterface
 
     public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier)
     {
-        $attributeQuery = <<<SQL
-        SELECT identifier FROM akeneo_enriched_entity_attribute WHERE enriched_entity_identifier = :enriched_entity_identifier
-SQL;
-
         $query = <<<SQL
-        SELECT
-            CONCAT(attribute_per_locale_and_channel.identifier, '_', channel.code, '_', locale.code) as `key`
-            FROM (%s AND value_per_locale = 1 and value_per_channel = 1) as attribute_per_locale_and_channel
-            JOIN (SELECT code FROM pim_catalog_locale WHERE is_activated = 1) as locale
-            JOIN (SELECT code FROM pim_catalog_channel) as channel
-        UNION SELECT
-            CONCAT(attribute_per_channel.identifier, '_', channel.code) as `key`
-            FROM (%s AND value_per_locale = 0 and value_per_channel = 1) as attribute_per_channel
-            JOIN (SELECT code FROM pim_catalog_channel) as channel
-        UNION SELECT
-            CONCAT(attribute_per_locale.identifier, '_', locale.code) as `key`
-            FROM (%s AND value_per_locale = 1 and value_per_channel = 0) as attribute_per_locale
-            JOIN (SELECT code FROM pim_catalog_locale WHERE is_activated = 1) as locale
-        UNION SELECT
-            identifier as `key`
-            FROM (%s AND value_per_locale = 0 and value_per_channel = 0) as attribute
+            SELECT
+                CONCAT(
+                    mask.identifier,
+                    IF(mask.value_per_channel, CONCAT('_', mask.channel_code), ''),
+                    IF(mask.value_per_locale, CONCAT('_', mask.locale_code), '')
+                 ) as `key`
+            FROM (
+                SELECT
+                    a.identifier,
+                    a.value_per_channel,
+                    a.value_per_locale,
+                    COALESCE(c.code, locale_channel.channel_code) as channel_code,
+                    COALESCE(l.code, locale_channel.locale_code) as locale_code
+                FROM
+                    akeneo_enriched_entity_attribute as a
+                    LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
+                    LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
+                    LEFT JOIN (
+                        SELECT
+                            c.code as channel_code,
+                            l.code as locale_code
+                        FROM
+                            pim_catalog_channel c
+                            JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
+                            JOIN pim_catalog_locale l ON l.id = locale_id
+                        WHERE
+                            l.is_activated = 1
+                    ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
+                WHERE
+                    enriched_entity_identifier = :enriched_entity_identifier
+            ) as mask;
 SQL;
 
-        $query = sprintf($query, $attributeQuery, $attributeQuery, $attributeQuery, $attributeQuery);
         $statement = $this->sqlConnection->executeQuery($query, [
             'enriched_entity_identifier' => $enrichedEntityIdentifier,
         ]);

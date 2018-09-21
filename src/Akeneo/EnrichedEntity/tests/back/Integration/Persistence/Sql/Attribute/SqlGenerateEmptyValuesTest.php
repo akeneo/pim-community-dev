@@ -57,7 +57,7 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $weight = $this->loadAttribute('designer', 'weigth', true, true);
         $emptyValues = ($this->generateEmptyValues)($designer);
 
-        $this->assertCount(16, $emptyValues);
+        $this->assertCount(11, $emptyValues);
         $this->assertArrayHasKey(sprintf('%s', $image->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_en_US', $name->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_de_DE', $name->getIdentifier()), $emptyValues);
@@ -65,15 +65,10 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $this->assertArrayHasKey(sprintf('%s_ecommerce', $age->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_mobile', $age->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_print', $age->getIdentifier()), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s_mobile_en_US', $weight->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_print_en_US', $weight->getIdentifier()), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s_ecommerce_de_DE', $weight->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_mobile_de_DE', $weight->getIdentifier()), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s_print_de_DE', $weight->getIdentifier()), $emptyValues);
         $this->assertArrayHasKey(sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier()), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s_mobile_fr_FR', $weight->getIdentifier()), $emptyValues);
-        $this->assertArrayHasKey(sprintf('%s_print_fr_FR', $weight->getIdentifier()), $emptyValues);
+        $this->assertArrayHasKey(sprintf('%s_ecommerce_en_US', $weight->getIdentifier()), $emptyValues);
 
         $this->assertSame([
             'data' => null,
@@ -99,9 +94,9 @@ class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
         $this->assertSame([
             'data' => null,
             'locale' => 'fr_FR',
-            'channel' => 'print',
+            'channel' => 'ecommerce',
             'attribute' => $weight->normalize(),
-        ], $emptyValues[sprintf('%s_print_fr_FR', $weight->getIdentifier())]);
+        ], $emptyValues[sprintf('%s_ecommerce_fr_FR', $weight->getIdentifier())]);
     }
 
     private function resetDB(): void

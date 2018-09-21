@@ -202,7 +202,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             AttributeIdentifier::fromString('name_designer_fingerprint'),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
-            TextData::fromString('An completely new and updated description')
+            TextData::fromString('A completely new and updated description')
         );
         $valueToAdd = Value::create(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
