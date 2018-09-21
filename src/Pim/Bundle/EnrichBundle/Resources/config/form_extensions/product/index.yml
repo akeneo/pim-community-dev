@@ -117,17 +117,15 @@ extensions:
         config:
             label: pim_datagrid.mass_action.selected.product
 
-    pim-product-index-grid-filters-manage:
-        module: oro/datafilter/filters-button
+    pim-product-index-grid-filters-column:
+        module: oro/datafilter/filters-column
         parent: pim-product-index-column-inner
         targetZone: manage-filters-button
 
     pim-product-index-grid-filters-list:
-        module: oro/datafilter/filters-list
+        module: oro/datafilter/filters-selector
         parent: pim-product-index-column-inner
         targetZone: filters
-        config:
-            displayedAsColumn: true
 
     pim-product-index-actions-panel:
         module: oro/datagrid/actions-panel
@@ -146,6 +144,9 @@ extensions:
         parent: pim-product-index-grid-container
         targetZone: toolbar
         position: 10
+        config:
+            route: pim_datagrid_productgrid_available_columns
+            paginatedSearch: true
 
     pim-product-index-display-selector:
         module: pim/datagrid/display-selector
