@@ -101,7 +101,7 @@ extensions:
                 unmapped: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.unmapped
                 pim_ai_attribute: akeneo_suggest_data.entity.attributes_mapping.fields.pim_ai_attribute
                 catalog_attribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
-                suggest_data: akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data
+                suggest_data: akeneo_suggest_data.entity.attributes_mapping.fields.suggest_data.label
 
     pim-suggest-data-settings-attributes-mapping-index-front-search-filter:
         module: pimee/settings/front-search-filter
