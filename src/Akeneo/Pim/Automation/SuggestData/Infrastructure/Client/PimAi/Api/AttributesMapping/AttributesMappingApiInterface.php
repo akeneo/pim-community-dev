@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 
 /**
@@ -26,7 +25,14 @@ interface AttributesMappingApiInterface
     /**
      * @param string $familyCode
      *
-     * @return AttributesMappingApiResponse
+     * @return AttributesMapping
      */
     public function fetchByFamily(string $familyCode): AttributesMapping;
+
+    /**
+     * @param string $familyCode
+     *
+     * @param array $mapping
+     */
+    public function update(string $familyCode, array $mapping): void;
 }

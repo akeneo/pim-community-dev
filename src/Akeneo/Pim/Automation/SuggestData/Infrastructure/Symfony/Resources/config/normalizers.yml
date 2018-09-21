@@ -9,3 +9,6 @@ services:
 
     akeneo.pim.automation.suggest_data.normalizers.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\AttributesMappingNormalizer'
+
+    akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.attributes_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer'

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+
 /**
  * @author    Romain Monceau <romain@akeneo.com>
  */
@@ -32,6 +34,9 @@ class AttributeMapping
 
     /** @var string|null */
     private $pimAttributeCode;
+
+    /** @var AttributeInterface */
+    private $attribute;
 
     /** @var string */
     private $status;
@@ -67,5 +72,41 @@ class AttributeMapping
     public function getPimAttributeCode(): ?string
     {
         return $this->pimAttributeCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetAttributeCode(): string
+    {
+        return $this->targetAttributeCode;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return AttributeMapping
+     */
+    public function setAttribute(AttributeInterface $attribute): self
+    {
+        $this->attribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * @return AttributeInterface
+     */
+    public function getAttribute(): ?AttributeInterface
+    {
+        return $this->attribute;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 }

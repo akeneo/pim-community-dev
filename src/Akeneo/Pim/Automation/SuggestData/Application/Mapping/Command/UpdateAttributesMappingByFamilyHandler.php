@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Application\DataProvider\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 
@@ -24,29 +27,39 @@ class UpdateAttributesMappingByFamilyHandler
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var DataProviderInterface */
+    private $dataProvider;
+
     /**
      * @param FamilyRepositoryInterface $familyRepository
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        DataProviderFactory $dataProviderFactory
     ) {
         $this->familyRepository = $familyRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->dataProvider = $dataProviderFactory->create();
     }
 
+    /**
+     * @param UpdateAttributesMappingByFamilyCommand $command
+     */
     public function handle(UpdateAttributesMappingByFamilyCommand $command)
     {
-        //TODO: Validates object
-            // Validates that attribute exists
-            // Validates that family exists
         $this->validate($command);
-        //TODO: Completes the AttributeMapping class
 
-        // TODO: Calls Data Provider
+        $this->dataProvider->updateAttributesMapping($command->getFamilyCode(), $command->getAttributesMapping());
     }
 
+    /**
+     * Validates that the family exists
+     * Validates that the attribute exists
+     * @param UpdateAttributesMappingByFamilyCommand $command
+     */
     private function validate(UpdateAttributesMappingByFamilyCommand $command)
     {
         $familyCode = $command->getFamilyCode();
@@ -57,10 +70,22 @@ class UpdateAttributesMappingByFamilyHandler
         $attributesMapping = $command->getAttributesMapping();
         foreach ($attributesMapping as $attributeMapping) {
             if (null !== $attributeMapping->getPimAttributeCode()) {
-                if (null === $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode())) {
-                    throw new \InvalidArgumentException(sprintf('Attribute "%s" not found', $familyCode));
-                }
+                $this->validateAndFillAttribute($attributeMapping);
             }
         }
+    }
+
+    /**
+     * @param AttributeMapping $attributeMapping
+     */
+    private function validateAndFillAttribute(AttributeMapping $attributeMapping)
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode());
+        if (null === $attribute) {
+            throw new \InvalidArgumentException(
+                sprintf('Attribute "%s" not found', $attributeMapping->getPimAttributeCode())
+            );
+        }
+        $attributeMapping->setAttribute($attribute);
     }
 }

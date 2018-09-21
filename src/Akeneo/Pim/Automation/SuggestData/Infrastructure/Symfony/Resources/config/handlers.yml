@@ -45,6 +45,7 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.attribute'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
     # Query Handlers
     akeneo.pim.automation.suggest_data.handler.get_product_subscription_status:
