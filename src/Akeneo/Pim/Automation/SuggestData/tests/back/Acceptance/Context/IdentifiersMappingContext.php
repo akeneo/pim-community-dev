@@ -41,10 +41,10 @@ class IdentifiersMappingContext implements Context
     private $identifiersMappingApiFake;
 
     /**
-     * @param ManageIdentifiersMapping              $manageIdentifiersMapping
+     * @param ManageIdentifiersMapping $manageIdentifiersMapping
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param IdentifiersMappingApiFake             $identifiersMappingApiFake
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param IdentifiersMappingApiFake $identifiersMappingApiFake
      */
     public function __construct(
         ManageIdentifiersMapping $manageIdentifiersMapping,

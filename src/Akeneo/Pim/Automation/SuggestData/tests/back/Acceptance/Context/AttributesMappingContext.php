@@ -62,7 +62,7 @@ final class AttributesMappingContext implements Context
     /**
      * @Then the retrieved attributes mapping for the family :familyCode should be:
      *
-     * @param           $familyCode
+     * @param $familyCode
      * @param TableNode $expectedAttributes
      */
     public function theRetrievedAttributesMappingShouldBe($familyCode, TableNode $expectedAttributes): void

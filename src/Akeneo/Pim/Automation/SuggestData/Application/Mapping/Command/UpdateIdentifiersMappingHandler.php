@@ -48,9 +48,9 @@ class UpdateIdentifiersMappingHandler
     private $dataProvider;
 
     /**
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param DataProviderFactory                   $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

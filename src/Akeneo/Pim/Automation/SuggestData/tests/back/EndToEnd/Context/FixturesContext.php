@@ -61,16 +61,16 @@ class FixturesContext extends PimContext
     private $productRepository;
 
     /**
-     * @param string                          $mainContextClass
+     * @param string $mainContextClass
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
-     * @param SubscribeProductHandler         $subscribeProductHandler
-     * @param EntityBuilder                   $attributeBuilder
-     * @param BulkSaverInterface              $attributeSaver
-     * @param EntityBuilder                   $familyBuilder
-     * @param SaverInterface                  $familySaver
-     * @param Builder\Product                 $productBuilder
-     * @param SaverInterface                  $productSaver
-     * @param ProductRepositoryInterface      $productRepository
+     * @param SubscribeProductHandler $subscribeProductHandler
+     * @param EntityBuilder $attributeBuilder
+     * @param BulkSaverInterface $attributeSaver
+     * @param EntityBuilder $familyBuilder
+     * @param SaverInterface $familySaver
+     * @param Builder\Product $productBuilder
+     * @param SaverInterface $productSaver
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         string $mainContextClass,

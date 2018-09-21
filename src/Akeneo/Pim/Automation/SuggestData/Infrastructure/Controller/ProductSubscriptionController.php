@@ -37,9 +37,9 @@ class ProductSubscriptionController
     private $unsubscribeProductHandler;
 
     /**
-     * @param SubscribeProduct                    $subscribeProduct
+     * @param SubscribeProduct $subscribeProduct
      * @param GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler
-     * @param UnsubscribeProductHandler           $unsubscribeProductHandler
+     * @param UnsubscribeProductHandler $unsubscribeProductHandler
      */
     public function __construct(
         SubscribeProduct $subscribeProduct,

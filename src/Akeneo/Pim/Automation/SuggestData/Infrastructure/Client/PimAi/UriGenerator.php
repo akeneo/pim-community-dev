@@ -31,8 +31,8 @@ class UriGenerator
 
     /**
      * @param string $path
-     * @param array  $uriParameters
-     * @param array  $queryParameters
+     * @param array $uriParameters
+     * @param array $queryParameters
      *
      * @return string
      */

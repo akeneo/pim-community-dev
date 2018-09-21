@@ -50,12 +50,12 @@ class ProductSubscriptionContext implements Context
     private $unsubscribeProductHandler;
 
     /**
-     * @param InMemoryProductRepository             $productRepository
+     * @param InMemoryProductRepository $productRepository
      * @param InMemoryProductSubscriptionRepository $productSubscriptionRepository
-     * @param SubscribeProduct                      $subscribeProduct
-     * @param DataFixturesContext                   $dataFixturesContext
-     * @param SubscriptionFake                      $subscriptionApi
-     * @param UnsubscribeProductHandler             $unsubscribeProductHandler
+     * @param SubscribeProduct $subscribeProduct
+     * @param DataFixturesContext $dataFixturesContext
+     * @param SubscriptionFake $subscriptionApi
+     * @param UnsubscribeProductHandler $unsubscribeProductHandler
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -120,7 +120,7 @@ class ProductSubscriptionContext implements Context
      * @Then /^the product "([^"]*)" should(| not) be subscribed$/
      *
      * @param string $identifier
-     * @param bool   $not
+     * @param bool $not
      */
     public function theProductShouldBeSubscribed(string $identifier, bool $not): void
     {
@@ -166,7 +166,7 @@ class ProductSubscriptionContext implements Context
 
     /**
      * @param string $identifier
-     * @param bool   $throwExceptions
+     * @param bool $throwExceptions
      */
     private function subscribeProductToPimAi(string $identifier, bool $throwExceptions = false): void
     {

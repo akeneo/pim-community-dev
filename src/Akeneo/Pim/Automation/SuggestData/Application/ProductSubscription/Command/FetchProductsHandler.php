@@ -33,7 +33,7 @@ class FetchProductsHandler
     private $productSubscriptionRepository;
 
     /**
-     * @param DataProviderFactory                    $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(

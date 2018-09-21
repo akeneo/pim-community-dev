@@ -37,7 +37,7 @@ class ProductSubscription
 
     /**
      * @param ProductInterface $product
-     * @param string           $subscriptionId
+     * @param string $subscriptionId
      */
     public function __construct(ProductInterface $product, string $subscriptionId)
     {

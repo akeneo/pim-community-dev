@@ -36,8 +36,8 @@ class CreateProposalsHandler
     private $productSubscriptionRepository;
 
     /**
-     * @param SuggestedDataNormalizer                $suggestedDataNormalizer
-     * @param ProposalUpsertInterface                $proposalUpsert
+     * @param SuggestedDataNormalizer $suggestedDataNormalizer
+     * @param ProposalUpsertInterface $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
@@ -96,7 +96,7 @@ class CreateProposalsHandler
     }
 
     /**
-     * @param SuggestedData   $suggestedData
+     * @param SuggestedData $suggestedData
      * @param FamilyInterface $family
      *
      * @return array

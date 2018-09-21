@@ -32,7 +32,7 @@ class IdentifiersMappingController
 
     /**
      * @param ManageIdentifiersMapping $manageIdentifiersMapping
-     * @param TranslatorInterface      $translator
+     * @param TranslatorInterface $translator
      */
     public function __construct(ManageIdentifiersMapping $manageIdentifiersMapping, TranslatorInterface $translator)
     {

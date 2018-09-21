@@ -76,19 +76,19 @@ class DataFixturesContext implements Context
     private $categoryRepository;
 
     /**
-     * @param InMemoryProductRepository             $productRepository
-     * @param ProductBuilderInterface               $productBuilder
-     * @param ValueCollectionFactoryInterface       $valueCollectionFactory
-     * @param InMemoryFamilyRepository              $familyRepository
-     * @param FamilyFactory                         $familyFactory
-     * @param InMemoryAttributeRepository           $attributeRepository
-     * @param EntityBuilder                         $familyBuilder
-     * @param EntityBuilder                         $attributeBuilder
-     * @param InMemoryAttributeGroupRepository      $attributeGroupRepository
-     * @param EntityBuilder                         $attributeGroupBuilder
+     * @param InMemoryProductRepository $productRepository
+     * @param ProductBuilderInterface $productBuilder
+     * @param ValueCollectionFactoryInterface $valueCollectionFactory
+     * @param InMemoryFamilyRepository $familyRepository
+     * @param FamilyFactory $familyFactory
+     * @param InMemoryAttributeRepository $attributeRepository
+     * @param EntityBuilder $familyBuilder
+     * @param EntityBuilder $attributeBuilder
+     * @param InMemoryAttributeGroupRepository $attributeGroupRepository
+     * @param EntityBuilder $attributeGroupBuilder
      * @param InMemoryProductSubscriptionRepository $subscriptionRepository
-     * @param EntityBuilder                         $categoryBuilder
-     * @param InMemoryCategoryRepository            $categoryRepository
+     * @param EntityBuilder $categoryBuilder
+     * @param InMemoryCategoryRepository $categoryRepository
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -304,7 +304,7 @@ class DataFixturesContext implements Context
      * Loads a product with its family (if any) and attributes.
      * Fixture content is in a JSON file in "Resources/config/fixtures/products/".
      *
-     * @param string      $identifier
+     * @param string $identifier
      * @param null|string $familyCode
      */
     private function loadProduct(string $identifier, ?string $familyCode = null): void
@@ -345,7 +345,7 @@ class DataFixturesContext implements Context
      * Converts raw data (storage format) into an array of values, and set the values to a product.
      *
      * @param ProductInterface $product
-     * @param array            $normalizedProduct
+     * @param array $normalizedProduct
      */
     private function setValuesFromRawDataToProduct(ProductInterface $product, array $normalizedProduct): void
     {

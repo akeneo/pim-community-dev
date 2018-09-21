@@ -35,7 +35,7 @@ class UnsubscribeProductHandler
 
     /**
      * @param ProductSubscriptionRepositoryInterface $subscriptionRepository,
-     * @param DataProviderFactory                    $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         ProductSubscriptionRepositoryInterface $subscriptionRepository,

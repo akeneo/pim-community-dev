@@ -31,7 +31,7 @@ final class PimAiConfigurationContext extends PimContext
     private $configurationRepository;
 
     /**
-     * @param string                           $mainContextClass
+     * @param string $mainContextClass
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(string $mainContextClass, ConfigurationRepositoryInterface $configurationRepository)

@@ -191,8 +191,8 @@ SQL;
     }
 
     /**
-     * @param int        $productId
-     * @param string     $subscriptionId
+     * @param int $productId
+     * @param string $subscriptionId
      * @param array|null $suggestedData
      */
     private function insertSubscription(int $productId, string $subscriptionId, array $suggestedData): void

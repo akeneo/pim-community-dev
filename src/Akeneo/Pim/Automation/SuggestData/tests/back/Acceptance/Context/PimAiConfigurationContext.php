@@ -51,10 +51,10 @@ class PimAiConfigurationContext implements Context
     private $retrievedConfiguration;
 
     /**
-     * @param ActivateSuggestDataConnection    $pimAiConnection
+     * @param ActivateSuggestDataConnection $pimAiConnection
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param GetNormalizedConfiguration       $getNormalizedConfiguration
-     * @param GetSuggestDataConnectionStatus   $getConnectionStatus
+     * @param GetNormalizedConfiguration $getNormalizedConfiguration
+     * @param GetSuggestDataConnectionStatus $getConnectionStatus
      */
     public function __construct(
         ActivateSuggestDataConnection $pimAiConnection,
@@ -158,7 +158,7 @@ class PimAiConfigurationContext implements Context
 
     /**
      * @param string $expectedToken
-     * @param array  $expectedConfiguration
+     * @param array $expectedConfiguration
      */
     private function assertPimAiConfigurationEqualsTo(string $expectedToken, array $expectedConfiguration): void
     {

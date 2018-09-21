@@ -31,7 +31,7 @@ class GetAttributesMappingByFamilyHandler
     private $familyRepository;
 
     /**
-     * @param DataProviderFactory       $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      * @param FamilyRepositoryInterface $familyRepository
      */
     public function __construct(DataProviderFactory $dataProviderFactory, FamilyRepositoryInterface $familyRepository)

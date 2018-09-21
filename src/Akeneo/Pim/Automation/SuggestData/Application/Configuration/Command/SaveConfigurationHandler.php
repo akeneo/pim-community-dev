@@ -36,7 +36,7 @@ class SaveConfigurationHandler
     private $repository;
 
     /**
-     * @param DataProviderFactory              $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      * @param ConfigurationRepositoryInterface $repository
      */
     public function __construct(

@@ -33,7 +33,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     private $attributeRepository;
 
     /**
-     * @param EntityManagerInterface       $em
+     * @param EntityManagerInterface $em
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(EntityManagerInterface $em, AttributeRepositoryInterface $attributeRepository)

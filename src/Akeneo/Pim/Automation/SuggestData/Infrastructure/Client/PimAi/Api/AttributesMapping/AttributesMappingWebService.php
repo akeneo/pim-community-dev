@@ -34,7 +34,7 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
 
     /**
      * @param UriGenerator $uriGenerator
-     * @param Client       $httpClient
+     * @param Client $httpClient
      */
     public function __construct(UriGenerator $uriGenerator, Client $httpClient)
     {

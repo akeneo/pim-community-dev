@@ -22,7 +22,7 @@ final class ProductFetchingContext implements Context
 
     /**
      * @param FetchProductsHandler $fetchProductsHandler
-     * @param SubscriptionFake     $subscriptionFake
+     * @param SubscriptionFake $subscriptionFake
      */
     public function __construct(
         FetchProductsHandler $fetchProductsHandler,

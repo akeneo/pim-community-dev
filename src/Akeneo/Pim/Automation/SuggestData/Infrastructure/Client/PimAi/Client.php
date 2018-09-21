@@ -32,7 +32,7 @@ class Client
     private $token;
 
     /**
-     * @param ClientInterface                  $httpClient
+     * @param ClientInterface $httpClient
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(ClientInterface $httpClient, ConfigurationRepositoryInterface $configurationRepository)
@@ -46,7 +46,7 @@ class Client
      *
      * @param string $method
      * @param string $uri
-     * @param array  $options
+     * @param array $options
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

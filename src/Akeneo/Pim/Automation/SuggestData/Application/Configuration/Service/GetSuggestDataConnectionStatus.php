@@ -31,7 +31,7 @@ class GetSuggestDataConnectionStatus
 
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param DataProviderFactory              $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,

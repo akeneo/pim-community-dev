@@ -30,7 +30,7 @@ class IdentifierMapping
     private $attribute;
 
     /**
-     * @param string                  $pimAiCode
+     * @param string $pimAiCode
      * @param AttributeInterface|null $attribute
      */
     public function __construct(string $pimAiCode, ?AttributeInterface $attribute)

@@ -59,7 +59,7 @@ class SuggestedDataNormalizer
 
     /**
      * @param string $attributeType
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return array
      */

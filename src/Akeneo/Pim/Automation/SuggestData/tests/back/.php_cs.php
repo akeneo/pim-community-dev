@@ -12,7 +12,6 @@ return PhpCsFixer\Config::create()
                 'align_double_arrow' => false,
                 'align_equals' => false,
             ],
-            'concat_space' => ['spacing' => 'none'],
             'linebreak_after_opening_tag' => true,
             'no_unreachable_default_argument_value' => true,
             'no_useless_else' => true,
@@ -20,6 +19,7 @@ return PhpCsFixer\Config::create()
             'ordered_class_elements' => true,
             'ordered_imports' => true,
             'phpdoc_add_missing_param_annotation' => true,
+            'phpdoc_align' => ['align' => 'left'],
             'phpdoc_order' => true,
         ]
     )

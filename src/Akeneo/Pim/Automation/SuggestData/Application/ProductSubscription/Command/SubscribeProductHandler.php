@@ -41,9 +41,9 @@ class SubscribeProductHandler
     private $dataProviderFactory;
 
     /**
-     * @param ProductRepositoryInterface             $productRepository
+     * @param ProductRepositoryInterface $productRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
-     * @param DataProviderFactory                    $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,

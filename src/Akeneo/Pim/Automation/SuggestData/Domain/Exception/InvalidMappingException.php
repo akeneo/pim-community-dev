@@ -36,11 +36,11 @@ final class InvalidMappingException extends \Exception
     private $messageParams;
 
     /**
-     * @param string          $className
-     * @param string          $message
-     * @param array           $messageParams
-     * @param string|null     $path
-     * @param int             $code
+     * @param string $className
+     * @param string $message
+     * @param array $messageParams
+     * @param string|null $path
+     * @param int $code
      * @param \Exception|null $previous
      */
     public function __construct(
@@ -59,9 +59,9 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param int         $frequency
-     * @param string      $attributeCode
-     * @param string      $className
+     * @param int $frequency
+     * @param string $attributeCode
+     * @param string $className
      * @param string|null $path
      *
      * @return InvalidMappingException
@@ -82,9 +82,9 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param array       $expectedIdentifiers
-     * @param array       $givenIdentifiers
-     * @param string      $className
+     * @param array $expectedIdentifiers
+     * @param array $givenIdentifiers
+     * @param string $className
      * @param string|null $path
      *
      * @return InvalidMappingException
@@ -105,8 +105,8 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
-     * @param string      $attributeCode
-     * @param string      $className
+     * @param string $attributeCode
+     * @param string $className
      * @param string|null $path
      *
      * @return static

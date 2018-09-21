@@ -30,7 +30,7 @@ final class ApiResponse
     private $subscriptionCollection;
 
     /**
-     * @param int                    $responseCode
+     * @param int $responseCode
      * @param SubscriptionCollection $subscriptionCollection
      */
     public function __construct(int $responseCode, SubscriptionCollection $subscriptionCollection)

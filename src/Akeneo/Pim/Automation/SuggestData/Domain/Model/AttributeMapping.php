@@ -43,11 +43,11 @@ class AttributeMapping
     private $type;
 
     /**
-     * @param string      $targetAttributeCode
+     * @param string $targetAttributeCode
      * @param null|string $targetAttributeLabel
      * @param null|string $pimAttributeCode
-     * @param string      $status
-     * @param string      $type
+     * @param string $status
+     * @param string $type
      */
     public function __construct(string $targetAttributeCode, ?string $targetAttributeLabel, ?string $pimAttributeCode, int $status, string $type)
     {

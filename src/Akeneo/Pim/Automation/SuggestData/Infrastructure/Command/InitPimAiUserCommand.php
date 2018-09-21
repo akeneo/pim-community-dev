@@ -62,10 +62,10 @@ final class InitPimAiUserCommand extends Command
 
     /**
      * @param IdentifiableObjectRepositoryInterface $userRepository
-     * @param SimpleFactoryInterface                $userFactory
-     * @param ObjectUpdaterInterface                $userUpdater
-     * @param SaverInterface                        $userSaver
-     * @param ValidatorInterface                    $validator
+     * @param SimpleFactoryInterface $userFactory
+     * @param ObjectUpdaterInterface $userUpdater
+     * @param SaverInterface $userSaver
+     * @param ValidatorInterface $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $userRepository,

@@ -30,7 +30,7 @@ class DataProviderFactory
 
     /**
      * @param DataProviderRegistry $dataProviderRegistry
-     * @param string               $dataProviderAlias
+     * @param string $dataProviderAlias
      */
     public function __construct(DataProviderRegistry $dataProviderRegistry, string $dataProviderAlias)
     {

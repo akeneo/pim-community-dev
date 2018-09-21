@@ -25,7 +25,7 @@ class DataProviderRegistry
     private $dataProviders = [];
 
     /**
-     * @param string                $alias
+     * @param string $alias
      * @param DataProviderInterface $dataProvider
      */
     public function addDataProvider(string $alias, DataProviderInterface $dataProvider): void

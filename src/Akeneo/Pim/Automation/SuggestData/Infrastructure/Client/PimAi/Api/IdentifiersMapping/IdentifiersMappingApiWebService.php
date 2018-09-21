@@ -31,7 +31,7 @@ class IdentifiersMappingApiWebService implements IdentifiersMappingApiInterface
 
     /**
      * @param UriGenerator $uriGenerator
-     * @param Client       $httpClient
+     * @param Client $httpClient
      */
     public function __construct(
         UriGenerator $uriGenerator,
