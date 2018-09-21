@@ -669,13 +669,18 @@ class Grid extends Index
             return $this->getElement('Body')->find('css', $this->elements['Filters']['css']);
         }, 'The filter box is not loaded');
 
-        $filter = $this->spin(function () use ($filterName) {
-            return $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
-        }, sprintf('Could not find filter item %s', $filterName));
 
-        if (null === $filter || !$filter->isVisible()) {
-            $this->clickOnFilterToManage($filterName);
-        }
+        $this->spin(function () use ($filterName) {
+            $filterItem = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+
+            if (null === $filterItem || !$filterItem->isVisible()) {
+                $this->clickOnFilterToManage($filterName);
+                return false;
+            }
+
+            return true;
+
+        }, sprintf('Could not find filter item %s', $filterName));
     }
 
     /**
