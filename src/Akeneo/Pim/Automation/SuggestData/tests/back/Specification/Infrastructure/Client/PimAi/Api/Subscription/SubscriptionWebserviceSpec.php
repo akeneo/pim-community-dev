@@ -48,7 +48,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/'.$subscriptionId)
+            ->generate('/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient->request('DELETE', 'unsubscription-route')->shouldBeCalled();
@@ -61,7 +61,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/'.$subscriptionId)
+            ->generate('/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient
@@ -80,7 +80,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/'.$subscriptionId)
+            ->generate('/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient

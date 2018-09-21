@@ -12,6 +12,7 @@ return PhpCsFixer\Config::create()
                 'align_double_arrow' => false,
                 'align_equals' => false,
             ],
+            'concat_space' => ['spacing' => 'one'],
             'linebreak_after_opening_tag' => true,
             'no_unreachable_default_argument_value' => true,
             'no_useless_else' => true,

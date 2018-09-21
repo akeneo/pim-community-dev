@@ -58,7 +58,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
             new SubscriptionCollection(
                 json_decode(
                     file_get_contents(
-                        sprintf(__DIR__.'/../resources/%s', $filename)
+                        sprintf(__DIR__ . '/../resources/%s', $filename)
                     ),
                     true
                 )
@@ -86,7 +86,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
             new SubscriptionCollection(
                 json_decode(
                     file_get_contents(
-                        sprintf(__DIR__.'/../resources/%s', $filename)
+                        sprintf(__DIR__ . '/../resources/%s', $filename)
                     ),
                     true
                 )

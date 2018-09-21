@@ -40,12 +40,12 @@ class UriGenerator
     {
         $uriParameters = $this->encodeUriParameters($uriParameters);
 
-        $uri = $this->baseUri.'/'.vsprintf(ltrim($path, '/'), $uriParameters);
+        $uri = $this->baseUri . '/' . vsprintf(ltrim($path, '/'), $uriParameters);
 
         $queryParameters = $this->booleanQueryParametersAsString($queryParameters);
 
         if (!empty($queryParameters)) {
-            $uri .= '?'.http_build_query($queryParameters, null, '&', PHP_QUERY_RFC3986);
+            $uri .= '?' . http_build_query($queryParameters, null, '&', PHP_QUERY_RFC3986);
         }
 
         return $uri;

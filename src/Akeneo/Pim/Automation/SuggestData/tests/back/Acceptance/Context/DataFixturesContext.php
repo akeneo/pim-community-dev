@@ -371,7 +371,7 @@ class DataFixturesContext implements Context
      */
     private function loadJsonFileAsArray(string $filepath)
     {
-        $filepath = realpath(sprintf(__DIR__.'/../Resources/fixtures/%s', $filepath));
+        $filepath = realpath(sprintf(__DIR__ . '/../Resources/fixtures/%s', $filepath));
         Assert::true(file_exists($filepath));
         $jsonContent = file_get_contents($filepath);
 

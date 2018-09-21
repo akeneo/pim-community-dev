@@ -240,7 +240,7 @@ class FixturesContext extends PimContext
      */
     private function loadJsonFileAsArray(string $filePath)
     {
-        $filePath = realpath(sprintf(__DIR__.'/../../Acceptance/Resources/fixtures/%s', $filePath));
+        $filePath = realpath(sprintf(__DIR__ . '/../../Acceptance/Resources/fixtures/%s', $filePath));
         Assert::true(file_exists($filePath));
         $jsonContent = file_get_contents($filePath);
 
