@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository as BaseJobInstanceRepository;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobInstanceRepository as BaseJobInstanceRepository;
 
 /**
  * Override job instance repository
