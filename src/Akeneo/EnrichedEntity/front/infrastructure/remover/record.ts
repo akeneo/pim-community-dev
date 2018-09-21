@@ -1,5 +1,5 @@
 import RecordRemover from 'akeneoenrichedentity/domain/remover/record';
-import RecordCode from 'akeneoenrichedentity/domain/model/record/identifier';
+import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
