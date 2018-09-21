@@ -21,16 +21,16 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     private $factory;
 
     /** @var ProductAndProductModelSearchAggregator */
-    private $resultAggregator;
+    private $searchAggregator;
 
     public function __construct(
         string $pqbClass,
         ProductQueryBuilderFactoryInterface $factory,
-        ProductAndProductModelSearchAggregator $resultAggregator = null
+        ProductAndProductModelSearchAggregator $searchAggregator = null
     ) {
         $this->pqbClass = $pqbClass;
         $this->factory = $factory;
-        $this->resultAggregator = $resultAggregator;
+        $this->searchAggregator = $searchAggregator;
     }
 
     /**
@@ -40,6 +40,6 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     {
         $basePqb = $this->factory->create($options);
 
-        return new $this->pqbClass($basePqb, $this->resultAggregator);
+        return new $this->pqbClass($basePqb, $this->searchAggregator);
     }
 }

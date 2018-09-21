@@ -31,6 +31,8 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * @param ProductQueryBuilderInterface                $pqb
      * @param ProductAndProductModelSearchAggregator|null $searchAggregator
+     *
+     * @todo @merge - remove null
      */
     public function __construct(
         ProductQueryBuilderInterface $pqb,
@@ -95,6 +97,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             $this->addFilter('parent', Operators::IS_EMPTY, null);
         }
 
+        /** @todo @merge remove null != $this->searchAggregator on master */
         if (!$this->hasRawFilter('field', 'parent') && null !== $this->searchAggregator) {
             $this->searchAggregator->aggregateResults($this->getQueryBuilder(), $this->getRawFilters());
         }
