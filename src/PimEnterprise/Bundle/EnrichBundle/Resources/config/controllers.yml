@@ -7,7 +7,7 @@ parameters:
 
 services:
     pim_enrich.controller.product_model:
-        class: '%pim_enrich.controller.product_model.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.values_filler.entity_with_family_variant'
@@ -84,7 +84,7 @@ services:
             - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.file:
-        class: '%pim_enrich.controller.file.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController'
         arguments:
             - '@liip_imagine.controller'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -99,7 +99,7 @@ services:
             - '@form.factory'
 
     pim_enrich.controller.rest.job_instance:
-        class: '%pim_enrich.controller.rest.job_instance.class%'
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job.job_registry'

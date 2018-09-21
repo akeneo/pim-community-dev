@@ -20,7 +20,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
-use Pim\Bundle\EnrichBundle\Controller\FileController;
+use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController;
 
 /**
  * Thumbnail property for an asset

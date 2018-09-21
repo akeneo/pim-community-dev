@@ -55,7 +55,7 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Controller\AjaxOptionController',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
-        'Pim\Bundle\EnrichBundle\Controller\FileController', // We should not use public constant
+        'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController', // We should not use public constant
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
