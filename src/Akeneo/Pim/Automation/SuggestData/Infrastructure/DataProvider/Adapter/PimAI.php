@@ -201,7 +201,10 @@ class PimAI implements DataProviderInterface
         return $attributesMapping;
     }
 
-    public function updateAttributesMapping(string $familyCode, AttributesMapping $attributesMapping)
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
     {
         $mapping = $this->attributesMappingNormalizer->normalize($attributesMapping);
 

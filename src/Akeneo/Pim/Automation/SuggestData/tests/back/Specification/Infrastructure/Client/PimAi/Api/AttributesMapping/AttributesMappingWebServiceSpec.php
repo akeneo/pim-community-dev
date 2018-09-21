@@ -42,15 +42,28 @@ class AttributesMappingWebServiceSpec  extends ObjectBehavior
         $uriGenerator,
         $httpClient
     ) {
-        $uriGenerator->generate(Argument::any())->willReturn('my/route');
+        $familyCode = 'router';
+        $route = sprintf('/mapping/%s/attributes', $familyCode);
+        $uriGenerator->generate($route)->willReturn('/my_route');
 
         $apiResponse->getBody()->willReturn($stream);
         $stream->getContents()->willReturn($this->getApiJsonReturn());
 
-        $httpClient->request('GET', 'my/route')->willReturn($apiResponse);
+        $httpClient->request('GET', '/my_route')->willReturn($apiResponse);
 
-        $attributesMapping = $this->fetchByFamily('router');
+        $attributesMapping = $this->fetchByFamily($familyCode);
         $attributesMapping->getIterator()->count()->shouldReturn(2);
+    }
+
+    function it_updates_attributes_mapping($uriGenerator, $httpClient)
+    {
+        $familyCode = 'router';
+        $mapping = ['foo' => 'bar'];
+
+        $route = sprintf('/mapping/%s/attributes', $familyCode);
+        $uriGenerator->generate($route)->willReturn('/my_route');
+
+        $httpClient->request('PUT', '/my_route', ['form_params' => $mapping]);
     }
 
     private function getApiJsonReturn(): string

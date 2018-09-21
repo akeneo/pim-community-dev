@@ -24,16 +24,15 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributesMapping;
 class AttributesMappingNormalizer
 {
     /**
-     * @param AttributesMapping $attributesMapping
+     * @param AttributeMapping[] $attributesMapping
      *
      * @return array
      */
-    public function normalize(AttributesMapping $attributesMapping): array
+    public function normalize(array $attributesMapping): array
     {
         $result = [];
         foreach ($attributesMapping as $attributeMapping)
         {
-            /** @var AttributeMapping $attributeMapping */
             $attribute = $attributeMapping->getAttribute();
 
             if (null === $attribute) {

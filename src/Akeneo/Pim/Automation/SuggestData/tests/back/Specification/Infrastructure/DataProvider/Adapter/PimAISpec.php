@@ -29,6 +29,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscripti
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter\PimAI;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -45,7 +46,8 @@ class PimAISpec extends ObjectBehavior
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
-        IdentifiersMappingNormalizer $identifiersMappingNormalizer
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
+        AttributesMappingNormalizer $attributesMappingNormalizer
     ) {
         $this->beConstructedWith(
             $authenticationApi,
@@ -53,7 +55,8 @@ class PimAISpec extends ObjectBehavior
             $identifiersMappingRepository,
             $identifiersMappingApi,
             $attributesMappingApi,
-            $identifiersMappingNormalizer
+            $identifiersMappingNormalizer,
+            $attributesMappingNormalizer
         );
     }
 
@@ -266,6 +269,18 @@ class PimAISpec extends ObjectBehavior
 
         $attributesMappingResponse = $this->getAttributesMapping('camcorders');
         $attributesMappingResponse->shouldHaveCount(2);
+    }
+
+    function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer)
+    {
+        $familyCode = 'foobar';
+        $attributesMapping = ['foo' => 'bar'];
+        $normalizedMapping = ['bar' => 'foo'];
+
+        $attributesMappingNormalizer->normalize($attributesMapping)->willReturn($normalizedMapping);
+        $attributesMappingApi->update($familyCode, $normalizedMapping)->shouldBeCalled();
+
+        $this->updateAttributesMapping($familyCode, $attributesMapping);
     }
 
     /**

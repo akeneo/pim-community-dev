@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AttributeMappingController
 {
@@ -139,8 +140,10 @@ class AttributeMappingController
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException
      */
-    public function updateAction($identifier, Request $request): Response
+    public function updateAction(string $identifier, Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -149,7 +152,7 @@ class AttributeMappingController
         $data = json_decode($request->getContent(), true);
 
         if (!isset($data['mapping'])) {
-            throw new \Exception('Missing mapping');
+            throw new BadRequestHttpException('No mapping have been sent');
         }
 
         $command = new UpdateAttributesMappingByFamilyCommand($identifier, $data['mapping']);

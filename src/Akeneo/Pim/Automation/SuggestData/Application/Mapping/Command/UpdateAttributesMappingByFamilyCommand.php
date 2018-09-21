@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributesMapping;
 
 /**
  * @author    Romain Monceau <romain@akeneo.com>
@@ -24,16 +24,18 @@ class UpdateAttributesMappingByFamilyCommand
     /** @var string */
     private $familyCode;
 
-    /** @var AttributesMapping */
-    private $attributesMapping;
+    /** @var AttributeMapping[] */
+    private $attributesMapping = [];
 
     /**
      * @param string $familyCode
      * @param array $mapping
+     *
+     * @throws InvalidMappingException
      */
     public function __construct(string $familyCode, array $mapping)
     {
-        $this->attributesMapping = new AttributesMapping();
+        $this->attributesMapping = [];
         $this->validate($mapping);
 
         $this->familyCode = $familyCode;
@@ -42,15 +44,15 @@ class UpdateAttributesMappingByFamilyCommand
     /**
      * @return string
      */
-    public function getFamilyCode()
+    public function getFamilyCode(): string
     {
         return $this->familyCode;
     }
 
     /**
-     * @return AttributesMapping
+     * @return AttributeMapping[]
      */
-    public function getAttributesMapping()
+    public function getAttributesMapping(): array
     {
         return $this->attributesMapping;
     }
@@ -61,37 +63,37 @@ class UpdateAttributesMappingByFamilyCommand
      *
      * Format is:
      * [
-     *     [
-     *          "color" => [
-     *              "pim_ai_attribute" => [
-     *                  "label" => "Color",
-     *                  "type" => "multiselect"
-     *              ],
-     *              "attribute" => "tshirt_style",
-     *              "status" => 1
-     *          ]
+     *      "color" => [
+     *          "pim_ai_attribute" => [
+     *              "label" => "Color",
+     *              "type" => "multiselect"
+     *          ],
+     *          "attribute" => "tshirt_style",
+     *          "status" => 1
+     *      ]
      * ]
      *
      * @param array $mapping
+     *
+     * @throws InvalidMappingException
      */
     private function validate(array $mapping): void
     {
         foreach ($mapping as $targetKey => $mappingRow) {
             if (!is_string($targetKey)) {
-                throw new \InvalidArgumentException('Target key expected');
+                throw InvalidMappingException::expectedTargetKey();
             }
 
             if (!array_key_exists('attribute', $mappingRow)) {
-                throw new \InvalidArgumentException('Missing PIM attribute');
+                throw InvalidMappingException::expectedKey($targetKey, 'attribute');
             }
 
             if (!array_key_exists('status', $mappingRow)) {
-                throw new \InvalidArgumentException('Missing status key');
+                throw InvalidMappingException::expectedKey($targetKey, 'status');
             }
 
-            $this->attributesMapping->addAttributeMapping(
-                new AttributeMapping($targetKey, $mappingRow['status'], $mappingRow['attribute'])
-            );
+            $this->attributesMapping[] =
+                new AttributeMapping($targetKey, $mappingRow['status'], $mappingRow['attribute']);
         }
     }
 }

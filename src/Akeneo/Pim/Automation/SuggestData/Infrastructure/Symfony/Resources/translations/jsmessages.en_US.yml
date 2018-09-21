@@ -48,6 +48,10 @@ akeneo_suggest_data:
                 subscribe:
                     subscribe: 'Subscribe family to PIM.ai'
                     subscribed: 'Subscribed to PIM.ai'
+            constraint:
+                missing_target_key: 'Missing target key for mapping'
+                missing_attribute_key: 'Missing {{ expectedKey }} key for mapping with target key "{{targetKey }}"'
+
         product_subscription:
             flash:
                 create:
