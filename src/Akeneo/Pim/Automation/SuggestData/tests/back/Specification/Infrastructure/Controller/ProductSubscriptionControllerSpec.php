@@ -30,7 +30,7 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         SubscribeProduct $subscribeProduct,
         GetProductSubscriptionStatusHandler $getProductSubscriptionStatusHandler,
         UnsubscribeProductHandler $unsubscribeProductHandler
-    ) {
+    ): void {
         $this->beConstructedWith(
             $subscribeProduct,
             $getProductSubscriptionStatusHandler,
@@ -38,12 +38,12 @@ class ProductSubscriptionControllerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_a_product_subscription_controller()
+    public function it_is_a_product_subscription_controller(): void
     {
         $this->shouldBeAnInstanceOf(ProductSubscriptionController::class);
     }
 
-    public function it_calls_unsubscribe_handler($unsubscribeProductHandler)
+    public function it_calls_unsubscribe_handler($unsubscribeProductHandler): void
     {
         $productId = 42;
 

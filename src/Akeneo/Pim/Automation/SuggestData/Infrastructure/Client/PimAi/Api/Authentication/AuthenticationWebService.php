@@ -34,7 +34,7 @@ class AuthenticationWebService implements AuthenticationApiInterface
     }
 
     /**
-     * {inheritdoc}
+     * {inheritdoc}.
      */
     public function authenticate(?string $token): bool
     {
@@ -42,14 +42,14 @@ class AuthenticationWebService implements AuthenticationApiInterface
 
         try {
             $options = [];
-            if (! empty($token)) {
+            if (!empty($token)) {
                 $options = [
                     'headers' => ['Authorization' => $token],
                 ];
             }
 
             $response = $this->httpClient->request('GET', $route, $options);
-            if ($response->getStatusCode() !== Response::HTTP_OK) {
+            if (Response::HTTP_OK !== $response->getStatusCode()) {
                 return false;
             }
         } catch (ClientException $e) {

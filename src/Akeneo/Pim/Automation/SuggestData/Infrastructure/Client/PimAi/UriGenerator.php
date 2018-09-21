@@ -31,8 +31,8 @@ class UriGenerator
 
     /**
      * @param string $path
-     * @param array $uriParameters
-     * @param array $queryParameters
+     * @param array  $uriParameters
+     * @param array  $queryParameters
      *
      * @return string
      */
@@ -40,12 +40,12 @@ class UriGenerator
     {
         $uriParameters = $this->encodeUriParameters($uriParameters);
 
-        $uri = $this->baseUri . '/' . vsprintf(ltrim($path, '/'), $uriParameters);
+        $uri = $this->baseUri.'/'.vsprintf(ltrim($path, '/'), $uriParameters);
 
         $queryParameters = $this->booleanQueryParametersAsString($queryParameters);
 
         if (!empty($queryParameters)) {
-            $uri .= '?' . http_build_query($queryParameters, null, '&', PHP_QUERY_RFC3986);
+            $uri .= '?'.http_build_query($queryParameters, null, '&', PHP_QUERY_RFC3986);
         }
 
         return $uri;
@@ -53,6 +53,7 @@ class UriGenerator
 
     /**
      * @param array $uriParameters
+     *
      * @return array
      */
     private function encodeUriParameters(array $uriParameters): array
@@ -66,6 +67,7 @@ class UriGenerator
 
     /**
      * @param array $queryParameters
+     *
      * @return array
      */
     private function booleanQueryParametersAsString(array $queryParameters): array

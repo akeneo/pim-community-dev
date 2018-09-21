@@ -36,7 +36,7 @@ class SaveConfigurationHandler
     private $repository;
 
     /**
-     * @param DataProviderFactory $dataProviderFactory
+     * @param DataProviderFactory              $dataProviderFactory
      * @param ConfigurationRepositoryInterface $repository
      */
     public function __construct(
@@ -56,7 +56,7 @@ class SaveConfigurationHandler
     {
         $dataProvider = $this->dataProviderFactory->create();
         $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
-        if ($isAuthenticated !== true) {
+        if (true !== $isAuthenticated) {
             throw new InvalidConnectionConfigurationException(
                 sprintf('Provided configuration is invalid.')
             );

@@ -60,7 +60,7 @@ class IdentifiersMappingController
                         'messageParams' => $invalidMapping->getMessageParams(),
                         'path' => $invalidMapping->getPath(),
                         'global' => false,
-                    ]
+                    ],
                 ],
                 $invalidMapping->getCode()
             );

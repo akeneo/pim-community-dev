@@ -27,11 +27,11 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
     public function let(
         ConfigurationRepositoryInterface $configurationRepository,
         DataProviderFactory $dataProviderFactory
-    ) {
+    ): void {
         $this->beConstructedWith($configurationRepository, $dataProviderFactory);
     }
 
-    public function it_checks_that_a_connection_is_active(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository)
+    public function it_checks_that_a_connection_is_active(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository): void
     {
         $configuration = new Configuration(['token' => 'bar']);
 
@@ -42,7 +42,7 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
         $this->isActive()->shouldReturn(true);
     }
 
-    public function it_checks_that_a_connection_is_inactive(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository)
+    public function it_checks_that_a_connection_is_inactive(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository): void
     {
         $configuration = new Configuration(['token' => 'bar']);
 
@@ -53,7 +53,7 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
         $this->isActive()->shouldReturn(false);
     }
 
-    public function it_checks_that_a_connection_does_not_exist($configurationRepository)
+    public function it_checks_that_a_connection_does_not_exist($configurationRepository): void
     {
         $configurationRepository->find()->willReturn(null);
 

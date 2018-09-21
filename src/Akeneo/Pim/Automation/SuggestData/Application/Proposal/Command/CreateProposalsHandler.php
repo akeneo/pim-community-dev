@@ -36,8 +36,8 @@ class CreateProposalsHandler
     private $productSubscriptionRepository;
 
     /**
-     * @param SuggestedDataNormalizer $suggestedDataNormalizer
-     * @param ProposalUpsertInterface $proposalUpsert
+     * @param SuggestedDataNormalizer                $suggestedDataNormalizer
+     * @param ProposalUpsertInterface                $proposalUpsert
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(
@@ -66,7 +66,7 @@ class CreateProposalsHandler
     /**
      * @param ProductSubscription $subscription
      */
-    private function createProposal(ProductSubscription $subscription)
+    private function createProposal(ProductSubscription $subscription): void
     {
         $product = $subscription->getProduct();
         if (0 === count($product->getCategoryCodes())) {
@@ -96,7 +96,7 @@ class CreateProposalsHandler
     }
 
     /**
-     * @param SuggestedData $suggestedData
+     * @param SuggestedData   $suggestedData
      * @param FamilyInterface $family
      *
      * @return array

@@ -37,7 +37,7 @@ class ProductSubscription
 
     /**
      * @param ProductInterface $product
-     * @param string $subscriptionId
+     * @param string           $subscriptionId
      */
     public function __construct(ProductInterface $product, string $subscriptionId)
     {
@@ -62,7 +62,7 @@ class ProductSubscription
     }
 
     /**
-     * Loads SuggestData entity from raw data if not already done
+     * Loads SuggestData entity from raw data if not already done.
      *
      * @return SuggestedData
      */

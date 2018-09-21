@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Enterprise Suggest Data Bundle
+ * Enterprise Suggest Data Bundle.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -30,13 +30,13 @@ class AkeneoSuggestDataBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container
             ->addCompilerPass(new RegisterDataProviderPass());
 
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model'
+            realpath(__DIR__.'/Resources/config/doctrine/model') => 'Akeneo\Pim\Automation\SuggestData\Domain\Model',
         ];
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
@@ -50,7 +50,7 @@ class AkeneoSuggestDataBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function registerCommands(Application $application)
+    public function registerCommands(Application $application): void
     {
         $application->add(new FetchProductsCommand());
     }

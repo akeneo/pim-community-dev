@@ -31,17 +31,17 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         DataProviderFactory $dataProviderFactory,
         DataProviderInterface $dataProvider,
         FamilyRepositoryInterface $familyRepository
-    ) {
+    ): void {
         $this->beConstructedWith($dataProviderFactory, $familyRepository);
         $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
-    public function it_is_a_get_attributes_mapping_query_handler()
+    public function it_is_a_get_attributes_mapping_query_handler(): void
     {
         $this->shouldHaveType(GetAttributesMappingByFamilyHandler::class);
     }
 
-    public function it_throws_an_exception_if_the_family_does_not_exist($familyRepository, $dataProvider)
+    public function it_throws_an_exception_if_the_family_does_not_exist($familyRepository, $dataProvider): void
     {
         $familyRepository->findOneByIdentifier('unknown_family')->willReturn(null);
         $dataProvider->getAttributesMapping('unknown_family')->shouldNotBeCalled();
@@ -50,7 +50,7 @@ class GetAttributesMappingByFamilyHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('handle', [$query]);
     }
 
-    public function it_handles_a_get_attributes_mapping_query(FamilyInterface $family, $familyRepository, $dataProvider)
+    public function it_handles_a_get_attributes_mapping_query(FamilyInterface $family, $familyRepository, $dataProvider): void
     {
         $attributesMappingResponse = new AttributesMappingResponse();
 

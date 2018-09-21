@@ -209,7 +209,7 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * This method converts a simple array
+     * This method converts a simple array.
      *
      * [
      *     'pim_ai_identifier_code' => 'akeneo_pim_attribute_code',

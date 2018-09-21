@@ -28,22 +28,22 @@ class ManageIdentifiersMappingSpec extends ObjectBehavior
     public function let(
         UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-    ) {
+    ): void {
         $this->beConstructedWith($updateIdentifiersMappingHandler, $identifiersMappingRepository);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ManageIdentifiersMapping::class);
     }
 
-    public function it_updates_identifiers_mapping($updateIdentifiersMappingHandler)
+    public function it_updates_identifiers_mapping($updateIdentifiersMappingHandler): void
     {
         $identifiersMapping = [
             'asin' => 'PIM_asin',
             'brand' => 'PIM_brand',
             'mpn' => 'PIM_mpn',
-            'upc' => 'PIM_upc'
+            'upc' => 'PIM_upc',
         ];
 
         $updateIdentifiersMappingHandler

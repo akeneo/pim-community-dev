@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject;
 
 /**
- * Encapsulates a raw subscription from a raw API response returned by PIM.ai
+ * Encapsulates a raw subscription from a raw API response returned by PIM.ai.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -67,11 +67,11 @@ class Subscription
             'id',
             'identifiers',
             'attributes',
-            'extra'
+            'extra',
         ];
 
         foreach ($expectedKeys as $key) {
-            if (! array_key_exists($key, $rawSubscription)) {
+            if (!array_key_exists($key, $rawSubscription)) {
                 throw new \InvalidArgumentException(sprintf('Missing key "%s" in raw subscription data', $key));
             }
         }

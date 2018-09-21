@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query;
 
 /**
- * Query the attributes mapping of a family
+ * Query the attributes mapping of a family.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */

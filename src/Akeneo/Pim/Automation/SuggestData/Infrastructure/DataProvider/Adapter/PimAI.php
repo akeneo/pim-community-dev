@@ -34,7 +34,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\Att
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
- * PIM.ai implementation to connect to a data provider
+ * PIM.ai implementation to connect to a data provider.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -110,8 +110,8 @@ class PimAI implements DataProviderInterface
         $familyInfos = [
             'code' => $family->getCode(),
             'label' => [
-                $family->getTranslation()->getLocale() => $family->getLabel()
-            ]
+                $family->getTranslation()->getLocale() => $family->getLabel(),
+            ],
         ];
 
         try {
@@ -135,7 +135,7 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * TODO: Deal with pagination (see APAI-192)
+     * TODO: Deal with pagination (see APAI-192).
      *
      * @return ProductSubscriptionsResponse
      */
@@ -154,6 +154,7 @@ class PimAI implements DataProviderInterface
             $subscriptionResponse = $this->buildSubscriptionResponse($subscription);
             $subscriptionsResponse->add($subscriptionResponse);
         }
+
         return $subscriptionsResponse;
     }
 
@@ -238,7 +239,7 @@ class PimAI implements DataProviderInterface
             AttributeMapping::STATUS_ACTIVE => DomainAttributeMapping::ATTRIBUTE_MAPPED,
         ];
 
-        if (! array_key_exists($status, $mapping)) {
+        if (!array_key_exists($status, $mapping)) {
             throw new \InvalidArgumentException(sprintf('Unknown mapping attribute status "%s"', $status));
         }
 

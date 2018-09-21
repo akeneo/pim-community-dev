@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 /**
  * Represents a standard response from a subscription request
- * Holds a collection of subscription
+ * Holds a collection of subscription.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

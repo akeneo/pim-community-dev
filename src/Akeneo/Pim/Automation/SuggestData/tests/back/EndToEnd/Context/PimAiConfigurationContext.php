@@ -134,7 +134,7 @@ final class PimAiConfigurationContext extends PimContext
     /**
      * @throws \Context\Spin\TimeoutException
      */
-    private function checkActivationButtonIsGreen()
+    private function checkActivationButtonIsGreen(): void
     {
         $activationButton = $this->spin(function (): ?NodeElement {
             if (null === $activationButton = $this->getCurrentPage()->find('css', '.suggest-data-connection')) {

@@ -23,17 +23,17 @@ use PhpSpec\ObjectBehavior;
  */
 class GetNormalizedConfigurationSpec extends ObjectBehavior
 {
-    public function let(ConfigurationRepositoryInterface $repository)
+    public function let(ConfigurationRepositoryInterface $repository): void
     {
         $this->beConstructedWith($repository);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(GetNormalizedConfiguration::class);
     }
 
-    public function it_queries_a_normalized_configuration($repository)
+    public function it_queries_a_normalized_configuration($repository): void
     {
         $configuration = new Configuration(['foo' => 'bar']);
         $repository->find()->willReturn($configuration);
@@ -44,7 +44,7 @@ class GetNormalizedConfigurationSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_an_empty_array_if_configuration_does_not_exist($repository)
+    public function it_returns_an_empty_array_if_configuration_does_not_exist($repository): void
     {
         $repository->find()->willReturn(null);
 

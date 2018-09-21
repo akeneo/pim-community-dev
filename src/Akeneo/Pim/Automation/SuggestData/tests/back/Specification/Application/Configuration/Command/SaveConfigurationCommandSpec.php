@@ -21,21 +21,21 @@ use PhpSpec\ObjectBehavior;
  */
 class SaveConfigurationCommandSpec extends ObjectBehavior
 {
-    public function it_is_a_save_configuration_command()
+    public function it_is_a_save_configuration_command(): void
     {
         $this->beConstructedWith(['foo' => 'bar']);
 
         $this->shouldHaveType(SaveConfigurationCommand::class);
     }
 
-    public function it_returns_a_values()
+    public function it_returns_a_values(): void
     {
         $this->beConstructedWith(['foo' => 'bar']);
 
         $this->getValues()->shouldReturn(['foo' => 'bar']);
     }
 
-    public function it_throws_an_exception_during_instantiation_if_values_are_emtpy()
+    public function it_throws_an_exception_during_instantiation_if_values_are_emtpy(): void
     {
         $this->beConstructedWith([]);
 
@@ -44,7 +44,7 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_during_instantiation_if_configuration_value_key_is_not_a_string()
+    public function it_throws_an_exception_during_instantiation_if_configuration_value_key_is_not_a_string(): void
     {
         $this->beConstructedWith([42 => 'value']);
 
@@ -55,7 +55,7 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_during_instantiation_if_configuration_value_value_is_not_a_string()
+    public function it_throws_an_exception_during_instantiation_if_configuration_value_value_is_not_a_string(): void
     {
         $this->beConstructedWith(['value' => 42]);
 
@@ -66,7 +66,7 @@ class SaveConfigurationCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_throws_an_exception_during_instantiation_if_configuration_value_value_is_empty()
+    public function it_throws_an_exception_during_instantiation_if_configuration_value_value_is_empty(): void
     {
         $this->beConstructedWith(['value' => '']);
 

@@ -26,6 +26,8 @@ class AttributesMappingFake implements AttributesMappingApiInterface
     /**
      * @param string $familyCode
      *
+     * @throws \Exception
+     *
      * @return AttributesMapping
      */
     public function fetchByFamily(string $familyCode): AttributesMapping

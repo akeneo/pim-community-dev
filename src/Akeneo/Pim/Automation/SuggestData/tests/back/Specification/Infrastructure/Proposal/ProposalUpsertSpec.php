@@ -19,7 +19,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -31,29 +30,29 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProposalUpsertSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         ObjectUpdaterInterface $productUpdater,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         SaverInterface $draftSaver,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    ): void {
         $this->beConstructedWith($productUpdater, $draftBuilder, $draftSaver, $eventDispatcher);
     }
 
-    function it_is_a_create_proposal()
+    public function it_is_a_create_proposal(): void
     {
         $this->shouldHaveType(ProposalUpsert::class);
         $this->shouldImplement(ProposalUpsertInterface::class);
     }
 
-    function it_creates_a_proposal_from_suggested_data(
+    public function it_creates_a_proposal_from_suggested_data(
         $productUpdater,
         $draftBuilder,
         $draftSaver,
         $eventDispatcher,
         ProductInterface $product,
         EntityWithValuesDraftInterface $productDraft
-    ) {
+    ): void {
         $suggestedData = ['foo' => 'bar'];
         $productUpdater->update($product, ['values' => $suggestedData])->willReturn($product);
 

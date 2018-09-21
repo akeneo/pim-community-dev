@@ -76,19 +76,19 @@ class DataFixturesContext implements Context
     private $categoryRepository;
 
     /**
-     * @param InMemoryProductRepository $productRepository
-     * @param ProductBuilderInterface $productBuilder
-     * @param ValueCollectionFactoryInterface $valueCollectionFactory
-     * @param InMemoryFamilyRepository $familyRepository
-     * @param FamilyFactory $familyFactory
-     * @param InMemoryAttributeRepository $attributeRepository
-     * @param EntityBuilder $familyBuilder
-     * @param EntityBuilder $attributeBuilder
-     * @param InMemoryAttributeGroupRepository $attributeGroupRepository
-     * @param EntityBuilder $attributeGroupBuilder
+     * @param InMemoryProductRepository             $productRepository
+     * @param ProductBuilderInterface               $productBuilder
+     * @param ValueCollectionFactoryInterface       $valueCollectionFactory
+     * @param InMemoryFamilyRepository              $familyRepository
+     * @param FamilyFactory                         $familyFactory
+     * @param InMemoryAttributeRepository           $attributeRepository
+     * @param EntityBuilder                         $familyBuilder
+     * @param EntityBuilder                         $attributeBuilder
+     * @param InMemoryAttributeGroupRepository      $attributeGroupRepository
+     * @param EntityBuilder                         $attributeGroupBuilder
      * @param InMemoryProductSubscriptionRepository $subscriptionRepository
-     * @param EntityBuilder $categoryBuilder
-     * @param InMemoryCategoryRepository $categoryRepository
+     * @param EntityBuilder                         $categoryBuilder
+     * @param InMemoryCategoryRepository            $categoryRepository
      */
     public function __construct(
         InMemoryProductRepository $productRepository,
@@ -125,7 +125,7 @@ class DataFixturesContext implements Context
      *
      * @Given the family ":familyCode"
      */
-    public function theFamily(string $familyCode)
+    public function theFamily(string $familyCode): void
     {
         $this->loadFamily($familyCode);
     }
@@ -205,6 +205,67 @@ class DataFixturesContext implements Context
     }
 
     /**
+     * @Given the following product:
+     *
+     * @param TableNode $table
+     */
+    public function theFollowingProduct(TableNode $table): void
+    {
+        foreach ($table->getHash() as $productRow) {
+            $product = $this->productBuilder->createProduct($productRow['identifier'], $productRow['family']);
+            unset($productRow['identifier'], $productRow['family']);
+
+            $rawValues = [];
+            foreach ($productRow as $attrCode => $value) {
+                $rawValues[$attrCode] = [
+                    '<all_channels>' => [
+                        '<all_locales>' => $value,
+                    ],
+                ];
+            }
+
+            $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
+            $product->setValues($values);
+
+            $this->productRepository->save($product);
+        }
+    }
+
+    /**
+     * @Given the following family:
+     *
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     */
+    public function theFollowingFamily(TableNode $table): void
+    {
+        foreach ($table->getHash() as $familyData) {
+            $family = $this->familyFactory->create();
+
+            if (!isset($familyData['code']) || '' === (string) $familyData['code']) {
+                throw new \Exception('Missing required field code for family creation');
+            }
+            $family->setCode($familyData['code']);
+
+            $attributeCodes = explode(',', $familyData['attributes']);
+            foreach ($attributeCodes as $attributeCode) {
+                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+                if (null === $attribute) {
+                    throw new \Exception(sprintf('Attribute "%s" does not exist', $attributeCode));
+                }
+                $family->addAttribute($attribute);
+            }
+
+            if (isset($familyData['label-en_US'])) {
+                $family->setLocale('en-US')->setLabel($familyData['label-en_US']);
+            }
+
+            $this->familyRepository->save($family);
+        }
+    }
+
+    /**
      * Loads attributes according to a provided list of attribute codes and a default attribute group.
      * Fixture content is in a file in "Resources/config/fixtures/attributes/".
      *
@@ -225,7 +286,7 @@ class DataFixturesContext implements Context
 
     /**
      * Loads the family with its attributes
-     * Fixture content is in a file in Resources/config/fixtures/families/
+     * Fixture content is in a file in Resources/config/fixtures/families/.
      *
      * @param string $familyCode
      */
@@ -290,10 +351,10 @@ class DataFixturesContext implements Context
     {
         $rawValues = [];
         foreach ($normalizedProduct['values'] as $attrCode => $value) {
-            $rawValues[$attrCode] =[
+            $rawValues[$attrCode] = [
                 '<all_channels>' => [
-                    '<all_locales>' => $value[0]['data']
-                ]
+                    '<all_locales>' => $value[0]['data'],
+                ],
             ];
         }
 
@@ -302,7 +363,7 @@ class DataFixturesContext implements Context
     }
 
     /**
-     * Loads a file containing json content and return it as a PHP array
+     * Loads a file containing json content and return it as a PHP array.
      *
      * @param string $filepath
      *
@@ -310,71 +371,10 @@ class DataFixturesContext implements Context
      */
     private function loadJsonFileAsArray(string $filepath)
     {
-        $filepath = realpath(sprintf(__DIR__ .'/../Resources/fixtures/%s', $filepath));
+        $filepath = realpath(sprintf(__DIR__.'/../Resources/fixtures/%s', $filepath));
         Assert::true(file_exists($filepath));
         $jsonContent = file_get_contents($filepath);
 
         return json_decode($jsonContent, true);
-    }
-
-    /**
-     * @Given the following product:
-     *
-     * @param TableNode $table
-     */
-    public function theFollowingProduct(TableNode $table): void
-    {
-        foreach ($table->getHash() as $productRow) {
-            $product = $this->productBuilder->createProduct($productRow['identifier'], $productRow['family']);
-            unset($productRow['identifier'], $productRow['family']);
-
-            $rawValues = [];
-            foreach ($productRow as $attrCode => $value) {
-                $rawValues[$attrCode] =[
-                    '<all_channels>' => [
-                        '<all_locales>' => $value
-                    ]
-                ];
-            }
-
-            $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
-            $product->setValues($values);
-
-            $this->productRepository->save($product);
-        }
-    }
-
-    /**
-     * @Given the following family:
-     *
-     * @param TableNode $table
-     *
-     * @throws \Exception
-     */
-    public function theFollowingFamily(TableNode $table): void
-    {
-        foreach ($table->getHash() as $familyData) {
-            $family = $this->familyFactory->create();
-
-            if (!isset($familyData['code']) || '' === (string)$familyData['code']) {
-                throw new \Exception('Missing required field code for family creation');
-            }
-            $family->setCode($familyData['code']);
-
-            $attributeCodes = explode(',', $familyData['attributes']);
-            foreach ($attributeCodes as $attributeCode) {
-                $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-                if (null === $attribute) {
-                    throw new \Exception(sprintf('Attribute "%s" does not exist', $attributeCode));
-                }
-                $family->addAttribute($attribute);
-            }
-
-            if (isset($familyData['label-en_US'])) {
-                $family->setLocale('en-US')->setLabel($familyData['label-en_US']);
-            }
-
-            $this->familyRepository->save($family);
-        }
     }
 }

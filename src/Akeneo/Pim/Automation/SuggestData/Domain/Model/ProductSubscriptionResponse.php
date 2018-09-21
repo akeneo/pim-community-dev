@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 /**
  * Represents a standard response from a subscription request
- * Holds a subscription id and optional suggested data
+ * Holds a subscription id and optional suggested data.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
@@ -31,9 +31,9 @@ final class ProductSubscriptionResponse
     private $suggestedData;
 
     /**
-     * @param int $productId
+     * @param int    $productId
      * @param string $subscriptionId
-     * @param array $suggestedData
+     * @param array  $suggestedData
      */
     public function __construct(int $productId, string $subscriptionId, array $suggestedData)
     {
@@ -70,7 +70,7 @@ final class ProductSubscriptionResponse
 
     /**
      * @param string $subscriptionId
-     * @param array $suggestedData
+     * @param array  $suggestedData
      */
     private function validate(string $subscriptionId, array $suggestedData): void
     {

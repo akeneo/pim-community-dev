@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exceptio
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 
 /**
- * Exception thrown when the user does not have enough credits to subscribe a product to PIM.ai
+ * Exception thrown when the user does not have enough credits to subscribe a product to PIM.ai.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */

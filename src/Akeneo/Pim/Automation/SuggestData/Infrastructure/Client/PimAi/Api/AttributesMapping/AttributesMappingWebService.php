@@ -34,7 +34,7 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
 
     /**
      * @param UriGenerator $uriGenerator
-     * @param Client $httpClient
+     * @param Client       $httpClient
      */
     public function __construct(UriGenerator $uriGenerator, Client $httpClient)
     {
@@ -59,10 +59,10 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
 
             $attributes = [];
             $responseContent = $response->getBody()->getContents();
-            /**
+            /*
              * TODO: should be removed later. see APAI-302
              */
-            if (! empty($responseContent)) {
+            if (!empty($responseContent)) {
                 $attributes = json_decode($responseContent, true);
             }
 

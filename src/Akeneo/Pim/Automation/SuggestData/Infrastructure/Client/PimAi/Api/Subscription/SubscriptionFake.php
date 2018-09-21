@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\Inva
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\SubscriptionCollection;
 
 /**
- * Fake implementation for PIM.ai subscription
+ * Fake implementation for PIM.ai subscription.
  */
 final class SubscriptionFake implements SubscriptionApiInterface
 {
@@ -58,7 +58,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
             new SubscriptionCollection(
                 json_decode(
                     file_get_contents(
-                        sprintf(__DIR__ . '/../resources/%s', $filename)
+                        sprintf(__DIR__.'/../resources/%s', $filename)
                     ),
                     true
                 )
@@ -86,7 +86,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
             new SubscriptionCollection(
                 json_decode(
                     file_get_contents(
-                        sprintf(__DIR__ . '/../resources/%s', $filename)
+                        sprintf(__DIR__.'/../resources/%s', $filename)
                     ),
                     true
                 )
@@ -112,7 +112,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
-     * Fakes an expired token
+     * Fakes an expired token.
      */
     public function expireToken(): void
     {
@@ -120,7 +120,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     }
 
     /**
-     * Fakes an empty credit
+     * Fakes an empty credit.
      */
     public function disableCredit(): void
     {
@@ -129,7 +129,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
 
     /**
      * Fakes a last fetch date
-     * Could be a date or "yesterday" or "today"
+     * Could be a date or "yesterday" or "today".
      *
      * @param string $lastFetchDate
      */

@@ -21,19 +21,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Symfony command that allows to launch data pulling to PIM.ai
- * It can be used automatically with a CRON but also manually from a specific date (TODO: APAI-170)
+ * It can be used automatically with a CRON but also manually from a specific date (TODO: APAI-170).
  *
  * @author    Romain Monceau <romain@akeneo.com>
  */
 class FetchProductsCommand extends ContainerAwareCommand
 {
     /** @var string */
-    const NAME = 'pimee:suggest-data:fetch-products';
+    public const NAME = 'pimee:suggest-data:fetch-products';
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(self::NAME);
     }
@@ -41,7 +41,7 @@ class FetchProductsCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $command = new AppFetchProductsCommand();
         $this->getFetchProductsHandler()->handle($command);

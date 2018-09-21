@@ -41,10 +41,10 @@ final class ProposalUpsert implements ProposalUpsertInterface
     private $eventDispatcher;
 
     /**
-     * @param ObjectUpdaterInterface $productUpdater
+     * @param ObjectUpdaterInterface                $productUpdater
      * @param EntityWithValuesDraftBuilderInterface $draftBuilder
-     * @param SaverInterface $draftSaver
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param SaverInterface                        $draftSaver
+     * @param EventDispatcherInterface              $eventDispatcher
      */
     public function __construct(
         ObjectUpdaterInterface $productUpdater,

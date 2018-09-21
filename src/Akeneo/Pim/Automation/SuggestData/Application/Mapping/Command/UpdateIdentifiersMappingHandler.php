@@ -83,9 +83,9 @@ class UpdateIdentifiersMappingHandler
     /**
      * @param array $identifiers
      *
-     * @return array
-     *
      * @throws InvalidMappingException If attribute does not exist
+     *
+     * @return array
      */
     private function replaceAttributeCodesByAttributes(array $identifiers): array
     {

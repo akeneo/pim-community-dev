@@ -23,12 +23,12 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributesMappingNormalizerSpec extends ObjectBehavior
 {
-    public function it_is_an_attributes_mapping_normalizer()
+    public function it_is_an_attributes_mapping_normalizer(): void
     {
         $this->shouldBeAnInstanceOf(AttributesMappingNormalizer::class);
     }
 
-    public function it_normalizes_attributes_mapping()
+    public function it_normalizes_attributes_mapping(): void
     {
         $attributesMapping = new AttributesMappingResponse();
         $attributesMapping->addAttribute(new AttributeMapping('product_weight', 'Product Weight', null, AttributeMapping::ATTRIBUTE_PENDING, 'metric'));
@@ -37,7 +37,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             'product_weight' => [
                 'pim_ai_attribute' => [
                     'label' => 'Product Weight',
-                    'type' => 'metric'
+                    'type' => 'metric',
                 ],
                 'attribute' => null,
                 'status' => AttributeMapping::ATTRIBUTE_PENDING,

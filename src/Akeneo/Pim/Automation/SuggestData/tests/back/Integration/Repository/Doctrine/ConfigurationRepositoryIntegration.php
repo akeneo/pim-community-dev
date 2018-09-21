@@ -22,7 +22,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 class ConfigurationRepositoryIntegration extends TestCase
 {
-    public function test_it_saves_a_suggest_data_configuration()
+    public function test_it_saves_a_suggest_data_configuration(): void
     {
         $configuration = new Configuration(['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
@@ -41,7 +41,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         ]], $retrievedConfiguration);
     }
 
-    public function test_it_updates_a_suggest_data_configuration()
+    public function test_it_updates_a_suggest_data_configuration(): void
     {
         $configuration = new Configuration(['token' => 'a_first_token']);
         $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
@@ -64,7 +64,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         ]], $retrievedConfiguration);
     }
 
-    public function test_it_finds_a_suggest_data_configuration()
+    public function test_it_finds_a_suggest_data_configuration(): void
     {
         $configuration = new Configuration(['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 

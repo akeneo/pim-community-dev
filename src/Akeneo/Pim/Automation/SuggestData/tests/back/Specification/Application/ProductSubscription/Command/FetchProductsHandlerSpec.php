@@ -24,7 +24,7 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         DataProviderFactory $dataProviderFactory,
         ProductSubscriptionRepositoryInterface $subscriptionRepository,
         PimAI $dataProvider
-    ) {
+    ): void {
         $this->beConstructedWith(
             $dataProviderFactory,
             $subscriptionRepository
@@ -32,7 +32,7 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         $dataProviderFactory->create()->willReturn($dataProvider);
     }
 
-    public function it_is_a_fetch_products_handler()
+    public function it_is_a_fetch_products_handler(): void
     {
         $this->shouldHaveType(FetchProductsHandler::class);
     }
@@ -42,7 +42,7 @@ class FetchProductsHandlerSpec extends ObjectBehavior
         $subscriptionRepository,
         FetchProductsCommand $command,
         ProductSubscription $subscription
-    ) {
+    ): void {
         $subscriptionResponse1 = new ProductSubscriptionResponse(42, 'subscription-id', ['foo' => 'bar']);
         $subscriptionsResponse = new ProductSubscriptionsResponse([$subscriptionResponse1]);
 

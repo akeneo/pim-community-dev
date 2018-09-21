@@ -38,7 +38,7 @@ class InitPimAiUserSubscriber implements EventSubscriberInterface
      *
      * @throws \Exception
      */
-    public function initUser(InstallerEvent $event)
+    public function initUser(InstallerEvent $event): void
     {
         $commandExecutor = $event->getCommandExecutor();
         $commandExecutor->runCommand(

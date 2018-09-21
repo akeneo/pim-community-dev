@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Model;
 
 /**
- * It structures data that comes from PIM.ai and that allows to create proposals
+ * It structures data that comes from PIM.ai and that allows to create proposals.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

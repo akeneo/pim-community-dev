@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -43,11 +44,9 @@ interface DataProviderInterface
     public function fetch(): ProductSubscriptionsResponse;
 
     /**
-     * Updates the identifiers mapping
+     * Updates the identifiers mapping.
      *
      * @param IdentifiersMapping $identifiersMapping
-     *
-     * @return void
      */
     public function updateIdentifiersMapping(IdentifiersMapping $identifiersMapping): void;
 

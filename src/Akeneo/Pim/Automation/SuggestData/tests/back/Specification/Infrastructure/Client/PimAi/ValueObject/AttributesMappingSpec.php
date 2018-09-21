@@ -21,17 +21,17 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributesMappingSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith([]);
     }
 
-    public function it_is_an_attributes_mapping()
+    public function it_is_an_attributes_mapping(): void
     {
         $this->shouldHaveType(AttributesMapping::class);
     }
 
-    public function it_is_traversable()
+    public function it_is_traversable(): void
     {
         $this->shouldHaveType(\Traversable::class);
 

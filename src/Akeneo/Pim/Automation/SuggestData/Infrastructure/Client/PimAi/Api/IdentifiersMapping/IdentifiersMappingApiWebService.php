@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 
 /**
- * API Web Service to manage identifiers mapping
+ * API Web Service to manage identifiers mapping.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */

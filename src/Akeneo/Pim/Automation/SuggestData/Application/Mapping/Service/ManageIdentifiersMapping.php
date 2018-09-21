@@ -32,7 +32,7 @@ class ManageIdentifiersMapping
     private $identifiersMappingRepository;
 
     /**
-     * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
+     * @param UpdateIdentifiersMappingHandler       $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
     public function __construct(

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Application\ProductSubscription\Command;
 
 /**
- * This is a DTO holding the id of a product which is being unsubscribed
+ * This is a DTO holding the id of a product which is being unsubscribed.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

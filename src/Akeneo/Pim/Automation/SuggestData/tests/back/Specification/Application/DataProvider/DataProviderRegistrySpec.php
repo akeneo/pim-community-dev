@@ -19,17 +19,17 @@ use PhpSpec\ObjectBehavior;
 
 class DataProviderRegistrySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(DataProviderRegistry::class);
     }
 
-    public function it_registers_a_data_provider(DataProviderInterface $inMemoryAdapter)
+    public function it_registers_a_data_provider(DataProviderInterface $inMemoryAdapter): void
     {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
     }
 
-    public function it_returns_defined_adapter(DataProviderInterface $inMemoryAdapter)
+    public function it_returns_defined_adapter(DataProviderInterface $inMemoryAdapter): void
     {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
         $this->getDataProvider('in_memory')->shouldReturn($inMemoryAdapter);
@@ -38,7 +38,7 @@ class DataProviderRegistrySpec extends ObjectBehavior
     public function it_returns_the_right_data_provider(
         DataProviderInterface $inMemoryAdapter,
         DataProviderInterface $pimAiAdapter
-    ) {
+    ): void {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
         $this->addDataProvider('pim_ai', $pimAiAdapter)->shouldReturn(null);
         $this->getDataProvider('in_memory')->shouldReturn($inMemoryAdapter);
@@ -47,7 +47,7 @@ class DataProviderRegistrySpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_the_data_provider_is_not_registered(
         DataProviderInterface $inMemoryAdapter
-    ) {
+    ): void {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
         $this
             ->shouldThrow(new \Exception('Data provider "unexisting_data_provider" not found'))

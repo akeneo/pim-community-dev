@@ -21,14 +21,14 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 interface IdentifiersMappingRepositoryInterface
 {
     /**
-     * Save the identifiers mapping
+     * Save the identifiers mapping.
      *
      * @param IdentifiersMapping $identifiersMapping
      */
     public function save(IdentifiersMapping $identifiersMapping): void;
 
     /**
-     * Return the identifiers mapping
+     * Return the identifiers mapping.
      *
      * @return IdentifiersMapping
      */

@@ -21,7 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
  */
 class ProductSubscriptionsResponseSpec
 {
-    public function it_is_a_product_subscriptions_response()
+    public function it_is_a_product_subscriptions_response(): void
     {
         $this->beConstructedWith([]);
         $this->shouldHaveType(ProductSubscriptionsResponse::class);
@@ -30,7 +30,7 @@ class ProductSubscriptionsResponseSpec
     public function it_contains_a_product_subscription_response_collection(
         ProductSubscriptionResponse $response1,
         ProductSubscriptionResponse $response2
-    ) {
+    ): void {
         $this->beConstructedWith([$response1, $response2]);
 
         $response1->getSubscriptionId()->willReturn('sub-1');
