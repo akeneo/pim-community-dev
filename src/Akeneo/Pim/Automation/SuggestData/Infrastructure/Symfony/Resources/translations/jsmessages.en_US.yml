@@ -18,14 +18,14 @@ akeneo_suggest_data:
                     fail: 'Identifiers mapping not saved due to an error.'
             fields:
                 identifier_label:
-                    label: Identifier Label
+                    label: Franklin label
                     values:
                         brand: Brand
                         asin: ASIN
                         mpn: MPN
                         upc: UPC
                 catalog_attribute: Catalog attribute
-                suggest_data: Suggest data
+                suggest_data: Franklin Identifier Status
                 status:
                     active: Active
                     inactive: Inactive
@@ -62,7 +62,7 @@ akeneo_suggest_data:
             subscription_status_title: 'Franklin Subscription'
 
     connection:
-        page_title: 'Franklin Insights connection'
+        page_title: 'Franklin Insights Connection'
         flash:
             success: Franklin Insights activation code saved successfully.
             invalid: Sorry, invalid activation code. Please try again with a valid one.
@@ -72,7 +72,7 @@ akeneo_suggest_data:
                 sub_title: 'Welcome to the <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
-                    second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
+                    second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
             activation:
                 label: 'Franklin connector'
                 activation_code: 'Activation code'
@@ -81,13 +81,13 @@ akeneo_suggest_data:
                 activate: 'Activate'
 
     settings:
-        page_title: 'Franklin Insights settings'
+        page_title: 'Franklin Insights Settings'
         module:
             title:
                 sub_title: 'Meet Franklin, your <span class="AknDescriptionHeader-title--highlight">Product Information AI assistant</span>!'
                 description:
                     first_step: 'In order to help you enrich your catalog, Franklin will need to know your catalog identifiers that match his.'
-                    second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#">Read more</a>'
+                    second_step: 'While mapping your identifiers, please keep in mind that the Brand and the MPN go together. <a href="#" class="AknDescriptionHeader-link">Read more</a>'
             inactive_connection:
                 title: Sorry, nothing to show here yet
                 sub_title: Please activate your account on System > PIM.ai connection an comme back.
