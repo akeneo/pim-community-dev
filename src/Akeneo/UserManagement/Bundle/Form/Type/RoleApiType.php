@@ -5,7 +5,7 @@ namespace Akeneo\UserManagement\Bundle\Form\Type;
 use Akeneo\UserManagement\Bundle\Form\Subscriber\PatchSubscriber;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
-use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -915,3 +915,32 @@
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobTrackerRepository` to `Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobTrackerRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\CountImpactedProducts\ItemsCounter` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountImpactedProducts\ItemsCounter`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ClientRepository` to `Oro\Bundle\PimDataGridBundle\Repository\ClientRepository`
+- Remove `Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler`
+- Remove `Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface`
+- Move `Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler` to `Akeneo\Pim\Enrichment\Bundle\Form\Handler\GroupHandler`
+- Move `Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber` to `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\BindAssociationTargetsSubscriber`
+- Move `Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber` to `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber`
+- Move `Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber` to `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleValueSubscriber`
+- Move `Pim\Bundle\EnrichBundle\Form\Subscriber\FixArrayToStringListener` to `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FixArrayToStringListener`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\CategoryType` to `Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\GroupType` to `Akeneo\Pim\Enrichment\Bundle\Form\Type\GroupType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType` to `Akeneo\Pim\Enrichment\Bundle\Form\Type\SelectFamilyType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AssociationTypeType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AvailableAttributesType`
+- Move `Pim\Bundle\EnrichBundle\Form\Exception\FormException` to `Akeneo\Platform\Bundle\UIBundle\Form\Exception\FormException`
+- Move `Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory` to `Akeneo\Platform\Bundle\UIBundle\Form\Factory\IdentifiableModelTransformerFactory`
+- Move `Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber` to `Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\AddTranslatableFieldSubscriber`
+- Move `Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber` to `Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber`
+- Move `Pim\Bundle\EnrichBundle\Form\DataTransformer\ArrayToStringTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\ArrayToStringTransformer`
+- Move `Pim\Bundle\EnrichBundle\Form\DataTransformer\EntitiesToIdsTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntitiesToIdsTransformer`
+- Move `Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdTransformer`
+- Move `Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdentifierTransformer`
+- Move `Pim\Bundle\EnrichBundle\Form\DataTransformer\IdentifiableModelTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\IdentifiableModelTransformer`
+- Move `Pim\Bundle\EnrichBundle\Form\DataTransformer\StringToBooleanTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\StringToBooleanTransformer`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\LocalizedCollectionType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\MediaType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\MediaType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\ObjectIdentifierType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\UploadType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\UploadType`

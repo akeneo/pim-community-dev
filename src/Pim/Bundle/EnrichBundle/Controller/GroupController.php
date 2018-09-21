@@ -3,11 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\GroupFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Akeneo\Pim\Enrichment\Bundle\Form\Handler\GroupHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +38,7 @@ class GroupController
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
-    /** @var HandlerInterface */
+    /** @var GroupHandler */
     protected $groupHandler;
 
     /** @var FormInterface */
@@ -53,7 +52,7 @@ class GroupController
      * @param EngineInterface              $templating
      * @param RouterInterface              $router
      * @param GroupTypeRepositoryInterface $groupTypeRepository
-     * @param HandlerInterface             $groupHandler
+     * @param GroupHandler             $groupHandler
      * @param FormInterface                $groupForm
      * @param GroupFactory                 $groupFactory
      */
@@ -62,7 +61,7 @@ class GroupController
         EngineInterface $templating,
         RouterInterface $router,
         GroupTypeRepositoryInterface $groupTypeRepository,
-        HandlerInterface $groupHandler,
+        GroupHandler $groupHandler,
         FormInterface $groupForm,
         GroupFactory $groupFactory
     ) {

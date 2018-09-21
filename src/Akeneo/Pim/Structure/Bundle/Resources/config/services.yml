@@ -44,3 +44,20 @@ services:
             - '%pim_catalog.entity.attribute_option.class%'
         tags:
             - { name: form.type, alias: pim_enrich_attribute_option }
+
+    pim_enrich.form.type.association_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AssociationTypeType'
+        arguments:
+            - '%pim_catalog.entity.association_type.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_associationtype }
+
+    pim_enrich.form.type.available_attributes:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AvailableAttributesType'
+        arguments:
+            - '@pim_enrich.repository.attribute'
+            - '@translator'
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_enrich.entity.available_attributes.class%'
+        tags:
+            - { name: form.type, alias: pim_available_attributes }

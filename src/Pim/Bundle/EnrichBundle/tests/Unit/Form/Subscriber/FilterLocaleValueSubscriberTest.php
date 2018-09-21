@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\tests\Unit\Form\Subscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PHPUnit\Framework\TestCase;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleValueSubscriber;
 
 /**
  * Test related class

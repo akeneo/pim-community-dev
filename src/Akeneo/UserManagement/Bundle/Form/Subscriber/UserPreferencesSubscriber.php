@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

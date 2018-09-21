@@ -208,12 +208,3 @@ services:
     ### UI
     pim_enrich.controller.association_type:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController'
-        arguments:
-            - '@request_stack'
-            - '@router'
-            - '@translator'
-            - '@pim_catalog.repository.association'
-            - '@pim_enrich.form.handler.association_type'
-            - '@pim_enrich.form.association_type'
-            - '@pim_catalog.remover.association_type'
-            - '@pim_catalog.repository.association_type'
