@@ -34,7 +34,7 @@ class AuthenticationWebService implements AuthenticationApiInterface
     }
 
     /**
-     * {inheritdoc}.
+     * {@inheritdoc}
      */
     public function authenticate(?string $token): bool
     {

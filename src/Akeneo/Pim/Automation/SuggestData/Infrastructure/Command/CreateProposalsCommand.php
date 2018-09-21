@@ -41,7 +41,7 @@ class CreateProposalsCommand extends Command
     }
 
     /**
-     * {@inheritdoc.
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
