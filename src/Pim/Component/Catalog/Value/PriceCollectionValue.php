@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Value;
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for "pim_catalog_price_collection" attribute type
@@ -15,7 +16,7 @@ use Pim\Component\Catalog\Model\PriceCollectionInterface;
  */
 class PriceCollectionValue extends AbstractValue implements PriceCollectionValueInterface
 {
-    /** @var PriceCollectionInterface */
+    /** @var PriceCollectionInterface|null */
     protected $data;
 
     /**
@@ -88,5 +89,47 @@ class PriceCollectionValue extends AbstractValue implements PriceCollectionValue
         }
 
         return implode(', ', $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof PriceCollectionValueInterface ||
+            $value->getLocale() !== $this->getLocale() ||
+            $value->getScope() !== $this->getScope()) {
+            return false;
+        }
+
+        $comparedPriceCollection = $value->getData();
+        $thisPriceCollection = $this->getData();
+
+        if (null === $thisPriceCollection && null === $comparedPriceCollection) {
+            return true;
+        }
+        if (null === $thisPriceCollection || null === $comparedPriceCollection) {
+            return false;
+        }
+        if ($comparedPriceCollection->count() !== $thisPriceCollection->count()) {
+            return false;
+        }
+
+        foreach ($comparedPriceCollection as $comparedPrice) {
+            $samePriceFound = false;
+            foreach ($thisPriceCollection as $thisPrice) {
+                if ($thisPrice->isEqual($comparedPrice)) {
+                    $samePriceFound = true;
+
+                    break;
+                }
+            }
+
+            if (!$samePriceFound) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

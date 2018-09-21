@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Value;
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for "pim_catalog_multiselect" attribute type
@@ -80,5 +81,41 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
         }
 
         return implode(', ', $optionValues);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof OptionsValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $comparedAttributeOptions = $value->getData();
+        $thisAttributeOptions = $this->getData();
+
+        if (count($comparedAttributeOptions) !== count($thisAttributeOptions)) {
+            return false;
+        }
+
+        foreach ($comparedAttributeOptions as $comparedAttributeOption) {
+            $hasEqual = false;
+            foreach ($thisAttributeOptions as $thisAttributeOption) {
+                if ($thisAttributeOption->getCode() === $comparedAttributeOption->getCode()) {
+                    $hasEqual = true;
+
+                    break;
+                }
+            }
+
+            if (!$hasEqual) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

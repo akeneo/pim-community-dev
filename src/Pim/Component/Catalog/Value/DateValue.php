@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product value for "pim_catalog_date" attribute types
@@ -46,5 +47,30 @@ class DateValue extends AbstractValue implements DateValueInterface
     public function __toString()
     {
         return null !== $this->data ? $this->data->format('Y-m-d') : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof DateValueInterface ||
+            $this->getScope() !== $value->getScope() ||
+            $this->getLocale() !== $value->getLocale()) {
+            return false;
+        }
+
+        $thisDate = $this->getData();
+        $comparedDate = $value->getData();
+
+        if (null === $thisDate && null === $comparedDate) {
+            return true;
+        }
+        if (null === $thisDate || null === $comparedDate) {
+            return false;
+        }
+
+        return $thisDate->getTimestamp() === $comparedDate->getTimestamp() &&
+            $thisDate->getTimezone()->getName() === $comparedDate->getTimezone()->getName();
     }
 }

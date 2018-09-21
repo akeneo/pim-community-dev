@@ -3,6 +3,10 @@
 ## Bug fixes
 
 - PIM-7653: Fix product export builder when completeness should export products complete on at least one locale
+- PIM-7650: Fix Values comparison. Allows to save a variant product with a metric as variant axe.
+  - Please, for this fix, if you implemented `Pim\Component\Catalog\Model\AbstractValue` in specific code be warned that
+    the `isEqual(ValueInterface $value)` method does not work due to a bug. Please, implement it in your own code for
+    your specific business.
 
 # 2.3.8 (2018-09-14)
 

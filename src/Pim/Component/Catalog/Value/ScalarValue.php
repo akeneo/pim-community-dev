@@ -20,7 +20,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  */
 class ScalarValue extends AbstractValue implements ValueInterface
 {
-    /** @var string */
+    /** @var mixed */
     protected $data;
 
     /**
@@ -52,5 +52,19 @@ class ScalarValue extends AbstractValue implements ValueInterface
     public function __toString()
     {
         return (string) $this->data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value)
+    {
+        if (!$value instanceof ScalarValue) {
+            return false;
+        }
+
+        return $this->getScope() === $value->getScope() &&
+            $this->getLocale() === $value->getLocale() &&
+            $value->getData() === $this->getData();
     }
 }
