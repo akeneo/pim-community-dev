@@ -1,73 +1,12 @@
 parameters:
     pim_enrich.controller.category_tree.class:                Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
-    pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
-    pim_enrich.controller.product_model.class:                Pim\Bundle\EnrichBundle\Controller\ProductModelController
-    pim_enrich.controller.group.class:                        Pim\Bundle\EnrichBundle\Controller\GroupController
-    pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
+    pim_enrich.controller.product_model.class:
+    pim_enrich.controller.file.class:                         Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
-    pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
 
 services:
 
-    pim_enrich.controller.product:
-        class: '%pim_enrich.controller.product.class%'
-        arguments:
-            - '@translator'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.values_filler.product'
-            - '%pim_catalog.entity.category.class%'
-            - '@oro_security.security_facade'
-            - 'pim_enrich_product_categories_view'
-            - '@@PimEnrich/Product/listCategories.json.twig'
-
-    pim_enrich.controller.product_model:
-        class: '%pim_enrich.controller.product_model.class%'
-        arguments:
-            - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.values_filler.entity_with_family_variant'
-            - '@pim_catalog.repository.category'
-            - '@oro_security.security_facade'
-            - '%pim_catalog.entity.category.class%'
-            - 'pim_enrich_product_model_categories_view'
-            - '@@PimEnrich/ProductModel/listCategories.json.twig'
-
-    pim_enrich.controller.group:
-        class: '%pim_enrich.controller.group.class%'
-        arguments:
-            - '@request_stack'
-            - '@templating'
-            - '@router'
-            - '@pim_catalog.repository.group_type'
-            - '@pim_enrich.form.handler.group'
-            - '@pim_enrich.form.group'
-            - '@pim_catalog.factory.group'
-
-    pim_enrich.controller.file:
-        class: '%pim_enrich.controller.file.class%'
-        arguments:
-            - '@liip_imagine.controller'
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo_file_storage.repository.file_info'
-            - '@pim_enrich.guesser.file_type'
-            - '@pim_enrich.provider.default_image'
-            - ['catalogStorage']
-
-    pim_enrich.controller.job_tracker:
-        class: '%pim_enrich.controller.job_tracker.class%'
-        arguments:
-            - '@templating'
-            - '@translator'
-            - '@event_dispatcher'
-            - '@pim_enrich.repository.job_execution'
-            - '@pim_connector.event_listener.archivist'
-            - '@pim_standard_format_serializer'
-            - '@akeneo_batch_queue.manager.job_execution_manager'
-            - '@oro_security.security_facade'
-            - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
 
     pim_enrich.controller.rest.measures:
         class: '%pim_enrich.controller.rest.measures.class%'

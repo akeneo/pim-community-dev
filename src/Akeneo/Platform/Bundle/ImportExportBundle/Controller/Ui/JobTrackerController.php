@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;

@@ -41,10 +41,18 @@ mass_edit_rest:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/mass_edit.yml'
     prefix: /rest/mass_edit
 
-media:
-    resource: '@PimEnrichBundle/Resources/config/routing/media.yml'
+media_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/media.yml'
     prefix: /media
 
 categorytree_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/categorytree.yml'
     prefix: /enrich/product-category-tree
+
+media_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/media.yml'
+    prefix: /media
+
+product_model_ui:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/product_model.yml'
+    prefix: /enrich/product-model

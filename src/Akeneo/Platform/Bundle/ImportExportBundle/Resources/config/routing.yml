@@ -21,3 +21,7 @@ job_instance_internal_api:
 job_execution_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/job_execution.yml'
     prefix: /job-execution
+
+job_tracker:
+    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
+    prefix: /job

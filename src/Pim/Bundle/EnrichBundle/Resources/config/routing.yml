@@ -6,10 +6,6 @@ product:
     resource: '@PimEnrichBundle/Resources/config/routing/product.yml'
     prefix: /enrich/product
 
-product_model:
-    resource: '@PimEnrichBundle/Resources/config/routing/product_model.yml'
-    prefix: /enrich/product-model
-
 mass_edit_action:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit_action.yml'
     prefix: /enrich/mass-edit-action
@@ -21,10 +17,6 @@ group:
 grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
-
-job_tracker:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
-    prefix: /job
 
 api_connection:
     resource: '@PimEnrichBundle/Resources/config/routing/api_connection.yml'

@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProductControllerSpec extends ObjectBehavior
+class ProductPdfControllerSpec extends ObjectBehavior
 {
     function let(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
