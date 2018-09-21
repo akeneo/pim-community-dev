@@ -434,4 +434,17 @@
       height: ~"calc(100% + 1px)";
     }
   }
+
+  &--stretched &-bodyCell {
+    padding-top: 26px;
+    padding-bottom: 26px;
+  }
+
+  &-bodyRow--success &-bodyCell {
+    background: lighten(@AknGreen, 40%);
+  }
+
+  &-bodyRow--success:hover &-bodyCell {
+    background: lighten(@AknGreen, 38%);
+  }
 }
