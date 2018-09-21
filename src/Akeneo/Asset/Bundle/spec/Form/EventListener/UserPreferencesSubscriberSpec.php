@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Asset\Bundle\Form\EventListener;
 
-use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
+use Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\Asset\Bundle\Form\EventListener\UserPreferencesSubscriber;
 use PhpSpec\ObjectBehavior;

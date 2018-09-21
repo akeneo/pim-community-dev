@@ -23,7 +23,7 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
 
     function it_is_a_form()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType');
+        $this->shouldHaveType('Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType');
     }
 
     function it_has_options(
