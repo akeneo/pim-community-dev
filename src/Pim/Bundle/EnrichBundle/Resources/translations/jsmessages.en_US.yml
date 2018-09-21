@@ -310,7 +310,7 @@ pim_enrich.entity.channel:
             success: Channel successfully removed
             fail: Cannot delete this channel
     page_title:
-        index: "]Inf, 1]{{ count }} channel|]1, Inf[{{ count }} channels"
+        index: "]-Inf, 1]{{ count }} channel|]1, Inf[{{ count }} channels"
     property:
         category_tree: Category tree
         do_not_convert: Do not convert
@@ -413,7 +413,7 @@ pim_enrich.entity.association_type:
             success: Association type successfully removed
             fail: Cannot delete this association type
     page_title:
-        index: "]Inf, 1]{{ count }} association type|]1, Inf[{{ count }} association types"
+        index: "]-Inf, 1]{{ count }} association type|]1, Inf[{{ count }} association types"
     module:
         create:
             button: Create association type
@@ -433,7 +433,7 @@ pim_enrich.entity.group_type:
             success: Group type successfully removed
             fail: Cannot delete this group type
     page_title:
-        index: "]Inf, 1]{{ count }} group type|]1, Inf[{{ count }} group types"
+        index: "]-Inf, 1]{{ count }} group type|]1, Inf[{{ count }} group types"
     module:
         create:
             button: Create group type
@@ -453,7 +453,7 @@ pim_enrich.entity.group:
             success: Group successfully removed
             fail: Cannot delete this group
     page_title:
-        index: "]Inf, 1]{{ count }} group|]1, Inf[{{ count }} groups"
+        index: "]-Inf, 1]{{ count }} group|]1, Inf[{{ count }} groups"
     module:
         create:
             button: Create group
@@ -472,7 +472,7 @@ pim_enrich.entity.attribute:
             success: Attribute successfully removed
             fail: Cannot delete this attribute
     page_title:
-        index: "]Inf, 1]{{ count }} attribute|]1, Inf[{{ count }} attributes"
+        index: "]-Inf, 1]{{ count }} attribute|]1, Inf[{{ count }} attributes"
     property:
         allowed_extensions: Allowed extensions
         auto_option_sorting: Sort automatically options by alphabetical order
@@ -571,14 +571,14 @@ pim_enrich.entity.api_connection:
             success: API connection successfully revoked
             fail: Cannot revoke this API connection
     page_title:
-        index: "]Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
+        index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
 
 pim_enrich.entity.locale:
     label: locale
     uppercase_label: Locale
     plural_label: Locales
     page_title:
-        index: "]Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
+        index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
 
 pim_enrich.entity.category:
     label: category
@@ -588,11 +588,11 @@ pim_enrich.entity.category:
 pim_enrich.entity.currency:
     plural_label: Currencies
     page_title:
-        index: "]Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
+        index: "]-Inf, 1]{{ count }} currency|]1, Inf[{{ count }} currencies"
 
 pim_enrich.entity.job_execution:
     page_title:
-        index: "]Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
+        index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
     module:
         create:
             upload: Drop your {{ type }} file here, or click to browse disk
