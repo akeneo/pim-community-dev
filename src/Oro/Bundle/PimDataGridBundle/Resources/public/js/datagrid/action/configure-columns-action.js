@@ -59,6 +59,10 @@ define(
 
             target: '.AknGridToolbar .actions-panel',
 
+            route: null,
+
+            paginatedSearch: false,
+
             template: _.template(template),
 
             configuratorTemplate: _.template(
@@ -68,7 +72,10 @@ define(
             /**
              * @inheritdoc
              */
-            initialize: function () {
+            initialize: function (options) {
+                this.route = options.config.route;
+                this.paginatedSearch = options.config.paginatedSearch;
+
                 mediator.once('grid_load:start', this.setupOptions.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -92,6 +99,10 @@ define(
                 }
                 if (_.has(options, 'icon')) {
                     this.icon = options.icon;
+                }
+
+                if (_.has(options, 'route')) {
+                    this.route = options.route;
                 }
 
                 this.gridName = gridContainer.name;
@@ -129,8 +140,11 @@ define(
              * @param  {jQueryEvent} e
              */
             execute: function(e) {
+                const route = this.route || 'pim_datagrid_view_list_available_columns'
+                const paginatedSearch = this.paginatedSearch
+
                 e.preventDefault();
-                var url = Routing.generate('pim_datagrid_view_list_available_columns', {
+                var url = Routing.generate(route, {
                     alias: this.gridName,
                     dataLocale: this.locale
                 });
@@ -157,6 +171,7 @@ define(
                     });
 
                     var columnList = new ColumnList();
+
                     _.each(columns, function(column) {
                         var displayedCode = _.findWhere(displayedCodes, {code: column.code});
                         if (!_.isUndefined(displayedCode)) {
@@ -167,7 +182,7 @@ define(
                         columnList.add(column);
                     });
 
-                    var columnListView = new ColumnListView({collection: columnList});
+                    var columnListView = new ColumnListView({collection: columnList, route, paginatedSearch});
 
                     var modal = new Backbone.BootstrapModal({
                         className: 'modal modal--fullPage modal--topButton column-configurator-modal',
