@@ -122,8 +122,8 @@ config:
         oro/datafilter/select2-rest-choice-filter:  pimdatagrid/js/datafilter/filter/select2-rest-choice-filter
         oro/datafilter/product_and_product_model_completeness-filter: pimdatagrid/js/datafilter/filter/product_completeness-filter
 
-        oro/datafilter/filters-column:              pimdatagrid/js/datafilter/filters-column.ts
-        oro/datafilter/filters-selector:            pimdatagrid/js/datafilter/filters-selector.ts
+        oro/datafilter/filters-column:              pimdatagrid/js/datafilter/filters-column
+        oro/datafilter/filters-selector:            pimdatagrid/js/datafilter/filters-selector
 
         oro/datafilter/filters-list:                pimdatagrid/js/datafilter/filters-list
         oro/datafilter/filters-button:              pimdatagrid/js/datafilter/filters-button
