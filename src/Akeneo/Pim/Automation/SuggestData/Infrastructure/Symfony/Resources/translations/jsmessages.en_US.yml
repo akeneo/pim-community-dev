@@ -5,7 +5,7 @@ pim_title:
 
 pim_menu:
     item:
-        pim_ai: PIM.ai
+        pim_ai: Franklin Insights
 
 akeneo_suggest_data:
     entity:
@@ -18,7 +18,7 @@ akeneo_suggest_data:
                     fail: 'Identifiers mapping not saved due to an error.'
             fields:
                 identifier_label:
-                    label: Franklin label
+                    label: Franklin identifier
                     values:
                         brand: Brand
                         asin: ASIN
@@ -75,7 +75,7 @@ akeneo_suggest_data:
                     first_step: 'The first step in the connection of the assistant is to configure the API token.'
                     second_step: 'The next step in the connection process is to match your <a href="#" class="AknDescriptionHeader-link">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
             activation:
-                label: 'Franklin connector'
+                label: 'Franklin Connector'
                 activation_code: 'Activation code'
                 paste_activation_code: 'Paste Activation Code'
                 activated: 'Activated'
