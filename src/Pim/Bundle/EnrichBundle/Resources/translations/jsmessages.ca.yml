@@ -785,7 +785,7 @@ pim_enrich:
           help: Seleccionar els productes d'exportació per la seva integritat.
           operators:
             ALL: Cap condició sobre integritat
-            ">=": Completar almenys a una configuració regional seleccionada
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completar almenys a una configuració regional seleccionada
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completar a totes les configuracions regionals seleccionades
             LOWER THAN ON ALL LOCALES: No completar a totes les configuracions regionals seleccionades
           empty_selection: Seleccioneu una família

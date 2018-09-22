@@ -697,7 +697,7 @@ pim_enrich:
           help: Selecteer de producten om te exporteren volgens hun volledigheid.
           operators:
             ALL: Geen voorwaarde op volledigheid
-            ">=": Vervolledig op z'n minst één gekozen landinstelling
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Vervolledig op z'n minst één gekozen landinstelling
             "GREATER OR EQUALS THAN ON ALL LOCALES": Voltooi op alle geselecteerde landinstellingen
             LOWER THAN ON ALL LOCALES: Niet volledig op alle geselecteerde landinstellingen
           empty_selection: Selecteer een familie
