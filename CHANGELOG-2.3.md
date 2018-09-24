@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7662: Fix migration script to index only the proposed product drafts
+
 # 2.3.9 (2018-09-25)
 
 ## Bug fixes
