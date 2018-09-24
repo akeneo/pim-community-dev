@@ -678,7 +678,6 @@
 - Move namespace `Pim\Bundle\VersioningBundle` to `Akeneo\Tool\Bundle\VersioningBundle`
 - Remove `Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle`
 - Remove `Pim\Bundle\PdfGeneratorBundle\DependencyInjection\PimPdfGeneratorExtension`
-- Move `Pim\Bundle\PdfGeneratorBundle\Controller\ProductController` to `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController`
 - Move `Pim\Bundle\PdfGeneratorBundle\DependencyInjection\Compiler\RegisterRendererPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterRendererPass`
 - Move `Pim\Bundle\PdfGeneratorBundle\Builder\DompdfBuilder` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder`
 - Move `Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface` to `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\PdfBuilderInterface`
@@ -970,7 +969,7 @@
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\MediaController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MediaController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCategoryController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCommentController`
-- Move `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController`
+- Move `Pim\Bundle\PdfGeneratorBundle\Controller\ProductController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\SequentialEditController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\SequentialEditController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ValuesController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ValuesController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\VersioningController`
