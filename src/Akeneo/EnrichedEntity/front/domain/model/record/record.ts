@@ -6,21 +6,19 @@ import Identifier, {NormalizedRecordIdentifier} from 'akeneoenrichedentity/domai
 import ValueCollection from 'akeneoenrichedentity/domain/model/record/value-collection';
 import {NormalizedValue, NormalizedMinimalValue} from 'akeneoenrichedentity/domain/model/record/value';
 
-export interface NormalizedRecord {
+interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
   enriched_entity_identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
+}
+
+export interface NormalizedRecord extends CommonNormalizedRecord {
   values: NormalizedValue[];
 }
 
-export interface NormalizedMinimalRecord {
-  identifier: NormalizedRecordIdentifier;
-  enriched_entity_identifier: string;
-  code: string;
-  labels: NormalizedLabelCollection;
-  image: NormalizedFile;
+export interface NormalizedMinimalRecord extends CommonNormalizedRecord {
   values: NormalizedMinimalValue[];
 }
 

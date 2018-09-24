@@ -73,7 +73,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 name="label"
                 id="pim_enriched_entity.record.enrich.label"
                 className="AknTextField AknTextField--withBottomBorder"
-                value={record.getLabel(this.props.context.locale, true)}
+                value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}
                 ref={(input: HTMLInputElement) => {
@@ -100,12 +100,14 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 export default connect(
   (state: EditState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channel =
+      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
 
     return {
       form: state.form,
       context: {
         locale,
-        channel: 'ecommerce',
+        channel,
       },
     };
   },

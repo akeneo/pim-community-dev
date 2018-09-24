@@ -1,15 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 import {EditorState, ContentState, convertToRaw} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import * as draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
-type RichTextEditorProps = {value: string, onChange: (value: string) => void};
+type RichTextEditorProps = {value: string; onChange: (value: string) => void};
 type RichTextEditorState = {editorState?: any};
 
 const draftToRaw = (editorState: any) => {
-  return draftToHtml(convertToRaw(editorState.getCurrentContent()))
-}
+  return draftToHtml(convertToRaw(editorState.getCurrentContent()));
+};
 
 const rawToEditorState = (value: string) => {
   const contentBlock = htmlToDraft(value);
@@ -17,11 +17,11 @@ const rawToEditorState = (value: string) => {
     const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
     const editorState = EditorState.createWithContent(contentState);
 
-    return {editorState}
+    return {editorState};
   }
 
-  return {}
-}
+  return {};
+};
 
 export default class RichTextEditor extends React.Component<RichTextEditorProps, RichTextEditorState> {
   constructor(props: RichTextEditorProps) {
@@ -45,7 +45,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const { editorState } = this.state;
+    const {editorState} = this.state;
     return (
       <React.Fragment>
         <Editor

@@ -14,9 +14,11 @@ import EditState from 'akeneoenrichedentity/application/component/app/edit-state
 const securityContext = require('pim/security-context');
 import File from 'akeneoenrichedentity/domain/model/file';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
-import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoenrichedentity/domain/event/user';
 import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
+import ChannelSwitcher from 'akeneoenrichedentity/application/component/app/channel-switcher';
 import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
+import Channel from 'akeneoenrichedentity/domain/model/channel';
 
 interface StateProps {
   sidebar: {
@@ -28,6 +30,7 @@ interface StateProps {
   };
   context: {
     locale: string;
+    channel: string;
   };
   acls: {
     create: boolean;
@@ -36,6 +39,7 @@ interface StateProps {
   record: NormalizedRecord;
   structure: {
     locales: Locale[];
+    channels: Channel[];
   };
 }
 
@@ -43,6 +47,7 @@ interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onLocaleChanged: (locale: Locale) => void;
+    onChannelChanged: (channel: Channel) => void;
     onImageUpdated: (image: File) => void;
     onDelete: (record: Record) => void;
   };
@@ -53,13 +58,15 @@ interface EditProps extends StateProps, DispatchProps {}
 class RecordEditView extends React.Component<EditProps> {
   public props: EditProps;
 
-  private onClickDelete = (record: Record) => {
+  private onClickDelete = () => {
     if (confirm(__('pim_enriched_entity.record.module.delete.confirm'))) {
+      const record = denormalizeRecord(this.props.record);
+
       this.props.events.onDelete(record);
     }
   };
 
-  private getSecondaryActions = (record: Record, canDelete: boolean): JSX.Element | JSX.Element[] | null => {
+  private getSecondaryActions = (canDelete: boolean): JSX.Element | JSX.Element[] | null => {
     if (canDelete) {
       return (
         <div className="AknSecondaryActions AknDropdown AknButtonList-item">
@@ -67,7 +74,7 @@ class RecordEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={() => this.onClickDelete(record)}>
+              <button className="AknDropdown-menuLink" onClick={() => this.onClickDelete()}>
                 {__('pim_enriched_entity.record.module.delete.button')}
               </button>
             </div>
@@ -139,7 +146,7 @@ class RecordEditView extends React.Component<EditProps> {
                           />
                         </div>
                         <div className="AknButtonList">
-                          {this.getSecondaryActions(record, this.props.acls.delete)}
+                          {this.getSecondaryActions(this.props.acls.delete)}
                           <div className="AknTitleContainer-rightButton">
                             <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
                               {__('pim_enriched_entity.record.button.save')}
@@ -160,6 +167,12 @@ class RecordEditView extends React.Component<EditProps> {
                           localeCode={this.props.context.locale}
                           locales={this.props.structure.locales}
                           onLocaleChange={this.props.events.onLocaleChanged}
+                        />
+                        <ChannelSwitcher
+                          channelCode={this.props.context.channel}
+                          channels={this.props.structure.channels}
+                          locale={this.props.context.locale}
+                          onChannelChange={this.props.events.onChannelChanged}
                         />
                       </div>
                     </div>
@@ -183,6 +196,8 @@ export default connect(
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channel =
+      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
 
     return {
       sidebar: {
@@ -194,10 +209,12 @@ export default connect(
       },
       context: {
         locale,
+        channel,
       },
       record: state.form.data,
       structure: {
         locales: state.structure.locales,
+        channels: state.structure.channels,
       },
       acls: {
         create: securityContext.isGranted('akeneo_enrichedentity_record_create'),
@@ -213,6 +230,9 @@ export default connect(
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
+        },
+        onChannelChanged: (channel: Channel) => {
+          dispatch(catalogChannelChanged(channel.code));
         },
         onImageUpdated: (image: File) => {
           dispatch(recordImageUpdated(image));

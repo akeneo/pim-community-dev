@@ -11,13 +11,6 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     }, nodeElement);
   };
 
-  const getIdentifier = async () => {
-    const identifier = await nodeElement.$('.AknTextField[name="code"]');
-    const identifierProperty = await identifier.getProperty('value');
-
-    return await identifierProperty.jsonValue();
-  };
-
   const getLabel = async () => {
     const label = await nodeElement.$('.AknTextField[name="label"]');
     const labelProperty = await label.getProperty('value');
@@ -34,7 +27,7 @@ const Enrich = async (nodeElement, createElementDecorator, page) => {
     await label.type(value);
   };
 
-  return {isLoaded, getIdentifier, getLabel, setLabel, getTabCode};
+  return {isLoaded, getLabel, setLabel, getTabCode};
 };
 
 module.exports = Enrich;

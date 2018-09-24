@@ -26,9 +26,7 @@ const ChannelItemView = ({
         if (' ' === event.key) onClick(element);
       }}
     >
-      <span className="label">
-        {element.label}
-      </span>
+      <span className="label">{element.label}</span>
     </div>
   );
 };
@@ -45,7 +43,9 @@ const ChannelButtonView = ({selectedElement, onClick}: {selectedElement: Dropdow
   >
     {__('Channel')}
     :&nbsp;
-    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}></span>
+    <span className="AknActionButton-highlight" data-identifier={selectedElement.identifier}>
+      {selectedElement.label}
+    </span>
     <span className="AknActionButton-caret" />
   </div>
 );
@@ -53,10 +53,12 @@ const ChannelButtonView = ({selectedElement, onClick}: {selectedElement: Dropdow
 const ChannelSwitcher = ({
   channelCode,
   channels,
+  locale,
   onChannelChange,
 }: {
   channelCode: string;
   channels: Channel[];
+  locale: string;
   onChannelChange: (channel: Channel) => void;
 }) => {
   return (
@@ -64,7 +66,7 @@ const ChannelSwitcher = ({
       elements={channels.map((channel: Channel) => {
         return {
           identifier: channel.code,
-          label: channel.getLabel('en_US'),
+          label: channel.getLabel(locale),
           original: channel,
         };
       })}
