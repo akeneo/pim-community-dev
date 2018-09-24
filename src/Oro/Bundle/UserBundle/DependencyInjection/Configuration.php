@@ -68,6 +68,15 @@ class Configuration implements ConfigurationInterface
                         ]
                     )
                 ->end()
+                ->arrayNode('login_form')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('action_route')
+                            ->defaultValue('oro_user_security_check')
+                            ->cannotBeEmpty()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $builder;

@@ -27,6 +27,7 @@ class SecurityController extends Controller
             'last_username' => $lastUsername,
             'csrf_token'    => $csrfToken,
             'error'         => $error,
+            'action_route'  => $this->getParameter('oro_user.login_form.action_route'),
         ];
     }
 
