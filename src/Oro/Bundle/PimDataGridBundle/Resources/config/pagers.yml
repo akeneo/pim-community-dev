@@ -17,3 +17,5 @@ services:
                 - 'association-product-model-grid'
                 - 'product-group-grid'
                 - 'association-product-picker-grid'
+                - 'published-product-grid'
+                - 'proposal-grid'
