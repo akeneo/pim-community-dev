@@ -962,3 +962,22 @@
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\FormExtensionProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider`
 - Move `Pim\Bundle\EnrichBundle\Provider\Form\StructureVersionProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface`
 - Remove `Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController` to `Akeneo\Channel\Bundle\Controller\InternalApi\CurrencyController`
+- Move `Pim\Bundle\EnrichBundle\Controller\CurrencyController` to `Akeneo\Channel\Bundle\Controller\UI\CurrencyController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\GroupController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\GroupController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MassEditController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\MediaController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\MediaController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCategoryController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCommentController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\SequentialEditController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\SequentialEditController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\ValuesController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ValuesController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController` to `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\VersioningController`
+- Move `Pim\Bundle\EnrichBundle\Controller\AbstractListCategoryController` to `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\AbstractListCategoryController`
+- Move `Pim\Bundle\EnrichBundle\Controller\FileController` to `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController`
+- Move `Pim\Bundle\EnrichBundle\Controller\ProductModelController` to `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to `Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi\JobInstanceController`
+- Move `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController` to `Akeneo\Platform\Bundle\UIBundle\Controller\InternalApi\FormExtensionController`
+
