@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\OroToPimGridFilterAdapter;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\Console\CommandLauncher;
@@ -18,7 +19,6 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

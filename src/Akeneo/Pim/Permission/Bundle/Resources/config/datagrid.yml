@@ -1,5 +1,4 @@
 parameters:
-    pimee_security.datagrid.configuration.product.filters_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
     pimee_security.datagrid.configuration.product.row_actions_configurator.class: Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator
     pim_datagrid.event_listener.configure_product_grid_listener.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureProductGridListener
     pimee_security.datagrid.event_listener.add_permissions_to_grid.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\AddPermissionsToGridListener
@@ -35,16 +34,6 @@ services:
             - '@request_stack'
             - '@pimee_security.repository.attribute_group_access'
 
-    pimee_security.datagrid.configuration.product.filters_configurator:
-        class: '%pimee_security.datagrid.configuration.product.filters_configurator.class%'
-        decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
-        decoration_inner_name: pim_datagrid.datagrid.configuration.product.filters_configurator.ce
-        arguments:
-            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
-            - '@request_stack'
-            - '@pimee_teamwork_assistant.repository.project'
-            - '@security.token_storage'
-
     pimee_security.datagrid.configuration.product.row_actions_configurator:
         class: '%pimee_security.datagrid.configuration.product.row_actions_configurator.class%'
         arguments:
@@ -53,6 +42,23 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.product_model'
+
+
+
+    pim_datagrid.extension.filter:
+        class: 'Akeneo\Pim\Permission\Bundle\Datagrid\Extension\Filter\FilterExtension'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
+            - '@pim_datagrid.datasource.adapter_resolver'
+            - '@pimee_enrich.repository.attribute'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@pim_user.context.user'
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@pimee_teamwork_assistant.repository.project'
+        public: false
+        tags:
+             - { name: oro_datagrid.extension }
 
     # EventListener
     pimee_security.datagrid.event_listener.inject_job_profile_access:
@@ -101,3 +107,16 @@ services:
             - '@pimee_security.repository.category_access'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
+
+    # Mass action
+    pim_datagrid.extension.mass_action.util.product_fields_builder:
+        class: 'Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.context.catalog'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@security.token_storage'

@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: レビューする提案はありません
   no_results:
     proposal: レビュー提案がありません。検索条件を変更してください。
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: 展開
+      collapse_text: 閉じる
 pimee_workflow:
   entity:
     published_product:

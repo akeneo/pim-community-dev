@@ -85,7 +85,6 @@ class AppKernel extends Kernel
             new Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
             new Akeneo\EnrichedEntity\Infrastructure\Symfony\AkeneoEnrichedEntityBundle(),
             new Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle(),
-            new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
             new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
             new Akeneo\Platform\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
             new Akeneo\Asset\Bundle\AkeneoAssetBundle(),

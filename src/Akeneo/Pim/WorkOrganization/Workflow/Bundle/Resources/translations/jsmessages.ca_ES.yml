@@ -11,6 +11,11 @@ pim_datagrid:
   no_results:
     proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
     product_draft: No hi ha cap projecte de producte per revisar. Intentar canviar els criteris de cerca.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Desplegar
+      collapse_text: Replegar
 pimee_workflow:
   entity:
     published_product:

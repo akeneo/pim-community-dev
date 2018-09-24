@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Prophecy\Argument;

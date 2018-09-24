@@ -13,6 +13,12 @@ pim_datagrid:
         proposal: There is no proposal to review. Try to change your search criteria.
         product_draft: There is no product draft to review. Try to change your search criteria.
 
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Expand
+      collapse_text: Collapse
+
 pimee_workflow:
     entity:
         published_product:

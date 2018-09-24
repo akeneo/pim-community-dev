@@ -9,6 +9,11 @@ pim_datagrid:
     proposal: Non ci sono proposte da revisionare.
   no_results:
     proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: Espandi
+      collapse_text: Comprimi
 pimee_workflow:
   entity:
     published_product:
