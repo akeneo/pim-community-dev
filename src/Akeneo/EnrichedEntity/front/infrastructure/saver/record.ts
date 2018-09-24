@@ -15,7 +15,6 @@ export class RecordSaverImplementation implements RecordSaver {
 
   async save(record: Record): Promise<ValidationError[] | null> {
     const normalizedRecord = record.normalize() as any;
-    normalizedRecord.enriched_entity_identifier = normalizedRecord.enrichedEntityIdentifier;
 
     return await postJSON(
       routing.generate('akeneo_enriched_entities_record_edit_rest', {
@@ -28,7 +27,6 @@ export class RecordSaverImplementation implements RecordSaver {
 
   async create(record: Record): Promise<ValidationError[] | null> {
     const normalizedRecord = record.normalize() as any;
-    normalizedRecord.enriched_entity_identifier = normalizedRecord.enrichedEntityIdentifier;
 
     return await postJSON(
       routing.generate('akeneo_enriched_entities_record_create_rest', {

@@ -12,7 +12,7 @@ export const redirectToRecord = (record: Record) => {
 
 export const redirectToRecordIndex = (enrichedEntityIdentifier: EnrichedEntityIdentifier) => {
   return redirectToRoute('akeneo_enriched_entities_enriched_entity_edit', {
-    enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+    identifier: enrichedEntityIdentifier.stringValue(),
     tab: 'record',
   });
 };

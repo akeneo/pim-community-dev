@@ -75,7 +75,7 @@ describe('akeneo > record > domain > model --- record', () => {
   test('I can create the record from normalized', () => {
     expect(
       denormalizeRecord({
-        identifier: 'didier',
+        identifier: 'designer_didier_1',
         code: 'didier',
         labels: {},
         image: null,

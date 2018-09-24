@@ -26,7 +26,7 @@ use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class InMemoryRecordRepository implements RecordRepositoryInterface
 {
-    /** @var array */
+    /** @var Record[] */
     protected $records = [];
 
     public function create(Record $record): void
@@ -68,13 +68,7 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
 
     public function count(): int
     {
-        $recordCount = 0;
-
-        foreach ($this->records as $enrichedEntity) {
-            $recordCount += count($enrichedEntity);
-        }
-
-        return $recordCount;
+        return count($this->records);
     }
 
     public function hasRecord(RecordIdentifier $identifier)

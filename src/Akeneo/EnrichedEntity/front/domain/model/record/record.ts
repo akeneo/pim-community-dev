@@ -72,7 +72,7 @@ class RecordImplementation implements Record {
 
   public static createFromNormalized(normalizedRecord: NormalizedRecord): Record {
     const identifier = createIdentifier(normalizedRecord.identifier);
-    const code = createCode(normalizedRecord.identifier);
+    const code = createCode(normalizedRecord.code);
     const enrichedEntityIdentifier = createEnrichedEntityIdentifier(normalizedRecord.enriched_entity_identifier);
     const labelCollection = createLabelCollection(normalizedRecord.labels);
     const image = denormalizeFile(normalizedRecord.image);
