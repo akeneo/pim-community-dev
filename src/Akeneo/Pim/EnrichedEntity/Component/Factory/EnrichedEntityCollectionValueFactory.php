@@ -15,6 +15,7 @@ namespace Akeneo\Pim\EnrichedEntity\Component\Factory;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
 use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
@@ -27,7 +28,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 /**
  * Factory that creates enriched entity product values.
  *
- * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
  * @author    Julien Sanchez (julien@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -119,19 +120,10 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
             $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
             $recordCode = RecordCode::fromString($code);
 
-            $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
-
-            if (null === $record) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $attribute->getCode(),
-                    'record code',
-                    sprintf(
-                        'The code of the enriched entity "%s" does not exist',
-                        (string) $enrichedEntityIdentifier
-                    ),
-                    static::class,
-                    (string) $recordCode
-                );
+            try {
+                $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+            } catch (RecordNotFoundException $e) {
+                continue;
             }
 
             if (!in_array($record, $collection, true)) {
