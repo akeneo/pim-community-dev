@@ -11,7 +11,7 @@ Feature: Assign assets to a product
       | shirt | tees   |
     And I generate missing variations
 
-  @critical @info Test both add and removal of assets in asset collection
+  @critical @info Test both add and removal of assets in asset collection, but only adding is critical
   Scenario: Succesfully assign assets to a product
     Given I am logged in as "Julia"
     And I am on the "shirt" product page
