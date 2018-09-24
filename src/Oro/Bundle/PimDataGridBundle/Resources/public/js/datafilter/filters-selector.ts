@@ -63,15 +63,13 @@ class FiltersColumn extends BaseView {
 
   disableFilter(filter: any) {
       mediator.trigger('filters-selector:disable-filter', filter)
-      this.updateDatagridStateWithFilters()
+      this.modules[filter.name].enabled = false
   }
 
   renderFilters(filters: any, datagridCollection: any) {
     this.datagridCollection = datagridCollection
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
-
-    console.log('renderFilters', state, filters)
 
     filters.forEach((filter: any) => {
       const filterModule =  this.getFilterModule(filter)
@@ -118,7 +116,12 @@ class FiltersColumn extends BaseView {
       const filterState = state[filterName]
 
       if (filterState) {
-        filterModule.setValue(state[filterName])
+        try {
+          filterModule.enabled = true
+          filterModule.setValue(state[filterName])
+        } catch (e) {
+          console.error('cant restore filter state for', filterName)
+        }
       }
     })
 
@@ -132,7 +135,7 @@ class FiltersColumn extends BaseView {
       const filter = this.modules[filterName]
       const shortName = `__${filterName}`
 
-      if (filter.enabled || this.datagridCollection.state.filters[filterName]) {
+      if (filter.enabled) {
           if (!filter.isEmpty()) {
               filterState[filterName] = filter.getValue();
           } else if (!filter.defaultEnabled) {
@@ -159,7 +162,7 @@ class FiltersColumn extends BaseView {
     const currentStateIsEmpty = _.isEmpty(currentState)
 
     console.log('is the state equal ? ', currentState, updatedState, _.isEqual(currentState, updatedState))
-    console.log('should we update?', (stateHasChanged || currentStateIsEmpty) && false === this.silent);
+    console.log('should we update?', (stateHasChanged || currentStateIsEmpty) && false === this.silent, 'silent?', this.silent);
 
     if ((stateHasChanged || currentStateIsEmpty) && false === this.silent) {
       this.datagridCollection.state.filters = filterState;
