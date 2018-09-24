@@ -42,6 +42,8 @@ $rules = [
         'Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker', // TODO: it should be moved somewhere we could centralize old symfony form or remove it
         'Sensio\Bundle\FrameworkExtraBundle', // TODO:Some old Oro controllers use Template annotation
         'Symfony\Bundle\FrameworkBundle', // TODO:Some old Oro controllers extend the symfony controller
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType', // TODO: you should not use form type anymore
+        'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType', // TODO: you should not use form type anymore
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 
