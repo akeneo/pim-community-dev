@@ -5,6 +5,7 @@ import {
   recordEditionErrorOccured,
   recordEditionSucceeded,
   recordEditionValueUpdated,
+  recordEditionUpdated,
 } from 'akeneoenrichedentity/domain/event/record/edit';
 import {
   notifyRecordWellSaved,
@@ -70,14 +71,17 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
   }
 };
 
-export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any) => {
+export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
   dispatch(recordEditionLabelUpdated(value, locale));
+  dispatch(recordEditionUpdated(getState().form.data));
 };
 
-export const recordImageUpdated = (image: File) => (dispatch: any) => {
+export const recordImageUpdated = (image: File) => (dispatch: any, getState: any) => {
   dispatch(recordEditionImageUpdated(image));
+  dispatch(recordEditionUpdated(getState().form.data));
 };
 
-export const recordValueUpdated = (value: Value) => (dispatch: any) => {
+export const recordValueUpdated = (value: Value) => (dispatch: any, getState: any) => {
   dispatch(recordEditionValueUpdated(value));
+  dispatch(recordEditionUpdated(getState().form.data));
 };

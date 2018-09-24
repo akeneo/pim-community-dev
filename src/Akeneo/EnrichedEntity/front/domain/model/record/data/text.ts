@@ -27,6 +27,10 @@ class TextData extends Data {
     return 0 === this.textData.length;
   }
 
+  public equals(data: Data): boolean {
+    return data instanceof TextData && this.textData === data.textData;
+  }
+
   public stringValue(): string {
     return this.textData;
   }

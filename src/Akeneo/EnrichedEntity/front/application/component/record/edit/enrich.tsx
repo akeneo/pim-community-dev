@@ -56,8 +56,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 
     return (
       <div className="AknSubsection">
-        <div className="AknFormContainer AknFormContainer--withPadding">
-          <div className="AknFieldContainer" data-code="label">
+        <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
+          <div className="AknFieldContainer AknFieldContainer--narrow" data-code="label">
             <div className="AknFieldContainer-header">
               <label
                 title="{__('pim_enriched_entity.record.enrich.label')}"

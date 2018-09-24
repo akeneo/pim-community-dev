@@ -50,6 +50,10 @@ export default class File {
     return undefined === this.filePath || undefined === this.originalFilename;
   }
 
+  public equals(file: File): boolean {
+    return file instanceof File && file.filePath === this.filePath && file.originalFilename === this.originalFilename;
+  }
+
   public static createFromNormalized(normalizedFile: NormalizedFile): File {
     if (null === normalizedFile) {
       return File.createEmpty();

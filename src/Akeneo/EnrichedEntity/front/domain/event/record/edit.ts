@@ -8,7 +8,7 @@ export const recordEditionReceived = (record: Record) => {
 };
 
 export const recordEditionUpdated = (record: Record) => {
-  return {type: 'RECORD_EDITION_UPDATED', record: record.normalize()};
+  return {type: 'RECORD_EDITION_UPDATED', record};
 };
 
 export const recordEditionLabelUpdated = (label: string, locale: string) => {

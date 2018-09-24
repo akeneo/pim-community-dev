@@ -32,6 +32,10 @@ class FileData extends Data {
     return this.fileData.isEmpty();
   }
 
+  public equals(data: Data): boolean {
+    return data instanceof FileData && this.fileData.equals(data.fileData);
+  }
+
   public normalize(): NormalizedFileData {
     return this.fileData.normalize();
   }

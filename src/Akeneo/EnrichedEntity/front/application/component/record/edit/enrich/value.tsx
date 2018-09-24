@@ -21,17 +21,18 @@ export default (
 
   return visibleValues.map((value: Value) => {
     const DataView = getDataView(value);
+
     return (
       <div
         key={value.attribute.getIdentifier().stringValue()}
         className="AknFieldContainer"
-        data-code={value.attribute.getCode()}
+        data-code={value.attribute.getCode().stringValue()}
       >
         <div className="AknFieldContainer-header">
           <label
             title={value.attribute.getLabel(locale.stringValue())}
             className="AknFieldContainer-label"
-            htmlFor={`pim_enriched_entity.record.enrich.${value.attribute.getCode()}`}
+            htmlFor={`pim_enriched_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           >
             {value.attribute.getLabel(locale.stringValue())}
           </label>
@@ -39,7 +40,7 @@ export default (
         <div className="AknFieldContainer-inputContainer">
           <DataView value={value} onChange={onValueChange} />
         </div>
-        {getErrorsView(errors, `values.${value.attribute.getCode()}`)}
+        {getErrorsView(errors, `values.${value.attribute.getCode().stringValue()}`)}
       </div>
     );
   });

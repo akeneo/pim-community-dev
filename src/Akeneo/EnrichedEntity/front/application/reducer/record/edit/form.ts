@@ -55,7 +55,8 @@ const dataReducer = (
           if (
             currentValue.channel === value.channel &&
             currentValue.locale === value.locale &&
-            currentValue.attribute.identifier === value.attribute.identifier
+            currentValue.attribute.identifier === value.attribute.identifier &&
+            currentValue.data !== value.data
           ) {
             return value;
           }
