@@ -30,7 +30,7 @@ group_internal_api:
     prefix: /enrich/group
 
 sequential_edit_internal_api:
-    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit/rest.yml'
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/sequential_edit.yml'
     prefix: /rest/sequential_edit
 
 value_internal_api:
@@ -48,6 +48,10 @@ media_internal_api:
 categorytree_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/categorytree.yml'
     prefix: /enrich/product-category-tree
+
+media_internal_api:
+    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/media.yml'
+    prefix: /rest/media
 
 media_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/media.yml'

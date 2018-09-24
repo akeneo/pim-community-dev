@@ -26,7 +26,4 @@ measures:
     resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
     prefix: /configuration/measures
 
-media_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/media_rest.yml'
-    prefix: /rest/media
 

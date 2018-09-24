@@ -15,13 +15,13 @@ export_report:
     prefix: /spread/export_execution
 
 job_instance_internal_api:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_instance.yml'
+    resource: '@PimImportExportBundle/Resources/config/routing/internal_api/job_instance.yml'
     prefix: /job-instance
 
-job_execution_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_execution.yml'
+job_execution_internal_api:
+    resource: '@PimImportExportBundle/Resources/config/routing/internal_api/job_execution.yml'
     prefix: /job-execution
 
-job_tracker:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
+job_tracker_ui:
+    resource: '@PimImportExportBundle/Resources/config/routing/ui/job_tracker.yml'
     prefix: /job
