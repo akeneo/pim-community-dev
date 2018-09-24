@@ -32,15 +32,12 @@ class FiltersColumn extends BaseView {
 
   configure() {
     this.listenTo(mediator, 'filters-column:update-filters', this.renderFilters)
-    this.listenTo(mediator, 'filters-column:add-category-filter', (categoryFilter: any) => {
-      this.stopListening(categoryFilter, 'update')
-
-      this.listenTo(categoryFilter, 'update', (filter: any) => {
-        this.updateDatagridStateWithFilters( { category: filter })
-      })
-
+    this.listenTo(mediator, 'filters-column:update-filter', (categoryFilter: any, silent = false) => {
       this.categoryFilter = categoryFilter
-      // stop listening
+
+      if (false === silent) {
+        this.updateDatagridStateWithFilters()
+      }
     })
 
     return BaseView.prototype.configure.apply(this, arguments)
@@ -53,6 +50,11 @@ class FiltersColumn extends BaseView {
 
     if (!cachedFilter) {
       const filterModule = requireContext(`oro/datafilter/${filterType}-filter`)
+
+      if (!filterModule) {
+        throw Error(`No module found for the ${filter.name} filter`)
+      }
+
       return this.modules[filter.name] = new (filterModule.extend(filter))(filter);
     }
 
@@ -68,6 +70,8 @@ class FiltersColumn extends BaseView {
     this.datagridCollection = datagridCollection
     const list = document.createDocumentFragment();
     const state = datagridCollection.state.filters
+
+    console.log('renderFilters', state, filters)
 
     filters.forEach((filter: any) => {
       const filterModule =  this.getFilterModule(filter)
@@ -142,19 +146,13 @@ class FiltersColumn extends BaseView {
     return filterState
   }
 
-  updateDatagridStateWithFilters(categoryFilter: any = {}) {
-    let categoryFilterValue = {}
+  updateDatagridStateWithFilters() {
     let filterState = this.getState()
+    const categoryFilter = this.categoryFilter || {}
 
-    console.log('passed categoryFilter', categoryFilter)
+    filterState = Object.assign(filterState, {...categoryFilter })
 
-    if (_.isEmpty(categoryFilter) && this.categoryFilter) {
-      categoryFilterValue = { category: this.categoryFilter._getTreeState() }
-    }
-
-    filterState = Object.assign(filterState, {...categoryFilterValue }, categoryFilter)
-
-    const currentState = Object.assign(categoryFilterValue, this.datagridCollection.state.filters)
+    const currentState = Object.assign(categoryFilter, this.datagridCollection.state.filters)
     const updatedState = filterState
 
     const stateHasChanged = !_.isEqual(currentState, updatedState)
@@ -167,7 +165,7 @@ class FiltersColumn extends BaseView {
       this.datagridCollection.state.filters = filterState;
       this.datagridCollection.state.currentPage = 1;
       this.datagridCollection.fetch();
-      console.log('final state', this.datagridCollection.state.filters)
+      console.log('saved state', this.datagridCollection.state.filters)
     }
   }
 }
