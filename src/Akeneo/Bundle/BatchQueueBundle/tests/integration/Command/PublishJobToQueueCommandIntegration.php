@@ -51,7 +51,6 @@ class PublishJobToQueueCommandIntegration extends TestCase
 
         $jobExecutionMessage  =$this->getJobExecutionMessage();
 
-        $this->assertEquals(1, $jobExecutionMessage['id']);
         $this->assertNotNull($jobExecutionMessage['job_execution_id']);
         $this->assertEquals('{"env":"test"}', $jobExecutionMessage['options']);
         $this->assertNotNull($jobExecutionMessage['create_time']);
@@ -74,7 +73,7 @@ class PublishJobToQueueCommandIntegration extends TestCase
         $this->assertEquals('mary', $jobExecution['user']);
         $jobExecutionMessage  =$this->getJobExecutionMessage();
 
-        $this->assertEquals(1, $jobExecutionMessage['id']);
+        $this->assertNotNull($jobExecutionMessage['id']);
     }
 
     public function testPushJobExecutionWithConfigOverridden()
