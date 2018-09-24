@@ -166,7 +166,7 @@ class ProductAssetController extends Controller
         AssetFactory $assetFactory,
         FileInfoFactoryInterface $fileInfoFactory,
         UserContext $userContext,
-        \Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController $fileController,
+        FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
         CategoryRepositoryInterface $categoryRepository,
         CategoryManager $categoryManager

@@ -6,6 +6,22 @@ parameters:
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
 
 services:
+    # overriden to add security checks and use a smarter product saver which update draft or working copy
+    pim_enrich.controller.product:
+        class: '%pim_enrich.controller.product.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '%pim_catalog.entity.category.class%'
+            - '@oro_security.security_facade'
+            - 'pim_enrich_product_categories_view'
+            - '@@PimEnrich/Product/listCategories.json.twig'
+            - '@pim_catalog.manager.category'
+
     pim_enrich.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController'
         arguments:
