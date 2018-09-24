@@ -62,8 +62,9 @@ class FiltersColumn extends BaseView {
   }
 
   disableFilter(filter: any) {
-      mediator.trigger('filters-selector:disable-filter', filter)
-      this.modules[filter.name].enabled = false
+    mediator.trigger('filters-selector:disable-filter', filter)
+
+    this.updateDatagridStateWithFilters()
   }
 
   renderFilters(filters: any, datagridCollection: any) {
@@ -117,8 +118,8 @@ class FiltersColumn extends BaseView {
 
       if (filterState) {
         try {
-          filterModule.enabled = true
           filterModule.setValue(state[filterName])
+          filterModule.enabled = true
         } catch (e) {
           console.error('cant restore filter state for', filterName)
         }
@@ -151,7 +152,7 @@ class FiltersColumn extends BaseView {
 
   updateDatagridStateWithFilters() {
     let filterState = this.getState()
-    const categoryFilter = this.categoryFilter || {}
+    const categoryFilter = this.categoryFilter ? {...this.categoryFilter} : {}
 
     filterState = Object.assign(filterState, {...categoryFilter })
 
