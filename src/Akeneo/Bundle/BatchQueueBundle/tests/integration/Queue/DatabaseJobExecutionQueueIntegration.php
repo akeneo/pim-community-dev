@@ -23,7 +23,6 @@ class DatabaseJobExecutionQueueIntegration extends TestCase
         $stmt->execute();
         $row = $stmt->fetch();
 
-        $this->assertEquals(1, $row['id']);
         $this->assertEquals(1, $row['job_execution_id']);
         $this->assertEquals('{"email":"ziggy@akeneo.com"}', $row['options']);
         $this->assertNotNull($row['create_time']);
@@ -46,7 +45,6 @@ SQL;
         $stmt->execute();
 
         $jobExecutionMessage = $this->getQueue()->consume('consumer_name');
-        $this->assertEquals(1, $jobExecutionMessage->getId());
         $this->assertEquals(1, $jobExecutionMessage->getJobExecutionId());
         $this->assertEquals(['email' => 'ziggy_1@akeneo.com'], $jobExecutionMessage->getOptions());
         $this->assertNull($jobExecutionMessage->getUpdatedTime());
@@ -56,7 +54,6 @@ SQL;
         $stmt->execute();
         $row = $stmt->fetch();
 
-        $this->assertEquals(1, $row['id']);
         $this->assertEquals(1, $row['job_execution_id']);
         $this->assertEquals('{"email":"ziggy_1@akeneo.com"}', $row['options']);
         $this->assertEquals('2017-08-30 10:15:30', $row['create_time']);
@@ -80,7 +77,6 @@ SQL;
         $stmt->execute();
 
         $jobExecutionMessage = $this->getQueue()->consume('consumer_name');
-        $this->assertEquals(2, $jobExecutionMessage->getId());
         $this->assertEquals(2, $jobExecutionMessage->getJobExecutionId());
         $this->assertEquals(['email' => 'ziggy_2@akeneo.com'], $jobExecutionMessage->getOptions());
         $this->assertNull($jobExecutionMessage->getUpdatedTime());
@@ -90,7 +86,6 @@ SQL;
         $stmt->execute();
         $row = $stmt->fetch();
 
-        $this->assertEquals(2, $row['id']);
         $this->assertEquals(2, $row['job_execution_id']);
         $this->assertEquals('{"email":"ziggy_2@akeneo.com"}', $row['options']);
         $this->assertEquals('2017-08-30 10:10:30', $row['create_time']);
@@ -98,7 +93,7 @@ SQL;
         $this->assertNotNull($row['updated_time']);
 
         $jobExecutionMessage = $this->getQueue()->consume('consumer_name');
-        $this->assertEquals(1, $jobExecutionMessage->getId());
+        $this->assertEquals(1, $jobExecutionMessage->getJobExecutionId());
     }
 
     /**
