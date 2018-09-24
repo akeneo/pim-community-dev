@@ -9,6 +9,7 @@
   - Please, for this fix, if you implemented `Pim\Component\Catalog\Model\AbstractValue` in specific code be warned that
     the `isEqual(ValueInterface $value)` method does not work due to a bug. Please, implement it in your own code for
     your specific business.
+- PIM-7652: Fix concurrent edition with the parent of a product or a product model in the UI
 
 # 2.3.8 (2018-09-14)
 
