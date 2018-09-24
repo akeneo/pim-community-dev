@@ -67,16 +67,3 @@ services:
         tags:
             - { name: akeneo_enrichedentity.edit_attribute_command_factory, priority: 100 }
 
-    # Edit record value command factory
-    akeneo_enrichedentity.application.registry.edit_record_value_command_factory_registry:
-        class: Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommandFactoryRegistry
-
-    akeneo_enrichedentity.application.factory.edit_text_value_command_factory:
-        class: Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommandFactory
-        tags:
-            - { name: akeneo_enrichedentity.edit_record_value_command_factory }
-
-    akeneo_enrichedentity.application.factory.edit_file_value_command_factory:
-        class: Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommandFactory
-        tags:
-            - { name: akeneo_enrichedentity.edit_record_value_command_factory }

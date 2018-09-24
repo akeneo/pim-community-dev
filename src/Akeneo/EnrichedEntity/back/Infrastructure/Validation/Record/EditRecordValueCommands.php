@@ -20,4 +20,13 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditRecordValueCommands extends Constraint
 {
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
+
+    public function validatedBy()
+    {
+        return 'akeneo_enrichedentity.validator.record.edit_record_value_commands';
+    }
 }

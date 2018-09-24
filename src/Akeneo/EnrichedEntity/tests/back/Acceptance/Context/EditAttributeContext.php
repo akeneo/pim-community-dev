@@ -72,7 +72,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^the following text attributes:$/
+     * @Given /^the following text attributes?:$/
      */
     public function theFollowingTextAttributes(TableNode $attributesTable)
     {

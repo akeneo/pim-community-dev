@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Common\Fake;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -23,11 +24,116 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
  */
 class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(EnrichedEntityIdentifier $identifier): array
-    {
-        throw new NotImplementedException('__invoke');
+    /** @var InMemoryAttributeRepository */
+    private $attributeRepository;
+
+    public function __construct(InMemoryAttributeRepository $attributeRepository) {
+        $this->attributeRepository = $attributeRepository;
     }
+
+    /**
+     * @return AbstractAttributeDetails[]
+     */
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    {
+        $attributes = $this->attributeRepository->findByEnrichedEntity($enrichedEntityIdentifier);
+
+        return array_reduce($attributes, function ($stack, AbstractAttribute $current) {
+            $stack[(string) $current->getIdentifier()] = $current;
+
+            return $stack;
+        }, []);
+
+    }
+//    /** @var InMemoryAttributeRepository */
+//    private $attributeRepository;
+//
+//    /** @var InMemoryChannelRepository */
+//    private $channelRepository;
+//
+//    /** @var InMemoryLocaleRepository */
+//    private $localeRepository;
+//
+//    public function __construct(
+//        InMemoryAttributeRepository $attributeRepository,
+//        InMemoryChannelRepository $channelRepository,
+//        InMemoryLocaleRepository $localeRepository
+//    ) {
+//        $this->attributeRepository = $attributeRepository;
+//        $this->channelRepository = $channelRepository;
+//        $this->localeRepository = $localeRepository;
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+//    {
+//        $attributes = $this->attributeRepository->findByEnrichedEntity($enrichedEntityIdentifier);
+//
+//        return $this->generateValueKeys($attributes);
+//    }
+//
+//    /**
+//     * The array returned looks like this:
+//     * [
+//     *     'normalized_value_key' => Attribute object,
+//     * ]
+//     *
+//     * @param AbstractAttribute[] $attributes
+//     *
+//     * @return
+//     */
+//    private function generateValueKeys(array $attributes): array
+//    {
+//        $readModel = [];
+//        foreach ($attributes as $attribute) {
+//            $hasValuePerChannel = $attribute->hasValuePerChannel();
+//            $hasValuePerLocale = $attribute->hasValuePerLocale();
+//
+//            if ($hasValuePerChannel && $hasValuePerLocale) {
+//                /** @var Channel $channel */
+//                foreach ($this->channelRepository->findAll() as $channel) {
+//                    foreach ($channel->getLocaleCodes() as $localeCode) {
+//                        $valueKey = ValueKey::create(
+//                            $attribute->getIdentifier(),
+//                            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($channel->getCode())),
+//                            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($localeCode))
+//                        );
+//                        $readModel[(string) $valueKey] = $attribute;
+//                    }
+//                }
+//
+//                continue;
+//            }
+//
+//            if ($hasValuePerChannel) {
+//                /** @var Channel $channel */
+//                foreach ($this->channelRepository->findAll() as $channel) {
+//                    $valueKey = ValueKey::create(
+//                        $attribute->getIdentifier(),
+//                        ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($channel->getCode())),
+//                        LocaleReference::noReference()
+//                    );
+//                    $readModel[(string) $valueKey] = $attribute;
+//                }
+//
+//                continue;
+//            }
+//
+//            if ($hasValuePerLocale) {
+//                /** @var Channel $channel */
+//                foreach ($this->channelRepository->findAll() as $channel) {
+//                    $valueKey = ValueKey::create(
+//                        $attribute->getIdentifier(),
+//                        ChannelReference::noReference(),
+//                        LocaleReference::
+//                    );
+//                    $readModel[(string) $valueKey] = $attribute;
+//                }
+//            }
+//        }
+//
+//        return $readModel;
+//    }
 }

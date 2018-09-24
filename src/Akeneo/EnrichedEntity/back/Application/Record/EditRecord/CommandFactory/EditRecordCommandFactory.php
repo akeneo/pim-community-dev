@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -21,31 +21,23 @@ use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttrib
  */
 class EditRecordCommandFactory
 {
-    /** @var EditRecordValueCommandFactoryRegistryInterface  */
-    private $editRecordValueCommandFactoryRegistry;
-
-    /** @var SqlFindAttributesIndexedByIdentifier  */
+    /** @var FindAttributesIndexedByIdentifierInterface  */
     private $sqlFindAttributesIndexedByIdentifier;
 
-    public function __construct(
-        EditRecordValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
-        SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier
-    ) {
-        $this->editRecordValueCommandFactoryRegistry = $editRecordValueCommandFactoryRegistry;
-        $this->sqlFindAttributesIndexedByIdentifier = $sqlFindAttributesIndexedByIdentifier;
-    }
+    /** @var EditValueCommandFactoryRegistryInterface */
+    private $editValueCommandFactoryRegistry;
 
-    public function supports(array $normalizedCommand): bool
-    {
-        return array_key_exists('enriched_entity_identifier', $normalizedCommand)
-            && array_key_exists('code', $normalizedCommand)
-            && array_key_exists('labels', $normalizedCommand)
-            && array_key_exists('values', $normalizedCommand);
+    public function __construct(
+        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        FindAttributesIndexedByIdentifierInterface $sqlFindAttributesIndexedByIdentifier
+    ) {
+        $this->sqlFindAttributesIndexedByIdentifier = $sqlFindAttributesIndexedByIdentifier;
+        $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
     }
 
     public function create(array $normalizedCommand): EditRecordCommand
     {
-        if (!$this->supports($normalizedCommand)) {
+        if (!$this->isValid($normalizedCommand)) {
             throw new \RuntimeException('Impossible to create a command of record edition.');
         }
 
@@ -59,16 +51,26 @@ class EditRecordCommandFactory
         $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($enrichedEntityIdentifier);
 
         foreach ($normalizedCommand['values'] as $normalizedValue) {
-            if (!key_exists('attribute', $normalizedValue)) {
-                throw new \RuntimeException('Missing key "attribute" to create the edit record value command.');
+            if (!array_key_exists('attribute', $normalizedValue)) {
+                // Attribute might has been removed, we ignore the user input.
+                continue;
             }
 
             $attribute = $attributesIndexedByIdentifier[$normalizedValue['attribute']];
-            $editRecordValueCommandFactory = $this->editRecordValueCommandFactoryRegistry->getFactory($attribute);
-            $command->editRecordValueCommands[] = $editRecordValueCommandFactory->create($normalizedValue, $attribute);
+            $command->editRecordValueCommands[] = $this->editValueCommandFactoryRegistry
+                ->getFactory($attribute)
+                ->create($attribute, $normalizedValue);
         }
 
 
         return $command;
+    }
+
+    private function isValid(array $normalizedCommand): bool
+    {
+        return array_key_exists('enriched_entity_identifier', $normalizedCommand)
+            && array_key_exists('code', $normalizedCommand)
+            && array_key_exists('labels', $normalizedCommand)
+            && array_key_exists('values', $normalizedCommand);
     }
 }

@@ -32,14 +32,21 @@ class ValueCollection
 
     public function getValue(ValueKey $valueKey): ?Value
     {
-        return (key_exists($valueKey, $this->values)) ? $this->values[$valueKey] : null;
+        $key = (string) $valueKey;
+
+        return (array_key_exists($key, $this->values)) ? $this->values[$key] : null;
     }
 
     public function setValue(Value $newValue): ValueCollection
     {
         $values = $this->values;
         $key = $newValue->getValueKey()->__toString();
-        $values[$key] = $newValue;
+
+        if ($newValue->isEmpty()) {
+            unset($values[$key]);
+        } else {
+            $values[$key] = $newValue;
+        }
 
         return new self($values);
     }

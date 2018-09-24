@@ -28,9 +28,9 @@ class EditFileValueCommandFactorySpec extends ObjectBehavior
             'channel' => 'ecommerce',
             'locale'  => 'fr_FR',
             'data'    => [
-                'file_key'          => '/a/file/key',
-                'original_filename' => 'my_image.png',
-            ]
+                'filePath'         => '/a/file/path/my_image.png',
+                'originalFilename' => 'my_image.png',
+            ],
         ];
         $command = $this->create($normalizedValue, $imageAttribute);
 
@@ -38,9 +38,7 @@ class EditFileValueCommandFactorySpec extends ObjectBehavior
         $command->attribute->shouldBeEqualTo($imageAttribute);
         $command->channel->shouldBeEqualTo('ecommerce');
         $command->locale->shouldBeEqualTo('fr_FR');
-        $command->data->shouldBeEqualTo([
-            'file_key'          => '/a/file/key',
-            'original_filename' => 'my_image.png',
-        ]);
+        $command->filePath->shouldBeEqualTo('/a/file/path/my_image.png');
+        $command->originalFilename->shouldBeEqualTo('my_image.png');
     }
 }

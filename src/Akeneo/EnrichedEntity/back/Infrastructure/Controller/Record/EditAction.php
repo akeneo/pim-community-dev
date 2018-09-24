@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -39,14 +40,19 @@ class EditAction
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     public function __construct(
         EditRecordCommandFactory $editRecordCommandFactory,
         EditRecordHandler $editRecordHandler,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        NormalizerInterface $normalizer
     ) {
         $this->editRecordCommandFactory = $editRecordCommandFactory;
         $this->editRecordHandler = $editRecordHandler;
         $this->validator = $validator;
+        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request): Response
@@ -65,14 +71,7 @@ class EditAction
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
-            $errors = [];
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = [
-                    'message' => $violation->getMessage()
-                ];
-            }
-
-            return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editRecordHandler)($command);

@@ -5,9 +5,9 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 
-interface EditRecordValueCommandFactoryInterface
+interface EditValueCommandFactoryInterface
 {
     public function supports(AbstractAttribute $attribute): bool;
 
-    public function create(array $normalizedCommand, AbstractAttribute $attribute);
+    public function create(AbstractAttribute $attribute, $normalizedCommand);
 }

@@ -9,16 +9,16 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditRecordValueCommandFactoryRegistry implements EditRecordValueCommandFactoryRegistryInterface
+class EditValueCommandFactoryRegistry implements EditValueCommandFactoryRegistryInterface
 {
     private $commandFactories = [];
 
-    public function register(EditRecordValueCommandFactoryInterface $editRecordValueCommandFactory): void
+    public function register(EditValueCommandFactoryInterface $editDataCommandFactory): void
     {
-        $this->commandFactories[] = $editRecordValueCommandFactory;
+        $this->commandFactories[] = $editDataCommandFactory;
     }
 
-    public function getFactory(AbstractAttribute $attribute): EditRecordValueCommandFactoryInterface
+    public function getFactory(AbstractAttribute $attribute): EditValueCommandFactoryInterface
     {
         foreach ($this->commandFactories as $commandFactory) {
             if ($commandFactory->supports($attribute)) {

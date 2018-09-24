@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditTextValueCommand as EditTextValueCommandConstraint;
+use Akeneo\EnrichedEntity\Infrastructure\Validation\Record\TextValueCommand as EditTextValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validation;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditTextValueCommandValidator extends ConstraintValidator
+class TextValueCommandValidator extends ConstraintValidator
 {
     public function validate($command, Constraint $constraint)
     {
@@ -89,7 +89,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
             );
         }
 
-        $violations = $validator->validate($command->data, [
+        $violations = $validator->validate($command->text, [
             new Constraints\Length([
                 'min' => 0,
                 'max' => $attribute->getMaxLength()->normalize(),
@@ -97,7 +97,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
         ]);
 
         if ($attribute->isValidationRuleSetToRegularExpression()) {
-            $violations->addAll($validator->validate($command->data, [
+            $violations->addAll($validator->validate($command->text, [
                 new Constraints\Regex([
                     'pattern' => $attribute->getRegularExpression()->normalize(),
                 ]),
@@ -106,10 +106,13 @@ class EditTextValueCommandValidator extends ConstraintValidator
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                $this->context->addViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                );
+                $this->context->buildViolation($violation->getMessage())
+                    ->setParameters($violation->getParameters())
+                    ->atPath(sprintf('values.%s', (string) $attribute->getCode()))
+                    ->setCode($violation->getCode())
+                    ->setPlural($violation->getPlural())
+                    ->setInvalidValue($violation->getInvalidValue())
+                    ->addViolation();
             }
         }
     }

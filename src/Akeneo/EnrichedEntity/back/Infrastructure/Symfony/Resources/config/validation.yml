@@ -46,7 +46,6 @@ Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
     constraints:
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
 
-
 Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
     properties:
         code:
@@ -59,21 +58,17 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCom
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Image: ~
         editRecordValueCommands:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
+    constraints:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
+
+Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
+    constraints:
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\TextValueCommand: ~
 
 Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand:
     constraints:
+#        fileKey:
 
-Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
-    properties:
-        channel:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
-        locale:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
-        labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
-        editRecordValueCommands:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
-    constraints:
 
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:

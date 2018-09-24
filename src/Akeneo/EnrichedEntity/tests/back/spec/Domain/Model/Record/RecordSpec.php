@@ -13,17 +13,23 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
 use PhpSpec\ObjectBehavior;
 
 class RecordSpec extends ObjectBehavior
 {
-    public function let()
+     function let()
     {
         $identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
@@ -44,28 +50,26 @@ class RecordSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_is_initializable()
+     function it_is_initializable()
     {
         $this->shouldHaveType(Record::class);
     }
 
-    public function it_returns_its_identifier()
+     function it_returns_its_identifier()
     {
         $identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
 
         $this->getIdentifier()->shouldBeLike($identifier);
     }
 
-    public function it_returns_the_identifier_of_the_enriched_entity_it_belongs_to()
+     function it_returns_the_identifier_of_the_enriched_entity_it_belongs_to()
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
 
         $this->getEnrichedEntityIdentifier()->shouldBeLike($enrichedEntityIdentifier);
     }
 
-    // TODO Missing specs
-
-    public function it_is_comparable()
+     function it_is_comparable()
     {
         $sameIdentifier = RecordIdentifier::fromString('designer_starck_fingerprint');
         $sameRecord = Record::create(
@@ -89,4 +93,38 @@ class RecordSpec extends ObjectBehavior
         );
         $this->equals($anotherRecord)->shouldReturn(false);
     }
+    
+     function it_sets_a_value_to_the_value_collection()
+     {
+         $valueKey = ValueKey::create(
+             AttributeIdentifier::fromString('name'),
+             ChannelReference::noReference(),
+             LocaleReference::noReference()
+         );
+         $value = Value::create(
+             AttributeIdentifier::fromString('name'),
+             ChannelReference::noReference(),
+             LocaleReference::noReference(),
+             TextData::fromString('Philippe Stark')
+         );
+         $this->findValue($valueKey)->shouldBeNull();
+
+         $this->setValue($value);
+
+         $this->findValue($valueKey)->shouldBeEqualTo($value);
+     }
+
+     function it_normalizes_itself()
+     {
+         $this->normalize()->shouldReturn([
+             'identifier' => 'designer_starck_fingerprint',
+             'code' => 'starck',
+             'enrichedEntityIdentifier' => 'designer',
+             'labels'                   => [
+                 'en_US' => 'Stark',
+                 'fr_FR' => 'Stark',
+             ],
+             'values' => []
+         ]);
+     }
 }

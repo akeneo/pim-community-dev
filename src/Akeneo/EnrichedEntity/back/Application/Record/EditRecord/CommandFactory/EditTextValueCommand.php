@@ -18,4 +18,6 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
  */
 class EditTextValueCommand extends AbstractEditValueCommand
 {
+    /** @var string */
+    public $text;
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommandFactoryRegistry;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistry;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommandFactory;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\TextEditRecordCommandFactory;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -14,7 +14,7 @@ class EditRecordValueCommandFactoryRegistrySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditRecordValueCommandFactoryRegistry::class);
+        $this->shouldHaveType(EditValueCommandFactoryRegistry::class);
     }
 
     function it_registers_a_record_value_command_factory_and_return_it_if_it_supports(

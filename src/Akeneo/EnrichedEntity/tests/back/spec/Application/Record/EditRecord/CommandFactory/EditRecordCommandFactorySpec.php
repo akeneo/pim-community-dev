@@ -6,8 +6,8 @@ namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactor
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommandFactoryInterface;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordValueCommandFactoryRegistryInterface;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryInterface;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistryInterface;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
@@ -21,7 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier;
-use Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditTextValueCommand;
+use Akeneo\EnrichedEntity\Infrastructure\Validation\Record\TextValueCommand;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -32,7 +32,7 @@ use Prophecy\Argument;
 class EditRecordCommandFactorySpec extends ObjectBehavior
 {
     function let(
-        EditRecordValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
+        EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
         SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier
     ) {
         $this->beConstructedWith($editRecordValueCommandFactoryRegistry, $sqlFindAttributesIndexedByIdentifier);
@@ -60,14 +60,14 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ]
             ]
         ];
-        $this->supports($normalizedCommand)->shouldReturn(true);
-        $this->supports(['dummy' => 'wrong edits'])->shouldReturn(false);
+        $this->isValid($normalizedCommand)->shouldReturn(true);
+        $this->isValid(['dummy' => 'wrong edits'])->shouldReturn(false);
     }
 
     function it_creates_an_edit_record_command_by_recursively_calling_other_edit_record_value_factories(
         SqlFindAttributesIndexedByIdentifier $sqlFindAttributesIndexedByIdentifier,
-        EditRecordValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
-        EditRecordValueCommandFactoryInterface $textValueCommandFactory
+        EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry,
+        EditValueCommandFactoryInterface $textValueCommandFactory
     ) {
         $normalizedCommand = [
             'enriched_entity_identifier' => 'designer',
@@ -84,7 +84,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ]
             ]
         ];
-        $editDescriptionCommand = new EditTextValueCommand();
+        $editDescriptionCommand = new TextValueCommand();
         $descriptionAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'description', 'test'),
             EnrichedEntityIdentifier::fromString('designer'),
@@ -103,7 +103,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
         $editRecordValueCommandFactoryRegistry->getFactory($descriptionAttribute)->willReturn($textValueCommandFactory);
-        $textValueCommandFactory->create($normalizedCommand['values'][0], $descriptionAttribute)->willReturn($editDescriptionCommand);
+        $textValueCommandFactory->create($descriptionAttribute, $normalizedCommand['values'][0])->willReturn($editDescriptionCommand);
 
         $command = $this->create($normalizedCommand);
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);

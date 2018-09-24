@@ -92,7 +92,7 @@ class EditFileValueCommandValidator extends ConstraintValidator
         $violations = $validator->validate($command->data, new Constraints\Collection([
             // TODO: Our validation is only based on the file extension... maybe we should check for mimetypes.
             'originalFilename' => new Constraints\Regex([
-                'pattern' => sprintf('/^.*\.(%s)$/', implode('|', $attribute->getAllowedExtensions()->normalize()))
+                'pattern' => sprintf('/^.*\.(%s)$/', implode('|', $attribute->getAllowedExtensions()->normalize())),
             ]),
         ]));
 

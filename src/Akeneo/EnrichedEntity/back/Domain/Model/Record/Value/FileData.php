@@ -13,8 +13,8 @@ use Webmozart\Assert\Assert;
  */
 class FileData implements ValueDataInterface
 {
-    private const KEY = 'file_key';
-    private const ORIGINAL_FILENAME = 'original_filename';
+    private const KEY = 'filePath';
+    private const ORIGINAL_FILENAME = 'originalFilename';
 
     /** @var string */
     private $key;
@@ -54,12 +54,12 @@ class FileData implements ValueDataInterface
 
     public static function createFromNormalize($normalizedData): ValueDataInterface
     {
-        Assert::isArray($normalizedData, 'Normalized data should be an array');
+        Assert::isArray($normalizedData, 'Normalized file data should be an array');
         Assert::keyExists($normalizedData, self::KEY, sprintf(
-            'The key "%s" should be present in the normalized data', self::KEY
+            'The key "%s" should be present in the normalized file data', self::KEY
         ));
         Assert::keyExists($normalizedData, self::ORIGINAL_FILENAME, sprintf(
-            'The key "%s" should be present in the normalized data', self::ORIGINAL_FILENAME
+            'The key "%s" should be present in the normalized file data', self::ORIGINAL_FILENAME
         ));
 
         return new self($normalizedData[self::KEY], $normalizedData[self::ORIGINAL_FILENAME]);

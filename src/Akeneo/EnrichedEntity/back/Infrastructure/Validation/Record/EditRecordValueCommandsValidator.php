@@ -14,8 +14,10 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -34,21 +36,73 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
 
     public function validate($editRecordCommand, Constraint $constraint)
     {
+        $this->checkConstraintType($constraint);
+        $this->checkCommandType($editRecordCommand);
+        $editRecordValueCommands = $editRecordCommand->editRecordValueCommands;
+
+        if (!$this->isArray($editRecordValueCommands)) {
+            return;
+        }
+
+        if (empty($editRecordValueCommands)) {
+            $this->context->addViolation('There should be updates to perform on the record but none were found.');
+        }
+
+        foreach ($editRecordValueCommands as $editValueCommand) {
+            $violations = $this->validator->validate($editValueCommand);
+            foreach ($violations as $violation) {
+                $this->context->buildViolation($violation->getMessage())
+                    ->setParameters($violation->getParameters())
+                    ->atPath($violation->getPropertyPath())
+                    ->setCode($violation->getCode())
+                    ->setPlural($violation->getPlural())
+                    ->setInvalidValue($violation->getInvalidValue())
+                    ->addViolation();
+            }
+        }
+    }
+
+    private function isArray($editRecordValueCommands): bool
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($editRecordValueCommands, new Assert\Type('array'));
+        $hasViolations = $violations->count() > 0;
+
+        if ($hasViolations) {
+            foreach ($violations as $violation) {
+                $this->context->addViolation(
+                    $violation->getMessage(),
+                    $violation->getParameters()
+                );
+            }
+        }
+
+        return !$hasViolations;
+    }
+
+    /**
+     * @param Constraint $constraint
+     *
+     */
+    private function checkConstraintType(Constraint $constraint): void
+    {
         if (!$constraint instanceof EditRecordValueCommands) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
+    }
 
-        if (!$editRecordCommand instanceof EditRecordValueCommands) {
-            throw new \InvalidArgumentException(sprintf('Expected argument to be of class "%s", "%s" given',
-                EditRecordCommand::class, get_class($editRecordCommand)));
-        }
-
-        if (empty($editRecordCommand->editRecordValueCommands)) {
-            $this->context->addViolation('There should be updates to perform on the attribute. None found.');
-        }
-
-        foreach ($editRecordCommand->editRecordValueCommands as $editRecordValueCommand) {
-            $this->validator->validate($editRecordValueCommand);
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function checkCommandType($command)
+    {
+        if (!$command instanceof EditRecordCommand) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected argument to be of class "%s", "%s" given', EditTextValueCommand::class,
+                    get_class($command)
+                )
+            );
         }
     }
 }

@@ -29,7 +29,7 @@ export default class LabelCollection {
   }
 
   public hasLabel(locale: string): boolean {
-    return 'string' === typeof this.labels[locale];
+    return 'string' === typeof this.labels[locale] && this.labels[locale].length > 0;
   }
 
   public getLabel(locale: string): string {

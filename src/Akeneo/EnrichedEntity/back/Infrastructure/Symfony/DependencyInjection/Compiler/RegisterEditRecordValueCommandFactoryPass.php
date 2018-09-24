@@ -21,16 +21,16 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterEditRecordValueCommandFactoryPass implements CompilerPassInterface
 {
-    private const RECORD_VALUE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.edit_record_value_command_factory_registry';
-    private const RECORD_VALUE_FACTORY_TAG = 'akeneo_enrichedentity.edit_record_value_command_factory';
+    private const RECORD_VALUE_COMMAND_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.record.edit_record_value_command_factory_registry';
+    private const RECORD_VALUE_COMMAND_FACTORY_TAG = 'akeneo_enrichedentity.edit_record_value_command_factory';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container): void
     {
-        $registry = $container->getDefinition(self::RECORD_VALUE_FACTORY_REGISTRY);
-        $recordValueFactories = $container->findTaggedServiceIds(self::RECORD_VALUE_FACTORY_TAG);
+        $registry = $container->getDefinition(self::RECORD_VALUE_COMMAND_FACTORY_REGISTRY);
+        $recordValueFactories = $container->findTaggedServiceIds(self::RECORD_VALUE_COMMAND_FACTORY_TAG);
 
         foreach (array_keys($recordValueFactories) as $recordValueFactoryId) {
             $registry->addMethodCall('register', [new Reference($recordValueFactoryId)]);

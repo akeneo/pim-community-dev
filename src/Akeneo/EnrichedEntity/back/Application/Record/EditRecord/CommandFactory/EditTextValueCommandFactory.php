@@ -19,21 +19,21 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EditTextValueCommandFactory implements EditRecordValueCommandFactoryInterface
+class EditTextValueCommandFactory implements EditValueCommandFactoryInterface
 {
     public function supports(AbstractAttribute $abstractAttribute): bool
     {
         return $abstractAttribute instanceof TextAttribute;
     }
 
-    public function create(array $normalizedValue, AbstractAttribute $attribute): EditTextValueCommand
+    public function create(AbstractAttribute $attribute, $normalizedCommand)
     {
-        $editTextDataCommand = new EditTextValueCommand();
-        $editTextDataCommand->attribute = $attribute;
-        $editTextDataCommand->channel = $normalizedValue['channel'];
-        $editTextDataCommand->locale = $normalizedValue['locale'];
-        $editTextDataCommand->data = $normalizedValue['data'];
+        $command = new EditTextValueCommand();
+        $command->attribute = $attribute;
+        $command->channel = $normalizedCommand['channel'];
+        $command->locale = $normalizedCommand['locale'];
+        $command->text = $normalizedCommand['data'];
 
-        return $editTextDataCommand;
+        return $command;
     }
 }

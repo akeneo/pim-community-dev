@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 
 /**
@@ -26,9 +25,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 class EnrichedEntityDetails
 {
     public const IDENTIFIER = 'identifier';
-
     public const LABELS = 'labels';
-
     public const IMAGE = 'image';
 
     /** @var EnrichedEntityIdentifier */

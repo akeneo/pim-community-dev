@@ -19,14 +19,12 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\EmptyData;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -52,12 +50,12 @@ class TextUpdaterSpec extends ObjectBehavior
         $editTextValueCommand->attribute = $textAttribute;
         $editTextValueCommand->channel = 'ecommerce';
         $editTextValueCommand->locale = 'fr_FR';
-        $editTextValueCommand->data = 'A name';
+        $editTextValueCommand->text = 'A name';
         $value = Value::create(
             $editTextValueCommand->attribute->getIdentifier(),
             ChannelReference::createfromNormalized($editTextValueCommand->channel),
             LocaleReference::createfromNormalized($editTextValueCommand->locale),
-            TextData::createFromNormalize($editTextValueCommand->data)
+            TextData::createFromNormalize($editTextValueCommand->text)
         );
 
         $this->__invoke($record, $editTextValueCommand);
@@ -71,7 +69,7 @@ class TextUpdaterSpec extends ObjectBehavior
         $editTextValueCommand->attribute = $textAttribute;
         $editTextValueCommand->channel = null;
         $editTextValueCommand->locale = null;
-        $editTextValueCommand->data = null;
+        $editTextValueCommand->text = null;
         $value = Value::create(
             $editTextValueCommand->attribute->getIdentifier(),
             ChannelReference::noReference(),
@@ -81,6 +79,13 @@ class TextUpdaterSpec extends ObjectBehavior
 
         $this->__invoke($record, $editTextValueCommand);
         $record->setValue($value)->shouldBeCalled();
+    }
+
+    function it_throws_if_it_does_not_support_the_command(Record $record)
+    {
+        $wrongCommand = new EditFileValueCommand();
+        $this->supports($wrongCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
     }
 
     private function getAttribute(): TextAttribute

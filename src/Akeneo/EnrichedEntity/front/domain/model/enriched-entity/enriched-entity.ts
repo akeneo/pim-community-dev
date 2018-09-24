@@ -7,6 +7,7 @@ import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain
 
 export interface NormalizedEnrichedEntity {
   identifier: string;
+  code: string;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
 }
@@ -75,6 +76,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
   public normalize(): NormalizedEnrichedEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
+      code: this.getIdentifier().stringValue(),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
     };

@@ -54,6 +54,10 @@ class FileUpdater implements ValueUpdaterInterface
 
     public function __invoke(Record $record, AbstractEditValueCommand $command): void
     {
+        if (!$this->supports($command)) {
+            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+        }
+
         $attribute = $command->attribute;
         $channelReference = (null !== $command->channel) ?
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($command->channel)) :
@@ -61,43 +65,36 @@ class FileUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $data = (null !== $command->data) ?
+        $fileData = (null !== $command->filePath) ?
             $this->getFileData($record, $command, $attribute, $channelReference, $localeReference) :
             EmptyData::create();
         
-        $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $data));
+        $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
     }
 
     private function getFileData(
         Record $record,
-        AbstractEditValueCommand $command,
+        EditFileValueCommand $command,
         AbstractAttribute $attribute,
         ChannelReference $channelReference,
         LocaleReference $localeReference
     ): ValueDataInterface {
         $fileData = EmptyData::create();
         $valueKey = ValueKey::create($attribute->getIdentifier(), $channelReference, $localeReference);
-        $existingFile = $record->getValue($valueKey);
+        $existingFile = $record->findValue($valueKey);
 
         // If we want to update the file and it's not already in file storage, we store it
-        if (
-            null === $existingFile ||
-            (
-                is_array($command->data) &&
-                key_exists('file_key', $command->data) &&
-                $existingFile !== $command->data['file_key']
-            )
-        ) {
-            $storedFile = $this->storeFile($command->data);
+        if (null === $existingFile || $existingFile !== $command->filePath) {
+            $storedFile = $this->storeFile($command->filePath);
             $fileData = FileData::createFromFileinfo($storedFile);
         }
 
         return $fileData;
     }
 
-    private function storeFile(array $image): FileInfoInterface
+    private function storeFile(string $fileKey): FileInfoInterface
     {
-        $rawFile = new \SplFileInfo($image['file_key']);
+        $rawFile = new \SplFileInfo($fileKey);
         try {
             $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
         } catch (FileTransferException | FileRemovalException $e) {

@@ -108,19 +108,9 @@ class Record
         $this->labelCollection = $labelCollection;
     }
 
-    public function setValues(ValueCollection $valueCollection): void
-    {
-        $this->valueCollection = $valueCollection;
-    }
-
     public function getImage(): Image
     {
         return $this->image;
-    }
-
-    public function getValues(): ValueCollection
-    {
-        return $this->valueCollection;
     }
 
     public function updateImage(Image $image): void
@@ -128,12 +118,17 @@ class Record
         $this->image = $image;
     }
 
-    public function setValue(Value $value): void
+    public function getValues(): ValueCollection
     {
-        $this->valueCollection->setValue($value);
+        return $this->valueCollection;
     }
 
-    public function getValue(ValueKey $valueKey): ?Value
+    public function setValue(Value $value): void
+    {
+        $this->valueCollection = $this->valueCollection->setValue($value);
+    }
+
+    public function findValue(ValueKey $valueKey): ?Value
     {
         return $this->valueCollection->getValue($valueKey);
     }

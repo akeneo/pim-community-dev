@@ -18,4 +18,9 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
  */
 class EditFileValueCommand extends AbstractEditValueCommand
 {
+    /** @var string */
+    public $filePath;
+
+    /** @var string */
+    public $originalFilename;
 }

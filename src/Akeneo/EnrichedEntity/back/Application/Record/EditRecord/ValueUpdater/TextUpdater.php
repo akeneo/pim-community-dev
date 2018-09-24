@@ -36,6 +36,10 @@ class TextUpdater implements ValueUpdaterInterface
 
     public function __invoke(Record $record, AbstractEditValueCommand $command): void
     {
+        if (!$this->supports($command)) {
+            throw new \RuntimeException('Impossible to update the value of the record with the given command.');
+        }
+
         $attribute = $command->attribute->getIdentifier();
         $channelReference = (null !== $command->channel) ?
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode($command->channel)) :
@@ -43,11 +47,11 @@ class TextUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $data = (null !== $command->data) ?
-            TextData::createFromNormalize($command->data) :
+        $text = (null !== $command->text) ?
+            TextData::createFromNormalize($command->text) :
             EmptyData::create();
 
-        $value = Value::create($attribute, $channelReference, $localeReference, $data);
+        $value = Value::create($attribute, $channelReference, $localeReference, $text);
         $record->setValue($value);
     }
 }

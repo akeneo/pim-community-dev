@@ -24,7 +24,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -52,8 +51,8 @@ class FileUpdaterSpec extends ObjectBehavior
     }
 
     function it_edits_the_file_value_of_a_record(
-        Record $record,
-        FileStorerInterface $fileStorer
+        $fileStorer,
+        Record $record
     ) {
         $imageAttribute = $this->getAttribute();
 
@@ -61,7 +60,7 @@ class FileUpdaterSpec extends ObjectBehavior
         $editFileValueCommand->attribute = $imageAttribute;
         $editFileValueCommand->channel = 'ecommerce';
         $editFileValueCommand->locale = 'fr_FR';
-        $editFileValueCommand->data = [
+        $editFileValueCommand->filePath = [
             'file_key'          => '/a/file/key',
             'original_filename' => 'my_image.png',
         ];
@@ -76,9 +75,15 @@ class FileUpdaterSpec extends ObjectBehavior
             FileData::createFromFileinfo($fileInfo)
         );
         $fileStorer->store(Argument::type(\SplFileInfo::class), 'catalogStorage')->willReturn($fileInfo);
-        $record->getValue('image_designer_test_ecommerce_fr_FR')->willReturn(null);
         $this->__invoke($record, $editFileValueCommand);
         $record->setValue($value)->shouldBeCalled();
+    }
+
+    function it_throws_if_it_does_not_support_the_command(Record $record)
+    {
+        $wrongCommand = new EditTextValueCommand();
+        $this->supports($wrongCommand)->shouldReturn(false);
+        $this->shouldThrow(\RuntimeException::class)->during('__invoke', [$record, $wrongCommand]);
     }
 
     private function getAttribute(): ImageAttribute

@@ -228,7 +228,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
         );
         $updatedValueCollection = ValueCollection::fromValues([$valueToUpdate, $valueToAdd]);
-        $record->setValues($updatedValueCollection);
+        foreach ($updatedValueCollection as $value) {
+            $record->setValue($value);
+        }
 
         $imageInfo = new FileInfo();
         $imageInfo

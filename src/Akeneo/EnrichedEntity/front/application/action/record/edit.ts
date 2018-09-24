@@ -6,6 +6,7 @@ import {
   recordEditionSucceeded,
   recordEditionValueUpdated,
   recordEditionUpdated,
+  recordEditionSubmission,
 } from 'akeneoenrichedentity/domain/event/record/edit';
 import {
   notifyRecordWellSaved,
@@ -28,6 +29,7 @@ import Value from 'akeneoenrichedentity/domain/model/record/value';
 export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const record = denormalizeRecord(getState().form.data);
 
+  dispatch(recordEditionSubmission());
   try {
     const errors = await recordSaver.save(record);
 

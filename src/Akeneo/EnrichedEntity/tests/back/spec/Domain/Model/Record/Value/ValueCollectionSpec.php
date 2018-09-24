@@ -11,6 +11,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
@@ -136,26 +137,27 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromValues', [[new \StdClass()]]);
     }
 
-    function it_gets_a_key_for_a_given_value(
-        Value $value,
-        ChannelReference $channelReference,
-        ChannelIdentifier $channelIdentifier,
-        LocaleReference $localeReference,
-        LocaleIdentifier $localeIdentifier,
-        AttributeIdentifier $attributeIdentifier
-    ) {
-        $attributeIdentifier->normalize()->willReturn('name_brand_fingerprint');
+    function it_finds_a_value_for_a_given_value_key()
+    {
+        $attributeIdentifier = AttributeIdentifier::fromString('name_designer_fingerprint');
+        $channelReference = ChannelReference::noReference();
+        $localeReference = LocaleReference::noReference();
 
-        $value->hasChannel()->willReturn(true);
-        $value->getChannelReference()->willReturn($channelReference);
-        $channelReference->getIdentifier()->willReturn($channelIdentifier);
-        $channelIdentifier->normalize()->willReturn('mobile');
+        $value = $this->getValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference));
 
-        $value->hasLocale()->willReturn(true);
-        $value->getLocaleReference()->willReturn($localeReference);
-        $localeReference->getIdentifier()->willReturn($localeIdentifier);
-        $localeIdentifier->normalize()->willReturn('de_DE');
+        $value->getAttributeIdentifier()->equals($attributeIdentifier)->shouldBeEqualTo(true);
+        $value->getChannelReference()->equals($channelReference)->shouldBeEqualTo(true);
+        $value->getLocaleReference()->equals($localeReference)->shouldBeEqualTo(true);
+        $value->getData()->normalize()->shouldBeEqualTo('Philippe Starck');
+    }
 
-        $value->getAttributeIdentifier()->willReturn($attributeIdentifier);
+    function it_returns_null_if_it_does_not_find_a_value_for_a_given_value_key()
+    {
+        $attributeIdentifier = AttributeIdentifier::fromString('unknown_attribute');
+        $channelReference = ChannelReference::noReference();
+        $localeReference = LocaleReference::noReference();
+
+        $this->getValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference))
+            ->shouldBeNull();
     }
 }

@@ -37,6 +37,6 @@ class EditTextValueCommandFactorySpec extends ObjectBehavior
         $command->attribute->shouldBeEqualTo($textAttribute);
         $command->channel->shouldBeEqualTo('ecommerce');
         $command->locale->shouldBeEqualTo('en_US');
-        $command->data->shouldBeEqualTo('A description');
+        $command->text->shouldBeEqualTo('A description');
     }
 }
