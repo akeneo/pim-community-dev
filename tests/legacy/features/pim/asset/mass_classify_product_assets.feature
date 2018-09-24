@@ -47,6 +47,7 @@ Feature: Mass edit assets to change their categories
     And I should be on the assets page
     When I wait for the "classify_assets" job to finish
     And I am on the assets grid
+    And I open the category tree
     Then I should see the text "Images (0)"
     And I should see the text "Audio (15)"
     And I should see the text "Client documents (15)"

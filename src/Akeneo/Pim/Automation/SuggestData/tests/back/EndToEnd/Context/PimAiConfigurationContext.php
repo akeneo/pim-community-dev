@@ -110,7 +110,9 @@ final class PimAiConfigurationContext extends PimContext
             return true;
         }, 'Impossible to fill the "token" field.');
 
-        $this->getCurrentPage()->pressButton('Activate');
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.activate-connection');
+        }, 'Impossible to find the Activate button')->click();
     }
 
     /**
