@@ -31,14 +31,13 @@ class AttributesMappingFake implements AttributesMappingApiInterface
     public function fetchByFamily(string $familyCode): AttributesMapping
     {
         $filename = sprintf('attributes-mapping-family-%s.json', $familyCode);
+        $filepath = sprintf(__DIR__ . '/../resources/%s', $filename);
+        if (!file_exists($filepath)) {
+            throw new \Exception(sprintf('File "%s" does not exist', $filepath));
+        }
 
         return new AttributesMapping(
-            json_decode(
-                file_get_contents(
-                    sprintf(__DIR__ . '/../resources/%s', $filename)
-                ),
-                true
-            )
+            json_decode(file_get_contents($filepath), true)
         );
     }
 

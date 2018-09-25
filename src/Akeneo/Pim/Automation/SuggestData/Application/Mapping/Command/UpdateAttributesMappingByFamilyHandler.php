@@ -48,7 +48,7 @@ class UpdateAttributesMappingByFamilyHandler
     /**
      * @param UpdateAttributesMappingByFamilyCommand $command
      */
-    public function handle(UpdateAttributesMappingByFamilyCommand $command)
+    public function handle(UpdateAttributesMappingByFamilyCommand $command): void
     {
         $this->validate($command);
 
@@ -58,9 +58,10 @@ class UpdateAttributesMappingByFamilyHandler
     /**
      * Validates that the family exists
      * Validates that the attribute exists
+     *
      * @param UpdateAttributesMappingByFamilyCommand $command
      */
-    private function validate(UpdateAttributesMappingByFamilyCommand $command)
+    private function validate(UpdateAttributesMappingByFamilyCommand $command): void
     {
         $familyCode = $command->getFamilyCode();
         if (null === $this->familyRepository->findOneByIdentifier($familyCode)) {
@@ -78,7 +79,7 @@ class UpdateAttributesMappingByFamilyHandler
     /**
      * @param AttributeMapping $attributeMapping
      */
-    private function validateAndFillAttribute(AttributeMapping $attributeMapping)
+    private function validateAndFillAttribute(AttributeMapping $attributeMapping): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeMapping->getPimAttributeCode());
         if (null === $attribute) {

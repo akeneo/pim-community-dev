@@ -72,7 +72,7 @@ class AttributeMappingController
     {
         $RESPONSE = [
             [
-                'code' => 'router',
+                'code' => 'clothing',
                 'status' => self::MAPPING_EMPTY,
                 'labels' => [
                     'en_US' => 'Clothing',
@@ -80,7 +80,7 @@ class AttributeMappingController
                     'de_DE' => 'Kartoffeln'
                 ]
             ], [
-                'code' => 'router',
+                'code' => 'accessories',
                 'status' => self::MAPPING_PENDING_ATTRIBUTES,
                 'labels' => [
                     'en_US' => 'accessories',
@@ -88,7 +88,7 @@ class AttributeMappingController
                     'de_DE' => 'Shön'
                 ]
             ], [
-                'code' => 'router',
+                'code' => 'camcorders',
                 'status' => self::MAPPING_FULL,
                 'labels' => [
                     'en_US' => 'camcorders',

@@ -60,7 +60,7 @@ class AttributeMapping
         if ($this->status !== self::ATTRIBUTE_MAPPED) {
             $this->pimAttributeCode = null;
         } elseif (null === $pimAttributeCode) {
-            throw new \InvalidArgumentException('Status need to be mapped as it is mapped to an attribute');
+            throw new \InvalidArgumentException('Status need to be mapped if you want to map with an attribute');
         } else {
             $this->pimAttributeCode = $pimAttributeCode;
         }
