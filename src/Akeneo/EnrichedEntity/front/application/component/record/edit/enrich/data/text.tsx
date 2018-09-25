@@ -29,7 +29,9 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} />
         ) : (
           <textarea
-            className={`AknTextareaField ${value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''}`}
+            className={`AknTextareaField AknTextareaField--withBottomBorder AknTextareaField--narrow ${
+              value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''
+            }`}
             value={value.data.stringValue()}
             onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
               onValueChange(event.currentTarget.value);
@@ -38,7 +40,7 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
         )
       ) : (
         <input
-          className={`AknTextField AknTextField--withBottomBorder ${
+          className={`AknTextField AknTextField--narrow AknTextField--withBottomBorder ${
             value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''
           }`}
           value={value.data.stringValue()}

@@ -75,7 +75,7 @@ const ChannelSwitcher = ({
       ItemView={ChannelItemView}
       ButtonView={ChannelButtonView}
       onSelectionChange={(channel: DropdownElement) => onChannelChange(channel.original)}
-      className="channel-switcher"
+      className="AknDropdown--left channel-switcher"
     />
   );
 };

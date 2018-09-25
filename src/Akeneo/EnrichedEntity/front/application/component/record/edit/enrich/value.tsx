@@ -28,7 +28,7 @@ export default (
         className="AknFieldContainer"
         data-code={value.attribute.getCode().stringValue()}
       >
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--small">
           <label
             title={value.attribute.getLabel(locale.stringValue())}
             className="AknFieldContainer-label"

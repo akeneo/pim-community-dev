@@ -58,7 +58,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
       <div className="AknSubsection">
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
           <div className="AknFieldContainer AknFieldContainer--narrow" data-code="label">
-            <div className="AknFieldContainer-header">
+            <div className="AknFieldContainer-header AknFieldContainer-header--small">
               <label
                 title="{__('pim_enriched_entity.record.enrich.label')}"
                 className="AknFieldContainer-label"
@@ -72,7 +72,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 type="text"
                 name="label"
                 id="pim_enriched_entity.record.enrich.label"
-                className="AknTextField AknTextField--withBottomBorder"
+                className="AknTextField AknTextField--narrow AknTextField--withBottomBorder"
                 value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}

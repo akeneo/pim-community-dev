@@ -18,4 +18,10 @@ describe('akeneo > enriched entity > domain > model > record > data --- text', (
   test('I can get the string value of a TextData', () => {
     expect(denormalize('awesome text').stringValue()).toEqual('awesome text');
   });
+
+  test('I can test if two textData are equal', () => {
+    expect(denormalize('awesome text').equals(denormalize('awesome text'))).toEqual(true);
+    expect(denormalize('awesome text').equals(denormalize('nice text'))).toEqual(false);
+    expect(denormalize('awesome text').equals('awesome text')).toEqual(false);
+  });
 });

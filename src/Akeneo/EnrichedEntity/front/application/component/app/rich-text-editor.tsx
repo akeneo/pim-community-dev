@@ -50,7 +50,7 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
       <React.Fragment>
         <Editor
           editorState={editorState}
-          editorClassName="AknTextareaField"
+          editorClassName="AknTextareaField AknTextareaField--withBottomBorder"
           onEditorStateChange={this.onEditorStateChange}
         />
       </React.Fragment>
