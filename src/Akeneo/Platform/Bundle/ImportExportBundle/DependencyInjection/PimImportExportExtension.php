@@ -34,6 +34,5 @@ class PimImportExportExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('normalizers.yml');
         $loader->load('repositories.yml');
-        $loader->load('providers.yml');
     }
 }
