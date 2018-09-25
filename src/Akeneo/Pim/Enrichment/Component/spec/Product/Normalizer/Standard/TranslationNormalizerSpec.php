@@ -2,14 +2,21 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
-use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use PhpSpec\ObjectBehavior;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {
+    function let(IdentifiableObjectRepositoryInterface $localeRepository)
+    {
+        $this->beConstructedWith($localeRepository);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(TranslationNormalizer::class);
@@ -29,9 +36,12 @@ class TranslationNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_translatable_object_using_activated_locales(
+        $localeRepository,
         TranslatableInterface $translatable,
         AttributeTranslation $english,
-        AttributeTranslation $french
+        AttributeTranslation $french,
+        LocaleInterface $enLocale,
+        LocaleInterface $frLocale
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french
@@ -42,6 +52,11 @@ class TranslationNormalizerSpec extends ObjectBehavior
 
         $french->getLocale()->willReturn('fr_FR');
         $french->getLabel()->willReturn('bar');
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
+        $frLocale->isActivated()->willReturn(true);
 
         $this->normalize($translatable, 'standard', ['locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']])->shouldReturn(
             [
@@ -97,10 +112,14 @@ class TranslationNormalizerSpec extends ObjectBehavior
     }
 
     function it_provides_all_locales_if_no_list_provided_in_context(
+        $localeRepository,
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
-        AttributeTranslation $german
+        AttributeTranslation $german,
+        LocaleInterface $enLocale,
+        LocaleInterface $frLocale,
+        LocaleInterface $deLocale
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french, $german
@@ -114,6 +133,13 @@ class TranslationNormalizerSpec extends ObjectBehavior
 
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
+        $frLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
+        $deLocale->isActivated()->willReturn(true);
 
         $this->normalize($translatable, 'standard', [
             'locales'  => [],
@@ -128,10 +154,14 @@ class TranslationNormalizerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_method_not_exists(
+        $localeRepository,
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
-        AttributeTranslation $german
+        AttributeTranslation $german,
+        LocaleInterface $enLocale,
+        LocaleInterface $frLocale,
+        LocaleInterface $deLocale
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french, $german
@@ -146,9 +176,58 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
 
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
+        $frLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
+        $deLocale->isActivated()->willReturn(true);
+
         $this->shouldThrow('\LogicException')->duringNormalize($translatable, 'standard', [
             'locales'  => [],
             'property' => 'unknown_property'
         ]);
+    }
+
+    function it_does_not_export_disable_locale(
+        $localeRepository,
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+        AttributeTranslation $german,
+        LocaleInterface $enLocale,
+        LocaleInterface $frLocale,
+        LocaleInterface $deLocale
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french, $german
+        ]);
+
+        $english->getLocale()->willReturn('en_US');
+        $english->getLabel()->willReturn('foo');
+
+        $french->getLocale()->willReturn('fr_FR');
+        $french->getLabel()->willReturn('bar');
+
+        $german->getLocale()->willReturn('de_DE');
+        $german->getLabel()->willReturn('baz');
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
+        $frLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
+        $deLocale->isActivated()->willReturn(false);
+
+        $this->normalize($translatable, 'standard', [
+            'locales'  => [],
+            'property' => 'label'
+        ])->shouldReturn(
+            [
+                'en_US' => 'foo',
+                'fr_FR' => 'bar',
+            ]
+        );
     }
 }

@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -89,7 +90,12 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $variantProductBuilder;
 
+    /** @var ProductAttributeFilter */
+    protected $productAttributeFilter;
+
     /**
+     * TODO : (merge) remove null
+     *
      * @param ProductRepositoryInterface    $productRepository
      * @param CursorableRepositoryInterface $cursorableRepository
      * @param AttributeRepositoryInterface  $attributeRepository
@@ -107,6 +113,7 @@ class ProductController
      * @param ConverterInterface            $productValueConverter
      * @param NormalizerInterface           $constraintViolationNormalizer
      * @param ProductBuilderInterface       $variantProductBuilder
+     * @param ProductAttributeFilter        $productAttributeFilter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -125,7 +132,8 @@ class ProductController
         FilterInterface $emptyValuesFilter,
         ConverterInterface $productValueConverter,
         NormalizerInterface $constraintViolationNormalizer,
-        ProductBuilderInterface $variantProductBuilder
+        ProductBuilderInterface $variantProductBuilder,
+        ProductAttributeFilter $productAttributeFilter = null
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;
@@ -144,6 +152,7 @@ class ProductController
         $this->productValueConverter = $productValueConverter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->variantProductBuilder = $variantProductBuilder;
+        $this->productAttributeFilter = $productAttributeFilter;
     }
 
     /**
@@ -297,7 +306,8 @@ class ProductController
     /**
      * Remove product
      *
-     * @param int $id
+     * @param Request $request
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_product_remove")
      *
@@ -318,8 +328,10 @@ class ProductController
     /**
      * Remove an optional attribute from a product
      *
-     * @param int $id          The product id
-     * @param int $attributeId The attribute id
+     * @param Request $request
+     * @param $id
+     * @param $attributeId
+     * @return JsonResponse|RedirectResponse
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
      *
@@ -420,6 +432,12 @@ class ProductController
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
+        }
+
+        // don't filter during creation, because identifier is needed
+        // but not sent by the frontend during creation (it sends the sku in the values)
+        if (null !== $product->getId() && $product->isVariant()) {
+            $data = $this->productAttributeFilter->filter($data);
         }
 
         $this->productUpdater->update($product, $data);

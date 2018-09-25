@@ -39,9 +39,9 @@ Feature: Import channels
     And I should see the text "Written 2"
     And exported file of "csv_footwear_channel_export" should contain:
     """
-    code;label-fr_FR;label-en_US;label-de_DE;conversion_units;currencies;locales;tree
-    mobile;Mobile;Mobile;Mobil;;USD,EUR;en_US,fr_FR;2014_collection
-    tablet;Tablette;Tablet;Tablet;;USD,EUR;en_US;2014_collection
+    code;label-fr_FR;label-en_US;conversion_units;currencies;locales;tree
+    mobile;Mobile;Mobile;;USD,EUR;en_US,fr_FR;2014_collection
+    tablet;Tablette;Tablet;;USD,EUR;en_US;2014_collection
     """
 
   Scenario: Successfully update existing channel and add a new one

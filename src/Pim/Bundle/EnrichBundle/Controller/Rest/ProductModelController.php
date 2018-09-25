@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFi
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
@@ -84,7 +85,12 @@ class ProductModelController
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
 
+    /** @var ProductModelAttributeFilter */
+    private $productModelAttributeFilter;
+
     /**
+     * TODO: (merge) remove null
+     *
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
      * @param UserContext                       $userContext
@@ -101,6 +107,7 @@ class ProductModelController
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
+     * @param ProductModelAttributeFilter       $productModelAttributeFilter
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -118,7 +125,8 @@ class ProductModelController
         EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
-        FamilyVariantRepositoryInterface $familyVariantRepository
+        FamilyVariantRepositoryInterface $familyVariantRepository,
+        ProductModelAttributeFilter $productModelAttributeFilter = null
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -136,6 +144,7 @@ class ProductModelController
         $this->productModelFactory           = $productModelFactory;
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
+        $this->productModelAttributeFilter = $productModelAttributeFilter;
     }
 
     /**
@@ -454,6 +463,10 @@ class ProductModelController
             $data = array_replace($data, $dataFiltered);
         } else {
             $data['values'] = [];
+        }
+
+        if (!$productModel->isRoot()) {
+            $data = $this->productModelAttributeFilter->filter($data);
         }
 
         $this->productModelUpdater->update($productModel, $data);

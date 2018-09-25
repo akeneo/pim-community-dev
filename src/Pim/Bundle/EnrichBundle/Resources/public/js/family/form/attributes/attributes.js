@@ -121,7 +121,7 @@ define([
 
                     _.each(groupedAttributes, function (attributes, group) {
                         attributes = _.sortBy(attributes, function (attribute) {
-                            return attribute.sort_order;
+                            return [attribute.sort_order, attribute.code].join('_');
                         });
 
                         groupedAttributes[group] = attributes;

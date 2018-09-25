@@ -6,9 +6,9 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\DBALException;
+use Pim\Bundle\UserBundle\Security\SystemUserToken;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Create a user system if token is null on CLI command "pim" or "akeneo"
@@ -51,9 +51,9 @@ class CreateUserSystemListener
     }
 
     /**
-     * @param ConsoleCommandEvent $event The event
+     * @param ConsoleCommandEvent $event
      */
-    public function createUserSystem(ConsoleCommandEvent $event)
+    public function createUserSystem(ConsoleCommandEvent $event): void
     {
         if (0 === preg_match('#^pim|akeneo#', $event->getCommand()->getName())) {
             return;
@@ -62,8 +62,8 @@ class CreateUserSystemListener
         try {
             $user = $this->userFactory->create();
             $user->setUsername(UserInterface::SYSTEM_USER_NAME);
-            $groups = $this->groupRepository->findAll();
 
+            $groups = $this->groupRepository->findAll();
             foreach ($groups as $group) {
                 $user->addGroup($group);
             }
@@ -73,7 +73,7 @@ class CreateUserSystemListener
                 $user->addRole($role);
             }
 
-            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+            $token = new SystemUserToken($user);
             $this->tokenStorage->setToken($token);
         } catch (DBALException $e) {
             // do nothing.

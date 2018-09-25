@@ -18,16 +18,24 @@ class DBALPurger implements PurgerInterface
     protected $connection;
 
     /** @var string[] */
-    protected $tables;
+    protected $tablesToDelete;
+
+    /** @var string[] */
+    protected $tablesToTruncate;
 
     /**
-     * @param Connection $connection The connection to use
-     * @param string[]   $tables     The tables to purge, the order is not significant
+     * Purging the database with a delete is by an order of magnitude faster than a truncate on a lot of small tables.
+     * Therefore, choose carefully the tables you want to truncate.
+     *
+     * @param Connection $connection       The connection to use
+     * @param string[]   $tablesToDelete   The tables to purge with a delete in database, the order is not significant
+     * @param string[]   $tablesToTruncate The tables to purge with a truncate in database, the order is not significant
      */
-    public function __construct(Connection $connection, array $tables)
+    public function __construct(Connection $connection, array $tablesToDelete, array $tablesToTruncate = [])
     {
         $this->connection = $connection;
-        $this->tables     = $tables;
+        $this->tablesToDelete = $tablesToDelete;
+        $this->tablesToTruncate = $tablesToTruncate;
     }
 
     /**
@@ -37,8 +45,12 @@ class DBALPurger implements PurgerInterface
     {
         $sql = 'SET FOREIGN_KEY_CHECKS = 0;';
 
-        foreach ($this->tables as $table) {
+        foreach ($this->tablesToDelete as $table) {
             $sql .= sprintf('DELETE FROM %s ;', $table);
+        }
+
+        foreach ($this->tablesToTruncate as $table) {
+            $sql .= sprintf('TRUNCATE TABLE %s;', $table);
         }
 
         $sql .= 'SET FOREIGN_KEY_CHECKS = 1;';

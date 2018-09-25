@@ -51,5 +51,10 @@ class PimUserExtension extends Extension
         $container->setParameter('pim_user.reset.ttl', $config['reset']['ttl']);
         $container->setParameter('pim_user.email', [$config['email']['address'] => $config['email']['name']]);
         $container->setParameter('pim_user.privileges', $config['privileges']);
+        $container->setParameter('pim_user.login_form.action_route', $config['login_form']['action_route']);
+        $container->setParameter(
+            'pim_user.login_form.additional_hidden_fields',
+            $config['login_form']['additional_hidden_fields']
+        );
     }
 }
