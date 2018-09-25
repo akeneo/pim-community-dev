@@ -54,6 +54,8 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      * @param DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param string                          $entityName
+     *
+     * @todo merge
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -61,7 +63,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         FilteredEntityFactory $filteredProductModelFactory,
         FilteredEntityFactory $filteredProductFactory,
         DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity,
-        AuthorizationCheckerInterface $authorizationChecker,
+        AuthorizationCheckerInterface $authorizationChecker = null,
         string $entityName
     ) {
         parent::__construct($em, $em->getClassMetadata($entityName));
@@ -284,12 +286,17 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      * @param ProductInterface[] $products
      *
      * @return array
+     *
+     * @todo merge
      */
     private function getFilteredProducts(array $products): array
     {
         $filteredProducts = [];
         foreach ($products as $product) {
-            if ($this->authorizationChecker->isGranted(Attributes::VIEW, $product)) {
+            if (
+                null !== $this->authorizationChecker &&
+                $this->authorizationChecker->isGranted(Attributes::VIEW, $product)
+            ) {
                 $filteredProducts[] = $this->filteredProductFactory->create($product);
             }
         }
