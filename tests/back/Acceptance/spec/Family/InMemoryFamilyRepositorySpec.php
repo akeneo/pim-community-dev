@@ -71,6 +71,25 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
             ->during('save', ['a_thing']);
     }
 
+    function it_finds_all_families()
+    {
+        $family1 = (new Family())->setCode('a-family');
+        $family2 = (new Family())->setCode('another-family');
+        $family3 = (new Family())->setCode('again-another-family');
+
+        $this->beConstructedWith([
+            $family1->getCode() => $family1,
+            $family2->getCode() => $family2,
+            $family3->getCode() => $family3,
+        ]);
+
+        $this->findAll()->shouldReturn([
+            $family1->getCode() => $family1,
+            $family2->getCode() => $family2,
+            $family3->getCode() => $family3,
+        ]);
+    }
+
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
         $this->shouldThrow(NotImplementedException::class)->during('getFullRequirementsQB', [new Family(), 'en_US']);
@@ -78,7 +97,6 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
         $this->shouldThrow(NotImplementedException::class)->during('findByIds', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('hasAttribute', ['a-family', 'an-attribute']);
         $this->shouldThrow(NotImplementedException::class)->during('find', ['a-family']);
-        $this->shouldThrow(NotImplementedException::class)->during('findAll', []);
         $this->shouldThrow(NotImplementedException::class)->during('findBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
