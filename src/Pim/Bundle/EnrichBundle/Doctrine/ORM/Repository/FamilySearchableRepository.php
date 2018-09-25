@@ -44,6 +44,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
         if (null !== $search && '' !== $search) {
             $qb->leftJoin('f.translations', 'ft');
             $qb->andWhere('f.code like :search OR ft.label like :search');
+            $qb->distinct();
             $qb->setParameter('search', '%' . $search . '%');
         }
 
