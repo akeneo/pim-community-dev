@@ -55,19 +55,20 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
             [
-                'identifiers'          => [],
-                'excluded_identifiers' => [],
-                'limit'                => null,
-                'page'                 => null,
-                'locale'               => null,
-                'exclude_unique'       => false,
-                'user_groups_ids'      => null,
-                'types'                => null,
-                'attribute_groups'     => [],
-                'rights'               => true,
-                'localizable'          => null,
-                'scopable'             => null,
-                'is_locale_specific'   => null
+                'identifiers'            => [],
+                'excluded_identifiers'   => [],
+                'limit'                  => null,
+                'page'                   => null,
+                'locale'                 => null,
+                'exclude_unique'         => false,
+                'user_groups_ids'        => null,
+                'types'                  => null,
+                'attribute_groups'       => [],
+                'rights'                 => true,
+                'localizable'            => null,
+                'scopable'               => null,
+                'is_locale_specific'     => null,
+                'useable_as_grid_filter' => null,
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -83,6 +84,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('localizable', ['bool', 'null']);
         $resolver->setAllowedTypes('scopable', ['bool', 'null']);
         $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
+        $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
 
         $options = $resolver->resolve($options);
 
@@ -159,6 +161,11 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         if (null !== $options['is_locale_specific']) {
             $qb->leftJoin('a.availableLocales', 'al');
             $qb->andWhere(sprintf('al.id IS %s', $options['is_locale_specific'] ? 'NOT NULL' : 'NULL'));
+        }
+
+        if (null !== $options['useable_as_grid_filter']) {
+            $qb->andWhere('a.useableAsGridFilter = :useable_as_grid_filter');
+            $qb->setParameter('useable_as_grid_filter', $options['useable_as_grid_filter']);
         }
 
         //TODO: this part is specific to attributes

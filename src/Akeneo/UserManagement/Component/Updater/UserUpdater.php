@@ -4,6 +4,7 @@ namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
@@ -20,7 +21,7 @@ use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\FileStorage;
 
 /**
@@ -232,7 +233,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 $this->setAvatar($user, $data);
                 break;
             case 'product_grid_filters':
-                $user->setProductGridFilters($data);
+                $user->setProductGridFilters(explode(',', $data));
                 break;
             default:
                 $matches = null;

@@ -1210,6 +1210,7 @@ config:
         # Attribute
         pim/template/attribute/tab/properties/group:        pimenrich/templates/attribute/tab/properties/group.html
         pim/template/attribute/tab/choices/options-grid:    pimenrich/templates/attribute/tab/choices/options-grid.html
+        pim/template/attribute/attribute-line:              pimenrich/templates/attribute/attribute-line.html
 
         # Product model
         pim/template/product-model/complete-variant-product: pimenrich/templates/product_model/complete-variant-product.html

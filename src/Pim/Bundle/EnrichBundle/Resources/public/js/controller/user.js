@@ -11,7 +11,7 @@ define([
         BaseController,
         FetcherRegistry,
         PageTitle,
-        FormBuilder
+        FormBuilder,
     ) {
         return BaseController.extend({
             /**

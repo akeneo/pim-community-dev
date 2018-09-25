@@ -1,5 +1,7 @@
 <?php
 
+// TODO To delete
+
 namespace Specification\Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType;

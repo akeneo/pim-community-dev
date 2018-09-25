@@ -97,7 +97,8 @@ define(
                         type: this.choiceVerb
                     },
                     initSelection: this.select2InitSelection.bind(this),
-                    placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' '
+                    placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' ',
+                    dropdownCssClass: ''
                 };
             },
 
