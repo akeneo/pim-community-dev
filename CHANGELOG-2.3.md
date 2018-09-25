@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.9 (2018-09-25)
+
 ## Bug fixes
 
 - PIM-7663: Fix API endpoint that list products updated since N days
