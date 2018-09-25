@@ -6,6 +6,10 @@ product:
     resource: '@PimEnrichBundle/Resources/config/routing/product.yml'
     prefix: /enrich/product
 
+product_grid_filter:
+    resource: '@PimEnrichBundle/Resources/config/routing/product_grid_filter.yml'
+    prefix: /enrich/product-grid-filter
+
 mass_edit_action:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit_action.yml'
     prefix: /enrich/mass-edit-action

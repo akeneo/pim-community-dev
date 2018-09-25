@@ -2,6 +2,7 @@ import * as $ from 'jquery';
 import * as i18n from 'pimenrich/js/i18n';
 import * as _ from "underscore";
 
+const __ = require('oro/translator');
 const BaseMultiSelectAsync = require('pim/form/common/fields/multi-select-async');
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -15,12 +16,12 @@ const LineTemplate = require('pim/template/attribute/attribute-line');
 
 interface NormalizedAttributeInterface {
   code: string;
-  labels: { [key: string]: string };
+  labels: { [locale: string]: string };
   group: string;
 }
 
 interface NormalizedAttributeGroupInterface {
-  labels: { [key: string]: string };
+  labels: { [locale: string]: string };
 }
 
 class ProductGridFilters extends BaseMultiSelectAsync {
@@ -31,13 +32,17 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
+    this.attributeGroups = {
+      system: ProductGridFilters.getSystemAttributeGroup()
+    };
+
     return $.when(
       BaseMultiSelectAsync.prototype.configure.apply(this, arguments),
       FetcherRegistry
         .getFetcher('attribute-group')
         .fetchAll()
         .then((attributeGroups: { [key: string]: NormalizedAttributeGroupInterface }) => {
-          this.attributeGroups = attributeGroups;
+          this.attributeGroups = {...this.attributeGroups, ...attributeGroups};
         })
     );
   }
@@ -51,23 +56,6 @@ class ProductGridFilters extends BaseMultiSelectAsync {
     parent.dropdownCssClass = 'select2--annotedLabels ' + parent.dropdownCssClass;
 
     return parent;
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * Removes the useless catalogLocale field, and add grid filter
-   */
-  protected select2Data(term: string, page: number) {
-    return {
-      // TODO Adds the product grid filters
-      search: term,
-      options: {
-        limit: this.resultsPerPage,
-        page: page
-      },
-      useable_as_grid_filter: true
-    };
   }
 
   protected convertBackendItem(item: NormalizedAttributeInterface): Object {
@@ -109,6 +97,18 @@ class ProductGridFilters extends BaseMultiSelectAsync {
         }));
       });
     }
+  }
+
+  /**
+   * Returns a fake attribute group for system filters
+   *
+   * @returns {NormalizedAttributeGroupInterface}
+   */
+  private static getSystemAttributeGroup(): NormalizedAttributeGroupInterface {
+    const result: NormalizedAttributeGroupInterface = {labels: {}};
+    result['labels'][UserContext.get('catalog_default_locale')] = __('pim_datagrid.filters.system');
+
+    return result;
   }
 
   /**

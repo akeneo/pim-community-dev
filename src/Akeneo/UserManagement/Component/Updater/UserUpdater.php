@@ -233,7 +233,11 @@ class UserUpdater implements ObjectUpdaterInterface
                 $this->setAvatar($user, $data);
                 break;
             case 'product_grid_filters':
-                $user->setProductGridFilters(explode(',', $data));
+                $filters = [];
+                if ('' !== $data && [] !== $data) {
+                    $filters = explode(',', $data);
+                }
+                $user->setProductGridFilters($filters);
                 break;
             default:
                 $matches = null;
@@ -241,6 +245,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 if (preg_match('/^default_(?P<alias>[a-z_]+)_view$/', $field, $matches)) {
                     $alias = str_replace('_', '-', $matches['alias']);
                     $user->setDefaultGridView($alias, $this->findDefaultGridView($alias, $data));
+
                     return;
                 }
 

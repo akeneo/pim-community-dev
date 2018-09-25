@@ -269,7 +269,7 @@ extensions:
         config:
             fieldName: product_grid_filters
             label: pim_user_management.entity.user.properties.product_grid_filters
-            choiceRoute: pim_enrich_attribute_rest_index
+            choiceRoute: pim_enrich_product_grid_filters
 
     pim-user-edit-form-default-grid-views:
         module: pim/user/fields/default-grid-views

@@ -164,6 +164,7 @@ Feature: Datagrid views
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
+    And I should see the text "Sneakers only"
     When I am on the products grid
     Then I should see the text "Sneakers only"
     When I delete the view
