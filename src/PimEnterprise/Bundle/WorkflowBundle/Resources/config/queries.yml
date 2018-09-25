@@ -12,3 +12,13 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
+
+    pimee_workflow.query.count_product_proposals:
+        class: PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\CountProductProposals
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.query.count_product_model_proposals:
+        class: PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\CountProductModelProposals
+        arguments:
+            - '@database_connection'
