@@ -1,7 +1,11 @@
 {
   "request": {
     "method": "POST",
-    "relative_url": "/rest/enriched_entity/designer/attribute/unknown",
+    "route": "akeneo_enriched_entities_attribute_edit_rest",
+    "query": {
+      "enrichedEntityIdentifier": "designer",
+      "attributeIdentifier": "unknown"
+    },
     "body": {
       "identifier": "unknown",
       "enriched_entity_identifier": "designer",

@@ -91,25 +91,25 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         );
 
         $expectedValues = [
-            'description_designer_fingerprint_de_DE' => [
+            [
                 'data' => null,
                 'locale' => 'de_DE',
                 'channel' => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
-            'description_designer_fingerprint_en_US' => [
+            [
                 'data' => null,
                 'locale' => 'en_US',
                 'channel' => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
-            'description_designer_fingerprint_fr_FR' => [
+            [
                 'data' => null,
                 'locale' => 'fr_FR',
                 'channel' => null,
                 'attribute' => $descriptionAttribute->normalize(),
             ],
-            'name_designer_fingerprint' => [
+            [
                 'data' => 'Hello',
                 'locale' => null,
                 'channel' => null,

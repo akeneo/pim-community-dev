@@ -5,10 +5,7 @@ import {attributeCreationStart} from 'akeneoenrichedentity/domain/event/attribut
 import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import {CreateState} from 'akeneoenrichedentity/application/reducer/attribute/create';
 import CreateAttributeModal from 'akeneoenrichedentity/application/component/attribute/create';
-import AttributeModel, {
-  denormalizeAttribute,
-  NormalizedAttribute,
-} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {denormalizeAttribute, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
 import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
 import EnrichedEntity, {
   denormalizeEnrichedEntity,
@@ -24,7 +21,6 @@ interface StateProps {
   createAttribute: CreateState;
   attributes: NormalizedAttribute[];
   firstLoading: boolean;
-  editedAttribute: AttributeModel | null;
 }
 interface DispatchProps {
   events: {
@@ -207,7 +203,7 @@ class AttributesView extends React.Component<CreateProps> {
                 </React.Fragment>
               )}
             </div>
-            {null !== this.props.editedAttribute ? <AttributeEditForm /> : null}
+            <AttributeEditForm />
           </div>
         ) : (
           <React.Fragment>
@@ -254,7 +250,6 @@ export default connect(
       createAttribute: state.createAttribute,
       firstLoading: null === state.attributes.attributes,
       attributes: null !== state.attributes.attributes ? state.attributes.attributes : [],
-      editedAttribute: state.attribute.active ? denormalizeAttribute(state.attribute.data) : null,
     };
   },
   (dispatch: any): DispatchProps => {

@@ -4,6 +4,7 @@ import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched
 import hydrator from 'akeneoenrichedentity/application/hydrator/attribute';
 import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
+import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -17,7 +18,7 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
       routing.generate('akeneo_enriched_entities_attribute_index_rest', {
         enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
       })
-    );
+    ).catch(errorHandler);
 
     return hydrateAll<Attribute>(this.hydrator)(backendAttributes);
   }

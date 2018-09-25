@@ -68,15 +68,6 @@ class GetActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_records_detail()
     {
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::RECORD_DETAIL_ROUTE,
-            [
-                'enrichedEntityIdentifier' => 'designer',
-                'recordCode' => 'starck'
-            ]
-        );
-
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
     }
 
@@ -122,19 +113,19 @@ class GetActionTest extends ControllerIntegrationTestCase
         $this->attributeRepository->create($textareaAttribute);
 
         $values = [
-            'name_designer_fingerprint' => [
+            [
                 'attribute' => $textAttribute->normalize(),
                 'channel' => null,
                 'locale' => null,
                 'data' => 'Philippe Starck'
             ],
-            'description_designer_fingerprint_en_US' => [
+            [
                 'attribute' => $textareaAttribute->normalize(),
                 'channel' => null,
                 'locale' => 'en_US',
                 'data' => null,
             ],
-            'description_designer_fingerprint_fr_FR' => [
+            [
                 'attribute' => $textareaAttribute->normalize(),
                 'channel' => null,
                 'locale' => 'fr_FR',

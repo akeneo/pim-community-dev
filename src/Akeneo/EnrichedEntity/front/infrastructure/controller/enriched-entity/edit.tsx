@@ -75,6 +75,10 @@ class EnrichedEntityEditController extends BaseController {
   }
 
   isDirty() {
+    if (undefined === this.store) {
+      return false;
+    }
+
     const state = this.store.getState();
 
     return state.form.state.isDirty || state.attribute.isDirty;

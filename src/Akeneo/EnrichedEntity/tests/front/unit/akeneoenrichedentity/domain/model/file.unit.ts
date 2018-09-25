@@ -55,4 +55,35 @@ describe('akeneo > enriched entity > domain > model --- file', () => {
       filePath: 'file/path.png',
     });
   });
+
+  test('I can test if a file is equal to another', () => {
+    expect(
+      denormalizeFile({
+        originalFilename: 'my_filename.png',
+        filePath: 'file/path.png',
+      }).equals(
+        denormalizeFile({
+          originalFilename: 'my_filename.png',
+          filePath: 'file/path.png',
+        })
+      )
+    ).toBe(true);
+    expect(
+      denormalizeFile({
+        originalFilename: 'another_filename.png',
+        filePath: 'file/path.png',
+      }).equals(
+        denormalizeFile({
+          originalFilename: 'my_filename.png',
+          filePath: 'file/path.png',
+        })
+      )
+    ).toBe(false);
+    expect(
+      denormalizeFile({
+        originalFilename: 'another_filename.png',
+        filePath: 'file/path.png',
+      }).equals(12)
+    ).toBe(false);
+  });
 });

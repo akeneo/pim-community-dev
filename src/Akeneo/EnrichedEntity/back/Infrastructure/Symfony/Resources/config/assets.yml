@@ -1,0 +1,3 @@
+css:
+    lib:
+        - bundles/akeneoenrichedentity/assets/less/react-draft-wysiwyg.less

@@ -6,6 +6,7 @@ import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
 import {getJSON} from 'akeneoenrichedentity/tools/fetch';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
+import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -20,15 +21,20 @@ export class RecordFetcherImplementation implements RecordFetcher {
         enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
         recordCode: recordCode.stringValue(),
       })
-    );
+    ).catch(errorHandler);
 
-    return this.hydrator(backendRecord);
+    const image = undefined === backendRecord.image ? null : backendRecord.image;
+
+    return this.hydrator({
+      ...backendRecord,
+      image,
+    });
   }
 
   async fetchAll(enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Record[]> {
     const backendRecords = await getJSON(
       routing.generate('akeneo_enriched_entities_record_index_rest', {enrichedEntityIdentifier})
-    );
+    ).catch(errorHandler);
 
     return hydrateAll<Record>(this.hydrator)(backendRecords.items);
   }
@@ -39,9 +45,13 @@ export class RecordFetcherImplementation implements RecordFetcher {
         // This is temporary, as soon as we will have a QB in backend it will be way simpler
         enrichedEntityIdentifier: query.filters[0].value,
       })
+    ).catch(errorHandler);
+    const items = hydrateAll<Record>(this.hydrator)(
+      backendRecords.items.map((backendRecord: any) => {
+        // This is temporary: the backend should send the image and the values
+        return {...backendRecord, image: undefined === backendRecord.image ? null : backendRecord.image, values: []};
+      })
     );
-
-    const items = hydrateAll<Record>(this.hydrator)(backendRecords.items);
 
     return {
       items,

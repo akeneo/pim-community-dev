@@ -16,10 +16,12 @@ import {IsTextarea} from 'akeneoenrichedentity/domain/model/attribute/type/text/
 import {MaxLength} from 'akeneoenrichedentity/domain/model/attribute/type/text/max-length';
 
 const AttributeValidationRuleItemView = ({
+  isOpen,
   element,
   isActive,
   onClick,
 }: {
+  isOpen: boolean;
   element: DropdownElement;
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
@@ -36,7 +38,7 @@ const AttributeValidationRuleItemView = ({
       onKeyPress={event => {
         if (' ' === event.key) onClick(element);
       }}
-      tabIndex={0}
+      tabIndex={isOpen ? 0 : -1}
     >
       <span>{element.label}</span>
     </div>
