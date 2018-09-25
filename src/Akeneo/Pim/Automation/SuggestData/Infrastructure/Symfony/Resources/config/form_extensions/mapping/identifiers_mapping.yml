@@ -55,7 +55,7 @@ extensions:
             template: pim/template/common/description-header
             templateParams:
                 title: akeneo_suggest_data.settings.module.title.sub_title
-                illustration: Helpcenter-settings.svg
+                illustration: Robot.svg
                 description:
                     - akeneo_suggest_data.settings.module.title.description.first_step
                     - akeneo_suggest_data.settings.module.title.description.second_step

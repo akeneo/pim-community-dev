@@ -90,16 +90,16 @@ class PimAiConnectionController
             $this->activateSuggestDataConnection->activate($configurationFields);
         } catch (InvalidConnectionConfigurationException $invalidConnection) {
             return new JsonResponse([
-                'message' => 'akeneo_suggest_data.pim_ai.module.activation.invalid',
+                'message' => 'akeneo_suggest_data.connection.flash.invalid',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
-                'message' => 'akeneo_suggest_data.pim_ai.module.activation.error',
+                'message' => 'akeneo_suggest_data.connection.flash.error',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
-            'message' => 'akeneo_suggest_data.pim_ai.module.activation.success',
+            'message' => 'akeneo_suggest_data.connection.flash.success',
         ]);
     }
 }

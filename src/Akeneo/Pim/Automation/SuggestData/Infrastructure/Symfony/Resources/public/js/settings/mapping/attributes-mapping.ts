@@ -181,8 +181,8 @@ class AttributeMapping extends BaseForm {
    */
   private toggleNoDataMessage(): void {
     this.$el.find('.searchable-row:visible').length ?
-      this.$el.find('.no-data').hide() :
-      this.$el.find('.no-data').show();
+      this.$el.find('.no-data-inner').hide() :
+      this.$el.find('.no-data-inner').show();
   }
 
   /**

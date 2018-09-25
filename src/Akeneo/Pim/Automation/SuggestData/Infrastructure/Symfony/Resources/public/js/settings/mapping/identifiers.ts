@@ -38,7 +38,7 @@ class EditIdentifiersMappingView extends BaseView {
   constructor(options: { config: Object }) {
     super({
       ...options, ...{
-        className: 'AknGrid AknGrid--unclickable',
+        className: 'AknGrid AknGrid--unclickable AknFormContainer--withPadding AknGrid--stretched',
         tagName: 'table'
       }
     });
@@ -76,6 +76,7 @@ class EditIdentifiersMappingView extends BaseView {
       headers: this.headers,
       identifiers: identifiersMapping,
       identifiersStatuses: this.identifiersStatuses,
+      getRowClass: EditIdentifiersMappingView.getRowClass,
       __
     }));
 
@@ -128,6 +129,21 @@ class EditIdentifiersMappingView extends BaseView {
         ? this.identifiersStatuses[pimAiAttributeCode] = 'inactive'
         : this.identifiersStatuses[pimAiAttributeCode] = 'active';
     });
+  }
+
+  /**
+   * Returns the class for a row depending of the identifier mapping status
+   *
+   * @param {string} status
+   *
+   * @returns {string}
+   */
+  private static getRowClass(status: string): string {
+    if (status === 'active') {
+      return 'AknGrid-bodyRow--success';
+    }
+
+    return '';
   }
 }
 
