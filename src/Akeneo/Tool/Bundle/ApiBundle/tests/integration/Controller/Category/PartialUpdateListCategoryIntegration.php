@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListCategoryIntegration extends ApiTestCase
 {
+    /**
+     * @critical
+     */
     public function testCreateAndUpdateAListOfCategories()
     {
         $data =
