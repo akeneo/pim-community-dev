@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
+namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Doctrine\DBAL\Connection;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
 /**
  * @author    Elodie Rapos <elodie.raposo@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AverageMaxLocalizableAttributesPerFamily implements AverageMaxQuery
+class AverageMaxScopableAttributesPerFamily implements AverageMaxQuery
 {
-    private const VOLUME_NAME = 'average_max_localizable_attributes_per_family';
+    private const VOLUME_NAME = 'average_max_scopable_attributes_per_family';
 
     /** @var Connection */
     private $connection;
@@ -40,10 +40,10 @@ class AverageMaxLocalizableAttributesPerFamily implements AverageMaxQuery
     {
         $sql = <<<SQL
             SELECT
-                CEIL(AVG(count_only_localizable_attributes * 100 / count_attributes)) average,
-                CEIL(MAX(count_only_localizable_attributes * 100 / count_attributes)) max
+                CEIL(AVG(count_only_scopable_attributes * 100 / count_attributes)) average,
+                CEIL(MAX(count_only_scopable_attributes * 100 / count_attributes)) max
             FROM (
-                SELECT fa.family_id as family_id, SUM(a.is_localizable = 1 AND a.is_scopable = 0) as count_only_localizable_attributes, COUNT(a.code) as count_attributes
+                SELECT fa.family_id as family_id, SUM(a.is_localizable = 0 AND a.is_scopable = 1) as count_only_scopable_attributes, COUNT(a.code) as count_attributes
                 FROM pim_catalog_family_attribute as fa
                 INNER JOIN pim_catalog_attribute as a ON fa.attribute_id = a.id
                 GROUP BY fa.family_id

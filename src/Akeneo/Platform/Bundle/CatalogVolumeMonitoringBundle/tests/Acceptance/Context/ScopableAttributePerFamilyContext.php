@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
+namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery;
 use Webmozart\Assert\Assert;
 
 final class ScopableAttributePerFamilyContext implements Context

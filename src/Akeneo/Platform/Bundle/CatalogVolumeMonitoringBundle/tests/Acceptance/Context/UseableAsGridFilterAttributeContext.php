@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
+namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery;
-use Webmozart\Assert\Assert;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery;
 
 final class UseableAsGridFilterAttributeContext implements Context
 {

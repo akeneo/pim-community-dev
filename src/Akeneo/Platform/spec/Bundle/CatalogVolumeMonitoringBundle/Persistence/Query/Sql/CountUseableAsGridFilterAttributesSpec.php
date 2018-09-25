@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace spec\Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
+namespace spec\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountScopableAttributes;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUseableAsGridFilterAttributes;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUseableAsGridFilterAttributes;
 use Prophecy\Argument;
 
 class CountUseableAsGridFilterAttributesSpec extends ObjectBehavior

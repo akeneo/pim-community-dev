@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
+namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
 
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
 
 class AverageMaxScopableAttributesPerFamilyIntegration extends QueryTestCase
 {

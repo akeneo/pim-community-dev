@@ -2,46 +2,46 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
+namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
 
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
 
-class AverageMaxLocalizableAndScopableAttributesPerFamilyIntegration extends QueryTestCase
+class AverageMaxLocalizableAttributesPerFamilyIntegration extends QueryTestCase
 {
     public function testGetAverageAndMaximumNumberOfAttributesPerFamily()
     {
-        $query = $this->get('pim_volume_monitoring.persistence.query.average_max_localizable_and_scopable_attributes_per_family');
-        $this->createFamilyWithLocalizableAndScopableAttributes(12, 30);
-        $this->createFamilyWithLocalizableAndScopableAttributes(0, 10);
-        $this->createFamilyWithLocalizableAndScopableAttributes(8, 10);
+        $query = $this->get('pim_volume_monitoring.persistence.query.average_max_localizable_attributes_per_family');
+        $this->createFamilyWithLocalizableAttributes(10, 30);
+        $this->createFamilyWithLocalizableAttributes(0, 10);
+        $this->createFamilyWithLocalizableAttributes(3, 10);
 
         $volume = $query->fetch();
 
-        Assert::assertEquals(80, $volume->getMaxVolume());
-        Assert::assertEquals(40, $volume->getAverageVolume());
-        Assert::assertEquals('average_max_localizable_and_scopable_attributes_per_family', $volume->getVolumeName());
+        Assert::assertEquals(30, $volume->getMaxVolume());
+        Assert::assertEquals(17, $volume->getAverageVolume());
+        Assert::assertEquals('average_max_localizable_attributes_per_family', $volume->getVolumeName());
         Assert::assertEquals(false, $volume->hasWarning());
     }
 
     /**
-     * @param int $numberOfLocScopAttributes
+     * @param int $numberOfLocAttributes
      * @param int $numberTotalAttribute
      */
-    private function createFamilyWithLocalizableAndScopableAttributes(int $numberOfLocScopAttributes, int $numberTotalAttribute): void
+    private function createFamilyWithLocalizableAttributes(int $numberOfLocAttributes, int $numberTotalAttribute): void
     {
         $family = $this->createFamily([
             'code' => 'family_' . rand()
         ]);
 
         $i = 0;
-        while ($i < $numberOfLocScopAttributes) {
+        while ($i < $numberOfLocAttributes-1) {
             $attribute = $this->createAttribute([
                 'code'     => 'new_attribute_' . rand(),
                 'type'     => 'pim_catalog_textarea',
                 'group'    => 'other',
                 'localizable' => true,
-                'scopable' => true
+                'scopable' => false
             ]);
 
             $family->addAttribute($attribute);
