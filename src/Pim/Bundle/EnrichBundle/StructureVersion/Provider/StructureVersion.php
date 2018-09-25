@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\StructureVersion\Provider;
 
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

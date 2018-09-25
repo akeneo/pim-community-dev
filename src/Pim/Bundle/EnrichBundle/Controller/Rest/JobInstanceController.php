@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
-use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;

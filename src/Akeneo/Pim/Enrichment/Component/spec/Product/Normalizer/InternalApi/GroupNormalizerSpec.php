@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

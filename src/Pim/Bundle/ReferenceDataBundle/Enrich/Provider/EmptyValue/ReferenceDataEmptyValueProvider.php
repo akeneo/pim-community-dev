@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 
 /**
  * EmptyValue provider for reference data attributes

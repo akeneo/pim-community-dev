@@ -943,3 +943,22 @@
 - Move `Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\ObjectIdentifierType`
 - Move `Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType`
 - Move `Pim\Bundle\EnrichBundle\Form\Type\UploadType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\UploadType`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider` to `Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductFormProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\ProductModelFormProvider` to `Akeneo\Pim\Enrichment\Bundle\Provider\Form\ProductModelFormProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider` to `Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\BaseEmptyValueProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\BaseEmptyValueProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\EmptyValueChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\EmptyValueProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\BaseFieldProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\BaseFieldProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FieldChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FieldProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\WysiwygFieldProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Field\WysiwygFieldProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\BaseFilterProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\BaseFilterProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FilterChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FilterProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormChainedProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\NoCompatibleFormProviderFoundException` to `Akeneo\Platform\Bundle\UIBundle\Provider\Form\NoCompatibleFormProviderFoundException`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\FormExtensionProvider` to `Akeneo\Platform\Bundle\UIBundle\Provider\FormExtensionProvider`
+- Move `Pim\Bundle\EnrichBundle\Provider\Form\StructureVersionProviderInterface` to `Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface`
+- Remove `Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider`
