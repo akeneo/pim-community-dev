@@ -64,6 +64,14 @@ define(
                     filtersManager.listenTo(this, 'update', filtersManager._onFilterUpdated);
                 });
 
+                this.listenTo(mediator, 'filters-column:init', () => {
+                    mediator.trigger('filters-column:update-filter', {category: this._getTreeState()}, true)
+
+                    this.listenTo(this, 'update', () => {
+                        mediator.trigger('filters-column:update-filter', {category: this._getTreeState()})
+                    })
+                })
+
                 mediator.on('grid_action_execute:product-grid:delete', function() {
                     TreeView.refresh();
                 });
