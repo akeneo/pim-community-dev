@@ -38,7 +38,7 @@ class FiltersColumn extends BaseView {
     >
         <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
         <div class="filters-column"></div>
-        <div class="AknColumn-bottomButtonContainer"><div class="AknButton AknButton--apply close">Done</div></div>
+        <div class="AknColumn-bottomButtonContainer AknColumn-bottomButtonContainer--sticky"><div class="AknButton AknButton--apply close">Done</div></div>
     </div>
   `
 
@@ -74,12 +74,23 @@ class FiltersColumn extends BaseView {
 
   togglePanel() {
     this.opened = !this.opened
+    let timer: any = null
 
     if (this.opened) {
-       $(this.filterList).css({ left: 360, display: 'block' })
-       $('input[type="search"]', this.filterList).focus();
+       $(this.filterList).css({display: 'block'})
+
+       timer = setTimeout(() => {
+        $(this.filterList).css({ left: 360 })
+        $('input[type="search"]', this.filterList).focus();
+        clearTimeout(timer)
+       }, 100)
+
     } else {
-       $(this.filterList).css({ left: 59, display: 'none' })
+       $(this.filterList).css({ left: 59 })
+       timer = setTimeout(() => {
+        $(this.filterList).css({display: 'none'})
+        clearTimeout(timer)
+       }, 100)
     }
   }
 
@@ -136,6 +147,11 @@ class FiltersColumn extends BaseView {
   searchFilters(event: JQueryEventObject) {
     if (null !== this.timer) {
         clearTimeout(this.timer)
+    }
+
+    if (27 === event.keyCode) {
+        $(this.filterList).find('input[type="search"]').val('').trigger('keyup')
+        return this.togglePanel();
     }
 
     if (13 === event.keyCode) {
