@@ -3,6 +3,7 @@ Feature: Import categories
   As a product manager
   I need to be able to import categories
 
+  @critical
   Scenario: Successfully import categories in CSV
     Given the "footwear" catalog configuration
     And the following CSV file to import:

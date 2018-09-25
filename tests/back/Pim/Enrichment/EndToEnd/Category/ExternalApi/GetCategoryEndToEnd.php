@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetCategoryEndToEnd extends ApiTestCase
 {
+    /**
+     * @critical
+     */
     public function testGetACategory()
     {
         $client = $this->createAuthenticatedClient();
