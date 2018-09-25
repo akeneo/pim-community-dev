@@ -1109,3 +1109,9 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Component\Enrich\Job\Delete
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Component\Enrich\Query\AscendantCategoriesInterface/Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Component\Enrich\Model\AvailableAttributes/Akeneo\Pim\Structure\Component\Model\AvailableAttributes/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface/Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface/g'
+
+find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)uiLocale/\1user_default_locale/gi'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)catalogLocale/\1catalog_default_locale/gi'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)catalogScope/\1catalog_default_scope/gi'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)firstName/\1first_name/gi'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/\(UserContext.[gs]et(['\''\"'']\)lastName/\1last_name/gi'

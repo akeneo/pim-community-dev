@@ -27,14 +27,14 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   convertBackendItem(item: any) {
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
+      text: i18n.getLabel(item.labels, UserContext.get('catalog_default_locale'), item.code),
       group: {
         text: 'toto'
         // (
         //   item.group ?
         //     i18n.getLabel(
         //       this.attributeGroups[item.group].labels,
-        //       UserContext.get('catalogLocale'),
+        //       UserContext.get('catalog_default_locale'),
         //       this.attributeGroups[item.group]
         //     ) : ''
         // )
