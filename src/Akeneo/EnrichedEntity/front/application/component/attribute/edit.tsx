@@ -31,6 +31,7 @@ interface StateProps {
     locale: string;
   };
   isSaving: boolean;
+  isActive: boolean;
   attribute: Attribute;
   errors: ValidationError[];
 }
@@ -126,8 +127,8 @@ class Edit extends React.Component<EditProps> {
   render(): JSX.Element | JSX.Element[] | null {
     return (
       <React.Fragment>
-        <div className="AknQuickEdit">
-          {this.props.isSaving ? <div className="AknLoadingMask" /> : null}
+        <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`}>
+          <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
             <header className="AknSubsection-title AknSubsection-title--sticky">
               {__('pim_enriched_entity.attribute.edit.common.title')}
@@ -280,6 +281,7 @@ export default connect(
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
     return {
+      isActive: state.attribute.isActive,
       attribute: denormalizeAttribute(state.attribute.data),
       errors: state.attribute.errors,
       isSaving: state.attribute.isSaving,

@@ -131,7 +131,8 @@ HTML;
             'CONTENT_TYPE'          => 'application/json',
         ];
         $body = $this->getBody($request);
-        $client->request($request['method'], $request['relative_url'], [], [], $headers, $body);
+        $url = $this->router->generate($request['route'], $request['query']);
+        $client->request($request['method'], $url, [], [], $headers, $body);
     }
 
     private function getBody(array $expectedResponse): string

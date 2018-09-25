@@ -13,6 +13,7 @@ import {recordEditionReceived} from 'akeneoenrichedentity/domain/event/record/ed
 import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
 import {setUpSidebar} from 'akeneoenrichedentity/application/action/sidebar';
 import {updateActivatedLocales} from 'akeneoenrichedentity/application/action/locale';
+import {updateChannels} from 'akeneoenrichedentity/application/action/channel';
 import {updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
 import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
@@ -42,6 +43,7 @@ class RecordEditController extends BaseController {
         this.store.dispatch(setUpSidebar('akeneo_enriched_entities_record_edit') as any);
         this.store.dispatch(updateCurrentTab(route.params.tab));
         this.store.dispatch(updateActivatedLocales() as any);
+        this.store.dispatch(updateChannels() as any);
         document.addEventListener('keydown', shortcutDispatcher(this.store));
 
         mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-enriched-entity'});
@@ -75,6 +77,9 @@ class RecordEditController extends BaseController {
   }
 
   isDirty() {
+    if (undefined === this.store) {
+      return false;
+    }
     const state = this.store.getState();
 
     return state.form.state.isDirty;

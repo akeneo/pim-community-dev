@@ -23,6 +23,8 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
     const response = await page.evaluate(async () => {
       const createRecord = require('akeneoenrichedentity/domain/model/record/record').createRecord;
       const createRecordCode = require('akeneoenrichedentity/domain/model/record/code').createCode;
+      const createValueCollection = require('akeneoenrichedentity/domain/model/record/value-collection')
+        .createValueCollection;
       const createIdentifier = require('akeneoenrichedentity/domain/model/record/identifier').createIdentifier;
       const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
         .createIdentifier;
@@ -35,7 +37,8 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
         createEnrichedEntityIdentifier('designer'),
         createRecordCode('starck'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'}),
-        Image.createEmpty()
+        Image.createEmpty(),
+        createValueCollection([])
       );
 
       return await saver.create(recordCreated);
@@ -95,6 +98,8 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
         .createIdentifier;
       const Image = require('akeneoenrichedentity/domain/model/file').default;
       const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
+      const createValueCollection = require('akeneoenrichedentity/domain/model/record/value-collection')
+        .createValueCollection;
       const saver = require('akeneoenrichedentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(
@@ -102,7 +107,8 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
         createEnrichedEntityIdentifier('designer'),
         createRecordCode('invalid/identifier'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'}),
-        Image.createEmpty()
+        Image.createEmpty(),
+        createValueCollection([])
       );
 
       return await saver.create(recordCreated);

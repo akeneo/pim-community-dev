@@ -53,7 +53,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
                 $value['data'] = $valueCollection[$key]['data'];
             }
 
-            $allValues[$key] = $value;
+            $allValues[] = $value;
         }
 
         $recordDetails = new RecordDetails(

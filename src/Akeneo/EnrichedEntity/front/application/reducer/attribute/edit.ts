@@ -20,7 +20,7 @@ import {NormalizedIsTextarea} from 'akeneoenrichedentity/domain/model/attribute/
 import {NormalizedMaxLength} from 'akeneoenrichedentity/domain/model/attribute/type/text/max-length';
 
 export interface EditState {
-  active: boolean;
+  isActive: boolean;
   isDirty: boolean;
   isSaving: boolean;
   originalData: string;
@@ -29,7 +29,7 @@ export interface EditState {
 }
 
 const initEditState = (): EditState => ({
-  active: false,
+  isActive: false,
   isDirty: false,
   isSaving: false,
   originalData: '',
@@ -46,9 +46,9 @@ const initEditState = (): EditState => ({
     max_length: null,
     is_textarea: false,
     is_rich_text_editor: false,
-    validation_rule: ValidationRuleOption.Email,
-    regular_expression: '',
-  },
+    validation_rule: 'none',
+    regular_expression: null,
+  } as NormalizedTextAttribute,
   errors: [],
 });
 
@@ -184,7 +184,7 @@ export default (
 ) => {
   switch (type) {
     case 'ATTRIBUTE_LIST_UPDATED':
-      if (!state.active) {
+      if (!state.isActive) {
         return state;
       }
       const newAttribute = attributes.find(
@@ -209,7 +209,7 @@ export default (
     case 'ATTRIBUTE_EDITION_START':
       state = {
         ...state,
-        active: true,
+        isActive: true,
         data: attribute,
         isDirty: false,
         originalData: JSON.stringify(attribute),
@@ -258,7 +258,7 @@ export default (
     case 'DISMISS':
       state = {
         ...state,
-        active: false,
+        isActive: false,
         isDirty: false,
       };
       break;

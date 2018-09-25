@@ -8,6 +8,8 @@ describe('akeneo > enriched entity > application > hydrator --- record', () => {
         enriched_entity_identifier: 'designer',
         code: 'starck',
         labels: {en_US: 'Stark'},
+        image: null,
+        values: [],
       })
     );
   });

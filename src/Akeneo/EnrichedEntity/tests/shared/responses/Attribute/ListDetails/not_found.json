@@ -1,7 +1,10 @@
 {
   "request": {
     "method": "GET",
-    "relative_url": "/rest/enriched_entity/unknown_enriched_Entity/attribute"
+    "route": "akeneo_enriched_entities_attribute_index_rest",
+    "query": {
+      "enrichedEntityIdentifier": "unknown_enriched_Entity"
+    }
   },
   "response": {
     "status": 404

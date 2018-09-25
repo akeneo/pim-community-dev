@@ -2,7 +2,7 @@ class InvalidTypeError extends Error {}
 
 export type NormalizedAttributeIdentifier = string;
 
-export default class Identifier {
+export default class AttributeIdentifier {
   private constructor(readonly identifier: string) {
     if ('string' !== typeof identifier) {
       throw new InvalidTypeError('AttributeIdentifier expect a string as parameter to be created');
@@ -11,15 +11,15 @@ export default class Identifier {
     Object.freeze(this);
   }
 
-  public static create(identifier: string): Identifier {
-    return new Identifier(identifier);
+  public static create(identifier: string): AttributeIdentifier {
+    return new AttributeIdentifier(identifier);
   }
 
-  public static createFromNormalized(identifier: NormalizedAttributeIdentifier): Identifier {
-    return new Identifier(identifier);
+  public static createFromNormalized(identifier: NormalizedAttributeIdentifier): AttributeIdentifier {
+    return new AttributeIdentifier(identifier);
   }
 
-  public equals(identifier: Identifier): boolean {
+  public equals(identifier: AttributeIdentifier): boolean {
     return this.identifier === identifier.identifier;
   }
 
@@ -32,5 +32,5 @@ export default class Identifier {
   }
 }
 
-export const createIdentifier = Identifier.create;
-export const denormalizeIdentifier = Identifier.createFromNormalized;
+export const createIdentifier = AttributeIdentifier.create;
+export const denormalizeIdentifier = AttributeIdentifier.createFromNormalized;

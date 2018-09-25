@@ -2,7 +2,7 @@ import Saver from 'akeneoenrichedentity/domain/saver/saver';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import handleError from 'akeneoenrichedentity/infrastructure/saver/error-handler';
+import handleError from 'akeneoenrichedentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 

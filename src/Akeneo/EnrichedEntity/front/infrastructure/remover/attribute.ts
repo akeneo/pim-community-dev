@@ -3,7 +3,7 @@ import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/ide
 import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import errorHandler from 'akeneoenrichedentity/infrastructure/saver/error-handler';
+import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 

@@ -1,7 +1,11 @@
 {
   "request": {
     "method": "GET",
-    "relative_url": "/rest/enriched_entity/designer/record/wrong_record_code"
+    "route": "akeneo_enriched_entities_records_get_rest",
+    "query": {
+      "enrichedEntityIdentifier": "designer",
+      "recordCode": "wrong_record_code"
+    }
   },
   "response": {
     "status": 404

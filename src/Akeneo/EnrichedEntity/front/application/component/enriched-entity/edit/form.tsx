@@ -23,11 +23,11 @@ export default class EditForm extends React.Component<FormProps> {
     }
   }
 
-  updateLabel = (event: any) => {
+  updateLabel = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.onLabelUpdated(event.target.value, this.props.locale);
   };
 
-  keyDown = (event: any) => {
+  keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if ('Enter' === event.key) {
       this.props.onPressEnter();
     }
