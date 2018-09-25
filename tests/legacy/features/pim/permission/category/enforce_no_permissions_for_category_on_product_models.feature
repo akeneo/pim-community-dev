@@ -35,6 +35,7 @@ Feature: Enforce no permissions for a category
     And I filter by "family" with operator "in list" and value "Clothing"
     Then I should not see the product models plain
 
+  @critical
   Scenario: A user can't see a product model if he doesn't have view permission on at least of one its categories
     Given I am logged in as "Julia"
     And I am on the "tshirts" category page

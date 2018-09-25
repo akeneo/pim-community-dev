@@ -7,7 +7,7 @@ Feature: Display the missing required attributes
   Background:
     Given the "catalog_modeling" catalog configuration
 
-  @skip @info unstable
+  @critical @skip @info unstable
   Scenario: Display missing required attributes on product models
     Given I am logged in as "Julia"
     When I am on the "apollon" product model page
@@ -27,6 +27,7 @@ Feature: Display the missing required attributes
     Then I should not see the text "5 missing required attributes"
     But I should see the text "3 missing required attributes"
 
+  @critical
   Scenario: Don't display missing required attribute if attribute is not editable because of permission on attribute group
     Given I am logged in as "Julia"
     When I am on the "product" attribute group page
@@ -44,7 +45,7 @@ Feature: Display the missing required attributes
     When I am on the "apollon_pink" product model page
     Then I should not see any missing required attribute
 
-  Scenario: Don't display missing required attribute if attribute is not editable because of permission on local
+  Scenario: Don't display missing required attribute if attribute is not editable because of permission on locale
     Given I am logged in as "Julia"
     When I am on the "apollon" product model page
     And I fill in the following information:
@@ -59,6 +60,7 @@ Feature: Display the missing required attributes
     Then the field Model description should be disabled
     And I should see the text "1 missing required attribute" in the total missing required attributes
 
+  @critical
   Scenario: Don't display missing required attribute if product is not editable because of categories
     Given I am logged in as "Mary"
     When I am on the "watch" product page

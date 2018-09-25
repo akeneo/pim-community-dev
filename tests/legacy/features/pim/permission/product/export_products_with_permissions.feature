@@ -4,6 +4,7 @@ Feature: Export products according to the granted permissions
   As a product manager
   I need to be able to export the products according to the granted permissions
 
+  @critical
   Scenario: Successfully apply permission on product export with the UI
     Given an "apparel" catalog configuration
     And the following job "tablet_product_export" configuration:

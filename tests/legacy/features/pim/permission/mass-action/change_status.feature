@@ -14,6 +14,7 @@ Feature: Disabled mass edit status of product when user is not owner
       | pump     |          | winter_collection | Pump          | 15 EUR, 20 USD | 41   | blue  | no      |
     And I am logged in as "Mary"
 
+  @critical
   Scenario: Impossible to mass edit status if not owner of products
     And I am on the products grid
     When I select rows boots, sneakers and pump

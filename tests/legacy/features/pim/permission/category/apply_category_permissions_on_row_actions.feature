@@ -4,6 +4,7 @@ Feature: Apply defined category permissions on product grid row actions
   As Julia
   I want to see product grid row actions only when I have the rights to execute them
 
+  @critical
   Scenario: Display the product classification action only if the user owns the product
     Given a "clothing" catalog configuration
     And the following products:

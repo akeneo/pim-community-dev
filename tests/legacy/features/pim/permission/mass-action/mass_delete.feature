@@ -39,6 +39,7 @@ Feature: Delete many products at once that I own
     And I am on the products grid
     Then I should not see products blue_sandal and black_sandal
 
+  @critical
   Scenario: Successfully mass delete a selection of products categorized in at least one category I own
     Given the following products:
       | sku        | categories                      |
@@ -55,6 +56,7 @@ Feature: Delete many products at once that I own
     And I am on the products grid
     Then I should not see products blue_boot and black_boot
 
+  @critical
   Scenario: Successfully mass delete a selection of products with at least one product I don't own
     Given the following category:
       | code    | label-en_US | parent          |

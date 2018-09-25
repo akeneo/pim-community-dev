@@ -4,6 +4,7 @@ Feature: Product creation
   As a product manager
   I need to be able to manually create a product
 
+  @critical
   Scenario: Successfully display an error message when user have no access rights on the identifier attribute
     Given the "default" catalog configuration
     And the following attribute group accesses:

@@ -22,6 +22,7 @@ Feature: Show a product product model
       | Allowed to own products  |          |
     And I save the category
 
+  @critical
   Scenario: Seeing the view actions on the product grid
     Given I am on the products grid
     When I open the category tree
@@ -35,6 +36,7 @@ Feature: Show a product product model
     And I should not be able to view the "Classify the product" action of the row which contains "caelus"
     And I should not be able to view the "Delete the product" action of the row which contains "caelus"
 
+  @critical
   Scenario: View a product model in read only mode
     Given I edit the "caelus" product model
     When I visit the "Erp" group
