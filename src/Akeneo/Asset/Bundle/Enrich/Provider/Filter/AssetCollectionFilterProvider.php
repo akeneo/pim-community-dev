@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Enrich\Provider\Filter;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
+use Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface;
 
 /**
  * Filter provider for asset collections
