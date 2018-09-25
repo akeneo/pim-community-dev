@@ -20,6 +20,9 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\At
  */
 class AttributesMappingFake implements AttributesMappingApiInterface
 {
+    /** @var array */
+    private $mappings = [];
+
     /**
      * @param string $familyCode
      *
@@ -46,5 +49,6 @@ class AttributesMappingFake implements AttributesMappingApiInterface
      */
     public function update(string $familyCode, array $mapping): void
     {
+        $this->mappings[$familyCode] = $mapping;
     }
 }

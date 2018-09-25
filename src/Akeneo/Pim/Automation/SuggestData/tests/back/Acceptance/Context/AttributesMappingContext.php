@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
@@ -26,14 +28,21 @@ use Webmozart\Assert\Assert;
 final class AttributesMappingContext implements Context
 {
     /** @var GetAttributesMappingByFamilyHandler */
-    private $attributesMappingByFamilyHandler;
+    private $getAttributesMappingByFamilyHandler;
+
+    /** @var UpdateAttributesMappingByFamilyHandler */
+    private $updateAttributesMappingByFamilyHandler;
 
     /**
-     * @param GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
+     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
+     * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
      */
-    public function __construct(GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler)
-    {
-        $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
+    public function __construct(
+        GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
+        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+    ) {
+        $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
+        $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
     }
 
     /**
@@ -45,7 +54,7 @@ final class AttributesMappingContext implements Context
     public function theRetrievedAttributesMappingShouldBe($familyCode, TableNode $expectedAttributes): void
     {
         $query = new GetAttributesMappingByFamilyQuery($familyCode);
-        $attributesMappingResponse = $this->attributesMappingByFamilyHandler->handle($query);
+        $attributesMappingResponse = $this->getAttributesMappingByFamilyHandler->handle($query);
 
         $attributesMapping = [];
         foreach ($attributesMappingResponse as $attribute) {
@@ -58,6 +67,30 @@ final class AttributesMappingContext implements Context
         }
 
         Assert::eq($this->buildExpectedAttributesMapping($expectedAttributes), $attributesMapping);
+    }
+
+    /**
+     * @When the attributes are mapped for the family :familyCode as follows:
+     *
+     * @param string $familyCode
+     * @param TableNode $mappings
+     */
+    public function theAttributesAreMappedForTheFamilyAsFollows($familyCode, TableNode $mappings): void
+    {
+        $requestMapping = [];
+        foreach ($mappings->getColumnsHash() as $mapping) {
+            $requestMapping[$mapping['target_attribute_code']] = [
+                'pim_ai_attribute' => [
+                    'label' => 'A label',
+                    'type' => 'text'
+                ],
+                'attribute' => $mapping['pim_attribute_code'],
+                'status' => (int) $mapping['status']
+            ];
+        }
+
+        $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
+        $this->updateAttributesMappingByFamilyHandler->handle($command);
     }
 
     private function buildExpectedAttributesMapping(TableNode $expectedAttributes)
