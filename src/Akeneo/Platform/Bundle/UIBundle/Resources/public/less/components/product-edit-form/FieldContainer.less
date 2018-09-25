@@ -14,7 +14,7 @@
   &-label {
     color: @AknSlateGrey;
     flex-grow: 1;
-    font-size: @AknFontSizeBig;
+    font-size: @AknDefaultFontSize;
 
     &--grey {
       font-size: 10px;
@@ -105,7 +105,7 @@
   }
 
   &--inline &-inputContainer {
-    width: @AknMaxFormWidth;
+    width: 350px;
     margin-right: 10px;
     flex-shrink: 0;
   }
@@ -115,5 +115,9 @@
     flex-direction: column;
     justify-content: center;
     padding-right: 10px;
+  }
+
+  &--big {
+    width: @AknMaxFormWidth * 2;
   }
 }
