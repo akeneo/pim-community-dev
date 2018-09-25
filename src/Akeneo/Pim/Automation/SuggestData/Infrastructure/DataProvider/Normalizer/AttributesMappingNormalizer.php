@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping as DomainAttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 
 /**
  * Prepare AttributesMapping model from Domain layer in order to be used by PIM.ai client
@@ -22,6 +23,13 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
  */
 class AttributesMappingNormalizer
 {
+    /** @var string[] */
+    const PIM_AI_MAPPING_STATUS = [
+        DomainAttributeMapping::ATTRIBUTE_PENDING => AttributeMapping::STATUS_PENDING,
+        DomainAttributeMapping::ATTRIBUTE_MAPPED => AttributeMapping::STATUS_ACTIVE,
+        DomainAttributeMapping::ATTRIBUTE_UNMAPPED => AttributeMapping::STATUS_INACTIVE
+    ];
+
     /**
      * @param AttributeMapping[] $attributesMapping
      *
@@ -49,7 +57,7 @@ class AttributesMappingNormalizer
             $result[] = [
                 'from' => ['id' => $attributeMapping->getTargetAttributeCode()],
                 'to' => $normalizedAttribute,
-                'status' => $attributeMapping->getStatus(), //TODO: Should be managed in APAI-99
+                'status' => static::PIM_AI_MAPPING_STATUS[$attributeMapping->getStatus()]
             ];
         }
 

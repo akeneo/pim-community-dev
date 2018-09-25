@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer;
 
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping as DomainAttributeMapping;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
@@ -28,27 +29,27 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AttributesMappingNormalizer::class);
     }
 
-    function it_normalizes_attributes_mapping_that_does_not_contain_attribute(AttributeMapping $attributeMapping)
+    function it_normalizes_attributes_mapping_that_does_not_contain_attribute(DomainAttributeMapping $attributeMapping)
     {
         $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
-        $attributeMapping->getStatus()->willReturn(AttributeMapping::ATTRIBUTE_UNMAPPED);
+        $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_UNMAPPED);
         $attributeMapping->getAttribute()->willReturn(null);
 
         $expectedData = [
             'from' => ['id' => 'target_attr'],
             'to' => null,
-            'status' => AttributeMapping::ATTRIBUTE_UNMAPPED
+            'status' => AttributeMapping::STATUS_INACTIVE
         ];
 
         $this->normalize([$attributeMapping])->shouldReturn([$expectedData]);
     }
 
     function it_normalizes_attributes_mapping_that_contains_attribute(
-        AttributeMapping $attributeMapping,
+        DomainAttributeMapping $attributeMapping,
         AttributeInterface $attribute
     ) {
         $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
-        $attributeMapping->getStatus()->willReturn(AttributeMapping::ATTRIBUTE_MAPPED);
+        $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
         $attributeMapping->getAttribute()->willReturn($attribute);
 
         $attribute->getCode()->willReturn('pim_attr');
@@ -62,7 +63,7 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
                 'label' => ['en_US' => 'Pim Attribute'],
                 'type' => 'text'
             ],
-            'status' => AttributeMapping::ATTRIBUTE_MAPPED
+            'status' => AttributeMapping::STATUS_ACTIVE
         ];
 
         $this->normalize([$attributeMapping])->shouldReturn([$expectedData]);
