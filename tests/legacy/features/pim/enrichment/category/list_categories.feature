@@ -4,6 +4,7 @@ Feature: List categories
   As a product manager
   I need to be able to list existing categories
 
+  @critical
   Scenario: Successfully display categories
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"

@@ -4,6 +4,7 @@ Feature: Export categories
   As a product manager
   I need to be able to import and export categories
 
+  @critical
   Scenario: Successfully export categories in CSV
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_category_export" configuration:

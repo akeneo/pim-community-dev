@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetCategoryIntegration extends ApiTestCase
 {
+    /**
+     * @critical
+     */
     public function testGetACategory()
     {
         $client = $this->createAuthenticatedClient();
