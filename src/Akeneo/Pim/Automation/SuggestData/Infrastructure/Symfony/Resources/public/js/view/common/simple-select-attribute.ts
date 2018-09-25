@@ -5,7 +5,7 @@ const BaseSimpleSelect = require('pim/form/common/fields/simple-select-async');
 const i18n = require('pim/i18n');
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
-const LineTemplate = require('pimee/template/common/attribute-line');
+const LineTemplate = require('pim/template/attribute/attribute-line');
 
 /**
  * Attributes simple select

@@ -11,6 +11,8 @@
  * file that was distributed with this source code.
  */
 
+// TODO To delete
+
 namespace Akeneo\Pim\Permission\Bundle\Form\Type;
 
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType as BaseProductGridFilterChoiceType;

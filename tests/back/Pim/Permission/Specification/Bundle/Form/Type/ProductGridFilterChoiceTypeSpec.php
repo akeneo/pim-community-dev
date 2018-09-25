@@ -1,5 +1,7 @@
 <?php
 
+// TODO To delete
+
 namespace Specification\Akeneo\Pim\Permission\Bundle\Form\Type;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
