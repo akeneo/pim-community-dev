@@ -6,7 +6,20 @@
   width: 100%;
   border-radius: 2px;
   padding: 12px;
-  height: 150px;
+  min-height: 150px;
+  max-height: 400px;
+
+  &--withBottomBorder {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+
+    &:focus {
+      border-color: @AknBlue;
+      outline: none;
+    }
+  }
 
   &-layer {
     border: 1px solid @AknBorderColor;
@@ -31,6 +44,10 @@
   &[disabled] {
     background: @AknDisabledInputColor;
     cursor: not-allowed;
+  }
+
+  &--narrow {
+    width: @AknMaxFormWidth;
   }
 
   &--small {

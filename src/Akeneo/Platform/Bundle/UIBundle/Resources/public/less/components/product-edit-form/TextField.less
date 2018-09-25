@@ -50,6 +50,12 @@
     border-left: none;
     border-right: none;
     border-bottom: 1px solid @AknMediumGrey;
+    border-radius: 0;
+
+    &:focus {
+      outline: none;
+      border-color: @AknBlue;
+    }
   }
 
   &--withDashedBottomBorder {
@@ -91,6 +97,10 @@
     margin-top: -30px;
   }
 
+  &--narrow {
+    width: @AknMaxFormWidth;
+  }
+
   &--disabled,
   &[readonly],
   &[disabled] {
@@ -105,6 +115,11 @@
 
   &--localizable {
     width: ~"calc(100% - 4px)";
+
+    &.AknTextField--narrow {
+      width: @AknMaxFormWidth - 4px;
+    }
+
     position: relative;
   }
 }

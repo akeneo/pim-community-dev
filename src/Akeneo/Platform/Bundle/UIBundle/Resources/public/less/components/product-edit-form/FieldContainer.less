@@ -9,6 +9,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+
+    &--small {
+      margin-bottom: 0;
+
+      & .AknFieldContainer-label {
+        font-size: 10px;
+        color: @AknGrey;
+      }
+    }
   }
 
   &-label {
@@ -17,8 +26,8 @@
     font-size: @AknDefaultFontSize;
 
     &--grey {
-      font-size: 10px;
       color: @AknGrey;
+      font-size: 10px;
     }
 
     &--withImage {
@@ -56,7 +65,6 @@
   &-inputContainer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     position: relative;
   }
 
