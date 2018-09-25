@@ -30,8 +30,7 @@ class AttributesMappingNormalizer
     public function normalize(array $attributesMapping): array
     {
         $result = [];
-        foreach ($attributesMapping as $attributeMapping)
-        {
+        foreach ($attributesMapping as $attributeMapping) {
             $attribute = $attributeMapping->getAttribute();
 
             if (null === $attribute) {

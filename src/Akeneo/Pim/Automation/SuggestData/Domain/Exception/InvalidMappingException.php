@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Domain\Exception;
 
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Exception thrown when trying to save a not valid mapping.
  *
