@@ -69,7 +69,7 @@ class InMemoryFamilyRepository implements IdentifiableObjectRepositoryInterface,
 
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->families->toArray();
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
