@@ -101,11 +101,9 @@ class CategoryTreeController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @return array
-     *
-     * @Template
+     * @return Response
      */
-    public function listTreeAction(Request $request)
+    public function listTreeAction(Request $request): Response
     {
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
             throw new AccessDeniedException();
@@ -119,13 +117,16 @@ class CategoryTreeController extends Controller
             $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
         }
 
-        return [
-            'trees'          => $this->categoryRepository->getTrees(),
-            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
-            'include_sub'    => (bool) $request->get('include_sub', false),
-            'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $this->rawConfiguration['related_entity']
-        ];
+        return $this->render(
+            'AkeneoPimEnrichmentBundle:CategoryTree:listTree.json.twig',
+            [
+                'trees'          => $this->categoryRepository->getTrees(),
+                'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
+                'include_sub'    => (bool) $request->get('include_sub', false),
+                'item_count'     => (bool) $request->get('with_items_count', true),
+                'related_entity' => $this->rawConfiguration['related_entity']
+            ]
+        );
     }
 
     /**
@@ -181,8 +182,6 @@ class CategoryTreeController extends Controller
      *
      * @throws AccessDeniedException
      *
-     * @Template
-     *
      * @return Response
      */
     public function childrenAction(Request $request)
@@ -212,9 +211,9 @@ class CategoryTreeController extends Controller
         $categories = $this->getChildrenCategories($request, $selectNode, $parent);
 
         if (null === $selectNode) {
-            $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
+            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children.json.twig';
         } else {
-            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
+            $view = 'AkeneoPimEnrichmentBundle:CategoryTree:children-tree.json.twig';
         }
 
         $withItemsCount = (bool) $request->get('with_items_count', false);
@@ -236,23 +235,24 @@ class CategoryTreeController extends Controller
     }
 
     /**
-     * @Template()
-     *
      * @throws AccessDeniedException
      *
-     * @return array
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
             throw new AccessDeniedException();
         }
 
-        return [
-            'related_entity' => $this->rawConfiguration['related_entity'],
-            'route'          => $this->rawConfiguration['route'],
-            'acl'            => $this->rawConfiguration['acl'],
-        ];
+        return $this->render(
+            'AkeneoPimEnrichmentBundle:CategoryTree:index.html.twig',
+            [
+                'related_entity' => $this->rawConfiguration['related_entity'],
+                'route'          => $this->rawConfiguration['route'],
+                'acl'            => $this->rawConfiguration['acl'],
+            ]
+        );
     }
 
     /**
@@ -300,7 +300,7 @@ class CategoryTreeController extends Controller
         }
 
         return $this->render(
-            sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
                 'form'           => $form->createView(),
                 'related_entity' => $this->rawConfiguration['related_entity'],
@@ -342,7 +342,7 @@ class CategoryTreeController extends Controller
         }
 
         return $this->render(
-            sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
                 'form'           => $form->createView(),
                 'related_entity' => $this->rawConfiguration['related_entity'],

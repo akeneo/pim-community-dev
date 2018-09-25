@@ -96,14 +96,6 @@ services:
         arguments:
             - '@pim_internal_api_serializer'
 
-    pim_enrich.normalizer.incomplete_values:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer'
-        arguments:
-            - '@pim_catalog.entity_with_family.required_value_collection_factory'
-            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
     pim_enrich.normalizer.completeness_collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\CompletenessCollectionNormalizer'
         arguments:
@@ -152,5 +144,13 @@ services:
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.normalizer.standard.product.parent_associations'
             - '@pim_catalog.context.catalog'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 110 }
+
+    pim_enrich.normalizer.incomplete_values:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer'
+        arguments:
+            - '@pim_catalog.entity_with_family.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
