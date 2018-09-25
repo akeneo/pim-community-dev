@@ -33,9 +33,8 @@ class AttributesMappingNormalizer
         foreach ($attributesMapping as $attributeMapping) {
             $attribute = $attributeMapping->getAttribute();
 
-            if (null === $attribute) {
-                $normalizedAttribute = null;
-            } else {
+            $normalizedAttribute = null;
+            if (null !== $attribute) {
                 $attribute->setLocale('en_US');
                 $normalizedAttribute = [
                     'id' => $attribute->getCode(),
