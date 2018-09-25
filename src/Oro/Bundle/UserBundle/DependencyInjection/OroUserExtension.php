@@ -29,5 +29,7 @@ class OroUserExtension extends Extension
         $container->setParameter('oro_user.reset.ttl', $config['reset']['ttl']);
         $container->setParameter('oro_user.email', [$config['email']['address'] => $config['email']['name']]);
         $container->setParameter('oro_user.privileges', $config['privileges']);
+        $container->setParameter('oro_user.login_form.action_route', $config['login_form']['action_route']);
+        $container->setParameter('oro_user.login_form.additional_hidden_fields', $config['login_form']['additional_hidden_fields']);
     }
 }

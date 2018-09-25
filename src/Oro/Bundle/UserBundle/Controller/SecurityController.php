@@ -24,9 +24,11 @@ class SecurityController extends Controller
 
         return [
             // last username entered by the user
-            'last_username' => $lastUsername,
-            'csrf_token'    => $csrfToken,
-            'error'         => $error,
+            'last_username'            => $lastUsername,
+            'csrf_token'               => $csrfToken,
+            'error'                    => $error,
+            'action_route'             => $this->getParameter('oro_user.login_form.action_route'),
+            'additional_hidden_fields' => $this->getParameter('oro_user.login_form.additional_hidden_fields'),
         ];
     }
 
