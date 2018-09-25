@@ -55,7 +55,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param string                          $entityName
      *
-     * @todo merge
+     * @todo merge update the $authorizationChecker parameter to be mandatory instead of optional.
      */
     public function __construct(
         EntityManagerInterface $em,
@@ -287,7 +287,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      *
      * @return array
      *
-     * @todo merge
+     * @todo merge remove the check "null !== $this->authorizationChecker".
      */
     private function getFilteredProducts(array $products): array
     {
