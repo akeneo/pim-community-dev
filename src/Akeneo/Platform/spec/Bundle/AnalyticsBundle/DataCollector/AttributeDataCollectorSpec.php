@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector;
 use PhpSpec\ObjectBehavior;

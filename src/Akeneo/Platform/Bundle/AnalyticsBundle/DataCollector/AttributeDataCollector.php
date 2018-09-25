@@ -44,25 +44,24 @@ class AttributeDataCollector implements DataCollectorInterface
     private $localizableAndScopableAttributePerFamilyAverageMaxQuery;
 
     /**
-     * @merge TODO - on master - remove '= null'
-     * @param CountQuery        $attributeCountQuery
-     * @param CountQuery        $localizableAttributeCountQuery
-     * @param CountQuery        $scopableAttributeCountQuery
-     * @param CountQuery        $localizableAndScopableAttributeCountQuery
-     * @param CountQuery        $useableAsGridFilterAttributeCountQuery
-     * @param AverageMaxQuery   $localizableAttributePerFamilyAverageMaxQuery
-     * @param AverageMaxQuery   $scopableAttributePerFamilyAverageMaxQuery
-     * @param AverageMaxQuery   $localizableAndScopableAttributePerFamilyAverageMaxQuery
+     * @param CountQuery      $attributeCountQuery
+     * @param CountQuery      $localizableAttributeCountQuery
+     * @param CountQuery      $scopableAttributeCountQuery
+     * @param CountQuery      $localizableAndScopableAttributeCountQuery
+     * @param CountQuery      $useableAsGridFilterAttributeCountQuery
+     * @param AverageMaxQuery $localizableAttributePerFamilyAverageMaxQuery
+     * @param AverageMaxQuery $scopableAttributePerFamilyAverageMaxQuery
+     * @param AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery
      */
     public function __construct(
         CountQuery $attributeCountQuery,
         CountQuery $localizableAttributeCountQuery,
         CountQuery $scopableAttributeCountQuery,
         CountQuery $localizableAndScopableAttributeCountQuery,
-        CountQuery $useableAsGridFilterAttributeCountQuery = null,
-        AverageMaxQuery $localizableAttributePerFamilyAverageMaxQuery = null,
-        AverageMaxQuery $scopableAttributePerFamilyAverageMaxQuery = null,
-        AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery = null
+        CountQuery $useableAsGridFilterAttributeCountQuery,
+        AverageMaxQuery $localizableAttributePerFamilyAverageMaxQuery,
+        AverageMaxQuery $scopableAttributePerFamilyAverageMaxQuery,
+        AverageMaxQuery $localizableAndScopableAttributePerFamilyAverageMaxQuery
     ) {
         $this->attributeCountQuery = $attributeCountQuery;
         $this->localizableAttributeCountQuery = $localizableAttributeCountQuery;
@@ -81,35 +80,15 @@ class AttributeDataCollector implements DataCollectorInterface
      */
     public function collect(): array
     {
-        $numberOfUseableAsGridFilterAttribute = 0;
-        if (null !== $this->useableAsGridFilterAttributeCountQuery) {
-            $numberOfUseableAsGridFilterAttribute = $this->useableAsGridFilterAttributeCountQuery->fetch()->getVolume();
-        }
-
-        $numberOfScopableAttributePerFamilyAverageMaxQuery = 0;
-        if (null !== $this->scopableAttributePerFamilyAverageMaxQuery) {
-            $numberOfScopableAttributePerFamilyAverageMaxQuery = $this->scopableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume();
-        }
-
-        $numberOfLocalizableAttributePerFamilyAverageMaxQuery = 0;
-        if (null !== $this->localizableAttributePerFamilyAverageMaxQuery) {
-            $numberOfLocalizableAttributePerFamilyAverageMaxQuery = $this->localizableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume();
-        }
-
-        $numberOfLocalizableAndScopableAttributePerFamilyAverageMaxQuery = 0;
-        if (null !== $this->localizableAndScopableAttributePerFamilyAverageMaxQuery) {
-            $numberOfLocalizableAndScopableAttributePerFamilyAverageMaxQuery = $this->localizableAndScopableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume();
-        }
-
         $data = [
             'nb_attributes' => $this->attributeCountQuery->fetch()->getVolume(),
             'nb_scopable_attributes' => $this->scopableAttributeCountQuery->fetch()->getVolume(),
             'nb_localizable_attributes' => $this->localizableAttributeCountQuery->fetch()->getVolume(),
             'nb_scopable_localizable_attributes' => $this->localizableAndScopableAttributeCountQuery->fetch()->getVolume(),
-            'nb_useable_as_grid_filter_attributes' => $numberOfUseableAsGridFilterAttribute,
-            'avg_percentage_scopable_attributes_per_family' => $numberOfScopableAttributePerFamilyAverageMaxQuery,
-            'avg_percentage_localizable_attributes_per_family' => $numberOfLocalizableAttributePerFamilyAverageMaxQuery,
-            'avg_percentage_scopable_localizable_attributes_per_family' => $numberOfLocalizableAndScopableAttributePerFamilyAverageMaxQuery,
+            'nb_useable_as_grid_filter_attributes' => $this->useableAsGridFilterAttributeCountQuery->fetch()->getVolume(),
+            'avg_percentage_scopable_attributes_per_family' => $this->scopableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
+            'avg_percentage_localizable_attributes_per_family' => $this->localizableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
+            'avg_percentage_scopable_localizable_attributes_per_family' => $this->localizableAndScopableAttributePerFamilyAverageMaxQuery->fetch()->getAverageVolume(),
         ];
 
         return $data;

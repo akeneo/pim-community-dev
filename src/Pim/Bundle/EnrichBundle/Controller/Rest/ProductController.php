@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -90,12 +90,10 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $variantProductBuilder;
 
-    /** @var ProductAttributeFilter */
+    /** @var AttributeFilterInterface */
     protected $productAttributeFilter;
 
     /**
-     * TODO : (merge) remove null
-     *
      * @param ProductRepositoryInterface    $productRepository
      * @param CursorableRepositoryInterface $cursorableRepository
      * @param AttributeRepositoryInterface  $attributeRepository
@@ -113,7 +111,7 @@ class ProductController
      * @param ConverterInterface            $productValueConverter
      * @param NormalizerInterface           $constraintViolationNormalizer
      * @param ProductBuilderInterface       $variantProductBuilder
-     * @param ProductAttributeFilter        $productAttributeFilter
+     * @param AttributeFilterInterface      $productAttributeFilter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -133,7 +131,7 @@ class ProductController
         ConverterInterface $productValueConverter,
         NormalizerInterface $constraintViolationNormalizer,
         ProductBuilderInterface $variantProductBuilder,
-        ProductAttributeFilter $productAttributeFilter = null
+        AttributeFilterInterface $productAttributeFilter
     ) {
         $this->productRepository = $productRepository;
         $this->cursorableRepository = $cursorableRepository;

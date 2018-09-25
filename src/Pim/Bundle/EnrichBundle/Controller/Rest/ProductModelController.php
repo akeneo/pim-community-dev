@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFi
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
@@ -85,12 +85,10 @@ class ProductModelController
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
 
-    /** @var ProductModelAttributeFilter */
+    /** @var AttributeFilterInterface */
     private $productModelAttributeFilter;
 
     /**
-     * TODO: (merge) remove null
-     *
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
      * @param UserContext                       $userContext
@@ -107,7 +105,7 @@ class ProductModelController
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
      * @param FamilyVariantRepositoryInterface  $familyVariantRepository
-     * @param ProductModelAttributeFilter       $productModelAttributeFilter
+     * @param AttributeFilterInterface          $productModelAttributeFilter
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -126,22 +124,22 @@ class ProductModelController
         SimpleFactoryInterface $productModelFactory,
         NormalizerInterface $violationNormalizer,
         FamilyVariantRepositoryInterface $familyVariantRepository,
-        ProductModelAttributeFilter $productModelAttributeFilter = null
+        AttributeFilterInterface $productModelAttributeFilter
     ) {
-        $this->productModelRepository        = $productModelRepository;
-        $this->normalizer                    = $normalizer;
-        $this->userContext                   = $userContext;
-        $this->objectFilter                  = $objectFilter;
-        $this->localizedConverter            = $localizedConverter;
-        $this->emptyValuesFilter             = $emptyValuesFilter;
-        $this->productValueConverter         = $productValueConverter;
-        $this->productModelUpdater           = $productModelUpdater;
-        $this->productModelRemover           = $productModelRemover;
-        $this->validator                     = $validator;
-        $this->productModelSaver             = $productModelSaver;
+        $this->productModelRepository = $productModelRepository;
+        $this->normalizer = $normalizer;
+        $this->userContext = $userContext;
+        $this->objectFilter = $objectFilter;
+        $this->localizedConverter = $localizedConverter;
+        $this->emptyValuesFilter = $emptyValuesFilter;
+        $this->productValueConverter = $productValueConverter;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelRemover = $productModelRemover;
+        $this->validator = $validator;
+        $this->productModelSaver = $productModelSaver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
-        $this->productModelFactory           = $productModelFactory;
+        $this->productModelFactory = $productModelFactory;
         $this->violationNormalizer = $violationNormalizer;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelAttributeFilter = $productModelAttributeFilter;

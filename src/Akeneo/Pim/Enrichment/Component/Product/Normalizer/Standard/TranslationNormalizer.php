@@ -41,12 +41,9 @@ class TranslationNormalizer implements NormalizerInterface
         $method = sprintf('get%s', ucfirst($context['property']));
 
         foreach ($object->getTranslations() as $translation) {
-            // TODO merge: remove null in master
-            if (null !== $this->localeRepository) {
-                $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
-                if (null === $locale || !$locale->isActivated()) {
-                    continue;
-                }
+            $locale = $this->localeRepository->findOneByIdentifier($translation->getLocale());
+            if (null === $locale || !$locale->isActivated()) {
+                continue;
             }
 
             if (false === method_exists($translation, $method)) {

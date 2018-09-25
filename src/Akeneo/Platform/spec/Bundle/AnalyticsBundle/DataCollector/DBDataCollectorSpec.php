@@ -13,20 +13,20 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolu
 class DBDataCollectorSpec extends ObjectBehavior
 {
     function let(
-        CountQuery        $channelCountQuery,
-        CountQuery        $productCountQuery,
-        CountQuery        $localeCountQuery,
-        CountQuery        $familyCountQuery,
-        CountQuery        $userCountQuery,
-        CountQuery        $productModelCountQuery,
-        CountQuery        $variantProductCountQuery,
-        CountQuery        $categoryCountQuery,
-        CountQuery        $categoryTreeCountQuery,
-        AverageMaxQuery   $categoriesInOneCategoryAverageMax,
-        AverageMaxQuery   $categoryLevelsAverageMax,
-        CountQuery        $productValueCountQuery,
-        AverageMaxQuery   $productValueAverageMaxQuery,
-        AverageMaxQuery   $productValuePerFamilyAverageMaxQuery
+        CountQuery $channelCountQuery,
+        CountQuery $productCountQuery,
+        CountQuery $localeCountQuery,
+        CountQuery $familyCountQuery,
+        CountQuery $userCountQuery,
+        CountQuery $productModelCountQuery,
+        CountQuery $variantProductCountQuery,
+        CountQuery $categoryCountQuery,
+        CountQuery $categoryTreeCountQuery,
+        AverageMaxQuery $categoriesInOneCategoryAverageMax,
+        AverageMaxQuery $categoryLevelsAverageMax,
+        CountQuery $productValueCountQuery,
+        AverageMaxQuery $productValueAverageMaxQuery,
+        AverageMaxQuery $productValuePerFamilyAverageMaxQuery
     ) {
         $this->beConstructedWith(
             $channelCountQuery,

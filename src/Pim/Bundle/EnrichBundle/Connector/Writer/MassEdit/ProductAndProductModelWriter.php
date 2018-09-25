@@ -49,8 +49,6 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     private $jobName;
 
     /**
-     * Constructor
-     *
      * @param VersionManager                        $versionManager
      * @param BulkSaverInterface                    $productSaver
      * @param BulkSaverInterface                    $productModelSaver
@@ -63,10 +61,10 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
-        TokenStorageInterface $tokenStorage = null, //TODO @merge remove following nullable before merge on 3.x
-        JobLauncherInterface $jobLauncher = null,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository = null,
-        string $jobName = null
+        TokenStorageInterface $tokenStorage,
+        JobLauncherInterface $jobLauncher,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        string $jobName
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
