@@ -18,7 +18,7 @@ services:
             - '@pim_catalog.repository.channel'
 
     pim_enrich.filter.product_attribute_filter:
-        class: 'Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductAttributeFilter'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.cached_family'
@@ -26,7 +26,7 @@ services:
             - '@pim_catalog.repository.cached_attribute'
 
     pim_enrich.filter.product_model_attribute_filter:
-        class: 'Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter'
+        class: 'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\ProductModelAttributeFilter'
         arguments:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
