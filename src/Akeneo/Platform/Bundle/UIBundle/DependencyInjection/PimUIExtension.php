@@ -28,6 +28,7 @@ class PimUIExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ .'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('forms.yml');
+        $loader->load('locale_provider.yml');
         $loader->load('twig.yml');
 
         $container->setParameter('pim_ui.wrap_class', 'block-wrap');

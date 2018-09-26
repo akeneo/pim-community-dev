@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Provider;
+namespace Akeneo\Platform\Bundle\UIBundle;
 
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Intl\Intl;

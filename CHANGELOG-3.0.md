@@ -16,6 +16,7 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider` to `Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider`
 - Move `Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer` to `Akeneo\Platform\Bundle\UIBundle\Form\Transformer\NumberLocalizerTransformer`
 - Move `Pim\Bundle\LocalizationBundle\Form\Type\LocaleType` to `Akeneo\Platform\Bundle\UIBundle\Form\Type\LocaleType`
 - Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer`
