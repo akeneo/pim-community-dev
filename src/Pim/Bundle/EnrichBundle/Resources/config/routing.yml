@@ -1,38 +1,10 @@
-mass_edit_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/mass_edit/rest.yml'
-    prefix: /rest/mass_edit
-
-sequential_edit_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit/rest.yml'
-    prefix: /rest/sequential_edit
-
-value_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/value/rest.yml'
-    prefix: /rest/value
-
 catalog_volume:
     resource: '@PimEnrichBundle/Resources/config/routing/catalog_volume.yml'
     prefix: /catalog-volumes
 
-currency:
-    resource: '@PimEnrichBundle/Resources/config/routing/currency.yml'
-    prefix: /configuration/currency
-
-category:
-    resource: '@PimEnrichBundle/Resources/config/routing/category.yml'
-    prefix: /enrich/category
-
-categorytree:
-    resource: '@PimEnrichBundle/Resources/config/routing/categorytree.yml'
-    prefix: /enrich/product-category-tree
-
 product:
     resource: '@PimEnrichBundle/Resources/config/routing/product.yml'
     prefix: /enrich/product
-
-product_model:
-    resource: '@PimEnrichBundle/Resources/config/routing/product_model.yml'
-    prefix: /enrich/product-model
 
 mass_edit_action:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit_action.yml'
@@ -42,17 +14,9 @@ group:
     resource: '@PimEnrichBundle/Resources/config/routing/group.yml'
     prefix: /enrich/group
 
-media:
-    resource: '@PimEnrichBundle/Resources/config/routing/media.yml'
-    prefix: /media
-
 grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
-
-job_tracker:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
-    prefix: /job
 
 api_connection:
     resource: '@PimEnrichBundle/Resources/config/routing/api_connection.yml'
@@ -62,18 +26,4 @@ measures:
     resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
     prefix: /configuration/measures
 
-form_extensions:
-    resource: '@PimEnrichBundle/Resources/config/routing/form_extensions.yml'
-    prefix: /form
 
-media_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/media_rest.yml'
-    prefix: /rest/media
-
-job_instance_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_instance.yml'
-    prefix: /job-instance
-
-job_execution_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/job_execution.yml'
-    prefix: /job-execution
