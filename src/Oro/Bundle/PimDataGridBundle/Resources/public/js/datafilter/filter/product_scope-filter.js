@@ -86,7 +86,6 @@ define(
                     scope = this.catalogScope;
                 }
 
-                this.setValue({value: scope});
                 UserContext.set('catalogScope', scope);
 
                 this.selectWidget.multiselect('refresh');
