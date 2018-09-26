@@ -11,7 +11,11 @@ doctrine:
                 dbname:       "%database_name%"
                 user:         "%database_user%"
                 password:     "%database_password%"
-                charset:      UTF8
+                charset:      utf8mb4
+                default_table_options:
+                        charset: utf8mb4
+                        collate: utf8mb4_unicode_ci
+                        row_format: DYNAMIC
                 server_version: 5.7
                 mapping_types:
                     json: string
@@ -23,7 +27,11 @@ doctrine:
                 dbname:       "%database_name%"
                 user:         "%database_user%"
                 password:     "%database_password%"
-                charset:      UTF8
+                charset:      utf8mb4
+                default_table_options:
+                        charset: utf8mb4
+                        collate: utf8mb4_unicode_ci
+                        row_format: DYNAMIC
         types:
             datetime: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
             native_json:

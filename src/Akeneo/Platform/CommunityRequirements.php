@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Platform;
 
 use \PDO;
@@ -128,6 +130,20 @@ class CommunityRequirements
             )
         );
 
+        $innodbPageSize = (int) $this->getMySQLVariableValue("innodb_page_size");
+        $requirements[] = new Requirement(
+            $innodbPageSize >= 8192,
+            'Check support for correct innodb_page_size for utf8mb4 support',
+            sprintf(
+                'In order for the PIM to implement full UTF8 support via MySQL utf8mb4 charset,'.
+                ' MySQL must have innodb_page_size >= 8KB.'.
+                ' Current innodb_page_size is at "%s".'.
+                ' Please change your MySQL server configuration to use the correct settings'.
+                ' (innodb_page_size is at 16KB by default on MySQL 5.7)',
+                $innodbPageSize
+            )
+        );
+
         $requirements[] = new Requirement(
             function_exists('exec'),
             'The exec() function should be enabled in order to run jobs',
@@ -135,7 +151,7 @@ class CommunityRequirements
         );
 
         $requirements[] = new Requirement(
-            ini_get('apc.enable_cli'),
+            ini_get('apc.enable_cli') == 1,
             'APCu should be enabled in CLI to get better performances',
             'Set <strong>apc.enable_cli</strong> to <strong>1</strong>',
             false
@@ -153,21 +169,47 @@ class CommunityRequirements
     }
 
     /**
+     * Returns a global MySQL configuration variable value
+     */
+    protected function getMySQLVariableValue(string $variableName) : ?string
+    {
+        $variableValue = null;
+
+        $stmt = $this->getConnection()->query(
+            sprintf("SELECT @@GLOBAL.%s", $variableName)
+        );
+
+        $variableValue = $stmt->fetchColumn();
+
+        if (false === $variableValue) {
+            $variableValue = null;
+        }
+
+        return $variableValue;
+    }
+
+    /**
      * Gets the MySQL server version thanks to a PDO connection.
-     *
+     */
+    protected function getMySQLVersion() : string
+    {
+        return $this->getConnection()->getAttribute(PDO::ATTR_SERVER_VERSION);
+    }
+
+    /**
      * If no connection is reached, or that "parameters.yml" do not exists, an
      * exception is thrown, then catch. If "parameters_test.yml" do not exists
      * either, then the exception is thrown again.
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      */
-    protected function getMySQLVersion(): string
+    protected function getConnection() : PDO
     {
         $file = file_get_contents($this->baseDir.'/app/config/parameters.yml');
 
         if (false === $file) {
             throw new RuntimeException(
-                'The file config/parameters.yml does not exist, please create it'
+                'The file "app/config/parameters.yml" does not exist, please create it'
             );
         }
 
@@ -179,21 +221,14 @@ class CommunityRequirements
                     'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
                 );
             }
-
-            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
         } catch (RuntimeException $e) {
             $parameters = Yaml::parse(file_get_contents($this->baseDir.'/app/config/parameters_test.yml'));
 
             if (null === $parameters) {
                 throw $e;
             }
-
-            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
         }
-    }
 
-    protected function getConnection(array $parameters): PDO
-    {
         return new PDO(
             sprintf(
                 'mysql:port=%s;host=%s',
@@ -205,10 +240,10 @@ class CommunityRequirements
         );
     }
 
-    protected function getBytes(string $val): int
+    protected function getBytes(string $val): float
     {
         if (empty($val)) {
-            return 0;
+            return (float) 0;
         }
 
         preg_match('/([\-0-9]+)[\s]*([a-z]*)$/i', trim($val), $matches);
