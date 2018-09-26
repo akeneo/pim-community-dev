@@ -3,7 +3,6 @@ parameters:
     pimee_security.form.type.attribute_group_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\AttributeGroupPermissionsType
     pimee_security.form.type.category_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType
     pimee_security.form.type.locale_permissions.class: Akeneo\Pim\Permission\Bundle\Form\Type\LocalePermissionsType
-    pimee_security.form.type.product_grid_filter_choice.class: Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType
     pimee_security.form.subscriber.category_permissions.class: Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber
     pimee_security.form.subscriber.locale_permissions.class:   Akeneo\Pim\Permission\Bundle\Form\EventListener\LocalePermissionsSubscriber
     pimee_security.form.provider.form.product.class: Akeneo\Pim\Permission\Bundle\Form\Provider\ProductFormProvider
@@ -32,16 +31,6 @@ services:
         class: '%pimee_security.form.type.locale_permissions.class%'
         tags:
             - { name: form.type, alias: pimee_enrich_locale_permissions }
-
-    pimee_security.form.type.product_grid_filter_choice:
-        class: '%pimee_security.form.type.product_grid_filter_choice.class%'
-        arguments:
-            - '@pimee_enrich.repository.attribute'
-            - '@oro_datagrid.datagrid.manager'
-            - 'product-grid'
-            - ['scope', 'locale']
-        tags:
-            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
 
     pimee_security.form.type.job_profile_permissions:
         class: '%pimee_security.form.type.job_profile_permissions.class%'
