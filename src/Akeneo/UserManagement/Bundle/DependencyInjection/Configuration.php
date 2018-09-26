@@ -72,7 +72,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('action_route')
-                            ->defaultValue('oro_user_security_check')
+                            ->defaultValue('pim_user_security_check')
                             ->cannotBeEmpty()
                         ->end()
                         ->arrayNode('additional_hidden_fields')
