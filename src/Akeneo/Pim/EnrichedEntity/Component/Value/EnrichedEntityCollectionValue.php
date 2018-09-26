@@ -13,6 +13,7 @@ namespace Akeneo\Pim\EnrichedEntity\Component\Value;
 
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -47,6 +48,16 @@ class EnrichedEntityCollectionValue extends AbstractValue implements EnrichedEnt
     public function getData(): array
     {
         return $this->records;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual(ValueInterface $value): bool
+    {
+        return $this->getData() === $value->getData() &&
+            $this->scope === $value->getScope() &&
+            $this->locale === $value->getLocale();
     }
 
     /**
