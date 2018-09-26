@@ -75,8 +75,7 @@ class AttributeDataCollector implements DataCollectorInterface
     }
 
     /**
-     * @merge TODO - on master - remove the if statements & move all inside the "if session" inside $data
-     * {@inheritdoc}
+     * @return array
      */
     public function collect(): array
     {
