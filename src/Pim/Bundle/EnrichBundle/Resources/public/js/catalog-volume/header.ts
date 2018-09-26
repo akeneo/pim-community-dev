@@ -46,7 +46,7 @@ class HeaderView extends BaseView {
           .replace('{{values}}', productValues.value.toLocaleString('en', {useGrouping: true}))
           .replace('{{average}}', productValuesAverage.value.average),
         description: __(this.config.description).replace('{{link}}', __('catalog_volume.link')),
-        illustration: 'Product-categories.svg'
+        illustration: 'Product-categories.svg',
       });
 
       this.$el.html(headerContents);
