@@ -299,7 +299,7 @@ class UserUpdater implements ObjectUpdaterInterface
 
         if (null === $defaultGridView) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'default_product_grid_view',
+                sprintf('default_%s_view', $alias),
                 'grid view code',
                 'The grid view does not exist',
                 static::class,
