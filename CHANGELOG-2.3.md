@@ -1,5 +1,9 @@
 # 2.3.x
 
+## Bug fixes
+
+- PIM-7659: Fix search on the families to get all the results when they have same translations for many locales.
+
 # 2.3.9 (2018-09-25)
 
 ## Bug fixes
