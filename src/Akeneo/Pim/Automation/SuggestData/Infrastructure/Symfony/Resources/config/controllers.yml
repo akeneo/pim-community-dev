@@ -25,4 +25,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
             - '@akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
+            - '@akeneo.pim.automation.suggest_data.handler.get_families'
+            - '@akeneo.pim.automation.suggest_data.normalizers.families'
             - '@akeneo.pim.automation.suggest_data.normalizers.attributes_mapping'

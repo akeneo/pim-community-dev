@@ -16,10 +16,12 @@ namespace Akeneo\Pim\Permission\Bundle\MassEdit\Writer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter as BaseWriter;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -34,24 +36,33 @@ class ProductAndProductModelWriter extends BaseWriter
     private $authorizationChecker;
 
     /**
-     * @param BulkSaverInterface            $productSaver
-     * @param BulkSaverInterface            $productModelSaver
-     * @param VersionManager                $versionManager
-     * @param EntityManagerClearerInterface $cacheClearer
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param BulkSaverInterface                    $productSaver
+     * @param BulkSaverInterface                    $productModelSaver
+     * @param VersionManager                        $versionManager
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param JobLauncherInterface                  $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param string                                $jobName
+     * @param AuthorizationCheckerInterface         $authorizationChecker
      */
     public function __construct(
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         VersionManager $versionManager,
-        EntityManagerClearerInterface $cacheClearer,
+        TokenStorageInterface $tokenStorage,
+        JobLauncherInterface $jobLauncher,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        string $jobName,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
             $versionManager,
             $productSaver,
             $productModelSaver,
-            $cacheClearer
+            $tokenStorage,
+            $jobLauncher,
+            $jobInstanceRepository,
+            $jobName
         );
 
         $this->authorizationChecker = $authorizationChecker;

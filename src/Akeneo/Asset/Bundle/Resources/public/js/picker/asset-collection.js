@@ -57,13 +57,15 @@ define(
                     this.data.forEach(assetCode => {
                         orderedAssets = orderedAssets.concat(assets.filter(asset => asset.code === assetCode));
                     });
+                    const canManageAssets = SecurityContext.isGranted('pimee_product_asset_category_list');
 
                     this.$el.html(this.template({
                         assets: orderedAssets,
                         locale: this.context.locale,
                         scope: this.context.scope,
                         thumbnailFilter: 'thumbnail',
-                        editMode: this.context.editMode
+                        editMode: this.context.editMode,
+                        canManageAssets: canManageAssets
                     }));
 
                     if ('view' !== this.context.editMode) {

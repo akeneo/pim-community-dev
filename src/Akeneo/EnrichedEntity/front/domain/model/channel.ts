@@ -5,6 +5,7 @@ export default interface Channel {
   code: string;
   labelCollection: LabelCollection;
   locales: Locale[];
+  getLabel(localeCode: string): string;
 }
 class InvalidTypeError extends Error {}
 

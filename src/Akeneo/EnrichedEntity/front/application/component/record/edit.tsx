@@ -8,14 +8,17 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import Record, {NormalizedRecord} from 'akeneoenrichedentity/domain/model/record/record';
 import {saveRecord, deleteRecord, recordImageUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 const securityContext = require('pim/security-context');
 import File from 'akeneoenrichedentity/domain/model/file';
 import Locale from 'akeneoenrichedentity/domain/model/locale';
-import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
+import {catalogLocaleChanged, catalogChannelChanged} from 'akeneoenrichedentity/domain/event/user';
 import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
+import ChannelSwitcher from 'akeneoenrichedentity/application/component/app/channel-switcher';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
+import Channel from 'akeneoenrichedentity/domain/model/channel';
 
 interface StateProps {
   sidebar: {
@@ -27,14 +30,16 @@ interface StateProps {
   };
   context: {
     locale: string;
+    channel: string;
   };
   acls: {
     create: boolean;
     delete: boolean;
   };
-  record: Record;
+  record: NormalizedRecord;
   structure: {
     locales: Locale[];
+    channels: Channel[];
   };
 }
 
@@ -42,6 +47,7 @@ interface DispatchProps {
   events: {
     onSaveEditForm: () => void;
     onLocaleChanged: (locale: Locale) => void;
+    onChannelChanged: (channel: Channel) => void;
     onImageUpdated: (image: File) => void;
     onDelete: (record: Record) => void;
   };
@@ -50,32 +56,13 @@ interface DispatchProps {
 interface EditProps extends StateProps, DispatchProps {}
 
 class RecordEditView extends React.Component<EditProps> {
-  private tabView: JSX.Element;
-
   public props: EditProps;
-
-  constructor(props: EditProps) {
-    super(props);
-
-    this.updateTabView(props.sidebar.currentTab);
-  }
-
-  componentDidUpdate(nextProps: EditProps) {
-    if (JSON.stringify(this.props.sidebar.currentTab) !== JSON.stringify(nextProps.sidebar.currentTab)) {
-      this.updateTabView(this.props.sidebar.currentTab);
-    }
-  }
-
-  private updateTabView = async (currentTab: string): Promise<void> => {
-    const TabView = await sidebarProvider.getView('akeneo_enriched_entities_record_edit', currentTab);
-
-    this.tabView = <TabView code={currentTab} />;
-    this.forceUpdate();
-  };
 
   private onClickDelete = () => {
     if (confirm(__('pim_enriched_entity.record.module.delete.confirm'))) {
-      this.props.events.onDelete(this.props.record);
+      const record = denormalizeRecord(this.props.record);
+
+      this.props.events.onDelete(record);
     }
   };
 
@@ -87,7 +74,7 @@ class RecordEditView extends React.Component<EditProps> {
           <div className="AknDropdown-menu AknDropdown-menu--right">
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
-              <button className="AknDropdown-menuLink" onClick={this.onClickDelete}>
+              <button className="AknDropdown-menuLink" onClick={() => this.onClickDelete()}>
                 {__('pim_enriched_entity.record.module.delete.button')}
               </button>
             </div>
@@ -101,8 +88,9 @@ class RecordEditView extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-    const label = this.props.record.getLabel(this.props.context.locale);
-
+    const record = denormalizeRecord(this.props.record);
+    const label = record.getLabel(this.props.context.locale);
+    const TabView = sidebarProvider.getView('akeneo_enriched_entities_record_edit', this.props.sidebar.currentTab);
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
@@ -114,7 +102,7 @@ class RecordEditView extends React.Component<EditProps> {
               <div className="AknTitleContainer-line">
                 <Image
                   alt={__('pim_enriched_entity.record.img', {'{{ label }}': label})}
-                  image={this.props.record.getImage()}
+                  image={record.getImage()}
                   onImageChange={this.props.events.onImageUpdated}
                 />
                 <div className="AknTitleContainer-mainContainer">
@@ -135,11 +123,17 @@ class RecordEditView extends React.Component<EditProps> {
                                 type: 'redirect',
                                 route: 'akeneo_enriched_entities_enriched_entity_edit',
                                 parameters: {
-                                  identifier: this.props.record.getEnrichedEntityIdentifier().stringValue(),
+                                  identifier: record.getEnrichedEntityIdentifier().stringValue(),
                                   tab: 'record',
                                 },
                               },
-                              label: __('pim_enriched_entity.record.title'),
+                              label: record.getEnrichedEntityIdentifier().stringValue(),
+                            },
+                            {
+                              action: {
+                                type: 'display',
+                              },
+                              label: record.getCode().stringValue(),
                             },
                           ]}
                         />
@@ -174,13 +168,21 @@ class RecordEditView extends React.Component<EditProps> {
                           locales={this.props.structure.locales}
                           onLocaleChange={this.props.events.onLocaleChanged}
                         />
+                        <ChannelSwitcher
+                          channelCode={this.props.context.channel}
+                          channels={this.props.structure.channels}
+                          locale={this.props.context.locale}
+                          onChannelChange={this.props.events.onChannelChanged}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </header>
-            <div className="content">{this.tabView}</div>
+            <div className="content">
+              <TabView code={this.props.sidebar.currentTab} />
+            </div>
           </div>
         </div>
         <Sidebar />
@@ -191,10 +193,11 @@ class RecordEditView extends React.Component<EditProps> {
 
 export default connect(
   (state: State): StateProps => {
-    const record = denormalizeRecord(state.form.data);
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channel =
+      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
 
     return {
       sidebar: {
@@ -206,10 +209,12 @@ export default connect(
       },
       context: {
         locale,
+        channel,
       },
-      record,
+      record: state.form.data,
       structure: {
         locales: state.structure.locales,
+        channels: state.structure.channels,
       },
       acls: {
         create: securityContext.isGranted('akeneo_enrichedentity_record_create'),
@@ -225,6 +230,9 @@ export default connect(
         },
         onLocaleChanged: (locale: Locale) => {
           dispatch(catalogLocaleChanged(locale.code));
+        },
+        onChannelChanged: (channel: Channel) => {
+          dispatch(catalogChannelChanged(channel.code));
         },
         onImageUpdated: (image: File) => {
           dispatch(recordImageUpdated(image));

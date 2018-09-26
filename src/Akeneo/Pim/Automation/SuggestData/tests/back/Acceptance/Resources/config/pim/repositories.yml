@@ -13,6 +13,11 @@ services:
     akeneo.pim.automation.suggest_data.repository.product_subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryProductSubscriptionRepository'
 
+    akeneo.pim.automation.suggest_data.repository.search_family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Memory\InMemoryFamilySearchableRepository'
+        arguments:
+            - '@pim_catalog.repository.family'
+
     akeneo.pim.automation.suggest_data.proposal.create_proposal:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Proposal\InMemoryProposalUpsert'
         arguments:

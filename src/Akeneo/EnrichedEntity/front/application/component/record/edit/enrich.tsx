@@ -1,17 +1,23 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
-import {recordLabelUpdated, saveRecord} from 'akeneoenrichedentity/application/action/record/edit';
+import {recordLabelUpdated, saveRecord, recordValueUpdated} from 'akeneoenrichedentity/application/action/record/edit';
 import __ from 'akeneoenrichedentity/tools/translator';
 import {EditionFormState} from 'akeneoenrichedentity/application/reducer/record/edit/form';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
+import {createLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
+import renderValues from 'akeneoenrichedentity/application/component/record/edit/enrich/value';
+import Value from 'akeneoenrichedentity/domain/model/record/value';
 
 interface StateProps {
   form: EditionFormState;
   context: {
     locale: string;
+    channel: string;
   };
 }
 
@@ -20,6 +26,7 @@ interface DispatchProps {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
       onPressEnter: () => void;
+      onValueChange: (value: Value) => void;
     };
   };
 }
@@ -45,36 +52,13 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
   };
 
   render() {
+    const record = denormalizeRecord(this.props.form.data);
+
     return (
       <div className="AknSubsection">
-        <header className="AknSubsection-title AknSubsection-title--blockDown">
-          <span className="group-label">{__('pim_enriched_entity.record.enrich.title')}</span>
-        </header>
-        <div className="AknFormContainer AknFormContainer--withPadding">
-          <div className="AknFieldContainer" data-code="code">
-            <div className="AknFieldContainer-header">
-              <label
-                title="{__('pim_enriched_entity.record.enrich.code')}"
-                className="AknFieldContainer-label"
-                htmlFor="pim_enriched_entity.record.enrich.code"
-              >
-                {__('pim_enriched_entity.record.enrich.code')}
-              </label>
-            </div>
-            <div className="AknFieldContainer-inputContainer">
-              <input
-                type="text"
-                name="code"
-                id="pim_enriched_entity.record.enrich.code"
-                className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
-                value={this.props.form.data.code}
-                readOnly
-              />
-            </div>
-            {getErrorsView(this.props.form.errors, 'code')}
-          </div>
-          <div className="AknFieldContainer" data-code="label">
-            <div className="AknFieldContainer-header">
+        <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
+          <div className="AknFieldContainer AknFieldContainer--narrow" data-code="label">
+            <div className="AknFieldContainer-header AknFieldContainer-header--small">
               <label
                 title="{__('pim_enriched_entity.record.enrich.label')}"
                 className="AknFieldContainer-label"
@@ -88,12 +72,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 type="text"
                 name="label"
                 id="pim_enriched_entity.record.enrich.label"
-                className="AknTextField AknTextField--withBottomBorder"
-                value={
-                  undefined === this.props.form.data.labels[this.props.context.locale]
-                    ? ''
-                    : this.props.form.data.labels[this.props.context.locale]
-                }
+                className="AknTextField AknTextField--narrow AknTextField--withBottomBorder"
+                value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}
                 ref={(input: HTMLInputElement) => {
@@ -104,6 +84,13 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
             </div>
             {getErrorsView(this.props.form.errors, 'labels')}
           </div>
+          {renderValues(
+            record,
+            createChannelReference(this.props.context.channel),
+            createLocaleReference(this.props.context.locale),
+            this.props.form.errors,
+            this.props.events.form.onValueChange
+          )}
         </div>
       </div>
     );
@@ -113,11 +100,14 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
 export default connect(
   (state: EditState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channel =
+      undefined === state.user || undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
 
     return {
       form: state.form,
       context: {
         locale,
+        channel,
       },
     };
   },
@@ -130,6 +120,9 @@ export default connect(
           },
           onPressEnter: () => {
             dispatch(saveRecord());
+          },
+          onValueChange: (value: Value) => {
+            dispatch(recordValueUpdated(value));
           },
         },
       },

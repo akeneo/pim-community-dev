@@ -10,6 +10,7 @@ import {createRecord as recordFactory} from 'akeneoenrichedentity/domain/model/r
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
 import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
+import {createValueCollection} from 'akeneoenrichedentity/domain/model/record/value-collection';
 
 export const createRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = getState().form.data;
@@ -19,7 +20,8 @@ export const createRecord = () => async (dispatch: any, getState: () => EditStat
     createEnrichedEntityIdentifier(enrichedEntity.identifier),
     createCode(code),
     createLabelCollection(labels),
-    createEmptyFile()
+    createEmptyFile(),
+    createValueCollection([])
   );
 
   try {

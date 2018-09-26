@@ -87,13 +87,11 @@ SQL;
         );
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to create one enriched entity, but %d rows were affected', $affectedRows)
+                sprintf('Expected to create one record, but %d rows were affected', $affectedRows)
             );
         }
     }
 
-    /**
-     */
     public function update(Record $record): void
     {
         $serializedLabels = $this->getSerializedLabels($record);
@@ -116,7 +114,7 @@ SQL;
 
         if ($affectedRows !== 1) {
             throw new \RuntimeException(
-                sprintf('Expected to save one enriched entity, but %d rows were affected', $affectedRows)
+                sprintf('Expected to save one record, but %d rows were affected', $affectedRows)
             );
         }
     }

@@ -1,18 +1,12 @@
-import EnrichedEntityIdentifier, {
-  createIdentifier as createEnrichedEntityIdentifier,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {
-  NormalizedLabelCollection,
-  createLabelCollection,
-} from 'akeneoenrichedentity/domain/model/label-collection';
-import RecordCode, {createCode} from 'akeneoenrichedentity/domain/model/record/code';
-import Identifier, {
-  NormalizedRecordIdentifier,
-  createIdentifier,
-} from 'akeneoenrichedentity/domain/model/record/identifier';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
+import File, {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
+import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import LabelCollection, {NormalizedLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
+import Identifier, {NormalizedRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import ValueCollection from 'akeneoenrichedentity/domain/model/record/value-collection';
+import {NormalizedValue, NormalizedMinimalValue} from 'akeneoenrichedentity/domain/model/record/value';
 
-export interface NormalizedRecord {
+interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
   enriched_entity_identifier: string;
   code: string;
@@ -20,15 +14,30 @@ export interface NormalizedRecord {
   image: NormalizedFile;
 }
 
+export interface NormalizedRecord extends CommonNormalizedRecord {
+  values: NormalizedValue[];
+}
+
+export interface NormalizedMinimalRecord extends CommonNormalizedRecord {
+  values: NormalizedMinimalValue[];
+}
+
+export enum NormalizeFormat {
+  Standard,
+  Minimal,
+}
+
 export default interface Record {
   getIdentifier: () => Identifier;
   getCode: () => RecordCode;
   getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
-  getLabel: (locale: string) => string;
+  getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
+  getValueCollection: () => ValueCollection;
   equals: (record: Record) => boolean;
   normalize: () => NormalizedRecord;
+  normalizeMinimal: () => NormalizedMinimalRecord;
 }
 
 class InvalidArgumentError extends Error {}
@@ -39,7 +48,8 @@ class RecordImplementation implements Record {
     private enrichedEntityIdentifier: EnrichedEntityIdentifier,
     private code: RecordCode,
     private labelCollection: LabelCollection,
-    private image: File
+    private image: File,
+    private valueCollection: ValueCollection
   ) {
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('Record expect a RecordIdentifier as identifier argument');
@@ -56,6 +66,9 @@ class RecordImplementation implements Record {
     if (!(image instanceof File)) {
       throw new InvalidArgumentError('Record expect a File as image argument');
     }
+    if (!(valueCollection instanceof ValueCollection)) {
+      throw new InvalidArgumentError('Record expect a ValueCollection as valueCollection argument');
+    }
 
     Object.freeze(this);
   }
@@ -65,19 +78,17 @@ class RecordImplementation implements Record {
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
     recordCode: RecordCode,
     labelCollection: LabelCollection,
-    image: File
+    image: File,
+    valueCollection: ValueCollection
   ): Record {
-    return new RecordImplementation(identifier, enrichedEntityIdentifier, recordCode, labelCollection, image);
-  }
-
-  public static createFromNormalized(normalizedRecord: NormalizedRecord): Record {
-    const identifier = createIdentifier(normalizedRecord.identifier);
-    const code = createCode(normalizedRecord.code);
-    const enrichedEntityIdentifier = createEnrichedEntityIdentifier(normalizedRecord.enriched_entity_identifier);
-    const labelCollection = createLabelCollection(normalizedRecord.labels);
-    const image = denormalizeFile(normalizedRecord.image);
-
-    return RecordImplementation.create(identifier, enrichedEntityIdentifier, code, labelCollection, image);
+    return new RecordImplementation(
+      identifier,
+      enrichedEntityIdentifier,
+      recordCode,
+      labelCollection,
+      image,
+      valueCollection
+    );
   }
 
   public getIdentifier(): Identifier {
@@ -92,10 +103,12 @@ class RecordImplementation implements Record {
     return this.code;
   }
 
-  public getLabel(locale: string) {
-    return this.labelCollection.hasLabel(locale)
-      ? this.labelCollection.getLabel(locale)
-      : `[${this.getCode().stringValue()}]`;
+  public getLabel(locale: string, defaultValue: boolean = true) {
+    if (!this.labelCollection.hasLabel(locale)) {
+      return defaultValue ? `[${this.getCode().stringValue()}]` : '';
+    }
+
+    return this.labelCollection.getLabel(locale);
   }
 
   public getImage(): File {
@@ -104,6 +117,10 @@ class RecordImplementation implements Record {
 
   public getLabelCollection(): LabelCollection {
     return this.labelCollection;
+  }
+
+  public getValueCollection(): ValueCollection {
+    return this.valueCollection;
   }
 
   public equals(record: Record): boolean {
@@ -117,9 +134,20 @@ class RecordImplementation implements Record {
       code: this.code.stringValue(),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
+      values: this.valueCollection.normalize(),
+    };
+  }
+
+  public normalizeMinimal(): NormalizedMinimalRecord {
+    return {
+      identifier: this.getIdentifier().normalize(),
+      enriched_entity_identifier: this.getEnrichedEntityIdentifier().stringValue(),
+      code: this.code.stringValue(),
+      labels: this.getLabelCollection().normalize(),
+      image: this.getImage().normalize(),
+      values: this.valueCollection.normalizeMinimal(),
     };
   }
 }
 
 export const createRecord = RecordImplementation.create;
-export const denormalizeRecord = RecordImplementation.createFromNormalized;

@@ -63,6 +63,7 @@ services:
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_attributes_mapping_by_family'
             - '@__symfony__.akeneo.pim.automation.suggest_data.handler.update_attributes_mapping_by_family'
+            - '@__symfony__.akeneo.pim.automation.suggest_data.handler.get_families'
         tags:
             - { name: 'fob.context_service' }
 

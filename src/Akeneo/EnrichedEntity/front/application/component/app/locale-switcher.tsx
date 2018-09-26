@@ -5,10 +5,12 @@ import Flag from 'akeneoenrichedentity/tools/component/flag';
 import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
 
 const LocaleItemView = ({
+  isOpen,
   element,
   isActive,
   onClick,
 }: {
+  isOpen: boolean;
   element: DropdownElement;
   isActive: boolean;
   onClick: (element: DropdownElement) => void;
@@ -16,7 +18,15 @@ const LocaleItemView = ({
   const menuLinkClass = `AknDropdown-menuLink ${isActive ? `AknDropdown-menuLink--active` : ''}`;
 
   return (
-    <div className={menuLinkClass} data-identifier={element.identifier} onClick={() => onClick(element)}>
+    <div
+      className={menuLinkClass}
+      data-identifier={element.identifier}
+      onClick={() => onClick(element)}
+      tabIndex={isOpen ? 0 : -1}
+      onKeyPress={event => {
+        if (' ' === event.key) onClick(element);
+      }}
+    >
       <span className="label">
         <Flag locale={element.original} displayLanguage />
       </span>
@@ -29,6 +39,10 @@ const LocaleButtonView = ({selectedElement, onClick}: {selectedElement: Dropdown
     className="AknActionButton AknActionButton--withoutBorder"
     data-identifier={selectedElement.identifier}
     onClick={onClick}
+    tabIndex={0}
+    onKeyPress={event => {
+      if (' ' === event.key) onClick();
+    }}
   >
     {__('Locale')}
     :&nbsp;

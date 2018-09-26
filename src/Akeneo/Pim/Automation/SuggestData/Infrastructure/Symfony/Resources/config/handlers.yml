@@ -58,3 +58,8 @@ services:
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.factory'
             - '@pim_catalog.repository.family'
+
+    akeneo.pim.automation.suggest_data.handler.get_families:
+        class: 'Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.search_family'

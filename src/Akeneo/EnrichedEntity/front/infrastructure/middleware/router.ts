@@ -2,7 +2,7 @@ const Routing = require('routing');
 
 export default (router: any) => () => (next: any) => (action: any) => {
   if ('REDIRECT_TO_ROUTE' === action.type) {
-    router.redirectToRoute(action.route, action.params, action.options);
+    router.redirectToRoute(action.route, action.params);
 
     return;
   }

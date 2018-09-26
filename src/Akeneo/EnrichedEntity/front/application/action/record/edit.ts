@@ -4,6 +4,8 @@ import {
   recordEditionImageUpdated,
   recordEditionErrorOccured,
   recordEditionSucceeded,
+  recordEditionValueUpdated,
+  recordEditionUpdated,
 } from 'akeneoenrichedentity/domain/event/record/edit';
 import {
   notifyRecordWellSaved,
@@ -12,7 +14,7 @@ import {
   notifyRecordDeleteFailed,
   notifyRecordDeletionErrorOccured,
 } from 'akeneoenrichedentity/application/action/record/notify';
-import Record, {denormalizeRecord} from 'akeneoenrichedentity/domain/model/record/record';
+import Record from 'akeneoenrichedentity/domain/model/record/record';
 import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
 import recordRemover from 'akeneoenrichedentity/infrastructure/remover/record';
 import recordFetcher from 'akeneoenrichedentity/infrastructure/fetcher/record';
@@ -20,6 +22,8 @@ import ValidationError, {createValidationError} from 'akeneoenrichedentity/domai
 import File from 'akeneoenrichedentity/domain/model/file';
 import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
 import {redirectToRecordIndex} from 'akeneoenrichedentity/application/action/record/router';
+import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
+import Value from 'akeneoenrichedentity/domain/model/record/value';
 
 export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const record = denormalizeRecord(getState().form.data);
@@ -42,7 +46,6 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
   dispatch(recordEditionSucceeded());
   dispatch(notifyRecordWellSaved());
-
   const savedRecord: Record = await recordFetcher.fetch(record.getEnrichedEntityIdentifier(), record.getCode());
 
   dispatch(recordEditionReceived(savedRecord));
@@ -68,10 +71,17 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
   }
 };
 
-export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any) => {
+export const recordLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
   dispatch(recordEditionLabelUpdated(value, locale));
+  dispatch(recordEditionUpdated(getState().form.data));
 };
 
-export const recordImageUpdated = (image: File) => (dispatch: any) => {
+export const recordImageUpdated = (image: File) => (dispatch: any, getState: any) => {
   dispatch(recordEditionImageUpdated(image));
+  dispatch(recordEditionUpdated(getState().form.data));
+};
+
+export const recordValueUpdated = (value: Value) => (dispatch: any, getState: any) => {
+  dispatch(recordEditionValueUpdated(value));
+  dispatch(recordEditionUpdated(getState().form.data));
 };

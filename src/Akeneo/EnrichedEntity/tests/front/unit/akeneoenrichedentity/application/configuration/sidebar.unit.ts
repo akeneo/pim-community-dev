@@ -39,53 +39,37 @@ config:
             my_view:
                 tabs:
                     tab-code:
-                        view: your_view_path_here
-      `;
-      expect(error.message).toBe(`Cannot get the tabs configured. The configuration path should be ${confPath}?`);
+                        view: '@your_view_path_here'
+
+Actual conf: {\"my_view\":{}}`;
+      expect(error.message).toBe(`Cannot get the tabs for "my_view". The configuration path should be ${confPath}`);
     }
   });
 
-  test('I can get a view', async () => {
-    const tabProvider = TabsProvider.create(
-      {
-        my_view: {
-          tabs: {
-            first: {
-              label: 'First tab',
-              view: 'view-to-load',
-            },
+  test('I can get a view', () => {
+    const tabProvider = TabsProvider.create({
+      my_view: {
+        tabs: {
+          first: {
+            label: 'First tab',
+            view: {default: 'view'},
           },
         },
       },
-      name => {
-        expect(name).toEqual('view-to-load');
-
-        return Promise.resolve({default: 'view'});
-      }
-    );
-
-    await tabProvider.getView('my_view', 'first').then(module => {
-      expect(module).toEqual('view');
     });
-    expect.assertions(2);
+
+    expect(tabProvider.getView('my_view', 'first')).toEqual('view');
   });
 
-  test('I get a SibebarMissConfigurationError exception if the view is not well configured', async () => {
-    const tabProvider = TabsProvider.create(
-      {
-        my_view: {
-          tabs: {},
-        },
+  test('I get a SibebarMissConfigurationError exception if the view is not well configured', () => {
+    const tabProvider = TabsProvider.create({
+      my_view: {
+        tabs: {},
       },
-      name => {
-        expect(name).toEqual('view-to-load');
-
-        return Promise.resolve({default: 'view'});
-      }
-    );
+    });
 
     try {
-      await tabProvider.getView('my_view', 'first');
+      tabProvider.getView('my_view', 'first');
     } catch (error) {
       const confPath = `
 config:
@@ -94,35 +78,29 @@ config:
             my_view:
                 tabs:
                     first:
-                        view: your_view_path_here
-      `;
-      expect(error.message).toBe(
-        `Cannot load view configuration for tab "first". The configuration path should be ${confPath}?`
+                        view: '@your_view_path_here'`;
+      expect(error.message).toEqual(
+        `Cannot load view for tab "first". The configuration should look like this ${confPath}
+
+Actual conf: {\"my_view\":{\"tabs\":{}}}`
       );
     }
   });
 
-  test('I get a SibebarMissConfigurationError exception if the view module is not well registered', async () => {
-    const tabProvider = TabsProvider.create(
-      {
-        my_view: {
-          tabs: {
-            first: {
-              label: 'First tab',
-              view: 'view-to-load',
-            },
+  test('I get a SibebarMissConfigurationError exception if the view module is not well registered', () => {
+    const tabProvider = TabsProvider.create({
+      my_view: {
+        tabs: {
+          first: {
+            label: 'First tab',
+            view: 'view-to-load',
           },
         },
       },
-      name => {
-        expect(name).toEqual('view-to-load');
-
-        return Promise.resolve(undefined);
-      }
-    );
+    });
 
     try {
-      await tabProvider.getView('my_view', 'first');
+      tabProvider.getView('my_view', 'first');
     } catch (error) {
       expect(error.message).toBe(
         'The module "view-to-load" does not exists. You may have an error in your filter configuration file.'

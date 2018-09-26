@@ -17,7 +17,11 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttribut
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\AttributesMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\FamiliesNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,19 +30,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AttributeMappingController
 {
-    /** TODO Move this into the model. */
-
-    /** There is no attributes to map (i.e. it has no attributes) */
-    private const MAPPING_EMPTY = 0;
-
-    /** All attributes are mapped (i.e. it has attributes and no pending attributes) */
-    private const MAPPING_FULL = 1;
-
-    /** There is new attributes to map (i.e. it has at least 1 pending attribute) */
-    private const MAPPING_PENDING_ATTRIBUTES = 2;
-
     /** @var GetAttributesMappingByFamilyHandler */
-    private $attributesMappingByFamilyHandler;
+    private $getAttributesMappingByFamilyHandler;
+
+    /** @var SearchFamiliesHandler */
+    private $searchFamiliesHandler;
+
+    /** @var $familiesNormalizer */
+    private $familiesNormalizer;
 
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
@@ -47,85 +46,66 @@ class AttributeMappingController
     private $updateAttributesMappingByFamilyHandler;
 
     /**
-     * @param GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
+     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param SearchFamiliesHandler $searchFamiliesHandler
+     * @param FamiliesNormalizer $familiesNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
-        GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler,
+        GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
         UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
+        SearchFamiliesHandler $searchFamiliesHandler,
+        FamiliesNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer
     ) {
-        $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
+        $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
         $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
+        $this->searchFamiliesHandler = $searchFamiliesHandler;
+        $this->familiesNormalizer = $familiesNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
     }
 
     /**
-     * Mocked return
-     * TODO Make it for real:
-     * Should return all the families of the PIM, with enabled at false for non existing familyMapping entities
+     * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function listAction(Request $request): JsonResponse
     {
-        $RESPONSE = [
-            [
-                'code' => 'clothing',
-                'status' => self::MAPPING_EMPTY,
-                'labels' => [
-                    'en_US' => 'Clothing',
-                    'fr_FR' => 'vetements',
-                    'de_DE' => 'Kartoffeln'
-                ]
-            ], [
-                'code' => 'accessories',
-                'status' => self::MAPPING_PENDING_ATTRIBUTES,
-                'labels' => [
-                    'en_US' => 'accessories',
-                    'fr_FR' => 'accessoires',
-                    'de_DE' => 'Shön'
-                ]
-            ], [
-                'code' => 'camcorders',
-                'status' => self::MAPPING_FULL,
-                'labels' => [
-                    'en_US' => 'camcorders',
-                    'fr_FR' => 'caméras',
-                    'de_DE' => 'Mein Fuss tut weh'
-                ]
-            ]
-        ];
+        $options = $request->get('options', []);
 
-        /** non treated arguments:
-         * options[limit]: 20
-         * options[page]: 1
-         * options[catalogLocale]: en_US (useless, comes from select2)
-         */
-        if (null !== $request->get('search') && '' !== $request->get('search')) {
-            return new JsonResponse(array_filter($RESPONSE, function ($family) use ($request) {
-                return strpos($family['code'], $request->get('search')) !== false;
-            }));
-        }
-        if (null !== $request->get('options') && isset($request->get('options')['identifiers'])) {
-            return new JsonResponse(array_filter($RESPONSE, function ($family) use ($request) {
-                return in_array($family['code'], $request->get('options')['identifiers']);
-            }));
+        $limit = 20;
+        if (isset($options['limit'])) {
+            $limit = (int) $options['limit'];
         }
 
-        return new JsonResponse($RESPONSE);
+        $page = 1;
+        if (isset($options['page'])) {
+            $page = (int) $options['page'];
+        }
+
+        $identifiers = [];
+        if (isset($options['identifiers'])) {
+            $identifiers = $options['identifiers'];
+        }
+
+        $query = new SearchFamiliesQuery($limit, $page, $identifiers, $request->get('search'));
+        $families = $this->searchFamiliesHandler->handle($query);
+
+        return new JsonResponse(
+            $this->familiesNormalizer->normalize($families)
+        );
     }
 
     /**
      * @param string   $identifier
-     * @param Response $response
      *
      * @return JsonResponse
      */
     public function getAction(string $identifier): JsonResponse
     {
-        $familyAttributesMapping = $this->attributesMappingByFamilyHandler->handle(
+        $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
             new GetAttributesMappingByFamilyQuery($identifier)
         );
 
