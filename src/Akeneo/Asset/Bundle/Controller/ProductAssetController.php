@@ -45,7 +45,7 @@ use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\Controller\FileController;
+use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

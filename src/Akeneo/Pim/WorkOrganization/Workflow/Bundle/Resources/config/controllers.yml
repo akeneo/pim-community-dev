@@ -111,7 +111,7 @@ services:
             - '@pim_user.context.user'
 
     pimee_workflow.controller.category_tree.published_product:
-        class: '%pim_enrich.controller.category_tree.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'
