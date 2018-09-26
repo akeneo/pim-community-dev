@@ -4,8 +4,36 @@ import * as _ from 'underscore'
 const mediator = require('oro/mediator')
 const requireContext = require('require-context')
 
+interface FilterModule extends Backbone.View<any> {
+    enabled: boolean
+    defaultEnabled: boolean
+    isSearch?: boolean
+    enable: () => FilterModule
+    disable: () => FilterModule
+    isEmpty: () => boolean
+    getValue: () => FilterValue
+    setValue: (value: FilterValue | number) => FilterModule
+    extend: (filterDefinition: FilterDefinition) => any
+}
+
+interface FilterDefinition {
+  name: string,
+  type: string,
+  populateDefault: boolean
+  enabled: boolean
+}
+
+interface FilterValue {
+  type: string
+  value: any
+}
+
+interface FilterState {
+  [name: string]:  FilterValue | number
+}
+
 class FiltersColumn extends BaseView {
-  public modules: any
+  public modules: {[name: string]: FilterModule}
   public datagridCollection: any
   public silent: boolean
   public categoryFilter: any
@@ -36,20 +64,20 @@ class FiltersColumn extends BaseView {
       this.categoryFilter = categoryFilter
 
       if (false === silent) {
-        this.updateDatagridStateWithFilters()
+        this.updateGridState()
       }
     })
 
     return BaseView.prototype.configure.apply(this, arguments)
   }
 
-  getFilterModule(filter: any) {
+  getFilterModule(filter: FilterDefinition): FilterModule {
     const types: any = this.config.filterTypes
     const filterType = types[filter.type] || filter.type
-    let cachedFilter = this.modules[filter.name]
+    let cachedFilter: FilterModule = this.modules[filter.name]
 
     if (!cachedFilter) {
-      const filterModule = requireContext(`oro/datafilter/${filterType}-filter`)
+      const filterModule: FilterModule = requireContext(`oro/datafilter/${filterType}-filter`)
 
       if (!filterModule) {
         throw Error(`No module found for the ${filter.name} filter`)
@@ -61,19 +89,19 @@ class FiltersColumn extends BaseView {
     return cachedFilter
   }
 
-  disableFilter(filter: any) {
+  disableFilter(filter: any): void {
     mediator.trigger('filters-selector:disable-filter', filter)
 
-    this.updateDatagridStateWithFilters()
+    this.updateGridState()
   }
 
-  renderFilters(filters: any, datagridCollection: any) {
+  renderFilters(filters: FilterDefinition[], datagridCollection: any): void {
     this.datagridCollection = datagridCollection
-    const list = document.createDocumentFragment();
-    const state = datagridCollection.state.filters
+    const list: DocumentFragment = document.createDocumentFragment();
+    const state: FilterState = datagridCollection.state.filters
 
-    filters.forEach((filter: any) => {
-      const filterModule =  this.getFilterModule(filter)
+    filters.forEach((filter: FilterDefinition) => {
+      const filterModule: FilterModule =  this.getFilterModule(filter)
 
       if (true === filter.enabled || state[filter.name]) {
         filterModule.render()
@@ -82,7 +110,7 @@ class FiltersColumn extends BaseView {
         this.stopListening(filterModule, 'update')
         this.stopListening(filterModule, 'disable')
 
-        this.listenTo(filterModule, 'update', this.updateDatagridStateWithFilters.bind(this))
+        this.listenTo(filterModule, 'update', this.updateGridState.bind(this))
         this.listenTo(filterModule, 'disable', this.disableFilter.bind(this, filter))
 
         list.appendChild(filterModule.el)
@@ -94,31 +122,29 @@ class FiltersColumn extends BaseView {
     })
 
     this.el.appendChild(list)
-    this.hideDisabledFilters(filters)
     this.restoreFilterState(state, filters)
 
-    mediator.trigger('filters-column:init', this.updateDatagridStateWithFilters.bind(this))
+    mediator.trigger('filters-column:init', this.updateGridState.bind(this))
     mediator.trigger('datagrid_filters:rendered', datagridCollection)
   }
 
-  hideDisabledFilters(filters: any) {
-    filters.forEach((filter: any) => {
-      const filterModule = this.modules[filter.name];
-      (false === filter.enabled) ? filterModule.disable() : filterModule.enable()
-    })
-  }
-
-  restoreFilterState(state: any, filters: any) {
+  restoreFilterState(state: FilterState, filters: FilterDefinition[]): void {
     this.silent = true
 
-    filters.forEach((filter: any) => {
+    filters.forEach((filter: FilterDefinition) => {
       const filterName = filter.name
-      const filterModule = this.modules[filterName]
-      const filterState = state[filterName]
+      const filterModule: FilterModule = this.modules[filterName]
+      const filterValue = state[filterName]
 
-      if (filterState) {
+      if (false === filter.enabled) {
+        filterModule.disable()
+      } else {
+        filterModule.enable()
+      }
+
+      if (filterValue) {
         try {
-          filterModule.setValue(state[filterName])
+          filterModule.setValue(filterValue)
           filterModule.enabled = true
         } catch (e) {
           console.error('cant restore filter state for', filterName)
@@ -129,8 +155,8 @@ class FiltersColumn extends BaseView {
     this.silent = false
   }
 
-  getState() {
-    let filterState: any = {}
+  getState(): FilterState {
+    let filterState: FilterState = {}
 
     for (let filterName in this.modules) {
       const filter = this.modules[filterName]
@@ -150,24 +176,19 @@ class FiltersColumn extends BaseView {
     return filterState
   }
 
-  updateDatagridStateWithFilters() {
-    let filterState = this.getState()
-    const categoryFilter = {...this.categoryFilter}
-
-    const currentState = this.datagridCollection.state.filters
-    const updatedState = Object.assign(filterState, categoryFilter)
+  updateGridState(): void {
+    const categoryFilter: FilterState  = {...this.categoryFilter}
+    const currentState: FilterState = this.datagridCollection.state.filters
+    const updatedState: FilterState = Object.assign(this.getState(), categoryFilter)
 
     const stateHasChanged = !_.isEqual(currentState, updatedState)
     const currentStateIsEmpty = _.isEmpty(currentState)
     const shouldReloadState = (stateHasChanged || currentStateIsEmpty) && false === this.silent
 
-    console.log('is the state equal ? ', JSON.stringify(currentState), JSON.stringify(updatedState), _.isEqual(currentState, updatedState))
-
     if (shouldReloadState) {
       this.datagridCollection.state.filters = updatedState;
       this.datagridCollection.state.currentPage = 1;
       this.datagridCollection.fetch();
-      console.log('saved state', this.datagridCollection.state.filters)
     }
   }
 }

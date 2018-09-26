@@ -15,17 +15,14 @@ interface GridFilter {
     enabled: boolean
 }
 
-// @TODO restore enabled status after search
-// @TODO restore selected state after updating filters (decoupled from filters-selector)
-
 class FiltersColumn extends BaseView {
-  public timer: any = null
+  public timer: number
   public defaultFilters: GridFilter[] = []
   public loadedFilters: GridFilter[] = []
   public gridCollection: any
   public page: number = 1
   public opened = false
-  public filterList = {}
+  public filterList: JQuery<HTMLElement>
 
   readonly config: FiltersConfig
   readonly template: string = `
@@ -72,6 +69,7 @@ class FiltersColumn extends BaseView {
     }
   }
 
+  // TODO: rewrite
   togglePanel() {
     this.opened = !this.opened
     let timer: any = null
@@ -95,9 +93,10 @@ class FiltersColumn extends BaseView {
   }
 
   toggleFilter(event: JQueryEventObject): void {
-    const name = $(event.currentTarget).attr('id')
-    const checked = $(event.currentTarget).is(':checked')
-    const filter = this.loadedFilters.find(filter => filter.name === name)
+    const filterElement: JQuery<Element> = $(event.currentTarget)
+    const name = filterElement.attr('id')
+    const checked = filterElement.is(':checked')
+    const filter = this.loadedFilters.find((filter: GridFilter) => filter.name === name)
 
     if (filter) {
         filter.enabled = checked
@@ -107,13 +106,14 @@ class FiltersColumn extends BaseView {
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
+      // TODO: Use route generator
       const url = 'datagrid/product-grid/attributes-filters'
       return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`)
   }
 
   mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]) {
     const filters = [ ...originalFilters, ...addedFilters]
-    const uniqueFilters: any[] = []
+    const uniqueFilters: GridFilter[] = []
 
     filters.forEach(mergedFilter => {
         if (undefined === uniqueFilters.find((searchedFilter) => searchedFilter.name === mergedFilter.name)) {
@@ -124,7 +124,7 @@ class FiltersColumn extends BaseView {
     return uniqueFilters;
   }
 
-  fetchNextFilters(event: JQueryMouseEventObject) {
+  fetchNextFilters(event: JQueryMouseEventObject): void {
       const list: any = event.currentTarget
       const scrollPosition = Math.max(0, list.scrollTop - 15)
       const bottomPosition = (list.scrollHeight - list.offsetHeight)
@@ -144,7 +144,7 @@ class FiltersColumn extends BaseView {
       }
   }
 
-  searchFilters(event: JQueryEventObject) {
+  searchFilters(event: JQueryEventObject): void {
     if (null !== this.timer) {
         clearTimeout(this.timer)
     }
@@ -191,8 +191,8 @@ class FiltersColumn extends BaseView {
     $(this.filterList).off('scroll')
   }
 
-  renderFilters(filters = this.loadedFilters) {
-    const groupedFilters: any = this.groupFilters(filters)
+  renderFilters(filters = this.loadedFilters): void {
+    const groupedFilters: {[name: string]: GridFilter[]} = this.groupFilters(filters)
     const list = document.createDocumentFragment();
     const filterColumn = $(this.filterList).find('.filters-column')
 
@@ -206,15 +206,17 @@ class FiltersColumn extends BaseView {
 
     filterColumn.append(list)
 
-    $('input[type="checkbox"]', filterColumn).off('change')
-    $('input[type="checkbox"]', filterColumn).on('change', this.toggleFilter.bind(this))
+    const checkbox = $('input[type="checkbox"]', filterColumn)
+    checkbox.off('change')
+    checkbox.on('change', this.toggleFilter.bind(this))
   }
 
-  loadFilterList(gridCollection: any, gridElement: any) {
+  loadFilterList(gridCollection: any, gridElement: JQuery<HTMLElement>): void {
     const metadata = gridElement.data('metadata') || {}
 
     this.defaultFilters = metadata.filters
     this.gridCollection = gridCollection
+
     this.fetchFilters().then((loadedFilters: GridFilter[]) => {
         this.loadedFilters = this.mergeAddedFilters(this.defaultFilters, loadedFilters)
         this.renderFilters()
@@ -223,7 +225,7 @@ class FiltersColumn extends BaseView {
     })
   }
 
-  disableFilter(filterToDisable: any) {
+  disableFilter(filterToDisable: GridFilter): void {
     this.loadedFilters.forEach(filter => {
         if (filter.name === filterToDisable.name) {
             filter.enabled = false;
@@ -241,7 +243,7 @@ class FiltersColumn extends BaseView {
     return $(this.filterList).find('input[checked]').map(((_, el: HTMLElement) => $(el).attr('id'))).toArray()
   }
 
-  renderFilterGroup(filters: GridFilter[], groupName: string) {
+  renderFilterGroup(filters: GridFilter[], groupName: string): string {
       return _.template(this.filterGroupTemplate)({ filters, groupName })
   }
 
