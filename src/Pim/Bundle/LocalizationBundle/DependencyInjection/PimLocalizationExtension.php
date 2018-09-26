@@ -27,7 +27,6 @@ class PimLocalizationExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('forms.yml');
         $loader->load('providers.yml');
-        $loader->load('twig.yml');
         $loader->load('updaters.yml');
     }
 }

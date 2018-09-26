@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\LocalizationBundle\Twig;
+namespace spec\Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
 

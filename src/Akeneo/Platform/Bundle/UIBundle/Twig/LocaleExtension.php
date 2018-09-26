@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Twig;
+namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 /**
  * Twig extension to present locales

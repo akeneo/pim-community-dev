@@ -37,3 +37,17 @@ services:
             - '@translator'
         tags:
             - { name: twig.extension }
+
+    pim_localization.twig.locale_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\LocaleExtension'
+        tags:
+            - { name: twig.extension }
+
+    pim_localization.twig.attribute_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\AttributeExtension'
+        arguments:
+            - '@pim_catalog.localization.presenter.date'
+            - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_enrich.resolver.locale'
+        tags:
+            - { name: twig.extension }
