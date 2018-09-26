@@ -27,7 +27,7 @@ class FiltersColumn extends BaseView {
     this.modules = {}
     this.datagridCollection = null;
     this.silent = false;
-    this.categoryFilter = null;
+    this.categoryFilter = {}
   }
 
   configure() {
@@ -152,21 +152,19 @@ class FiltersColumn extends BaseView {
 
   updateDatagridStateWithFilters() {
     let filterState = this.getState()
-    const categoryFilter = this.categoryFilter ? {...this.categoryFilter} : {}
+    const categoryFilter = {...this.categoryFilter}
 
-    filterState = Object.assign(filterState, {...categoryFilter })
-
-    const currentState = Object.assign(categoryFilter, this.datagridCollection.state.filters)
-    const updatedState = filterState
+    const currentState = this.datagridCollection.state.filters
+    const updatedState = Object.assign(filterState, categoryFilter)
 
     const stateHasChanged = !_.isEqual(currentState, updatedState)
     const currentStateIsEmpty = _.isEmpty(currentState)
+    const shouldReloadState = (stateHasChanged || currentStateIsEmpty) && false === this.silent
 
-    console.log('is the state equal ? ', currentState, updatedState, _.isEqual(currentState, updatedState))
-    console.log('should we update?', (stateHasChanged || currentStateIsEmpty) && false === this.silent, 'silent?', this.silent);
+    console.log('is the state equal ? ', JSON.stringify(currentState), JSON.stringify(updatedState), _.isEqual(currentState, updatedState))
 
-    if ((stateHasChanged || currentStateIsEmpty) && false === this.silent) {
-      this.datagridCollection.state.filters = filterState;
+    if (shouldReloadState) {
+      this.datagridCollection.state.filters = updatedState;
       this.datagridCollection.state.currentPage = 1;
       this.datagridCollection.fetch();
       console.log('saved state', this.datagridCollection.state.filters)
