@@ -83,4 +83,18 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
             ));
         }
     }
+
+    /**
+     * @param string $familyCode
+     *
+     * @param array $mapping
+     */
+    public function update(string $familyCode, array $mapping): void
+    {
+        $route = $this->uriGenerator->generate(sprintf('/mapping/%s/attributes', $familyCode));
+
+        $this->httpClient->request('PUT', $route, [
+            'form_params' => $mapping,
+        ]);
+    }
 }

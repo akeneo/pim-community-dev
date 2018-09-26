@@ -20,6 +20,9 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\At
  */
 class AttributesMappingFake implements AttributesMappingApiInterface
 {
+    /** @var array */
+    private $mappings = [];
+
     /**
      * @param string $familyCode
      *
@@ -28,14 +31,23 @@ class AttributesMappingFake implements AttributesMappingApiInterface
     public function fetchByFamily(string $familyCode): AttributesMapping
     {
         $filename = sprintf('attributes-mapping-family-%s.json', $familyCode);
+        $filepath = sprintf(__DIR__ . '/../resources/%s', $filename);
+        if (!file_exists($filepath)) {
+            throw new \Exception(sprintf('File "%s" does not exist', $filepath));
+        }
 
         return new AttributesMapping(
-            json_decode(
-                file_get_contents(
-                    sprintf(__DIR__ . '/../resources/%s', $filename)
-                ),
-                true
-            )
+            json_decode(file_get_contents($filepath), true)
         );
+    }
+
+    /**
+     * @param string $familyCode
+     *
+     * @param array $mapping
+     */
+    public function update(string $familyCode, array $mapping): void
+    {
+        $this->mappings[$familyCode] = $mapping;
     }
 }

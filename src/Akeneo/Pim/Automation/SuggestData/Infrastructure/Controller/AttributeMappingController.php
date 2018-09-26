@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
+use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyHandler;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\GetAttributesMappingByFamilyQuery;
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHandler;
@@ -24,11 +26,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AttributeMappingController
 {
     /** @var GetAttributesMappingByFamilyHandler */
-    private $attributesMappingByFamilyHandler;
+    private $getAttributesMappingByFamilyHandler;
 
     /** @var SearchFamiliesHandler */
     private $searchFamiliesHandler;
@@ -39,19 +42,25 @@ class AttributeMappingController
     /** @var AttributesMappingNormalizer */
     private $attributesMappingNormalizer;
 
+    /** @var UpdateAttributesMappingByFamilyHandler */
+    private $updateAttributesMappingByFamilyHandler;
+
     /**
-     * @param GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler
+     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
+     * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
      * @param SearchFamiliesHandler $searchFamiliesHandler
      * @param FamiliesNormalizer $familiesNormalizer
      * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
-        GetAttributesMappingByFamilyHandler $attributesMappingByFamilyHandler,
+        GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
+        UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler,
         SearchFamiliesHandler $searchFamiliesHandler,
         FamiliesNormalizer $familiesNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer
     ) {
-        $this->attributesMappingByFamilyHandler = $attributesMappingByFamilyHandler;
+        $this->getAttributesMappingByFamilyHandler = $getAttributesMappingByFamilyHandler;
+        $this->updateAttributesMappingByFamilyHandler = $updateAttributesMappingByFamilyHandler;
         $this->searchFamiliesHandler = $searchFamiliesHandler;
         $this->familiesNormalizer = $familiesNormalizer;
         $this->attributesMappingNormalizer = $attributesMappingNormalizer;
@@ -96,7 +105,7 @@ class AttributeMappingController
      */
     public function getAction(string $identifier): JsonResponse
     {
-        $familyAttributesMapping = $this->attributesMappingByFamilyHandler->handle(
+        $familyAttributesMapping = $this->getAttributesMappingByFamilyHandler->handle(
             new GetAttributesMappingByFamilyQuery($identifier)
         );
 
@@ -107,17 +116,28 @@ class AttributeMappingController
     }
 
     /**
+     * @param string $identifier
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException
      */
-    public function updateAction(Request $request): Response
+    public function updateAction(string $identifier, Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
         $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['mapping'])) {
+            throw new BadRequestHttpException('No mapping have been sent');
+        }
+
+        $command = new UpdateAttributesMappingByFamilyCommand($identifier, $data['mapping']);
+        $this->updateAttributesMappingByFamilyHandler->handle($command);
+
         /*
         $familyMapping = $this->getOrCreateFamilyMapping($data['code'])
         $this->updater->update($familyMapping, $data);

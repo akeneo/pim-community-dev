@@ -24,6 +24,9 @@ final class InvalidMappingException extends \Exception
     private const IDENTIFIER_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.identifier_mapping.constraint.%s';
 
     /** @var string */
+    private const ATTRIBUTE_MAPPING_CONSTRAINT_KEY = 'akeneo_suggest_data.entity.attributes_mapping.constraint.%s';
+
+    /** @var string */
     private $className;
 
     /** @var string */
@@ -41,7 +44,7 @@ final class InvalidMappingException extends \Exception
      * @param \Exception|null $previous
      */
     public function __construct(
-        string $className,
+        ?string $className,
         string $message = '',
         array $messageParams = [],
         string $path = null,
@@ -145,6 +148,26 @@ final class InvalidMappingException extends \Exception
         $message = sprintf(static::IDENTIFIER_MAPPING_CONSTRAINT_KEY, 'attribute_type');
 
         return new static($className, $message, [], $attributeCode);
+    }
+
+    /**
+     * @return InvalidMappingException
+     */
+    public static function expectedTargetKey()
+    {
+        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'missing_target_key');
+
+        return new self(null, $message, [], '', 400);
+    }
+
+    /**
+     * @return InvalidMappingException
+     */
+    public static function expectedKey($targetKey, $expectedKey)
+    {
+        $message = sprintf(static::ATTRIBUTE_MAPPING_CONSTRAINT_KEY, 'missing_attribute_key');
+
+        return new self(null, $message, ['expectedKey' => $expectedKey, 'targetKey' => $targetKey], '', 400);
     }
 
     /**

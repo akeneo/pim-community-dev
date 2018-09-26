@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
+use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
@@ -29,6 +30,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Identifier
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
 
 /**
@@ -56,6 +58,9 @@ class PimAI implements DataProviderInterface
     /** @var IdentifiersMappingNormalizer */
     private $identifiersMappingNormalizer;
 
+    /** @var AttributesMappingNormalizer */
+    private $attributesMappingNormalizer;
+
     /**
      * @param AuthenticationApiInterface            $authenticationApi
      * @param SubscriptionApiInterface              $subscriptionApi
@@ -63,6 +68,7 @@ class PimAI implements DataProviderInterface
      * @param IdentifiersMappingApiInterface        $identifiersMappingApi
      * @param AttributesMappingApiInterface         $attributesMappingApi
      * @param IdentifiersMappingNormalizer          $identifiersMappingNormalizer
+     * @param AttributesMappingNormalizer           $attributesMappingNormalizer
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,
@@ -70,7 +76,8 @@ class PimAI implements DataProviderInterface
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         IdentifiersMappingApiInterface $identifiersMappingApi,
         AttributesMappingApiInterface $attributesMappingApi,
-        IdentifiersMappingNormalizer $identifiersMappingNormalizer
+        IdentifiersMappingNormalizer $identifiersMappingNormalizer,
+        AttributesMappingNormalizer $attributesMappingNormalizer
     ) {
         $this->authenticationApi = $authenticationApi;
         $this->subscriptionApi = $subscriptionApi;
@@ -78,6 +85,7 @@ class PimAI implements DataProviderInterface
         $this->identifiersMappingApi = $identifiersMappingApi;
         $this->attributesMappingApi = $attributesMappingApi;
         $this->identifiersMappingNormalizer = $identifiersMappingNormalizer;
+        $this->attributesMappingNormalizer = $attributesMappingNormalizer;
     }
 
     /**
@@ -191,6 +199,16 @@ class PimAI implements DataProviderInterface
         }
 
         return $attributesMapping;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void
+    {
+        $mapping = $this->attributesMappingNormalizer->normalize($attributesMapping);
+
+        $this->attributesMappingApi->update($familyCode, $mapping);
     }
 
     /**

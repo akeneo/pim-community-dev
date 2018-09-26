@@ -62,4 +62,11 @@ interface DataProviderInterface
      * @return AttributesMappingResponse
      */
     public function getAttributesMapping(string $familyCode): AttributesMappingResponse;
+
+    /**
+     * @param string $familyCode
+     *
+     * @param array $attributesMapping
+     */
+    public function updateAttributesMapping(string $familyCode, array $attributesMapping): void;
 }
