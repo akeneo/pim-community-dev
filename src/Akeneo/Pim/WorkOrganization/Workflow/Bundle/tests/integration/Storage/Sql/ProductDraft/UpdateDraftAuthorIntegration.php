@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\Storage\Sql\ProductDraft;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\integration\Storage\Sql\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ValueCollection;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UpdateDraftAuthorIntegration extends TestCase
 {

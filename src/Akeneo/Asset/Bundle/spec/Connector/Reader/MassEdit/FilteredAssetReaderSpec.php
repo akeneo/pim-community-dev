@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Connector\Reader\MassEdit;
+namespace spec\Akeneo\Asset\Bundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\StepExecution;
-use PimEnterprise\Bundle\ProductAssetBundle\Connector\Reader\MassEdit\FilteredAssetReader;
+use Akeneo\Asset\Bundle\Connector\Reader\MassEdit\FilteredAssetReader;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 class FilteredAssetReaderSpec extends ObjectBehavior
 {
@@ -41,7 +41,6 @@ class FilteredAssetReaderSpec extends ObjectBehavior
     function it_does_not_read_assets(
         $repository,
         StepExecution $stepExecution,
-        AssetInterface $asset,
         JobParameters $jobParameters
     ) {
         $this->setStepExecution($stepExecution);

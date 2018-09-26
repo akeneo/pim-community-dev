@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
+namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductDraft\UpdateDraftAuthor;
+use Akeneo\UserManagement\Component\Event\UserEvent;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Event\UserEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\ProductDraft\UpdateDraftAuthor;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\User\UserInterface;

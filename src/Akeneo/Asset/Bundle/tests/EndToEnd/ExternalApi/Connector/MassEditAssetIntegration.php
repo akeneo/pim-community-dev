@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\Connector;
 
-use Akeneo\Component\Batch\Model\Warning;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 
 class MassEditAssetIntegration extends TestCase
 {
@@ -29,7 +30,9 @@ class MassEditAssetIntegration extends TestCase
         $jobInstance = $this->get('akeneo_batch.job.job_instance_repository')->findOneByIdentifier('classify_assets');
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');
 
-        $jobExecution = $this->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $config);
+        $jobExecution = $this
+            ->get('akeneo_batch_queue.launcher.queue_job_launcher')
+            ->launch($jobInstance, $user, $config);
 
         $jobLauncher = new JobLauncher(static::$kernel);
         $jobLauncher->launchConsumerOnce();
@@ -45,11 +48,17 @@ class MassEditAssetIntegration extends TestCase
         }
     }
 
-    protected function getConfiguration()
+    /**
+     * @return Configuration
+     */
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 
+    /**
+     * @return array
+     */
     private function createAssets(): array
     {
         $assets = [];

@@ -132,14 +132,14 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.subscriber.product_draft.updated_author:
-        class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\UpdateDraftAuthorSubscriber
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\UpdateDraftAuthorSubscriber
         arguments:
             - '@pimee_workflow.sql.product.update_draft_author'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.subscriber.product_model_draft.updated_author:
-        class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelDraft\UpdateDraftAuthorSubscriber
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductModelDraft\UpdateDraftAuthorSubscriber
         arguments:
             - '@pimee_workflow.sql.product_model.update_draft_author'
         tags:

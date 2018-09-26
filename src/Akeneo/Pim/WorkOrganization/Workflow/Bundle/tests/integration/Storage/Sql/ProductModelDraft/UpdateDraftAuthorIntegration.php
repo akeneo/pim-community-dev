@@ -2,26 +2,24 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\Storage\Sql\ProductModelDraft;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\integration\Storage\Sql\ProductModelDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollection;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UpdateDraftAuthorIntegration extends TestCase
 {
-
     public function testQueryToGetAssociatedProductCodes(): void
     {
         $this->createFamilyVariant();
         $productModel = $this->createProductModel('foo');
 
-        $draft = $this->get('pimee_workflow.factory.product_model_draft')->createEntityWithValueDraft($productModel, 'admin');
+        $draft = $this
+            ->get('pimee_workflow.factory.product_model_draft')
+            ->createEntityWithValueDraft($productModel, 'admin');
         $draft->setValues(new ValueCollection());
         $this->get('pimee_workflow.saver.product_model_draft')->save($draft);
 

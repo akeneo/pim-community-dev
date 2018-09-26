@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\ProductDraft;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductDraft;
 
 use Doctrine\DBAL\Connection;
 

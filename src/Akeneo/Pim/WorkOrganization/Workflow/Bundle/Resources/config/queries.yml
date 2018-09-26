@@ -14,11 +14,11 @@ services:
             - '@security.token_storage'
 
     pimee_workflow.sql.product.update_draft_author:
-        class: PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\ProductDraft\UpdateDraftAuthor
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductDraft\UpdateDraftAuthor
         arguments:
             - '@database_connection'
 
     pimee_workflow.sql.product_model.update_draft_author:
-        class: PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\ProductModelDraft\UpdateDraftAuthor
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductModelDraft\UpdateDraftAuthor
         arguments:
             - '@database_connection'

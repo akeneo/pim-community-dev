@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
-use Pim\Bundle\UserBundle\Event\UserEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Storage\Sql\ProductDraft\UpdateDraftAuthor;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductDraft\UpdateDraftAuthor;
+use Akeneo\UserManagement\Component\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
