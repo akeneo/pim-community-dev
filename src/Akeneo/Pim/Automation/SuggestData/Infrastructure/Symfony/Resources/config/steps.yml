@@ -1,0 +1,10 @@
+services:
+    akeneo.pim.automation.suggest_data.step.subscribe_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'subscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.dummy_item'
+            - '@pim_connector.processor.dummy_item'
+            - '@pim_connector.writer.dummy_item'
