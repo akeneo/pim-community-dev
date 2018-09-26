@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
-use Behat\Behat\Context\Context;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery;
+use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
 final class LocalizableAndScopableAttributePerFamilyContext implements Context
