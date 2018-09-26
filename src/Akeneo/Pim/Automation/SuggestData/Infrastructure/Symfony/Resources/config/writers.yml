@@ -1,0 +1,3 @@
+services:
+    akeneo.pim.automation.suggest_data.writer.subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Writer\SubscriptionWriter'

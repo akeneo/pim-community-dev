@@ -1,0 +1,6 @@
+services:
+    akeneo.pim.automation.suggest_data.processor.subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Processor\SubscriptionProcessor'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
