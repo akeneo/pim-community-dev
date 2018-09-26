@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7659: Fix search on the families to get all the results when they have same translations for many locales.
+- PIM-7619: Fix search on groups for the variant products.
 
 # 2.3.9 (2018-09-25)
 
