@@ -111,4 +111,5 @@ akeneo_suggest_data:
 batch_jobs:
     suggest_data_subscribe_products:
         label: Franklin Insights bulk subscription
+        validate_configuration.label: Validate Franklin Insights configuration
         subscribe_products.label: Subscribe products
