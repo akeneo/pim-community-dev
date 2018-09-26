@@ -471,6 +471,28 @@ class CompletenessFilterSpec extends ObjectBehavior
         );
     }
 
+    function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator_with_locales($sqb)
+    {
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['gte' => 56]]]
+                    ]
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter(
+            'completeness',
+            Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
+            56,
+            null,
+            'ecommerce',
+            ['locales' => ['en_US']]
+        );
+    }
+
     function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES_operator($sqb)
     {
         $sqb->addFilter(

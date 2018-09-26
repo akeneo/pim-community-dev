@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\tests\integration\PQB\Sorter\ReferenceData;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Sorter\ReferenceData;
 
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;

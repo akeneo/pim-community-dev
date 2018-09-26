@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\CatalogBundle\tests\integration;
+namespace Akeneo\Pim\Structure\Bundle\tests\integration;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;

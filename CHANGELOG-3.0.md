@@ -914,3 +914,9 @@
 - Rename `Pim\Bundle\FilterBundle\Filter\CompletenessFilter` to `Oro\Bundle\PimFilterBundle\Filter\ProductCompletenessFilter`
 - Move `Pim\Bundle\PimDataGridBundle` to `Oro\Bundle\PimDataGridBundle`
 - Move `Pim\Bundle\PimFilterBundle` to `Oro\Bundle\PimFilterBundle`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer`, add `IdentifiableObjectRepositoryInterface` argument 
+- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector`, add `AverageMaxQuery` argument 3 times 
+- Change constructor of `Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector`, add `AverageMaxQuery` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter`, add `TokenStorageInterface`, `JobLauncherInterface`, `IdentifiableObjectRepositoryInterface` and `string` arguments
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`, add `AttributeFilterInterface` argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController`, add `AttributeFilterInterface` argument

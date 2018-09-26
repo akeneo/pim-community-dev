@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fa1673c7f2e9124f1d897ca074ef466",
+    "content-hash": "a932ba2045873f14271fe5b9dfeb30a7",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -1298,16 +1298,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.5",
+            "version": "2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3"
+                "reference": "0578b32b30b22de3e8664f797cf846fc9246f786"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/54859fabea8b3beecbb1a282888d5c990036b9e3",
-                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/0578b32b30b22de3e8664f797cf846fc9246f786",
+                "reference": "0578b32b30b22de3e8664f797cf846fc9246f786",
                 "shasum": ""
             },
             "require": {
@@ -1351,7 +1351,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-08-16T20:49:45+00:00"
+            "time": "2018-09-25T20:47:26+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -4614,16 +4614,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.2",
+            "version": "v3.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "29961b693fa2157a3f349d1a801f9f8742be4e03"
+                "reference": "5220b6f9fcdee261c6fdd3e096f3b204fba5d906"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/29961b693fa2157a3f349d1a801f9f8742be4e03",
-                "reference": "29961b693fa2157a3f349d1a801f9f8742be4e03",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/5220b6f9fcdee261c6fdd3e096f3b204fba5d906",
+                "reference": "5220b6f9fcdee261c6fdd3e096f3b204fba5d906",
                 "shasum": ""
             },
             "require": {
@@ -4641,7 +4641,6 @@
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.6",
-                "symfony/polyfill-util": "~1.0",
                 "twig/twig": "^1.35|^2.4.4"
             },
             "conflict": {
@@ -4765,7 +4764,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-12-15T02:05:35+00:00"
+            "time": "2018-01-29T12:30:04+00:00"
         },
         {
             "name": "symfony/thanks",
@@ -5906,16 +5905,16 @@
         },
         {
             "name": "friends-of-behat/symfony-extension",
-            "version": "v1.2.2",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfBehat/SymfonyExtension.git",
-                "reference": "291530353b19e9e6cbb759e3d0bbf71475fca965"
+                "reference": "12d4c58ec2ce24b0bf52fc419135249a181c2a1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfBehat/SymfonyExtension/zipball/291530353b19e9e6cbb759e3d0bbf71475fca965",
-                "reference": "291530353b19e9e6cbb759e3d0bbf71475fca965",
+                "url": "https://api.github.com/repos/FriendsOfBehat/SymfonyExtension/zipball/12d4c58ec2ce24b0bf52fc419135249a181c2a1a",
+                "reference": "12d4c58ec2ce24b0bf52fc419135249a181c2a1a",
                 "shasum": ""
             },
             "require": {
@@ -5956,7 +5955,7 @@
                 }
             ],
             "description": "Integrates Behat with Symfony.",
-            "time": "2018-08-01T14:35:39+00:00"
+            "time": "2018-09-25T11:18:21+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",

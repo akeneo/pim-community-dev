@@ -48,13 +48,6 @@ abstract class ApiTestCase extends WebTestCase
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $clientRegistry = $this->get('akeneo_elasticsearch.registry.clients');
-        $clients = $clientRegistry->getClients();
-
-        foreach ($clients as $client) {
-            $client->resetIndex();
-        }
-
         $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
         $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
 
