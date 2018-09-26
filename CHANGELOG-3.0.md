@@ -128,6 +128,8 @@
 - Move namespace `PimEnterprise\Component\ProductAsset` to `Akeneo\Asset\Component`
 - Change constructor of `Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor`. Replace argument `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface` with `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`.
 - Change `Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber::massUploadAssets()` signature to replace `Symfony\Component\EventDispatcher\GenericEvent` by `Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent`
+- Change constructor of `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter`. Replace argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
+    with  `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, and `string`.
 
 ## Security
 

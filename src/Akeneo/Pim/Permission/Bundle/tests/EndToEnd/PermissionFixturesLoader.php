@@ -654,9 +654,8 @@ class PermissionFixturesLoader
         $userGroup = $entityManager->getRepository(Group::class)->findOneBy(['name' => $userGroupName]);
 
         $accessManager->revokeAccess($category);
-        $accessManager->grantAccess($category, $userGroup, $right);
-
         $entityManager->flush();
+        $accessManager->grantAccess($category, $userGroup, $right);
     }
 
     /**

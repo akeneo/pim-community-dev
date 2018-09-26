@@ -12,3 +12,13 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@security.token_storage'
+
+    pimee_workflow.sql.product.update_draft_author:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductDraft\UpdateDraftAuthor
+        arguments:
+            - '@database_connection'
+
+    pimee_workflow.sql.product_model.update_draft_author:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\ProductModelDraft\UpdateDraftAuthor
+        arguments:
+            - '@database_connection'
