@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\ReferenceData\Value;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;

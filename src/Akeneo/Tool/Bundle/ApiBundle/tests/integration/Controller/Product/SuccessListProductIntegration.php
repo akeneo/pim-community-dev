@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
  * @group ce

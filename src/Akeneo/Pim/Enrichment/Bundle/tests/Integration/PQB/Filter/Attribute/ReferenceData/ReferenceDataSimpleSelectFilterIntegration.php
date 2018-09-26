@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\tests\integration\PQB\Filter\ReferenceData;
+namespace Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\Filter\ReferenceData;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Pim\Enrichment\Bundle\tests\Integration\PQB\AbstractProductQueryBuilderTestCase;

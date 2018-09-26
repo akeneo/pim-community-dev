@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\UserBundle\Security;
+namespace Akeneo\UserManagement\Bundle\Security;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,6 +17,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class SystemUserToken extends AbstractToken
 {
+    /**
+     * @param UserInterface $user
+     */
     public function __construct(UserInterface $user)
     {
         $this->setUser($user);
