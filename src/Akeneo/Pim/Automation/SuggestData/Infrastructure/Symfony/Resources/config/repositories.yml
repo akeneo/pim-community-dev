@@ -14,3 +14,8 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\ProductSubscriptionRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    akeneo.pim.automation.suggest_data.repository.search_family:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\FamilySearchableRepository'
+        arguments:
+            - '@pim_enrich.repository.family.search'
