@@ -44,8 +44,8 @@ class CategoryTreeFixturesLoaderWithPermission
             $this->container->get('pim_catalog.saver.category')->save($category);
 
             $accessManager->revokeAccess($category);
+            $entityManager->flush($category);
             $accessManager->grantAccess($category, $userGroup, Attributes::VIEW_ITEMS);
-            $entityManager->flush();
 
             $this->givenTheCategoryTreesWithoutViewPermission($children, $categoryCode);
         }
@@ -75,7 +75,7 @@ class CategoryTreeFixturesLoaderWithPermission
     public function givenTheViewableCategories(array $categoryCodes): void
     {
         $accessManager = $this->container->get('pimee_security.manager.category_access');
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $entityManager = $this->container->get('doctrine')->getEntityManager();
         $groupRepository = $this->container->get('pim_user.repository.group');
         $categoryRepository = $this->container->get('pim_catalog.repository.product_category');
 
@@ -83,9 +83,8 @@ class CategoryTreeFixturesLoaderWithPermission
             $category = $categoryRepository->findOneByIdentifier($categoryCode);
             $userGroup = $groupRepository->findOneByIdentifier('IT support');
             $accessManager->revokeAccess($category);
+            $entityManager->flush($category);
             $accessManager->grantAccess($category, $userGroup, Attributes::VIEW_ITEMS);
         }
-
-        $entityManager->flush();
     }
 }
