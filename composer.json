@@ -69,7 +69,7 @@
         "sensio/framework-extra-bundle": "3.0.26",
         "sensio/generator-bundle": "3.1.6",
         "symfony/assetic-bundle": "2.8.2",
-        "symfony/monolog-bundle": "3.1.0",
+        "symfony/monolog-bundle": "3.1.2",
         "symfony/swiftmailer-bundle": "3.0.3",
         "symfony/security-acl": "3.0.0",
         "symfony/symfony": "3.4.4",
