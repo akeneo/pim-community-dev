@@ -139,43 +139,10 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesIds()
     {
         $attributeCodes = $this->getUserGridColumns();
-        $attributeIds = $this->getAttributeIds($attributeCodes);
+        $attributeIds = empty($attributeCodes) ? [] : $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
 
         $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
         $this->configuration->offsetSetByPath($path, $attributeIds);
-    }
-
-    /**
-     * Return attribute ids to add to the conf
-     *
-     * @param string[] $attributeCodes
-     *
-     * @return integer[]
-     */
-    protected function getAttributeIds($attributeCodes)
-    {
-        if (empty($attributeCodes)) {
-            return [];
-        }
-
-        // as now only attributes usable as grid filters are usable in the grid,
-        // we need to add the variant group axes (even if they are not usable as grid filter)
-        // as usable in the grid (to be displayed in the columns)
-        $attributeIds = $this->getAttributeIdsUseableInGrid($attributeCodes);
-
-        return $attributeIds;
-    }
-
-    /**
-     * Return usable attribute ids
-     *
-     * @param string[]|null $attributeCodes
-     *
-     * @return integer[]
-     */
-    protected function getAttributeIdsUseableInGrid($attributeCodes = null)
-    {
-        return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
     }
 
     /**
@@ -348,13 +315,29 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Get attributes configuration for attribute that can be used in grid (as column or filter)
+     * Get attributes configuration for attributes that have been selected as filter or column in the grid.
      *
      * @return array
      */
     protected function getAttributesConfig()
     {
-        $attributeIds = $this->getAttributeIdsUsed();
+        $filterValues = $this->requestParams->get('_filter');
+        unset($filterValues['scope']);
+        unset($filterValues['category']);
+        $attributesUsedAsFilter = array_keys($filterValues);
+
+
+        $userColumns = $this->configuration->offsetGetByPath(
+            sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY), []
+        );
+        $baseColumns = array_keys($this->configuration->offsetGet('columns'));
+        $attributesUsedAsColumn = array_diff($userColumns, $baseColumns);
+        $filters = $this->userContext->getUser()->getProductGridFilters();
+
+        $usedAttributeCodes = array_unique(array_merge($attributesUsedAsFilter, $attributesUsedAsColumn, $filters));
+
+        $attributeIds = empty($usedAttributeCodes) ? [] : $this->attributeRepository->getAttributeIdsUseableInGrid($usedAttributeCodes);
+
         if (empty($attributeIds)) {
             return [];
         }
@@ -363,30 +346,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $configuration = $this->attributeRepository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
-    }
-
-    /**
-     * Get Ids of the attributes that have been selected as filter or column by the user
-     * The other available attributes will be loaded in a dedicated end-point
-     *
-     * @return integer[]
-     */
-    private function getAttributeIdsUsed(): array
-    {
-        $filterValues = $this->requestParams->get('_filter');
-        unset($filterValues['scope']);
-        unset($filterValues['category']);
-        $attributesUsedAsFilter = array_keys($filterValues);
-
-        $userColumns = $this->configuration->offsetGetByPath(
-            sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY), []
-        );
-        $baseColumns = array_keys($this->configuration->offsetGet('columns'));
-        $attributesUsedAsColumn = array_diff($userColumns, $baseColumns);
-
-        $attributeCodesUsed = array_unique(array_merge($attributesUsedAsFilter, $attributesUsedAsColumn));
-
-        return $this->getAttributeIds($attributeCodesUsed);
     }
 
     /**
