@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Form\Type;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Type;
 
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;

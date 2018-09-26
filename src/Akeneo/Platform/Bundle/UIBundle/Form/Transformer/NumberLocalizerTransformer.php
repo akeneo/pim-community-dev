@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Form\DataTransformer;
+namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
