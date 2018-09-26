@@ -10,6 +10,7 @@
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
 - PAV3-4: Regroup PAM Classes
 - Composer use Packagist to retrieve pim-community-dev
+- Uses centralized community edition technical requirements
 
 ## BC breaks
 
