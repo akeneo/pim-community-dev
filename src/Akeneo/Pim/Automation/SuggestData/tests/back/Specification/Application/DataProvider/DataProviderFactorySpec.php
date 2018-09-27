@@ -20,17 +20,17 @@ use PhpSpec\ObjectBehavior;
 
 class DataProviderFactorySpec extends ObjectBehavior
 {
-    public function let(DataProviderRegistry $registry)
+    public function let(DataProviderRegistry $registry): void
     {
         $this->beConstructedWith($registry, 'alias');
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(DataProviderFactory::class);
     }
 
-    public function it_creates_a_data_provider($registry, DataProviderInterface $dataProvider)
+    public function it_creates_a_data_provider($registry, DataProviderInterface $dataProvider): void
     {
         $registry->getDataProvider('alias')->willReturn($dataProvider);
 

@@ -61,16 +61,16 @@ class FixturesContext extends PimContext
     private $productRepository;
 
     /**
-     * @param string                          $mainContextClass
+     * @param string $mainContextClass
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
-     * @param SubscribeProductHandler         $subscribeProductHandler
-     * @param EntityBuilder                   $attributeBuilder
-     * @param BulkSaverInterface              $attributeSaver
-     * @param EntityBuilder                   $familyBuilder
-     * @param SaverInterface                  $familySaver
-     * @param Builder\Product                 $productBuilder
-     * @param SaverInterface                  $productSaver
-     * @param ProductRepositoryInterface      $productRepository
+     * @param SubscribeProductHandler $subscribeProductHandler
+     * @param EntityBuilder $attributeBuilder
+     * @param BulkSaverInterface $attributeSaver
+     * @param EntityBuilder $familyBuilder
+     * @param SaverInterface $familySaver
+     * @param Builder\Product $productBuilder
+     * @param SaverInterface $productSaver
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         string $mainContextClass,
@@ -171,7 +171,7 @@ class FixturesContext extends PimContext
 
     /**
      * Loads a product with its family and attributes
-     * Fixture content is in a file in Resources/config/fixtures/products/
+     * Fixture content is in a file in Resources/config/fixtures/products/.
      *
      * @param string $identifier
      * @param string $familyCode
@@ -194,7 +194,7 @@ class FixturesContext extends PimContext
 
     /**
      * Loads the family with its attributes
-     * Fixture content is in a file in Resources/config/fixtures/families/
+     * Fixture content is in a file in Resources/config/fixtures/families/.
      *
      * @param string $familyCode
      */
@@ -232,7 +232,7 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * Loads a file containing json content and return it as a PHP array
+     * Loads a file containing json content and return it as a PHP array.
      *
      * @param string $filePath
      *
@@ -240,7 +240,7 @@ class FixturesContext extends PimContext
      */
     private function loadJsonFileAsArray(string $filePath)
     {
-        $filePath = realpath(sprintf(__DIR__ .'/../../Acceptance/Resources/fixtures/%s', $filePath));
+        $filePath = realpath(sprintf(__DIR__ . '/../../Acceptance/Resources/fixtures/%s', $filePath));
         Assert::true(file_exists($filePath));
         $jsonContent = file_get_contents($filePath);
 

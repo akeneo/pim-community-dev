@@ -25,24 +25,24 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionRequestSpec extends ObjectBehavior
 {
-    function let(ProductInterface $product)
+    public function let(ProductInterface $product): void
     {
         $this->beConstructedWith($product);
     }
 
-    function it_is_a_product_subscription_request()
+    public function it_is_a_product_subscription_request(): void
     {
         $this->shouldHaveType(ProductSubscriptionRequest::class);
     }
 
-    function it_does_not_take_missing_values_into_account(
+    public function it_does_not_take_missing_values_into_account(
         $product,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
         ValueInterface $modelValue,
         ValueInterface $eanValue
-    ) {
+    ): void {
         $manufacturer->getCode()->willReturn('manufacturer');
         $model->getCode()->willReturn('model');
         $ean->getCode()->willReturn('ean');
@@ -57,20 +57,20 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
 
         $this->getMappedValues(new IdentifiersMapping([
-            'upc'   => $ean->getWrappedObject(),
+            'upc' => $ean->getWrappedObject(),
             'brand' => $manufacturer->getWrappedObject(),
-            'mpn'   => $model->getWrappedObject(),
+            'mpn' => $model->getWrappedObject(),
         ]))->shouldReturn([
             'upc' => '123456789123',
         ]);
     }
 
-    function it_handles_incomplete_mapping(
+    public function it_handles_incomplete_mapping(
         $product,
         IdentifiersMapping $mapping,
         AttributeInterface $ean,
         ValueInterface $eanValue
-    ) {
+    ): void {
         $ean->getCode()->willReturn('ean');
         $eanValue->hasData()->willReturn(true);
         $eanValue->__toString()->willReturn('123456789123');
@@ -93,14 +93,14 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         );
     }
 
-    function it_handles_mpn_and_brand_as_one_identifier(
+    public function it_handles_mpn_and_brand_as_one_identifier(
         $product,
         IdentifiersMapping $mapping,
         AttributeInterface $brand,
         AttributeInterface $mpn,
         ValueInterface $brandValue,
         ValueInterface $mpnValue
-    ) {
+    ): void {
         $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(true);
         $brandValue->__toString()->willReturn('qwertee');
@@ -127,14 +127,14 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         ]);
     }
 
-    function it_does_not_handle_mpn_data_without_brand_data(
+    public function it_does_not_handle_mpn_data_without_brand_data(
         $product,
         IdentifiersMapping $mapping,
         AttributeInterface $brand,
         AttributeInterface $mpn,
         ValueInterface $brandValue,
         ValueInterface $mpnValue
-    ) {
+    ): void {
         $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(true);
         $brandValue->__toString()->willReturn('qwertee');
@@ -159,14 +159,14 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $this->getMappedValues($mapping)->shouldReturn([]);
     }
 
-    function it_does_not_handle_brand_data_without_mpn_data(
+    public function it_does_not_handle_brand_data_without_mpn_data(
         $product,
         IdentifiersMapping $mapping,
         AttributeInterface $brand,
         AttributeInterface $mpn,
         ValueInterface $brandValue,
         ValueInterface $mpnValue
-    ) {
+    ): void {
         $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(false);
 
@@ -191,13 +191,13 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $this->getMappedValues($mapping)->shouldReturn([]);
     }
 
-    function it_does_not_handle_mpn_value_without_brand_value(
+    public function it_does_not_handle_mpn_value_without_brand_value(
         $product,
         IdentifiersMapping $mapping,
         AttributeInterface $brand,
         AttributeInterface $mpn,
         ValueInterface $brandValue
-    ) {
+    ): void {
         $brand->getCode()->willReturn('brand');
         $brandValue->hasData()->willReturn(true);
         $brandValue->__toString()->willReturn('qwertee');
@@ -221,13 +221,13 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $this->getMappedValues($mapping)->shouldReturn([]);
     }
 
-    function it_does_not_handle_brand_value_without_mpn_value(
+    public function it_does_not_handle_brand_value_without_mpn_value(
         $product,
         IdentifiersMapping $mapping,
         AttributeInterface $brand,
         AttributeInterface $mpn,
         ValueInterface $mpnValue
-    ) {
+    ): void {
         $brand->getCode()->willReturn('brand');
 
         $mpn->getCode()->willReturn('mpn');

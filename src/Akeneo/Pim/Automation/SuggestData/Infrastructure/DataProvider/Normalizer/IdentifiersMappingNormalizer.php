@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normaliz
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 
 /**
- * Normalizes an IdentifiersMapping for API
+ * Normalizes an IdentifiersMapping for API.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -37,8 +37,8 @@ class IdentifiersMappingNormalizer
                 $result[$identifier] = [
                     'code' => $attribute->getCode(),
                     'label' => [
-                        'en_US' => $attribute->getLabel()
-                    ]
+                        'en_US' => $attribute->getLabel(),
+                    ],
                 ];
             }
         }

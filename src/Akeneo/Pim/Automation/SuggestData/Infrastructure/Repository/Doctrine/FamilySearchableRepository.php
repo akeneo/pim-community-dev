@@ -33,7 +33,7 @@ class FamilySearchableRepository implements FamilySearchableRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function findBySearch(int $page, int $limit, ?string $search = null, array $identifiers = []): array
     {

@@ -66,7 +66,7 @@ class SubscribeProductHandler
     }
 
     /**
-     * Creates a subscription request, sends it to the data provider and saves the resulting subscription
+     * Creates a subscription request, sends it to the data provider and saves the resulting subscription.
      *
      * @param ProductInterface $product
      */

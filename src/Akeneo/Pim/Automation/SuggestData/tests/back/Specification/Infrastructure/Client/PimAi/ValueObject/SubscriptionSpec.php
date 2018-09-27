@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 
 class SubscriptionSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith([
             'id' => '86b7a527-9531-4a46-bc5c-02d89dcbc7eb',
@@ -20,26 +20,26 @@ class SubscriptionSpec extends ObjectBehavior
                 'Memory' => 'RAM (Installed): 256 MB',
             ],
             'extra' => [
-                'tracker_id' => "42",
+                'tracker_id' => '42',
                 'family' => [
                     'code' => 'laptop',
-                    'label' => ['en_US' => 'Laptop']
-                ]
-            ]
+                    'label' => ['en_US' => 'Laptop'],
+                ],
+            ],
         ]);
     }
 
-    public function it_is_subscription()
+    public function it_is_subscription(): void
     {
         $this->shouldHaveType(Subscription::class);
     }
 
-    public function it_returns_a_subscription_id()
+    public function it_returns_a_subscription_id(): void
     {
         $this->getSubscriptionId()->shouldReturn('86b7a527-9531-4a46-bc5c-02d89dcbc7eb');
     }
 
-    public function it_returns_all_attributes_combined()
+    public function it_returns_all_attributes_combined(): void
     {
         $this->getAttributes()->shouldReturn([
             'upc' => '606449099812',
@@ -47,12 +47,12 @@ class SubscriptionSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_the_tracker_id_as_an_integer()
+    public function it_returns_the_tracker_id_as_an_integer(): void
     {
         $this->getTrackerId()->shouldReturn(42);
     }
 
-    public function it_throws_an_exception_if_the_validation_fails()
+    public function it_throws_an_exception_if_the_validation_fails(): void
     {
         $this->beConstructedWith([]);
 

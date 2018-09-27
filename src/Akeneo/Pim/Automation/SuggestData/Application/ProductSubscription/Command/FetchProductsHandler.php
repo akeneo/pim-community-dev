@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\SuggestedData;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 
 /**
- * Handles a FetchProducts command
+ * Handles a FetchProducts command.
  *
  * It fetches ProductSubscription from on PIM.ai
  *

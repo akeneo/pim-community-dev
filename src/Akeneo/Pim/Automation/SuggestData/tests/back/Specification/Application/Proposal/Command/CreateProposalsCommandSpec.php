@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand;
@@ -10,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  */
 class CreateProposalsCommandSpec extends ObjectBehavior
 {
-    public function it_is_a_create_proposal_command()
+    public function it_is_a_create_proposal_command(): void
     {
         $this->shouldBeAnInstanceOf(CreateProposalsCommand::class);
     }

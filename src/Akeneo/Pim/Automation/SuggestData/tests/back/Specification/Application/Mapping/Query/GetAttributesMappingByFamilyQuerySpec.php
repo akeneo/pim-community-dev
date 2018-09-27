@@ -21,22 +21,22 @@ use PhpSpec\ObjectBehavior;
  */
 class GetAttributesMappingByFamilyQuerySpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('camcorders');
     }
 
-    public function it_is_a_get_attributes_mapping_query()
+    public function it_is_a_get_attributes_mapping_query(): void
     {
         $this->shouldHaveType(GetAttributesMappingByFamilyQuery::class);
     }
 
-    public function it_returns_the_family_code()
+    public function it_returns_the_family_code(): void
     {
         $this->getFamilyCode()->shouldReturn('camcorders');
     }
 
-    public function it_throws_an_exception_if_family_code_is_empty()
+    public function it_throws_an_exception_if_family_code_is_empty(): void
     {
         $this->beConstructedWith('');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();

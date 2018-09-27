@@ -24,11 +24,11 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
     public function let(
         UriGenerator $uriGenerator,
         Client $httpClient
-    ) {
+    ): void {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
-    public function it_is_subscription_collection()
+    public function it_is_subscription_collection(): void
     {
         $this->shouldHaveType(IdentifiersMappingApiWebService::class);
     }
@@ -37,7 +37,7 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
         UriGenerator $uriGenerator,
         Client $httpClient,
         IdentifiersMapping $mapping
-    ) {
+    ): void {
         $normalizedMapping = ['foo' => 'bar'];
         $generatedRoute = '/api/mapping/identifiers';
 
@@ -45,7 +45,7 @@ class IdentifiersMappingApiWebServiceSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($generatedRoute);
         $httpClient->request('PUT', $generatedRoute, [
-            'form_params' => $normalizedMapping
+            'form_params' => $normalizedMapping,
         ])->shouldBeCalled();
 
         $this->update($normalizedMapping);

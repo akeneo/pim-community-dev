@@ -20,7 +20,7 @@ use PhpSpec\ObjectBehavior;
 
 class IdentifiersMappingNormalizerSpec extends ObjectBehavior
 {
-    public function it_is_subscription_collection()
+    public function it_is_subscription_collection(): void
     {
         $this->shouldHaveType(IdentifiersMappingNormalizer::class);
     }
@@ -29,12 +29,12 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
         IdentifiersMapping $mapping,
         AttributeInterface $attributeSku,
         AttributeInterface $attributeBrand
-    ) {
+    ): void {
         $mapping->getIdentifiers()->willReturn(
             [
-                'mpn'   => $attributeSku,
+                'mpn' => $attributeSku,
                 'brand' => $attributeBrand,
-                'ean'   => null
+                'ean' => null,
             ]
         );
         $attributeSku->setLocale('en_US')->shouldBeCalled();
@@ -48,12 +48,12 @@ class IdentifiersMappingNormalizerSpec extends ObjectBehavior
             [
                 'mpn' => [
                     'code' => 'sku',
-                    'label' => ['en_US' => 'SKU']
+                    'label' => ['en_US' => 'SKU'],
                 ],
                 'brand' => [
                     'code' => 'brand_code',
-                    'label' => ['en_US' => 'Brand']
-                ]
+                    'label' => ['en_US' => 'Brand'],
+                ],
             ]
         );
     }

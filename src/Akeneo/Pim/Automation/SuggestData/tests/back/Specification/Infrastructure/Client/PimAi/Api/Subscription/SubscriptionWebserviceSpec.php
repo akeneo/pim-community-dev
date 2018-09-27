@@ -28,27 +28,27 @@ use PhpSpec\ObjectBehavior;
  */
 class SubscriptionWebserviceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, Client $httpClient)
+    public function let(UriGenerator $uriGenerator, Client $httpClient): void
     {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
-    public function it_is_a_subscription_web_service()
+    public function it_is_a_subscription_web_service(): void
     {
         $this->shouldBeAnInstanceOf(SubscriptionWebservice::class);
     }
 
-    public function it_is_a_subscription_api()
+    public function it_is_a_subscription_api(): void
     {
         $this->shouldImplement(SubscriptionApiInterface::class);
     }
 
-    public function it_calls_a_delete_request_on_subscription_id($uriGenerator, $httpClient)
+    public function it_calls_a_delete_request_on_subscription_id($uriGenerator, $httpClient): void
     {
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/'. $subscriptionId)
+            ->generate('/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient->request('DELETE', 'unsubscription-route')->shouldBeCalled();
@@ -56,12 +56,12 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $this->unsubscribeProduct($subscriptionId)->shouldReturn(null);
     }
 
-    public function it_throws_pim_ai_server_exception_on_server_exception($uriGenerator, $httpClient)
+    public function it_throws_pim_ai_server_exception_on_server_exception($uriGenerator, $httpClient): void
     {
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/'. $subscriptionId)
+            ->generate('/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient
@@ -75,12 +75,12 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
             ->during('unsubscribeProduct', [$subscriptionId]);
     }
 
-    public function it_throws_bad_request_exception_on_client_exception($uriGenerator, $httpClient)
+    public function it_throws_bad_request_exception_on_client_exception($uriGenerator, $httpClient): void
     {
         $subscriptionId = 'foo-bar';
 
         $uriGenerator
-            ->generate('/subscriptions/'. $subscriptionId)
+            ->generate('/subscriptions/' . $subscriptionId)
             ->willReturn('unsubscription-route');
 
         $httpClient

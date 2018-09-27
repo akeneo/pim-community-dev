@@ -66,7 +66,7 @@ class CreateProposalsHandler
     /**
      * @param ProductSubscription $subscription
      */
-    private function createProposal(ProductSubscription $subscription)
+    private function createProposal(ProductSubscription $subscription): void
     {
         $product = $subscription->getProduct();
         if (0 === count($product->getCategoryCodes())) {

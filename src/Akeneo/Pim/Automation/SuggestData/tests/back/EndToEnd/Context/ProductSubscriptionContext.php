@@ -37,8 +37,8 @@ class ProductSubscriptionContext extends PimContext
     private $productSubscriptionRepository;
 
     /**
-     * @param string                                 $mainContextClass
-     * @param ProductRepositoryInterface             $productRepository
+     * @param string $mainContextClass
+     * @param ProductRepositoryInterface $productRepository
      * @param ProductSubscriptionRepositoryInterface $productSubscriptionRepository
      */
     public function __construct(

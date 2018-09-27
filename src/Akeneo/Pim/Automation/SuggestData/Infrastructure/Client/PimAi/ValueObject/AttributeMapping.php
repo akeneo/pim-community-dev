@@ -97,16 +97,16 @@ class AttributeMapping
     /**
      * @param array $attribute
      */
-    private function validateAttribute(array $attribute)
+    private function validateAttribute(array $attribute): void
     {
         $this->checkMandatoryKeys($attribute);
         $this->validateStatus($attribute['status']);
 
-        if (! isset($attribute['from']['id'])) {
+        if (!isset($attribute['from']['id'])) {
             throw new \InvalidArgumentException('Missing "id" key in target attribute code data');
         }
 
-        if (! empty($attribute['to']) && ! isset($attribute['to']['id'])) {
+        if (!empty($attribute['to']) && !isset($attribute['to']['id'])) {
             throw new \InvalidArgumentException('Missing "id" key in pim attribute code data');
         }
     }
@@ -114,7 +114,7 @@ class AttributeMapping
     /**
      * @param string $status
      */
-    private function validateStatus(string $status)
+    private function validateStatus(string $status): void
     {
         $allowedStatus = [
             self::STATUS_PENDING,
@@ -122,7 +122,7 @@ class AttributeMapping
             self::STATUS_INACTIVE,
         ];
 
-        if (! in_array($status, $allowedStatus)) {
+        if (!in_array($status, $allowedStatus)) {
             throw new \InvalidArgumentException(sprintf('The attribute status "%s" is invalid', $status));
         }
     }
@@ -130,7 +130,7 @@ class AttributeMapping
     /**
      * @param array $attribute
      */
-    private function checkMandatoryKeys(array $attribute)
+    private function checkMandatoryKeys(array $attribute): void
     {
         $mandatoryKeys = [
             'from',
@@ -140,7 +140,7 @@ class AttributeMapping
         ];
 
         foreach ($mandatoryKeys as $mandatoryKey) {
-            if (! array_key_exists($mandatoryKey, $attribute)) {
+            if (!array_key_exists($mandatoryKey, $attribute)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Missing key "%s" in attribute',
                     $mandatoryKey

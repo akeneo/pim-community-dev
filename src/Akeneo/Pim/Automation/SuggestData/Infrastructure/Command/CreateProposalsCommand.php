@@ -41,9 +41,9 @@ class CreateProposalsCommand extends Command
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Handles the creation of proposals based on suggested data');
     }
@@ -51,7 +51,7 @@ class CreateProposalsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $this->handler->handle(new AppCommand());
         $output->writeln('<info>Proposals sucessfully created</info>');

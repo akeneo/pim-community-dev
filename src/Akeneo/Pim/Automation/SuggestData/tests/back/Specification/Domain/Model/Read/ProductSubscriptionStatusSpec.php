@@ -21,17 +21,17 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductSubscriptionStatusSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(true);
     }
 
-    public function it_is_a_product_subscription_status()
+    public function it_is_a_product_subscription_status(): void
     {
         $this->beAnInstanceOf(ProductSubscriptionStatus::class);
     }
 
-    public function it_normalizes_itself()
+    public function it_normalizes_itself(): void
     {
         $this->normalize()->shouldReturn(['is_subscribed' => true]);
     }

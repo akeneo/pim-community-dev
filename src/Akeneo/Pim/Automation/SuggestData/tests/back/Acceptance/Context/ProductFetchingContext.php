@@ -35,7 +35,7 @@ final class ProductFetchingContext implements Context
     /**
      * @When the subscribed products are fetched from PIM.ai
      */
-    public function theProductsAreFetchedFromPimAi()
+    public function theProductsAreFetchedFromPimAi(): void
     {
         try {
             $this->fetchProductsHandler->handle(new FetchProductsCommand());
@@ -48,7 +48,7 @@ final class ProductFetchingContext implements Context
      *
      * @Given last fetch of subscribed products has been done :lastFetchDate
      */
-    public function lastFetchHaveBeenDone($lastFetchDate)
+    public function lastFetchHaveBeenDone($lastFetchDate): void
     {
         // TODO: Rework with a real date later (See APAI-170)
         $this->subscriptionApi->defineLastFetchDate($lastFetchDate);

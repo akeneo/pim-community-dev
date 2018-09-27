@@ -14,22 +14,22 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitPimAiUserSubscriberSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(InitPimAiUserSubscriber::class);
     }
 
-    function it_is_an_event_subscriber()
+    public function it_is_an_event_subscriber(): void
     {
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    function it_subscribes_to_post_load_fixtures_event()
+    public function it_subscribes_to_post_load_fixtures_event(): void
     {
         $this::getSubscribedEvents()->shouldHaveKey(InstallerEvents::POST_LOAD_FIXTURES);
     }
 
-    function it_launches_init_user_command(CommandExecutor $commandExecutor)
+    public function it_launches_init_user_command(CommandExecutor $commandExecutor): void
     {
         $commandExecutor->runCommand(
             InitPimAiUserCommand::getDefaultName(),

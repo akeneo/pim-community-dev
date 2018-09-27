@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Adapter;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\ProductSubscriptionException;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
@@ -48,7 +46,7 @@ class PimAISpec extends ObjectBehavior
         AttributesMappingApiInterface $attributesMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         AttributesMappingNormalizer $attributesMappingNormalizer
-    ) {
+    ): void {
         $this->beConstructedWith(
             $authenticationApi,
             $subscriptionApi,
@@ -60,7 +58,7 @@ class PimAISpec extends ObjectBehavior
         );
     }
 
-    public function it_is_pim_ai_adapter()
+    public function it_is_pim_ai_adapter(): void
     {
         $this->shouldHaveType(PimAI::class);
     }
@@ -68,7 +66,7 @@ class PimAISpec extends ObjectBehavior
     public function it_throws_an_exception_if_no_mapping_has_been_defined(
         ProductInterface $product,
         $identifiersMappingRepository
-    ) {
+    ): void {
         $identifiersMappingRepository->find()->willReturn(new IdentifiersMapping([]));
         $productSubscriptionRequest = new ProductSubscriptionRequest($product->getWrappedObject());
 
@@ -81,7 +79,7 @@ class PimAISpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $ean,
         ValueInterface $eanValue
-    ) {
+    ): void {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
                 [
@@ -109,7 +107,7 @@ class PimAISpec extends ObjectBehavior
         ValueInterface $eanValue,
         FamilyInterface $family,
         FamilyTranslation $familyTranslation
-    ) {
+    ): void {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
                 [
@@ -155,11 +153,11 @@ class PimAISpec extends ObjectBehavior
         ValueInterface $skuValue,
         FamilyInterface $family,
         FamilyTranslation $familyTranslation
-    ) {
+    ): void {
         $identifiersMappingRepository->find()->willReturn(
             new IdentifiersMapping(
                 [
-                    'upc'  => $ean->getWrappedObject(),
+                    'upc' => $ean->getWrappedObject(),
                     'asin' => $sku->getWrappedObject(),
                 ]
             )
@@ -188,7 +186,7 @@ class PimAISpec extends ObjectBehavior
 
         $subscriptionApi->subscribeProduct(
             [
-                'upc'  => '123456789',
+                'upc' => '123456789',
                 'asin' => '987654321',
             ],
             42,
@@ -200,7 +198,7 @@ class PimAISpec extends ObjectBehavior
             ->shouldReturnAnInstanceOf(ProductSubscriptionResponse::class);
     }
 
-    public function it_fetches_products_from_pim_ai($subscriptionApi)
+    public function it_fetches_products_from_pim_ai($subscriptionApi): void
     {
         $subscriptionApi
             ->fetchProducts()
@@ -211,7 +209,7 @@ class PimAISpec extends ObjectBehavior
         IdentifiersMappingApiInterface $identifiersMappingApi,
         IdentifiersMappingNormalizer $identifiersMappingNormalizer,
         IdentifiersMapping $mapping
-    ) {
+    ): void {
         $normalizedMapping = ['foo' => 'bar'];
 
         $identifiersMappingNormalizer->normalize($mapping)->shouldBeCalled()->willReturn($normalizedMapping);
@@ -220,14 +218,14 @@ class PimAISpec extends ObjectBehavior
         $this->updateIdentifiersMapping($mapping);
     }
 
-    public function it_unsubscribes_a_subscription_id_from_pim_ai($subscriptionApi)
+    public function it_unsubscribes_a_subscription_id_from_pim_ai($subscriptionApi): void
     {
         $subscriptionApi->unsubscribeProduct('foo-bar')->shouldBeCalled();
 
         $this->unsubscribe('foo-bar')->shouldReturn(null);
     }
 
-    public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi)
+    public function it_throws_a_product_subscription_exception_on_client_exception($subscriptionApi): void
     {
         $clientException = new ClientException('exception-message');
         $subscriptionApi->unsubscribeProduct('foo-bar')->willThrow($clientException);
@@ -240,7 +238,7 @@ class PimAISpec extends ObjectBehavior
             );
     }
 
-    public function it_gets_attributes_mapping($attributesMappingApi)
+    public function it_gets_attributes_mapping($attributesMappingApi): void
     {
         $response = new AttributesMapping([
             [
@@ -248,7 +246,7 @@ class PimAISpec extends ObjectBehavior
                     'id' => 'product_weight',
                     'label' => [
                         'en_us' => 'Product Weight',
-                    ]
+                    ],
                 ],
                 'to' => null,
                 'type' => 'metric',
@@ -263,7 +261,7 @@ class PimAISpec extends ObjectBehavior
                 'type' => 'multiselect',
                 'status' => 'pending',
                 'summary' => ['blue',  'red'],
-            ]
+            ],
         ]);
         $attributesMappingApi->fetchByFamily('camcorders')->willReturn($response);
 
@@ -271,7 +269,7 @@ class PimAISpec extends ObjectBehavior
         $attributesMappingResponse->shouldHaveCount(2);
     }
 
-    function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer)
+    public function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
     {
         $familyCode = 'foobar';
         $attributesMapping = ['foo' => 'bar'];
@@ -293,16 +291,16 @@ class PimAISpec extends ObjectBehavior
                 '_embedded' => [
                     'subscription' => [
                         0 => [
-                            'id'          => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
+                            'id' => 'a3fd0f30-c689-4a9e-84b4-7eac1f661923',
                             'identifiers' => [],
-                            'attributes'  => [],
+                            'attributes' => [],
                             'extra' => [
                                 'tracker_id' => 42,
                                 'family' => [
                                     'code' => 'laptop',
-                                    'label' => ['en_US' => 'Laptop']
-                                ]
-                            ]
+                                    'label' => ['en_US' => 'Laptop'],
+                                ],
+                            ],
                         ],
                     ],
                 ],

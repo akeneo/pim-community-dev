@@ -59,10 +59,10 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
 
             $attributes = [];
             $responseContent = $response->getBody()->getContents();
-            /**
+            /*
              * TODO: should be removed later. see APAI-302
              */
-            if (! empty($responseContent)) {
+            if (!empty($responseContent)) {
                 $attributes = json_decode($responseContent, true);
             }
 
@@ -86,7 +86,6 @@ class AttributesMappingWebService implements AttributesMappingApiInterface
 
     /**
      * @param string $familyCode
-     *
      * @param array $mapping
      */
     public function update(string $familyCode, array $mapping): void

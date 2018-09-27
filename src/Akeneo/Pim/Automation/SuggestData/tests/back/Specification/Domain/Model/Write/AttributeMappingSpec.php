@@ -22,47 +22,47 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributeMappingSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->beConstructedWith('target', 1, 'pim');
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    function it_is_initializable_without_a_nullable_pim_attribute_code()
+    public function it_is_initializable_without_a_nullable_pim_attribute_code(): void
     {
         $this->beConstructedWith('target', 0, null);
         $this->shouldBeAnInstanceOf(AttributeMapping::class);
     }
 
-    function it_sets_null_as_pim_attribute_code_if_status_is_unmapped()
+    public function it_sets_null_as_pim_attribute_code_if_status_is_unmapped(): void
     {
         $this->beConstructedWith('target', AttributeMapping::ATTRIBUTE_PENDING, 'foobar');
 
         $this->getPimAttributeCode()->shouldReturn(null);
     }
 
-    function it_returns_the_status()
+    public function it_returns_the_status(): void
     {
         $this->beConstructedWith('target', AttributeMapping::ATTRIBUTE_UNMAPPED, 'foobar');
 
         $this->getStatus()->shouldReturn(AttributeMapping::ATTRIBUTE_UNMAPPED);
     }
 
-    function it_returns_the_pim_attribute_code()
+    public function it_returns_the_pim_attribute_code(): void
     {
         $this->beConstructedWith('target', AttributeMapping::ATTRIBUTE_MAPPED, 'foobar');
 
         $this->getPimAttributeCode()->shouldReturn('foobar');
     }
 
-    function it_returns_the_target_attribute_code()
+    public function it_returns_the_target_attribute_code(): void
     {
         $this->beConstructedWith('target', AttributeMapping::ATTRIBUTE_MAPPED, 'foobar');
 
         $this->getTargetAttributeCode()->shouldReturn('target');
     }
 
-    function it_sets_attribute_to_the_attribute_mapping(AttributeInterface $attribute)
+    public function it_sets_attribute_to_the_attribute_mapping(AttributeInterface $attribute): void
     {
         $this->beConstructedWith('target', AttributeMapping::ATTRIBUTE_MAPPED, 'foobar');
 
@@ -70,7 +70,7 @@ class AttributeMappingSpec extends ObjectBehavior
         $this->getAttribute()->shouldReturn($attribute);
     }
 
-    function it_throws_an_exception_if_status_is_invalid()
+    public function it_throws_an_exception_if_status_is_invalid(): void
     {
         $this->beConstructedWith('target', 4, 'pim');
 
@@ -79,7 +79,7 @@ class AttributeMappingSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_throws_an_exception_if_status_is_mapped_without_pim_attribute()
+    public function it_throws_an_exception_if_status_is_mapped_without_pim_attribute(): void
     {
         $this->beConstructedWith('target', AttributeMapping::ATTRIBUTE_MAPPED, null);
 

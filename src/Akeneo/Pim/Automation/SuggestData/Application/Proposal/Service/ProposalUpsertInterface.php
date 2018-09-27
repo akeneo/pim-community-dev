@@ -21,7 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 interface ProposalUpsertInterface
 {
     /**
-     * Creates or updates a proposal given a set of values
+     * Creates or updates a proposal given a set of values.
      *
      * @param ProductInterface $product
      * @param array $values

@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attr
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\AttributesMapping;
 
 /**
- * Interface for the API Service to manage attributes mapping
+ * Interface for the API Service to manage attributes mapping.
  *
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
@@ -31,7 +31,6 @@ interface AttributesMappingApiInterface
 
     /**
      * @param string $familyCode
-     *
      * @param array $mapping
      */
     public function update(string $familyCode, array $mapping): void;

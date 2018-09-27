@@ -40,10 +40,10 @@ class PimAiConnectionController
     private $translator;
 
     /**
-     * @param ActivateSuggestDataConnection  $activateSuggestDataConnection
-     * @param GetNormalizedConfiguration     $getNormalizedConfiguration
+     * @param ActivateSuggestDataConnection $activateSuggestDataConnection
+     * @param GetNormalizedConfiguration $getNormalizedConfiguration
      * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
-     * @param TranslatorInterface            $translator
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         ActivateSuggestDataConnection $activateSuggestDataConnection,

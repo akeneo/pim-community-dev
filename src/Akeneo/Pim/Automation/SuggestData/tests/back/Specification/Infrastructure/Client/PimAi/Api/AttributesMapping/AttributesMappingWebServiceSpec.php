@@ -17,21 +17,20 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\Attributes
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Client;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\UriGenerator;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class AttributesMappingWebServiceSpec  extends ObjectBehavior
+class AttributesMappingWebServiceSpec extends ObjectBehavior
 {
-    public function let(UriGenerator $uriGenerator, Client $httpClient)
+    public function let(UriGenerator $uriGenerator, Client $httpClient): void
     {
         $this->beConstructedWith($uriGenerator, $httpClient);
     }
 
-    public function it_is_a_attributes_mapping_webservice()
+    public function it_is_a_attributes_mapping_webservice(): void
     {
         $this->shouldHaveType(AttributesMappingWebService::class);
     }
@@ -41,7 +40,7 @@ class AttributesMappingWebServiceSpec  extends ObjectBehavior
         StreamInterface $stream,
         $uriGenerator,
         $httpClient
-    ) {
+    ): void {
         $familyCode = 'router';
         $route = sprintf('/mapping/%s/attributes', $familyCode);
         $uriGenerator->generate($route)->willReturn('/my_route');
@@ -55,7 +54,7 @@ class AttributesMappingWebServiceSpec  extends ObjectBehavior
         $attributesMapping->getIterator()->count()->shouldReturn(2);
     }
 
-    function it_updates_attributes_mapping($uriGenerator, $httpClient)
+    public function it_updates_attributes_mapping($uriGenerator, $httpClient): void
     {
         $familyCode = 'router';
         $mapping = ['foo' => 'bar'];

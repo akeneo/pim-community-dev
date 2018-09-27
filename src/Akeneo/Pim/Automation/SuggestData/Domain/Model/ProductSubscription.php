@@ -62,7 +62,7 @@ class ProductSubscription
     }
 
     /**
-     * Loads SuggestData entity from raw data if not already done
+     * Loads SuggestData entity from raw data if not already done.
      *
      * @return SuggestedData
      */

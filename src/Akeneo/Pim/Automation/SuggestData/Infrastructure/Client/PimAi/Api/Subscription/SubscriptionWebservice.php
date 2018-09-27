@@ -26,7 +26,7 @@ use GuzzleHttp\Exception\ServerException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Concrete implementation of subscription web service
+ * Concrete implementation of subscription web service.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -69,10 +69,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
         } catch (ServerException $e) {
             throw new PimAiServerException(sprintf('Something went wrong on PIM.ai side during product subscription : ', $e->getMessage()));
         } catch (ClientException $e) {
-            if ($e->getCode() === Response::HTTP_PAYMENT_REQUIRED) {
+            if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
                 throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
             }
-            if ($e->getCode() === Response::HTTP_FORBIDDEN) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
                 throw new InvalidTokenException('The PIM.ai token is missing or invalid');
             }
 
@@ -102,10 +102,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
                 sprintf('Something went wrong on PIM.ai side during product subscription : ', $e->getMessage())
             );
         } catch (ClientException $e) {
-            if ($e->getCode() === Response::HTTP_PAYMENT_REQUIRED) {
+            if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
                 throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
             }
-            if ($e->getCode() === Response::HTTP_FORBIDDEN) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
                 throw new InvalidTokenException('The PIM.ai token is missing or invalid');
             }
 
@@ -129,7 +129,7 @@ class SubscriptionWebservice implements SubscriptionApiInterface
                 sprintf('Something went wrong on PIM.ai side during product subscription: %s', $e->getMessage())
             );
         } catch (ClientException $e) {
-            if ($e->getCode() === Response::HTTP_FORBIDDEN) {
+            if (Response::HTTP_FORBIDDEN === $e->getCode()) {
                 throw new InvalidTokenException('The PIM.ai token is missing or invalid');
             }
 

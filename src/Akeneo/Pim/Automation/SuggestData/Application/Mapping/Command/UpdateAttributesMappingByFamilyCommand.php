@@ -58,8 +58,7 @@ class UpdateAttributesMappingByFamilyCommand
     }
 
     /**
-     *
-     * Validates data and creates AttributesMapping
+     * Validates data and creates AttributesMapping.
      *
      * Format is:
      * [

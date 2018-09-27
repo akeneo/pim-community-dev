@@ -37,7 +37,7 @@ class ActivateSuggestDataConnection
      * Throws an invalid argument exception if anything goes wrong during the activation.
      *
      * @param string $code
-     * @param array  $configuration
+     * @param array $configuration
      *
      * @throws \InvalidArgumentException
      */

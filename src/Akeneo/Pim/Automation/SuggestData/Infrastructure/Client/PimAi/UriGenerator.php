@@ -53,6 +53,7 @@ class UriGenerator
 
     /**
      * @param array $uriParameters
+     *
      * @return array
      */
     private function encodeUriParameters(array $uriParameters): array
@@ -66,6 +67,7 @@ class UriGenerator
 
     /**
      * @param array $queryParameters
+     *
      * @return array
      */
     private function booleanQueryParametersAsString(array $queryParameters): array

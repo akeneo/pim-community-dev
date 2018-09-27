@@ -21,32 +21,32 @@ use PhpSpec\ObjectBehavior;
  */
 class SearchFamiliesQuerySpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(10, 2, ['router'], 'router');
     }
 
-    public function it_is_a_get_families_query()
+    public function it_is_a_get_families_query(): void
     {
         $this->shouldHaveType(SearchFamiliesQuery::class);
     }
 
-    public function it_gets_the_limit()
+    public function it_gets_the_limit(): void
     {
         $this->getLimit()->shouldReturn(10);
     }
 
-    public function it_gets_the_page()
+    public function it_gets_the_page(): void
     {
         $this->getPage()->shouldReturn(2);
     }
 
-    public function it_gets_the_family_identifiers()
+    public function it_gets_the_family_identifiers(): void
     {
         $this->getFamilyIdentifiers()->shouldReturn(['router']);
     }
 
-    public function it_gets_the_search_query()
+    public function it_gets_the_search_query(): void
     {
         $this->getSearch()->shouldReturn('router');
     }

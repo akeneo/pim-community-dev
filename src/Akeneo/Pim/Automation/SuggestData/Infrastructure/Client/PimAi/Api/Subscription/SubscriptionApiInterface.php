@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\BadR
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Exception\PimAiServerException;
 
 /**
- *
  * @author Romain Monceau <romain@akeneo.com>
  */
 interface SubscriptionApiInterface

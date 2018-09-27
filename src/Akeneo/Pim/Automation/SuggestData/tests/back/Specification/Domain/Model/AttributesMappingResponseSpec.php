@@ -21,12 +21,12 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributesMappingResponseSpec extends ObjectBehavior
 {
-    public function it_is_an_attributes_mapping_response()
+    public function it_is_an_attributes_mapping_response(): void
     {
         $this->shouldHaveType(AttributesMappingResponse::class);
     }
 
-    public function it_is_traversable()
+    public function it_is_traversable(): void
     {
         $this->shouldHaveType(\Traversable::class);
 

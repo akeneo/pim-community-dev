@@ -22,28 +22,28 @@ use PhpSpec\ObjectBehavior;
  */
 class IdentifiersMappingApiFakeSpec extends ObjectBehavior
 {
-    function it_is_an_identifiers_mapping_api()
+    public function it_is_an_identifiers_mapping_api(): void
     {
         $this->shouldImplement(IdentifiersMappingApiInterface::class);
     }
 
-    function it_is_a_fake_implementation_of_the_identifiers_mapping_api()
+    public function it_is_a_fake_implementation_of_the_identifiers_mapping_api(): void
     {
         $this->beAnInstanceOf(IdentifiersMappingApiFake::class);
     }
 
-    function it_returns_the_stored_mapping()
+    public function it_returns_the_stored_mapping(): void
     {
         $this->get()->shouldReturn([]);
     }
 
-    function it_updates_the_identifiers_mapping()
+    public function it_updates_the_identifiers_mapping(): void
     {
         $normalizedMapping = [
             'foo' => [
                 'code' => 'bar',
                 'label' => ['en_US' => 'Chaquip'],
-            ]
+            ],
         ];
 
         $this->update($normalizedMapping);

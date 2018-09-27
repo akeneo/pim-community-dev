@@ -31,7 +31,7 @@ final class PimAiConfigurationContext extends PimContext
     private $configurationRepository;
 
     /**
-     * @param string                           $mainContextClass
+     * @param string $mainContextClass
      * @param ConfigurationRepositoryInterface $configurationRepository
      */
     public function __construct(string $mainContextClass, ConfigurationRepositoryInterface $configurationRepository)
@@ -134,7 +134,7 @@ final class PimAiConfigurationContext extends PimContext
     /**
      * @throws \Context\Spin\TimeoutException
      */
-    private function checkActivationButtonIsGreen()
+    private function checkActivationButtonIsGreen(): void
     {
         $activationButton = $this->spin(function (): ?NodeElement {
             if (null === $activationButton = $this->getCurrentPage()->find('css', '.suggest-data-connection')) {

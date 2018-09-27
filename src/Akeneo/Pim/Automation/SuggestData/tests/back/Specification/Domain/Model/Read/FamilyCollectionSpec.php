@@ -22,17 +22,17 @@ use PhpSpec\ObjectBehavior;
  */
 class FamilyCollectionSpec extends ObjectBehavior
 {
-    public function it_is_a_family_collection()
+    public function it_is_a_family_collection(): void
     {
         $this->shouldHaveType(FamilyCollection::class);
     }
 
-    public function it_is_iterable()
+    public function it_is_iterable(): void
     {
         $this->shouldHaveType(\IteratorAggregate::class);
     }
 
-    public function it_can_add_a_family()
+    public function it_can_add_a_family(): void
     {
         $this
             ->add(new Family('router', []))

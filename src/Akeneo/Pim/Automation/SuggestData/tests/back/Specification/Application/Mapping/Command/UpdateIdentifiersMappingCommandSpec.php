@@ -23,7 +23,7 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
 {
-    public function it_is_an_update_identifiers_mapping_command()
+    public function it_is_an_update_identifiers_mapping_command(): void
     {
         $this->beConstructedWith([
             'brand' => 'manufacturer',
@@ -35,7 +35,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         $this->shouldHaveType(UpdateIdentifiersMappingCommand::class);
     }
 
-    public function it_returns_identifiers_mapping()
+    public function it_returns_identifiers_mapping(): void
     {
         $identifiersMapping = [
             'brand' => 'manufacturer',
@@ -48,7 +48,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         $this->getIdentifiersMapping()->shouldReturn($identifiersMapping);
     }
 
-    public function it_does_not_fail_whatever_identifiers_order()
+    public function it_does_not_fail_whatever_identifiers_order(): void
     {
         $identifiersMapping = [
             'mpn' => 'model',
@@ -61,7 +61,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         $this->getIdentifiersMapping()->shouldReturn($identifiersMapping);
     }
 
-    public function it_throws_an_exception_if_identifiers_are_missing()
+    public function it_throws_an_exception_if_identifiers_are_missing(): void
     {
         $mapping = [
             'brand' => 'manufacturer',
@@ -84,7 +84,7 @@ class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_an_attribute_is_used_more_than_once()
+    public function it_throws_an_exception_if_an_attribute_is_used_more_than_once(): void
     {
         $this->beConstructedWith([
             'brand' => 'ean',

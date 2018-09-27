@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Initializes PIM.ai user
+ * Initializes PIM.ai user.
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
@@ -94,7 +94,7 @@ final class InitPimAiUserCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $this->userRepository->findOneByIdentifier(ProposalAuthor::USERNAME)) {
             $output->writeln(

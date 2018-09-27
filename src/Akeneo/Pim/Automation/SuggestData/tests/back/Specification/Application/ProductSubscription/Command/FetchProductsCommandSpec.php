@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  */
 class FetchProductsCommandSpec extends ObjectBehavior
 {
-    public function it_is_a_fetch_products_command()
+    public function it_is_a_fetch_products_command(): void
     {
         $this->shouldHaveType(FetchProductsCommand::class);
     }

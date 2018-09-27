@@ -19,22 +19,22 @@ class InMemoryProposalUpsertSpec extends ObjectBehavior
     /**
      * @param ObjectUpdaterInterface|\PhpSpec\Wrapper\Collaborator $productUpdater
      */
-    function let(ObjectUpdaterInterface $productUpdater)
+    public function let(ObjectUpdaterInterface $productUpdater): void
     {
         $this->beConstructedWith($productUpdater);
     }
 
-    function it_is_an_in_memory_proposal_upsert()
+    public function it_is_an_in_memory_proposal_upsert(): void
     {
         $this->shouldHaveType(InMemoryProposalUpsert::class);
         $this->shouldImplement(ProposalUpsertInterface::class);
     }
 
-    function it_stores_updated_values(
+    public function it_stores_updated_values(
         $productUpdater,
         ProductInterface $product,
         ValueCollectionInterface $values
-    ) {
+    ): void {
         $suggestedData = ['foo' => 'bar'];
 
         $values->toArray()->willReturn(['foo' => 'bar', 'bar' => 'baz']);

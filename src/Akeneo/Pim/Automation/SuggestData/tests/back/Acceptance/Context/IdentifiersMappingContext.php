@@ -41,10 +41,10 @@ class IdentifiersMappingContext implements Context
     private $identifiersMappingApiFake;
 
     /**
-     * @param ManageIdentifiersMapping              $manageIdentifiersMapping
+     * @param ManageIdentifiersMapping $manageIdentifiersMapping
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param IdentifiersMappingApiFake             $identifiersMappingApiFake
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param IdentifiersMappingApiFake $identifiersMappingApiFake
      */
     public function __construct(
         ManageIdentifiersMapping $manageIdentifiersMapping,
@@ -209,7 +209,7 @@ class IdentifiersMappingContext implements Context
     }
 
     /**
-     * This method converts a simple array
+     * This method converts a simple array.
      *
      * [
      *     'pim_ai_identifier_code' => 'akeneo_pim_attribute_code',

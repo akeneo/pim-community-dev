@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesHa
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Query\SearchFamiliesQuery;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributeMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\FamilyCollection;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -62,7 +61,7 @@ final class AttributesMappingContext implements Context
     /**
      * @Then the retrieved attributes mapping for the family :familyCode should be:
      *
-     * @param           $familyCode
+     * @param $familyCode
      * @param TableNode $expectedAttributes
      */
     public function theRetrievedAttributesMappingShouldBe($familyCode, TableNode $expectedAttributes): void
@@ -96,21 +95,21 @@ final class AttributesMappingContext implements Context
             $requestMapping[$mapping['target_attribute_code']] = [
                 'pim_ai_attribute' => [
                     'label' => 'A label',
-                    'type' => 'text'
+                    'type' => 'text',
                 ],
                 'attribute' => $mapping['pim_attribute_code'],
-                'status' => (int) $mapping['status']
+                'status' => (int) $mapping['status'],
             ];
         }
 
         $command = new UpdateAttributesMappingByFamilyCommand($familyCode, $requestMapping);
         $this->updateAttributesMappingByFamilyHandler->handle($command);
     }
-  
+
     /**
      * @When I search for all the families
      */
-    public function iRetrieveTheFamilies()
+    public function iRetrieveTheFamilies(): void
     {
         $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, [], null));
     }
@@ -120,7 +119,7 @@ final class AttributesMappingContext implements Context
      *
      * @When I search a family with the query :familyCodeOrLabel
      */
-    public function iSearchAFamilyWithTheQuery(string $familyCodeOrLabel)
+    public function iSearchAFamilyWithTheQuery(string $familyCodeOrLabel): void
     {
         $this->retrievedFamilies = $this->searchFamiliesHandler->handle(new SearchFamiliesQuery(20, 0, [], $familyCodeOrLabel));
     }
@@ -130,7 +129,7 @@ final class AttributesMappingContext implements Context
      *
      * @Then /^I should have the famil(?:y|ies) (.*)$/
      */
-    public function iShouldHaveTheFamilies(string $families)
+    public function iShouldHaveTheFamilies(string $families): void
     {
         $expectedFamilyCodes = explode(', ', str_replace(' and ', ', ', $families));
 

@@ -18,20 +18,20 @@ use PhpSpec\ObjectBehavior;
 
 class UnsubscribeProductCommandSpec extends ObjectBehavior
 {
-    public function it_is_an_unsubscribe_product_command()
+    public function it_is_an_unsubscribe_product_command(): void
     {
         $this->beConstructedWith(42);
         $this->shouldHaveType(UnsubscribeProductCommand::class);
     }
 
-    public function it_exposes_product_id()
+    public function it_exposes_product_id(): void
     {
         $this->beConstructedWith(42);
 
         $this->getProductId()->shouldReturn(42);
     }
 
-    public function it_throws_an_exception_if_product_id_is_negative()
+    public function it_throws_an_exception_if_product_id_is_negative(): void
     {
         $this->beConstructedWith(-42);
         $this

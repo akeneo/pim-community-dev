@@ -42,7 +42,7 @@ class Client
     }
 
     /**
-     * Send request to PIM.ai
+     * Send request to PIM.ai.
      *
      * @param string $method
      * @param string $uri

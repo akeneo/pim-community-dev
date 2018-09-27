@@ -26,11 +26,11 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         SuggestedDataNormalizer $suggestedDataNormalizer,
         ProposalUpsertInterface $proposalUpsert,
         ProductSubscriptionRepositoryInterface $subscriptionRepository
-    ) {
+    ): void {
         $this->beConstructedWith($suggestedDataNormalizer, $proposalUpsert, $subscriptionRepository);
     }
 
-    public function it_is_a_create_proposal_handler()
+    public function it_is_a_create_proposal_handler(): void
     {
         $this->shouldHaveType(CreateProposalsHandler::class);
     }
@@ -40,7 +40,7 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         $subscriptionRepository,
         ProductInterface $product,
         ProductSubscription $subscription
-    ) {
+    ): void {
         $product->getCategoryCodes()->willReturn([]);
         $subscription->getProduct()->willReturn($product);
         $subscriptionRepository->findPendingSubscriptions()->willReturn([$subscription]);
@@ -57,7 +57,7 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         ProductSubscription $subscription,
         ProductInterface $product,
         FamilyInterface $family
-    ) {
+    ): void {
         $product->getCategoryCodes()->willReturn(['category_1']);
         $product->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(['foo']);
@@ -94,14 +94,14 @@ class CreateProposalsHandlerSpec extends ObjectBehavior
         $this->handle(new CreateProposalsCommand())->shouldReturn(null);
     }
 
-    function it_does_not_create_proposal_for_invalid_data(
+    public function it_does_not_create_proposal_for_invalid_data(
         $suggestedDataNormalizer,
         $proposalUpsert,
         $subscriptionRepository,
         ProductSubscription $subscription,
         ProductInterface $product,
         FamilyInterface $family
-    ) {
+    ): void {
         $product->getCategoryCodes()->willReturn(['category_1']);
         $product->getFamily()->willReturn($family);
         $family->getAttributeCodes()->willReturn(['foo']);

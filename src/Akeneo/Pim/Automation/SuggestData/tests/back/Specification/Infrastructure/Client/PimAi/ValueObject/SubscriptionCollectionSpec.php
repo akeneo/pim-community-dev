@@ -10,17 +10,17 @@ use PhpSpec\ObjectBehavior;
 
 class SubscriptionCollectionSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith($this->buildApiResponse());
     }
 
-    public function it_is_subscription_collection()
+    public function it_is_subscription_collection(): void
     {
         $this->shouldHaveType(SubscriptionCollection::class);
     }
 
-    public function it_returns_a_collection_of_subscription()
+    public function it_returns_a_collection_of_subscription(): void
     {
         $subscriptions = $this->getSubscriptions();
         $subscriptions->shouldBeArray();
@@ -29,12 +29,12 @@ class SubscriptionCollectionSpec extends ObjectBehavior
         $subscriptions[1]->shouldBeAnInstanceOf(Subscription::class);
     }
 
-    public function it_returns_the_first_subscription()
+    public function it_returns_the_first_subscription(): void
     {
         $this->getFirst()->shouldReturnAnInstanceOf(Subscription::class);
     }
 
-    public function it_throws_an_exception_if_the_validation_fails()
+    public function it_throws_an_exception_if_the_validation_fails(): void
     {
         $subscriptions = [
             '_embedded' => [
@@ -65,7 +65,7 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                 'subscription' => [
                     0 => $this->buildFirstSubscription(),
                     1 => $this->buildSecondSubscription(),
-                ]
+                ],
             ],
         ];
     }
@@ -84,9 +84,9 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                 'tracker_id' => 42,
                 'family' => [
                     'code' => 'laptops',
-                    'label' => ['en_US' => 'Laptop']
-                ]
-            ]
+                    'label' => ['en_US' => 'Laptop'],
+                ],
+            ],
         ];
     }
 
@@ -101,8 +101,8 @@ class SubscriptionCollectionSpec extends ObjectBehavior
                 'Processor' => '1 GHz',
             ],
             'extra' => [
-                'tracker_id' => 50
-            ]
+                'tracker_id' => 50,
+            ],
         ];
     }
 }

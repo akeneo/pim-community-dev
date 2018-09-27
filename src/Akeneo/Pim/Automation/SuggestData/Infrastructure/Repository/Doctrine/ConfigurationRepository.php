@@ -112,7 +112,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
      * If no OroConfigValues exists for a value, a new one will be created and
      * added to the OroConfig entity.
      *
-     * @param Config        $oroConfig
+     * @param Config $oroConfig
      * @param Configuration $configuration
      */
     private function updateOroConfigValues(Config $oroConfig, Configuration $configuration): void

@@ -25,18 +25,18 @@ use PhpSpec\ObjectBehavior;
  */
 class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
 {
-    public function let(FamilyRepositoryInterface $familyRepository)
+    public function let(FamilyRepositoryInterface $familyRepository): void
     {
         $this->beConstructedWith($familyRepository);
     }
 
-    public function it_is_a_family_searchable_repository()
+    public function it_is_a_family_searchable_repository(): void
     {
         $this->shouldHaveType(InMemoryFamilySearchableRepository::class);
         $this->shouldImplement(FamilySearchableRepositoryInterface::class);
     }
 
-    public function it_finds_all_family_without_filter($familyRepository)
+    public function it_finds_all_family_without_filter($familyRepository): void
     {
         $family1 = (new Family())->setCode('a-family');
         $family2 = (new Family())->setCode('another-family');
@@ -48,7 +48,7 @@ class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
         $this->findBySearch(0, 10)->shouldReturn($familyList);
     }
 
-    public function it_finds_families_with_pagination_applied($familyRepository)
+    public function it_finds_families_with_pagination_applied($familyRepository): void
     {
         $family1 = (new Family())->setCode('a-family');
         $family2 = (new Family())->setCode('another-family');
@@ -66,7 +66,7 @@ class InMemoryFamilySearchableRepositorySpec extends ObjectBehavior
         FamilyTranslationInterface $family1LabelTranslation,
         FamilyTranslationInterface $family2LabelTranslation,
         FamilyTranslationInterface $family3LabelTranslation
-    ) {
+    ): void {
         $family1LabelTranslation->getLabel()->willReturn('family1');
         $family1LabelTranslation->getLocale()->willReturn('en_US');
         $family2LabelTranslation->getLabel()->willReturn('family2');

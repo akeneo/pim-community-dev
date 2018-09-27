@@ -31,7 +31,7 @@ class GetAttributesMappingByFamilyHandler
     private $familyRepository;
 
     /**
-     * @param DataProviderFactory       $dataProviderFactory
+     * @param DataProviderFactory $dataProviderFactory
      * @param FamilyRepositoryInterface $familyRepository
      */
     public function __construct(DataProviderFactory $dataProviderFactory, FamilyRepositoryInterface $familyRepository)
@@ -59,7 +59,7 @@ class GetAttributesMappingByFamilyHandler
     {
         $family = $this->familyRepository->findOneByIdentifier($familyCode);
 
-        if (! $family instanceof FamilyInterface) {
+        if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(sprintf(
                 'The family with code "%s" does not exist',
                 $familyCode

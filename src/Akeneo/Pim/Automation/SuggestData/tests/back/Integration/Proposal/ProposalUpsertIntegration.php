@@ -32,6 +32,15 @@ class ProposalUpsertIntegration extends TestCase
     private $proposalUpsert;
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->proposalUpsert = $this->get('akeneo.pim.automation.suggest_data.proposal.create_proposal');
+    }
+
+    /**
      * @return array
      */
     public static function invalidDataProvider(): array
@@ -64,7 +73,7 @@ class ProposalUpsertIntegration extends TestCase
         ];
     }
 
-    public function test_it_creates_a_proposal_from_values()
+    public function test_it_creates_a_proposal_from_values(): void
     {
         $product = $this->createProduct('foo', 'familyA');
 
@@ -93,7 +102,7 @@ class ProposalUpsertIntegration extends TestCase
         Assert::assertEquals(['a_number_integer', 'a_text'], array_keys($draft->getChanges()['values']));
     }
 
-    public function test_it_does_not_create_a_proposal_with_suggested_values_identical_to_the_product()
+    public function test_it_does_not_create_a_proposal_with_suggested_values_identical_to_the_product(): void
     {
         $values = $suggestedValues = [
             'a_text' => [
@@ -117,7 +126,7 @@ class ProposalUpsertIntegration extends TestCase
         Assert::assertNull($this->getDraft($product, ProposalAuthor::USERNAME));
     }
 
-    public function test_it_updates_an_existing_proposal_with_new_values()
+    public function test_it_updates_an_existing_proposal_with_new_values(): void
     {
         $product = $this->createProduct(
             'foo',
@@ -170,7 +179,7 @@ class ProposalUpsertIntegration extends TestCase
      * @param array $invalidValues
      * @param string $exceptionClass
      */
-    public function test_it_throws_an_exception_for_invalid_data(array $invalidValues, string $exceptionClass)
+    public function test_it_throws_an_exception_for_invalid_data(array $invalidValues, string $exceptionClass): void
     {
         $product = $this->createProduct(
             'foo',
@@ -179,15 +188,6 @@ class ProposalUpsertIntegration extends TestCase
 
         $this->expectException($exceptionClass);
         $this->proposalUpsert->process($product, $invalidValues, ProposalAuthor::USERNAME);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->proposalUpsert = $this->get('akeneo.pim.automation.suggest_data.proposal.create_proposal');
     }
 
     /**

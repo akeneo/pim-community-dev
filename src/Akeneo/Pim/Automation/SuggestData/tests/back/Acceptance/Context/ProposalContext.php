@@ -46,7 +46,7 @@ class ProposalContext implements Context
     /**
      * @When the system creates proposals for suggested data
      */
-    public function theSystemCreatesProposalsForSuggestedData()
+    public function theSystemCreatesProposalsForSuggestedData(): void
     {
         $this->createProposalsHandler->handle(new CreateProposalsCommand());
     }
@@ -56,7 +56,7 @@ class ProposalContext implements Context
      *
      * @param string îdentifier
      */
-    public function thereShouldBeAProposalForProduct(string $identifier)
+    public function thereShouldBeAProposalForProduct(string $identifier): void
     {
         Assert::true($this->proposalUpsert->hasProposalForProduct($identifier, ProposalAuthor::USERNAME));
     }
@@ -66,7 +66,7 @@ class ProposalContext implements Context
      *
      * @param string $identifier
      */
-    public function thereShouldNotBeAProposalForProduct(string $identifier)
+    public function thereShouldNotBeAProposalForProduct(string $identifier): void
     {
         Assert::false($this->proposalUpsert->hasProposalForProduct($identifier, ProposalAuthor::USERNAME));
     }
