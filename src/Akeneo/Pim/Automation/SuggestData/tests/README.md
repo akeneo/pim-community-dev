@@ -11,7 +11,7 @@ The SuggestData bounded context contains its own `php-cs-fixer` configuration, m
 
 You can run it in dry mode (no modification of the code) with the following command, from the root of the PIM:
 ```bash
-$ vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes --config=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cs.php
+$ vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cs.php
 ```
 
 To apply the changes to your code, remove the `--dry-run` option.
