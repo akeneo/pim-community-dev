@@ -77,10 +77,16 @@ class VersionNormalizer implements NormalizerInterface
      */
     public function normalize($version, $format = null, array $context = [])
     {
-        $context = array_merge($context, [
-            'locale' => $this->translator->getLocale(),
-            'timezone' => $this->userContext->getUserTimezone()
-        ]);
+        try {
+            $timezone = $this->userContext->getUserTimezone();
+
+            $context = array_merge($context, [
+                'locale' => $this->translator->getLocale(),
+                'timezone' => $timezone
+            ]);
+        } catch (\RuntimeException $exception) {
+            $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
+        }
 
         return [
             'id'           => $version->getId(),

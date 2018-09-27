@@ -6,6 +6,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Component\Versioning\Model\Version;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -19,9 +20,17 @@ class VersionNormalizerSpec extends ObjectBehavior
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        UserContext $userContext
     ) {
-        $this->beConstructedWith($userManager, $translator, $datetimePresenter, $presenterRegistry, $attributeRepository);
+        $this->beConstructedWith(
+            $userManager,
+            $translator,
+            $datetimePresenter,
+            $presenterRegistry,
+            $attributeRepository,
+            $userContext
+        );
     }
 
     function it_supports_versions(Version $version)
@@ -34,6 +43,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $translator,
         $datetimePresenter,
         $presenterRegistry,
+        $userContext,
         Version $version,
         User $steve,
         PresenterInterface $numberPresenter,
@@ -71,8 +81,12 @@ class VersionNormalizerSpec extends ObjectBehavior
             'weight'             => ['old' => '', 'new' => '10,1234'],
         ];
 
-        $options = ['locale' => 'fr_FR'];
+        $options = [
+            'locale' => 'fr_FR',
+            'timezone' => 'Europe/Paris',
+        ];
         $translator->getLocale()->willReturn('fr_FR');
+        $userContext->getUserTimezone()->willReturn('Europe/Paris');
 
         $attributeRepository
             ->getAttributeTypeByCodes(['maximum_frame_rate', 'price', 'weight'])
@@ -114,6 +128,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userManager,
         $translator,
         $datetimePresenter,
+        $userContext,
         Version $version
     ) {
         $versionTime = new \DateTime();
@@ -133,6 +148,8 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userManager->findUserByUsername('steve')->willReturn(null);
 
         $translator->trans('Removed user')->willReturn('Utilisateur supprimé');
+
+        $userContext->getUserTimezone()->willThrow(\RuntimeException::class);
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
