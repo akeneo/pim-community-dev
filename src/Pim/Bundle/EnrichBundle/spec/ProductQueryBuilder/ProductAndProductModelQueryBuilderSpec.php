@@ -475,4 +475,28 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldNotBeCalled();
         $this->execute()->shouldReturn($cursor);
     }
+
+    function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_groups(
+        $pqb,
+        CursorInterface $cursor,
+        SearchQueryBuilder $sqb
+    ) {
+        $pqb->getRawFilters()->willReturn(
+            [
+                [
+                    'field'    => 'groups',
+                    'operator' => 'IN',
+                    'value'    => ['group_A', 'group_B'],
+                    'context'  => [],
+                    'type'     => 'field'
+                ],
+            ]
+        );
+
+        $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $pqb->execute()->willReturn($cursor);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+
+        $this->execute()->shouldReturn($cursor);
+    }
 }
