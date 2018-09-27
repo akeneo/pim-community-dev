@@ -12,9 +12,12 @@
   margin-left: 70px;
   align-self: flex-start;
   transition: .2s ease-in-out opacity, .2s ease-in-out transform;
+  min-width: 400px;
+  max-width: @AknMaxFormWidth;
+  flex: 1;
 
   &--hidden {
     opacity: 0;
-    transform: translate(0, -100px);
+    transform: translate(-100px, 0);
   }
 }
