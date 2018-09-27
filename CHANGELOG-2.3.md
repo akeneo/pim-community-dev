@@ -5,6 +5,7 @@
 - PIM-7629: Fix category filter in product grid
 - PIM-7659: Fix search on the families to get all the results when they have same translations for many locales.
 - PIM-7619: Fix search on groups for the variant products.
+- PIM-7671: Fix associations tab cannot display more than 24 associated products/product models or 25 groups
 
 # 2.3.9 (2018-09-25)
 
