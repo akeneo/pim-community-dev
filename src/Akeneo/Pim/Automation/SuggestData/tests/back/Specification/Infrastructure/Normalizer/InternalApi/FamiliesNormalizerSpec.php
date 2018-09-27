@@ -23,12 +23,12 @@ use PhpSpec\ObjectBehavior;
  */
 class FamiliesNormalizerSpec extends ObjectBehavior
 {
-    public function it_is_a_families_normalizer()
+    public function it_is_a_families_normalizer(): void
     {
         $this->shouldBeAnInstanceOf(FamiliesNormalizer::class);
     }
 
-    public function it_normalizes_families()
+    public function it_normalizes_families(): void
     {
         $familyCollection = new FamilyCollection();
         $familyCollection
@@ -42,14 +42,14 @@ class FamiliesNormalizerSpec extends ObjectBehavior
                 'labels' => [
                     'en_US' => 'router',
                     'fr_FR' => 'routeur',
-                ]
+                ],
             ],
             [
                 'code' => 'camcorders',
                 'status' => 0,
                 'labels' => [
                     'en_US' => 'camcorders',
-                ]
+                ],
             ],
         ];
 

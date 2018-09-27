@@ -24,12 +24,12 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributesMappingNormalizerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(AttributesMappingNormalizer::class);
     }
 
-    function it_normalizes_attributes_mapping_that_does_not_contain_attribute(DomainAttributeMapping $attributeMapping)
+    public function it_normalizes_attributes_mapping_that_does_not_contain_attribute(DomainAttributeMapping $attributeMapping): void
     {
         $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
         $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_UNMAPPED);
@@ -38,16 +38,16 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
         $expectedData = [
             'from' => ['id' => 'target_attr'],
             'to' => null,
-            'status' => AttributeMapping::STATUS_INACTIVE
+            'status' => AttributeMapping::STATUS_INACTIVE,
         ];
 
         $this->normalize([$attributeMapping])->shouldReturn([$expectedData]);
     }
 
-    function it_normalizes_attributes_mapping_that_contains_attribute(
+    public function it_normalizes_attributes_mapping_that_contains_attribute(
         DomainAttributeMapping $attributeMapping,
         AttributeInterface $attribute
-    ) {
+    ): void {
         $attributeMapping->getTargetAttributeCode()->willReturn('target_attr');
         $attributeMapping->getStatus()->willReturn(DomainAttributeMapping::ATTRIBUTE_MAPPED);
         $attributeMapping->getAttribute()->willReturn($attribute);
@@ -61,9 +61,9 @@ class AttributesMappingNormalizerSpec extends ObjectBehavior
             'to' => [
                 'id' => 'pim_attr',
                 'label' => ['en_US' => 'Pim Attribute'],
-                'type' => 'text'
+                'type' => 'text',
             ],
-            'status' => AttributeMapping::STATUS_ACTIVE
+            'status' => AttributeMapping::STATUS_ACTIVE,
         ];
 
         $this->normalize([$attributeMapping])->shouldReturn([$expectedData]);

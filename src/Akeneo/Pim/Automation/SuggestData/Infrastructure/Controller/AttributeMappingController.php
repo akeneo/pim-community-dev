@@ -45,11 +45,11 @@ class AttributeMappingController
     private $updateAttributesMappingByFamilyHandler;
 
     /**
-     * @param GetAttributesMappingByFamilyHandler    $getAttributesMappingByFamilyHandler
+     * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
-     * @param SearchFamiliesHandler                  $searchFamiliesHandler
-     * @param FamiliesNormalizer                     $familiesNormalizer
-     * @param AttributesMappingNormalizer            $attributesMappingNormalizer
+     * @param SearchFamiliesHandler $searchFamiliesHandler
+     * @param FamiliesNormalizer $familiesNormalizer
+     * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
@@ -118,9 +118,9 @@ class AttributeMappingController
      * @param string $identifier
      * @param Request $request
      *
-     * @return Response
-     *
      * @throws \Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException
+     *
+     * @return Response
      */
     public function updateAction(string $identifier, Request $request): Response
     {

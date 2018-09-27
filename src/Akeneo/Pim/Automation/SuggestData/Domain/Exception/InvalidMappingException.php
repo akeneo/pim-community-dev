@@ -161,6 +161,9 @@ final class InvalidMappingException extends \Exception
     }
 
     /**
+     * @param mixed $targetKey
+     * @param mixed $expectedKey
+     *
      * @return InvalidMappingException
      */
     public static function expectedKey($targetKey, $expectedKey)

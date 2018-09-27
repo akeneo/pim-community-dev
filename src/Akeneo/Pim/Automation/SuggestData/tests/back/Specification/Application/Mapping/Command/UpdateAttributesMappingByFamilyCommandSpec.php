@@ -16,7 +16,6 @@ namespace Specification\Akeneo\Pim\Automation\SuggestData\Application\Mapping\Co
 use Akeneo\Pim\Automation\SuggestData\Application\Mapping\Command\UpdateAttributesMappingByFamilyCommand;
 use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributeMapping;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributesMapping;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -24,13 +23,13 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->beConstructedWith('family_code', []);
         $this->shouldHaveType(UpdateAttributesMappingByFamilyCommand::class);
     }
 
-    function it_returns_the_family_code()
+    public function it_returns_the_family_code(): void
     {
         $familyCode = 'family_code';
 
@@ -38,7 +37,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
         $this->getFamilyCode()->shouldReturn($familyCode);
     }
 
-    function it_returns_an_attribute_mapping()
+    public function it_returns_an_attribute_mapping(): void
     {
         $mapping = ['color' => ['attribute' => 'tshirt_style', 'status' => 1]];
         $this->beConstructedWith('family_code', $mapping);
@@ -53,7 +52,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
         $attributeMapping->getStatus()->shouldReturn(1);
     }
 
-    function it_throws_an_exception_if_target_key_is_missing()
+    public function it_throws_an_exception_if_target_key_is_missing(): void
     {
         $mapping = [['attribute' => 'tshirt_style', 'status' => 1]];
         $this->beConstructedWith('family_code', $mapping);
@@ -63,7 +62,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_throws_an_exception_if_attribute_key_is_missing()
+    public function it_throws_an_exception_if_attribute_key_is_missing(): void
     {
         $mapping = ['color' => ['status' => 1]];
         $this->beConstructedWith('family_code', $mapping);
@@ -73,7 +72,7 @@ class UpdateAttributesMappingByFamilyCommandSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    function it_throws_an_exception_if_status_key_is_missing()
+    public function it_throws_an_exception_if_status_key_is_missing(): void
     {
         $mapping = ['color' => ['attribute' => 'tshirt_style']];
         $this->beConstructedWith('family_code', $mapping);

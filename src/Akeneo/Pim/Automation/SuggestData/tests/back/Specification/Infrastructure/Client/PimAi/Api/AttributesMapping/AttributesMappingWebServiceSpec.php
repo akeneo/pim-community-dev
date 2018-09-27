@@ -41,7 +41,6 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $uriGenerator,
         $httpClient
     ): void {
-
         $familyCode = 'router';
         $route = sprintf('/mapping/%s/attributes', $familyCode);
         $uriGenerator->generate($route)->willReturn('/my_route');
@@ -55,7 +54,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
         $attributesMapping->getIterator()->count()->shouldReturn(2);
     }
 
-    function it_updates_attributes_mapping($uriGenerator, $httpClient)
+    public function it_updates_attributes_mapping($uriGenerator, $httpClient): void
     {
         $familyCode = 'router';
         $mapping = ['foo' => 'bar'];

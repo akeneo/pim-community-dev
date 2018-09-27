@@ -64,7 +64,6 @@ interface DataProviderInterface
 
     /**
      * @param string $familyCode
-     *
      * @param array $attributesMapping
      */
     public function updateAttributesMapping(string $familyCode, array $attributesMapping): void;

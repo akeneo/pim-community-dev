@@ -26,12 +26,12 @@ use PhpSpec\ObjectBehavior;
  */
 class SearchFamiliesHandlerSpec extends ObjectBehavior
 {
-    public function let(FamilySearchableRepositoryInterface $familyRepository)
+    public function let(FamilySearchableRepositoryInterface $familyRepository): void
     {
         $this->beConstructedWith($familyRepository);
     }
 
-    public function it_is_a_get_families_query()
+    public function it_is_a_get_families_query(): void
     {
         $this->shouldHaveType(SearchFamiliesHandler::class);
     }
@@ -46,7 +46,7 @@ class SearchFamiliesHandlerSpec extends ObjectBehavior
         \Iterator $family2TranslationsIterator,
         Collection $family2Translations,
         $familyRepository
-    ) {
+    ): void {
         $family1Translations->getIterator()->willReturn($family1TranslationsIterator);
         $family1TranslationsIterator->rewind()->shouldBeCalled();
         $family1TranslationsIterator->valid()->willReturn(true, false);

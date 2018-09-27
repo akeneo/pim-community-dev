@@ -31,12 +31,12 @@ class SearchFamiliesQuery
     private $search;
 
     /**
-     * @param int         $limit
-     * @param int         $page
-     * @param array|null  $familyIdentifiers
+     * @param int $limit
+     * @param int $page
+     * @param array|null $familyIdentifiers
      * @param null|string $search
      */
-    public function __construct(int $limit, int $page, array $familyIdentifiers = [], ?string $search)
+    public function __construct(int $limit, int $page, array $familyIdentifiers, ?string $search)
     {
         $this->limit = $limit;
         $this->page = $page;

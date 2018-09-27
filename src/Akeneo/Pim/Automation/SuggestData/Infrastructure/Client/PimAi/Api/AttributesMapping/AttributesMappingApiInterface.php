@@ -31,7 +31,6 @@ interface AttributesMappingApiInterface
 
     /**
      * @param string $familyCode
-     *
      * @param array $mapping
      */
     public function update(string $familyCode, array $mapping): void;

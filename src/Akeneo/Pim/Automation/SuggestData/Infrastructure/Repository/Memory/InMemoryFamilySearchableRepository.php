@@ -34,7 +34,7 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findBySearch(int $page, int $limit, ?string $search = null, array $identifiers = []): array
     {
@@ -48,8 +48,8 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
 
     /**
      * @param array $families
-     * @param int   $page
-     * @param int   $limit
+     * @param int $page
+     * @param int $limit
      *
      * @return array
      */
@@ -65,7 +65,7 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
     }
 
     /**
-     * @param array       $families
+     * @param array $families
      * @param null|string $search
      *
      * @return array
@@ -80,6 +80,7 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
             if ($this->stringContains($family->getCode(), $search) || $this->stringContains($family->getLabel(), $search)) {
                 return true;
             }
+
             return false;
         });
 
@@ -88,12 +89,12 @@ class InMemoryFamilySearchableRepository implements FamilySearchableRepositoryIn
 
     /**
      * @param string $string
-     * @param        $search
+     * @param $search
      *
      * @return bool
      */
     private function stringContains(string $string, $search): bool
     {
-        return strpos($string, $search) !== false;
+        return false !== strpos($string, $search);
     }
 }

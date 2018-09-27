@@ -19,10 +19,10 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Repository;
 interface FamilySearchableRepositoryInterface
 {
     /**
-     * @param int         $limit
-     * @param int         $page
+     * @param int $limit
+     * @param int $page
      * @param null|string $search
-     * @param array       $identifiers
+     * @param array $identifiers
      *
      * @return array
      */

@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\Write\AttributesMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
@@ -62,13 +61,13 @@ class PimAI implements DataProviderInterface
     private $attributesMappingNormalizer;
 
     /**
-     * @param AuthenticationApiInterface            $authenticationApi
-     * @param SubscriptionApiInterface              $subscriptionApi
+     * @param AuthenticationApiInterface $authenticationApi
+     * @param SubscriptionApiInterface $subscriptionApi
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
-     * @param IdentifiersMappingApiInterface        $identifiersMappingApi
-     * @param AttributesMappingApiInterface         $attributesMappingApi
-     * @param IdentifiersMappingNormalizer          $identifiersMappingNormalizer
-     * @param AttributesMappingNormalizer           $attributesMappingNormalizer
+     * @param IdentifiersMappingApiInterface $identifiersMappingApi
+     * @param AttributesMappingApiInterface $attributesMappingApi
+     * @param IdentifiersMappingNormalizer $identifiersMappingNormalizer
+     * @param AttributesMappingNormalizer $attributesMappingNormalizer
      */
     public function __construct(
         AuthenticationApiInterface $authenticationApi,

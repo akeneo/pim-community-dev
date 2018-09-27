@@ -57,7 +57,7 @@ class UpdateAttributesMappingByFamilyHandler
 
     /**
      * Validates that the family exists
-     * Validates that the attribute exists
+     * Validates that the attribute exists.
      *
      * @param UpdateAttributesMappingByFamilyCommand $command
      */

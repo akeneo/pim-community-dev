@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
  */
 class FamilySpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('router', [
             'en_US' => 'router',
@@ -29,17 +29,17 @@ class FamilySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_is_a_family_read_model()
+    public function it_is_a_family_read_model(): void
     {
         $this->shouldHaveType(Family::class);
     }
 
-    public function it_gets_the_family_code()
+    public function it_gets_the_family_code(): void
     {
         $this->getCode()->shouldReturn('router');
     }
 
-    public function it_gets_the_labels()
+    public function it_gets_the_labels(): void
     {
         $this->getLabels()->shouldReturn([
             'en_US' => 'router',

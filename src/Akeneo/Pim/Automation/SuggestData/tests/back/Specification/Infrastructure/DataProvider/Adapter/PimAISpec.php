@@ -269,7 +269,7 @@ class PimAISpec extends ObjectBehavior
         $attributesMappingResponse->shouldHaveCount(2);
     }
 
-    function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer)
+    public function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
     {
         $familyCode = 'foobar';
         $attributesMapping = ['foo' => 'bar'];
