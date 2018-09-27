@@ -17,3 +17,13 @@ services:
             - '@pim_enrich.reader.database.product'
             - '@akeneo.pim.automation.suggest_data.processor.subscription'
             - '@akeneo.pim.automation.suggest_data.writer.subscription'
+
+    akeneo.pim.automation.suggest_data.step.unsubscribe_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'subscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product'
+            - '@akeneo.pim.automation.suggest_data.processor.unsubscription'
+            - '@akeneo.pim.automation.suggest_data.writer.unsubscription'
