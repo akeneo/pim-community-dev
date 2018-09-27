@@ -39,11 +39,13 @@ class NotificationControllerSpec extends ObjectBehavior
         $context->getUser()->willReturn($user);
         $userNotifRepository->findBy(['user' => $user], ['id' => 'DESC'], 10, null)
             ->willReturn([$userNotification]);
+        $context->getUserTimezone()->willReturn('Europe/Paris');
 
         $templating->renderResponse(
             'PimNotificationBundle:Notification:list.json.twig',
             [
-                'userNotifications' => [$userNotification]
+                'userNotifications' => [$userNotification],
+                'userTimezone' => 'Europe/Paris',
             ],
             Argument::type('Symfony\Component\HttpFoundation\JsonResponse')
         )->shouldBeCalled();
