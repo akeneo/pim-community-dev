@@ -21,4 +21,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditFileValueCommand extends Constraint
 {
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 }

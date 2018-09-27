@@ -63,11 +63,13 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCom
 
 Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\TextValueCommand: ~
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
 
 Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand:
     constraints:
-#        fileKey:
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditFileValueCommand: ~
 
 
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:

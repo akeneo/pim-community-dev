@@ -87,6 +87,11 @@ class ImageAttribute extends AbstractAttribute
         );
     }
 
+    public function hasMaxFileSizeLimit():bool
+    {
+        return $this->maxFileSize->hasLimit();
+    }
+
     protected function getType(): string
     {
         return self::ATTRIBUTE_TYPE;

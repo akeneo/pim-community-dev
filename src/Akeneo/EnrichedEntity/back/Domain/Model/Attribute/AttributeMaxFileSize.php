@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -50,6 +51,16 @@ class AttributeMaxFileSize
     public static function noLimit(): self
     {
         return new self(self::NO_LIMIT);
+    }
+
+    public function hasLimit(): bool
+    {
+        return null !== $this->maxFileSize;
+    }
+
+    public function intValue(): int
+    {
+        return (int) $this->maxFileSize;
     }
 
     public function normalize(): ?string

@@ -39,6 +39,25 @@ class AttributeValidationRuleSpec extends ObjectBehavior
     function it_tells_if_it_is_none()
     {
         $this::none()->isNone()->shouldReturn(true);
+        $this::none()->isRegularExpression()->shouldReturn(false);
+    }
+
+    function it_tells_if_it_is_regular_expression()
+    {
+        $this::fromString(AttributeValidationRule::REGULAR_EXPRESSION)->isRegularExpression()->shouldReturn(true);
+        $this::fromString(AttributeValidationRule::REGULAR_EXPRESSION)->isNone()->shouldReturn(false);
+    }
+
+    function it_tells_if_it_is_email()
+    {
+        $this::fromString(AttributeValidationRule::EMAIL)->isEmail()->shouldReturn(true);
+        $this::fromString(AttributeValidationRule::EMAIL)->isNone()->shouldReturn(false);
+    }
+
+    function it_tells_if_it_is_url()
+    {
+        $this::fromString(AttributeValidationRule::URL)->isUrl()->shouldReturn(true);
+        $this::fromString(AttributeValidationRule::URL)->isNone()->shouldReturn(false);
     }
 
     function it_normalizes_itself()

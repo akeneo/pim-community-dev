@@ -33,9 +33,11 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -64,10 +66,23 @@ final class EditRecordContext implements Context
     private const ENRICHED_ENTITY_IDENTIFIER = 'designer';
     private const FINGERPRINT = 'fingerprint';
     private const RECORD_CODE = 'stark';
+
+    private const ECOMMERCE_CHANNEL_CODE = 'ecommerce';
+    private const FRENCH_LOCALE_CODE = 'fr_FR';
+
     private const TEXT_ATTRIBUTE_CODE = 'name';
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
     private const IMAGE_ATTRIBUTE_CODE = 'primary_picture';
     private const IMAGE_ATTRIBUTE_IDENTIFIER = 'primary_picture_designer_fingerprint';
+    private const DUMMY_ORIGINAL_VALUE = 'Une valeur naïve';
+    private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
+
+    private const DUMMY_FILEPATH_PREFIX = '/a/dummy/key';
+    private const UPDATED_FILE_PATH_PREFIX = '/tmp/an/updated/file/';
+    private const INVALID_FILEPATH_VALUE = false;
+    private const DUMMY_FILENAME = 'dummy_filename.png';
+    private const INVALID_FILENAME = 144;
+    private const FILE_TOO_BIG = 'too_big.jpeg';
 
     /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
@@ -92,6 +107,7 @@ final class EditRecordContext implements Context
 
     /** @var ConstraintViolationsContext */
     private $violationsContext;
+
 
     public function __construct(
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
@@ -308,7 +324,6 @@ final class EditRecordContext implements Context
                 ],
             ],
         ]);
-
         $this->executeCommand($editCommand);
     }
 
@@ -343,13 +358,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this enriched entity with a the file "([^"]*)" for the image attribute$/
+     * @Given /^a record belonging to this enriched entity with the file "([^"]*)" for the image attribute$/
      */
     public function aRecordBelongingToThisEnrichedEntityWithATheFileForTheImageAttribute(string $originalFilename)
     {
         $file = new FileInfo();
         $file->setOriginalFilename($originalFilename);
-        $file->setKey('/a/dummy/key');
+        $file->setKey(self::DUMMY_FILEPATH_PREFIX . $originalFilename);
 
         $fileValue = Value::create(
             AttributeIdentifier::create(
@@ -380,7 +395,7 @@ final class EditRecordContext implements Context
                     'locale'    => null,
                     'data'      => [
                         'originalFilename' => $originalFileName,
-                        'filePath'         => '/tmp/' . $originalFileName,
+                        'filePath'         => self::UPDATED_FILE_PATH_PREFIX . $originalFileName
                     ],
                 ],
             ],
@@ -408,8 +423,10 @@ final class EditRecordContext implements Context
 
         Assert::assertNotNull($value);
         $normalizeData = $value->getData()->normalize();
-        Assert::assertArrayHasKey('original_filename', $normalizeData);
-        Assert::assertEquals($expectedOriginalFilename, $normalizeData['original_filename']);
+        Assert::assertArrayHasKey('originalFilename', $normalizeData);
+        Assert::assertArrayHasKey('filePath', $normalizeData);
+        Assert::assertEquals($expectedOriginalFilename, $normalizeData['originalFilename']);
+        Assert::assertEquals(self::UPDATED_FILE_PATH_PREFIX . $expectedOriginalFilename, $normalizeData['filePath']);
     }
 
     /**
@@ -444,6 +461,562 @@ final class EditRecordContext implements Context
                 AttributeMaxLength::fromInteger($maxLength),
                 AttributeValidationRule::none(),
                 AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^an enriched entity with a text attribute with an email validation rule$/
+     * @throws \Exception
+     */
+    public function anEnrichedEntityWithATextAttributeWithAnEmailValidationRule()
+    {
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::fromString(AttributeValidationRule::EMAIL),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^an enriched entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
+     * @throws \Exception
+     */
+    public function anEnrichedEntityWithATextAttributeWithARegularExpressionValidationRuleLike(string $regularExpression
+    ): void
+    {
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::fromString(AttributeValidationRule::REGULAR_EXPRESSION),
+                AttributeRegularExpression::fromString($regularExpression)
+            )
+        );
+    }
+
+    /**
+     * @When /^the user updates the text attribute of the record to an invalid value type$/
+     */
+    public function theUserUpdatesTheTextAttributeOfTheRecordToAnInvalidValue()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => 150,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^an enriched entity with a text attribute with an url validation rule$/
+     * @throws \Exception
+     */
+    public function anEnrichedEntityWithATextAttributeWithAnUrlValidationRule()
+    {
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::fromString(AttributeValidationRule::URL),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @When /^the user empties the text attribute of the record$/
+     */
+    public function theUserEmptiesTheTextAttributeOfTheRecord()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => null,
+                ],
+            ],
+        ]);
+
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should have an empty value for this attribute$/
+     */
+    public function theRecordShouldHaveAnEmptyValueForThisAttribute()
+    {
+        $record = $this->recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        );
+
+        Assert::assertNull($value);
+    }
+
+    /**
+     * @Given /^an enriched entity with a localizable attribute$/
+     * @throws \Exception
+     */
+    public function anEnrichedEntityWithALocalizableAttribute()
+    {
+        $this->createEnrichedEntity();
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this enriched entity with a value for the french locale$/
+     */
+    public function aRecordBelongingToThisEnrichedEntityWithAValueForTheFrenchLocale()
+    {
+        $localizedValue = Value::create(
+            AttributeIdentifier::create(
+                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::TEXT_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::noReference(),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE)),
+            TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
+        );
+        $this->createRecord($localizedValue);
+    }
+
+    /**
+     * @When /^the user updates the attribute of the record for the french locale$/
+     */
+    public function theUserUpdatesTheAttributeOfTheRecordForTheFrenchLocale()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => self::FRENCH_LOCALE_CODE,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should have the updated value for this attribute and the french locale$/
+     */
+    public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheFrenchLocale()
+    {
+        $record = $this->recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
+            )
+        );
+
+        Assert::assertNotNull($value);
+        Assert::assertEquals(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
+    }
+
+    /**
+     * @Given /^an enriched entity with a scopable attribute$/
+     * @throws \Exception
+     */
+    public function anEnrichedEntityWithAScopableAttribute()
+    {
+        $this->createEnrichedEntity();
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this enriched entity with a value for the ecommerce channel$/
+     */
+    public function aRecordBelongingToThisEnrichedEntityWithAValueForTheEcommerceChannel()
+    {
+        $localizedValue = Value::create(
+            AttributeIdentifier::create(
+                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::TEXT_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
+            LocaleReference::noReference(),
+            TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
+        );
+        $this->createRecord($localizedValue);
+    }
+
+    /**
+     * @When /^the user updates the attribute of the record for the ecommerce channel$/
+     */
+    public function theUserUpdatesTheAttributeOfTheRecordForTheEcommerceChannel()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => self::ECOMMERCE_CHANNEL_CODE,
+                    'locale'    => null,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should have the updated value for this attribute and the ecommerce channel$/
+     */
+    public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannel()
+    {
+        $record = $this->recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
+                LocaleReference::noReference()
+            )
+        );
+        Assert::assertNotNull($value);
+        Assert::assertEquals(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
+    }
+
+    /**
+     * @Given /^an enriched entity with a scopable and localizable attribute$/
+     */
+    public function anEnrichedEntityWithAScopableAndLocalizableAttribute()
+    {
+        $this->createEnrichedEntity();
+        $this->attributeRepository->create(
+            TextAttribute::createText(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(true),
+                AttributeValuePerLocale::fromBoolean(true),
+                AttributeMaxLength::fromInteger(255),
+                AttributeValidationRule::none(),
+                AttributeRegularExpression::createEmpty()
+            )
+        );
+    }
+
+    /**
+     * @Given /^a record belonging to this enriched entity with a value for the ecommerce channel and french locale$/
+     */
+    public function aRecordBelongingToThisEnrichedEntityWithAValueForTheEcommerceChannelAndFrenchLocale()
+    {
+        $localizedValue = Value::create(
+            AttributeIdentifier::create(
+                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::TEXT_ATTRIBUTE_CODE,
+                self::FINGERPRINT
+            ),
+            ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
+            LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE)),
+            TextData::fromString(self::DUMMY_ORIGINAL_VALUE)
+        );
+        $this->createRecord($localizedValue);
+    }
+
+    /**
+     * @When /^the user updates the attribute of the record for the ecommerce channel and french locale$/
+     */
+    public function theUserUpdatesTheAttributeOfTheRecordForTheEcommerceChannelAndFrenchLocale()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => self::ECOMMERCE_CHANNEL_CODE,
+                    'locale'    => self::FRENCH_LOCALE_CODE,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should have the updated value for this attribute and the ecommerce channel and the french locale$/
+     */
+    public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannelAndTheFrenchLocale()
+    {
+        $record = $this->recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
+            )
+        );
+        Assert::assertNotNull($value);
+        Assert::assertEquals(self::DUMMY_UPDATED_VALUE, $value->getData()->normalize());
+    }
+
+    /**
+     * @When /^the user updates the attribute of the record for an invalid channel$/
+     */
+    public function theUserUpdatesTheAttributeOfTheRecordForAnInvalidChannel()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => 155,
+                    'locale'    => null,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the attribute of the record for an unknown channel$/
+     */
+    public function theUserUpdatesTheAttributeOfTheRecordForAnUnknownChannel()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::TEXT_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => 'Unknown channel',
+                    'locale'    => null,
+                    'data'      => self::DUMMY_UPDATED_VALUE,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid file path$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidFilepath()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::DUMMY_FILENAME,
+                        'filePath'         => self::INVALID_FILEPATH_VALUE
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Then /^there should be a validation error on the property image attribute with message "([^"]*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThePropertyImageAttributeWithMessage(string $expectedMessage): void
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage('values.' . self::IMAGE_ATTRIBUTE_CODE, $expectedMessage);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record to an invalid file name$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidFileName()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::INVALID_FILENAME,
+                        'filePath'         => self::FILE_TOO_BIG
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the image attribute of the record with a bigger file than the limit$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerFileThanTheLimit()
+    {
+        $fileTooBigPath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
+            'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::FILE_TOO_BIG,
+                        'filePath'         => $fileTooBigPath
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^an enriched entity with an image attribute having a max file size of 1MB$/
+     */
+    public function anEnrichedEntityWithAnImageAttributeHavingAMaxFileSizeOf1MB()
+    {
+        $this->attributeRepository->create(
+            ImageAttribute::create(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::fromString('1.2'),
+                AttributeAllowedExtensions::fromList(['jpeg', 'png'])
             )
         );
     }
@@ -497,6 +1070,8 @@ final class EditRecordContext implements Context
         $violations = $this->validator->validate($editCommand);
         if ($violations->count() > 0) {
             $this->violationsContext->addViolations($violations);
+
+            return;
         }
 
         try {

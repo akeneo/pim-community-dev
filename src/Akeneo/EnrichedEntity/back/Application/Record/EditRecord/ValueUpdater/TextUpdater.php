@@ -47,7 +47,7 @@ class TextUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $text = (null !== $command->text) ?
+        $text = (null !== $command->text && '' !== $command->text) ?
             TextData::createFromNormalize($command->text) :
             EmptyData::create();
 

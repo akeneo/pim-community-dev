@@ -49,9 +49,19 @@ class AttributeValidationRule
         return self::NONE === $this->validationRule;
     }
 
-    public function isRegex(): bool
+    public function isRegularExpression(): bool
     {
         return self::REGULAR_EXPRESSION === $this->validationRule;
+    }
+
+    public function isEmail(): bool
+    {
+        return self::EMAIL === $this->validationRule;
+    }
+
+    public function isUrl(): bool
+    {
+        return self::URL === $this->validationRule;
     }
 
     public function normalize(): ?string

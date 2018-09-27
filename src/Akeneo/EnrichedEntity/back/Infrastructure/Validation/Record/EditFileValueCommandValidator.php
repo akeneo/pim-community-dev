@@ -19,6 +19,7 @@ use Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditFileValueCommand 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -43,7 +44,8 @@ class EditFileValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditFileValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be of class "%s", "%s" given', EditFileValueCommand::class, get_class($command)
+                    'Expected argument to be of class "%s", "%s" given', EditFileValueCommand::class,
+                    get_class($command)
                 )
             );
         }
@@ -68,7 +70,8 @@ class EditFileValueCommandValidator extends ConstraintValidator
         if (!$command->attribute instanceof ImageAttribute) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected command attribute to be of class "%s", "%s" given', ImageAttribute::class, get_class($command)
+                    'Expected command attribute to be of class "%s", "%s" given', ImageAttribute::class,
+                    get_class($command)
                 )
             );
         }
@@ -89,24 +92,46 @@ class EditFileValueCommandValidator extends ConstraintValidator
             );
         }
 
-        $violations = $validator->validate($command->data, new Constraints\Collection([
-            // TODO: Our validation is only based on the file extension... maybe we should check for mimetypes.
-            'originalFilename' => new Constraints\Regex([
-                'pattern' => sprintf('/^.*\.(%s)$/', implode('|', $attribute->getAllowedExtensions()->normalize())),
-            ]),
-        ]));
-
-
-        // TODO: Note, I don't check file size, because here the file would have already be moved from tmp dir to media dir.
-        // This check on size should be done prior to command validation imho
+        $violations = $this->checkPropertyTypes($command);
+        if (0 === $violations->count()) {
+            $violations = $validator->validate($command->originalFilename, [
+                    new Constraints\Regex([
+                            'pattern' => sprintf('/^.*\.(%s)$/', implode('|', $attribute->getAllowedExtensions()->normalize())),
+                            'message' => 'invalid regex'
+                        ]
+                    )]
+            );
+            if ($attribute->hasMaxFileSizeLimit()) {
+                $violations->addAll($validator->validate($command->filePath, [
+                        new Constraints\File([
+                                'maxSize' => $command->attribute->getMaxFileSize()->intValue() . 'M',
+                                'maxSizeMessage' => 'Max size invalid'
+                            ]
+                        ),
+                    ]
+                ));
+            }
+        }
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
-                $this->context->addViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                );
+                $this->context->buildViolation($violation->getMessage())
+                    ->setParameters($violation->getParameters())
+                    ->atPath(sprintf('values.%s', (string) $command->attribute->getCode()))
+                    ->setCode($violation->getCode())
+                    ->setPlural($violation->getPlural())
+                    ->setInvalidValue($violation->getInvalidValue())
+                    ->addViolation();
             }
         }
+    }
+
+    private function checkPropertyTypes($command): ConstraintViolationListInterface
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($command->originalFilename, [new Constraints\Type('string')]);
+        $violations->addAll($validator->validate($command->filePath, [new Constraints\Type('string')]));
+
+        return $violations;
     }
 }
