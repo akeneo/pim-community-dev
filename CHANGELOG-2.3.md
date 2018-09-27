@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7629: Fix category filter in product grid
 - PIM-7659: Fix search on the families to get all the results when they have same translations for many locales.
 
 # 2.3.9 (2018-09-25)
