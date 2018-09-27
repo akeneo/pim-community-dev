@@ -290,6 +290,14 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer}
 
+    pim_enrich.normalizer.job_execution:
+        class: 'Pim\Bundle\EnrichBundle\Normalizer\JobExecutionNormalizer'
+        arguments:
+            - '@pim_import_export.normalizer.job_execution'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer}
+
     pim_enrich.normalizer.image:
         class: '%pim_enrich.normalizer.image.class%'
         arguments:
