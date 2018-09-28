@@ -166,7 +166,7 @@ export default connect(
     return {
       events: {
         onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => {
-          dispatch(redirectToEnrichedEntity(enrichedEntity));
+          dispatch(redirectToEnrichedEntity(enrichedEntity, 'record'));
         },
         onCreationStart: () => {
           dispatch(enrichedEntityCreationStart());

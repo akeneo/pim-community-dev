@@ -195,6 +195,7 @@ class RecordEditView extends React.Component<EditProps> {
                         <LocaleSwitcher
                           localeCode={this.props.context.locale}
                           locales={this.props.structure.locales}
+                          className="AknDropdown--left"
                           onLocaleChange={this.props.events.onLocaleChanged}
                         />
                       </div>

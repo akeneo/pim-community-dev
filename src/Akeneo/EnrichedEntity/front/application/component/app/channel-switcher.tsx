@@ -54,11 +54,13 @@ const ChannelSwitcher = ({
   channelCode,
   channels,
   locale,
+  className = '',
   onChannelChange,
 }: {
   channelCode: string;
   channels: Channel[];
   locale: string;
+  className?: string;
   onChannelChange: (channel: Channel) => void;
 }) => {
   return (
@@ -75,7 +77,7 @@ const ChannelSwitcher = ({
       ItemView={ChannelItemView}
       ButtonView={ChannelButtonView}
       onSelectionChange={(channel: DropdownElement) => onChannelChange(channel.original)}
-      className="AknDropdown--left channel-switcher"
+      className={className}
     />
   );
 };
