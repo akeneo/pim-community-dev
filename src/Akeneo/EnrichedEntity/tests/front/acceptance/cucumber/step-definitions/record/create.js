@@ -1,6 +1,6 @@
 const Header = require('../../decorators/enriched-entity/app/header.decorator');
 const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
-const Modal = require('../../decorators/enriched-entity/create/modal.decorator');
+const Modal = require('../../decorators/create/modal.decorator');
 const Records = require('../../decorators/enriched-entity/edit/records.decorator');
 const path = require('path');
 

@@ -25,8 +25,8 @@ interface DispatchProps {
   events: {
     form: {
       onLabelUpdated: (value: string, locale: string) => void;
-      onPressEnter: () => void;
       onValueChange: (value: Value) => void;
+      onFieldSubmit: () => void;
     };
   };
 }
@@ -41,13 +41,13 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
     }
   }
 
-  updateLabel = (event: any) => {
+  updateLabel = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.events.form.onLabelUpdated(event.target.value, this.props.context.locale);
   };
 
-  keyDown = (event: any) => {
+  keyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if ('Enter' === event.key) {
-      this.props.events.form.onPressEnter();
+      this.props.events.form.onFieldSubmit();
     }
   };
 
@@ -58,7 +58,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
       <div className="AknSubsection">
         <div className="AknFormContainer AknFormContainer--wide AknFormContainer--withPadding">
           <div className="AknFieldContainer AknFieldContainer--narrow" data-code="label">
-            <div className="AknFieldContainer-header AknFieldContainer-header--small">
+            <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
               <label
                 title="{__('pim_enriched_entity.record.enrich.label')}"
                 className="AknFieldContainer-label"
@@ -72,7 +72,7 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
                 type="text"
                 name="label"
                 id="pim_enriched_entity.record.enrich.label"
-                className="AknTextField AknTextField--narrow AknTextField--withBottomBorder"
+                className="AknTextField AknTextField--narrow AknTextField--light"
                 value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}
                 onKeyDown={this.keyDown}
@@ -89,7 +89,8 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
             createChannelReference(this.props.context.channel),
             createLocaleReference(this.props.context.locale),
             this.props.form.errors,
-            this.props.events.form.onValueChange
+            this.props.events.form.onValueChange,
+            this.props.events.form.onFieldSubmit
           )}
         </div>
       </div>
@@ -118,11 +119,11 @@ export default connect(
           onLabelUpdated: (value: string, locale: string) => {
             dispatch(recordLabelUpdated(value, locale));
           },
-          onPressEnter: () => {
-            dispatch(saveRecord());
-          },
           onValueChange: (value: Value) => {
             dispatch(recordValueUpdated(value));
+          },
+          onFieldSubmit: () => {
+            dispatch(saveRecord());
           },
         },
       },

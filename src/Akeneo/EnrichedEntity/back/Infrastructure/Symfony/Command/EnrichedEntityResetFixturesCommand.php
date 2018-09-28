@@ -301,11 +301,21 @@ INSERT INTO `akeneo_enriched_entity_attribute` (
   `additional_properties`
   )
 VALUES
-  ('name_designer_16f624b3-0855-4e12-80b6-da077252a194',      'name',        'designer', '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, false, true, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('portrait_designer_1781b92b-6785-4bdf-9837-9f0db68902d4',  'portrait',    'designer', '{"en_US": "Portrait"}',             'image', 2, false, false, false, '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}'),
-  ('name_brand_90440ddf-109d-4114-8668-e6a1da98dc38',         'name',        'brand',    '{"en_US": "Name", "fr_FR": "Nom"}', 'text',  1, false, true, false, '{"max_length": null, "is_textarea": false, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('description_brand_befbca68-b613-4839-a1aa-5f74f98c438a',  'description', 'brand',    '{"en_US": "Description"}',          'text',  2, false, true, true, '{"max_length": 255, "is_textarea": true, "validation_rule": null, "regular_expression": null, "is_rich_text_editor": false}'),
-  ('image_designer_d00e1ee1-6c3d-4280-ae45-b124994491f2',     'image',       'designer', '{"en_US": "Image"}',                'image', 3, false, false, true,  '{"max_file_size": "30.01", "allowed_extensions": ["png", "jpg"]}')
+  ('baseline_brand_ed11f718-0e93-4d75-8965-21a5b4566b46','baseline','brand','{"en_US": "Baseline"}','text',8,0,0,1,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('birthdate_designer_87939c45-1d85-4134-9579-d594fff65030','birthdate','designer','{"en_US": "Birthdate"}','text',0,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('city_brand_d75161e7-765c-4523-9b87-0bd73ccf068f','city','brand','{"en_US": "City"}','text',1,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('coverphoto_designer_e68f7b52-dfbc-4c5b-a316-73c83fdd841a','coverphoto','designer','{"en_US": "Cover photo"}','image',5,0,0,0,'{"max_file_size": "10", "allowed_extensions": ["jpeg", "jpg", "png"]}'),
+  ('description_brand_081b677a-d662-4a3b-a843-aeeda4218154','description','brand','{"en_US": "Description"}','text',5,0,1,1,'{"max_length": null, "is_textarea": true, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": true}'),
+  ('founded_brand_fff5387e-64ce-4228-b68e-af8704867761','founded','brand','{"en_US": "Founded"}','text',3,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('founder_brand_eb505477-3139-4c6d-9014-ac8091c2c2de','founder','brand','{"en_US": "Founder"}','text',2,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('industry_brand_99e4cd39-3e56-4e2e-9f51-86ea1f3a66c0','industry','brand','{"en_US": "Industry"}','text',4,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('nationality_brand_f60def21-f44f-449d-9fae-7a4f76cded60','nationality','brand','{"en_US": "Nationality"}','text',0,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('nationality_designer_df90ead4-8aea-42a0-a517-5554e12631bb','nationality','designer','{"en_US": "Nationality"}','text',1,0,0,1,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('presentationvideo_brand_c61e8ef7-6606-40d7-810c-b2b94e92e68f','presentationvideo','brand','{"en_US": "Presentation video"}','text',6,0,0,1,'{"max_length": null, "is_textarea": false, "validation_rule": "url", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('resume_designer_bad11eab-769b-49a1-a3e9-5a6366cc65dc','resume','designer','{"en_US": "Résumé"}','text',4,0,1,1,'{"max_length": null, "is_textarea": false, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('website_brand_4272f9ec-e9ff-4734-878b-7f24fed422e2','website','brand','{"en_US": "Website"}','text',7,0,0,1,'{"max_length": null, "is_textarea": false, "validation_rule": "url", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('website_designer_5d008f13-a115-4147-8b7f-122a4f1d52d4','website','designer','{"en_US": "Website"}','text',2,0,0,0,'{"max_length": null, "is_textarea": false, "validation_rule": "url", "regular_expression": null, "is_rich_text_editor": false}'),
+  ('wikipediapage_designer_8b2aa74c-cc2e-486f-a514-496800214bde','wikipediapage','designer','{"en_US": "Wikipedia page"}','text',3,0,0,1,'{"max_length": 5000, "is_textarea": true, "validation_rule": "none", "regular_expression": null, "is_rich_text_editor": true}');
 SQL;
 
         $affectedRows = $this->dbal->exec($sql);

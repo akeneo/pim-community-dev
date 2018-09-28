@@ -5,7 +5,11 @@ import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entit
 import {toggleSidebar, updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 
-interface SidebarState {
+interface SidebarOwnProps {
+  backButton?: () => JSX.Element;
+}
+
+interface SidebarState extends SidebarOwnProps {
   tabs: Tab[];
   currentTab: string;
   isCollapsed: boolean;
@@ -27,21 +31,28 @@ class Sidebar extends React.Component<SidebarProps> {
     this.props.events.toggleSidebar(!this.props.isCollapsed);
   };
 
-  updateCurrentTab = (event: any) => {
+  updateCurrentTab = (event: React.MouseEvent<HTMLSpanElement> | React.KeyboardEvent<HTMLSpanElement>) => {
     event.preventDefault();
-    this.props.events.updateCurrentTab(event.target.attributes.getNamedItem('data-tab').value);
+    const target = event.target as HTMLSpanElement;
+    if (undefined === target || undefined === target.dataset || undefined === target.dataset.tab) {
+      return false;
+    }
+
+    this.props.events.updateCurrentTab(target.dataset.tab);
 
     return false;
   };
 
   render(): JSX.Element | JSX.Element[] {
     const colapsedClass = this.props.isCollapsed ? 'AknColumn--collapsed' : '';
+    const BackButton = this.props.backButton;
 
     return (
       <div className={`AknColumn ${colapsedClass}`}>
         <div className="AknColumn-inner column-inner">
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
+              {undefined !== BackButton ? <BackButton /> : null}
               <div className="AknColumn-title">{__('pim_enriched_entity.enriched_entity.title')}</div>
               {this.props.tabs.map((tab: any) => {
                 const activeClass = this.props.currentTab === tab.code ? 'AknColumn-navigationLink--active' : '';
@@ -51,10 +62,14 @@ class Sidebar extends React.Component<SidebarProps> {
                     key={tab.code}
                     role="button"
                     tabIndex={0}
-                    className={`AknColumn-navigationLink column-navigation-link ${activeClass}`}
+                    className={`AknColumn-navigationLink ${activeClass}`}
                     data-tab={tab.code}
                     onClick={this.updateCurrentTab}
-                    onKeyPress={this.updateCurrentTab}
+                    onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                      if (' ' === event.key) {
+                        this.updateCurrentTab(event);
+                      }
+                    }}
                   >
                     {__(tab.label)}
                   </span>
@@ -71,12 +86,13 @@ class Sidebar extends React.Component<SidebarProps> {
 }
 
 export default connect(
-  (state: EditState): SidebarState => {
+  (state: EditState, ownProps: SidebarOwnProps): SidebarState => {
     const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
     const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
     const isCollapsed = undefined === state.sidebar.isCollapsed ? false : state.sidebar.isCollapsed;
 
     return {
+      ...ownProps,
       tabs,
       currentTab,
       isCollapsed,

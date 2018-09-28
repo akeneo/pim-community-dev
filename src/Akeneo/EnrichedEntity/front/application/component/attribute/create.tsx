@@ -93,11 +93,11 @@ class Create extends React.Component<CreateProps> {
     }
   }
 
-  private onCodeUpdate = (event: any) => {
+  private onCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.events.onCodeUpdated(event.target.value);
   };
 
-  private onLabelUpdate = (event: any) => {
+  private onLabelUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.events.onLabelUpdated(event.target.value, this.props.context.locale);
   };
 
@@ -105,7 +105,7 @@ class Create extends React.Component<CreateProps> {
     this.props.events.onTypeUpdated(value.identifier);
   };
 
-  private onKeyPress = (event: any) => {
+  private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if ('Enter' === event.key) {
       this.props.events.onSubmit();
     }
@@ -134,7 +134,7 @@ class Create extends React.Component<CreateProps> {
                 <div className="AknFullPage-title">{__('pim_enriched_entity.attribute.create.title')}</div>
                 <div>
                   <div className="AknFieldContainer" data-code="label">
-                    <div className="AknFieldContainer-header">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
                         htmlFor="pim_enriched_entity.attribute.create.input.label"
@@ -148,7 +148,7 @@ class Create extends React.Component<CreateProps> {
                         ref={(input: HTMLInputElement) => {
                           this.labelInput = input;
                         }}
-                        className="AknTextField"
+                        className="AknTextField AknTextField--light"
                         id="pim_enriched_entity.attribute.create.input.label"
                         name="label"
                         value={this.props.data.labels[this.props.context.locale]}
@@ -164,7 +164,7 @@ class Create extends React.Component<CreateProps> {
                     {getErrorsView(this.props.errors, 'labels')}
                   </div>
                   <div className="AknFieldContainer" data-code="code">
-                    <div className="AknFieldContainer-header">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
                         htmlFor="pim_enriched_entity.attribute.create.input.code"
@@ -175,7 +175,7 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-inputContainer">
                       <input
                         type="text"
-                        className="AknTextField"
+                        className="AknTextField AknTextField--light"
                         id="pim_enriched_entity.attribute.create.input.code"
                         name="code"
                         value={this.props.data.code}
@@ -186,7 +186,7 @@ class Create extends React.Component<CreateProps> {
                     {getErrorsView(this.props.errors, 'code')}
                   </div>
                   <div className="AknFieldContainer" data-code="type">
-                    <div className="AknFieldContainer-header">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
                         htmlFor="pim_enriched_entity.attribute.create.input.type"
@@ -206,7 +206,7 @@ class Create extends React.Component<CreateProps> {
                     {getErrorsView(this.props.errors, 'type')}
                   </div>
                   <div className="AknFieldContainer" data-code="valuePerLocale">
-                    <div className="AknFieldContainer-header">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
                         htmlFor="pim_enriched_entity.attribute.create.input.value_per_locale"
@@ -224,7 +224,7 @@ class Create extends React.Component<CreateProps> {
                     {getErrorsView(this.props.errors, 'valuePerLocale')}
                   </div>
                   <div className="AknFieldContainer" data-code="valuePerChannel">
-                    <div className="AknFieldContainer-header">
+                    <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
                         htmlFor="pim_enriched_entity.attribute.create.input.value_per_channel"

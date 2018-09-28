@@ -1,6 +1,7 @@
 const Header = require('../../decorators/enriched-entity/app/header.decorator');
-const Modal = require('../../decorators/enriched-entity/create/modal.decorator');
+const Modal = require('../../decorators/create/modal.decorator');
 const Grid = require('../../decorators/enriched-entity/index/grid.decorator');
+const {getRequestContract, listenRequest} = require('../../tools');
 const path = require('path');
 
 const {
@@ -30,11 +31,9 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   const saveEnrichedEntity = async function(page) {
-    page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity' === request.url() && 'POST' === request.method()) {
-        answerJson(request, {}, 204);
-      }
-    });
+    const requestContract = getRequestContract('EnrichedEntity/Create/ok.json');
+
+    return await listenRequest(page, requestContract);
   };
 
   const listEnrichedUpdated = async function(page, identifier, labels) {

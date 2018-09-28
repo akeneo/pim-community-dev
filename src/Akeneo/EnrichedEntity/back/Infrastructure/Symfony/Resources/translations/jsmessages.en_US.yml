@@ -20,8 +20,9 @@ pim_enriched_entity:
             properties: Properties
         properties:
             title: Entity properties
-            identifier: Identifier
+            identifier: Code
             label: Label
+            image: Image
         attribute:
             title: Record attributes
         module:
@@ -62,6 +63,7 @@ pim_enriched_entity:
             save: Save
             create: Add new
             delete: Delete
+            back: Back to list
         enrich:
             title: Record attributes
             code: Code

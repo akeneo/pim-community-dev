@@ -65,7 +65,7 @@ class FileUpdater implements ValueUpdaterInterface
         $fileData = null !== $command->filePath && '' !== $command->filePath ?
             $this->getFileData($record, $command, $attribute, $channelReference, $localeReference) :
             EmptyData::create();
-        
+
         $record->setValue(Value::create($attribute->getIdentifier(), $channelReference, $localeReference, $fileData));
     }
 

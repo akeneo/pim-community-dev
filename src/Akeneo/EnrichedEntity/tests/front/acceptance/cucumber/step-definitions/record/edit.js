@@ -1,7 +1,7 @@
 const Edit = require('../../decorators/record/edit.decorator');
+const {getRequestContract, listenRequest} = require('../../tools');
 const Header = require('../../decorators/enriched-entity/app/header.decorator');
 const path = require('path');
-const fs = require('fs');
 
 const {
   decorators: {createElementDecorator},
@@ -11,30 +11,6 @@ const {
 let currentRequestContract = {};
 
 module.exports = async function(cucumber) {
-  const listenRequest = async function(page, fileName) {
-    const requestContract = JSON.parse(
-      fs.readFileSync(process.cwd() + '/src/Akeneo/EnrichedEntity/tests/shared/responses/Record/' + fileName, 'utf-8')
-    );
-    currentRequestContract = requestContract;
-
-    const url = await page.evaluate(
-      async (route, query) => {
-        const router = require('pim/router');
-
-        return router.generate(route, query);
-      },
-      requestContract.request.route,
-      requestContract.request.query
-    );
-
-    const answerRequest = request => {
-      if (url === request.url() && requestContract.request.method === request.method()) {
-        answerJson(request, requestContract.response.body, requestContract.response.status);
-        page.removeListener('request', answerRequest);
-      }
-    };
-    page.on('request', answerRequest);
-  };
   const {When, Then, Given} = cucumber;
   const assert = require('assert');
 
@@ -52,10 +28,16 @@ module.exports = async function(cucumber) {
   const getElement = createElementDecorator(config);
 
   Given('a valid record', async function() {
-    return await listenRequest(this.page, 'RecordDetails/ok.json');
+    const requestContract = getRequestContract('Record/RecordDetails/ok.json');
+    currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
   });
   Given('an invalid record', async function() {
-    return await listenRequest(this.page, 'RecordDetails/not_found.json');
+    const requestContract = getRequestContract('Record/RecordDetails/not_found.json');
+    currentRequestContract = requestContract;
+
+    return await listenRequest(this.page, requestContract);
   });
 
   const askForRecord = async function(recordCode, enrichedEntityIdentifier) {

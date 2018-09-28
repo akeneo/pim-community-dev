@@ -9,7 +9,12 @@ import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import Record, {NormalizedRecord} from 'akeneoenrichedentity/domain/model/record/record';
-import {saveRecord, deleteRecord, recordImageUpdated} from 'akeneoenrichedentity/application/action/record/edit';
+import {
+  saveRecord,
+  deleteRecord,
+  recordImageUpdated,
+  backToEnrichedEntity,
+} from 'akeneoenrichedentity/application/action/record/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 const securityContext = require('pim/security-context');
 import File from 'akeneoenrichedentity/domain/model/file';
@@ -50,6 +55,7 @@ interface DispatchProps {
     onChannelChanged: (channel: Channel) => void;
     onImageUpdated: (image: File) => void;
     onDelete: (record: Record) => void;
+    backToEnrichedEntity: () => void;
   };
 }
 
@@ -57,6 +63,21 @@ interface EditProps extends StateProps, DispatchProps {}
 
 class RecordEditView extends React.Component<EditProps> {
   public props: EditProps;
+  private backToEnrichedEntity = () => (
+    <span
+      role="button"
+      tabIndex={0}
+      className="AknColumn-navigationLink"
+      onClick={this.props.events.backToEnrichedEntity}
+      onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (' ' === event.key) {
+          this.props.events.backToEnrichedEntity();
+        }
+      }}
+    >
+      {__('pim_enriched_entity.record.button.back')}
+    </span>
+  );
 
   private onClickDelete = () => {
     const label = this.props.record.labels[this.props.context.locale];
@@ -92,6 +113,7 @@ class RecordEditView extends React.Component<EditProps> {
     const record = denormalizeRecord(this.props.record);
     const label = record.getLabel(this.props.context.locale);
     const TabView = sidebarProvider.getView('akeneo_enriched_entities_record_edit', this.props.sidebar.currentTab);
+
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
@@ -164,16 +186,16 @@ class RecordEditView extends React.Component<EditProps> {
                   <div>
                     <div className="AknTitleContainer-line">
                       <div className="AknTitleContainer-context AknButtonList">
-                        <LocaleSwitcher
-                          localeCode={this.props.context.locale}
-                          locales={this.props.structure.locales}
-                          onLocaleChange={this.props.events.onLocaleChanged}
-                        />
                         <ChannelSwitcher
                           channelCode={this.props.context.channel}
                           channels={this.props.structure.channels}
                           locale={this.props.context.locale}
                           onChannelChange={this.props.events.onChannelChanged}
+                        />
+                        <LocaleSwitcher
+                          localeCode={this.props.context.locale}
+                          locales={this.props.structure.locales}
+                          onLocaleChange={this.props.events.onLocaleChanged}
                         />
                       </div>
                     </div>
@@ -186,7 +208,7 @@ class RecordEditView extends React.Component<EditProps> {
             </div>
           </div>
         </div>
-        <Sidebar />
+        <Sidebar backButton={this.backToEnrichedEntity} />
       </div>
     );
   }
@@ -240,6 +262,9 @@ export default connect(
         },
         onDelete: (record: Record) => {
           dispatch(deleteRecord(record));
+        },
+        backToEnrichedEntity: () => {
+          dispatch(backToEnrichedEntity());
         },
       },
     };

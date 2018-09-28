@@ -58,3 +58,15 @@ Feature: Create an attribute linked to an enriched entity
       | invalid_attribute_code | message                                                  |
       | labels                 | The code cannot be any of those values: "%code, labels%" |
       | code                   | The code cannot be any of those values: "%code, labels%" |
+
+  @acceptance-front
+  Scenario: Creating a simple valid text attribute
+    When the user creates a valid attribute
+    And the user saves the valid attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Creating an invalid text attribute
+    When the user creates an attribute with an invalid code
+    And the user saves the attribute with an invalid code
+    Then the user should see the validation error "This field may only contain letters, numbers and underscores."

@@ -11,6 +11,15 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
 
     await field.type(value);
   };
+  const switchField = async (id, value) => {
+    if (value) {
+      const switchElement = await nodeElement.$(`.AknSwitch-input[id="${id}"]:not(:checked)`);
+      switchElement.click();
+    } else {
+      const switchElement = await nodeElement.$(`.AknSwitch-input[id="${id}"]:not(:checked)`);
+      switchElement.click();
+    }
+  };
 
   const save = async () => {
     // As the button doesn't have any size, we need to make it clickable by giving him a size
@@ -26,14 +35,19 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
   };
 
   const getValidationMessageForCode = async () => {
-    await page.waitForSelector('.error-message');
-    const error = await nodeElement.$('.error-message');
-    const property = await error.getProperty('textContent');
+    try {
+      await page.waitForSelector('.error-message', {timeout: 2000});
+    } catch (error) {
+      return '';
+    }
+
+    const validationError = await nodeElement.$('.error-message');
+    const property = await validationError.getProperty('textContent');
 
     return await property.jsonValue();
   };
 
-  return {fillField, save, getValidationMessageForCode};
+  return {fillField, switchField, save, getValidationMessageForCode};
 };
 
 module.exports = Modal;
