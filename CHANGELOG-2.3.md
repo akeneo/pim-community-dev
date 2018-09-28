@@ -5,6 +5,7 @@
 - PIM-7676: Add code filter on attribute and family grid
 - PIM-7673: Fix permissions on locales applied on channel settings page
 - PIM-7664: ReferenceDataCollectionValueFactory can now ignore unknown reference data with an optionnal argument and not throw an exception.
+- PIM-7672: Fix the mass edit controller to launch jobs with authentication.
 
 # 2.3.10 (2018-10-01)
 
