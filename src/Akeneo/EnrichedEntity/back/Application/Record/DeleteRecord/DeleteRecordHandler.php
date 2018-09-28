@@ -32,9 +32,9 @@ class DeleteRecordHandler
 
     public function __invoke(DeleteRecordCommand $deleteRecordCommand): void
     {
-        $identifier = RecordCode::fromString($deleteRecordCommand->recordCode);
+        $recordCode = RecordCode::fromString($deleteRecordCommand->recordCode);
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($deleteRecordCommand->enrichedEntityIdentifier);
 
-        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $identifier);
+        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
     }
 }

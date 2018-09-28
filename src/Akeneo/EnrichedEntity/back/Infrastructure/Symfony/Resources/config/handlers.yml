@@ -53,7 +53,7 @@ services:
                 - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
                 - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    akeneo_enrichedentity.application.enriched_entity.delete_record_handler:
+    akeneo_enrichedentity.application.record.delete_record_handler:
         class: Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
