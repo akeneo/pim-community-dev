@@ -92,7 +92,7 @@ class UpdateAttributesMappingByFamilyCommand
             }
 
             $this->attributesMapping[] =
-                new AttributeMapping($targetKey, $mappingRow['status'], $mappingRow['attribute']);
+                new AttributeMapping($targetKey, $mappingRow['status'], $mappingRow['pim_ai_attribute']['type'], $mappingRow['attribute']);
         }
     }
 }

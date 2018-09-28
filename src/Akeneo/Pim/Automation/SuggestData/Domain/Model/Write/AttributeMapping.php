@@ -35,6 +35,9 @@ class AttributeMapping
     /** @var string|null */
     private $pimAttributeCode;
 
+    /** @var string */
+    private $pimAiAttributeType;
+
     /** @var AttributeInterface */
     private $attribute;
 
@@ -43,12 +46,14 @@ class AttributeMapping
 
     /**
      * @param string $targetAttributeCode
-     * @param string $pimAttributeCode
      * @param int $status
+     * @param null|string $pimAttributeCode
+     * @param string $pimAiAttributeType
      */
     public function __construct(
         string $targetAttributeCode,
         int $status,
+        string $pimAiAttributeType,
         ?string $pimAttributeCode
     ) {
         $this->targetAttributeCode = $targetAttributeCode;
@@ -64,6 +69,8 @@ class AttributeMapping
         } else {
             $this->pimAttributeCode = $pimAttributeCode;
         }
+
+        $this->pimAiAttributeType = $pimAiAttributeType;
     }
 
     /**
@@ -108,5 +115,13 @@ class AttributeMapping
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPimAiAttributeType(): string
+    {
+        return $this->pimAiAttributeType;
     }
 }
