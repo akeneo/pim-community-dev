@@ -61,7 +61,7 @@ class VersionNormalizer implements NormalizerInterface
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository = null, // TODO on master: remove = null
+        AttributeRepositoryInterface $attributeRepository = null,
         UserContext $userContext = null
     ) {
         $this->userManager = $userManager;
@@ -77,15 +77,13 @@ class VersionNormalizer implements NormalizerInterface
      */
     public function normalize($version, $format = null, array $context = [])
     {
+        $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
+
         try {
             $timezone = $this->userContext->getUserTimezone();
-
-            $context = array_merge($context, [
-                'locale' => $this->translator->getLocale(),
-                'timezone' => $timezone
-            ]);
+            $loggedAtContext = array_merge($context, ['timezone' => $timezone]);
         } catch (\RuntimeException $exception) {
-            $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
+            $loggedAtContext = $context;
         }
 
         return [
@@ -96,7 +94,7 @@ class VersionNormalizer implements NormalizerInterface
             'changeset'    => $this->convertChangeset($version->getChangeset(), $context),
             'context'      => $version->getContext(),
             'version'      => $version->getVersion(),
-            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $context),
+            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $loggedAtContext),
             'pending'      => $version->isPending(),
         ];
     }

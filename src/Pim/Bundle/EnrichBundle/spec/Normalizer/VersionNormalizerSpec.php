@@ -67,7 +67,6 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getVersion()->willReturn(12);
         $version->getLoggedAt()->willReturn($versionTime);
         $translator->getLocale()->willReturn('en_US');
-        $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
@@ -82,6 +81,9 @@ class VersionNormalizerSpec extends ObjectBehavior
         ];
 
         $options = [
+            'locale' => 'fr_FR',
+        ];
+        $datetimePresenterOtions = [
             'locale' => 'fr_FR',
             'timezone' => 'Europe/Paris',
         ];
@@ -110,6 +112,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $numberPresenter->present('', $options + ['versioned_attribute' => 'maximum_frame_rate'])->willReturn('');
         $pricesPresenter->present('', $options)->willReturn('');
         $metricPresenter->present('', $options + ['versioned_attribute' => 'weight'])->willReturn('');
+        $datetimePresenter->present($versionTime, $datetimePresenterOtions)->willReturn('01/01/1985 09:41 AM');
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
