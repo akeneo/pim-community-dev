@@ -57,12 +57,12 @@ const LocaleSwitcher = ({
   localeCode,
   locales,
   onLocaleChange,
-  className = ''
+  className = '',
 }: {
   localeCode: string;
   locales: Locale[];
   onLocaleChange: (locale: Locale) => void;
-  className?: string
+  className?: string;
 }) => {
   return (
     <Dropdown
