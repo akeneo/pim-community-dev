@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditTextValueCommand as EditTextValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -31,6 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditTextValueCommandValidator extends ConstraintValidator
 {
+
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
@@ -113,10 +113,14 @@ class EditTextValueCommandValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         if ($command->attribute->isValidationRuleSetToRegularExpression()) {
+            $regularExpression = $command->attribute->getRegularExpression()->normalize();
             return $validator->validate($command->text, [
-                new Constraints\Regex([
-                    'pattern' => $command->attribute->getRegularExpression()->normalize(),
-                ]),
+                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) use ($regularExpression) {
+                    return $this->context->buildViolation(
+                        EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION,
+                        ['regular_expression', $regularExpression]
+                    )->addViolation();
+                }),
             ]);
         }
 

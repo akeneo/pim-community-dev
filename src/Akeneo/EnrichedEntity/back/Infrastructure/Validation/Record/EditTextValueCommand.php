@@ -21,6 +21,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditTextValueCommand extends Constraint
 {
+    public const TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION = 'pim_enriched_entity.record.validation.text.incompatible_with_regular_expression';
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
