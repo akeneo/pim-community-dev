@@ -82,6 +82,18 @@ services:
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
         tags:
             - { name: fob.context_service }
+    akeneo_enrichedentity.tests.back.acceptance.context.delete_record_context:
+        class: Akeneo\EnrichedEntity\Acceptance\Context\DeleteRecordContext
+        arguments:
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.record'
+            - '@__symfony__.akeneo_enrichedentity.application.record.delete_record_handler'
+            - '@__symfony__.validator'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
+            - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
+        tags:
+        - { name: fob.context_service }
+
 
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\Test\Acceptance\FileStorage\InMemoryFileStorer
