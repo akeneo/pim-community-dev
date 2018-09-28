@@ -101,8 +101,8 @@ class SubscriptionStatusSwitcher extends BaseView {
       const response = xhr.responseJSON;
       let errorMessage = this.config.create_product_subscription_fail_message;
 
-      if (!_.isUndefined(response.error)) {
-        errorMessage = response.error;
+      if (undefined !== response && undefined !== response.errors) {
+        errorMessage = response.errors;
       }
 
       messenger.notify('error', __(errorMessage));
@@ -127,8 +127,8 @@ class SubscriptionStatusSwitcher extends BaseView {
       const response = xhr.responseJSON;
       let errorMessage = this.config.delete_product_subscription_fail_message;
 
-      if (!_.isUndefined(response.error)) {
-        errorMessage = response.error;
+      if (undefined !== response && undefined !== response.errors) {
+        errorMessage = response.errors;
       }
 
       messenger.notify('error', __(errorMessage));
