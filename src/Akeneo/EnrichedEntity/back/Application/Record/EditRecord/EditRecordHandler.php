@@ -21,7 +21,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

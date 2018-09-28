@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Validation;
  */
 class EditTextValueCommandValidator extends ConstraintValidator
 {
-
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
@@ -93,7 +92,8 @@ class EditTextValueCommandValidator extends ConstraintValidator
     }
 
     private function checkTextLength(EditTextValueCommand $command)
-    : ConstraintViolationListInterface {
+    : ConstraintViolationListInterface
+    {
         $validator = Validation::createValidator();
         $violations = $validator->validate($command->text, [
             new Constraints\Length([
@@ -106,7 +106,8 @@ class EditTextValueCommandValidator extends ConstraintValidator
     }
 
     private function checkValidationRule(EditTextValueCommand $command)
-    : ConstraintViolationListInterface {
+    : ConstraintViolationListInterface
+    {
         if ($command->attribute->hasValidationRule()) {
             return new ConstraintViolationList();
         }

@@ -66,6 +66,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'filePath' => 'test/image_1.jpg',
                 'originalFilename' => 'image_1.jpg'
             ],
+            'values' => []
         ];
 
         $this->webClientHelper->callRoute(
@@ -111,6 +112,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'fr_FR' => 'Madame Celine Dion',
             ],
             'image' => null,
+            'values' => []
         ];
 
         $this->webClientHelper->callRoute(
@@ -174,6 +176,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
             ],
+            'values' => []
         ];
 
         $callRoute = function ($postContent) {
@@ -208,6 +211,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'image' => [
                 'filePath' => 'test/image_1.jpg',
             ],
+            'values' => []
         ];
         $callRoute($postContent);
         $response = $this->client->getResponse();
@@ -224,6 +228,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'image' => [
                 'originalFilename' => 'baz'
             ],
+            'values' => []
         ];
         $callRoute($postContent);
         $response = $this->client->getResponse();

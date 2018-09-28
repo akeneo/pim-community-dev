@@ -49,7 +49,7 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath(sprintf('values.%s',  $violation->getPropertyPath()))
+                    ->atPath(sprintf('values.%s', $violation->getPropertyPath()))
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())

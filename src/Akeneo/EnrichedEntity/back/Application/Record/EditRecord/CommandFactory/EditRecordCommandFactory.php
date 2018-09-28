@@ -21,7 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifi
  */
 class EditRecordCommandFactory
 {
-    /** @var FindAttributesIndexedByIdentifierInterface  */
+    /** @var FindAttributesIndexedByIdentifierInterface */
     private $sqlFindAttributesIndexedByIdentifier;
 
     /** @var EditValueCommandFactoryRegistryInterface */
@@ -51,8 +51,12 @@ class EditRecordCommandFactory
         $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($enrichedEntityIdentifier);
 
         foreach ($normalizedCommand['values'] as $normalizedValue) {
-            if (!array_key_exists('attribute', $normalizedValue)) {
-                // Attribute might has been removed, we ignore the user input.
+            if (!$this->isUserIntputCorrectlyFormed($normalizedValue)) {
+                // we ignore the user input, it might be malformed.
+                continue;
+            }
+            if (!$this->isAttributeExisting($normalizedValue, $attributesIndexedByIdentifier)) {
+                // Attribute might has been removed
                 continue;
             }
 
@@ -71,5 +75,15 @@ class EditRecordCommandFactory
             && array_key_exists('code', $normalizedCommand)
             && array_key_exists('labels', $normalizedCommand)
             && array_key_exists('values', $normalizedCommand);
+    }
+
+    private function isUserIntputCorrectlyFormed($normalizedValue): bool
+    {
+        return array_key_exists('attribute', $normalizedValue);
+    }
+
+    private function isAttributeExisting($normalizedValue, $attributesIndexedByIdentifier): bool
+    {
+        return array_key_exists($normalizedValue['attribute'], $attributesIndexedByIdentifier);
     }
 }

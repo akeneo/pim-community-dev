@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Webmozart\Assert\Assert;
 
 /**

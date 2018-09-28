@@ -17,8 +17,8 @@ use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\Re
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeUpdaterPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditRecordValueCommandFactoryPass;
+use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueDataHydratorPass;
 use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueUpdaterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

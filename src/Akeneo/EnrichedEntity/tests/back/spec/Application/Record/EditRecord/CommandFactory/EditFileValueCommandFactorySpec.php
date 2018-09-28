@@ -32,7 +32,7 @@ class EditFileValueCommandFactorySpec extends ObjectBehavior
                 'originalFilename' => 'my_image.png',
             ],
         ];
-        $command = $this->create($normalizedValue, $imageAttribute);
+        $command = $this->create($imageAttribute, $normalizedValue);
 
         $command->shouldBeAnInstanceOf(EditFileValueCommand::class);
         $command->attribute->shouldBeEqualTo($imageAttribute);

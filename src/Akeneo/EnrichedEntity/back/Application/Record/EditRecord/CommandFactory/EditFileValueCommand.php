@@ -12,12 +12,17 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
+
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class EditFileValueCommand extends AbstractEditValueCommand
 {
+    /** @var ImageAttribute */
+    public $attribute;
+
     /** @var string */
     public $filePath;
 

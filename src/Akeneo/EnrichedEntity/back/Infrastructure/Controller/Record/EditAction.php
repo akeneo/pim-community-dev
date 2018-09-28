@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -389,8 +389,7 @@ final class EditRecordContext implements Context
      * @throws \Exception
      */
     public function anEnrichedEntityWithATextAttributeWithARegularExpressionValidationRuleLike(string $regularExpression
-    ): void
-    {
+    ): void {
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(

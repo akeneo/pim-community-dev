@@ -16,11 +16,8 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -69,11 +66,12 @@ class EditEnrichedEntityHandler
     private function storeFile(array $image): FileInfoInterface
     {
         $rawFile = new \SplFileInfo($image['filePath']);
-        try {
-            $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-        } catch (FileTransferException | FileRemovalException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
+        // TODO: Need to rework this part
+//        try {
+        $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+//        } catch (FileTransferException | FileRemovalException $e) {
+//            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+//        }
 
         return $file;
     }

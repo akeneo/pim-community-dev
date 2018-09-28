@@ -30,7 +30,6 @@ use Symfony\Component\Validator\Validation;
  */
 class EditFileValueCommandValidator extends ConstraintValidator
 {
-
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);

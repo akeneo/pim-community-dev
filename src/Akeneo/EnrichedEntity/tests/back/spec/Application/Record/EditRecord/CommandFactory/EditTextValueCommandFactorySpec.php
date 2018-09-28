@@ -31,7 +31,7 @@ class EditTextValueCommandFactorySpec extends ObjectBehavior
             'locale'  => 'en_US',
             'data'    => 'A description'
         ];
-        $command = $this->create($normalizedValue, $textAttribute);
+        $command = $this->create($textAttribute, $normalizedValue);
 
         $command->shouldBeAnInstanceOf(EditTextValueCommand::class);
         $command->attribute->shouldBeEqualTo($textAttribute);

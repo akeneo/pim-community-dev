@@ -102,7 +102,10 @@ class EditRecordHandlerSpec extends ObjectBehavior
 
         $existingImage->isEmpty()->willReturn(false);
         $existingImage->getKey()->willReturn('/my/image/path');
-        $recordRepository->getByIdentifier(Argument::type(RecordIdentifier::class))->willReturn($record);
+        $recordRepository->getByEnrichedEntityAndCode(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($record);
         $record->getImage()->willReturn($existingImage);
 
         $record->setLabels(Argument::type(LabelCollection::class))->shouldBeCalled();

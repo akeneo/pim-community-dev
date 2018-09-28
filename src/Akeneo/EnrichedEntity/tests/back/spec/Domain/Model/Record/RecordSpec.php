@@ -124,7 +124,8 @@ class RecordSpec extends ObjectBehavior
                  'en_US' => 'Stark',
                  'fr_FR' => 'Stark',
              ],
-             'values' => []
+             'values' => [],
+             'image' => null,
          ]);
      }
 }

@@ -60,8 +60,8 @@ class ValueCollectionSpec extends ObjectBehavior
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
                 'data'      => [
-                    'file_key'              => '/a/file/key',
-                    'original_filename' => 'my_file.png',
+                    'filePath'              => '/a/file/key',
+                    'originalFilename' => 'my_file.png',
                 ],
             ],
         ]);
@@ -89,8 +89,8 @@ class ValueCollectionSpec extends ObjectBehavior
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
                 'data'      => [
-                    'file_key'              => '/a/file/key',
-                    'original_filename' => 'my_file.png',
+                    'filePath'              => '/a/file/key',
+                    'originalFilename' => 'my_file.png',
                 ],
             ],
         ]);
@@ -118,8 +118,8 @@ class ValueCollectionSpec extends ObjectBehavior
                 'channel'   => 'mobile',
                 'locale'    => 'fr_FR',
                 'data'      => [
-                    'file_key'              => '/a/file/key',
-                    'original_filename' => 'my_file.png',
+                    'filePath'              => '/a/file/key',
+                    'originalFilename' => 'my_file.png',
                 ],
             ],
             'name_designer_fingerprint_mobile_fr_FR' => [

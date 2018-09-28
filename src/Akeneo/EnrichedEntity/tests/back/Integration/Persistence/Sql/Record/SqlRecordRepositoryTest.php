@@ -247,27 +247,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_when_updating_a_non_existing_record()
-    {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $enrichedEntityIdentifier,
-            $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
-        );
-
-        $this->expectException(\RuntimeException::class);
-        $this->repository->update($record);
-    }
-
-    /**
-     * @test
-     */
     public function it_counts_the_records()
     {
         $this->assertEquals(0, $this->repository->count());

@@ -12,12 +12,17 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
+
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class EditTextValueCommand extends AbstractEditValueCommand
 {
+    /** @var TextAttribute */
+    public $attribute;
+
     /** @var string */
     public $text;
 }

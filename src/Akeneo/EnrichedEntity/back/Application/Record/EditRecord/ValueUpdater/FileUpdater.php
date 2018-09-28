@@ -25,11 +25,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueDataInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -94,12 +91,13 @@ class FileUpdater implements ValueUpdaterInterface
 
     private function storeFile(string $fileKey): FileInfoInterface
     {
+        // Todo: rework about this service.
         $rawFile = new \SplFileInfo($fileKey);
-        try {
-            $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-        } catch (FileTransferException | FileRemovalException $exception) {
-            throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
-        }
+//        try {
+        $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+//        } catch (FileTransferException | FileRemovalException $exception) {
+//            throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
+//        }
 
         return $file;
     }

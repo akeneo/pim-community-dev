@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistry;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommandFactory;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\TextEditRecordCommandFactory;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistry;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
-class EditRecordValueCommandFactoryRegistrySpec extends ObjectBehavior
+class EditValueCommandFactoryRegistrySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {

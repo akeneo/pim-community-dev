@@ -60,10 +60,9 @@ class FileUpdaterSpec extends ObjectBehavior
         $editFileValueCommand->attribute = $imageAttribute;
         $editFileValueCommand->channel = 'ecommerce';
         $editFileValueCommand->locale = 'fr_FR';
-        $editFileValueCommand->filePath = [
-            'file_key'          => '/a/file/key',
-            'original_filename' => 'my_image.png',
-        ];
+        $editFileValueCommand->filePath = '/a/file/key';
+        $editFileValueCommand->originalFilename = 'my_image.png';
+
         $fileInfo = new FileInfo();
         $fileInfo->setKey('/b/file/key');
         $fileInfo->setOriginalFilename('my_image.png');

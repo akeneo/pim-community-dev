@@ -27,7 +27,8 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
 
-    public function __construct(InMemoryAttributeRepository $attributeRepository) {
+    public function __construct(InMemoryAttributeRepository $attributeRepository)
+    {
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -43,6 +44,5 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
 
             return $stack;
         }, []);
-
     }
 }
