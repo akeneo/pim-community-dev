@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - PIM-7662: Fix migration script to index only the proposed product drafts
+- PIM-7672: Fix missing permission check on assets during a mass edit.
 
 ## Improvements
 
