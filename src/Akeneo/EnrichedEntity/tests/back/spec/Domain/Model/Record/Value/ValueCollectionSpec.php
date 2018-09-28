@@ -143,7 +143,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $channelReference = ChannelReference::noReference();
         $localeReference = LocaleReference::noReference();
 
-        $value = $this->getValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference));
+        $value = $this->findValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference));
 
         $value->getAttributeIdentifier()->equals($attributeIdentifier)->shouldBeEqualTo(true);
         $value->getChannelReference()->equals($channelReference)->shouldBeEqualTo(true);
@@ -157,7 +157,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $channelReference = ChannelReference::noReference();
         $localeReference = LocaleReference::noReference();
 
-        $this->getValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference))
+        $this->findValue(ValueKey::create($attributeIdentifier, $channelReference, $localeReference))
             ->shouldBeNull();
     }
 }

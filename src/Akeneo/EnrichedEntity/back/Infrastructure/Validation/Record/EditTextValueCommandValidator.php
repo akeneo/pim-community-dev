@@ -98,7 +98,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
         $violations = $validator->validate($command->text, [
             new Constraints\Length([
                 'min' => 0,
-                'max' => $command->attribute->getMaxLength()->normalize(),
+                'max' => $command->attribute->getMaxLength()->intValue(),
             ]),
         ]);
 

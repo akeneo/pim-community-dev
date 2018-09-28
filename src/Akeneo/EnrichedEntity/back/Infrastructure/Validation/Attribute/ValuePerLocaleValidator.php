@@ -25,14 +25,14 @@ use Symfony\Component\Validator\Validation;
  */
 class ValuePerLocaleValidator extends ConstraintValidator
 {
-    public function validate($perLocale, Constraint $constraint)
+    public function validate($valuePerLocale, Constraint $constraint)
     {
         if (!$constraint instanceof ValuePerLocale) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($perLocale, [
+        $violations = $validator->validate($valuePerLocale, [
                 new Constraints\NotNull(),
                 new Constraints\Type(['type' => 'boolean'])
             ]

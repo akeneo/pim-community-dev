@@ -196,6 +196,7 @@ Each editRecordValueCommand will have those properties :
 - channel
 - label
 - data
+(Each of those commands will be created via a dedicated factory, registered as such in a registry).
 
 To create the editRecordValueCommand typed by the attribute, we will have to : 
  - create an associative array of attribute indexed by identifier for each enriched entity (QueryFunction)

@@ -65,7 +65,7 @@ class FileUpdater implements ValueUpdaterInterface
         $localeReference = (null !== $command->locale) ?
             LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode($command->locale)) :
             LocaleReference::noReference();
-        $fileData = (null !== $command->filePath) ?
+        $fileData = null !== $command->filePath && '' !== $command->filePath ?
             $this->getFileData($record, $command, $attribute, $channelReference, $localeReference) :
             EmptyData::create();
         
@@ -81,10 +81,10 @@ class FileUpdater implements ValueUpdaterInterface
     ): ValueDataInterface {
         $fileData = EmptyData::create();
         $valueKey = ValueKey::create($attribute->getIdentifier(), $channelReference, $localeReference);
-        $existingFile = $record->findValue($valueKey);
+        $existingValue = $record->findValue($valueKey);
 
         // If we want to update the file and it's not already in file storage, we store it
-        if (null === $existingFile || $existingFile !== $command->filePath) {
+        if (null === $existingValue || $existingValue->getData()->getKey() !== $command->filePath) {
             $storedFile = $this->storeFile($command->filePath);
             $fileData = FileData::createFromFileinfo($storedFile);
         }
@@ -97,8 +97,8 @@ class FileUpdater implements ValueUpdaterInterface
         $rawFile = new \SplFileInfo($fileKey);
         try {
             $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
-        } catch (FileTransferException | FileRemovalException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (FileTransferException | FileRemovalException $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
 
         return $file;

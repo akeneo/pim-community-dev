@@ -51,6 +51,11 @@ class AttributeMaxLength
         return new self(self::NO_LIMIT);
     }
 
+    public function intValue(): ?int
+    {
+        return $this->maxLength;
+    }
+
     public function normalize(): ?int
     {
         return $this->maxLength;

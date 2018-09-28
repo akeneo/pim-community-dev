@@ -130,7 +130,7 @@ class Record
 
     public function findValue(ValueKey $valueKey): ?Value
     {
-        return $this->valueCollection->getValue($valueKey);
+        return $this->valueCollection->findValue($valueKey);
     }
 
     public function normalize(): array

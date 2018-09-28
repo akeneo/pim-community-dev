@@ -764,7 +764,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the attribute of the record for an invalid channel$/
+     * @When /^the user updates the attribute of the record with an invalid channel$/
      */
     public function theUserUpdatesTheAttributeOfTheRecordForAnInvalidChannel()
     {

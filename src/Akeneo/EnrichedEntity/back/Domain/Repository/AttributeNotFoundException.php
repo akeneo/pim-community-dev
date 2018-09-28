@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

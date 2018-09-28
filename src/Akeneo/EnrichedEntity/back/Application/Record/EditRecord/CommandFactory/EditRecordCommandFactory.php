@@ -62,7 +62,6 @@ class EditRecordCommandFactory
                 ->create($attribute, $normalizedValue);
         }
 
-
         return $command;
     }
 

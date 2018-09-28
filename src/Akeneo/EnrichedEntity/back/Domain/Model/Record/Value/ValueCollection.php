@@ -30,7 +30,7 @@ class ValueCollection
         }, $this->values);
     }
 
-    public function getValue(ValueKey $valueKey): ?Value
+    public function findValue(ValueKey $valueKey): ?Value
     {
         $key = (string) $valueKey;
 

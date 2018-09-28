@@ -1,6 +1,5 @@
 services:
     # Edit record command factory
-
     akeneo_enrichedentity.application.factory.record.edit_record_command_factory:
         class: Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory
         arguments:

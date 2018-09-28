@@ -77,8 +77,7 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
     }
 
     /**
-     * @param Constraint $constraint
-     *
+     * @throws UnexpectedTypeException
      */
     private function checkConstraintType(Constraint $constraint): void
     {

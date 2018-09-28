@@ -34,9 +34,8 @@ Feature: Edit an record
   Scenario: Updating a scopable value of a record with an invalid channel
     Given an enriched entity with a scopable attribute
     And a record belonging to this enriched entity with a value for the ecommerce channel
-    When the user updates the attribute of the record for an invalid channel
+    When the user updates the attribute of the record with an invalid channel
     Then there should be a validation error on the property text attribute with message "This value should be of type string."
-
 
 #  Todo: Scenario to activate for the import,exports/API
 #  @acceptance-back
@@ -101,7 +100,7 @@ Feature: Edit an record
   Scenario: Updating an url with an invalid url value
     Given an enriched entity with a text attribute with an url validation rule
     And a record belonging to this enriched entity with a value of "https://www.akeneo.com/" for the text attribute
-    When the user updates the text attribute of the record to "My website is 'https://www.akeneo.com/'"
+    When the user updates the text attribute of the record to "htt://akeneo.com/"
     Then there should be a validation error on the property text attribute with message "This value is not a valid URL."
 
   @acceptance-back
@@ -138,7 +137,7 @@ Feature: Edit an record
     Then there should be a validation error on the property image attribute with message "This value should be of type string."
 
   @acceptance-back
-  Scenario: Updating the image value of a record with an invalid originale filename
+  Scenario: Updating the image value of a record with an invalid original filename
     Given an enriched entity with an image attribute
     And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
     When the user updates the image attribute of the record to an invalid file name

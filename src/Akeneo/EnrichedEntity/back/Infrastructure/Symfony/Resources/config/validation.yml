@@ -71,7 +71,6 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValue
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditFileValueCommand: ~
 
-
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
         - CreateTextAttributeCommand

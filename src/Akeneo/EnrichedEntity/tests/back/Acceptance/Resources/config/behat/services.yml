@@ -40,7 +40,7 @@ services:
         class: Akeneo\EnrichedEntity\Acceptance\Context\CreateRecordContext
         arguments:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.record'
-            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_record_handler'
+            - '@__symfony__.akeneo_enrichedentity.application.record.create_record_handler'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
             - { name: fob.context_service }
@@ -52,7 +52,7 @@ services:
             - '@__symfony__.akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry'
             - '@__symfony__.validator'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
-            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@__symfony__.akeneo_enrichedentity.application.attribute.create_attribute_handler'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
         tags:
             - { name: fob.context_service }
@@ -62,7 +62,7 @@ services:
         arguments:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
             - '@__symfony__.akeneo_enrichedentity.application.factory.edit_attribute_command_factory'
-            - '@__symfony__.akeneo_enrichedentity.application.attribute.edit_attribute.edit_attribute_handler'
+            - '@__symfony__.akeneo_enrichedentity.application.attribute.edit_attribute_handler'
             - '@__symfony__.validator'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
@@ -76,7 +76,7 @@ services:
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.repository.record'
             - '@__symfony__.akeneo_enrichedentity.application.factory.record.edit_record_command_factory'
-            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
+            - '@__symfony__.akeneo_enrichedentity.application.record.edit_record_handler'
             - '@__symfony__.validator'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.exception_context'
             - '@akeneo_enrichedentity.tests.back.acceptance.context.constraint_violations_context'

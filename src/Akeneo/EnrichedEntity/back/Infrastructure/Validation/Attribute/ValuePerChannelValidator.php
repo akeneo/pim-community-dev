@@ -25,14 +25,14 @@ use Symfony\Component\Validator\Validation;
  */
 class ValuePerChannelValidator extends ConstraintValidator
 {
-    public function validate($perChannel, Constraint $constraint)
+    public function validate($valuePerChannel, Constraint $constraint)
     {
         if (!$constraint instanceof ValuePerChannel) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($perChannel, [
+        $violations = $validator->validate($valuePerChannel, [
                 new Constraints\NotNull(),
                 new Constraints\Type(['type' => 'boolean'])
             ]
