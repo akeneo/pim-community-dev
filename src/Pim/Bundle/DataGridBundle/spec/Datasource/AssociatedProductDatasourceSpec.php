@@ -72,7 +72,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         )->during('getResults');
     }
 
-    function it_gets_products_sorted_by_association_status(
+    function it_gets_products_and_product_models_sorted_by_association_status(
         $pqbFactory,
         $productNormalizer,
         Datagrid $datagrid,
@@ -289,6 +289,210 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data'][0]->getValue('id')->shouldReturn('product-1');
         $results['data'][1]->getValue('id')->shouldReturn('product-2');
         $results['data'][2]->getValue('id')->shouldReturn('product-model-1');
+    }
+
+    function it_gets_only_products_because_of_limit_reached(
+        $pqbFactory,
+        $productNormalizer,
+        Datagrid $datagrid,
+        ProductQueryBuilderInterface $pqb,
+        ProductQueryBuilderInterface $pqbAsso,
+        ProductQueryBuilderInterface $pqbAssoProductModel,
+        ProductInterface $currentProduct,
+        ProductModelInterface $parent,
+        ProductInterface $associatedProduct1,
+        ProductInterface $associatedProduct2,
+        ProductModelInterface $associatedProductModel,
+        Collection $associationCollection,
+        Collection $parentAssociationCollection,
+        AssociationInterface $association,
+        AssociationInterface $parentAssociation,
+        AssociationTypeInterface $associationType,
+        \ArrayIterator $associationIterator,
+        \ArrayIterator $parentAssociationIterator,
+        CursorInterface $productCursor,
+        CursorInterface $associatedProductCursor,
+        CursorInterface $associatedProductModelCursor,
+        Collection $collectionProductModel,
+        Collection $parentCollectionProductModel,
+        \Iterator $collectionProductModelIterator,
+        \Iterator $parentCollectionProductModelIterator
+    ) {
+        $pqbFactory->create([
+            'repository_parameters' => [],
+            'repository_method'     => 'createQueryBuilder',
+            'limit'                 => 2,
+            'from'                  => 0,
+            'default_locale'        => 'a_locale',
+            'default_scope'         => 'a_channel',
+        ])->willReturn($pqb);
+        $pqb->getQueryBuilder()->shouldBeCalledTimes(1);
+
+        $this->process($datagrid, [
+            'locale_code'         => 'a_locale',
+            'scope_code'          => 'a_channel',
+            '_per_page'           => 2,
+            'current_product'     => $currentProduct,
+            'association_type_id' => '1'
+        ]);
+
+        $associatedProduct1->getId()->willReturn('1');
+        $associatedProduct2->getId()->willReturn('2');
+        $associatedProductModel->getId()->willReturn('1');
+        $currentProduct->getAllAssociations()->willReturn($associationCollection);
+        $currentProduct->getIdentifier()->willReturn('current_product');
+        $currentProduct->getParent()->willReturn($parent);
+
+        $parent->getAllAssociations()->willReturn($parentAssociationCollection);
+
+        $parentAssociationCollection->getIterator()->willReturn($parentAssociationIterator);
+        $parentAssociationIterator->rewind()->shouldBeCalled();
+        $parentAssociationIterator->valid()->willReturn(true, false);
+        $parentAssociationIterator->current()->willReturn($parentAssociation);
+
+        $associationCollection->getIterator()->willReturn($associationIterator);
+        $associationIterator->rewind()->shouldBeCalled();
+        $associationIterator->valid()->willReturn(true, false);
+        $associationIterator->current()->willReturn($association);
+
+        $association->getProducts()->willReturn([$associatedProduct1, $associatedProduct2]);
+        $parentAssociation->getProducts()->willReturn([$associatedProduct2]);
+        $association->getProductModels()->willReturn($collectionProductModel);
+        $parentAssociation->getProductModels()->willReturn($parentCollectionProductModel);
+
+        $collectionProductModel->getIterator()->willReturn($collectionProductModelIterator);
+        $collectionProductModelIterator->rewind()->shouldBeCalled();
+        $collectionProductModelIterator->valid()->willReturn(true, false);
+        $collectionProductModelIterator->current()->willReturn($associatedProductModel);
+        $collectionProductModelIterator->next()->shouldBeCalled();
+
+        $parentCollectionProductModel->getIterator()->willReturn($parentCollectionProductModelIterator);
+        $parentCollectionProductModelIterator->rewind()->shouldBeCalled();
+        $parentCollectionProductModelIterator->valid()->willReturn(false);
+
+        $association->getAssociationType()->willReturn($associationType);
+        $parentAssociation->getAssociationType()->willReturn($associationType);
+        $associationType->getId()->willReturn(1);
+
+        $pqb->execute()->willReturn($productCursor);
+        $productCursor->count()->willReturn(2);
+
+        $pqb->getRawFilters()->shouldBeCalledTimes(1)->willReturn(null);
+
+        $pqbFactory->create([
+            'repository_parameters' => [],
+            'repository_method'     => 'createQueryBuilder',
+            'limit'                 => 2,
+            'from'                  => 0,
+            'default_locale'        => 'a_locale',
+            'default_scope'         => 'a_channel',
+            'filters'               => null,
+        ])->willReturn($pqbAsso);
+
+        $pqbAsso
+            ->addFilter(
+                'id',
+                Operators::IN_LIST,
+                ['product_1', 'product_2']
+            )->shouldBeCalled();
+        $pqbAsso
+            ->addFilter(
+                'entity_type',
+                Operators::EQUALS,
+                ProductInterface::class
+            )->shouldBeCalled();
+        $pqbAsso->execute()->willReturn($associatedProductCursor);
+
+        $associatedProductCursor->rewind()->shouldBeCalled();
+        $associatedProductCursor->valid()->willReturn(true, true, false);
+        $associatedProductCursor->current()->willReturn($associatedProduct1, $associatedProduct2);
+        $associatedProductCursor->next()->shouldBeCalled();
+        $associatedProductCursor->count()->willReturn(2);
+
+        $pqbFactory->create([
+            'repository_parameters' => [],
+            'repository_method'     => 'createQueryBuilder',
+            'limit'                 => 0,
+            'from'                  => 0,
+            'default_locale'        => 'a_locale',
+            'default_scope'         => 'a_channel',
+            'filters'               => null,
+        ])->willReturn($pqbAssoProductModel);
+
+        $pqbAssoProductModel->execute()->willReturn($associatedProductModelCursor);
+
+        $associatedProductModelCursor->valid()->willReturn(true, false);
+        $associatedProductModelCursor->current()->willReturn($associatedProductModel);
+        $associatedProductModelCursor->count()->willReturn(1);
+
+        $productNormalizer->normalize($currentProduct, Argument::cetera())->shouldNotBeCalled();
+
+        $productNormalizer->normalize($associatedProduct1, 'datagrid', [
+            'locales'       => ['a_locale'],
+            'channels'      => ['a_channel'],
+            'data_locale'   => 'a_locale',
+            'is_associated' => true,
+        ])->willReturn([
+            'identifier'    => 'associated_product_1',
+            'family'        => null,
+            'enabled'       => true,
+            'values'        => [],
+            'created'       => '2000-01-01',
+            'updated'       => '2000-01-01',
+            'is_checked'    => true,
+            'is_associated' => true,
+            'label'         => 'associated_product_1',
+            'completeness'  => null,
+            'from_inheritance' => false,
+        ]);
+
+        $productNormalizer->normalize($associatedProduct2, 'datagrid', [
+            'locales'       => ['a_locale'],
+            'channels'      => ['a_channel'],
+            'data_locale'   => 'a_locale',
+            'is_associated' => true,
+        ])->willReturn([
+            'identifier'    => 'associated_product_2',
+            'family'        => null,
+            'enabled'       => true,
+            'values'        => [],
+            'created'       => '2000-01-01',
+            'updated'       => '2000-01-01',
+            'is_checked'    => true,
+            'is_associated' => true,
+            'label'         => 'associated_product_2',
+            'completeness'  => null,
+            'from_inheritance' => true,
+        ]);
+
+        $productNormalizer->normalize($associatedProductModel, 'datagrid', [
+            'locales'       => ['a_locale'],
+            'channels'      => ['a_channel'],
+            'data_locale'   => 'a_locale',
+            'is_associated' => true,
+        ])->willReturn([
+            'identifier'    => 'associated_product_model_1',
+            'family'        => null,
+            'enabled'       => true,
+            'values'        => [],
+            'created'       => '2000-01-01',
+            'updated'       => '2000-01-01',
+            'is_checked'    => true,
+            'is_associated' => true,
+            'label'         => 'associated_product_model_1',
+            'completeness'  => null,
+        ]);
+
+        $results = $this->getResults();
+        $results->shouldBeArray();
+        $results->shouldHaveCount(2);
+        $results->shouldHaveKey('data');
+        $results->shouldHaveKeyWithValue('totalRecords', 3);
+        $results['data']->shouldBeArray();
+        $results['data']->shouldHaveCount(2);
+        $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
+        $results['data'][0]->getValue('id')->shouldReturn('product-1');
+        $results['data'][1]->getValue('id')->shouldReturn('product-2');
     }
 
     public function getMatchers()
