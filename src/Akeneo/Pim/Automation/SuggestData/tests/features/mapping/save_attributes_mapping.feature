@@ -7,6 +7,9 @@ Feature: Map the PIM attributes with PIM.ai attributes
 
   Scenario: Successfully save the attributes mapping
     Given the family "router"
+    And the following attribute:
+      | code  | type             |
+      | product_color | pim_catalog_text |
     And PIM.ai is configured with a valid token
     When the attributes are mapped for the family "router" as follows:
       | target_attribute_code | pim_attribute_code | status  |
