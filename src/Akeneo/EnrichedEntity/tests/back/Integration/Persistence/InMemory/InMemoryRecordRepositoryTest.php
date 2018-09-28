@@ -222,8 +222,14 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [],
-            ValueCollection::fromValues([]));
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
         $this->recordRepository->create($record);
 
         $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
@@ -240,8 +246,14 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [],
-            ValueCollection::fromValues([]));
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
         $this->recordRepository->create($record);
 
         $unknownCode = RecordCode::fromString('unknown_code');

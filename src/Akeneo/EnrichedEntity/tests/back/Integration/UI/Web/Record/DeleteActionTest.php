@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
 use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -100,6 +101,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             EnrichedEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $recordRepository->create($recordItem);

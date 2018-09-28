@@ -315,8 +315,13 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [],
-            ValueCollection::fromValues([]));
+        $record = Record::create($identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
         $this->repository->create($record);
 
         $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
