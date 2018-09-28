@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -29,6 +30,7 @@ use Symfony\Component\Validator\Validation;
  */
 class EditFileValueCommandValidator extends ConstraintValidator
 {
+
     public function validate($command, Constraint $constraint)
     {
         $this->checkConstraintType($constraint);
@@ -94,18 +96,36 @@ class EditFileValueCommandValidator extends ConstraintValidator
 
         $violations = $this->checkPropertyTypes($command);
         if (0 === $violations->count()) {
-            $violations = $validator->validate($command->originalFilename, [
-                    new Constraints\Regex([
-                            'pattern' => sprintf('/^.*\.(%s)$/', implode('|', $attribute->getAllowedExtensions()->normalize())),
-                            'message' => 'invalid regex'
-                        ]
-                    )]
-            );
+            if (!$attribute->getAllowedExtensions()->isAllAllowed()) {
+                $violations = $validator->validate(
+                    $command->originalFilename,
+                    [
+                        new Constraints\Callback(function ($originalFilename, ExecutionContextInterface $context, $payload) use (
+                            $attribute
+                        ) {
+                            $extension = pathinfo($originalFilename, PATHINFO_EXTENSION);
+                            $regularExpression = sprintf(
+                                '/^.*\.(%s)$/',
+                                implode('|', $attribute->getAllowedExtensions()->normalize())
+                            );
+                            if (!preg_match($regularExpression, $originalFilename, $matches)) {
+                                $this->context
+                                    ->buildViolation(EditFileValueCommandConstraint::FILE_EXTENSION_NOT_ALLOWED_MESSAGE)
+                                    ->setParameter('%file_extension%', '.' . $extension)
+                                    ->setParameter('%allowed_file_extensions%',
+                                        implode(',', $attribute->getAllowedExtensions()->normalize()))
+                                    ->atPath((string) $attribute->getCode())
+                                    ->addViolation();
+                            }
+                        }),
+                    ]
+                );
+            }
             if ($attribute->hasMaxFileSizeLimit()) {
                 $violations->addAll($validator->validate($command->filePath, [
                         new Constraints\File([
-                                'maxSize' => $command->attribute->getMaxFileSize()->intValue() . 'M',
-                                'maxSizeMessage' => 'Max size invalid'
+                                'maxSize' => $this->getKbValue($command),
+                                'maxSizeMessage' => EditFileValueCommandConstraint::FILE_SIZE_EXCEEDED_MESSAGE
                             ]
                         ),
                     ]
@@ -117,7 +137,7 @@ class EditFileValueCommandValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath(sprintf('values.%s', (string) $command->attribute->getCode()))
+                    ->atPath((string) $command->attribute->getCode())
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())
@@ -133,5 +153,12 @@ class EditFileValueCommandValidator extends ConstraintValidator
         $violations->addAll($validator->validate($command->filePath, [new Constraints\Type('string')]));
 
         return $violations;
+    }
+
+    private function getKbValue(EditFileValueCommand $command): string
+    {
+        $kb = $command->attribute->getMaxFileSize()->floatValue() * 1000;
+
+        return (int) $kb . 'k';
     }
 }

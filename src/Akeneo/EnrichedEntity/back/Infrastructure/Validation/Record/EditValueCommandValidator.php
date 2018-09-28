@@ -31,7 +31,7 @@ class EditValueCommandValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath(sprintf('values.%s', (string) $command->attribute->getCode()))
+                    ->atPath((string) $command->attribute->getCode())
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())

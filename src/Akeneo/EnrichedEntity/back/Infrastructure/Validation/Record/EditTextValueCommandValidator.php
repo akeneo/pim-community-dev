@@ -75,7 +75,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath(sprintf('values.%s', (string) $command->attribute->getCode()))
+                    ->atPath((string) $command->attribute->getCode())
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())
@@ -113,13 +113,14 @@ class EditTextValueCommandValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         if ($command->attribute->isValidationRuleSetToRegularExpression()) {
-            $regularExpression = $command->attribute->getRegularExpression()->normalize();
+            $attribute = $command->attribute;
             return $validator->validate($command->text, [
-                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) use ($regularExpression) {
-                    return $this->context->buildViolation(
-                        EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION,
-                        ['regular_expression', $regularExpression]
-                    )->addViolation();
+                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) use ($attribute) {
+                    return $this->context
+                        ->buildViolation(EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION)
+                        ->setParameter('%regular_expression%', $attribute->getRegularExpression()->normalize())
+                        ->atPath((string) $attribute->getCode())
+                        ->addViolation();
                 }),
             ]);
         }

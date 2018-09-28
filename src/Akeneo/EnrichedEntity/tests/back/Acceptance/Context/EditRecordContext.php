@@ -80,9 +80,15 @@ final class EditRecordContext implements Context
     private const DUMMY_FILEPATH_PREFIX = '/a/dummy/key';
     private const UPDATED_FILE_PATH_PREFIX = '/tmp/an/updated/file/';
     private const INVALID_FILEPATH_VALUE = false;
-    private const DUMMY_FILENAME = 'dummy_filename.png';
+    private const UPDATED_DUMMY_FILENAME = 'dummy_filename.png';
     private const INVALID_FILENAME = 144;
     private const FILE_TOO_BIG = 'too_big.jpeg';
+    private const FILE_TOO_BIG_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
+    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
+    private const UPDATED_DUMMY_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
+    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::UPDATED_DUMMY_FILENAME;
+    private const WRONG_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
+    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::WRONG_EXTENSION_FILENAME;
 
     /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
@@ -108,6 +114,7 @@ final class EditRecordContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
+    private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
 
     public function __construct(
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
@@ -127,137 +134,6 @@ final class EditRecordContext implements Context
         $this->exceptionContext = $exceptionContext;
         $this->validator = $validator;
         $this->violationsContext = $violationsContext;
-    }
-
-    /**
-     * @Given /^the following records for the enriched entity "(.+)":$/
-     */
-    public function theFollowingRecords(string $entityIdentifier, TableNode $recordsTable)
-    {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($entityIdentifier);
-
-        foreach ($recordsTable->getHash() as $record) {
-            $values = isset($record['values']) ? json_decode($record['values'], true) : [];
-            var_dump($values);
-            $this->recordRepository->create(Record::create(
-                RecordIdentifier::fromString($record['identifier']),
-                $enrichedEntityIdentifier,
-                RecordCode::fromString($record['code']),
-                json_decode($record['labels'], true),
-                ValueCollection::fromValues($values)
-            ));
-        }
-    }
-
-    /**
-     * @When /^the user updates the values of record "([^"]+)" with:$/
-     */
-    public function theUserUpdatesTheRecordValuesWith(string $identifier, TableNode $updateTable)
-    {
-        $actualRecord = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString($identifier));
-
-        $command = new EditRecordCommand();
-        $command->identifier = $identifier;
-        $command->enrichedEntityIdentifier = (string) $actualRecord->getEnrichedEntityIdentifier();
-        $command->labels = [];
-
-        $values = [];
-        foreach ($updateTable->getHash() as $rowValues) {
-            $values[] = json_decode($rowValues['data'], true);
-        }
-        $command->values = $values;
-        ($this->editRecordHandler)($command);
-    }
-
-    /**
-     * @When /^the user updates the record "([^"]+)" with:$/
-     */
-    public function theUserUpdatesTheRecordWith(string $identifier, TableNode $updateTable)
-    {
-        $actualRecord = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString($identifier));
-
-        $command = new EditRecordCommand();
-        $command->identifier = $identifier;
-        $command->enrichedEntityIdentifier = (string) $actualRecord->getEnrichedEntityIdentifier();
-
-        $updates = $updateTable->getRowsHash();
-        $command->labels = isset($updates['labels']) ? json_decode($updates['labels'], true) : [];
-        $command->values = isset($updates['values']) ? json_decode($updates['values'], true) : [];
-
-        ($this->editRecordHandler)($command);
-    }
-
-    /**
-     * @Then /^the record "([^"]+)" should be:$/
-     */
-    public function theRecordShouldBe(string $identifier, TableNode $enrichedEntityTable)
-    {
-        $expectedIdentifier = RecordIdentifier::fromString($identifier);
-        $expectedInformation = current($enrichedEntityTable->getHash());
-        $actualRecord = $this->recordRepository->getByIdentifier($expectedIdentifier);
-
-        $this->assertSameLabels(
-            json_decode($expectedInformation['labels'], true),
-            $actualRecord
-        );
-    }
-
-    /**
-     * @Then /^the values of record "([^"]+)" should be:$/
-     */
-    public function theRecordValuesShouldBe(string $identifier, TableNode $updateTable)
-    {
-        $expectedIdentifier = RecordIdentifier::fromString($identifier);
-        $actualRecord = $this->recordRepository->getByIdentifier($expectedIdentifier);
-
-        $expectedValues = [];
-        foreach ($updateTable->getHash() as $value) {
-            $expectedValues[] = json_decode($value['data'], true);
-        }
-
-        $notFound = [];
-        foreach ($expectedValues as $expectedValue) {
-            if (!$this->recordHasValue($expectedValue, $actualRecord)) {
-                $notFound[] = $expectedValue;
-            }
-        }
-
-        Assert::isEmpty(
-            $notFound,
-            sprintf('Expected values "%s" not found', json_encode($notFound))
-        );
-    }
-
-    private function assertSameLabels(array $expectedLabels, Record $actualRecord)
-    {
-        $actualLabels = [];
-        foreach ($actualRecord->getLabelCodes() as $labelCode) {
-            $actualLabels[$labelCode] = $actualRecord->getLabel($labelCode);
-        }
-
-        $differences = array_merge(
-            array_diff($expectedLabels, $actualLabels),
-            array_diff($actualLabels, $expectedLabels)
-        );
-
-        Assert::isEmpty(
-            $differences,
-            sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
-        );
-    }
-
-    private function recordHasValue(array $expectedValue, Record $actualRecord): bool
-    {
-        $actualValues = $actualRecord->getValues()->normalize();
-
-        foreach ($actualValues as $actualValue) {
-            $differences = array_diff($actualValue, $expectedValue);
-            if (empty($differences)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -354,7 +230,24 @@ final class EditRecordContext implements Context
     public function anEnrichedEntityWithAImageAttribute()
     {
         $this->createEnrichedEntity();
-        $this->createAttributeImage();
+        $this->attributeRepository->create(
+            ImageAttribute::create(
+                AttributeIdentifier::create(
+                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
+                LabelCollection::fromArray([]),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeValuePerChannel::fromBoolean(false),
+                AttributeValuePerLocale::fromBoolean(false),
+                AttributeMaxFileSize::noLimit(),
+                AttributeAllowedExtensions::fromList(AttributeAllowedExtensions::ALL_ALLOWED)
+            )
+        );
     }
 
     /**
@@ -380,9 +273,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @When /^the user updates the image attribute of the record to "([^"]*)"$/
+     * @When /^the user updates the image attribute of the record with a valid file$/
      */
-    public function theUserUpdatesTheImageAttributeOfTheRecordTo(string $originalFileName)
+    public function theUserUpdatesTheImageAttributeOfTheRecordTo()
     {
         $editCommand = $this->editRecordCommandFactory->create([
             'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
@@ -394,8 +287,8 @@ final class EditRecordContext implements Context
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
-                        'originalFilename' => $originalFileName,
-                        'filePath'         => self::UPDATED_FILE_PATH_PREFIX . $originalFileName
+                        'originalFilename' => self::UPDATED_DUMMY_FILENAME,
+                        'filePath'         => self::UPDATED_DUMMY_FILE_FILEPATH
                     ],
                 ],
             ],
@@ -405,9 +298,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^the record should have the image "([^"]*)" for this attribute$/
+     * @Given /^the record should have the valid image for this attribute$/
      */
-    public function theRecordShouldHaveTheImageForThisAttribute(string $expectedOriginalFilename)
+    public function theRecordShouldHaveTheImageForThisAttribute()
     {
         $record = $this->recordRepository->getByEnrichedEntityAndCode(
             EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
@@ -420,13 +313,12 @@ final class EditRecordContext implements Context
                 LocaleReference::noReference()
             )
         );
-
         Assert::assertNotNull($value);
         $normalizeData = $value->getData()->normalize();
         Assert::assertArrayHasKey('originalFilename', $normalizeData);
         Assert::assertArrayHasKey('filePath', $normalizeData);
-        Assert::assertEquals($expectedOriginalFilename, $normalizeData['originalFilename']);
-        Assert::assertEquals(self::UPDATED_FILE_PATH_PREFIX . $expectedOriginalFilename, $normalizeData['filePath']);
+        Assert::assertEquals(self::UPDATED_DUMMY_FILENAME, $normalizeData['originalFilename']);
+        Assert::assertEquals(self::UPDATED_DUMMY_FILE_FILEPATH, $normalizeData['filePath']);
     }
 
     /**
@@ -928,7 +820,7 @@ final class EditRecordContext implements Context
                     'channel'   => null,
                     'locale'    => null,
                     'data'      => [
-                        'originalFilename' => self::DUMMY_FILENAME,
+                        'originalFilename' => self::UPDATED_DUMMY_FILENAME,
                         'filePath'         => self::INVALID_FILEPATH_VALUE
                     ],
                 ],
@@ -975,8 +867,6 @@ final class EditRecordContext implements Context
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerFileThanTheLimit()
     {
-        $fileTooBigPath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
-            'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
         $editCommand = $this->editRecordCommandFactory->create([
             'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
@@ -988,7 +878,7 @@ final class EditRecordContext implements Context
                     'locale'    => null,
                     'data'      => [
                         'originalFilename' => self::FILE_TOO_BIG,
-                        'filePath'         => $fileTooBigPath
+                        'filePath'         => self::FILE_TOO_BIG_FILEPATH
                     ],
                 ],
             ],
@@ -997,9 +887,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute having a max file size of 1MB$/
+     * @Given /^an enriched entity with an image attribute having a max file size of 10ko$/
      */
-    public function anEnrichedEntityWithAnImageAttributeHavingAMaxFileSizeOf1MB()
+    public function anEnrichedEntityWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
         $this->attributeRepository->create(
             ImageAttribute::create(
@@ -1015,23 +905,42 @@ final class EditRecordContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeMaxFileSize::fromString('1.2'),
-                AttributeAllowedExtensions::fromList(['jpeg', 'png'])
+                AttributeMaxFileSize::fromString('0.01'),
+                AttributeAllowedExtensions::fromList([])
             )
         );
     }
 
-    private function createEnrichedEntity(): void
+    /**
+     * @When /^the user updates the image attribute of the record with a gif file which is a denied extension$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithAFileHavingADeniedExtension()
     {
-        $this->enrichedEntityRepository->create(EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
-            [],
-            null
-        ));
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::WRONG_EXTENSION_FILENAME,
+                        'filePath'         => self::WRONG_EXTENSION_FILE_FILEPATH
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
     }
 
-    private function createAttributeImage(): void
+    /**
+     * @Given /^an enriched entity with an image attribute allowing only files with extension jpeg$/
+     */
+    public function anEnrichedEntityWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
+        $this->createEnrichedEntity();
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
@@ -1047,9 +956,103 @@ final class EditRecordContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('150.110'),
-                AttributeAllowedExtensions::fromList(['jpeg', 'png'])
+                AttributeAllowedExtensions::fromList(['jpeg'])
             )
         );
+    }
+
+    /**
+     * @When /^the user removes an image from the record for this attribute$/
+     */
+    public function theUserRemovesAnImageFromTheRecordForThisAttribute()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => null,
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^the record should not have any image for this attribute$/
+     */
+    public function theRecordShouldNotHaveAnyImageForThisAttribute()
+    {
+        $record = $this->recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        $value = $record->findValue(
+            ValueKey::create(
+                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
+                ChannelReference::noReference(),
+                LocaleReference::noReference()
+            )
+        );
+        Assert::assertNull($value);
+    }
+
+    /**
+     * @Given /^an enrichedEntity and a record with french label "([^"]*)"$/
+     */
+    public function anEnrichedEntityAndARecordWithLabel(string $label): void
+    {
+        $this->createEnrichedEntity();
+        $this->recordRepository->create(
+            Record::create(
+                RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
+                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                RecordCode::fromString(self::RECORD_CODE),
+                ['fr_FR' => $label],
+                ValueCollection::fromValues([])
+            )
+        );
+    }
+
+    /**
+     * @When /^the user updates the french label to "([^"]*)"$/
+     */
+    public function theUserUpdatesTheLabelTo(string $updatedLabel)
+    {
+        $editLabelCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [
+                'fr_FR' => $updatedLabel
+            ],
+            'values'                     => [],
+        ]);
+        $this->executeCommand($editLabelCommand);
+    }
+
+    /**
+     * @Then /^the record should have the french label "([^"]*)"$/
+     */
+    public function theRecordShouldHaveTheLabel(string $expectedLabel)
+    {
+        $record = $this->recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+        Assert::assertEquals($expectedLabel, $record->getLabel('fr_FR'), 'Labels are not equal');
+    }
+
+    private function createEnrichedEntity(): void
+    {
+        $this->enrichedEntityRepository->create(EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            [],
+            null
+        ));
     }
 
     private function createRecord(Value $value): void

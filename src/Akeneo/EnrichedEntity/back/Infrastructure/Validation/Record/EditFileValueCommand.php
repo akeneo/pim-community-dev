@@ -21,6 +21,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditFileValueCommand extends Constraint
 {
+    public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_enriched_entity.record.validation.file.extension_not_allowed';
+    public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_enriched_entity.record.validation.file.file_size_exceeded';
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

@@ -44,16 +44,12 @@ class EditRecordValueCommandsValidator extends ConstraintValidator
             return;
         }
 
-        if (empty($editRecordValueCommands)) {
-            $this->context->addViolation('There should be updates to perform on the record but none were found.');
-        }
-
         foreach ($editRecordValueCommands as $editValueCommand) {
             $violations = $this->validator->validate($editValueCommand);
             foreach ($violations as $violation) {
                 $this->context->buildViolation($violation->getMessage())
                     ->setParameters($violation->getParameters())
-                    ->atPath($violation->getPropertyPath())
+                    ->atPath(sprintf('values.%s',  $violation->getPropertyPath()))
                     ->setCode($violation->getCode())
                     ->setPlural($violation->getPlural())
                     ->setInvalidValue($violation->getInvalidValue())

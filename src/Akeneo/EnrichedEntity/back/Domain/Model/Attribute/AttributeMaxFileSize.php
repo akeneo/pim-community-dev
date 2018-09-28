@@ -58,9 +58,9 @@ class AttributeMaxFileSize
         return null !== $this->maxFileSize;
     }
 
-    public function intValue(): int
+    public function floatValue(): float
     {
-        return (int) $this->maxFileSize;
+        return (float) $this->maxFileSize;
     }
 
     public function normalize(): ?string

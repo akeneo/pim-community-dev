@@ -3,6 +3,14 @@ Feature: Edit an record
   As a user
   I want see the details of an record and update them
 
+  @acceptance-back
+  Scenario: Updating a record label
+    Given an enrichedEntity and a record with french label "My label"
+    When the user updates the french label to "My updated label"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the french label "My updated label"
+
   # ValuePerChannel / ValuePerLocale
   @acceptance-back
   Scenario: Updating a localizable value of a record
@@ -27,14 +35,8 @@ Feature: Edit an record
     Given an enriched entity with a scopable attribute
     And a record belonging to this enriched entity with a value for the ecommerce channel
     When the user updates the attribute of the record for an invalid channel
-    Then there should be a validation error on the property text attribute with message "This value should be of type boolean."
+    Then there should be a validation error on the property text attribute with message "This value should be of type string."
 
-  @acceptance-back
-  Scenario: Updating a scopable value of a record with an unknown channel
-    Given an enriched entity with a scopable attribute
-    And a record belonging to this enriched entity with a value for the ecommerce channel
-    When the user updates the attribute of the record for an unknown channel
-    Then there should be a validation error on the property text attribute with message "This value should be of type boolean."
 
 #  Todo: Scenario to activate for the import,exports/API
 #  @acceptance-back
@@ -107,17 +109,26 @@ Feature: Edit an record
     Given an enriched entity with a text attribute with a regular expression validation rule like "/\d+\|\d+/"
     And a record belonging to this enriched entity with a value of "15|25" for the text attribute
     When the user updates the text attribute of the record to "15-25"
-    Then there should be a validation error on the property text attribute with message "This value is not valid."
+    Then there should be a validation error on the property text attribute with message "The text is incompatible with the regular expression "/\d+\|\d+/""
 
   # Image
   @acceptance-back
   Scenario: Updating the image value of a record
     Given an enriched entity with an image attribute
     And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to "updated_picture.jpeg"
+    When the user updates the image attribute of the record with a valid file
     Then there is no exception thrown
     And there is no violations errors
-    And the record should have the image "updated_picture.jpeg" for this attribute
+    And the record should have the valid image for this attribute
+
+  @acceptance-back
+  Scenario: Emptying the file value of a record
+    Given an enriched entity with an image attribute
+    And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
+    When the user removes an image from the record for this attribute
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should not have any image for this attribute
 
   @acceptance-back
   Scenario: Updating the image value of a record with an invalid file path
@@ -135,17 +146,17 @@ Feature: Edit an record
 
   @acceptance-back
   Scenario: Updating the image value of a record with a file having an extension not allowed
-    Given an enriched entity with an image attribute
+    Given an enriched entity with an image attribute allowing only files with extension jpeg
     And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
-    When the user updates the image attribute of the record to "updated_picture.xrgife"
-    Then there should be a validation error on the property image attribute with message "invalid regex"
+    When the user updates the image attribute of the record with a gif file which is a denied extension
+    Then there should be a validation error on the property image attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: jpeg'
 
   @acceptance-back
   Scenario: Updating the image value of a record with a file bigger than the limit
-    Given an enriched entity with an image attribute having a max file size of 1MB
+    Given an enriched entity with an image attribute having a max file size of 10ko
     And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
     When the user updates the image attribute of the record with a bigger file than the limit
-    Then there should be a validation error on the property image attribute with message "Max size invalid"
+    Then there should be a validation error on the property image attribute with message "The file exceeds the max file size set for the attribute."
 
   @acceptance-front
   Scenario: Updating a record labels
