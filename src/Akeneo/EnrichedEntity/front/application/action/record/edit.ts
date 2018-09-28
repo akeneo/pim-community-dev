@@ -64,7 +64,7 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
       return;
     }
 
-    dispatch(notifyRecordWellDeleted());
+    dispatch(notifyRecordWellDeleted(record.getCode()));
     dispatch(redirectToRecordIndex(record.getEnrichedEntityIdentifier()));
   } catch (error) {
     dispatch(notifyRecordDeleteFailed());
