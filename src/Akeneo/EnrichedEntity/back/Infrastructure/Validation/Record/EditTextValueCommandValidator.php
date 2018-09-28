@@ -117,11 +117,13 @@ class EditTextValueCommandValidator extends ConstraintValidator
             $attribute = $command->attribute;
             return $validator->validate($command->text, [
                 new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) use ($attribute) {
-                    return $this->context
-                        ->buildViolation(EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION)
-                        ->setParameter('%regular_expression%', $attribute->getRegularExpression()->normalize())
-                        ->atPath((string) $attribute->getCode())
-                        ->addViolation();
+                    if (!preg_match((string) $attribute->getRegularExpression(), $value)) {
+                        return $this->context
+                            ->buildViolation(EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION)
+                            ->setParameter('%regular_expression%', (string) $attribute->getRegularExpression())
+                            ->atPath((string) $attribute->getCode())
+                            ->addViolation();
+                    }
                 }),
             ]);
         }

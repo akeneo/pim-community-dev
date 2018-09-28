@@ -87,8 +87,12 @@ final class EditRecordContext implements Context
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::FILE_TOO_BIG;
     private const UPDATED_DUMMY_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::UPDATED_DUMMY_FILENAME;
+    private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
     private const WRONG_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
     . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::WRONG_EXTENSION_FILENAME;
+    private const GOOD_EXTENSION_FILENAME = 'dummy_filename.png';
+    private const GOOD_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
+    . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::GOOD_EXTENSION_FILENAME;
 
     /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
@@ -114,7 +118,6 @@ final class EditRecordContext implements Context
     /** @var ConstraintViolationsContext */
     private $violationsContext;
 
-    private const WRONG_EXTENSION_FILENAME = 'wrong_extension.gif';
 
     public function __construct(
         EnrichedEntityRepositoryInterface $enrichedEntityRepository,
@@ -886,7 +889,31 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute having a max file size of 10ko$/
+     * @When /^the user updates the image attribute of the record with a smaller file than the limit$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithASmallerFileThanTheLimit()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::GOOD_EXTENSION_FILENAME,
+                        'filePath'         => self::GOOD_EXTENSION_FILE_FILEPATH
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^an enriched entity with an image attribute having a max file size of 15ko$/
      */
     public function anEnrichedEntityWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
@@ -904,7 +931,7 @@ final class EditRecordContext implements Context
                 AttributeIsRequired::fromBoolean(false),
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
-                AttributeMaxFileSize::fromString('0.01'),
+                AttributeMaxFileSize::fromString('0.015'),
                 AttributeAllowedExtensions::fromList([])
             )
         );
@@ -935,7 +962,31 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute allowing only files with extension jpeg$/
+     * @When /^the user updates the image attribute of the record with a png file$/
+     */
+    public function theUserUpdatesTheImageAttributeOfTheRecordWithAFileHavingAValidExtension()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'enriched_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'code'                       => self::RECORD_CODE,
+            'labels'                     => [],
+            'values'                     => [
+                [
+                    'attribute' => self::IMAGE_ATTRIBUTE_IDENTIFIER,
+                    'channel'   => null,
+                    'locale'    => null,
+                    'data'      => [
+                        'originalFilename' => self::GOOD_EXTENSION_FILENAME,
+                        'filePath'         => self::GOOD_EXTENSION_FILE_FILEPATH
+                    ],
+                ],
+            ],
+        ]);
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @Given /^an enriched entity with an image attribute allowing only files with extension png$/
      */
     public function anEnrichedEntityWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
@@ -955,7 +1006,7 @@ final class EditRecordContext implements Context
                 AttributeValuePerChannel::fromBoolean(false),
                 AttributeValuePerLocale::fromBoolean(false),
                 AttributeMaxFileSize::fromString('150.110'),
-                AttributeAllowedExtensions::fromList(['jpeg'])
+                AttributeAllowedExtensions::fromList(['png'])
             )
         );
     }

@@ -95,7 +95,7 @@ class EditFileValueCommandValidator extends ConstraintValidator
 
         $violations = $this->checkPropertyTypes($command);
         if (0 === $violations->count()) {
-            if (!$attribute->getAllowedExtensions()->isAllAllowed()) {
+            if (!$attribute->getAllowedExtensions()->isAllAllowed() && null !== $command->originalFilename) {
                 $violations = $validator->validate(
                     $command->originalFilename,
                     [
@@ -121,6 +121,9 @@ class EditFileValueCommandValidator extends ConstraintValidator
                 );
             }
             if ($attribute->hasMaxFileSizeLimit()) {
+                // TODO
+                //if
+                // upload (tmp)
                 $violations->addAll($validator->validate($command->filePath, [
                         new Constraints\File([
                                 'maxSize' => $this->getKbValue($command),
@@ -129,6 +132,10 @@ class EditFileValueCommandValidator extends ConstraintValidator
                         ),
                     ]
                 ));
+
+                // else (db)
+                // findOneByFileKey
+                // LowerThan
             }
         }
 

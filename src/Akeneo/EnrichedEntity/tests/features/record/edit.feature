@@ -85,9 +85,18 @@ Feature: Edit an record
   @acceptance-back
   Scenario: Updating the text value with more characters than the attribute's max length
     Given an enriched entity with a text attribute with max length 10
-    And a record belonging to this enriched entity with a value of "Philippe stark" for the text attribute
+    And a record belonging to this enriched entity with a value of "Philippe" for the text attribute
     When the user updates the text attribute of the record to "Philippe Starck, né le 18 janvier 1949 à Paris"
     Then there should be a validation error on the property text attribute with message "This value is too long. It should have 10 characters or less."
+
+  @acceptance-back
+  Scenario: Updating the text value with less characters than the attribute's max length
+    Given an enriched entity with a text attribute with max length 10
+    And a record belonging to this enriched entity with a value of "Philippe" for the text attribute
+    When the user updates the text attribute of the record to "Didier"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the text value "Didier" for this attribute
 
   @acceptance-back
   Scenario: Updating an email with an invalid email value
@@ -97,6 +106,15 @@ Feature: Edit an record
     Then there should be a validation error on the property text attribute with message "This value is not a valid email address."
 
   @acceptance-back
+  Scenario: Updating an email with an valid email value
+    Given an enriched entity with a text attribute with an email validation rule
+    And a record belonging to this enriched entity with a value of "jean-pierre@dummy.com" for the text attribute
+    When the user updates the text attribute of the record to "didier@dummy.com"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the text value "didier@dummy.com" for this attribute
+
+  @acceptance-back
   Scenario: Updating an url with an invalid url value
     Given an enriched entity with a text attribute with an url validation rule
     And a record belonging to this enriched entity with a value of "https://www.akeneo.com/" for the text attribute
@@ -104,11 +122,29 @@ Feature: Edit an record
     Then there should be a validation error on the property text attribute with message "This value is not a valid URL."
 
   @acceptance-back
+  Scenario: Updating an url with an valid url value
+    Given an enriched entity with a text attribute with an url validation rule
+    And a record belonging to this enriched entity with a value of "https://www.akeneo.com/" for the text attribute
+    When the user updates the text attribute of the record to "http://akeneo.com/"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the text value "http://akeneo.com/" for this attribute
+
+  @acceptance-back
   Scenario: Updating a text with regular expression with an incompatible value
     Given an enriched entity with a text attribute with a regular expression validation rule like "/\d+\|\d+/"
     And a record belonging to this enriched entity with a value of "15|25" for the text attribute
     When the user updates the text attribute of the record to "15-25"
     Then there should be a validation error on the property text attribute with message "The text is incompatible with the regular expression "/\d+\|\d+/""
+
+  @acceptance-back
+  Scenario: Updating a text with regular expression with an compatible value
+    Given an enriched entity with a text attribute with a regular expression validation rule like "/\d+\|\d+/"
+    And a record belonging to this enriched entity with a value of "15|25" for the text attribute
+    When the user updates the text attribute of the record to "15|25"
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the text value "15|25" for this attribute
 
   # Image
   @acceptance-back
@@ -145,17 +181,35 @@ Feature: Edit an record
 
   @acceptance-back
   Scenario: Updating the image value of a record with a file having an extension not allowed
-    Given an enriched entity with an image attribute allowing only files with extension jpeg
+    Given an enriched entity with an image attribute allowing only files with extension png
     And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
     When the user updates the image attribute of the record with a gif file which is a denied extension
-    Then there should be a validation error on the property image attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: jpeg'
+    Then there should be a validation error on the property image attribute with message '".gif" files are not allowed for this attribute. Allowed extensions are: png'
+
+  @acceptance-back
+  Scenario: Updating the image value of a record with a file having an extension not allowed
+    Given an enriched entity with an image attribute allowing only files with extension png
+    And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
+    When the user updates the image attribute of the record with a png file
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the valid image for this attribute
 
   @acceptance-back
   Scenario: Updating the image value of a record with a file bigger than the limit
-    Given an enriched entity with an image attribute having a max file size of 10ko
+    Given an enriched entity with an image attribute having a max file size of 15ko
     And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
     When the user updates the image attribute of the record with a bigger file than the limit
     Then there should be a validation error on the property image attribute with message "The file exceeds the max file size set for the attribute."
+
+  @acceptance-back
+  Scenario: Updating the image value of a record with a file smaller than the limit
+    Given an enriched entity with an image attribute having a max file size of 15ko
+    And a record belonging to this enriched entity with the file "picture.jpeg" for the image attribute
+    When the user updates the image attribute of the record with a smaller file than the limit
+    Then there is no exception thrown
+    And there is no violations errors
+    And the record should have the valid image for this attribute
 
   @acceptance-front
   Scenario: Updating a record labels
