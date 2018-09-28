@@ -91,6 +91,11 @@ class Value
         return $this->localeReference;
     }
 
+    public function getData(): ValueDataInterface
+    {
+        return $this->data;
+    }
+
     public function normalize(): array
     {
         return [

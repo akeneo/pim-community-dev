@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
 use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterInterface;
+use Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
@@ -26,9 +31,12 @@ use Prophecy\Argument;
 
 class EditRecordHandlerSpec extends ObjectBehavior
 {
-    function let(RecordRepositoryInterface $recordRepository, FileStorerInterface $storer)
-    {
-        $this->beConstructedWith($recordRepository, $storer);
+    function let(
+        ValueUpdaterRegistryInterface $valueUpdaterRegistry,
+        RecordRepositoryInterface $recordRepository,
+        FileStorerInterface $storer
+    ) {
+        $this->beConstructedWith($valueUpdaterRegistry, $recordRepository, $storer);
     }
 
     function it_is_initializable()
@@ -37,23 +45,38 @@ class EditRecordHandlerSpec extends ObjectBehavior
     }
 
     function it_edits_a_record(
-        RecordRepositoryInterface $recordRepository,
-        EditRecordCommand $editRecordCommand,
-        Record $record
+        $valueUpdaterRegistry,
+        $recordRepository,
+        Record $record,
+        ValueUpdaterInterface $textUpdater,
+        AbstractAttribute $textAttribute
     ) {
-        $editRecordCommand->identifier = 'brand_sony_a1677570-a278-444b-ab46-baa1db199392';
+        $editDescriptionCommand = new EditTextValueCommand();
+        $editDescriptionCommand->attribute = $textAttribute;
+        $editDescriptionCommand->channel = null;
+        $editDescriptionCommand->locale = 'fr_FR';
+        $editDescriptionCommand->data = 'Sony is a famous electronic company';
+
+        $editRecordCommand = new EditRecordCommand();
         $editRecordCommand->code = 'sony';
         $editRecordCommand->enrichedEntityIdentifier = 'brand';
         $editRecordCommand->labels = [
             'fr_FR' => 'Sony',
             'en_US' => 'Sony',
         ];
+        $editRecordCommand->editRecordValueCommands = [$editDescriptionCommand];
 
-        $recordRepository->getByIdentifier(Argument::type(RecordIdentifier::class))->willReturn($record);
+        $recordRepository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString('brand'),
+            RecordCode::fromString('sony')
+        )->willReturn($record);
+        $valueUpdaterRegistry->getUpdater($editDescriptionCommand)->willReturn($textUpdater);
 
         $record->setLabels(Argument::type(LabelCollection::class))->shouldBeCalled();
         $record->updateImage(Argument::type(Image::class))->shouldBeCalled();
+        $textUpdater->__invoke($record, $editDescriptionCommand)->shouldBeCalled();
         $recordRepository->update($record)->shouldBeCalled();
+
 
         $this->__invoke($editRecordCommand);
     }
@@ -79,7 +102,10 @@ class EditRecordHandlerSpec extends ObjectBehavior
 
         $existingImage->isEmpty()->willReturn(false);
         $existingImage->getKey()->willReturn('/my/image/path');
-        $recordRepository->getByIdentifier(Argument::type(RecordIdentifier::class))->willReturn($record);
+        $recordRepository->getByEnrichedEntityAndCode(
+            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(RecordCode::class)
+        )->willReturn($record);
         $record->getImage()->willReturn($existingImage);
 
         $record->setLabels(Argument::type(LabelCollection::class))->shouldBeCalled();

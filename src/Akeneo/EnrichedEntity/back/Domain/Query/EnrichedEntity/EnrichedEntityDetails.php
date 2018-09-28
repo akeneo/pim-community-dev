@@ -26,9 +26,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 class EnrichedEntityDetails
 {
     public const IDENTIFIER = 'identifier';
-
     public const LABELS = 'labels';
-
     public const IMAGE = 'image';
 
     /** @var EnrichedEntityIdentifier */

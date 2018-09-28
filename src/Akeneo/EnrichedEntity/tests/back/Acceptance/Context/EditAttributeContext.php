@@ -72,15 +72,19 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^the following text attributes:$/
+     * @Given /^the following text attributes?:$/
      */
     public function theFollowingTextAttributes(TableNode $attributesTable)
     {
         foreach ($attributesTable->getHash() as $attribute) {
-            $identifier = $this->attributeRepository->nextIdentifier(
-                EnrichedEntityIdentifier::fromString($attribute['entity_identifier']),
-                AttributeCode::fromString($attribute['code'])
-            );
+            if (isset($attribute['identifier'])) {
+                $identifier = AttributeIdentifier::fromString($attribute['identifier']);
+            } else {
+                $identifier = $this->attributeRepository->nextIdentifier(
+                    EnrichedEntityIdentifier::fromString($attribute['entity_identifier']),
+                    AttributeCode::fromString($attribute['code'])
+                );
+            }
 
             $this->attributeRepository->create(TextAttribute::createText(
                 $identifier,
@@ -118,7 +122,7 @@ class EditAttributeContext implements Context
         string $attributeCode,
         string $localeCode,
         string $label
-    ) : void {
+    ): void {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -244,8 +248,11 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithAImageAttributeAndTheLabelEqualTo(string $attributeCode, string $label, string $localeCode)
-    {
+    public function anEnrichedEntityWithAImageAttributeAndTheLabelEqualTo(
+        string $attributeCode,
+        string $label,
+        string $localeCode
+    ) {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -293,7 +300,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateMaxFileSize = [
-            'identifier'    => (string) $identifier,
+            'identifier' => (string) $identifier,
             'max_file_size' => json_decode($newMaxFileSize),
         ];
         $this->updateAttribute($updateMaxFileSize);
@@ -327,7 +334,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateAllowedExtensions = [
-            'identifier'         => (string) $identifier,
+            'identifier' => (string) $identifier,
             'allowed_extensions' => json_decode($newAllowedExtension),
         ];
         $this->updateAttribute($updateAllowedExtensions);
@@ -349,8 +356,11 @@ class EditAttributeContext implements Context
     /**
      * @When /^the user updates the \'([^\']*)\' attribute label with \'([^\']*)\' on the locale \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheAttributeLabelWithOnTheLocale1(string $attributeCode, string $label, string $localeCode): void
-    {
+    public function theUserUpdatesTheAttributeLabelWithOnTheLocale1(
+        string $attributeCode,
+        string $label,
+        string $localeCode
+    ): void {
         if (isset($this->attributeIdentifiers['dummy_identifier'][$attributeCode])) {
             $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
         } else {
@@ -361,7 +371,7 @@ class EditAttributeContext implements Context
         $localeCode = json_decode($localeCode);
         $updateLabels = [
             'identifier' => (string) $identifier,
-            'labels'     => [$localeCode => $label],
+            'labels' => [$localeCode => $label],
         ];
         $this->updateAttribute($updateLabels);
     }
@@ -374,7 +384,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateIsRequired = [
-            'identifier'  => (string) $identifier,
+            'identifier' => (string) $identifier,
             'is_required' => json_decode($invalidValue),
         ];
         $this->updateAttribute($updateIsRequired);
@@ -445,8 +455,10 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithAnImageAttributeWithAllowedExtensions(string $attributeCode, string $normalizedExtensions): void
-    {
+    public function anEnrichedEntityWithAnImageAttributeWithAllowedExtensions(
+        string $attributeCode,
+        string $normalizedExtensions
+    ): void {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -549,7 +561,8 @@ class EditAttributeContext implements Context
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         $normalizedAttribute = $attribute->normalize();
         Assert::assertTrue($normalizedAttribute['is_textarea'], 'isTextarea should be true');
-        Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule'], 'validationRule should be none');
+        Assert::assertEquals(AttributeValidationRule::NONE, $normalizedAttribute['validation_rule'],
+            'validationRule should be none');
         Assert::assertNull($normalizedAttribute['regular_expression'], 'regularExpression should be null');
     }
 
@@ -584,7 +597,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateValidationRule = [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
             'validation_rule' => json_decode($newValidationRule),
         ];
         $this->updateAttribute($updateValidationRule);
@@ -606,8 +619,10 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextAttributeWithARegularExpression(string $attributeCode, string $regularExpression)
-    {
+    public function anEnrichedEntityWithATextAttributeWithARegularExpression(
+        string $attributeCode,
+        string $regularExpression
+    ) {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
@@ -649,7 +664,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $editRegularExpression = [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
             'regular_expression' => json_decode($newRegularExpression),
         ];
         $this->updateAttribute($editRegularExpression);
@@ -678,7 +693,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $removeRegularExpression = [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
             'regular_expression' => null,
         ];
         $this->updateAttribute($removeRegularExpression);
@@ -706,7 +721,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $removeValidationRule = [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
             'validation_rule' => AttributeValidationRule::NONE,
         ];
         $this->updateAttribute($removeValidationRule);
@@ -756,7 +771,7 @@ class EditAttributeContext implements Context
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updateIsRichTextEditor = [
-            'identifier'          => (string) $identifier,
+            'identifier' => (string) $identifier,
             'is_rich_text_editor' => json_decode($newIsRichTextEditor),
         ];
         $this->updateAttribute($updateIsRichTextEditor);
@@ -785,7 +800,7 @@ class EditAttributeContext implements Context
 
         $newflag = json_decode($newflag);
         $updates = [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
             'is_rich_text_editor' => $newflag,
             'is_textarea' => $newflag,
         ];
@@ -795,12 +810,15 @@ class EditAttributeContext implements Context
     /**
      * @When /^the user changes the text area flag to \'([^\']*)\' and the validation rule of \'([^\']*)\' to \'([^\']*)\'$/
      */
-    public function theUserChangesTheTextareaFlagToAndTheValidationRuleOfTo(string $textareaFlag, string $attributeCode, string $validationRule)
-    {
+    public function theUserChangesTheTextareaFlagToAndTheValidationRuleOfTo(
+        string $textareaFlag,
+        string $attributeCode,
+        string $validationRule
+    ) {
         $identifier = $this->attributeIdentifiers['dummy_identifier'][$attributeCode];
 
         $updates = [
-            'identifier' => (string)$identifier,
+            'identifier' => (string) $identifier,
             'is_textarea' => json_decode($textareaFlag),
             'validation_rule' => $validationRule,
         ];
@@ -817,7 +835,8 @@ class EditAttributeContext implements Context
         $this->constraintViolationsContext->assertThereIsNoViolations();
         $attribute = $this->attributeRepository->getByIdentifier($identifier);
         $normalizedAttribute = $attribute->normalize();
-        Assert::assertTrue($normalizedAttribute['is_rich_text_editor'], 'Expected is rich text editor to be true, but found false');
+        Assert::assertTrue($normalizedAttribute['is_rich_text_editor'],
+            'Expected is rich text editor to be true, but found false');
     }
 
     private function updateAttribute(array $updates): void

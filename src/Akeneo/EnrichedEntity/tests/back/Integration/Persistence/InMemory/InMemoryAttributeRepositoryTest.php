@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
@@ -170,6 +171,36 @@ class InMemoryAttributeRepositoryTest extends TestCase
 
         $this->expectException(AttributeNotFoundException::class);
         $this->attributeRepository->getByIdentifier($identifier);
+    }
+
+    public function it_creates_an_attribute_with_and_finds_it_by_enriched_entity_and_attribute_code()
+    {
+        $attributeCode = AttributeCode::fromString('description');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = $this->attributeRepository->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+        $attribute = TextAttribute::createTextarea(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $attributeCode,
+            LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
+            AttributeOrder::fromInteger(0),
+            AttributeIsRequired::fromBoolean(true),
+            AttributeValuePerChannel::fromBoolean(false),
+            AttributeValuePerLocale::fromBoolean(false),
+            AttributeMaxLength::fromInteger(255),
+            AttributeIsRichTextEditor::fromBoolean(false)
+        );
+        $this->attributeRepository->create($attribute);
+        $attributeFound = $this->attributeRepository->getByEnrichedEntityAndCode('designer', 'description');
+        $this->assertSame($attribute->normalize(), $attributeFound->normalize());
+    }
+    /**
+     * @test
+     */
+    public function it_throws_if_the_attribute_code_and_the_enriched_entity_are_not_found()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->attributeRepository->getByEnrichedEntityAndCode('designer', 'description');
     }
 
     private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute

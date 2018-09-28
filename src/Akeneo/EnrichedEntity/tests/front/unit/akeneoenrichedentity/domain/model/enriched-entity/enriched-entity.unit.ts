@@ -70,6 +70,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
 
     expect(michelEnrichedEntity.normalize()).toEqual({
       identifier: 'michel',
+      code: 'michel',
       labels: {en_US: 'Michel'},
       image: null,
     });
@@ -86,6 +87,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
 
     expect(michelEnrichedEntity.normalize()).toEqual({
       identifier: 'michel',
+      code: 'michel',
       labels: {en_US: 'Michel'},
       image: null,
     });

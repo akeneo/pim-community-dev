@@ -66,3 +66,4 @@ services:
         class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommandFactory
         tags:
             - { name: akeneo_enrichedentity.edit_attribute_command_factory, priority: 100 }
+

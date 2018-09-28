@@ -172,3 +172,48 @@ We use the couple record code and enriched entity identifier to fetch the record
 ##### for indexation:
 
 We use the unique identifier to fetch the result of the elastic search query
+
+## 19/09/2018
+
+### Set values on Record:
+
+#### Problem:
+
+To set values on the record, we need to validate and update the value regarding the attribute type of this value.
+
+#### Proposed solution:
+
+##### Command Definition :
+
+Create a generic editRecordCommand which will have those properties :
+- enrichedEntityIdentifier
+- code
+- labels
+- editRecordValueCommands (array of editRecordValueCommand typed by the attribute)
+
+Each editRecordValueCommand will have those properties :
+- attribute (the attribute object)
+- channel
+- label
+- data
+(Each of those commands will be created via a dedicated factory, registered as such in a registry).
+
+To create the editRecordValueCommand typed by the attribute, we will have to : 
+ - create an associative array of attribute indexed by identifier for each enriched entity (QueryFunction)
+ - get the attribute identifier of each raw value to be able to retrieve the attribute (thanks to the array create previously)
+ - create the specific editRecordValueCommand of this attribute type
+
+##### Validation :
+
+As we have different validation by type of record value, we have a dedicated validator by type of editRecordValueCommand.
+For instance, we will have :
+ - EditFileValueCommandValidator to validate the EditFileValueCommand
+ - EditTextValueCommandValidator to validate the EditTextValueCommand
+
+#### Set value on the record :
+
+As we could have a different edit of a record value, we have a dedicated updater by type of value.
+For instance, we will have :
+ -  FileUpdater to update a record value from the EditFileValueCommand
+ -  TextUpdater to update a record value from the EditTextValueCommand
+

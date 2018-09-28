@@ -17,7 +17,9 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -107,14 +109,14 @@ class Record
         $this->labelCollection = $labelCollection;
     }
 
-    public function setValues(ValueCollection $valueCollection): void
-    {
-        $this->valueCollection = $valueCollection;
-    }
-
     public function getImage(): Image
     {
         return $this->image;
+    }
+
+    public function updateImage(Image $image): void
+    {
+        $this->image = $image;
     }
 
     public function getValues(): ValueCollection
@@ -122,9 +124,14 @@ class Record
         return $this->valueCollection;
     }
 
-    public function updateImage(Image $image): void
+    public function setValue(Value $value): void
     {
-        $this->image = $image;
+        $this->valueCollection = $this->valueCollection->setValue($value);
+    }
+
+    public function findValue(ValueKey $valueKey): ?Value
+    {
+        return $this->valueCollection->findValue($valueKey);
     }
 
     public function normalize(): array

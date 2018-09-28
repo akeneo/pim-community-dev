@@ -43,16 +43,27 @@ final class ExceptionContext implements Context
         Assert::notNull($this->exceptionThrown);
     }
 
-    public function setException(\Exception $exception): void
-    {
-        $this->exceptionThrown = $exception;
-    }
-
     /**
      * @Then /^there is no exception thrown$/
      */
     public function thereIsNoExceptionThrown()
     {
-        Assert::null($this->exceptionThrown);
+        Assert::null(
+            $this->exceptionThrown,
+            sprintf(
+                'There was no exception expected, but one was found with message "%s"',
+                null !== $this->exceptionThrown ? $this->exceptionThrown->getMessage() : ''
+            )
+        );
+    }
+
+    public function setException(\Exception $exception): void
+    {
+        $this->exceptionThrown = $exception;
+    }
+
+    public function hasException(): bool
+    {
+        return null !== $this->exceptionThrown;
     }
 }

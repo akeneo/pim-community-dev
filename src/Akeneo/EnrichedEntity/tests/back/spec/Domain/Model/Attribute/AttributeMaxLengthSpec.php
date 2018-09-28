@@ -28,6 +28,11 @@ class AttributeMaxLengthSpec extends ObjectBehavior
         $this::noLimit()->normalize()->shouldReturn(null);
     }
 
+    function it_returns_an_intValue()
+    {
+        $this->intValue()->shouldReturn(300);
+    }
+
     function it_cannot_be_greater_than_the_limit()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromInteger', [65536]);

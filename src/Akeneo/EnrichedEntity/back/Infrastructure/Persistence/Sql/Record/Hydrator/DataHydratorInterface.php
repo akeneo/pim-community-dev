@@ -24,5 +24,5 @@ interface DataHydratorInterface
 {
     public function supports(AbstractAttribute $attribute): bool;
 
-    public function hydrate($normalizedData, AbstractAttribute $attribute): ValueDataInterface;
+    public function hydrate($normalizedData): ValueDataInterface;
 }

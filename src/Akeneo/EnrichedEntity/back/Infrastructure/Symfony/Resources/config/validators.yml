@@ -55,3 +55,10 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.attribute.text_property_updates_should_be_coherent_validator' }
 
+    akeneo_enrichedentity.infrastructure.validation.record.edit_value_commands_validator:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommandsValidator
+        arguments:
+            - '@validator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.edit_record_value_commands' }
+

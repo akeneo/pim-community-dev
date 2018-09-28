@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
 
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
 use Webmozart\Assert\Assert;
 
 /**
@@ -29,11 +30,23 @@ class ValueCollection
         }, $this->values);
     }
 
+    public function findValue(ValueKey $valueKey): ?Value
+    {
+        $key = (string) $valueKey;
+
+        return (array_key_exists($key, $this->values)) ? $this->values[$key] : null;
+    }
+
     public function setValue(Value $newValue): ValueCollection
     {
         $values = $this->values;
         $key = $newValue->getValueKey()->__toString();
-        $values[$key] = $newValue;
+
+        if ($newValue->isEmpty()) {
+            unset($values[$key]);
+        } else {
+            $values[$key] = $newValue;
+        }
 
         return new self($values);
     }

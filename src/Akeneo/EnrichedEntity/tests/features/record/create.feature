@@ -1,7 +1,7 @@
 Feature: Create a record
   In order to have records
   As a user
-  I want create a record
+  I want to create a record
 
   Background:
     Given the following enriched entity:

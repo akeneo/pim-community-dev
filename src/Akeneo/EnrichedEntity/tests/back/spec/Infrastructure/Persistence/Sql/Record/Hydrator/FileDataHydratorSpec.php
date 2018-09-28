@@ -16,22 +16,24 @@ class FileDataHydratorSpec extends ObjectBehavior
     }
 
 
-    function it_supports_text_attributes(TextAttribute $text, ImageAttribute $image)
-    {
+    function it_only_supports_hydrate_data_of_image_attribute(
+        TextAttribute $text,
+        ImageAttribute $image
+    ) {
         $this->supports($image)->shouldReturn(true);
         $this->supports($text)->shouldReturn(false);
     }
 
-    function it_hydrates_text_data(ImageAttribute $image)
+    function it_hydrates_image_data(ImageAttribute $image)
     {
         $imageData = $this->hydrate([
-            'original_filename' => 'my_image.png',
-            'file_key'          => '/a/file/key',
-        ], $image);
+            'filePath'          => '/a/file/key',
+            'originalFilename' => 'my_image.png',
+        ]);
         $imageData->shouldBeAnInstanceOf(FileData::class);
         $imageData->normalize()->shouldReturn([
-            'file_key'          => '/a/file/key',
-            'original_filename' => 'my_image.png',
+            'filePath'          => '/a/file/key',
+            'originalFilename' => 'my_image.png',
         ]);
     }
 }

@@ -15,15 +15,17 @@ class TextDataHydratorSpec extends ObjectBehavior
         $this->shouldHaveType(TextDataHydrator::class);
     }
 
-    function it_supports_text_attributes(TextAttribute $text, ImageAttribute $image)
-    {
+    function it_only_supports_hydrate_data_of_text_attribute(
+        TextAttribute $text,
+        ImageAttribute $image
+    ) {
         $this->supports($text)->shouldReturn(true);
         $this->supports($image)->shouldReturn(false);
     }
 
     function it_hydrates_text_data(TextAttribute $text)
     {
-        $textData = $this->hydrate('A description', $text);
+        $textData = $this->hydrate('A description');
         $textData->shouldBeAnInstanceOf(TextData::class);
         $textData->normalize()->shouldReturn('A description');
     }

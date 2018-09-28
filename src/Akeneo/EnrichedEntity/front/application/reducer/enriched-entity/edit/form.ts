@@ -13,7 +13,7 @@ export interface EditionFormState {
 const stateReducer = formState('enrichedEntity', 'ENRICHED_ENTITY_EDITION_UPDATED', 'ENRICHED_ENTITY_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: NormalizedEnrichedEntity = {identifier: '', labels: {}, image: null},
+  state: NormalizedEnrichedEntity = {identifier: '', code: '', labels: {}, image: null},
   {
     type,
     enrichedEntity,

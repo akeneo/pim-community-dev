@@ -66,7 +66,12 @@ class EditEnrichedEntityHandler
     private function storeFile(array $image): FileInfoInterface
     {
         $rawFile = new \SplFileInfo($image['filePath']);
+        // TODO: Need to rework this part
+//        try {
         $file = $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
+//        } catch (FileTransferException | FileRemovalException $e) {
+//            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+//        }
 
         return $file;
     }

@@ -45,11 +45,23 @@ final class ConstraintViolationsContext implements Context
 
     /**
      * @Then /^there should be a validation error with message \'([^\']*)\'$/
+     * @Then /^there should be a validation error on the property image attribute with message \'([^\']*)\'$/
      */
     public function thereShouldBeAValidationErrorWithMessage(string $message): void
     {
         $this->assertThereShouldBeViolations();
         $this->assertViolation($message);
+    }
+
+    /**
+     * @Given /^there is no violations errors$/
+     */
+    public function thereIsNoViolationsErrors()
+    {
+        Assert::assertEmpty(
+            $this->violations,
+            sprintf('Expecting to have no violations, but "%d" violations were found', $this->violations->count())
+        );
     }
 
     public function addViolations(ConstraintViolationListInterface $violationList): void
@@ -68,9 +80,17 @@ final class ConstraintViolationsContext implements Context
         }
     }
 
-    public function assertThereShouldBeViolations(): void
+    public function assertThereShouldBeViolations(int $violationsNumber = 0): void
     {
-        Assert::assertGreaterThan(0, $this->violations->count(), 'There should be violations.');
+        if (0 === $violationsNumber) {
+            Assert::assertGreaterThan($violationsNumber, $this->violations->count(), 'There should be violations');
+        } else {
+            Assert::assertEquals(
+                $violationsNumber,
+                $this->violations->count(),
+                sprintf('There should be %d violations. %d found', $violationsNumber, $this->violations->count())
+            );
+        }
     }
 
     public function assertViolationOnPropertyWithMesssage(string $expectedPropertyPath, string $expectedMessage): void
@@ -90,9 +110,11 @@ final class ConstraintViolationsContext implements Context
             $expectedMessage
         );
         if ($this->hasViolations()) {
+            $violation = $this->violations->get(0);
             $message = sprintf(
-                'Unexpected violation found with with message "%s"',
-                $this->violations->get(0)->getMessage()
+                'Unexpected violation found with with message "%s" on property "%s"',
+                $violation->getMessage(),
+                $violation->getPropertyPath()
             );
         }
 

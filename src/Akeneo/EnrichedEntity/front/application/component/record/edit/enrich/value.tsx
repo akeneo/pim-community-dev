@@ -3,9 +3,9 @@ import LocaleReference from 'akeneoenrichedentity/domain/model/locale-reference'
 import ChannelReference from 'akeneoenrichedentity/domain/model/channel-reference';
 import Value from 'akeneoenrichedentity/domain/model/record/value';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 import {getDataView} from 'akeneoenrichedentity/application/configuration/value';
+import {getErrorsView} from 'akeneoenrichedentity/application/component/record/edit/validaton-error';
 
 export default (
   record: Record,
@@ -40,7 +40,7 @@ export default (
         <div className="AknFieldContainer-inputContainer">
           <DataView value={value} onChange={onValueChange} />
         </div>
-        {getErrorsView(errors, `values.${value.attribute.getCode().stringValue()}`)}
+        {getErrorsView(errors, value)}
       </div>
     );
   });

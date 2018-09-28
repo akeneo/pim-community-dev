@@ -228,7 +228,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             TextData::fromString('Une valeur de test qui n\'éxistait pas avant')
         );
         $updatedValueCollection = ValueCollection::fromValues([$valueToUpdate, $valueToAdd]);
-        $record->setValues($updatedValueCollection);
+        foreach ($updatedValueCollection as $value) {
+            $record->setValue($value);
+        }
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -240,27 +242,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $recordFound = $this->repository->getByIdentifier($identifier);
 
         $this->assertSame($record->normalize(), $recordFound->normalize());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_updating_a_non_existing_record()
-    {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create(
-            $identifier,
-            $enrichedEntityIdentifier,
-            $recordCode,
-            ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
-            Image::createEmpty(),
-            ValueCollection::fromValues([])
-        );
-
-        $this->expectException(\RuntimeException::class);
-        $this->repository->update($record);
     }
 
     /**

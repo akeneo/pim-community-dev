@@ -6,6 +6,7 @@ import reducer from 'akeneoenrichedentity/application/reducer/enriched-entity/ed
 const initialState = {
   data: {
     identifier: '',
+    code: '',
     labels: {},
     image: null,
   },

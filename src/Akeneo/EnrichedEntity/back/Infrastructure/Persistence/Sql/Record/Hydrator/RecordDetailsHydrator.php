@@ -51,7 +51,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 
         $allValues = [];
         foreach ($emptyValues as $key => $value) {
-            if (key_exists($key, $valueCollection)) {
+            if (array_key_exists($key, $valueCollection)) {
                 $value['data'] = $valueCollection[$key]['data'];
             }
 

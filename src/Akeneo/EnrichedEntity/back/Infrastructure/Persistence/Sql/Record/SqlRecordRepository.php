@@ -115,9 +115,9 @@ SQL;
             ]
         );
 
-        if ($affectedRows !== 1) {
+        if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to save one record, but %d rows were affected', $affectedRows)
+                sprintf('Expected to update one record, but %d rows were affected', $affectedRows)
             );
         }
     }

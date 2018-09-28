@@ -42,6 +42,11 @@ class AttributeRegularExpression
         return self::EMPTY === $this->regularExpression;
     }
 
+    public function __toString(): string
+    {
+        return $this->regularExpression ?? '';
+    }
+
     public function normalize(): ?string
     {
         return $this->regularExpression;

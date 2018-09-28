@@ -109,4 +109,29 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
             md5(sprintf('%s_%s', $enrichedEntityIdentifier, $attributeCode))
         );
     }
+
+    /**
+     * Find a record by its code and entity.
+     * It's a tooling method not present in the main interface, because we need a way to retrieve attributes by their
+     * code only in acceptance test. The real application will always use identifiers.
+     *
+     * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
+     * @param AttributeCode            $code
+     *
+     * @return AbstractAttribute
+     */
+    public function getByEnrichedEntityAndCode(string $entityCode, string $attributeCode): AbstractAttribute
+    {
+        $entityIdentifier = EnrichedEntityIdentifier::fromString($entityCode);
+        $code = AttributeCode::fromString($attributeCode);
+
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->getCode()->equals($code) && $attribute->getEnrichedEntityIdentifier()->equals($entityIdentifier)) {
+                return $attribute;
+            }
+        }
+        throw new \InvalidArgumentException(
+            sprintf('Could not find attribute with "%s" for entity "%s"', $attributeCode, $entityCode)
+        );
+    }
 }

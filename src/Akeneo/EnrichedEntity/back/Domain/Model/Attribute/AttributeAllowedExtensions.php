@@ -54,4 +54,9 @@ class AttributeAllowedExtensions
     {
         return $this->allowedExtensions;
     }
+
+    public function isAllAllowed(): bool
+    {
+        return $this->allowedExtensions === self:: ALL_ALLOWED;
+    }
 }

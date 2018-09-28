@@ -52,6 +52,16 @@ class AttributeMaxFileSize
         return new self(self::NO_LIMIT);
     }
 
+    public function hasLimit(): bool
+    {
+        return null !== $this->maxFileSize;
+    }
+
+    public function floatValue(): float
+    {
+        return (float) $this->maxFileSize;
+    }
+
     public function normalize(): ?string
     {
         return $this->maxFileSize;

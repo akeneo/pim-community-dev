@@ -5,7 +5,7 @@ export default interface ValidationError {
   };
   message: string;
   propertyPath: string;
-  invalidValue: string;
+  invalidValue: any;
 }
 
 class ConcreteValidationError implements ValidationError {
@@ -15,7 +15,7 @@ class ConcreteValidationError implements ValidationError {
   };
   readonly message: string;
   readonly propertyPath: string;
-  readonly invalidValue: string;
+  readonly invalidValue: any;
 
   private constructor(error: ValidationError) {
     this.messageTemplate = error.messageTemplate;

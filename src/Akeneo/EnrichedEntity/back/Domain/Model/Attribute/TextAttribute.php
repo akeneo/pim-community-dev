@@ -80,7 +80,7 @@ class TextAttribute extends AbstractAttribute
             );
         } else {
             Assert::false($isRichTextEditor->isYes());
-            if ($validationRule->isRegex()) {
+            if ($validationRule->isRegularExpression()) {
                 Assert::false(
                     $regularExpression->isEmpty(),
                     'It is not possible to create a text attribute with a regular expression without specifying it'
@@ -164,11 +164,6 @@ class TextAttribute extends AbstractAttribute
         );
     }
 
-    public function setMaxLength(AttributeMaxLength $newMaxLength): void
-    {
-        $this->maxLength = $newMaxLength;
-    }
-
     public function normalize(): array
     {
         return array_merge(
@@ -200,7 +195,7 @@ class TextAttribute extends AbstractAttribute
             throw new \LogicException('Cannot update the validation rule when the text area flag is true');
         }
         $this->validationRule = $validationRule;
-        if (!$this->validationRule->isRegex()) {
+        if (!$this->validationRule->isRegularExpression()) {
             $this->regularExpression = AttributeRegularExpression::createEmpty();
         }
     }
@@ -211,11 +206,16 @@ class TextAttribute extends AbstractAttribute
             if ($this->isTextarea->isYes()) {
                 throw new \LogicException('Cannot update the regular expression when the text area flag is true');
             }
-            if (!$this->validationRule->isRegex()) {
+            if (!$this->validationRule->isRegularExpression()) {
                 throw new \LogicException('Cannot update the regular expression when the validation rule is not set to regular expression');
             }
         }
         $this->regularExpression = $regularExpression;
+    }
+
+    public function getRegularExpression(): AttributeRegularExpression
+    {
+        return $this->regularExpression;
     }
 
     public function setIsRichTextEditor(AttributeIsRichTextEditor $isRichTextEditor): void
@@ -226,6 +226,16 @@ class TextAttribute extends AbstractAttribute
         $this->isRichTextEditor = $isRichTextEditor;
     }
 
+    public function setMaxLength(AttributeMaxLength $newMaxLength): void
+    {
+        $this->maxLength = $newMaxLength;
+    }
+
+    public function getMaxLength(): AttributeMaxLength
+    {
+        return $this->maxLength;
+    }
+
     public function isTextarea(): bool
     {
         return $this->isTextarea->isYes();
@@ -233,7 +243,22 @@ class TextAttribute extends AbstractAttribute
 
     public function isValidationRuleSetToRegularExpression(): bool
     {
-        return $this->validationRule->isRegex();
+        return $this->validationRule->isRegularExpression();
+    }
+
+    public function isValidationRuleSetToEmail(): bool
+    {
+        return $this->validationRule->isEmail();
+    }
+
+    public function isValidationRuleSetToUrl(): bool
+    {
+        return $this->validationRule->isUrl();
+    }
+
+    public function hasValidationRule(): bool
+    {
+        return $this->validationRule->isNone();
     }
 
     protected function getType(): string

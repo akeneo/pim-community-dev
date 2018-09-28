@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Common\Fake;
 
+use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -23,11 +24,25 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
  */
 class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIdentifierInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(EnrichedEntityIdentifier $identifier): array
+    /** @var InMemoryAttributeRepository */
+    private $attributeRepository;
+
+    public function __construct(InMemoryAttributeRepository $attributeRepository)
     {
-        throw new NotImplementedException('__invoke');
+        $this->attributeRepository = $attributeRepository;
+    }
+
+    /**
+     * @return AbstractAttributeDetails[]
+     */
+    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    {
+        $attributes = $this->attributeRepository->findByEnrichedEntity($enrichedEntityIdentifier);
+
+        return array_reduce($attributes, function ($stack, AbstractAttribute $current) {
+            $stack[(string) $current->getIdentifier()] = $current;
+
+            return $stack;
+        }, []);
     }
 }

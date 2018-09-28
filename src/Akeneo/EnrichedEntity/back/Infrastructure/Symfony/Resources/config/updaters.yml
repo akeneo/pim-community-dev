@@ -47,3 +47,19 @@ services:
         class: Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater\AllowedExtensionsUpdater
         tags:
             - { name: akeneo_enrichedentity.attribute_updater, priority: 110 }
+
+    # Records
+    akeneo_enrichedentity.application.registry.edit_record.record_value_updater.record_value_updater_registry:
+        class: Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistry
+
+    akeneo_enrichedentity.application.edit_record.record_value_updater.text_updater:
+        class: Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\TextUpdater
+        tags:
+            - { name: akeneo_enrichedentity.record_value_updater }
+
+    akeneo_enrichedentity.application.edit_record.record_value_updater.file_updater:
+        class: Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\FileUpdater
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+        tags:
+            - { name: akeneo_enrichedentity.record_value_updater }
