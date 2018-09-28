@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Component\Versioning\Model\Version;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -40,6 +41,9 @@ class VersionNormalizer implements NormalizerInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var UserContext */
+    protected $userContext;
+
     const ATTRIBUTE_HEADER_SEPARATOR = "-";
 
     /**
@@ -48,19 +52,24 @@ class VersionNormalizer implements NormalizerInterface
      * @param PresenterInterface           $datetimePresenter
      * @param PresenterRegistryInterface   $presenterRegistry
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param UserContext                  $userContext
+     *
+     * @todo merge: remove the "= null` on master and add to BC breaks
      */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
-        AttributeRepositoryInterface $attributeRepository = null // TODO on master: remove = null
+        AttributeRepositoryInterface $attributeRepository = null,
+        UserContext $userContext = null
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
         $this->attributeRepository = $attributeRepository;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -70,6 +79,13 @@ class VersionNormalizer implements NormalizerInterface
     {
         $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
 
+        try {
+            $timezone = $this->userContext->getUserTimezone();
+            $loggedAtContext = array_merge($context, ['timezone' => $timezone]);
+        } catch (\RuntimeException $exception) {
+            $loggedAtContext = $context;
+        }
+
         return [
             'id'           => $version->getId(),
             'author'       => $this->normalizeAuthor($version->getAuthor()),
@@ -78,7 +94,7 @@ class VersionNormalizer implements NormalizerInterface
             'changeset'    => $this->convertChangeset($version->getChangeset(), $context),
             'context'      => $version->getContext(),
             'version'      => $version->getVersion(),
-            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $context),
+            'logged_at'    => $this->datetimePresenter->present($version->getLoggedAt(), $loggedAtContext),
             'pending'      => $version->isPending(),
         ];
     }

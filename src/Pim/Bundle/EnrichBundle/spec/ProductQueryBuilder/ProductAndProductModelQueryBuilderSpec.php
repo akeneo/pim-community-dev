@@ -16,8 +16,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
     function let(
         ProductQueryBuilderInterface $pqb,
         ProductAndProductModelSearchAggregator $searchAggregator
-    )
-    {
+    ) {
         $this->beConstructedWith($pqb, $searchAggregator);
     }
 
@@ -58,11 +57,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_executes_the_query_and_aggregate_results(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'foo',
@@ -100,11 +98,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_executes_the_query_by_adding_a_filter_on_attributes_and_categories(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters =[
             [
                 'field'    => 'categories',
@@ -126,11 +123,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_executes_the_query_with_operator_is_empty_on_an_attribute(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'foo',
@@ -180,9 +176,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_attribute_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
+        SearchQueryBuilder $sqb
     ) {
         $rawFilters = [
             [
@@ -205,11 +201,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_parent_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'parent',
@@ -231,11 +226,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_nor_group_when_there_is_a_filter_on_enabled(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'enabled',
@@ -258,11 +252,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_id_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'id',
@@ -284,11 +277,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_identifier_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'identifier',
@@ -310,11 +302,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_entity_type_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'entity_type',
@@ -336,11 +327,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_ancestor_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'ancestor.id',
@@ -362,11 +352,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_ancestor_or_self_filter(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'self_and_ancestor.id',
@@ -388,9 +377,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN_LIST(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
+        SearchQueryBuilder $sqb
     ) {
         $rawFilters = [
             [
@@ -413,9 +402,9 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN_CHILDREN(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
+        SearchQueryBuilder $sqb
     ) {
         $rawFilters = [
             [
@@ -438,11 +427,10 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_aggregate_when_there_is_a_filter_on_parent(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
-        SearchQueryBuilder $sqb,
-        $searchAggregator
-    )
-    {
+        SearchQueryBuilder $sqb
+    ) {
         $rawFilters = [
             [
                 'field'    => 'parent',
@@ -478,24 +466,26 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_groups(
         $pqb,
+        $searchAggregator,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
     ) {
-        $pqb->getRawFilters()->willReturn(
+        $rawFilters = [
             [
-                [
-                    'field'    => 'groups',
-                    'operator' => 'IN',
-                    'value'    => ['group_A', 'group_B'],
-                    'context'  => [],
-                    'type'     => 'field'
-                ],
-            ]
-        );
+                'field'    => 'groups',
+                'operator' => 'IN',
+                'value'    => ['group_A', 'group_B'],
+                'context'  => [],
+                'type'     => 'field'
+            ],
+        ];
+
+        $pqb->getRawFilters()->willReturn($rawFilters);
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }
