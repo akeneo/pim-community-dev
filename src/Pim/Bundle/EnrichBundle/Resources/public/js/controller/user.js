@@ -33,10 +33,16 @@ define([
                             this.on('pim:controller:can-leave', function (event) {
                                 form.trigger('pim_enrich:form:can-leave', event);
                             });
-                            form.on('pim_enrich:form:entity:post_save', () => {
-                                // Reload the page to reload new language
-                                location.reload();
+
+                            let previousUserLocale = user.user_default_locale;
+                            form.on('pim_enrich:form:entity:post_save', (data) => {
+                                if (data.user_default_locale !== previousUserLocale) {
+                                    previousUserLocale = data.user_default_locale;
+                                    // Reload the page to reload new language
+                                    location.reload();
+                                }
                             });
+
                             form.setData(user);
                             form.trigger('pim_enrich:form:entity:post_fetch', user);
                             form.setElement(this.$el).render();

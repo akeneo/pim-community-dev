@@ -85,9 +85,11 @@ define(
 
             /**
              * What to do after a save
+             *
+             * @param {any} data
              */
-            postSave: function () {
-                this.getRoot().trigger('pim_enrich:form:entity:post_save');
+            postSave: function (data) {
+                this.getRoot().trigger('pim_enrich:form:entity:post_save', data);
 
                 messenger.notify(
                     'success',

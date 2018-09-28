@@ -93,7 +93,7 @@ define(
                     .setUrl(this.config.url)
                     .save(entity.code, entity, this.config.method || 'POST')
                     .then(function (data) {
-                        this.postSave();
+                        this.postSave(data);
                         this.setData(data);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
 
