@@ -56,8 +56,6 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCom
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
         image:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Image: ~
-        editRecordValueCommands:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
     constraints:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
 

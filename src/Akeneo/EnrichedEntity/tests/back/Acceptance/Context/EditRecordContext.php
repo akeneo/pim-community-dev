@@ -36,6 +36,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
@@ -53,7 +54,6 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -1013,6 +1013,7 @@ final class EditRecordContext implements Context
                 EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
                 ['fr_FR' => $label],
+                Image::createEmpty(),
                 ValueCollection::fromValues([])
             )
         );
@@ -1051,7 +1052,7 @@ final class EditRecordContext implements Context
         $this->enrichedEntityRepository->create(EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
             [],
-            null
+            Image::createEmpty()
         ));
     }
 
@@ -1063,6 +1064,7 @@ final class EditRecordContext implements Context
                 EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
                 [],
+                Image::createEmpty(),
                 ValueCollection::fromValues([$value])
             )
         );
