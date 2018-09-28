@@ -56,6 +56,8 @@ class ClassifyAssetsProcessor extends AbstractProcessor
 
     /**
      * {@inheritdoc}
+     *
+     * @todo merge : remove null check on authorizationChecker in master branch
      */
     public function process($asset)
     {

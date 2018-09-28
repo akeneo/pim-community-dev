@@ -45,6 +45,8 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
      * @param TokenStorageInterface               $tokenStorage
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
+     *
+     * @todo merge : remove properties $userManager and $tokenStorage in master branch. They are no longer used.
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -74,8 +76,6 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
      */
     public function execute()
     {
-        $this->initSecurityContext($this->stepExecution);
-
         $jobParameters = $this->stepExecution->getJobParameters();
         $cursor = $this->getProductsCursor($jobParameters->get('filters'));
         $paginator = $this->paginatorFactory->createPaginator($cursor);

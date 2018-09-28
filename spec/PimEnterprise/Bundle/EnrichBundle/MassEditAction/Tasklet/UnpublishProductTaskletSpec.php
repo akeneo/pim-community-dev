@@ -16,11 +16,11 @@ use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UnpublishProductHandlerSpec extends ObjectBehavior
 {
+    // @todo merge : remove $userManager and $tokenStorage in master branch. They are no longer used.
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
@@ -30,18 +30,11 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         CursorInterface $cursor,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        AuthorizationCheckerInterface $authorizationChecker,
-        UserInterface $userJulia,
-        UserInterface $userMary
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::any(), Argument::any(), Argument::any(), Argument::any())->willReturn($pqb);
         $pqbFactory->create()->willReturn($pqb);
-
-        $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $userMary->getRoles()->willReturn(['NotProductOwner']);
-        $userManager->findUserByUsername('julia')->willReturn($userJulia);
-        $userManager->findUserByUsername('mary')->willReturn($userMary);
 
         $this->beConstructedWith(
             $manager,
@@ -89,12 +82,8 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
 
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('julia');
-
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
-        $authorizationChecker->setToken(Argument::any())->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
 
@@ -132,12 +121,8 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $jobExecution->getUser()->willReturn('mary');
-
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);
-        $authorizationChecker->setToken(Argument::any())->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
