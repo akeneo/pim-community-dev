@@ -51,7 +51,7 @@ class EditEnrichedEntityHandler
             $existingImage = $enrichedEntity->getImage();
             // If we want to update the image and it's not already in file storage, we store it
             if (
-                null === $existingImage ||
+                $existingImage->isEmpty() ||
                 $existingImage->getKey() !== $editEnrichedEntityCommand->image['filePath']
             ) {
                 $storedFile = $this->storeFile($editEnrichedEntityCommand->image);

@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 
 /**
@@ -36,7 +37,7 @@ class CreateEnrichedEntityHandler
         $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString($createEnrichedEntityCommand->code),
             $createEnrichedEntityCommand->labels,
-            null
+            Image::createEmpty()
         );
 
         $this->enrichedEntityRepository->create($enrichedEntity);

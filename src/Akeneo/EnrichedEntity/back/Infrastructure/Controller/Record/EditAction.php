@@ -94,6 +94,7 @@ class EditAction
         $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
+        $command->image = $normalizedCommand['image'] ?? null;
 
         return $command;
     }

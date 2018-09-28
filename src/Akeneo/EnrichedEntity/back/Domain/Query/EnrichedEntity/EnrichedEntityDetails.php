@@ -37,7 +37,7 @@ class EnrichedEntityDetails
     /** @var LabelCollection */
     public $labels;
 
-    /** @var ?Image */
+    /** @var Image */
     public $image;
 
     public function normalize(): array
@@ -45,7 +45,7 @@ class EnrichedEntityDetails
         return [
             self::IDENTIFIER => (string) $this->identifier,
             self::LABELS     => $this->labels->normalize(),
-            self::IMAGE      => (null !== $this->image) ? $this->image->normalize() : null
+            self::IMAGE      => $this->image->normalize(),
         ];
     }
 }

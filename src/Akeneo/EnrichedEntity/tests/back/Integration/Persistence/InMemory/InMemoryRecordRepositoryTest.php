@@ -15,17 +15,18 @@ namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
 
 use Akeneo\EnrichedEntity\Common\Fake\InMemoryRecordRepository;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
 {
-    /** @var RecordRepositoryInterface */
+    /** @var InMemoryRecordRepository */
     private $recordRepository;
 
     public function setup()
@@ -41,11 +42,18 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
+
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
             [],
+            Image::fromFileInfo($imageInfo),
             ValueCollection::fromValues([])
         );
 
@@ -68,6 +76,7 @@ class InMemoryRecordRepositoryTest extends TestCase
             $enrichedEntityIdentifier,
             $recordCode,
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
@@ -89,6 +98,7 @@ class InMemoryRecordRepositoryTest extends TestCase
             $enrichedEntityIdentifier,
             $recordCode,
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->recordRepository->create($record);
@@ -108,7 +118,14 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [], ValueCollection::fromValues([]));
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
 
         $this->expectException(\RuntimeException::class);
         $this->recordRepository->update($record);
@@ -124,7 +141,14 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [], ValueCollection::fromValues([]));
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
 
         $this->recordRepository->create($record);
 
@@ -132,7 +156,14 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $recordIdentifier = RecordCode::fromString('record_identifier');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordIdentifier);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordIdentifier, [], ValueCollection::fromValues([]));
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordIdentifier,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
 
         $this->recordRepository->create($record);
 
@@ -144,7 +175,14 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
         $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
-        $record = Record::create($identifier, $enrichedEntityIdentifier, $recordCode, [], ValueCollection::fromValues([]));
+        $record = Record::create(
+            $identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
 
         $this->recordRepository->create($record);
         $this->assertTrue($this->recordRepository->hasRecord($identifier));

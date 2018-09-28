@@ -15,7 +15,6 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
@@ -67,15 +66,19 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     private function fetchResult(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): array
     {
         $query = <<<SQL
-        SELECT identifier, code, enriched_entity_identifier, labels, value_collection
-        FROM akeneo_enriched_entity_record
+        SELECT ee.identifier, ee.code, ee.enriched_entity_identifier, ee.labels, ee.value_collection, fi.image
+        FROM akeneo_enriched_entity_record AS ee
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image
         WHERE code = :code && enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => (string) $recordCode,
-            'enriched_entity_identifier' => (string) $enrichedEntityIdentifier
+            'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
         ]);
-        $result = $statement->fetch();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
 
         return !$result ? [] : $result;

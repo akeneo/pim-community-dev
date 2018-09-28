@@ -27,6 +27,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -138,6 +139,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             EnrichedEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+            Image::createEmpty(),
             $values
         );
 

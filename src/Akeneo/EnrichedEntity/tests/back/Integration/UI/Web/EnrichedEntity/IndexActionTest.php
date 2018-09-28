@@ -92,6 +92,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $entityItem->labels = LabelCollection::fromArray([
             'en_US' => 'Designer',
         ]);
+        $entityItem->image = Image::createEmpty();
         $queryHandler->save($entityItem);
 
         $entityItem = new EnrichedEntityItem();

@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
 use Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
@@ -38,7 +39,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     public function it_creates_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, [], null);
+        $enrichedEntity = EnrichedEntity::create($identifier, [], Image::createEmpty());
 
         $this->enrichedEntityRepository->create($enrichedEntity);
 
@@ -52,7 +53,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     public function it_throws_when_creating_an_enriched_entity_with_the_same_identifier()
     {
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, [], null);
+        $enrichedEntity = EnrichedEntity::create($identifier, [], Image::createEmpty());
         $this->enrichedEntityRepository->create($enrichedEntity);
 
         $this->expectException(\RuntimeException::class);
@@ -65,7 +66,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     public function it_updates_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, [], null);
+        $enrichedEntity = EnrichedEntity::create($identifier, [], Image::createEmpty());
         $this->enrichedEntityRepository->create($enrichedEntity);
         $enrichedEntity->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
 
@@ -82,7 +83,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     {
         $anotherIdentifier = EnrichedEntityIdentifier::fromString('another_identifier');
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-        $this->enrichedEntityRepository->create(EnrichedEntity::create($identifier, [], null));
+        $this->enrichedEntityRepository->create(EnrichedEntity::create($identifier, [], Image::createEmpty()));
         Assert::assertTrue($this->enrichedEntityRepository->hasRecord($identifier));
         Assert::assertFalse($this->enrichedEntityRepository->hasRecord($anotherIdentifier));
     }
@@ -93,7 +94,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     public function it_throws_when_udpating_a_non_existing_enriched_entity()
     {
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, [], null);
+        $enrichedEntity = EnrichedEntity::create($identifier, [], Image::createEmpty());
         $this->enrichedEntityRepository->create($enrichedEntity);
         $enrichedEntity->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Styliste']));
 
@@ -120,7 +121,11 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     public function it_deletes_an_enriched_entity_given_an_identifier()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], null);
+        $enrichedEntity = EnrichedEntity::create(
+            $identifier,
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'],
+            Image::createEmpty()
+        );
         $this->enrichedEntityRepository->create($enrichedEntity);
 
         $this->enrichedEntityRepository->deleteByIdentifier($identifier);

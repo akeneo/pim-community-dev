@@ -166,20 +166,12 @@ SQL;
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
-
-        $file = null;
-        if (null !== $image) {
-            $file = new FileInfo();
-            $file->setKey($image['file_key']);
-            $file->setOriginalFilename($image['original_filename']);
-        }
+        $entityImage = $this->hydrateImage($image);
 
         $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString(
-                $identifier
-            ),
+            EnrichedEntityIdentifier::fromString($identifier),
             $labels,
-            (null !== $image) ? Image::fromFileInfo($file) : null
+            $entityImage
         );
 
         return $enrichedEntity;
@@ -193,5 +185,19 @@ SQL;
         }
 
         return json_encode($labels);
+    }
+
+    private function hydrateImage(?array $imageData): Image
+    {
+        $image = Image::createEmpty();
+
+        if (null !== $imageData) {
+            $file = new FileInfo();
+            $file->setKey($imageData['file_key']);
+            $file->setOriginalFilename($imageData['original_filename']);
+            $image = Image::fromFileInfo($file);
+        }
+
+        return $image;
     }
 }

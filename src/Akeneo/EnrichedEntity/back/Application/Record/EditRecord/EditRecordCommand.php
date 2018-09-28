@@ -31,4 +31,7 @@ class EditRecordCommand
 
     /** @var array */
     public $labels;
+
+    /** @var string[]|null */
+    public $image;
 }

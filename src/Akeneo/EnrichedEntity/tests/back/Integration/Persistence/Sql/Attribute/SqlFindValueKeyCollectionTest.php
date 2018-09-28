@@ -25,6 +25,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
@@ -88,7 +89,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }

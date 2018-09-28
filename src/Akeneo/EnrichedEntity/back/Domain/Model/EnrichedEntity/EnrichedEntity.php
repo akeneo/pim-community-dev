@@ -34,14 +34,14 @@ class EnrichedEntity
     private function __construct(
         EnrichedEntityIdentifier $identifier,
         LabelCollection $labelCollection,
-        ?Image $image
+        Image $image
     ) {
         $this->identifier = $identifier;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
     }
 
-    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection, ?Image $image): self
+    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection, Image $image): self
     {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
@@ -68,9 +68,9 @@ class EnrichedEntity
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function getImage(): ?Image
+    public function getImage(): Image
     {
-        return ($this->image) ?? null;
+        return $this->image;
     }
 
     public function updateLabels(LabelCollection $labelCollection): void

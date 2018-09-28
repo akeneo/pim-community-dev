@@ -51,6 +51,7 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
             'enriched_entity_identifier' => 'game',
             'code' => 'world_of_warcraft',
             'labels' => $labels,
+            'image' => null,
             'values' => [],
         ]);
     }

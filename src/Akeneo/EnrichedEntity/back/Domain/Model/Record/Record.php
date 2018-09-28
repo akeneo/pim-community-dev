@@ -15,8 +15,8 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 
 /**
@@ -37,6 +37,9 @@ class Record
     /** @var LabelCollection */
     private $labelCollection;
 
+    /** @var Image */
+    private $image;
+
     /** @var ValueCollection */
     private $valueCollection;
 
@@ -45,12 +48,14 @@ class Record
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
         LabelCollection $labelCollection,
+        Image $image,
         ValueCollection $valueCollection
     ) {
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->code = $code;
         $this->labelCollection = $labelCollection;
+        $this->image = $image;
         $this->valueCollection = $valueCollection;
     }
 
@@ -59,11 +64,12 @@ class Record
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
         array $rawLabelCollection, // TODO: receive LabelCollection instead
+        Image $image,
         ValueCollection $valueCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $valueCollection);
+        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $image, $valueCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
@@ -106,9 +112,19 @@ class Record
         $this->valueCollection = $valueCollection;
     }
 
+    public function getImage(): Image
+    {
+        return $this->image;
+    }
+
     public function getValues(): ValueCollection
     {
         return $this->valueCollection;
+    }
+
+    public function updateImage(Image $image): void
+    {
+        $this->image = $image;
     }
 
     public function normalize(): array
@@ -118,7 +134,8 @@ class Record
             'code' => $this->code->normalize(),
             'enrichedEntityIdentifier' => $this->enrichedEntityIdentifier->normalize(),
             'labels' => $this->labelCollection->normalize(),
-            'values' => $this->valueCollection->normalize()
+            'values' => $this->valueCollection->normalize(),
+            'image' => $this->image->normalize(),
         ];
     }
 }

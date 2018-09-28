@@ -16,12 +16,14 @@ namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
 use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -56,9 +58,13 @@ class EditActionTest extends ControllerIntegrationTestCase
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
             'enriched_entity_identifier' => 'singer',
-            'labels'     => [
+            'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
+            ],
+            'image' => [
+                'filePath' => 'test/image_1.jpg',
+                'originalFilename' => 'image_1.jpg'
             ],
         ];
 
@@ -72,7 +78,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
+                'CONTENT_TYPE' => 'application/json',
             ],
             $postContent
         );
@@ -88,6 +94,52 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
         Assert::assertEquals($postContent['labels']['en_US'], $recordItem->getLabel('en_US'));
         Assert::assertEquals($postContent['labels']['fr_FR'], $recordItem->getLabel('fr_FR'));
+        Assert::assertEquals($postContent['image']['filePath'], $recordItem->getImage()->getKey());
+    }
+
+    /**
+     * @test
+     */
+    public function it_edits_a_record_details_by_removing_the_default_image(): void
+    {
+        $postContent = [
+            'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
+            'code' => 'celine_dion',
+            'enriched_entity_identifier' => 'singer',
+            'labels' => [
+                'en_US' => 'Celine Dion',
+                'fr_FR' => 'Madame Celine Dion',
+            ],
+            'image' => null,
+        ];
+
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_EDIT_ROUTE,
+            [
+                'recordCode' => 'celine_dion',
+                'enrichedEntityIdentifier' => 'singer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            $postContent
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+
+        $repository = $this->getRecordRepository();
+        $recordItem = $repository->getByEnrichedEntityAndCode(
+            EnrichedEntityIdentifier::fromString($postContent['enriched_entity_identifier']),
+            RecordCode::fromString($postContent['code'])
+        );
+
+        Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
+        Assert::assertEquals($postContent['labels']['en_US'], $recordItem->getLabel('en_US'));
+        Assert::assertEquals($postContent['labels']['fr_FR'], $recordItem->getLabel('fr_FR'));
+        Assert::assertTrue($recordItem->getImage()->isEmpty());
     }
 
     /**
@@ -118,27 +170,62 @@ class EditActionTest extends ControllerIntegrationTestCase
             'identifier' => 'singer_ah!_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'ah!',
             'enriched_entity_identifier' => 'singer',
-            'labels'     => [
+            'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
             ],
         ];
 
-        $this->webClientHelper->callRoute(
-            $this->client,
-            self::RECORD_EDIT_ROUTE,
-            [
-                'recordCode' => 'celine_dion',
-                'enrichedEntityIdentifier' => 'singer',
-            ],
-            'POST',
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
-            ],
-            $postContent
-        );
+        $callRoute = function ($postContent) {
+            $this->webClientHelper->callRoute(
+                $this->client,
+                self::RECORD_EDIT_ROUTE,
+                [
+                    'recordCode' => 'celine_dion',
+                    'enrichedEntityIdentifier' => 'singer',
+                ],
+                'POST',
+                [
+                    'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                    'CONTENT_TYPE' => 'application/json',
+                ],
+                $postContent
+            );
+        };
 
+        $callRoute($postContent);
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+
+        $postContent = [
+            'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
+            'code' => 'celine_dion',
+            'enriched_entity_identifier' => 'singer',
+            'labels' => [
+                'en_US' => 'Celine Dion',
+                'fr_FR' => 'Madame Celine Dion',
+            ],
+            'image' => [
+                'filePath' => 'test/image_1.jpg',
+            ],
+        ];
+        $callRoute($postContent);
+        $response = $this->client->getResponse();
+        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+
+        $postContent = [
+            'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
+            'code' => 'celine_dion',
+            'enriched_entity_identifier' => 'singer',
+            'labels' => [
+                'en_US' => 'Celine Dion',
+                'fr_FR' => 'Madame Celine Dion',
+            ],
+            'image' => [
+                'originalFilename' => 'baz'
+            ],
+        ];
+        $callRoute($postContent);
         $response = $this->client->getResponse();
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
@@ -152,7 +239,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
             'enriched_entity_identifier' => 'singer',
-            'labels'     => [
+            'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
             ],
@@ -167,24 +254,25 @@ class EditActionTest extends ControllerIntegrationTestCase
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
+                'CONTENT_TYPE' => 'application/json',
             ],
             $postContent
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"The identifier provided in the route and the one given in the body of the request are different"');
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST,
+            '"The identifier provided in the route and the one given in the body of the request are different"');
     }
 
     /**
      * @test
      */
-    public function it_returns_an_error_if_the_enriched_entity_identifier_provided_in_the_route_is_different_from_the_body()
-    {
+    public function it_returns_an_error_if_the_enriched_entity_identifier_provided_in_the_route_is_different_from_the_body(
+    ) {
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
             'enriched_entity_identifier' => 'singer',
-            'labels'     => [
+            'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
             ],
@@ -199,12 +287,13 @@ class EditActionTest extends ControllerIntegrationTestCase
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE'          => 'application/json',
+                'CONTENT_TYPE' => 'application/json',
             ],
             $postContent
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"The identifier provided in the route and the one given in the body of the request are different"');
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST,
+            '"The identifier provided in the route and the one given in the body of the request are different"');
     }
 
     private function getRecordRepository(): RecordRepositoryInterface
@@ -218,6 +307,12 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('singer');
         $recordCode = RecordCode::fromString('celine_dion');
+
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_1.jpg')
+            ->setKey('test/image_1.jpg');
+
         $entityItem = Record::create(
             RecordIdentifier::fromString('singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392'),
             $enrichedEntityIdentifier,
@@ -226,6 +321,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Celine Dion',
             ],
+            Image::fromFileInfo($imageInfo),
             ValueCollection::fromValues([])
         );
         $repository->create($entityItem);

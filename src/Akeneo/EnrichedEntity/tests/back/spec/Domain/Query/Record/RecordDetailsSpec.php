@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\EnrichedEntity\Domain\Query\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -25,6 +26,7 @@ class RecordDetailsSpec extends ObjectBehavior
             $enrichedEntityIdentifier,
             $code,
             $labelCollection,
+            Image::createEmpty(),
             []
         );
     }
@@ -51,6 +53,7 @@ class RecordDetailsSpec extends ObjectBehavior
             'enriched_entity_identifier' => 'designer',
             'code' => 'starck',
             'labels' => ['fr_FR' => 'Philippe Starck'],
+            'image' => null,
             'values' => [],
         ]);
     }

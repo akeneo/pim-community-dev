@@ -75,7 +75,7 @@ final class EditEnrichedEntityContext implements Context
                 EnrichedEntity::create(
                     EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
                     json_decode($enrichedEntity['labels'], true),
-                    null
+                    Image::createEmpty()
                 )
             );
         }
@@ -136,7 +136,7 @@ final class EditEnrichedEntityContext implements Context
             EnrichedEntity::create(
                 EnrichedEntityIdentifier::fromString($identifier),
                 [$localCode => $label],
-                null
+                Image::createEmpty()
             )
         );
     }
@@ -208,7 +208,7 @@ final class EditEnrichedEntityContext implements Context
 
         Assert::assertEquals($enrichedEntity->getImage()->getKey(), $filePath);
     }
-    
+
     private function editEnrichedEntity(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
     {
         $this->constraintViolationsContext->addViolations($this->validator->validate($editEnrichedEntityCommand));

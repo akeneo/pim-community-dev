@@ -25,6 +25,7 @@
   (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
 - rework constructors to receive domain models (label collection)
 - fix the enriched entity field on the pef to be able to search when the search will work (front)
+- PIM-7677: Better storage management. https://akeneo.atlassian.net/browse/PIM-7677
 
 DONE:
 

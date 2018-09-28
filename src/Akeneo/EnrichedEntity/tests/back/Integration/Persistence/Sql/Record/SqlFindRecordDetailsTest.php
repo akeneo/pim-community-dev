@@ -25,6 +25,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
@@ -39,6 +40,7 @@ use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
 use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 {
@@ -117,11 +119,17 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
             ],
         ];
 
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
+
         $expectedStarck = new RecordDetails(
             $this->recordIdentifier,
             $enrichedEntityIdentifier,
             $recordCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
+            Image::fromFileInfo($imageInfo),
             $expectedValues
         );
 
@@ -143,7 +151,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntity);
 
@@ -186,12 +194,19 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
         $starckCode = RecordCode::fromString('starck');
         $this->recordIdentifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $starckCode);
+
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
+
         $this->recordRepository->create(
             Record::create(
                 $this->recordIdentifier,
                 $enrichedEntityIdentifier,
                 $starckCode,
                 ['fr_FR' => 'Philippe Starck'],
+                Image::fromFileInfo($imageInfo),
                 ValueCollection::fromValues([$value])
             )
         );

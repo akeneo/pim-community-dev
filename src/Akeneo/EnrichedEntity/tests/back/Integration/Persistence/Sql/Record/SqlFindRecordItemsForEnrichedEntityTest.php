@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
@@ -23,6 +24,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
 {
@@ -90,11 +92,17 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntity);
 
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
+
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+
         $starckCode = RecordCode::fromString('starck');
         $this->starckIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $starckCode);
         $recordRepository->create(
@@ -103,6 +111,7 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
                 $enrichedEntityIdentifier,
                 $starckCode,
                 ['fr_FR' => 'Philippe Starck'],
+                Image::fromFileInfo($imageInfo),
                 ValueCollection::fromValues([])
             )
         );
@@ -114,6 +123,7 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
                 $enrichedEntityIdentifier,
                 $cocoCode,
                 ['fr_FR' => 'Coco Chanel'],
+                Image::createEmpty(),
                 ValueCollection::fromValues([])
             )
         );

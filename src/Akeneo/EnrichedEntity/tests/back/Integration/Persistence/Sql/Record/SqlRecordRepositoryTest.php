@@ -29,6 +29,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
@@ -72,6 +73,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -84,7 +86,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_a_record_with_and_finds_it_by_enriched_entity_and_record_code()
+    public function it_creates_a_record_with_no_values_and_finds_it_by_enriched_entity_and_record_code()
     {
         $recordCode = RecordCode::fromString('starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
@@ -94,6 +96,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -111,16 +114,23 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $recordCode = RecordCode::fromString('starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
         $fileInfo = new FileInfo();
         $fileInfo
-            ->setOriginalFilename('image.png')
-            ->setKey('/a/file/image');
+            ->setOriginalFilename('image_1.jpg')
+            ->setKey('test/image_1.jpg');
+
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
 
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::fromFileInfo($imageInfo),
             ValueCollection::fromValues([
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
@@ -141,6 +151,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $recordFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($record->normalize(), $recordFound->normalize());
+
+        $recordFound = $this->repository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 
     /**
@@ -156,6 +169,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->repository->create($record);
@@ -172,15 +186,18 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+
         $fileInfo = new FileInfo();
         $fileInfo
-            ->setOriginalFilename('image.png')
-            ->setKey('/a/file/image');
+            ->setOriginalFilename('image_1.jpg')
+            ->setKey('test/image_1.jpg');
+
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
             ValueCollection::fromValues([
                 Value::create(
                     AttributeIdentifier::fromString('name_designer_fingerprint'),
@@ -213,6 +230,12 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $updatedValueCollection = ValueCollection::fromValues([$valueToUpdate, $valueToAdd]);
         $record->setValues($updatedValueCollection);
 
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename('image_2.jpg')
+            ->setKey('test/image_2.jpg');
+        $record->updateImage(Image::fromFileInfo($imageInfo));
+
         $this->repository->update($record);
         $recordFound = $this->repository->getByIdentifier($identifier);
 
@@ -232,6 +255,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $enrichedEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -255,6 +279,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $enrichedEntityIdentifier,
             $recordCode,
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -269,6 +294,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             $enrichedEntityIdentifier,
             $recordCode,
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
 
@@ -314,7 +340,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer'
             ],
-            null
+            Image::createEmpty()
         );
         $repository->create($enrichedEntity);
 

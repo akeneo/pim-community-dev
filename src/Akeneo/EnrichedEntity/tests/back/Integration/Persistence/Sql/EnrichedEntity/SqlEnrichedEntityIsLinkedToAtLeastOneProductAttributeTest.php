@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
@@ -67,7 +68,7 @@ class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInteg
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Domain\Query\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -30,6 +31,7 @@ class RecordDetails
     private const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
+    private const IMAGE = 'image';
     private const VALUES = 'values';
 
     /** @var RecordIdentifier */
@@ -44,6 +46,9 @@ class RecordDetails
     /** @var LabelCollection */
     private $labels;
 
+    /** @var Image */
+    private $image;
+
     /** @var array */
     private $values;
 
@@ -52,6 +57,7 @@ class RecordDetails
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code,
         LabelCollection $labels,
+        Image $image,
         array $values
     ) {
         $this->identifier = $identifier;
@@ -59,6 +65,7 @@ class RecordDetails
         $this->code = $code;
         $this->labels = $labels;
         $this->values = $values;
+        $this->image = $image;
     }
 
     public function normalize(): array
@@ -68,6 +75,7 @@ class RecordDetails
             self::ENRICHED_ENTITY_IDENTIFIER => $this->enrichedEntityIdentifier->normalize(),
             self::CODE                       => $this->code->normalize(),
             self::LABELS                     => $this->labels->normalize(),
+            self::IMAGE                      => $this->image->normalize(),
             self::VALUES                     => $this->values,
         ];
     }

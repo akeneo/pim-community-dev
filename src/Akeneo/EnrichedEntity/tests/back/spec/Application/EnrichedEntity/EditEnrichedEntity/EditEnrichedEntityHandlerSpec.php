@@ -31,7 +31,8 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         EnrichedEntity $enrichedEntity,
         EditEnrichedEntityCommand $editEnrichedEntityCommand,
         FileStorerInterface $storer,
-        FileInfoInterface $fileInfo
+        FileInfoInterface $fileInfo,
+        Image $image
     ) {
         $editEnrichedEntityCommand->identifier = 'designer';
         $editEnrichedEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
@@ -40,7 +41,8 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $repository->getByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
             ->willReturn($enrichedEntity);
 
-        $enrichedEntity->getImage()->willReturn(null);
+        $enrichedEntity->getImage()->willReturn($image);
+        $image->isEmpty()->willReturn(true);
 
         $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();

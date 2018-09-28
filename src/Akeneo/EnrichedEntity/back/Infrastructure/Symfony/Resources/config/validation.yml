@@ -55,6 +55,8 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+        image:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Image: ~
 
 Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:

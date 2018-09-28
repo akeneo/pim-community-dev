@@ -126,6 +126,7 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     `code` VARCHAR(255) NOT NULL,
     `enriched_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
+    `image` VARCHAR(255) NULL,
     `value_collection` JSON NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE `akeneoenriched_entity_record_identifier_index` (`identifier`, `enriched_entity_identifier`),
@@ -260,19 +261,25 @@ SQL;
 
     private function loadRecords(): void
     {
+        $starck_image = $this->uploadEnrichedEntityImage('philippe_starck');
+        $arad_image = $this->uploadEnrichedEntityImage('ron_arad');
+
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `value_collection`)
+INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `value_collection`, image)
 VALUES
-  ('designer_starck_1', 'starck', 'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
-  ('designer_dyson_2',  'dyson', 'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
-  ('designer_newson_3', 'newson', 'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
-  ('designer_vignelli_4', 'vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
-  ('designer_arad_5', 'arad', 'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
-  ('brand_cogip_6', 'cogip', 'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
-  ('brand_sbep_7', 'sbep', 'brand', '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
-  ('brand_scep_8', 'scep', 'brand', '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
+  ('designer_starck_1', 'starck', 'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}', :starck_image),
+  ('designer_dyson_2',  'dyson', 'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}', NULL),
+  ('designer_newson_3', 'newson', 'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}', NULL),
+  ('designer_vignelli_4', 'vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}', NULL),
+  ('designer_arad_5', 'arad', 'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}', :arad_image),
+  ('brand_cogip_6', 'cogip', 'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}', NULL),
+  ('brand_sbep_7', 'sbep', 'brand', '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}', NULL),
+  ('brand_scep_8', 'scep', 'brand', '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}', NULL);
 SQL;
-        $affectedRows = $this->dbal->exec($sql);
+        $affectedRows = $this->dbal->executeUpdate($sql, [
+            'starck_image' => $starck_image->getKey(),
+            'arad_image' => $arad_image->getKey(),
+        ]);
         if (0 === $affectedRows) {
             throw new \LogicException('An issue occured while installing the records.');
         }

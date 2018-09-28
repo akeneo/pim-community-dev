@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -56,11 +58,26 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
             $allValues[] = $value;
         }
 
+        $recordImage = Image::createEmpty();
+
+        if (isset($row['image'])) {
+            $image = json_decode($row['image'], true);
+            $imageKey = Type::getType(Type::STRING)
+                ->convertToPHPValue($image['file_key'], $this->platform);
+            $imageFilename = Type::getType(Type::STRING)
+                ->convertToPHPValue($image['original_filename'], $this->platform);
+            $file = new FileInfo();
+            $file->setKey($imageKey);
+            $file->setOriginalFilename($imageFilename);
+            $recordImage = Image::fromFileInfo($file);
+        }
+
         $recordDetails = new RecordDetails(
             RecordIdentifier::fromString($recordIdentifier),
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
             RecordCode::fromString($recordCode),
             LabelCollection::fromArray($labels),
+            $recordImage,
             $allValues
         );
 

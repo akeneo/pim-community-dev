@@ -97,18 +97,19 @@ SQL;
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $file = null;
+        $entityImage = Image::createEmpty();
 
         if (null !== $fileKey && null !== $originalFilename) {
             $file = new FileInfo();
             $file->setKey($fileKey);
             $file->setOriginalFilename($originalFilename);
+            $entityImage=Image::fromFileInfo($file);
         }
 
         $enrichedEntityItem = new EnrichedEntityDetails();
         $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
-        $enrichedEntityItem->image = (null !== $file) ? Image::fromFileInfo($file) : null;
+        $enrichedEntityItem->image = $entityImage;
 
         return $enrichedEntityItem;
     }

@@ -9,6 +9,7 @@ use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
@@ -171,16 +172,24 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $enrichedEntityRepository = $this->getEnrichEntityRepository();
         $recordRepository = $this->getRecordRepository();
 
-        $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
-            'en_US' => 'Designer',
-            'fr_FR' => 'Concepteur',
-        ], null);
+        $entityItem = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('designer'),
+            [
+                'en_US' => 'Designer',
+                'fr_FR' => 'Concepteur',
+            ],
+            Image::createEmpty()
+        );
         $enrichedEntityRepository->create($entityItem);
 
-        $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [
-            'en_US' => 'Brand',
-            'fr_FR' => 'Marque',
-        ], null);
+        $entityItem = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('brand'),
+            [
+                'en_US' => 'Brand',
+                'fr_FR' => 'Marque',
+            ],
+            Image::createEmpty()
+        );
         $enrichedEntityRepository->create($entityItem);
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');
@@ -193,6 +202,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'ASUS',
                 'fr_FR' => 'ASUS',
             ],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $recordRepository->create($recordItem);

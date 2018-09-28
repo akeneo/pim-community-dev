@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -32,11 +34,8 @@ class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedE
     /** @var Connection */
     private $sqlConnection;
 
-    /** @var RecordRepositoryInterface  */
-    private $recordRepository;
-
     /**
-     * @param Connection $sqlConnection
+     * @param Connection                $sqlConnection
      * @param RecordRepositoryInterface $recordRepository
      */
     public function __construct(Connection $sqlConnection)
@@ -50,22 +49,29 @@ class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedE
     public function __invoke(EnrichedEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT identifier, enriched_entity_identifier, code, labels
-        FROM akeneo_enriched_entity_record
+        SELECT ee.identifier, ee.enriched_entity_identifier, ee.code, ee.labels, fi.image
+        FROM akeneo_enriched_entity_record AS ee
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image
         WHERE enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => (string) $identifier
+            'enriched_entity_identifier' => (string) $identifier,
         ]);
-        $results = $statement->fetchAll();
+        $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
 
         $recordItems = [];
+
         foreach ($results as $result) {
+            $image = null !== $result['image'] ? json_decode($result['image'], true) : null;
             $recordItems[] = $this->hydrateRecordItem(
                 $result['identifier'],
                 $result['enriched_entity_identifier'],
                 $result['code'],
+                $image,
                 $result['labels']
             );
         }
@@ -77,6 +83,7 @@ SQL;
         string $identifier,
         string $enrichedEntityIdentifier,
         string $code,
+        ?array $image,
         string $normalizedLabels
     ): RecordItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -87,11 +94,25 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
 
+        $recordImage = Image::createEmpty();
+
+        if (null !== $image) {
+            $imageKey = Type::getType(Type::STRING)
+                ->convertToPHPValue($image['file_key'], $platform);
+            $imageFilename = Type::getType(Type::STRING)
+                ->convertToPHPValue($image['original_filename'], $platform);
+            $file = new FileInfo();
+            $file->setKey($imageKey);
+            $file->setOriginalFilename($imageFilename);
+            $recordImage = Image::fromFileInfo($file);
+        }
+
         $recordItem = new RecordItem();
         $recordItem->identifier = RecordIdentifier::fromString($identifier);
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
         $recordItem->code = RecordCode::fromString($code);
         $recordItem->labels = LabelCollection::fromArray($labels);
+        $recordItem->image = $recordImage;
 
         return $recordItem;
     }

@@ -69,17 +69,19 @@ class SqlRecordRepository implements RecordRepositoryInterface
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_record (identifier, code, enriched_entity_identifier, labels, value_collection)
-        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :value_collection);
+        INSERT INTO akeneo_enriched_entity_record 
+            (identifier, code, enriched_entity_identifier, labels, image, value_collection)
+        VALUES (:identifier, :code, :enriched_entity_identifier, :labels, :image, :value_collection);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier'                 => (string) $record->getIdentifier(),
-                'code'                       => (string) $record->getCode(),
+                'identifier' => (string) $record->getIdentifier(),
+                'code' => (string) $record->getCode(),
                 'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
-                'labels'                     => $serializedLabels,
-                'value_collection'           => $record->getValues()->normalize(),
+                'labels' => $serializedLabels,
+                'image' => $record->getImage()->isEmpty() ? null : $record->getImage()->getKey(),
+                'value_collection' => $record->getValues()->normalize(),
             ],
             [
                 'value_collection' => Type::JSON_ARRAY,
@@ -95,16 +97,17 @@ SQL;
     public function update(Record $record): void
     {
         $serializedLabels = $this->getSerializedLabels($record);
-        $insert = <<<SQL
+        $update = <<<SQL
         UPDATE akeneo_enriched_entity_record
-        SET labels = :labels, value_collection = :value_collection
+        SET labels = :labels, image = :image, value_collection = :value_collection
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
-            $insert,
+            $update,
             [
-                'identifier'       => $record->getIdentifier(),
-                'labels'           => $serializedLabels,
+                'identifier' => $record->getIdentifier(),
+                'labels' => $serializedLabels,
+                'image' => $record->getImage()->isEmpty() ? null : $record->getImage()->getKey(),
                 'value_collection' => $record->getValues()->normalize(),
             ],
             [
@@ -124,14 +127,18 @@ SQL;
         RecordCode $code
     ): Record {
         $fetch = <<<SQL
-        SELECT identifier, code, enriched_entity_identifier, labels, value_collection
-        FROM akeneo_enriched_entity_record
+        SELECT identifier, code, enriched_entity_identifier, labels, value_collection, fi.image
+        FROM akeneo_enriched_entity_record ee
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image
         WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'code'                       => (string) $code,
+                'code' => (string) $code,
                 'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
             ]
         );
@@ -147,8 +154,12 @@ SQL;
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
         $fetch = <<<SQL
-        SELECT identifier, code, enriched_entity_identifier, labels, value_collection
-        FROM akeneo_enriched_entity_record
+        SELECT ee.identifier, ee.code, ee.enriched_entity_identifier, ee.labels, ee.value_collection, fi.image
+        FROM akeneo_enriched_entity_record AS ee
+        LEFT JOIN (
+          SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
+          FROM akeneo_file_storage_file_info
+        ) AS fi ON fi.file_key = ee.image
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -157,7 +168,7 @@ SQL;
                 'identifier' => (string) $identifier,
             ]
         );
-        $result = $statement->fetch();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
         if (!$result) {
             throw RecordNotFoundException::withIdentifier($identifier);

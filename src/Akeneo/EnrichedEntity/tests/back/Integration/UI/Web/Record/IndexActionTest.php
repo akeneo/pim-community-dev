@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
 use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -65,6 +66,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                     'labels'                     => [
                         'en_US' => 'Philippe Starck',
                     ],
+                    'image' => null
                 ],
                 [
                     'identifier'                 => 'designer_coco_a1677570-a278-444b-ab46-baa1db199392',
@@ -73,6 +75,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                     'labels'                     => [
                         'en_US' => 'Coco',
                     ],
+                    'image' => null
                 ],
             ],
             'total' => 2,
@@ -116,6 +119,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
         $recordItem->code = RecordCode::fromString($code);
         $recordItem->labels = LabelCollection::fromArray($labels);
+        $recordItem->image = Image::createEmpty();
 
         return $recordItem;
     }

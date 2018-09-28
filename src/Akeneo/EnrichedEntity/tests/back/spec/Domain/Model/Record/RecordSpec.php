@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -38,6 +39,7 @@ class RecordSpec extends ObjectBehavior
             $enrichedEntityIdentifier,
             $recordCode,
             $labelCollection,
+            Image::createEmpty(),
             $valueCollection
         ]);
     }
@@ -71,6 +73,7 @@ class RecordSpec extends ObjectBehavior
             EnrichedEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->equals($sameRecord)->shouldReturn(true);
@@ -81,6 +84,7 @@ class RecordSpec extends ObjectBehavior
             EnrichedEntityIdentifier::fromString('designer'),
             RecordCode::fromString('jony_ive'),
             [],
+            Image::createEmpty(),
             ValueCollection::fromValues([])
         );
         $this->equals($anotherRecord)->shouldReturn(false);

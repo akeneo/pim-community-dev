@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
@@ -135,10 +136,14 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $enrichedEntityRepository = $this->getEnrichEntityRepository();
 
-        $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
-            'en_US' => 'Designer',
-            'fr_FR' => 'Concepteur',
-        ], null);
+        $entityItem = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('designer'),
+            [
+                'en_US' => 'Designer',
+                'fr_FR' => 'Concepteur',
+            ],
+            Image::createEmpty()
+        );
         $enrichedEntityRepository->create($entityItem);
 
         $user = new User();

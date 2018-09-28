@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
-import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
 const router = require('pim/router');
 
 export default ({
@@ -38,7 +37,7 @@ export default ({
       }}
     >
       <td className="AknGrid-bodyCell">
-        <img className="AknGrid-image" src={getImageShowUrl(createEmptyFile(), 'thumbnail_small')} title="" />
+        <img className="AknGrid-image" src={getImageShowUrl(record.getImage(), 'thumbnail_small')} title="" />
       </td>
       <td className="AknGrid-bodyCell">
         <a

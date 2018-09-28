@@ -28,7 +28,7 @@ class EnrichedEntitySpec extends ObjectBehavior
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
         ];
-        $this->beConstructedThrough('create', [$identifier, $labelCollection, null]);
+        $this->beConstructedThrough('create', [$identifier, $labelCollection, Image::createEmpty()]);
     }
 
     public function it_is_initializable()
@@ -48,7 +48,7 @@ class EnrichedEntitySpec extends ObjectBehavior
         $sameEnrichedEntity = EnrichedEntity::create(
             $sameIdentifier,
             [],
-            null
+            Image::createEmpty()
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(true);
 
@@ -56,7 +56,7 @@ class EnrichedEntitySpec extends ObjectBehavior
         $sameEnrichedEntity = EnrichedEntity::create(
             $anotherIdentifier,
             [],
-            null
+            Image::createEmpty()
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(false);
     }

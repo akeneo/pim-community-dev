@@ -21,6 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
@@ -120,10 +121,15 @@ class EditActionTest extends ControllerIntegrationTestCase
         $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_edit', true);
 
         $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [],
-            null));
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('brand'), [],
-            null));
+        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'),
+            [],
+            Image::createEmpty()
+        ));
+        $enrichedEntityRepository->create(EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('brand'),
+            [],
+            Image::createEmpty()
+        ));
 
         $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
         $name = TextAttribute::createText(

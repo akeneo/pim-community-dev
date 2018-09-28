@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Integration\Persistence\Helper;
 use Doctrine\DBAL\Connection;
 
 /**
- * This class is responsible for helping calling web routes.
+ * This class is responsible for helping in DB setup in tests.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -39,6 +39,7 @@ class DatabaseHelper
         $this->insertDefaultChannels();
         $this->insertDefaultAssetTree();
         $this->insertUsers();
+        $this->insertImages();
     }
 
     private function resetTables(): void
@@ -54,6 +55,7 @@ class DatabaseHelper
             DELETE FROM pim_catalog_category;
             DELETE FROM pimee_product_asset_category;
             DELETE FROM pim_catalog_locale;
+            DELETE FROM akeneo_file_storage_file_info;
 SQL;
         $this->sqlConnection->executeQuery($resetQuery);
     }
@@ -118,5 +120,16 @@ SQL;
 	        (1, 1, 'admin', 'admin@example.com', NULL, 'John', NULL, 'Doe', NULL, NULL, NULL, 1, '9zpd00l1ijkg0s44og4wck0cwoo00c8', '2S/jxiyQSBEsCWqvH3YOpelBwjfj2MhmDV8mFcrOD6pcGa9VzUlVuJ7R64fG68llfHpyjXJbvD9gnAzMDnsn8w==', NULL, NULL, NULL, 0, '2018-09-14 23:46:33', '2018-09-14 23:46:33', '[]', 0, NULL, 'UTC', 5, 1, 1, 1, 1, 1, 1);
 SQL;
         $this->sqlConnection->executeQuery($resetUsers);
+    }
+
+    private function insertImages(): void
+    {
+        $imagesQuery = <<<SQL
+        INSERT INTO akeneo_file_storage_file_info (file_key, original_filename, mime_type, size, extension, hash, storage) 
+        VALUES
+        ('test/image_1.jpg', 'image_1.jpg', 'image/jpeg', 295739, 'jpg', '4d78843ea9e6c93b8677b80cb926c9c74c17aa6e', 'catalogStorage'), 
+        ('test/image_2.jpg', 'image_2.jpg', 'image/jpeg', 97573, 'jpg', '61e3f10aad1db6bfa7d2eff35fee97d377dec01d', 'catalogStorage');
+SQL;
+        $this->sqlConnection->executeUpdate($imagesQuery);
     }
 }

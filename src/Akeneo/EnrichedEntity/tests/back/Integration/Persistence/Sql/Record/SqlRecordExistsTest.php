@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -72,7 +73,7 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntity);
     }
@@ -90,6 +91,7 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
                 $enrichedEntityIdentifier,
                 $recordCode,
                 ['fr_FR' => 'Philippe Starck'],
+                Image::createEmpty(),
                 ValueCollection::fromValues([])
             )
         );

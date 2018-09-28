@@ -30,6 +30,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
 use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -92,7 +93,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntityFull);
 
@@ -171,7 +172,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
-            null
+            Image::createEmpty()
         );
         $enrichedEntityRepository->create($enrichedEntityEmpty);
     }

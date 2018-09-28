@@ -3,6 +3,7 @@
 namespace spec\Akeneo\EnrichedEntity\Domain\Query\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Image;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -25,6 +26,7 @@ class RecordItemSpec extends ObjectBehavior
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
         ]);
+        $this->image = Image::createEmpty();
 
         $this->normalize()->shouldReturn(
             [
@@ -35,6 +37,7 @@ class RecordItemSpec extends ObjectBehavior
                     'fr_FR' => 'Philippe starck',
                     'en_US' => 'Philip starck',
                 ],
+                'image' => null,
             ]
         );
     }
