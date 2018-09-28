@@ -247,9 +247,9 @@ extensions:
             readOnly: true
 
 
-    pim-user-edit-form-default-grid-views:
+    pim-user-show-default-grid-views:
         module: pim/user/fields/default-grid-views
-        parent: pim-user-edit-form-additional-tab-content
+        parent: pim-user-show-additional-tab-content
         position: 40
         targetZone: content
         config:
