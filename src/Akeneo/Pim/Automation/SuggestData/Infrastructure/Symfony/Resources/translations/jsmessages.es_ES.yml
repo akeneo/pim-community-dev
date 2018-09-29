@@ -1,17 +1,9 @@
-pim_title:
-  akeneo_suggest_data_connection_index: 'Conexión PIM.ai'
-  akeneo_suggest_data_identifiers_mapping_edit: 'Configuración de PIM.ai'
-  akeneo_suggest_data_attributes_mapping_edit: 'Configuración de PIM.ai'
-pim_menu:
-  item:
-    pim_ai: PIM.ai
 akeneo_suggest_data:
   entity:
     identifier_mapping:
       plural_label: Identificadores
       fields:
         identifier_label:
-          label: Identificador de la etiqueta
           values:
             brand: Marca
             asin: ASIN
@@ -22,7 +14,6 @@ akeneo_suggest_data:
           inactive: Inactivo
     attributes_mapping:
       fields:
-        pim_ai_attribute: 'Atributo PIM.ai'
         suggest_data:
           mapped: Activo
           unmapped: Inactivo
@@ -30,18 +21,13 @@ akeneo_suggest_data:
         subscribe:
           subscribe: 'Suscribir familia a PIM.ai'
           subscribed: 'Suscrito a PIM.ai'
-  pim_ai:
-    page_title: 'Conexión PIM.ai'
+  connection:
     module:
       activation:
-        label: 'Conector PIM.ai'
         activation_code: 'Código de activación'
         activated: 'Habilitado'
         activate: 'Activar'
   settings:
-    page_title: 'Configuración de PIM.ai'
     module:
-      title:
-        sub_title: 'Bienvenido a la configuración IA de Información de Producto'
       inactive_connection:
         title: Lo sentimos, no hay nada que mostrar aquí todavía

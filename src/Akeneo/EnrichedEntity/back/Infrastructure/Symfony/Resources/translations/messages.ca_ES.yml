@@ -4,5 +4,6 @@ akeneo_enrichedentity:
   acl:
     enriched_entity:
       create: Crear una entitat
+      delete: Suprimir una entitat
     record:
       create: Crear registre

@@ -221,7 +221,7 @@ batch_jobs:
     execute_rules.label: ルールの実行
   publish_product:
     perform.label: 公開製品
-pim_catalog_volumne:
+pim_catalog_volume:
   axis:
     count_assets: アセット
     count_asset_categories: アセットカテゴリー
