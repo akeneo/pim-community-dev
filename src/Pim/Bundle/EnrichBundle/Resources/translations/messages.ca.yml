@@ -621,6 +621,7 @@ pim_title.product:
   edit: "Productes %product.sku% | Editar"
 pim_title.family:
   index: "Famílies"
+  edit: "Famílies %code% | Editar"
 pim_title.channel:
   index: "Canals"
   create: "Canals | Crear"
@@ -841,6 +842,7 @@ job_execution.summary:
   skip: Omès
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
+  skipped_families: Famílies omeses
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs comuns
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
@@ -904,6 +906,8 @@ pim_enrich_attribute_form:
   code: Codi
   type: Tipus d'atribut
   reference_data_name: Nom de dades de referència
+  scopable: Valor per canal
+  localizable: Valor per local
   unique: Valor únic
   availableLocales: Configuracions regionals disponibles
   locale_specific: Configuració regional específica

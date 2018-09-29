@@ -57,6 +57,8 @@ flash:
   role:
     removed: Rol eliminat correctament
 error:
+  creating:
+    product: Cap atribut s'ha configurat com identificador del producte o no té permisos per editar-lo.
   removing:
     item: No podeu eliminar aquest element
     association_type: No podeu eliminar aquest tipus d'associació
@@ -157,6 +159,7 @@ pim_enrich:
         deletion_failed: No s'ha pogut suprimir el producte.
         update_successful: Producte actualitzat correctament.
         update_failed: El producte podria no actualitzar-se.
+        field_not_ready: "Ara no es pot guardar el producte. Els següents camps no estan preparats: {{ fields }}"
         already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       error:
         upload: S'ha produït un error durant la càrrega
@@ -203,6 +206,10 @@ pim_enrich:
           cancel: Cancelar
     association_type:
       info:
+        deletion_successful: Tipus d'associació eliminat correctament.
+        deletion_failed: No s'ha pogut eliminar el tipus d'associació.
+        update_successful: Tipus d'associació actualitzat correctament.
+        update_failed: No s'ha pogut actualitzar el tipus d'associació.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - camps
@@ -216,6 +223,12 @@ pim_enrich:
     channel:
       title: canal
       info:
+        deletion_successful: Canal eliminat correctament.
+        deletion_failed: El canal no s'ha pogut eliminar.
+        update_successful: Canal actualitzat correctament.
+        update_failed: El canal no s'ha pogut actualitzar.
+        create_successful: Canal creat correctament.
+        create_failed: El canal no s'ha pogut crear.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - camps
@@ -228,6 +241,12 @@ pim_enrich:
         save: Desar
     family:
       title: família
+      info:
+        update_successful: Família actualitzada correctament.
+        create_successful: Canal creat correctament.
+        update_failed: S'ha produït un error durant l'actualització de la família.
+        cant_remove_attribute_as_label: No es pot eliminar un atribut utilitzat com etiqueta
+        attribute_edit_permission_is_not_granted: No teniu permisos per editar els atributs de la família
       meta:
         created: Creat
         created_by: Creat per
@@ -277,6 +296,11 @@ pim_enrich:
         created_by: Creat per
         updated: Actualitzat
         updated_by: Actualitzat per
+    job_instance:
+      title: perfil de treball
+      info:
+        update_failed: No s'ha pogut actualitzar el perfil de treball.
+        update_successful: El perfil de treball s'ha actualitzat correctament.
   confirmation:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
@@ -311,6 +335,7 @@ pim_enrich:
           info:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
+            attributes_selected: "{{ itemsCount }} atribut(s) seleccionat(s)"
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
         categories:
@@ -383,8 +408,10 @@ pim_enrich:
           title: Atributs
           label_label: Etiqueta
           toolbox:
+            select_attributes_by_groups: Afegir per grups
             select_attributes: Afegir atributs
             add: Afegir
+            attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
           not_required_label: No és obligatori
           required_label: Obligatori
         history:
@@ -438,6 +465,12 @@ pim_enrich:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
     job_instance:
+      fail:
+        launch: No s'ha pogut iniciar el perfil de treball. Assegureu-vos que és vàlid i que teniu dret a executar-lo.
+        save: No ha pogut desar el perfil de treball. Assegureu-vos que teniu dret a editar-lo.
+      title:
+        import: Perfils d'importació
+        export: Perfils d'exportació
       button:
         edit.title: Editar
         export.title: Exportar ara
@@ -510,8 +543,12 @@ pim_enrich:
         attributes:
           label_label: Etiqueta
           toolbox:
+            select_attributes_by_groups: Afegir per grups
             select_attributes: Afegir atributs
             add: Afegir
+            attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
+  job:
+    upload: Arrossegui aquí un arxiu o feu-hi clic
   export:
     product:
       data:
@@ -539,6 +576,7 @@ pim_enrich:
             title: Selecció de l'atribut
         attributes_selector:
           attribute_group: Grups d'atribut
+          attributes: "Cercar a {{ itemsCount }} atributs"
           selected: "Atributs seleccionats"
           clear: Restablir
           all_group: Tots els grups
