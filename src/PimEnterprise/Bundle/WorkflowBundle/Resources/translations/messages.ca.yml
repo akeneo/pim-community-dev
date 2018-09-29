@@ -157,3 +157,7 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importació en XLSX del producte proposat
     import.label: Importació en XLSX del producte proposat
+pim_analytics:
+  info_type:
+    nb_published_products: Número de productes publicats
+    nb_product_drafts: Nombre d'esborranys de productes

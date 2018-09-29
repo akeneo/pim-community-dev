@@ -137,6 +137,9 @@ edit_common_attributes_with_permission_and_rules:
   steps.perform: Editar atributs comuns
   steps.edit_common_attributes_processor.title: Editar atributs comuns
 batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Importar configuració de recursos per canal
   add_product_value_with_permission_and_rules:
     label: Afegir valor producte amb comprovació de permisos i aplicació de regles
     perform.label: Afegir valor de producte

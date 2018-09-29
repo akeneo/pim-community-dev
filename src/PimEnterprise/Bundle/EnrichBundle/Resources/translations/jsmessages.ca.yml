@@ -19,8 +19,10 @@ pimee_enrich:
       tab:
         permission:
           title: Permisos
+          added: El grup {{ group }} s'autoritzarà a {{ permission }} perfil de treball
           execute.label: Autoritzat per executar el perfil d'aquesta tasca
           edit.label: Autoritzat per editar el perfil d'aquesta tasca
+          removed: El grup {{ group }} no s'autoritzarà a {{ permission }} perfil de treball
     channel:
       tab:
         asset-transformation:
