@@ -51,6 +51,7 @@ pim_catalog:
     family_variant_axes_number_of_axes: 'Ein Variantenattribut-Set darf nicht mehr als %max_axes_number% Achsen haben'
     family_variant_axis_level: Attribut "%axis%" muss als Attribut im selben Variantattribut gesetzt sein, in dem es als Achse gesetzt wurde
     family_variant_has_family_attribute: 'Attribut "%attribute%" kann nicht der Variantenfamilie "%family_variant%" hinzugefügt werden, da es kein Attribut der Familie "%family%" ist'
+    family_variant_unique_attributes_in_last_level: Eindeutiges Attribut "%attribute%" muss auf Produktebene gesetzt sein
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
     0: Es ist ein unerwarteter Fehler aufgetreten.
     100: Unerwarteter Wert

@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Extracció d'entitats
     csv_reader:
       title: Lector de CSV
+    file_reader:
+      invalid_item_columns_count: 'Esperem tenir %totalColumnsCount% columnes, ara tenim %itemColumnsCount% a %filePath%:%lineno%'
     csv_product_reader.title: Lector CSV de productes
     csv_category_reader.title: Lector CSV de categories
     dummy_processor.title: Processador de proves
@@ -38,11 +40,18 @@ job_execution.summary:
     title: 'Codificació de l''arxiu:'
     skipped: omès, extensió a la llista blanca
   product_skipped_no_diff: producte omès (no hi ha diferències)
+  product_skipped_no_associations: producte omès (cap associació detectada)
+  product_model_skipped_no_diff: models de producte omès (no hi ha diferències)
   item_position: llegir les línies
+  skipped_in_root_product_model: ometre el model de producte amb el pare
+  skipped_in_sub_product_model: ometre el model de producte sense el pare
 batch_jobs:
   csv_product_export:
     label: Exportar productes a CSV
     export.label: Exportar productes
+  csv_product_model_export:
+    label: Exportar model de producte a CSV
+    export.label: Exportar model de producte
   csv_category_export:
     label: Exportar categories en CSV
     export.label: Exportar categories
@@ -61,13 +70,20 @@ batch_jobs:
   csv_family_export:
     label: Exportar famílies en CSV
     export.label: Exportar família
+  csv_family_variant_export:
+    label: Exportar variant de família a CSV
+    export.label: Exportar variant de família
   csv_product_import:
     label: Importar producte en CSV
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
   csv_product_model_import:
+    label: Importar model de producte a CSV
     validation.label: Validar arxius
+    import_root_product_model.label: Importar el model de producte base
+    import_sub_product_model.label: Importar el model de subproducte
+    import_product_model_descendants.label: Calcular descendents del model de producte
   csv_category_import:
     label: Importar categories en CSV
     validation.label: Validar arxius
@@ -89,7 +105,9 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar família
   csv_family_variant_import:
+    label: Importar variant de família a CSV
     validation.label: Validar arxius
+    import.label: Importar variant de família
   csv_group_import:
     label: Importar grups en CSV
     validation.label: Validar arxius
@@ -150,17 +168,26 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar família
   xlsx_family_variant_import:
+    label: Importar variant de família a XLSX
     validation.label: Validar arxius
+    import.label: Importar variant de família
   xlsx_product_export:
     label: Exportació de producte en XLSX
     export.label: Exportar productes
+  xlsx_product_model_export:
+    label: Exportar model de producte a XLSX
+    export.label: Exportar model de producte
   xlsx_product_import:
     label: Importació de producte en XLSX
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
   xlsx_product_model_import:
+    label: Importar model de producte a XSLX
     validation.label: Validar arxius
+    import_root_product_model.label: Importar el model de producte base
+    import_sub_product_model.label: Importar el model de subproducte
+    import_product_model_descendants.label: Calcular descendents del model de producte
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups
