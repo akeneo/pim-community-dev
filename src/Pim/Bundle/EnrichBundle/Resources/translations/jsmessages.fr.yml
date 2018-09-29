@@ -874,7 +874,7 @@ pim_enrich:
           help: Choisir les produits à exporter selon leur complétude.
           operators:
             ALL: Pas de condition sur la complétude
-            ">=": Complet sur au moins une locale sélectionnée
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Complet sur au moins une locale sélectionnée
             "GREATER OR EQUALS THAN ON ALL LOCALES": Complet sur toutes les locales sélectionnées
             LOWER THAN ON ALL LOCALES: Incomplet sur toutes les locales sélectionnées
             AT LEAST COMPLETE: Au moins un produit enfant complet sur une locale sélectionnée

@@ -767,7 +767,7 @@ pim_enrich:
           help: Välj produkterna att exportera från deras fullständighet.
           operators:
             ALL: Inga villkor på fullständighet
-            ">=": Fullständig på minst ett valt språk
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Fullständig på minst ett valt språk
             "GREATER OR EQUALS THAN ON ALL LOCALES": Fullständig på alla valda språk
             LOWER THAN ON ALL LOCALES: Inte fullständig på alla valda språk
           empty_selection: Välj en familj

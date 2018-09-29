@@ -874,7 +874,7 @@ pim_enrich:
           help: Vælg produkterne, der eksporteres af deres fuldstændighed.
           operators:
             ALL: Ingen betingelse på fuldstændighed
-            ">=": Komplet på mindst én valgte landestandard
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Komplet på mindst én valgte landestandard
             "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
             LOWER THAN ON ALL LOCALES: Ikke komplet på alle valgte landestandarder
             AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard

@@ -343,7 +343,7 @@ confirmation:
     item: Oletko varma että haluat poistaa tämän kohteen?
     attribute: Oletko varma että haluat poistaa attribuutin %name%?
     attribute group: Oletko varma että haluat poistaa attribuuttiryhmän %name%?
-    category: Oletko varma että haluat poistaa kategoian %name%?
+    category: Oletko varma että haluat poistaa kategorian %name%?
     family: Oletko varma, että haluat poistaa tuoteryhmän %name%?
     family_variant: Oletko varma, että haluat poistaa varianttiperheen %name%?
     product: Oletko varma, että haluat poistaa tuotteen %name%?

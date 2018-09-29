@@ -28,6 +28,7 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mètriques per defecte de l'atribut determinat "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
 product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
+product_model.code.unique.message: El codi ja està utilitzat per un altre model de producte.
 product_model.family_variant.not_blank.message: La variant de família del model de producte no pot ser buit.
 pim_catalog:
   constraint:
@@ -44,12 +45,14 @@ pim_catalog:
     invalid_variant_product_parent: 'La variant de producte %variant_product% no pot tenir model de producte %product_model% com a pare (aquest model de producte només pot tenir un altre model de producte com a fill)'
     modified_variant_axis_value: 'Els variants d''eixos "%variant_axis%" no poden ser modificats, "%provided_value%" donats'
     family_variant_attributes_unique: Els atributs han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
+    family_variant_axes_unique: Els variants d'eixos han de ser únics, "%attributes%" s'utilitzen diverses vegades en la configuració de variants d'atributs
     family_variant_axes_immutable: 'Els variants d''eixos no poden ser modificats per el nivell "%level%"'
     family_variant_axes_attribute_type_unique: Els variants d'eixos "%axis%" no poden ser únics o un identificador
     family_variant_axes_attribute_type: Els variant d'eixos "%axis%" tenen que ser booleans, selecció simple, data de referència simple o mètrica
     family_variant_axes_wrong_type: Els variants d'eixos %axis% no poden ser localitzables, ni accesibles i no tenen un local específic
     family_variant_axes_number_of_axes: 'La configuració d''un atribut no pot tenir més de %max_axes_number% eixos'
     family_variant_no_axis: Ha d'haver almenys un atribut definit com a eix per a l'atribut de nivell "%level%"
+    family_variant_axis_level: L'atribut "%axis%" té que ser configurat com atribut en la mateixa configuració de variant d'atribut creada coma eix
     family_variant_has_family_attribute: 'l''atribut "%attribute%" no es pot afegir a variant familiar de "%family_variant%", ja que no és un atribut de la família de "%family%"'
     family_variant_level_do_not_exist: No hi ha configuració de variant de l'atribut per el nivell "%level%"
     family_variant_no_level: Ha d'haver almenys un nivell definit en la variant familiar
@@ -76,4 +79,5 @@ pim_catalog:
     302: Aquest camp espera un àmbit vàlid.
     303: Aquest camp espera un format vàlid d'associació.
     pim_immutable_product_validator: L'identificador ja està utilitzat per un altre producte
+    pim_immutable_product_model_validator: El codi ja està utilitzat per un altre model de producte.
 

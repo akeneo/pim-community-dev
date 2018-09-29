@@ -40,6 +40,7 @@ job_execution.summary:
     title: 'Codificació de l''arxiu:'
     skipped: omès, extensió a la llista blanca
   product_skipped_no_diff: producte omès (no hi ha diferències)
+  product_skipped_no_associations: producte omès (cap associació detectada)
   product_model_skipped_no_diff: models de producte omès (no hi ha diferències)
   item_position: llegir les línies
   skipped_in_root_product_model: ometre el model de producte amb el pare
