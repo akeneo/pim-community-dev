@@ -91,6 +91,7 @@ pim_enrich:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
       empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
       success_flash: La tasca d'actualització del(s) producte(s) està en marxa
+      launched_flash: L'acció en massa "editar atributs" ja s'ha engegat. Se li notificarà una cop acabi.
       message:
         warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
@@ -242,6 +243,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Triar el tipus de dades de referència
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: El local s'ha eliminat del canal. Actualment s'està netejant la completesa d'ells.
+        done: S'ha acabat de suprimir el local en un canal.
 attribute:
   title: atribut
   edit: editar atribut

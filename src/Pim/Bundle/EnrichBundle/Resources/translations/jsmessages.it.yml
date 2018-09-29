@@ -874,7 +874,7 @@ pim_enrich:
           help: Seleziona i prodotti da esportare in base alla loro completezza.
           operators:
             ALL: Nessuna condizione sulla completezza
-            ">=": Completa almeno una delle impostazioni internazionali selezionate
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completa almeno una delle impostazioni internazionali selezionate
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completo su tutte le impostazione internazionali selezionate
             LOWER THAN ON ALL LOCALES: Non completo su tutte le impostazione internazionali selezionate
             AT LEAST COMPLETE: Almeno un prodotto figlio completo in una impostazione locale selezionata

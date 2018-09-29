@@ -34,6 +34,8 @@ Yes: true
 No: false
 oro.datagrid.entityHint: Entitat
 oro.datagrid.noentities: No s'han trobat registres
+oro.datagrid.noresults: "Ho sentim, no hi ha cap resultat de la cerca."
+oro.datagrid.noresults_subTitle: "Provi amb nous criteris de cerca."
 oro.datagrid.nocolumns: Sense columnes configurades per aquesta graella
 oro.datagrid.pagination.label: "Pàgina"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
@@ -75,6 +77,7 @@ pim_datagrid:
     apply: Aplicar
     cancel: Cancelar
     remove_column: Eliminar
+    description: Seleccionar la informació que voleu mostrar com columna
     attribute_groups: Grups d'atribut
   mass_action:
     delete:
@@ -101,9 +104,11 @@ grid.view_selector:
   placeholder: Nom de la nova vista
   choose_label: Trieu una etiqueta per a la vista
   confirmation:
+    remove: Està segur que vol suprimir aquesta vista?
     delete: Confirmar l'eliminació
 grid.view_selector.flash.updated: Vista de Graella de dades actualitzada correctament
 grid.display_selector:
+  label: Mostrar
   gallery: Galeria
   list: Llista
 Client ID: ID de client

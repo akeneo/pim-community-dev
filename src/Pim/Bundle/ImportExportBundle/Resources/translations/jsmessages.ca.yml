@@ -18,8 +18,12 @@ pim_connector:
         not_blank: S'ha de seleccionar una configuració regional, trieu una configuració regional per exportar.
 page_title:
   pim_importexport_export_profile_index: Gestió de perfils d'exportació
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Exportar històric d'execucions
   pim_importexport_export_execution_show: Exportar execucions | Detalls
   pim_importexport_import_profile_index: Gestió de perfils d'importació
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Importar històric d'execucions
   pim_importexport_import_execution_show: Importar execucions | Detalls

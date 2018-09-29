@@ -686,7 +686,7 @@ pim_enrich:
           help: Odaberite proizvode za izvoz po njihovoj cjelovitosti.
           operators:
             ALL: Nema stanja o potpunosti podataka
-            ">=": Kompletiraj barem jedan selektirani lokalni parametar
+            "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Kompletiraj barem jedan selektirani lokalni parametar
             "GREATER OR EQUALS THAN ON ALL LOCALES": Kompletiraj sve selektirane lokalne parametre
             LOWER THAN ON ALL LOCALES: Nisu kompletirani svi odabrani lokalni parametri
           empty_selection: Odaberite obitelj
