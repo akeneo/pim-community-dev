@@ -12,8 +12,11 @@ pimee_product_asset:
           cancel: Cancelar
           confirm: Confirmar
         title: Gestió de recursos
+        description: Escull els recursos que voleu adjuntar al seu producte
     asset:
       not_empty: Codi obligatori. No es pot deixar buit.
+      alpha_numeric_plus_underscore: El codi només pot ser alfanumèric o subratllat.
+      unique: El codi ha de ser únic. Hem generat un nou per a vostè.
   enrich_asset:
     grid:
       edit: Edita les propietats del recurs
@@ -68,6 +71,7 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
+        confirm_content: Està segur que vol eliminar els recursos seleccionats?
         success: Recursos seleccionats correctament.
         error: S'ha produït un error en intentar suprimir els recursos seleccionats, torneu-ho a intentar.
         empty_selection: No hi ha cap recurs seleccionat
@@ -134,6 +138,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Exportació de categoria de recurs en XLSX
     export.label: Exportació de categoria de recurs en XLSX
+  xlsx_asset_variation_export:
+    label: Exportació de variant de recursos a XLSX
+    export.label: Exportació de variant de recursos a XLSX
   classify_assets:
     perform.label: Moure recursos a categories
   add_tags_to_assets:
