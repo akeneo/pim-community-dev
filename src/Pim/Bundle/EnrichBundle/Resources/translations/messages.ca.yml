@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Atributs
       history.title: Històric
   family:
+    info:
+      cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
     tab:
       property.title: Propietats
       attribute.title: Atributs
@@ -89,23 +91,28 @@ pim_enrich:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
       empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
       success_flash: La tasca d'actualització del(s) producte(s) està en marxa
+      launched_flash: L'acció en massa "editar atributs" ja s'ha engegat. Se li notificarà una cop acabi.
       message:
         warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
         no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
     classify-add:
+      label: Afegir a categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
       launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
     classify-move:
+      label: Moure entre categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) ha(n) estat mogut(s) a les categories seleccionades
       launched_flash: L'acció en massa "moure a categories" ja s'ha engegat. Se li notificarà una cop acabi.
     classify-remove:
+      label: Eliminar de les categories
       description: Els productes s'eliminaran de les següents categories.
       success_flash: El(s) producte(s) ha(n) estat eliminat(s) de les categories seleccionades
       launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
     change-family:
+      label: Canviar família
       description: La família dels productes seleccionats es canviarà per la família escollida
       success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
       launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -116,6 +123,7 @@ pim_enrich:
       launched_flash: L'acció en massa "afegir a grups" ja s'ha engegat. Se li notificarà una cop acabi.
       no_group: Cap grup ara mateix. Si us plau, comenceu creant un grup.
     set-attribute-requirements:
+      label: Establir els requeriments d'atributs
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -148,6 +156,12 @@ pim_enrich:
       comment: Comentar productes
       download: Descarregar el producte en format PDF
       history: Veure l'històric del producte
+    product_model:
+      create: Crear un model de producte
+      edit_attributes: Editar els atributs d'un model de producte
+      categories_view: Consultar les categories d'un model de producte
+      history: Veure l'històric del model de producte
+      remove: Eliminar un model de producte
     category:
       list: Llistar categories
       create: Crear una categoria
@@ -205,6 +219,8 @@ pim_enrich:
       history: Veure l'històric del tipus d'associació
     job_tracker:
       index: Veure seguiment del procés
+    api_connection:
+      manage: Gestionar les connexions de l'API
   acl_group:
     association_type: Tipus d'associació
     attribute: Atributs
@@ -217,10 +233,16 @@ pim_enrich:
     group_type: Tipus de grup
     locale: Configuracions regionals
     product: Productes
+    product_model: Models de producte
   reference_data:
     empty_value:
       reference_data_type:
         label: Triar el tipus de dades de referència
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: El local s'ha eliminat del canal. Actualment s'està netejant la completesa d'ells.
+        done: S'ha acabat de suprimir el local en un canal.
 attribute:
   title: atribut
   edit: editar atribut
@@ -468,6 +490,7 @@ Useable as grid column: Utilitzable com a columna de quadrícula
 Useable as grid filter: Utilitzable en quadrícula
 Family: Família
 Image: Imatge
+Variant products: Variant de productes
 Available locales: Configuracions regionals disponibles
 Locale specific: Configuració regional específica
 default: Per defecte
@@ -496,6 +519,7 @@ No matches found: No s’han trobat coincidències
 Category tree: Arbre de categories
 Completeness: Integritat
 Attribute used as label: Atribut utilitzat com a etiqueta
+Credentials: Credencials
 Global: Global
 Channel: Canal
 Expand all channels: Ampliar tots els canals
@@ -543,6 +567,7 @@ pim_title.attribute:
   edit: "Atributs %attribute.label% | Editar"
 pim_title.product:
   index: "Productes"
+  edit: "Productes %product.label% | Editar"
 pim_title.family:
   index: "Famílies"
   edit: "Famílies %family.label% | Editar"
@@ -629,9 +654,11 @@ pim_enrich.mass_edit_action:
     message.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
     no_attribute.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
   classify:
+    label: Afegir a categories
     description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
     success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
   change-family:
+    label: Canviar família
     description: La família dels productes seleccionats es canviarà per la família escollida
     success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
     no_family: Cap família
@@ -640,6 +667,7 @@ pim_enrich.mass_edit_action:
     description: Seleccioneu els grups on volgueu afegir els productes seleccionats
     success_flash: Els productes s'han afegit correctament als grups seleccionats
   set-attribute-requirements:
+    label: Establir els requeriments d'atributs
     description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
     success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
 To enable: Per activar
@@ -738,11 +766,13 @@ job_execution.summary:
   skip: Omès
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
+  skipped_families: Famílies omeses
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
 remove_product_value.steps.update_product_value_processor.title: Treure el valor del producte
 edit_common_attributes: Editar atributs
+edit_common_attributes_clean: Netejar arxius per atributs
 perform.steps.duplicated.title: Eix duplicat
 perform.steps.excluded.title: Producte exclòs
 batch_jobs:
@@ -758,6 +788,14 @@ batch_jobs:
     label: Editar atributs
     perform:
       label: Editar atributs
+    clean:
+      label: Netejar arxius per atributs
+  compute_completeness_of_products_family:
+    compute_completeness_of_products_family.label: Calcular completesa
+  set_attribute_requirements:
+    label: Establir els requeriments d'atributs
+    perform:
+      label: Establir els requeriments d'atributs
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
     perform:
@@ -785,6 +823,8 @@ pim_enrich_attribute_form:
   code: Codi
   type: Tipus d'atribut
   reference_data_name: Nom de dades de referència
+  scopable: Valor per canal
+  localizable: Valor per local
   unique: Valor únic
   availableLocales: Configuracions regionals disponibles
   locale_specific: Configuració regional específica

@@ -1,4 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": '%entityHint% no existeix.'
+oro_datagrid.not_found_hint: Ho sentim, no hi ha cap resultat de la cerca.
 oro_datagrid.label_add_filter: Administrar filtres
 oro_datagrid.label_loading_mask: Carregant . . .
 oro.grid.mass_action.selected_rows: Files seleccionades
