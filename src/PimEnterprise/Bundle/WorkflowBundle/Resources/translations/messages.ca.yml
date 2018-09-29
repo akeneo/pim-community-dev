@@ -109,6 +109,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Productes publicats
+    view: Producte publicat %product.label% | Veure
+  product:
+    dispatch: "Producte %product.label%"
+    show: "Producte %product.label% | Mostrar"
   proposal:
     index: Propostes
 btn.editworkingcopy: Editar la còpia de treball
@@ -133,3 +137,7 @@ job_execution.summary:
   proposal_created: proposta creada
   proposal_skipped: proposta omesa (no hi ha diferències)
 published products: Productes publicats
+pim_analytics:
+  info_type:
+    nb_published_products: Número de productes publicats
+    nb_product_drafts: Nombre d'esborranys de productes

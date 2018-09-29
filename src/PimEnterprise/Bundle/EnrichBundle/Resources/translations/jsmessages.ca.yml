@@ -26,14 +26,20 @@ pim_enrich:
         properties:
           label:
             is_read_only: Només de lectura
+pim:
+  grid:
+    mass_action:
+      asset_edit: Editar en massa els recursos
 pimee_enrich:
   form:
     job_instance:
       tab:
         permission:
           title: Permisos
+          added: El grup {{ group }} s'autoritzarà a {{ permission }} perfil de treball
           execute.label: Autoritzat per executar el perfil d'aquesta tasca
           edit.label: Autoritzat per editar el perfil d'aquesta tasca
+          removed: El grup {{ group }} no s'autoritzarà a {{ permission }} perfil de treball
     channel:
       tab:
         asset-transformation:
@@ -44,8 +50,11 @@ pimee_enrich:
           title: Permisos
           view.label: Permet veure els atributs
           edit.label: Permet editar els atributs
+          removed: El grup {{ group }} no s'autoritzarà a {{ permission }} grup d'atributs
+          added: El grup {{ group }} s'autoritzarà a {{ permission }} grup d'atributs
   entity:
     product:
+      index_title: "[] -Inf, 1] resultat {{ count }} |] 1, Inf [{{ count }} resultats"
       navigation: Productes publicats
       history:
         published: Publicat
@@ -77,6 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: La proposta s'ha aplicat amb èxit.
+              error: "La proposta no es pot aplicar a causa de l'error següent: {{ error }}"
             reject:
               success: La proposta ha estat rebutjada.
             remove:
@@ -155,18 +165,30 @@ pimee_enrich:
         height: '% value%px d''alçada'
   mass_edit:
     next: Següent
+    previous: Tornar
     cancel: Cancelar
     confirm: Confirmar
     product:
       operation:
         publish:
           label: Publicar
+          label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+          description: Els productes es publicaran
+          warning: Els productes {{ itemsCount }} seleccionats seran publicats.
         unpublish:
           label: Despublicar
+          label_count: "{1}No publicar <span class=\"AknFullPage-title--highlight\">1 producte</span>|] 1, Inf [No publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
+          description: Els productes no es publicaran
+          warning: Els productes {{ itemsCount }} seleccionats no seran publicats.
     asset:
+      title: Acció en massa dels recursos
+      confirm: "{1}Esteu a punt d'actualitzar un recurs amb la informació següent, confirmeu-ho su us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} recursos amb la informació següent, confirmeu-ho si us plau."
       step:
         select:
           label: Triar recursos
+        choose:
+          title: Accións en massa dels recursos
+          label_count: "] 0, Inf [Selecciona l'acció"
         configure:
           label: Configurar
         confirm:
@@ -174,8 +196,14 @@ pimee_enrich:
       operation:
         add_tag:
           label: Afegir etiquetes als recursos
+          description: S'afegiran les etiquetes als actius.
+          label_count: "{1}Afegir etiquetes a <span class=\"AknFullPage-title--highlight\">1 recurs</span>|] 1, Inf [Afegir etiquetes a<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos</span>"
           field: Etiquetes
+          empty_selection: Escull les etiquetes, si us plau
         add_to_category:
+          label: Classificar els recursos en categories
+          description: Els recursos es posicionaran a dins les següents categories, es perdrà la posició actual.
+          label_count: "{1}Classificar <span class=\"AknFullPage-title--highlight\">1 recurs</span> a categories|] 1, Inf [Classificar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} recursos </span> a categorías"
           field: Categories
 pim_menu:
   tab:
@@ -185,13 +213,20 @@ pim_menu:
     proposal: Propostes
     published_product: Productes publicats
     rule: Regles
+    upload_asset: Penjar recursos
 page_title:
   pimee_workflow_proposal_index: Propostes
   pimee_workflow_published_product_index: Productes publicats
+  pimee_workflow_published_product_view: Producte publicat {{ product.label }} | Veure
   pimee_product_asset_index: Recursos
+  pimee_product_asset_edit: Recurs {{ asset.label }} | Editar
   pimee_asset_categorytree_index: Categories
+  pimee_asset_categorytree_edit: Categoria {{ category.label }} | Editar
   pimee_catalog_rule_rule_index: Regles
 batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Importar configuració de recursos per canal
   add_product_value_with_permission_and_rules:
     label: Afegir valor producte amb comprovació de permisos i aplicació de regles
     perform.label: Afegir valor de producte
@@ -205,6 +240,7 @@ batch_jobs:
     perform.label: Treure el valor del producte
     execute_rules.label: Execució de les regles
   edit_common_attributes_with_permission_and_rules:
+    label: Editar atributs amb permisos de verificació i aplicació de regles
     perform.label: Editar atributs
     execute_rules.label: Execució de les regles
     cleaner.label: Netejar arxius temporals
