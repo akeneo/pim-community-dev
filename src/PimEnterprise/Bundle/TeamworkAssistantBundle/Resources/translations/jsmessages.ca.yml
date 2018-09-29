@@ -23,16 +23,19 @@ teamwork_assistant:
     description: Descripció
     due_date: Data límit
     due_date_past: No podeu seleccionar una data en el passat.
+    leaving_scope: Està sortint del perímetre del projecte.
   edit_project_modal:
     saved: El projecte s'ha guardat.
     title: Editar projecte
     confirm: Desar
     cancel: Cancelar
   create_project_modal:
+    saved: El projecte s'ha guardat, se li notificarà quan hagi finalitzat el càlcul.
     title: Crear projecte
     confirm: Desar
     cancel: Cancelar
   widget:
+    no_project: No té cap projecte
     no_project_create: crear un nou projecte
     description: Descripció
     due_date: Data límit
