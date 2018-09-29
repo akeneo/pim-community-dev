@@ -1,5 +1,4 @@
 pim_catalog_volume:
-  product_values_description: 'Mitä enemmän tuotearvoja on, sitä arvokkaampi on PIM -järjestelmäsi ja sitä korkeampi on ROI! Katso lisätietoja <a href="#">täältä</a>'
   section:
     product_values:
       title: Ulottuvuudet, jotka vaikuttavat tuotearvojen lukumäärään

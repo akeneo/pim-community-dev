@@ -92,6 +92,7 @@ pim_datagrid:
       subHint: 'Klicken Sie auf den Button "Verbindung hinzufügen", um dieses Produkt zu verbinden'
   filters:
     label: Filter
+    system: System
 error:
   exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen

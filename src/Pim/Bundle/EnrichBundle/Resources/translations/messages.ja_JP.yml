@@ -11,6 +11,197 @@ pim_common:
   permissions: パーミッション
   properties: プロパティ
 pim_enrich:
+  attribute:
+    tab:
+      parameter.title: パラメータ
+      value.title: 値
+      history.title: 履歴
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: ファミリーバリアントで使われるバリアント軸である属性は削除できません
+  group_type:
+    tab:
+      property.title: プロパティ
+  category:
+    tab:
+      property.title: プロパティ
+      history.title: 履歴
+    suggest_selection: 左側のカテゴリから選択してください
+    or: または
+    create_new: 新しいカテゴリを作成
+  locale:
+    tab:
+      property.title: プロパティ
+  mass_edit_action:
+    limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
+    product:
+      page_title: 製品
+      page_subtitle: 一括編集(1件)|一括編集(%count% 件)
+      title: 操作を選択
+      subtitle: 選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      steps:
+        first: 商品を選択してください
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+    family:
+      page_title: ファミリー
+      page_subtitle: 一括編集(1 件)|一括編集 (%count% 件)
+      title: 操作を選択
+      subtitle: 選択したファミリーで実行したい操作を選択してください | 選択した %count% 件のファミリーで実行したい操作を選択してください
+      confirm: 更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。
+      steps:
+        first: ファミリーを選択
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+    change-status:
+      label: ステータスの変更
+      description: 選択した製品は有効または無効になります。
+      success_flash: 製品の状態を変更しました
+      launched_flash: 状態を変更する一括操作が開始されています。終了後に通知されます。
+    edit-common-attributes:
+      label: 属性を編集
+      description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
+      empty: 編集する属性を選択してください
+      success_flash: 製品を更新する状態が現在実行されています。
+      message:
+        warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
+        invalid_attribute: 選択された製品とスキップされた属性に対し、コード"attribute_code"を持つ属性は共通ではない。
+        no_valid_attribute: 選択した属性のいずれも、この製品に適用できません。
+    classify-add:
+      label: カテゴリーに追加
+      description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
+      success_flash: 選択したカテゴリに製品が分類されました
+      launched_flash: '"カテゴリに追加"一括操作が開始されています。終了後に通知されます。'
+    classify-move:
+      label: カテゴリ間を移動
+      description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
+      success_flash: 選択したカテゴリに製品が移動されました
+      launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
+    classify-remove:
+      label: カテゴリから削除
+      description: 次のカテゴリから製品が削除されます。
+      success_flash: 選択されたカテゴリから製品が削除されました
+      launched_flash: カテゴリから削除する一括操作が開始されています。終了後に通知されます。
+    change-family:
+      label: ファミリーの変更
+      description: 選択した製品のファミリーを選択したファミリーに変更します
+      success_flash: 選択した製品のファミリーを変更しました
+      launched_flash: ファミリーを変更する一括操作が開始されています。終了後に通知されます。
+    add-to-groups:
+      label: グループに追加
+      description: 選択した製品を追加するグループを選択します
+      success_flash: 製品を選択したグループに追加しました
+      launched_flash: カテゴリに追加する一括操作が開始されています。終了後に通知されます。
+      no_group: 現時点でグループはありません。グループを作成することから始めてください。
+    set-attribute-requirements:
+      label: 属性の要件を設定
+      description: 以下の属性要件が選択したファミリーに適用されます
+      success_flash: 選択したファミリーに適用された属性要件
+      launched_flash: 属性の要件を設定する一括操作が開始されています。終了後に通知されます。
+    mass_action:
+      quick_export:
+        launched_flash: 製品をエクスポートするジョブが現在実行されています。
+  acl:
+    locale:
+      index: ロケール一覧
+    currency:
+      index: 通貨一覧
+      toggle: 通貨切り替え
+    product:
+      index: 製品一覧
+      create: 製品作成
+      edit_attributes: 製品の属性を編集
+      remove: 製品削除
+      add_attribute: 製品に属性を追加
+      remove_attribute: 製品から属性を削除
+      categories_view: 製品のカテゴリを参照
+      change_family: 製品ファミリーを変更
+      change_state: 製品状態を変更
+      add_to_groups: 製品をグループに追加
+      mass_edit: 製品一括編集操作
+      comment: 製品のコメント
+      download: 製品情報をPDFでダウンロード
+      history: 製品の履歴を表示
+    product_model:
+      create: 製品モデルを作成
+      edit_attributes: 製品モデルの属性を編集
+      categories_view: 製品モデルのカテゴリを参照
+      history: 製品モデルの履歴を表示
+    category:
+      list: カテゴリリスト
+      create: カテゴリ作成
+      edit: カテゴリ編集
+      remove: カテゴリ編集
+      move: カテゴリを移動
+      children: サブカテゴリを見る
+      products: カテゴリの商品を見る
+      history: カテゴリの履歴を表示
+    channel:
+      index: チャンネル一覧
+      create: チャンネル作成
+      edit: チャンネル編集
+      remove: チャンネル削除
+      history: チャネルの履歴の表示
+    family:
+      index: ファミリーのリスト
+      create: ファミリーを作成
+      edit_properties: ファミリーのプロパティを編集
+      edit_attributes: ファミリーの属性を編集
+      remove: ファミリー削除
+      history: ファミリーの履歴を表示
+    attribute_group:
+      index: 属性グループの一覧
+      create: 属性グループを作成
+      edit: 属性グループを編集
+      remove: 属性グループを削除
+      sort: 属性グループをソート
+      add_attribute: 属性をグループに追加
+      remove_attribute: グループから属性を削除
+      history: 属性グループの履歴を表示
+    attribute:
+      index: 属性リスト
+      create: 属性を作成
+      edit: 属性を編集
+      remove: 属性を削除
+      sort: 属性グループ内での属性ソート順
+      history: 属性の履歴を表示
+    group:
+      index: グループ一覧
+      create: グループ作成
+      edit: グループ編集
+      remove: グループ削除
+      history: グループの履歴を表示
+    group_type:
+      index: グループタイプ一覧
+      create: グループタイプ作成
+      edit: グループタイプ編集
+      remove: グループタイプ削除
+    association_type:
+      index: 関連タイプ一覧
+      create: 関連タイプ作成
+      edit: 関連タイプ編集
+      remove: 関連タイプ削除
+      history: 関連タイプの履歴を表示
+    job_tracker:
+      index: プロセストラッカーの表示
+    api_connection:
+      manage: API 接続の管理
+  acl_group:
+    association_type: 関連タイプ
+    attribute: 属性
+    attribute_group: 属性グループ
+    category: カテゴリ
+    channel: チャンネル
+    currency: 通貨
+    family: ファミリー
+    group: グループ
+    group_type: グループタイプ
+    locale: ロケール
+    product: 製品
+    product_model: 製品モデル
   create:
     attribute: 属性を作成
     attribute group: 属性グループを作成

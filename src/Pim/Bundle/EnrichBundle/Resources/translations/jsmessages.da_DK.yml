@@ -95,6 +95,7 @@ pim_datagrid:
       subHint: 'Klik på knappen "Tilføj tilknytning" for at tilknytte dette produkt'
   filters:
     label: Filtre
+    system: System
 error:
   exception: Oh snap! Der opstod en {{ status_code }}...
   forbidden: Du har ikke adgang til denne side

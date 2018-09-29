@@ -15,33 +15,61 @@ pim_connector:
         not_blank: S'ha de seleccionar una configuració regional, trieu una configuració regional per exportar.
 pim_import_export:
   entity:
+    job_instance:
+      label: perfil de treball
+      flash:
+        update:
+          success: El perfil de treball s'ha actualitzat correctament.
+          fail: No s'ha pogut actualitzar el perfil de treball.
+        delete:
+          success: Instància de feina suprimida correctament
     import_profile:
-      page_title:
-        index: "]Inf, 1] {{ count }} perfil d'importació|]1, Inf [{{ count }} perfils d'importació"
+      uppercase_label: Perfils d'importació
+      flash:
+        create:
+          success: Perfil d'importació creat correctament
+      module:
+        create:
+          button: Crear perfil d'importació
     export_profile:
-      page_title:
-        index: "]Inf, 1] {{ count }} perfil d'exportació|]1, Inf [{{ count }} perfils d'exportació"
+      uppercase_label: Perfils d'exportació
+      flash:
+        create:
+          success: Perfil d'exportació creat correctament
+      module:
+        create:
+          button: Crear perfil d'exportació
   form:
     job_execution:
+      title.details: Detalls de l'execució
       refreshBtn.title: Actualitza
       button:
         show_profile.title: Mostrar perfil
         download_log.title: Descarregar registre
+        download_file.title: Descarregar arxiu generat
+        download_archive.title: Descarregar arxiu generat
       summary:
         fetching: Recollida de dades sobre l'execució del job...
         warning: Avís
         header.step: Pas
+        header.warnings: Avisos
         header.summary: Sumari
         header.start: Començar
         header.end: Fi
     job_instance:
+      fail:
+        launch: No s'ha pogut iniciar el perfil de treball. Assegureu-vos que és vàlid i que teniu dret a executar-lo.
+        save: No ha pogut desar el perfil de treball. Assegureu-vos que teniu dret a editar-lo.
       button:
         export.title: Exportar ara
         import.launch: Importar ara
         import.upload: Carregar i importar ara
+        import.upload_file: Pujar un arxiu
       meta:
         job: Job
         connector: Connector
+      subsection:
+        last_executions: Últimes execucions
       tab:
         content:
           title: Contingut
@@ -94,15 +122,22 @@ pim_import_export:
           real_time_versioning:
             title: Actualització de l'historial en temps real
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
+          family_variant_column:
+            title: Columna de la variant familiar
       file_path: Ruta de l'arxiu
 confirmation:
   remove:
     import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?
     export_profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    job_instance: Esteu segur que voleu suprimir aquesta instància de feina?
 pim_title:
   pim_importexport_export_profile_index: Gestió de perfils d'exportació
+  pim_importexport_export_profile_edit: Exportar perfil {{ job.label }} | Editar
+  pim_importexport_export_profile_show: Exportar perfil {{ job.label }} | Mostrar
   pim_importexport_export_execution_index: Exportar històric d'execucions
   pim_importexport_export_execution_show: Exportar execucions | Detalls
   pim_importexport_import_profile_index: Gestió de perfils d'importació
+  pim_importexport_import_profile_edit: Importar perfil {{ job.label }} | Editar
+  pim_importexport_import_profile_show: Importar perfil {{ job.label }} | Mostrar
   pim_importexport_import_execution_index: Importar històric d'execucions
   pim_importexport_import_execution_show: Importar execucions | Detalls

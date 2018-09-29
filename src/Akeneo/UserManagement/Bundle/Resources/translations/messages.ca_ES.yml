@@ -65,6 +65,7 @@ pim_user:
       request: Petició
       password_reset: Reiniciar contrasenya
       reset: Reinicia
+      password_reset_email_sent: S'ha enviat un correu electrònic a l'usuari. Conté un enllaç per restablir la contrasenya.
       homepage: Anar a la pàgina d'inici
   group:
     tab:

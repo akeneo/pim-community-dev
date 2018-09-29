@@ -97,6 +97,7 @@ pim_datagrid:
       subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'
   filters:
     label: Filtres
+    system: Système
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
@@ -525,7 +526,7 @@ pim_enrich.entity.api_connection:
       success: La connexion API a été révoquée avec succès
       fail: Impossible de révoquer cette connexion API
   page_title:
-    index: "] -Inf, 1]{{ count }} connexion API|]1, Inf[{{ count }} connexion API"
+    index: "] -Inf, 1]{{ count }} connexion API|]1, Inf[{{ count }} connexions API"
 pim_enrich.entity.locale:
   label: locale
   uppercase_label: Locale

@@ -95,6 +95,7 @@ pim_datagrid:
       subHint: 'Haga clic en el botón "Agregar las asociaciones" para asociar estos productos'
   filters:
     label: Filtros
+    system: Sistema
 error:
   exception: Oups! Un error {{ status_code }} ha ocurrido...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página

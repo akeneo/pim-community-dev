@@ -11,6 +11,210 @@ pim_common:
   permissions: Permisos
   properties: Propiedades
 pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Parámetros
+      value.title: Valores
+      history.title: Histórico
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
+  group_type:
+    tab:
+      property.title: Propiedades
+  category:
+    tab:
+      property.title: Propiedades
+      history.title: Histórico
+    suggest_selection: Por favor, seleccione una categoría de la izquierda
+    or: o
+    create_new: Crear una nueva categoría
+  locale:
+    tab:
+      property.title: Propiedades
+  mass_edit_action:
+    limit_exceeded: Por favor, elige menos de %limit% de artículos para editar
+    product:
+      page_title: Productos
+      page_subtitle: Edición masiva (1 producto) |Edición masiva (%count% productos)
+      title: Elegir operación
+      subtitle: Elija la operación que desea realizar en el producto seleccionado| Elija la operación que desea realizar en los %count% productos seleccionados
+      confirm: Está a punto de actualizar un producto con la siguiente información, por favor confirme. |Está a punto de actualizar %count% productos con la siguiente información, por favor confirme.
+      steps:
+        first: Elegir productos
+        second: Elegir operación
+        third: Configurar
+        fourth: Confirmar
+    family:
+      page_title: Familias
+      page_subtitle: Edición masiva (1 familia) |Edición masiva (%count% familias)
+      title: Elegir operación
+      subtitle: Elija la operación que desea realizar en la familia seleccionada|Elija la operación que desea realizar en las %count% familias seleccionadas
+      confirm: Está a punto de actualizar una familia con la siguiente información, por favor confirme. |Estás a punto de actualizar %count% familias con la siguiente información, por favor confirme.
+      steps:
+        first: Elija familias
+        second: Elegir operación
+        third: Configurar
+        fourth: Confirmar
+    change-status:
+      label: Cambiar el estado
+      description: Los productos seleccionados serán habilitados o inhabilitados.
+      success_flash: Estado de los producto(s) han sido cambiados
+      launched_flash: La acción en masa "cambiar estado" ha sido lanzada.  Será notificado una vez finalizada.
+    edit-common-attributes:
+      label: Editar atributos
+      description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
+      empty: Por favor, seleccione atributo(s) que desea editar
+      success_flash: El trabajo de actualización del estado de producto(s) está ejecutándose
+      launched_flash: La acción en masa "editar atributos" ha sido emitida. Usted será notificado cuando este lista.
+      message:
+        warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
+        invalid_attribute: El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.
+        no_valid_attribute: Ninguno de los atributos seleccionados puede ser aplicado a este producto.
+    classify-add:
+      label: Agregar a categorias
+      description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
+      success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
+      launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
+    classify-move:
+      label: Mover entre categorias
+      description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
+      success_flash: El/los producto(s) ha(n) sido trasladado(s) a las categorías seleccionadas
+      launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
+    classify-remove:
+      label: Eliminar de las categorías
+      description: Se eliminarán los productos de las siguientes categorías.
+      success_flash: El/los producto(s) se ha(n) quitado de las categorías seleccionadas
+      launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
+    change-family:
+      label: Cambiar familia
+      description: La familia de los productos seleccionados se cambiará a la familia elegida
+      success_flash: La familia de producto(s) seleccionados se ha cambiado correctamente
+      launched_flash: La acción en masa "cambiar familia" ha sido lanzada. Será notificado una vez finalizada.
+    add-to-groups:
+      label: Agregar a grupos
+      description: Seleccione los grupos en los cuales agregará los productos seleccionados
+      success_flash: Los productos se han agregado correctamente a los grupos seleccionados
+      launched_flash: La acción en masa "agregar a grupos" ha sido lanzada. Será notificado una vez finalizada.
+      no_group: Ningún grupo por el instante. Por favor comience creando un grupo.
+    set-attribute-requirements:
+      label: Establecer los requisitos de atributos
+      description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
+      success_flash: Requisitos de atributo se aplicaron a las familias seleccionadas
+      launched_flash: La acción en masa "definir requisitos de atributos" ha sido lanzada. Será notificado una vez finalizada.
+    mass_action:
+      quick_export:
+        launched_flash: El trabajo de exportación de productos está ejecutándose
+  acl:
+    locale:
+      index: Lista de locales
+    currency:
+      index: Lista de monedas
+      toggle: Alternar monedas
+    product:
+      index: Lista de productos
+      create: Crear un producto
+      edit_attributes: Editar atributos del producto
+      remove: Eliminar un producto
+      add_attribute: Agregar un atributo a un producto
+      remove_attribute: Quitar un atributo de un producto
+      categories_view: Consulte las categorías de un producto
+      associations_view: Ver las asociaciones de un producto
+      associations_edit: Agregar asociaciones a un producto
+      change_family: Cambiar Familia de productos
+      change_state: Cambiar estado de producto
+      add_to_groups: Agregar productos a grupos
+      mass_edit: Acciones de edición masiva de producto
+      comment: Comentario de Productos
+      download: Descargar el producto en formato PDF
+      history: Ver historial de producto
+    product_model:
+      create: Cree un modelo de producto
+      edit_attributes: Editar atributos de un modelo del producto
+      categories_view: Consultar las categorías de un modelo del producto
+      history: Ver el historial del modelo del producto
+      remove: Eliminar un modelo del producto
+    category:
+      list: Lista de categorías
+      create: Crear una categoría
+      edit: Editar una categoría
+      remove: Eliminar una categoría
+      move: Mover Categoría
+      children: Ver subcategorías
+      products: Ver productos de la categoría
+      history: Ver historial de categoría
+    channel:
+      index: Lista de canales
+      create: Crear un canal
+      edit: Editar un canal
+      remove: Eliminar un canal
+      history: Ver historial del canal
+    family:
+      index: Lista de familias
+      create: Crear una familia
+      edit_properties: Editar propiedades de una familia
+      edit_attributes: Editar atributos de una familia
+      remove: Eliminar una familia
+      history: Ver historial de la familia
+    family_variant:
+      remove: Remover una variante familiar
+    attribute_group:
+      index: Lista de atributos del grupo
+      create: Crear un grupo de atributos
+      edit: Editar un atributos del grupo
+      remove: Eliminar un atributos del grupo
+      sort: Ordenar atributos del grupo
+      add_attribute: Agregar atributos a un grupo
+      remove_attribute: Eliminar atributo de un grupo
+      history: Ver historial de atributo del grupo
+    attribute:
+      index: Lista de atributos
+      create: Crear un atributo
+      edit: Editar un atributo
+      remove: Eliminar un atributo
+      sort: Ordenar atributos dentro del grupo de atributos
+      history: Ver historial del atributo
+    group:
+      index: Lista de grupos
+      create: Crear un grupo
+      edit: Editar un grupo
+      remove: Eliminar un grupo
+      history: Ver historial del grupo
+    group_type:
+      index: Lista tipos Grupos
+      create: Crear un tipo de grupo
+      edit: Editar un tipo de grupo
+      remove: Eliminar un tipo de grupo
+    association_type:
+      index: Lista de asociación de tipos
+      create: Crear un tipo de asociación
+      edit: Editar un tipo de asociación
+      remove: Eliminar un tipo de asociación
+      history: Ver historial de  asociación de tipo
+    association:
+      remove: Remover las asociaciones de un producto
+    job_tracker:
+      index: Visualizar los procesos ejecutados
+    api_connection:
+      manage: Gestionar las conexiones API
+  acl_group:
+    association_type: Tipos de asociaciones
+    attribute: Atributos
+    attribute_group: Grupos de atributos
+    category: Categorías
+    channel: Canales
+    currency: Monedas
+    family: Familias
+    group: Grupos
+    group_type: Tipos de grupo
+    locale: Locales
+    product: Productos
+    product_model: Modelos de producto
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: El local ha sido removido del canal. Actualmente estamos limpiando la completitud relacionado a ellos.
+        done: Remoción de un local en un canal terminada.
   create:
     attribute: Crear atributo
     attribute group: crear grupo de atributos
