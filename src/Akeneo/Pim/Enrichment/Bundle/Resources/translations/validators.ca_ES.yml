@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: El
 This value should not be a decimal.: Aquest valor no ha de ser un decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": El valor %value% ja es troba a un altre producte per l'atribut únic %attribute%
+The same identifier is already set on another product: L'identificador ja està utilitzat per un altre producte
 regex.comma_or_semicolon.message: Aquest camp no hauria de contenir cap coma ni punt i coma.
 file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extensions permeses: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Aquest tipus de valor espera l'ús de {{ decimal_separator }} per separar els decimals.
@@ -27,6 +28,7 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unitat "%unitCode%" no existeix o no pertany a la família de mètriques per defecte de l'atribut determinat "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": La moneda "%currency%" ha de ser activada.
 product_model.code.not_blank.message: El codi de model de producte no pot ser buit.
+product_model.code.unique.message: El codi ja està utilitzat per un altre model de producte.
 product_model.family_variant.not_blank.message: La variant de família del model de producte no pot ser buit.
 pim_catalog:
   constraint:
@@ -76,4 +78,6 @@ pim_catalog:
     301: Aquest camp s'espera un àmbit i una configuració regional vàlids.
     302: Aquest camp espera un àmbit vàlid.
     303: Aquest camp espera un format vàlid d'associació.
+    pim_immutable_product_validator: L'identificador ja està utilitzat per un altre producte
+    pim_immutable_product_model_validator: El codi ja està utilitzat per un altre model de producte.
 

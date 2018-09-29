@@ -11,6 +11,210 @@ pim_common:
   permissions: Permisos
   properties: Propietats
 pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Paràmetres
+      value.title: Valors
+      history.title: Històric
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
+  group_type:
+    tab:
+      property.title: Propietats
+  category:
+    tab:
+      property.title: Propietats
+      history.title: Històric
+    suggest_selection: Seleccioneu una categoria a l'esquerra
+    or: o
+    create_new: Crear una nova categoria
+  locale:
+    tab:
+      property.title: Propietats
+  mass_edit_action:
+    limit_exceeded: Trieu menys de %limit% elements per editar
+    product:
+      page_title: Productes
+      page_subtitle: Edició en massa (1 producte) | Edició en massa (%count% productes)
+      title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar al producte seleccionat| Trieu la operació que voleu realitzar als %count% productes seleccionats
+      confirm: Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% productes amb la informació següent, confirmeu-ho si us plau.
+      steps:
+        first: Triar productes
+        second: Trieu l'operació
+        third: Configurar
+        fourth: Confirmar
+    family:
+      page_title: Famílies
+      page_subtitle: Editar en massa (1 família) | Editar en massa (%count% famílies)
+      title: Trieu l'operació
+      subtitle: Trieu la operació que voleu realitzar a la familília seleccionada | Trieu la operació que desitja realitzar a les %count% famílies seleccionades
+      confirm: Esteu a punt d'actualitzar una família amb la següent informació, confirmeu-ho si us plau. | Esteu a punt d'actualitzar %count% famílies amb la següent informació, confirmeu-ho si us plau.
+      steps:
+        first: Triar famílies
+        second: Trieu l'operació
+        third: Configurar
+        fourth: Confirmar
+    change-status:
+      label: Canviar l'estat
+      description: Els productes seleccionats seran activats o desactivats.
+      success_flash: S'ha canviat l'estat del(s) producte(s)
+      launched_flash: L'acció en massa "canviar estat" ja s'ha engegat. Se li notificarà una cop acabi.
+    edit-common-attributes:
+      label: Editar atributs
+      description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
+      empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
+      success_flash: La tasca d'actualització del(s) producte(s) està en marxa
+      launched_flash: L'acció en massa "editar atributs" ja s'ha engegat. Se li notificarà una cop acabi.
+      message:
+        warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
+        invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
+        no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
+    classify-add:
+      label: Afegir a categories
+      description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+      success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
+      launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    classify-move:
+      label: Moure entre categories
+      description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+      success_flash: El(s) producte(s) ha(n) estat mogut(s) a les categories seleccionades
+      launched_flash: L'acció en massa "moure a categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    classify-remove:
+      label: Eliminar de les categories
+      description: Els productes s'eliminaran de les següents categories.
+      success_flash: El(s) producte(s) ha(n) estat eliminat(s) de les categories seleccionades
+      launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
+    change-family:
+      label: Canviar família
+      description: La família dels productes seleccionats es canviarà per la família escollida
+      success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
+      launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
+    add-to-groups:
+      label: Afegir a grups
+      description: Seleccioneu els grups on volgueu afegir els productes seleccionats
+      success_flash: Els productes s'han afegit correctament als grups seleccionats
+      launched_flash: L'acció en massa "afegir a grups" ja s'ha engegat. Se li notificarà una cop acabi.
+      no_group: Cap grup ara mateix. Si us plau, comenceu creant un grup.
+    set-attribute-requirements:
+      label: Establir els requeriments d'atributs
+      description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
+      success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
+      launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
+    mass_action:
+      quick_export:
+        launched_flash: La tasca d'exportació del(s) producte(s) està en marxa
+  acl:
+    locale:
+      index: Llistar configuracions regionals
+    currency:
+      index: Llistar monedes
+      toggle: Tancar monedes
+    product:
+      index: Llistar productes
+      create: Crear un producte
+      edit_attributes: Edita els atributs d'un producte
+      remove: Treure un producte
+      add_attribute: Afegir un atribut a un producte
+      remove_attribute: Treure un atribut d'un producte
+      categories_view: Consultar les categories d'un producte
+      associations_view: Mostra l'associació d'un producte
+      associations_edit: Afegir associacions a un producte
+      change_family: Canviar la família del producte
+      change_state: Canviar l'estat del producte
+      add_to_groups: Afegir el producte a grups
+      mass_edit: Accions d'edició en massa del producte
+      comment: Comentar productes
+      download: Descarregar el producte en format PDF
+      history: Veure l'històric del producte
+    product_model:
+      create: Crear un model de producte
+      edit_attributes: Editar els atributs d'un model de producte
+      categories_view: Consultar les categories d'un model de producte
+      history: Veure l'històric del model de producte
+      remove: Eliminar un model de producte
+    category:
+      list: Llistar categories
+      create: Crear una categoria
+      edit: Editar una categoria
+      remove: Eliminar una categoria
+      move: Moure categoria
+      children: Veure subcategories
+      products: Veure productes de la categoria
+      history: Veure l'històric de la categoria
+    channel:
+      index: Llistar canals
+      create: Crear un canal
+      edit: Editar un canal
+      remove: Eliminar un canal
+      history: Veure l'històric del canal
+    family:
+      index: Llistar famílies
+      create: Crear una família
+      edit_properties: Editar les propietats d'una família
+      edit_attributes: Editar els atributs d'una família
+      remove: Eliminar una família
+      history: Veure l'històric de la família
+    family_variant:
+      remove: Eliminar una variant familiar
+    attribute_group:
+      index: Llistar grups d'atribut
+      create: Crear un grup d'atributs
+      edit: Editar un grup d'atributs
+      remove: Suprimir un grup d'atributs
+      sort: Ordenar grups d'atribut
+      add_attribute: Afegir l'atribut a un grup
+      remove_attribute: Suprimir l'atribut d'un grup
+      history: Veure l'històric d'un grup d'atributs
+    attribute:
+      index: Llistar atributs
+      create: Crear un atribut
+      edit: Editar un atribut
+      remove: Eliminar un atribut
+      sort: Ordena els atributs dins els grups d'atributs
+      history: Veure l'històric dels atributs
+    group:
+      index: Llistar grups
+      create: Crear un grup
+      edit: Editar un grup
+      remove: Eliminar un grup
+      history: Veure l'històric del grup
+    group_type:
+      index: Llistar tipus de grup
+      create: Crear un tipus de grup
+      edit: Editar un tipus de grup
+      remove: Eliminar un tipus de grup
+    association_type:
+      index: Llistar tipus d'associació
+      create: Crear un tipus d'associació
+      edit: Editar un tipus d'associació
+      remove: Eliminar un tipus d'associació
+      history: Veure l'històric del tipus d'associació
+    association:
+      remove: Eliminar associacions d'un producte
+    job_tracker:
+      index: Veure seguiment del procés
+    api_connection:
+      manage: Gestionar les connexions de l'API
+  acl_group:
+    association_type: Tipus d'associació
+    attribute: Atributs
+    attribute_group: Grups d'atribut
+    category: Categories
+    channel: Canals
+    currency: Monedes
+    family: Famílies
+    group: Grups
+    group_type: Tipus de grup
+    locale: Configuracions regionals
+    product: Productes
+    product_model: Models de producte
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: El local s'ha eliminat del canal. Actualment s'està netejant la completesa d'ells.
+        done: S'ha acabat de suprimir el local en un canal.
   create:
     attribute: crear atribut
     attribute group: crear grup d'atributs
@@ -247,9 +451,11 @@ pim_enrich.mass_edit_action:
     message.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
     no_attribute.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
   classify:
+    label: Afegir a categories
     description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
     success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
   change-family:
+    label: Canviar família
     description: La família dels productes seleccionats es canviarà per la família escollida
     success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
     no_family: Cap família
@@ -258,6 +464,7 @@ pim_enrich.mass_edit_action:
     description: Seleccioneu els grups on volgueu afegir els productes seleccionats
     success_flash: Els productes s'han afegit correctament als grups seleccionats
   set-attribute-requirements:
+    label: Establir els requeriments d'atributs
     description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
     success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
 To enable: Per activar
@@ -359,6 +566,7 @@ job_execution.summary:
   skip: Omès
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
+  skipped_families: Famílies omeses
   deleted_products: Productes suprimits
   deleted_product_models: Models de productes suprimits
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
@@ -366,6 +574,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atri
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
 remove_product_value.steps.update_product_value_processor.title: Treure el valor del producte
 edit_common_attributes: Editar atributs
+edit_common_attributes_clean: Netejar arxius per atributs
 perform.steps.duplicated.title: Eix duplicat
 perform.steps.excluded.title: Producte exclòs
 mass_edit report:

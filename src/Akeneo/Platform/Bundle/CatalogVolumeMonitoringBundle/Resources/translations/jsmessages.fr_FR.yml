@@ -1,6 +1,6 @@
 pim_catalog_volume:
   product_values: "Vous avez <span class=\"AknDescriptionHeader-title--highlight\">{{values}}</span> valeurs de produit dans votre PIM ! La moyenne est de <span class=\"AknDescriptionHeader-title--highlight\">{{average}}</span> valeurs par produit ! 💪"
-  product_values_description: 'Plus vous aurez de valeurs de produit, plus votre PIM prendra de la valeur et donc, plus vous boosterez votre ROI ! Plus de détails <a href="#">ici</a>.'
+  product_values_description: 'Plus vous aurez de valeurs de produit, plus votre PIM prendra de la valeur et donc, plus vous boosterez votre ROI ! Plus de détails <a href="{{link}}" class="AknDescriptionHeader-link">ici</a>'
   section:
     product_values:
       hint: Saviez-vous que le nombre total de valeurs de produit de votre PIM est directement lié aux axes suivants ?<br/>Pour plus de détails, nous vous invitons à <a href="{{}}" target="_blank">lire cet article</a>.

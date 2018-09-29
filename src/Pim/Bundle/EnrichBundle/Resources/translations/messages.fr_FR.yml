@@ -11,6 +11,211 @@ pim_common:
   permissions: Permissions
   properties: Propriétés
 pim_enrich:
+  attribute:
+    tab:
+      parameter.title: Paramètres
+      value.title: Valeurs
+      history.title: Historique
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
+  group_type:
+    tab:
+      property.title: Propriétés
+  category:
+    tab:
+      property.title: Propriétés
+      history.title: Historique
+    suggest_selection: Veuillez sélectionner une catégorie à gauche
+    or: ou
+    create_new: Créer une nouvelle catégorie
+  locale:
+    tab:
+      property.title: Propriétés
+  mass_edit_action:
+    limit_exceeded: Veuillez sélectionner moins de %limit% éléments à modifier
+    product:
+      page_title: Produits
+      page_subtitle: Édition en masse (1 produit)|Édition en masse (%count% produits)
+      title: Choisir une opération
+      subtitle: Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné|Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés
+      confirm: Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% produits avec les renseignements suivants, merci de confirmer.
+      steps:
+        first: Choisir des produits
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
+    family:
+      page_title: Familles
+      page_subtitle: Édition en masse (1 famille)|Édition en masse (%count% familles)
+      title: Choisir une opération
+      subtitle: Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée|Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées
+      confirm: Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|Vous êtes sur le point de mettre à jour %count% familles avec les renseignements suivants, merci de confirmer.
+      steps:
+        first: Choisir des familles
+        second: Choisir une opération
+        third: Configurer
+        fourth: Confirmer
+    change-status:
+      label: Changer le statut
+      description: Les produits sélectionnés vont être activés ou désactivés.
+      success_flash: Le statut des produits ont été changés
+      launched_flash: L'action de masse "changement de statut" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    edit-common-attributes:
+      label: Modifier des attributs
+      description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
+      empty: Veuillez sélectionner le ou les attribut(s) à modifier
+      success_flash: La mise à jour du statut de produit(s) est en cours
+      launched_flash: L'action de masse "Modification des attributs" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+      message:
+        warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
+        invalid_attribute: L'attribut ayant pour code "attribute_code" n'est pas un attribut commun aux produits sélectionnés, attribut ignoré.
+        no_valid_attribute: Aucun des attributs sélectionnés ne peut être appliqué à ce produit.
+    classify-add:
+      label: Ajouter à des catégories
+      description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
+      success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
+      launched_flash: L'action de masse "ajout aux catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    classify-move:
+      label: Déplacer vers d'autres catégories
+      description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+      success_flash: Le(s) produit(s) ont été déplacés dans les catégories sélectionnées
+      launched_flash: L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    classify-remove:
+      label: Retirer des catégories
+      description: Les produits seront retirés des catégories suivantes.
+      success_flash: Le(s) produit(s) ont été supprimés des catégories sélectionnées
+      launched_flash: L'action de masse "suppression des catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    change-family:
+      label: Changer de famille
+      description: La famille des produits sélectionnés sera remplacée par la famille choisie
+      success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
+      launched_flash: L'action de masse "changement de famille" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    add-to-groups:
+      label: Ajouter aux groupes
+      description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
+      success_flash: Les produits ont été ajoutés aux groupes sélectionnés
+      launched_flash: L'action de masse "ajout aux groupes" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+      no_group: Aucun groupe pour l'instant. Veuillez commencer par créer un groupe.
+    set-attribute-requirements:
+      label: Configurer les exigences d'attributs
+      description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
+      success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
+      launched_flash: L'action de masse "définition des attributs requis" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+    mass_action:
+      quick_export:
+        launched_flash: L'export des produits est en cours
+  acl:
+    locale:
+      index: Liste des locales
+    currency:
+      index: Liste des devises
+      toggle: Activer / désactiver des devises
+    product:
+      index: Liste des produits
+      create: Créer un produit
+      edit_attributes: Modifier les attributs du produit
+      remove: Supprimer un produit
+      add_attribute: Ajouter un attribut à un produit
+      remove_attribute: Supprimer un attribut d'un produit
+      categories_view: Consulter les catégories d'un produit
+      associations_view: Afficher les associations d'un produit
+      associations_edit: Ajouter des associations à un produit
+      change_family: Changer la famille du produit
+      change_state: Changer l'état du produit
+      add_to_groups: Ajouter le produit à des groupes
+      mass_edit: Actions d'édition en masse des produits
+      comment: Commenter les produits
+      download: Télécharger le produit en PDF
+      history: Afficher l'historique du produit
+    product_model:
+      create: Créer un modèle de produit
+      edit_attributes: Modifier les attributs du modèle de produit
+      categories_view: Afficher les catégories d'un modèle de produit
+      history: Afficher l'historique d'un modèle de produit
+      remove: Supprimer un modèle de produit
+    category:
+      list: Liste des catégories
+      create: Créer une catégorie
+      edit: Modifier une catégorie
+      remove: Supprimer une catégorie
+      move: Déplacer la catégorie
+      children: Voir les catégories enfants
+      products: Voir les produits de la catégorie
+      history: Afficher l'historique de la catégorie
+    channel:
+      index: Liste des canaux
+      create: Créer un canal
+      edit: Modifier un canal
+      remove: Supprimer un canal
+      history: Afficher l'historique du canal
+    family:
+      index: Liste des familles
+      create: Créer une famille
+      edit_properties: Modifier les propriétés d'une famille
+      edit_attributes: Modifier les attributs d'une famille
+      edit_variants: Editer une variante de famille
+      remove: Supprimer une famille
+      history: Afficher l'historique de la famille
+    family_variant:
+      remove: Supprimez une variante de famille
+    attribute_group:
+      index: Liste des groupes d'attributs
+      create: Créer un groupe d'attributs
+      edit: Modifier un groupe d'attributs
+      remove: Supprimer un groupe d'attributs
+      sort: Trier les groupes d'attributs
+      add_attribute: Ajouter l'attribut à un groupe
+      remove_attribute: Supprimer l'attribut d'un groupe
+      history: Afficher l'historique du groupe d'attributs
+    attribute:
+      index: Liste des attributs
+      create: Créer un attribut
+      edit: Modifier un attribut
+      remove: Supprimer un attribut
+      sort: Trier les attributs au sein d'un groupe d'attributs
+      history: Afficher l'historique de l'attribut
+    group:
+      index: Liste des groupes
+      create: Créer un groupe
+      edit: Modifier un groupe
+      remove: Supprimer un groupe
+      history: Afficher l'historique du groupe
+    group_type:
+      index: Liste des types de groupe
+      create: Créer un type de groupe
+      edit: Modifier un type de groupe
+      remove: Supprimer un type de groupe
+    association_type:
+      index: Liste des types d'association
+      create: Créer un type d'association
+      edit: Modifier un type d'association
+      remove: Supprimer un type d'association
+      history: Afficher l'historique du type d'association
+    association:
+      remove: Supprimer les associations d'un produit
+    job_tracker:
+      index: Voir les processus exécutés
+    api_connection:
+      manage: Gérer les connexions API
+  acl_group:
+    association_type: Types d'association
+    attribute: Attributs
+    attribute_group: Groupes d'attributs
+    category: Catégories
+    channel: Canaux
+    currency: Devises
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    locale: Locales
+    product: Produits
+    product_model: Modèles de produits
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: La locale a été retirée du canal. Les complétudes liées sont en cours de suppression.
+        done: Suppression d'un paramètre régional pour un canal terminée.
   create:
     attribute: Créer un attribut
     attribute group: Créer un groupe d'attributs

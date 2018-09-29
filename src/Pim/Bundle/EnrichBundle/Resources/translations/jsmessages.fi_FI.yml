@@ -95,6 +95,7 @@ pim_datagrid:
       subHint: 'Klikkaa "Lisää assosiaatioita" lisätäksesi assosiaatioita tälle tuotteelle'
   filters:
     label: Suodattimet
+    system: Järjestelmä
 error:
   exception: Voi ei! {{ status_code }} virhe tapahtui...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua

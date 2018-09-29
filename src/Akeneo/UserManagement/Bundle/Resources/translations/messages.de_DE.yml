@@ -9,6 +9,7 @@ pim_user:
       middle_name: Zweiter Vorname
       last_name: Nachname
       name_suffix: Namenssuffix
+      phone: Telefon
       date_of_birth: Geburtsdatum
       avatar: Benutzerbild
       timezone: Zeitzone
