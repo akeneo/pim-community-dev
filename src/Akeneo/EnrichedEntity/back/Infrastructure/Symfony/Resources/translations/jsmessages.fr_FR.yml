@@ -1,5 +1,8 @@
 pim_enriched_entity:
   enriched_entity:
+    validation:
+      code:
+        pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
     button:
       save: Enregistrer
       create: Créer
@@ -25,6 +28,9 @@ pim_enriched_entity:
         label: Libellé
       confirm: Confirmer
   record:
+    validation:
+      code:
+        pattern: 'Ce champ ne peut qu''être composé de lettres, de chiffres et d''underscores.'
     button:
       save: Enregistrer
       create: Créer

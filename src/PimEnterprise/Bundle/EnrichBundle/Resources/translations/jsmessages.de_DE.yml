@@ -218,7 +218,7 @@ batch_jobs:
     execute_rules.label: Regel-Ausführung
   publish_product:
     perform.label: Produkte veröffentlichen
-pim_catalog_volumne:
+pim_catalog_volume:
   section:
     assets:
       title: Achsen auf Assets

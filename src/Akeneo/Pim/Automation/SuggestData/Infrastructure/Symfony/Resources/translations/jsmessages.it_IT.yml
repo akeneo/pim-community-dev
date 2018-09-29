@@ -10,7 +10,7 @@ akeneo_suggest_data:
         suggest_data:
           mapped: Attivo
           unmapped: Inattivo
-  pim_ai:
+  connection:
     module:
       activation:
         activated: 'Attivato'

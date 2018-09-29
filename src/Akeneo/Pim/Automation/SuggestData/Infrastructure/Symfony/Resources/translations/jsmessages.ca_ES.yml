@@ -1,46 +1,40 @@
-pim_title:
-  akeneo_suggest_data_connection_index: 'Connexió PIM.ai'
-  akeneo_suggest_data_identifiers_mapping_edit: 'Configuració PIM.ai'
-  akeneo_suggest_data_attributes_mapping_edit: 'Configuració PIM.ai'
-pim_menu:
-  item:
-    pim_ai: PIM.ai
 akeneo_suggest_data:
   entity:
     identifier_mapping:
       plural_label: Identificadors
       fields:
         identifier_label:
-          label: Identificador de l'etiqueta
           values:
             brand: Marca
             asin: ASIN
             mpn: MPN
+            upc: Preu per unitat
         status:
           active: Actiu
           inactive: Inactiu
     attributes_mapping:
       fields:
-        pim_ai_attribute: 'Atribut PIM.ai'
         suggest_data:
+          pending: Pendent
           mapped: Actiu
           unmapped: Inactiu
       module:
         subscribe:
           subscribe: 'Família subscrita a PIM.ai'
           subscribed: 'Subscrit a PIM.ai'
-  pim_ai:
-    page_title: 'Connexió PIM.ai'
+  connection:
     module:
       activation:
-        label: 'Connector PIM.ai'
         activation_code: 'Codi d''activació'
         activated: 'Activat'
         activate: 'Activat'
   settings:
-    page_title: 'Configuració PIM.ai'
     module:
-      title:
-        sub_title: 'Benvingut a la configuració IA d''Informació de Producte'
       inactive_connection:
         title: Ho sentim, no hi ha res que mostrar ara mateix
+  mass_edit:
+    product:
+      operation:
+        suggest_data:
+          subscribe_label: Subscriure’s
+          unsubscribe_label: Desubscriviu-vos

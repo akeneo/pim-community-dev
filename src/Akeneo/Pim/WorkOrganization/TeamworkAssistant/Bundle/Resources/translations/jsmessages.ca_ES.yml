@@ -2,17 +2,59 @@ teamwork_assistant:
   common:
     required: Obligatori
     warning: No et preocupis, el càlcul del projecte pot tardar una estona. Podria no ser visible immediatament.
+  grid:
+    view_selector:
+      create: Crear projecte
+      edit: Editar projecte
+      remove: Eliminar projecte
+      create_from_view: Crear un projecte des d'aquesta vista
+      start_new_project: Iniciar un nou projecte
+      confirmation:
+        remove: Estàs segur que vols eliminar aquest projecte?
+      projects: Projectes
   project:
     label: Nom
     locale: Configuració Regional
+    label_maxlength: Aquest valor és massa llarga. Ha de tenir {{ max }} caràcters o menys.
     description: Descripció
+    due_date: Data límit
+    due_date_past: No podeu seleccionar una data en el passat.
+    leaving_scope: Està sortint del perímetre del projecte.
+  edit_project_modal:
+    saved: El projecte s'ha guardat.
+    title: Editar projecte
+  create_project_modal:
+    saved: El projecte s'ha guardat, se li notificarà quan hagi finalitzat el càlcul.
+    title: Crear projecte
   widget:
+    no_project: No té cap projecte
     no_project_create: crear un nou projecte
     description: Descripció
+    due_date: Data límit
+    todo: Obert
+    in_progress: En progrés
+    done: Fet
+    all_contributors: Tots els col·laboradors
+    display_products: Mostrar productes
+    placeholder:
+      contributor_selector: Buscar col·laborador
+      project_selector: Buscar projecte
     completeness:
       to_start: PRODUCTES A COMENÇAR
+      in_progress: Productes en progrés
+      done: Productes acabats
+pim_datagrid:
+  view_selector:
+    project: Projectes
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Assistent de treball d'equip
+        project_calculation: Assistent de treball d'equip
 batch_jobs:
   project_calculation:
+    project_calculation.label: Càlcul de projecte
     prepare_project_calculation.label: Preparar el càlcul del projecte
     clean_contributor_group.label: Revisar permisos dels usuaris en el local del projecte
   refresh_project_completeness_calculation:
@@ -21,3 +63,4 @@ batch_jobs:
 pim_notification:
   types:
     project_created: Un nou projecte per a vostè
+    project_finished: Projecte acabat

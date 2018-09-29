@@ -225,7 +225,7 @@ batch_jobs:
     execute_rules.label: Ejecución de las reglas
   publish_product:
     perform.label: Productos publicados
-pim_catalog_volumne:
+pim_catalog_volume:
   section:
     assets:
       title: Ejes en los recursos
