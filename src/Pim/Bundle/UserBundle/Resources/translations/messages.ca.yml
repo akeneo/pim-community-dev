@@ -43,6 +43,7 @@ Additional: Addicional
 Groups and Roles: Grups i Rols
 Username: Nom d’usuari
 Password: Contrasenya
+Password (again): Contrasenya (altre cop)
 Re-enter password: Torneu a introduir la contrasenya
 Name prefix: Prefix del nom
 First name: Nom
@@ -149,4 +150,5 @@ Username or Email: Usuari o correu electrònic
 Forgot Password: He oblidat la contrasenya
 Request: Petició
 Check Email: Comprovar el correu electrònic
+password_reset_email_sent: S'ha enviat un correu electrònic a l'usuari. Conté un enllaç per restablir la contrasenya.
 Go to homepage: Anar a la pàgina d'inici
