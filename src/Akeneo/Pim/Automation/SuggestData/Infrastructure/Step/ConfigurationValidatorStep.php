@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Step;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
-use Akeneo\Pim\Automation\SuggestData\Domain\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -54,17 +53,16 @@ class ConfigurationValidatorStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(StepExecution $stepExecution)
+    protected function doExecute(StepExecution $stepExecution): void
     {
+        // TODO : the validation should be handled by specific services
         if (true !== $this->connectionStatus->isActive()) {
             throw new \Exception('Token is invalid or expired');
         }
 
         $mapping = $this->identifiersMappingRepo->find();
-        $mappedIdentifiers = array_keys(array_filter($mapping->getIdentifiers()));
-
-        if ($mapping->isEmpty() || ['brand'] === $mappedIdentifiers || ['mpn'] === $mappedIdentifiers) {
-            throw new \Exception('Identifiers mapping is incomplete');
+        if ($mapping->isEmpty()) {
+            throw new \Exception('Identifiers mapping is empty');
         }
 
         $stepExecution->addSummaryInfo('configuration_validation', 'OK');
