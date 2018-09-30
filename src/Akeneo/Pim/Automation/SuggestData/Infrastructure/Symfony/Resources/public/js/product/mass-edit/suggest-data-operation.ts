@@ -51,14 +51,6 @@ class SuggestDataOperation extends Operation {
     this.config = {...this.config, ...options.config};
   };
 
-  /**
-   * {@inheritdoc}
-   */
-  configure(): void {
-    this.setAction('subscribe');
-
-    Operation.prototype.configure.apply(this, arguments);
-  }
 
   /**
    * {@inheritdoc}
@@ -73,9 +65,14 @@ class SuggestDataOperation extends Operation {
    * {@inheritdoc}
    */
   public render() {
+    if (undefined === this.getFormData().action) {
+      this.setAction('subscribe');
+    }
+
     this.$el.html(this.template({
       subscribeLabel: __(this.config.subscribeLabel),
-      unsubscribeLabel: __(this.config.unsubscribeLabel)
+      unsubscribeLabel: __(this.config.unsubscribeLabel),
+      currentAction: this.getFormData().action,
     }));
 
     return this;
@@ -100,6 +97,7 @@ class SuggestDataOperation extends Operation {
     let data = this.getFormData();
 
     data.jobInstanceCode = this.config.jobInstanceCode.replace('%s', action);
+    data.action = action;
 
     this.setData(data);
   }
