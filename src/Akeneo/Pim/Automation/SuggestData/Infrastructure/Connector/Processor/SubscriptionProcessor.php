@@ -18,16 +18,20 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\ProductSubscriptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscriptionProcessor implements ItemProcessorInterface
+class SubscriptionProcessor implements ItemProcessorInterface, InitializableInterface
 {
     /** @var ProductSubscriptionRepositoryInterface */
     private $productSubscriptionRepository;
+
+    /** @var IdentifiersMappingRepositoryInterface */
+    private $identifiersMappingRepository;
 
     /** @var IdentifiersMapping */
     private $identifiersMapping;
@@ -41,7 +45,15 @@ class SubscriptionProcessor implements ItemProcessorInterface
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository
     ) {
         $this->productSubscriptionRepository = $productSubscriptionRepository;
-        $this->identifiersMapping = $identifiersMappingRepository->find();
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize(): void
+    {
+        $this->identifiersMapping = $this->identifiersMappingRepository->find();
     }
 
     /**

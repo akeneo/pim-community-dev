@@ -41,6 +41,7 @@ class SubscriptionProcessorSpec extends ObjectBehavior
             new IdentifiersMapping(['asin' => $asin->getWrappedObject()])
         );
         $this->beConstructedWith($productSubscriptionRepository, $identifiersMappingRepository);
+        $this->initialize();
     }
 
     public function it_is_an_item_processor(): void
