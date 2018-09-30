@@ -113,3 +113,7 @@ batch_jobs:
         label: Franklin Insights bulk subscription
         validate_configuration.label: Validate Franklin Insights configuration
         subscribe_products.label: Subscribe products
+    suggest_data_unsubscribe_products:
+        label: Franklin Insights bulk unsubscription
+        validate_configuration.label: Validate Franklin Insights configuration
+        unsubscribe_products.label: Unsubscribe products
