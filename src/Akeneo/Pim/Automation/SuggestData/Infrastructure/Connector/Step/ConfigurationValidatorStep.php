@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Step;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step;
 
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;

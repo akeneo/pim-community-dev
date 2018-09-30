@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.suggest_data.step.validate_configuration.subscription:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Step\ConfigurationValidatorStep'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step\ConfigurationValidatorStep'
         arguments:
             - 'validate_configuration'
             - '@event_dispatcher'
@@ -10,7 +10,7 @@ services:
                 - '@akeneo.pim.automation.suggest_data.connector.validation.identifiers_mapping'
 
     akeneo.pim.automation.suggest_data.step.validate_configuration.unsubscription:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Step\ConfigurationValidatorStep'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step\ConfigurationValidatorStep'
         arguments:
             - 'validate_configuration'
             - '@event_dispatcher'

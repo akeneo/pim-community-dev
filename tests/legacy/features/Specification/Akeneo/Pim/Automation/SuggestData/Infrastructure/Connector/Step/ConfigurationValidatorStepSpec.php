@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Step;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step;
 
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Step\ConfigurationValidatorStep;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step\ConfigurationValidatorStep;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
 use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;

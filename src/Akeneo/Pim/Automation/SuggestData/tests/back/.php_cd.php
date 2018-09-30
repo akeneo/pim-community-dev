@@ -16,7 +16,7 @@ $rules = [
 
         // Akeneo external bounded contexts
         'Akeneo\Pim\Structure\Component',
-        'Akeneo\Pim\Enrichment\Component'
+        'Akeneo\Pim\Enrichment\Component',
     ])->in('Akeneo\Pim\Automation\SuggestData\Domain'),
     $builder->only([
         'Akeneo\Pim\Automation\SuggestData\Domain',
@@ -24,7 +24,7 @@ $rules = [
 
         // Akeneo external bounded contexts
         'Akeneo\Pim\Structure\Component',
-        'Akeneo\Pim\Enrichment\Component'
+        'Akeneo\Pim\Enrichment\Component',
     ])->in('Akeneo\Pim\Automation\SuggestData\Application'),
     $builder->only([
         'Akeneo\Pim\Automation\SuggestData\Infrastructure',
@@ -37,12 +37,15 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
         'Akeneo\Platform\Bundle\InstallerBundle\Event',
         'Akeneo\Tool\Component\StorageUtils',
+        'Akeneo\Tool\Component\Batch',
+        // TODO: should be removed see with JJ and AL
+        'Akeneo\Tool\Bundle\BatchBundle',
 
         // External dependencies
         'Oro\Bundle\ConfigBundle\Entity\Config',
         'Doctrine',
         'Symfony',
-        'Guzzle'
+        'Guzzle',
     ])->in('Akeneo\Pim\Automation\SuggestData\Infrastructure'),
     $builder->only([
         'Akeneo\Pim\Automation\SuggestData\Infrastructure\Client',
@@ -53,8 +56,21 @@ $rules = [
 
         // External dependencies
         'Guzzle',
-        'Symfony\Component\HttpFoundation\Response'
-    ])->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Client')
+        'Symfony\Component\HttpFoundation\Response',
+    ])->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Client'),
+    $builder->only([
+        'Akeneo\Pim\Automation\SuggestData\Domain',
+        'Akeneo\Pim\Automation\SuggestData\Application',
+        'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector',
+
+        // Akeneo external bounded contexts
+        'Akeneo\Tool\Component\Batch',
+        // TODO: should be removed see with JJ and AL
+        'Akeneo\Tool\Bundle\BatchBundle',
+
+        // External dependencies
+        'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+    ])->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector'),
 ];
 
 $config = new Configuration($rules, $finder);
