@@ -40,11 +40,11 @@ class UnsubscriptionWriterSpec extends ObjectBehavior
         $this->shouldHaveType(UnsubscriptionWriter::class);
     }
 
-    public function it_unsusbscribes_products($stepExecution)
+    public function it_unsusbscribes_products($stepExecution): void
     {
         $stepExecution->incrementSummaryInfo('unsubscribed')->shouldBeCalledTimes(2);
 
-        $items= [
+        $items = [
             new ProductSubscription(new Product(), 'fake-subscription-id'),
             new ProductSubscription(new Product(), 'another-fake-subscription-id'),
         ];

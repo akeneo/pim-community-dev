@@ -126,7 +126,7 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
     }
 
     /**
-     * Common assertions for a successful execution
+     * Common assertions for a successful execution.
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface $jobRepository
@@ -164,7 +164,7 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
     }
 
     /**
-     * Common assertions for a failed validation
+     * Common assertions for a failed validation.
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface $jobRepository

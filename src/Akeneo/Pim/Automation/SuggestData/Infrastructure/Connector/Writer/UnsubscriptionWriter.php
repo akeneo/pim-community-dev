@@ -28,7 +28,7 @@ class UnsubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInt
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -36,7 +36,7 @@ class UnsubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInt
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         // TODO APAI-154: Implement actual unsubscription
         foreach ($items as $item) {

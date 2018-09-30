@@ -28,7 +28,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -36,7 +36,7 @@ class SubscriptionWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         // TODO APAI-154: Implement actual subscription
         foreach ($items as $item) {
