@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Step;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Repository\Doctrine\IdentifiersMappingRepository;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Step\ConfigurationValidatorStep;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidationException;
+use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
@@ -37,15 +36,13 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
     public function let(
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        GetSuggestDataConnectionStatus $connectionStatus,
-        IdentifiersMappingRepository $identifiersMappingRepo
+        ValidatorInterface $validator
     ): void {
         $this->beConstructedWith(
             'validate_configuration',
             $eventDispatcher,
             $jobRepository,
-            $connectionStatus,
-            $identifiersMappingRepo
+            [$validator]
         );
     }
 
@@ -60,48 +57,31 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
         $this->shouldHaveType(ConfigurationValidatorStep::class);
     }
 
-    public function it_stops_execution_with_an_invalid_token(
+    public function it_stops_execution_with_failed_validation(
         $eventDispatcher,
         $jobRepository,
-        $connectionStatus,
+        $validator,
         StepExecution $execution,
         BatchStatus $status
     ): void {
-        $connectionStatus->isActive()->willReturn(false);
-        $this->failure($eventDispatcher, $jobRepository, $execution, $status);
+        $execution->getStatus()->willReturn($status);
+        $status->getValue()->willReturn(BatchStatus::STARTING);
+        $validator->validate(null)->willThrow(new ValidationException('Invalid configuration'));
 
-        $this->execute($execution);
-    }
+        $eventDispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
+        $execution->setStartTime(Argument::type(\DateTime::class))->shouldBeCalled();
+        $execution->setStatus(Argument::type(BatchStatus::class))->shouldBeCalled();
+        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
 
-    public function it_stops_execution_with_empty_identifiers_mapping(
-        $eventDispatcher,
-        $jobRepository,
-        $connectionStatus,
-        $identifiersMappingRepo,
-        StepExecution $execution,
-        BatchStatus $status
-    ): void {
-        $connectionStatus->isActive()->willReturn(true);
-        $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping([]));
+        $execution->upgradeStatus(BatchStatus::FAILED)->shouldBeCalled();
+        $execution->addFailureException(Argument::type(\Exception::class))->shouldBeCalled();
+        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
 
-        $this->failure($eventDispatcher, $jobRepository, $execution, $status);
+        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_ERRORED, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
 
-        $this->execute($execution);
-    }
-
-    public function it_stops_execution_with_incomplete_identifiers_mapping(
-        $eventDispatcher,
-        $jobRepository,
-        $connectionStatus,
-        $identifiersMappingRepo,
-        StepExecution $execution,
-        BatchStatus $status,
-        AttributeInterface $brand
-    ): void {
-        $connectionStatus->isActive()->willReturn(true);
-        $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping(['brand' => $brand]));
-
-        $this->failure($eventDispatcher, $jobRepository, $execution, $status);
+        $execution->setEndTime(Argument::type(\DateTime::class))->shouldBeCalled();
+        $execution->setExitStatus(Argument::type(ExitStatus::class))->shouldBeCalled();
 
         $this->execute($execution);
     }
@@ -109,40 +89,15 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
     public function it_executes_with_success(
         $eventDispatcher,
         $jobRepository,
-        $connectionStatus,
-        $identifiersMappingRepo,
+        $validator,
         StepExecution $execution,
         BatchStatus $status,
         ExitStatus $exitStatus,
         AttributeInterface $asin
     ): void {
-        $connectionStatus->isActive()->willReturn(true);
-        $identifiersMappingRepo->find()->willReturn(new IdentifiersMapping(['asin' => $asin]));
-        $execution->addSummaryInfo('configuration_validation', 'OK')->shouldBeCalled();
-
-        $this->success($eventDispatcher, $jobRepository, $execution, $status, $exitStatus);
-
-        $this->execute($execution);
-    }
-
-    /**
-     * Common assertions for a successful execution.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface $jobRepository
-     * @param StepExecution $execution
-     * @param BatchStatus $status
-     * @param ExitStatus $exitStatus
-     */
-    private function success(
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository,
-        StepExecution $execution,
-        BatchStatus $status,
-        ExitStatus $exitStatus
-    ): void {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
+        $validator->validate(null)->willReturn(null);
 
         $execution->getExitStatus()->willReturn($exitStatus);
         $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
@@ -161,39 +116,9 @@ class ConfigurationValidatorStepSpec extends ObjectBehavior
 
         $execution->setEndTime(Argument::type(\DateTime::class))->shouldBeCalled();
         $execution->setExitStatus(Argument::type(ExitStatus::class))->shouldBeCalled();
-    }
 
-    /**
-     * Common assertions for a failed validation.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface $jobRepository
-     * @param StepExecution $execution
-     * @param BatchStatus $status
-     */
-    private function failure(
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository,
-        StepExecution $execution,
-        BatchStatus $status
-    ): void {
-        $execution->getStatus()->willReturn($status);
-        $status->getValue()->willReturn(BatchStatus::STARTING);
+        $execution->addSummaryInfo('configuration_validation', 'OK')->shouldBeCalled();
 
-        $eventDispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
-        $execution->setStartTime(Argument::type(\DateTime::class))->shouldBeCalled();
-        $execution->setStatus(Argument::type(BatchStatus::class))->shouldBeCalled();
-        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
-
-        $execution->upgradeStatus(BatchStatus::FAILED)->shouldBeCalled();
-        $execution->addFailureException(Argument::type(\Exception::class))->shouldBeCalled();
-        $jobRepository->updateStepExecution($execution)->shouldBeCalled();
-
-        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_ERRORED, Argument::any())->shouldBeCalled();
-
-        $eventDispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
-
-        $execution->setEndTime(Argument::type(\DateTime::class))->shouldBeCalled();
-        $execution->setExitStatus(Argument::type(ExitStatus::class))->shouldBeCalled();
+        $this->execute($execution);
     }
 }

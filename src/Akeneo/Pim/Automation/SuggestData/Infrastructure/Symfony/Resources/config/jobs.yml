@@ -6,7 +6,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.suggest_data.step.validate_configuration'
+                - '@akeneo.pim.automation.suggest_data.step.validate_configuration.subscription'
                 - '@akeneo.pim.automation.suggest_data.step.subscribe_products'
         tags:
             - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'mass_edit' }
@@ -18,7 +18,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.suggest_data.step.validate_configuration'
+                - '@akeneo.pim.automation.suggest_data.step.validate_configuration.unsubscription'
                 - '@akeneo.pim.automation.suggest_data.step.unsubscribe_products'
         tags:
             - { name: akeneo_batch.job, connector: 'Suggest Data Connector', type: 'mass_edit' }

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Step;
 
-use Akeneo\Pim\Automation\SuggestData\Application\Configuration\Service\GetSuggestDataConnectionStatus;
-use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
@@ -25,29 +24,23 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ConfigurationValidatorStep extends AbstractStep
 {
-    /** @var GetSuggestDataConnectionStatus */
-    private $connectionStatus;
-
-    /** @var IdentifiersMappingRepositoryInterface */
-    private $identifiersMappingRepo;
+    /** @var ValidatorInterface[] */
+    private $validators;
 
     /**
      * @param $name
      * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface $jobRepository
-     * @param GetSuggestDataConnectionStatus $connectionStatus
-     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepo
+     * @param ValidatorInterface[] $validators
      */
     public function __construct(
         $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        GetSuggestDataConnectionStatus $connectionStatus,
-        IdentifiersMappingRepositoryInterface $identifiersMappingRepo
+        array $validators
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
-        $this->connectionStatus = $connectionStatus;
-        $this->identifiersMappingRepo = $identifiersMappingRepo;
+        $this->validators = $validators;
     }
 
     /**
@@ -55,14 +48,8 @@ class ConfigurationValidatorStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution): void
     {
-        // TODO : the validation should be handled by specific services
-        if (true !== $this->connectionStatus->isActive()) {
-            throw new \Exception('Token is invalid or expired');
-        }
-
-        $mapping = $this->identifiersMappingRepo->find();
-        if ($mapping->isEmpty()) {
-            throw new \Exception('Identifiers mapping is empty');
+        foreach ($this->validators as $validator) {
+            $validator->validate(null);
         }
 
         $stepExecution->addSummaryInfo('configuration_validation', 'OK');

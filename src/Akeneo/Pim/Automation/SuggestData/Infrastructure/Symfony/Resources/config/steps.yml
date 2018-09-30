@@ -1,12 +1,22 @@
 services:
-    akeneo.pim.automation.suggest_data.step.validate_configuration:
+    akeneo.pim.automation.suggest_data.step.validate_configuration.subscription:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Step\ConfigurationValidatorStep'
         arguments:
             - 'validate_configuration'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@akeneo.pim.automation.suggest_data.connection.get_status'
-            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+            -
+                - '@akeneo.pim.automation.suggest_data.connector.validation.connection_status'
+                - '@akeneo.pim.automation.suggest_data.connector.validation.identifiers_mapping'
+
+    akeneo.pim.automation.suggest_data.step.validate_configuration.unsubscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Step\ConfigurationValidatorStep'
+        arguments:
+            - 'validate_configuration'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.suggest_data.connector.validation.connection_status'
 
     akeneo.pim.automation.suggest_data.step.subscribe_products:
         class: '%pim_connector.step.item_step.class%'
