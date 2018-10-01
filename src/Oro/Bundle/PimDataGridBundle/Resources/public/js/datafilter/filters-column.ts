@@ -23,6 +23,7 @@ class FiltersColumn extends BaseView {
   public page: number = 1;
   public opened = false;
   public filterList: JQuery<HTMLElement>;
+  public ignoredFilters: string[];
 
   readonly config: FiltersConfig;
   readonly template: string = `
@@ -47,7 +48,14 @@ class FiltersColumn extends BaseView {
         <% filters.forEach(filter => { %>
         <li>
             <label for="<%- filter.name %>" title="" class="ui-corner-all ui-state-hover">
-                <input id="<%- filter.name %>" name="multiselect_add-filter-select" type="checkbox" value="<%- filter.name %>" title="<%- filter.label %>" <%- filter.enabled ? 'checked="checked"' : ''  %> aria-selected="true">
+                <input
+                id="<%- filter.name %>"
+                name="multiselect_add-filter-select"
+                type="checkbox" value="<%- filter.name %>"
+                title="<%- filter.label %>"
+                <%- filter.enabled ? 'checked="checked"' : ''  %>
+                <%- true === ignoredFilters.includes(filter.name) ? 'disabled="true"' : ''  %>
+                  aria-selected="true">
                     <span><%- filter.label %></span>
             </label>
         </li>
@@ -60,6 +68,7 @@ class FiltersColumn extends BaseView {
     this.config = {...this.config, ...options.config};
     this.defaultFilters = [];
     this.loadedFilters = [];
+    this.ignoredFilters = ['scope'];
     this.gridCollection = {};
   }
 
@@ -69,7 +78,6 @@ class FiltersColumn extends BaseView {
     };
   }
 
-  // TODO: rewrite
   togglePanel() {
     this.opened = !this.opened;
     let timer: any = null;
@@ -87,7 +95,7 @@ class FiltersColumn extends BaseView {
       timer = setTimeout(() => {
         $(this.filterList).css({display: 'none'});
         clearTimeout(timer);
-      }, 100);
+      }, 300);
     }
   }
 
@@ -255,7 +263,11 @@ class FiltersColumn extends BaseView {
   }
 
   renderFilterGroup(filters: GridFilter[], groupName: string): string {
-    return _.template(this.filterGroupTemplate)({filters, groupName});
+    return _.template(this.filterGroupTemplate)({
+      filters,
+      groupName,
+      ignoredFilters: this.ignoredFilters
+    });
   }
 
   groupFilters(filters: GridFilter[]) {
