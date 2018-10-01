@@ -91,6 +91,17 @@ define(
              */
             doSearch: function () {
                 this.setValue(this._readDOMValue());
+            },
+
+            /**
+             * Appends filter to a grid
+            * */
+            moveFilter: function(collection, element) {
+                if (element) {
+                    element.$('.search-zone')
+                    .empty()
+                    .append(this.$el.get(0));
+                }
             }
         });
     }
