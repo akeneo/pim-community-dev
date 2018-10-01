@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -12,16 +12,16 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater;
  * file that was distributed with this source code.
  */
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\EmptyData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\EmptyData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

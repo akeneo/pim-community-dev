@@ -1,5 +1,5 @@
-import reducer from 'akeneoenrichedentity/application/reducer/sidebar';
-import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
+import reducer from 'akeneoreferenceentity/application/reducer/sidebar';
+import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 
 describe('akeneo > enriched entity > application > reducer --- sidebar', () => {
   test('I ignore other commands', () => {

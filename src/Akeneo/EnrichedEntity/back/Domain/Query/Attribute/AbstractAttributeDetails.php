@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -29,7 +29,7 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 abstract class AbstractAttributeDetails
 {
     public const IDENTIFIER = 'identifier';
-    public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+    public const ENRICHED_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     public const CODE = 'code';
     public const LABELS = 'labels';
     public const IS_REQUIRED = 'is_required';
@@ -41,8 +41,8 @@ abstract class AbstractAttributeDetails
     /** @var AttributeIdentifier */
     public $identifier;
 
-    /** @var EnrichedEntity */
-    public $enrichedEntityIdentifier;
+    /** @var ReferenceEntity */
+    public $referenceEntityIdentifier;
 
     /** @var AttributeCode */
     public $code;
@@ -66,7 +66,7 @@ abstract class AbstractAttributeDetails
     {
         return [
             self::IDENTIFIER                 => $this->identifier->normalize(),
-            self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->enrichedEntityIdentifier,
+            self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->referenceEntityIdentifier,
             self::CODE                       => (string) $this->code,
             self::LABELS                     => $this->labels->normalize(),
             self::IS_REQUIRED                => $this->isRequired->normalize(),

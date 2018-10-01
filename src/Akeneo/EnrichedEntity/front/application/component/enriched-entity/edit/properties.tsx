@@ -1,24 +1,24 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import Form from 'akeneoreferenceentity/application/component/reference-entity/edit/form';
 import {
-  enrichedEntityLabelUpdated,
-  saveEnrichedEntity,
-  deleteEnrichedEntity,
-  enrichedEntityImageUpdated,
-} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
-import __ from 'akeneoenrichedentity/tools/translator';
-import {EditionFormState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
-import EnrichedEntity, {
-  denormalizeEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import Header from 'akeneoenrichedentity/application/component/enriched-entity/edit/header';
+  referenceEntityLabelUpdated,
+  saveReferenceEntity,
+  deleteReferenceEntity,
+  referenceEntityImageUpdated,
+} from 'akeneoreferenceentity/application/action/reference-entity/edit';
+import __ from 'akeneoreferenceentity/tools/translator';
+import {EditionFormState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {
   SecondaryAction,
   breadcrumbConfiguration,
-} from 'akeneoenrichedentity/application/component/enriched-entity/edit';
-import File from 'akeneoenrichedentity/domain/model/file';
+} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -39,7 +39,7 @@ interface DispatchProps {
       onPressEnter: () => void;
       onImageUpdated: (image: File) => void;
     };
-    onDelete: (enrichedEntity: EnrichedEntity) => void;
+    onDelete: (referenceEntity: ReferenceEntity) => void;
     onSaveEditForm: () => void;
   };
 }
@@ -48,17 +48,17 @@ class Properties extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
 
   render() {
-    const enrichedEntity = denormalizeEnrichedEntity(this.props.form.data);
+    const referenceEntity = denormalizeReferenceEntity(this.props.form.data);
 
     return (
       <React.Fragment>
         <Header
-          label={enrichedEntity.getLabel(this.props.context.locale)}
-          image={enrichedEntity.getImage()}
+          label={referenceEntity.getLabel(this.props.context.locale)}
+          image={referenceEntity.getImage()}
           primaryAction={() => {
             return this.props.acls.edit ? (
               <button className="AknButton AknButton--apply" onClick={this.props.events.onSaveEditForm}>
-                {__('pim_enriched_entity.enriched_entity.button.save')}
+                {__('pim_reference_entity.reference_entity.button.save')}
               </button>
             ) : null;
           }}
@@ -66,7 +66,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
             return this.props.acls.delete ? (
               <SecondaryAction
                 onDelete={() => {
-                  this.props.events.onDelete(enrichedEntity);
+                  this.props.events.onDelete(referenceEntity);
                 }}
               />
             ) : null;
@@ -78,7 +78,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title">
-            <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
+            <span className="group-label">{__('pim_reference_entity.reference_entity.properties.title')}</span>
           </header>
           <div className="AknFormContainer AknFormContainer--withPadding">
             <Form
@@ -107,7 +107,7 @@ export default connect(
       },
       acls: {
         edit: true,
-        delete: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_delete'),
+        delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
       },
     };
   },
@@ -116,20 +116,20 @@ export default connect(
       events: {
         form: {
           onLabelUpdated: (value: string, locale: string) => {
-            dispatch(enrichedEntityLabelUpdated(value, locale));
+            dispatch(referenceEntityLabelUpdated(value, locale));
           },
           onPressEnter: () => {
-            dispatch(saveEnrichedEntity());
+            dispatch(saveReferenceEntity());
           },
           onImageUpdated: (image: File) => {
-            dispatch(enrichedEntityImageUpdated(image));
+            dispatch(referenceEntityImageUpdated(image));
           },
         },
-        onDelete: (enrichedEntity: EnrichedEntity) => {
-          dispatch(deleteEnrichedEntity(enrichedEntity));
+        onDelete: (referenceEntity: ReferenceEntity) => {
+          dispatch(deleteReferenceEntity(referenceEntity));
         },
         onSaveEditForm: () => {
-          dispatch(saveEnrichedEntity());
+          dispatch(saveReferenceEntity());
         },
       },
     };

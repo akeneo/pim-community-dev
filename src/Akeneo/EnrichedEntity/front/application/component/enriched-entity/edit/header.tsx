@@ -1,15 +1,15 @@
 import * as React from 'react';
-import BreadCrumb, {BreadcrumbConfiguration} from 'akeneoenrichedentity/application/component/app/breadcrumb';
-import __ from 'akeneoenrichedentity/tools/translator';
-import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
-import Image from 'akeneoenrichedentity/application/component/app/image';
+import BreadCrumb, {BreadcrumbConfiguration} from 'akeneoreferenceentity/application/component/app/breadcrumb';
+import __ from 'akeneoreferenceentity/tools/translator';
+import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
+import Image from 'akeneoreferenceentity/application/component/app/image';
 import {connect} from 'react-redux';
-import LocaleSwitcher from 'akeneoenrichedentity/application/component/app/locale-switcher';
-import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import File from 'akeneoenrichedentity/domain/model/file';
-import Locale from 'akeneoenrichedentity/domain/model/locale';
-import {EditState as State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {catalogLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
+import LocaleSwitcher from 'akeneoreferenceentity/application/component/app/locale-switcher';
+import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
+import File from 'akeneoreferenceentity/domain/model/file';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {catalogLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
 
 interface OwnProps {
   label: string;
@@ -53,7 +53,7 @@ const Header = ({
   return (
     <header className="AknTitleContainer">
       <div className="AknTitleContainer-line">
-        <Image alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})} image={image} />
+        <Image alt={__('pim_reference_entity.reference_entity.img', {'{{ label }}': label})} image={image} />
         <div className="AknTitleContainer-mainContainer">
           <div>
             <div className="AknTitleContainer-line">
@@ -64,7 +64,7 @@ const Header = ({
                 <div className="user-menu">
                   <PimView
                     className="AknTitleContainer-userMenu"
-                    viewName="pim-enriched-entity-index-user-navigation"
+                    viewName="pim-reference-entity-index-user-navigation"
                   />
                 </div>
                 <div className="AknButtonList">

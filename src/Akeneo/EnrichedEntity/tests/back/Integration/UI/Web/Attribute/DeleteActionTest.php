@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteActionTest extends ControllerIntegrationTestCase
 {
-    private const DELETE_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_delete_rest';
+    private const DELETE_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_delete_rest';
 
     /** @var Client */
     private $client;
@@ -54,7 +54,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -67,7 +67,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
-                'enrichedEntityIdentifier' => 'designer',
+                'referenceEntityIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -87,7 +87,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => sprintf('%s_%s_%s', 'name', 'designer', md5('fingerprint')),
-                'enrichedEntityIdentifier' => 'designer',
+                'referenceEntityIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -106,7 +106,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => 'unknown',
-                'enrichedEntityIdentifier' => 'designer',
+                'referenceEntityIdentifier' => 'designer',
             ],
             'DELETE',
             [
@@ -128,7 +128,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_ATTRIBUTE_ROUTE,
             [
                 'attributeIdentifier' => 'name',
-                'enrichedEntityIdentifier' => 'celine_dion',
+                'referenceEntityIdentifier' => 'celine_dion',
             ],
             'DELETE'
         );
@@ -142,7 +142,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $attributeItem = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -160,17 +160,17 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->get('pim_user.repository.user')->save($user);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_delete', true);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_delete', true);
     }
 
     private function getAttributeRepository(): AttributeRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
     }
 
     private function revokeDeletionRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_delete', false);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_delete', false);
     }
 }

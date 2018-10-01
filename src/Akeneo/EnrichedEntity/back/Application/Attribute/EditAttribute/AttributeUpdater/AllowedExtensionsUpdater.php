@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\AttributeUpdater;
+namespace Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\AttributeUpdater;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -1,4 +1,4 @@
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
 
 describe('akeneo > enriched entity > domain > model --- identifier', () => {
   test('I can create a new identifier with a string value', () => {

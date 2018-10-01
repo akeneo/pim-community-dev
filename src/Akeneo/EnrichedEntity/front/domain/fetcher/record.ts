@@ -1,10 +1,10 @@
-import {Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
+import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
 
 export default interface Fetcher {
-  fetch: (enrichedEntityIdentifier: EnrichedEntityIdentifier, identifier: RecordCode) => Promise<Record>;
-  fetchAll: (enrichedEntityIdentifier: EnrichedEntityIdentifier) => Promise<Record[]>;
+  fetch: (referenceEntityIdentifier: ReferenceEntityIdentifier, identifier: RecordCode) => Promise<Record>;
+  fetchAll: (referenceEntityIdentifier: ReferenceEntityIdentifier) => Promise<Record[]>;
   search: (query: Query) => Promise<{items: Record[]; total: number}>;
 }

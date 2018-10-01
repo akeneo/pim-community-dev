@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity;
+namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class DeleteEnrichedEntityHandlerSpec extends ObjectBehavior
+class DeleteReferenceEntityHandlerSpec extends ObjectBehavior
 {
-    function let(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
+    function let(ReferenceEntityRepositoryInterface $referenceEntityRepository)
     {
-        $this->beConstructedWith($enrichedEntityRepository);
+        $this->beConstructedWith($referenceEntityRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(DeleteEnrichedEntityHandler::class);
+        $this->shouldHaveType(DeleteReferenceEntityHandler::class);
     }
 
-    function it_deletes_an_enriched_entity(
-        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
-        DeleteEnrichedEntityCommand $command
+    function it_deletes_an_reference_entity(
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        DeleteReferenceEntityCommand $command
     ) {
         $command->identifier = 'brand';
 
-        $enrichedEntityRepository->deleteByIdentifier(
-            Argument::type(EnrichedEntityIdentifier::class)
+        $referenceEntityRepository->deleteByIdentifier(
+            Argument::type(ReferenceEntityIdentifier::class)
         )->shouldBeCalled();
 
         $this->__invoke($command);

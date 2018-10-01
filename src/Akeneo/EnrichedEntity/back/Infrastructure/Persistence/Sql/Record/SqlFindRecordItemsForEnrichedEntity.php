@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntityInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -29,7 +29,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedEntityInterface
+class SqlFindRecordItemsForReferenceEntity implements FindRecordItemsForReferenceEntityInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -46,19 +46,19 @@ class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedE
     /**
      * {@inheritdoc}
      */
-    public function __invoke(EnrichedEntityIdentifier $identifier): array
+    public function __invoke(ReferenceEntityIdentifier $identifier): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.enriched_entity_identifier, ee.code, ee.labels, fi.image
-        FROM akeneo_enriched_entity_record AS ee
+        SELECT ee.identifier, ee.reference_entity_identifier, ee.code, ee.labels, fi.image
+        FROM akeneo_reference_entity_record AS ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
         ) AS fi ON fi.file_key = ee.image
-        WHERE enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => (string) $identifier,
+            'reference_entity_identifier' => (string) $identifier,
         ]);
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
@@ -69,7 +69,7 @@ SQL;
             $image = null !== $result['image'] ? json_decode($result['image'], true) : null;
             $recordItems[] = $this->hydrateRecordItem(
                 $result['identifier'],
-                $result['enriched_entity_identifier'],
+                $result['reference_entity_identifier'],
                 $result['code'],
                 $image,
                 $result['labels']
@@ -81,7 +81,7 @@ SQL;
 
     private function hydrateRecordItem(
         string $identifier,
-        string $enrichedEntityIdentifier,
+        string $referenceEntityIdentifier,
         string $code,
         ?array $image,
         string $normalizedLabels
@@ -90,8 +90,8 @@ SQL;
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
-        $enrichedEntityIdentifier = Type::getType(Type::STRING)
-            ->convertToPHPValue($enrichedEntityIdentifier, $platform);
+        $referenceEntityIdentifier = Type::getType(Type::STRING)
+            ->convertToPHPValue($referenceEntityIdentifier, $platform);
         $code = Type::getType(Type::STRING)->convertToPHPValue($code, $platform);
 
         $recordImage = Image::createEmpty();
@@ -109,7 +109,7 @@ SQL;
 
         $recordItem = new RecordItem();
         $recordItem->identifier = RecordIdentifier::fromString($identifier);
-        $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordItem->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         $recordItem->code = RecordCode::fromString($code);
         $recordItem->labels = LabelCollection::fromArray($labels);
         $recordItem->image = $recordImage;

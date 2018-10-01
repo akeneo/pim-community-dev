@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -26,7 +26,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
         array $normalizedCommand
     ): AbstractCreateAttributeCommand {
         $command->code = $normalizedCommand['code'] ?? null;
-        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? null;
         $command->order = $normalizedCommand['order'] ?? null;
         $command->isRequired = $normalizedCommand['is_required'] ?? false;

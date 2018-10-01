@@ -1,6 +1,6 @@
-import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoenrichedentity/application/event/search';
-import {SearchFetcher, Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
-import {dataReceived} from 'akeneoenrichedentity/domain/event/search';
+import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoreferenceentity/application/event/search';
+import {SearchFetcher, Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import {dataReceived} from 'akeneoreferenceentity/domain/event/search';
 
 const fetchResults = <Object>(fetcher: SearchFetcher<Object>) => async (
   query: Query

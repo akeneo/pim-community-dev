@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

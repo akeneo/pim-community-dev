@@ -1,7 +1,7 @@
 const BaseField = require('pim/form/common/fields/field');
 import * as $ from 'jquery';
-import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 const __ = require('oro/translator');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
@@ -13,7 +13,7 @@ const template = _.template(require('pim/template/form/common/fields/select'));
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityField extends (BaseField as {new (config: any): any}) {
+class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
@@ -32,8 +32,8 @@ class EnrichedEntityField extends (BaseField as {new (config: any): any}) {
   configure() {
     const promise = $.Deferred();
 
-    enrichedEntityFetcher.fetchAll().then((enrichedEntities: EnrichedEntity[]) => {
-      this.enrichedEntities = enrichedEntities;
+    referenceEntityFetcher.fetchAll().then((referenceEntities: ReferenceEntity[]) => {
+      this.referenceEntities = referenceEntities;
       promise.resolve();
     });
 
@@ -51,14 +51,14 @@ class EnrichedEntityField extends (BaseField as {new (config: any): any}) {
       multiple: false,
       readOnly: undefined !== this.getFormData().meta,
       labels: {
-        defaultLabel: __('pim_enrich.entity.attribute.property.enriched_entity.default_label'),
+        defaultLabel: __('pim_enrich.entity.attribute.property.reference_entity.default_label'),
       },
     });
   }
 
   getChoices() {
-    return this.enrichedEntities.reduce((result: {[key: string]: string}, enrichedEntity: EnrichedEntity) => {
-      result[enrichedEntity.getIdentifier().stringValue()] = enrichedEntity.getLabel(UserContext.get('catalogLocale'));
+    return this.referenceEntities.reduce((result: {[key: string]: string}, referenceEntity: ReferenceEntity) => {
+      result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(UserContext.get('catalogLocale'));
 
       return result;
     }, {});
@@ -79,4 +79,4 @@ class EnrichedEntityField extends (BaseField as {new (config: any): any}) {
   }
 }
 
-export = EnrichedEntityField;
+export = ReferenceEntityField;

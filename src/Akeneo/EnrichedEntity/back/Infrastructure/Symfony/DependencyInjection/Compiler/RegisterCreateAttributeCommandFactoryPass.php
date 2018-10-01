@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,8 +23,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterCreateAttributeCommandFactoryPass implements CompilerPassInterface
 {
-    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.create_attribute_command_factory_registry';
-    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.create_attribute_command_factory';
+    private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_referenceentity.application.registry.create_attribute_command_factory_registry';
+    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_referenceentity.create_attribute_command_factory';
     const DEFAULT_PRIORITY = 50;
 
     /**

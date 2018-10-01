@@ -1,31 +1,31 @@
-import notify from 'akeneoenrichedentity/application/event/notify';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import notify from 'akeneoreferenceentity/application/event/notify';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 
-export const notifyEnrichedEntityWellSaved = () => {
-  return notify('success', 'pim_enriched_entity.enriched_entity.notification.save.success');
+export const notifyReferenceEntityWellSaved = () => {
+  return notify('success', 'pim_reference_entity.reference_entity.notification.save.success');
 };
 
-export const notifyEnrichedEntitySaveFailed = () => {
-  return notify('error', 'pim_enriched_entity.enriched_entity.notification.save.fail');
+export const notifyReferenceEntitySaveFailed = () => {
+  return notify('error', 'pim_reference_entity.reference_entity.notification.save.fail');
 };
 
-export const notifyEnrichedEntityWellCreated = () => {
-  return notify('success', 'pim_enriched_entity.enriched_entity.notification.create.success');
+export const notifyReferenceEntityWellCreated = () => {
+  return notify('success', 'pim_reference_entity.reference_entity.notification.create.success');
 };
 
-export const notifyEnrichedEntityCreateFailed = () => {
-  return notify('error', 'pim_enriched_entity.enriched_entity.notification.create.fail');
+export const notifyReferenceEntityCreateFailed = () => {
+  return notify('error', 'pim_reference_entity.reference_entity.notification.create.fail');
 };
 
-export const notifyEnrichedEntityWellDeleted = () => {
-  return notify('success', 'pim_enriched_entity.enriched_entity.notification.delete.success');
+export const notifyReferenceEntityWellDeleted = () => {
+  return notify('success', 'pim_reference_entity.reference_entity.notification.delete.success');
 };
 
-export const notifyEnrichedEntityDeleteFailed = () => {
-  return notify('error', 'pim_enriched_entity.enriched_entity.notification.delete.fail');
+export const notifyReferenceEntityDeleteFailed = () => {
+  return notify('error', 'pim_reference_entity.reference_entity.notification.delete.fail');
 };
 
-export const notifyEnrichedEntityDeletionErrorOccured = (errors: ValidationError[]) => {
+export const notifyReferenceEntityDeletionErrorOccured = (errors: ValidationError[]) => {
   const firstError = errors[0];
 
   return notify('error', firstError.message);

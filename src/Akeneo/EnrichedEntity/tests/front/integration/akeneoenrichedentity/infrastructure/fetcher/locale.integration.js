@@ -1,6 +1,6 @@
 const timeout = 5000;
 
-describe('Akeneoenrichedentity > infrastructure > fetcher > locale', () => {
+describe('Akeneoreferenceentity > infrastructure > fetcher > locale', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > locale', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/locale').default;
+      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/locale').default;
 
       return await fetcher.fetchActivated();
     });

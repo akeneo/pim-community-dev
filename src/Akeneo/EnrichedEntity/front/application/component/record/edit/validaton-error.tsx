@@ -1,9 +1,9 @@
 import * as React from 'react';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import __ from 'akeneoenrichedentity/tools/translator';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
-import {denormalizeChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import __ from 'akeneoreferenceentity/tools/translator';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
+import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 
 export const getErrorsView = (errors: ValidationError[], value: Value) => {
   const errorMessages = errors

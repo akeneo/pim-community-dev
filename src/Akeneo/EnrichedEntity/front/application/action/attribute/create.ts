@@ -1,25 +1,25 @@
-import {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import attributeSaver from 'akeneoenrichedentity/infrastructure/saver/attribute';
+import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
   attributeCreationSucceeded,
   attributeCreationErrorOccured,
-} from 'akeneoenrichedentity/domain/event/attribute/create';
-import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+} from 'akeneoreferenceentity/domain/event/attribute/create';
+import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
 import {
   notifyAttributeWellCreated,
   notifyAttributeCreateFailed,
-} from 'akeneoenrichedentity/application/action/attribute/notify';
-import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
-import {denormalizeMinimalAttribute} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import {attributeEditionStartByCode} from 'akeneoenrichedentity/application/action/attribute/edit';
+} from 'akeneoreferenceentity/application/action/attribute/notify';
+import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
+import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {attributeEditionStartByCode} from 'akeneoreferenceentity/application/action/attribute/edit';
 
 export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const enrichedEntity = getState().form.data;
+  const referenceEntity = getState().form.data;
   const formData = getState().createAttribute.data;
   const normalizedAttribute = {
     ...formData,
-    enriched_entity_identifier: enrichedEntity.identifier,
+    reference_entity_identifier: referenceEntity.identifier,
   } as NormalizedAttribute;
   const attribute = denormalizeMinimalAttribute(normalizedAttribute);
 

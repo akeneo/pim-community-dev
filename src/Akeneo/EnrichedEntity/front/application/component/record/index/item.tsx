@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 const router = require('pim/router');
 
 export default ({
@@ -18,8 +18,8 @@ export default ({
 }) => {
   const path =
     '' !== record.getIdentifier().identifier
-      ? `#${router.generate('akeneo_enriched_entities_record_edit', {
-          enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
+      ? `#${router.generate('akeneo_reference_entities_record_edit', {
+          referenceEntityIdentifier: record.getReferenceEntityIdentifier().stringValue(),
           recordCode: record.getCode().stringValue(),
           tab: 'enrich',
         })}`

@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateEnrichedEntityCommand
+class CreateReferenceEntityCommand
 {
     /** @var string */
     public $code;

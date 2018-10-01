@@ -21,7 +21,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="EnrichedEntity_Integration_Test">
+        <testsuite name="ReferenceEntity_Integration_Test">
             <directory>Integration</directory>
         </testsuite>
     </testsuites>

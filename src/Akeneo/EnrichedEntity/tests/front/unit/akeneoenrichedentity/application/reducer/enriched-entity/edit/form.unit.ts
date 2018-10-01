@@ -1,7 +1,7 @@
-import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import reducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
+import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import ReferenceEntity, {createReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
 
 const initialState = {
   data: {
@@ -17,7 +17,7 @@ const initialState = {
   },
 };
 
-describe('akeneo > enriched entity > application > reducer > enriched-entity --- edit', () => {
+describe('akeneo > enriched entity > application > reducer > reference-entity --- edit', () => {
   test('I ignore other commands', () => {
     const newState = reducer(initialState, {
       type: 'ANOTHER_ACTION',
@@ -36,7 +36,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
 
   test('I can receive an enriched entity', () => {
     const state = {};
-    const normalizedEnrichedEntity = {
+    const normalizedReferenceEntity = {
       identifier: 'designer',
       labels: {
         en_US: 'Designer',
@@ -45,12 +45,12 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     };
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_EDITION_RECEIVED',
-      enrichedEntity: normalizedEnrichedEntity,
+      referenceEntity: normalizedReferenceEntity,
     });
 
     expect(newState).toEqual({
       errors: [],
-      data: normalizedEnrichedEntity,
+      data: normalizedReferenceEntity,
       state: {isDirty: false, originalData: '{"identifier":"designer","labels":{"en_US":"Designer"},"image":null}'},
     });
   });

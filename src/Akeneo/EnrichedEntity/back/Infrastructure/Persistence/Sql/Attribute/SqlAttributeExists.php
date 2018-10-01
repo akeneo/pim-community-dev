@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use PDO;
@@ -45,7 +45,7 @@ class SqlAttributeExists implements AttributeExistsInterface
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_attribute
+            FROM akeneo_reference_entity_attribute
             WHERE identifier = :identifier
         ) as is_existing
 SQL;
@@ -61,18 +61,18 @@ SQL;
         return $isExisting;
     }
 
-    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeCode $attributeCode): bool
+    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_attribute
-            WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier
+            FROM akeneo_reference_entity_attribute
+            WHERE code = :code AND reference_entity_identifier = :reference_entity_identifier
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => $attributeCode,
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
+            'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -83,20 +83,20 @@ SQL;
         return $isExisting;
     }
 
-    public function withEnrichedEntityIdentifierAndOrder(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+    public function withReferenceEntityIdentifierAndOrder(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeOrder $order
     ): bool {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_attribute
-            WHERE attribute_order = :attribute_order AND enriched_entity_identifier = :enriched_entity_identifier
+            FROM akeneo_reference_entity_attribute
+            WHERE attribute_order = :attribute_order AND reference_entity_identifier = :reference_entity_identifier
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'attribute_order' => $order->intValue(),
-            'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
+            'reference_entity_identifier' => (string) $referenceEntityIdentifier,
         ]);
 
         $platform = $this->sqlConnection->getDatabasePlatform();

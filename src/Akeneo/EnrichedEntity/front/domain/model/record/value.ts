@@ -1,9 +1,9 @@
-import ChannelReference, {NormalizedChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
-import LocaleReference, {NormalizedLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
-import Data from 'akeneoenrichedentity/domain/model/record/data';
-import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {CommonConcreteAttribute} from 'akeneoenrichedentity/domain/model/attribute/common';
-import {NormalizedAttributeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
+import ChannelReference, {NormalizedChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import LocaleReference, {NormalizedLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import Data from 'akeneoreferenceentity/domain/model/record/data';
+import Attribute, {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {CommonConcreteAttribute} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 export type NormalizedValue = {
   attribute: NormalizedAttribute;

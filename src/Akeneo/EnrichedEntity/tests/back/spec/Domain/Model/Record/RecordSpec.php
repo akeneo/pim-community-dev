@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 use PhpSpec\ObjectBehavior;
 
 class RecordSpec extends ObjectBehavior
@@ -32,7 +32,7 @@ class RecordSpec extends ObjectBehavior
      function let()
     {
         $identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $labelCollection = [
             'en_US' => 'Stark',
@@ -42,7 +42,7 @@ class RecordSpec extends ObjectBehavior
 
         $this->beConstructedThrough('create', [
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             $labelCollection,
             Image::createEmpty(),
@@ -62,11 +62,11 @@ class RecordSpec extends ObjectBehavior
         $this->getIdentifier()->shouldBeLike($identifier);
     }
 
-     function it_returns_the_identifier_of_the_enriched_entity_it_belongs_to()
+     function it_returns_the_identifier_of_the_reference_entity_it_belongs_to()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $this->getEnrichedEntityIdentifier()->shouldBeLike($enrichedEntityIdentifier);
+        $this->getReferenceEntityIdentifier()->shouldBeLike($referenceEntityIdentifier);
     }
 
      function it_is_comparable()
@@ -74,7 +74,7 @@ class RecordSpec extends ObjectBehavior
         $sameIdentifier = RecordIdentifier::fromString('designer_starck_fingerprint');
         $sameRecord = Record::create(
             $sameIdentifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
             [],
             Image::createEmpty(),
@@ -85,7 +85,7 @@ class RecordSpec extends ObjectBehavior
         $anotherIdentifier = RecordIdentifier::fromString('designer_jony_ive_other-fingerprint');
         $anotherRecord = Record::create(
             $anotherIdentifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('jony_ive'),
             [],
             Image::createEmpty(),
@@ -119,7 +119,7 @@ class RecordSpec extends ObjectBehavior
          $this->normalize()->shouldReturn([
              'identifier' => 'designer_starck_fingerprint',
              'code' => 'starck',
-             'enrichedEntityIdentifier' => 'designer',
+             'referenceEntityIdentifier' => 'designer',
              'labels'                   => [
                  'en_US' => 'Stark',
                  'fr_FR' => 'Stark',

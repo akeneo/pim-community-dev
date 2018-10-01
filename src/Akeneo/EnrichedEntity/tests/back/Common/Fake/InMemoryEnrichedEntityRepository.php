@@ -11,71 +11,71 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
+class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 {
-    /** @var EnrichedEntity[] */
-    private $enrichedEntities = [];
+    /** @var ReferenceEntity[] */
+    private $referenceEntities = [];
 
-    public function create(EnrichedEntity $enrichedEntity): void
+    public function create(ReferenceEntity $referenceEntity): void
     {
-        if (isset($this->enrichedEntities[(string) $enrichedEntity->getIdentifier()])) {
+        if (isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
             throw new \RuntimeException('Enriched entity already exists');
         }
-        $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
+        $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
     }
 
-    public function update(EnrichedEntity $enrichedEntity): void
+    public function update(ReferenceEntity $referenceEntity): void
     {
-        if (!isset($this->enrichedEntities[(string) $enrichedEntity->getIdentifier()])) {
+        if (!isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
             throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
         }
-        $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
+        $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
+    public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity
     {
-        $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
-        if (null === $enrichedEntity) {
-            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
+        $referenceEntity = $this->referenceEntities[(string) $identifier] ?? null;
+        if (null === $referenceEntity) {
+            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
 
-        return $enrichedEntity;
+        return $referenceEntity;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByIdentifier(EnrichedEntityIdentifier $identifier): void
+    public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void
     {
-        $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
-        if (null === $enrichedEntity) {
-            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
+        $referenceEntity = $this->referenceEntities[(string) $identifier] ?? null;
+        if (null === $referenceEntity) {
+            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
 
-        unset($this->enrichedEntities[(string) $identifier]);
+        unset($this->referenceEntities[(string) $identifier]);
     }
 
     public function count(): int
     {
-        return count($this->enrichedEntities);
+        return count($this->referenceEntities);
     }
 
-    public function hasRecord(EnrichedEntityIdentifier $identifier): bool
+    public function hasRecord(ReferenceEntityIdentifier $identifier): bool
     {
-        return isset($this->enrichedEntities[(string) $identifier]);
+        return isset($this->referenceEntities[(string) $identifier]);
     }
 }

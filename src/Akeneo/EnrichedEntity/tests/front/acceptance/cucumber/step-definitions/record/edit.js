@@ -1,6 +1,6 @@
 const Edit = require('../../decorators/record/edit.decorator');
 const {getRequestContract, listenRequest} = require('../../tools');
-const Header = require('../../decorators/enriched-entity/app/header.decorator');
+const Header = require('../../decorators/reference-entity/app/header.decorator');
 const path = require('path');
 
 const {
@@ -40,15 +40,15 @@ module.exports = async function(cucumber) {
     return await listenRequest(this.page, requestContract);
   });
 
-  const askForRecord = async function(recordCode, enrichedEntityIdentifier) {
+  const askForRecord = async function(recordCode, referenceEntityIdentifier) {
     await this.page.evaluate(
-      async (enrichedEntityIdentifier, recordCode) => {
+      async (referenceEntityIdentifier, recordCode) => {
         const Controller = require('pim/controller/record/edit');
         const controller = new Controller();
-        controller.renderRoute({params: {enrichedEntityIdentifier, recordCode, tab: 'enrich'}});
+        controller.renderRoute({params: {referenceEntityIdentifier, recordCode, tab: 'enrich'}});
         await document.getElementById('app').appendChild(controller.el);
       },
-      enrichedEntityIdentifier,
+      referenceEntityIdentifier,
       recordCode
     );
     await this.page.waitFor('.AknDefault-mainContent[data-tab="enrich"] .content');
@@ -78,7 +78,7 @@ module.exports = async function(cucumber) {
     await answerLocaleList.apply(this);
     await askForRecord.apply(this, [
       currentRequestContract.request.query.recordCode,
-      currentRequestContract.request.query.enrichedEntityIdentifier,
+      currentRequestContract.request.query.referenceEntityIdentifier,
     ]);
   });
 

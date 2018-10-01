@@ -11,25 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 {
@@ -42,9 +42,9 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findValueKeyCollection = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection');
+        $this->findValueKeyCollection = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection');
         $this->resetDB();
-        $this->loadEnrichedEntity();
+        $this->loadReferenceEntity();
     }
 
     /**
@@ -52,7 +52,7 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
      */
     public function it_returns_all_attributes()
     {
-        $designer = EnrichedEntityIdentifier::fromString('designer');
+        $designer = ReferenceEntityIdentifier::fromString('designer');
         $image = $this->loadAttribute('designer', 'image', false, false);
         $name = $this->loadAttribute('designer', 'name', false, true);
         $age = $this->loadAttribute('designer', 'age', true, false);
@@ -77,34 +77,34 @@ class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntity(): void
+    private function loadReferenceEntity(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale): AbstractAttribute
+    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, bool $hasValuePerChannel, bool $hasValuePerLocale): AbstractAttribute
     {
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $attribute = TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray(['fr_FR' => 'dummy label']),
             AttributeOrder::fromInteger($this->order++),

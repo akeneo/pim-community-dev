@@ -11,30 +11,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntityInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedEntityInterface
+class InMemoryFindRecordItemsForReferenceEntity implements FindRecordItemsForReferenceEntityInterface
 {
     /** @var RecordItem[] */
     private $results = [];
 
     public function save(RecordItem $recordItem)
     {
-        $this->results[(string) $recordItem->enrichedEntityIdentifier][] = $recordItem;
+        $this->results[(string) $recordItem->referenceEntityIdentifier][] = $recordItem;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __invoke(EnrichedEntityIdentifier $identifier): array
+    public function __invoke(ReferenceEntityIdentifier $identifier): array
     {
         return $this->results[(string) $identifier] ?? [];
     }

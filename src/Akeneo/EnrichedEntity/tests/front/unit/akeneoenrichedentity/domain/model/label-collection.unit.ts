@@ -1,4 +1,4 @@
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 
 describe('akeneo > enriched entity > domain > model --- label collection', () => {
   test('I can create a new label collection with some values', () => {

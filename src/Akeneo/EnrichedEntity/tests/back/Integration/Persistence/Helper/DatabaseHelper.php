@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Helper;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Helper;
 
 use Doctrine\DBAL\Connection;
 
@@ -45,9 +45,9 @@ class DatabaseHelper
     private function resetTables(): void
     {
         $resetQuery = <<<SQL
-            DELETE FROM akeneo_enriched_entity_attribute;
-            DELETE FROM akeneo_enriched_entity_record;
-            DELETE FROM akeneo_enriched_entity_enriched_entity;
+            DELETE FROM akeneo_reference_entity_attribute;
+            DELETE FROM akeneo_reference_entity_record;
+            DELETE FROM akeneo_reference_entity_reference_entity;
             DELETE FROM pim_catalog_attribute_group;
             DELETE FROM pim_catalog_attribute;
             DELETE FROM oro_user;

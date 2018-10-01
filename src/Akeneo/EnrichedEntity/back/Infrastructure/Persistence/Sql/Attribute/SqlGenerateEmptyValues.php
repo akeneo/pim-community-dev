@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -39,7 +39,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
     }
 
     /**
-     * Return an array of all empty values combination (structure) for the given $enrichedEntityIdentifier.
+     * Return an array of all empty values combination (structure) for the given $referenceEntityIdentifier.
      * [
      *    'value_key1' => [
      *        'attribute' => [],        // fully normalized attribute
@@ -52,7 +52,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
      *
      *
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $query = <<<SQL
             SELECT
@@ -69,7 +69,7 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
                     COALESCE(c.code, locale_channel.channel_code) as channel_code,
                     COALESCE(l.code, locale_channel.locale_code) as locale_code
                 FROM
-                    akeneo_enriched_entity_attribute as a
+                    akeneo_reference_entity_attribute as a
                     LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
                     LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
                     LEFT JOIN (
@@ -84,12 +84,12 @@ class SqlGenerateEmptyValues implements GenerateEmptyValuesInterface
                             l.is_activated = 1
                     ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
                 WHERE
-                    enriched_entity_identifier = :enriched_entity_identifier
+                    reference_entity_identifier = :reference_entity_identifier
             ) as mask;
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
+            'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
 
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);

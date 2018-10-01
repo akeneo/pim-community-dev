@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\DataHydratorRegistry;
 use PhpSpec\ObjectBehavior;
 
 class DataHydratorRegistrySpec extends ObjectBehavior

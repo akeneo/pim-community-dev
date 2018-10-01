@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,8 +22,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterValueUpdaterPass implements CompilerPassInterface
 {
-    private const RECORD_VALUE_UPDATER_REGISTRY = 'akeneo_enrichedentity.application.registry.edit_record.record_value_updater.record_value_updater_registry';
-    private const RECORD_VALUE_UPDATER_TAG = 'akeneo_enrichedentity.record_value_updater';
+    private const RECORD_VALUE_UPDATER_REGISTRY = 'akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry';
+    private const RECORD_VALUE_UPDATER_TAG = 'akeneo_referenceentity.record_value_updater';
 
     /**
      * {@inheritdoc}

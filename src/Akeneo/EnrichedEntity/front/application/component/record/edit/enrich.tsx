@@ -1,17 +1,17 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
-import {recordLabelUpdated, saveRecord, recordValueUpdated} from 'akeneoenrichedentity/application/action/record/edit';
-import __ from 'akeneoenrichedentity/tools/translator';
-import {EditionFormState} from 'akeneoenrichedentity/application/reducer/record/edit/form';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
-import {createLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
-import {createChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
-import renderValues from 'akeneoenrichedentity/application/component/record/edit/enrich/value';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
+import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
+import {recordLabelUpdated, saveRecord, recordValueUpdated} from 'akeneoreferenceentity/application/action/record/edit';
+import __ from 'akeneoreferenceentity/tools/translator';
+import {EditionFormState} from 'akeneoreferenceentity/application/reducer/record/edit/form';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
+import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import renderValues from 'akeneoreferenceentity/application/component/record/edit/enrich/value';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
 
 interface StateProps {
   form: EditionFormState;
@@ -60,18 +60,18 @@ class Enrich extends React.Component<StateProps & DispatchProps> {
           <div className="AknFieldContainer AknFieldContainer--narrow" data-code="label">
             <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
               <label
-                title="{__('pim_enriched_entity.record.enrich.label')}"
+                title="{__('pim_reference_entity.record.enrich.label')}"
                 className="AknFieldContainer-label"
-                htmlFor="pim_enriched_entity.record.enrich.label"
+                htmlFor="pim_reference_entity.record.enrich.label"
               >
-                {__('pim_enriched_entity.record.create.input.label')}
+                {__('pim_reference_entity.record.create.input.label')}
               </label>
             </div>
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
                 name="label"
-                id="pim_enriched_entity.record.enrich.label"
+                id="pim_reference_entity.record.enrich.label"
                 className="AknTextField AknTextField--narrow AknTextField--light"
                 value={record.getLabel(this.props.context.locale, false)}
                 onChange={this.updateLabel}

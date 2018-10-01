@@ -1,4 +1,4 @@
-const Edit = require('../../decorators/enriched-entity/edit.decorator');
+const Edit = require('../../decorators/reference-entity/edit.decorator');
 const path = require('path');
 
 const {

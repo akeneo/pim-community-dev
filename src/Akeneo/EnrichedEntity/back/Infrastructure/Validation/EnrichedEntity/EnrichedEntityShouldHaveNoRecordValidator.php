@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityHasRecordsInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,14 +24,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EnrichedEntityShouldHaveNoRecordValidator extends ConstraintValidator
+class ReferenceEntityShouldHaveNoRecordValidator extends ConstraintValidator
 {
-    /** @var EnrichedEntityHasRecordsInterface */
-    private $enrichedEntityHasRecords;
+    /** @var ReferenceEntityHasRecordsInterface */
+    private $referenceEntityHasRecords;
 
-    public function __construct(EnrichedEntityHasRecordsInterface $enrichedEntityHasRecords)
+    public function __construct(ReferenceEntityHasRecordsInterface $referenceEntityHasRecords)
     {
-        $this->enrichedEntityHasRecords = $enrichedEntityHasRecords;
+        $this->referenceEntityHasRecords = $referenceEntityHasRecords;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -46,11 +46,11 @@ class EnrichedEntityShouldHaveNoRecordValidator extends ConstraintValidator
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof DeleteEnrichedEntityCommand) {
+        if (!$command instanceof DeleteReferenceEntityCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    DeleteEnrichedEntityCommand::class,
+                    DeleteReferenceEntityCommand::class,
                     get_class($command)
                 )
             );
@@ -62,19 +62,19 @@ class EnrichedEntityShouldHaveNoRecordValidator extends ConstraintValidator
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EnrichedEntityShouldHaveNoRecord) {
+        if (!$constraint instanceof ReferenceEntityShouldHaveNoRecord) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(DeleteEnrichedEntityCommand $command): void
+    private function validateCommand(DeleteReferenceEntityCommand $command): void
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($command->identifier);
-        $hasRecords = ($this->enrichedEntityHasRecords)($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
+        $hasRecords = ($this->referenceEntityHasRecords)($referenceEntityIdentifier);
 
         if ($hasRecords) {
-            $this->context->buildViolation(EnrichedEntityShouldHaveNoRecord::ERROR_MESSAGE)
-                ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
+            $this->context->buildViolation(ReferenceEntityShouldHaveNoRecord::ERROR_MESSAGE)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->addViolation();
         }
     }

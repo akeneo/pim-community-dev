@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
 use Webmozart\Assert\Assert;
 

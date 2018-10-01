@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterInterface;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterInterface;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -59,15 +59,15 @@ class EditRecordHandlerSpec extends ObjectBehavior
 
         $editRecordCommand = new EditRecordCommand();
         $editRecordCommand->code = 'sony';
-        $editRecordCommand->enrichedEntityIdentifier = 'brand';
+        $editRecordCommand->referenceEntityIdentifier = 'brand';
         $editRecordCommand->labels = [
             'fr_FR' => 'Sony',
             'en_US' => 'Sony',
         ];
         $editRecordCommand->editRecordValueCommands = [$editDescriptionCommand];
 
-        $recordRepository->getByEnrichedEntityAndCode(
-            EnrichedEntityIdentifier::fromString('brand'),
+        $recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString('brand'),
             RecordCode::fromString('sony')
         )->willReturn($record);
         $valueUpdaterRegistry->getUpdater($editDescriptionCommand)->willReturn($textUpdater);
@@ -90,7 +90,7 @@ class EditRecordHandlerSpec extends ObjectBehavior
     ) {
         $editRecordCommand->identifier = 'brand_sony_a1677570-a278-444b-ab46-baa1db199392';
         $editRecordCommand->code = 'sony';
-        $editRecordCommand->enrichedEntityIdentifier = 'brand';
+        $editRecordCommand->referenceEntityIdentifier = 'brand';
         $editRecordCommand->labels = [
             'fr_FR' => 'Sony',
             'en_US' => 'Sony',
@@ -102,8 +102,8 @@ class EditRecordHandlerSpec extends ObjectBehavior
 
         $existingImage->isEmpty()->willReturn(false);
         $existingImage->getKey()->willReturn('/my/image/path');
-        $recordRepository->getByEnrichedEntityAndCode(
-            Argument::type(EnrichedEntityIdentifier::class),
+        $recordRepository->getByReferenceEntityAndCode(
+            Argument::type(ReferenceEntityIdentifier::class),
             Argument::type(RecordCode::class)
         )->willReturn($record);
         $record->getImage()->willReturn($existingImage);

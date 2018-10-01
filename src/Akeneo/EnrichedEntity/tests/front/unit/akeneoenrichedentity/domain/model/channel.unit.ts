@@ -1,6 +1,6 @@
-import {ConcreteChannel, denormalizeChannel} from 'akeneoenrichedentity/domain/model/channel';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import {denormalizeLocale} from 'akeneoenrichedentity/domain/model/locale';
+import {ConcreteChannel, denormalizeChannel} from 'akeneoreferenceentity/domain/model/channel';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {denormalizeLocale} from 'akeneoreferenceentity/domain/model/locale';
 
 describe('akeneo > enriched entity > domain > model --- channel', () => {
   test('I can create a new channel from a normalized one', () => {

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordItemsForEnrichedEntityInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordItemsForReferenceEntityInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -27,23 +27,23 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    /** @var FindRecordItemsForEnrichedEntityInterface */
-    private $findRecordItemsForEnrichedEntityQuery;
+    /** @var FindRecordItemsForReferenceEntityInterface */
+    private $findRecordItemsForReferenceEntityQuery;
 
     public function __construct(
-        FindRecordItemsForEnrichedEntityInterface $findRecordItemsForEnrichedEntityQuery
+        FindRecordItemsForReferenceEntityInterface $findRecordItemsForReferenceEntityQuery
     ) {
-        $this->findRecordItemsForEnrichedEntityQuery = $findRecordItemsForEnrichedEntityQuery;
+        $this->findRecordItemsForReferenceEntityQuery = $findRecordItemsForReferenceEntityQuery;
     }
 
     /**
      * Get all records belonging to an enriched entity.
      */
-    public function __invoke(string $enrichedEntityIdentifier): JsonResponse
+    public function __invoke(string $referenceEntityIdentifier): JsonResponse
     {
-        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
-        $enrichedRecordItems = ($this->findRecordItemsForEnrichedEntityQuery)($enrichedEntityIdentifier);
-        $normalizedRecordItems = $this->normalizeEnrichedEntityItems($enrichedRecordItems);
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
+        $enrichedRecordItems = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier);
+        $normalizedRecordItems = $this->normalizeReferenceEntityItems($enrichedRecordItems);
 
         return new JsonResponse([
             'items' => $normalizedRecordItems,
@@ -54,10 +54,10 @@ class IndexAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getEnrichedEntityIdentifierOr404(string $identifier): EnrichedEntityIdentifier
+    private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
     {
         try {
-            return EnrichedEntityIdentifier::fromString($identifier);
+            return ReferenceEntityIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
@@ -68,7 +68,7 @@ class IndexAction
      *
      * @return array
      */
-    private function normalizeEnrichedEntityItems(array $recordItems): array
+    private function normalizeReferenceEntityItems(array $recordItems): array
     {
         return array_map(function (RecordItem $recordItem) {
             return $recordItem->normalize();

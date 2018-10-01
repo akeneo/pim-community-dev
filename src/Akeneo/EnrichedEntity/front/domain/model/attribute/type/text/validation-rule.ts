@@ -1,5 +1,5 @@
-import {NormalizableAdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {InvalidArgumentError} from 'akeneoenrichedentity/domain/model/attribute/type/text';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {InvalidArgumentError} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 
 export enum ValidationRuleOption {
   Email = 'email',

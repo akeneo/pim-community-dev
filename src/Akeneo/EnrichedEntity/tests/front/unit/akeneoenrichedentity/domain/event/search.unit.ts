@@ -1,4 +1,4 @@
-import {dataReceived} from 'akeneoenrichedentity/domain/event/search';
+import {dataReceived} from 'akeneoreferenceentity/domain/event/search';
 
 describe('akeneo > enriched entity > domain > event --- search', () => {
   test('I can create a dataReceived event', () => {

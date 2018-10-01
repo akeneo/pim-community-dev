@@ -1,40 +1,40 @@
 <?php
 
-namespace spec\Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints;
+namespace spec\Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints;
 
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
-use Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfigured;
-use Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfiguredValidator;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
+use Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfigured;
+use Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfiguredValidator;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class IsEnrichedEntityConfiguredValidatorSpec extends ObjectBehavior
+class IsReferenceEntityConfiguredValidatorSpec extends ObjectBehavior
 {
-    function let(ExecutionContextInterface $context, FindEnrichedEntityDetailsInterface $findEnrichedEntityDetails)
+    function let(ExecutionContextInterface $context, FindReferenceEntityDetailsInterface $findReferenceEntityDetails)
     {
         $this->beConstructedWith(
-            ['akeneo_enriched_entity_collection'],
-            $findEnrichedEntityDetails
+            ['akeneo_reference_entity_collection'],
+            $findReferenceEntityDetails
         );
         $this->initialize($context);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(IsEnrichedEntityConfiguredValidator::class);
+        $this->shouldHaveType(IsReferenceEntityConfiguredValidator::class);
     }
 
-    function it_builds_violation_for_a_null_enriched_entity_collection(
+    function it_builds_violation_for_a_null_reference_entity_collection(
         $context,
         Attribute $attribute,
-        IsEnrichedEntityConfigured $constraint,
+        IsReferenceEntityConfigured $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn(null);
 
         $context->buildViolation($constraint->emptyMessage)->willReturn($violationBuilder);
@@ -45,13 +45,13 @@ class IsEnrichedEntityConfiguredValidatorSpec extends ObjectBehavior
         $this->validate($attribute, $constraint);
     }
 
-    function it_builds_violation_for_an_empty_enriched_entity_collection(
+    function it_builds_violation_for_an_empty_reference_entity_collection(
         $context,
         Attribute $attribute,
-        IsEnrichedEntityConfigured $constraint,
+        IsReferenceEntityConfigured $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn('');
 
         $context->buildViolation($constraint->emptyMessage)->willReturn($violationBuilder);
@@ -62,53 +62,53 @@ class IsEnrichedEntityConfiguredValidatorSpec extends ObjectBehavior
         $this->validate($attribute, $constraint);
     }
 
-    function it_builds_violation_for_an_invalid_enriched_entity_collection(
+    function it_builds_violation_for_an_invalid_reference_entity_collection(
         $context,
         Attribute $attribute,
-        IsEnrichedEntityConfigured $constraint,
+        IsReferenceEntityConfigured $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn('//designer');
 
         $context->buildViolation($constraint->invalidMessage)->willReturn($violationBuilder);
 
-        $violationBuilder->setParameter('%enriched_entity_identifier%', '//designer')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setParameter('%reference_entity_identifier%', '//designer')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('reference_data_name')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
 
-    function it_builds_violation_for_an_unknown_enriched_entity_collection(
-        $findEnrichedEntityDetails,
+    function it_builds_violation_for_an_unknown_reference_entity_collection(
+        $findReferenceEntityDetails,
         $context,
         Attribute $attribute,
-        IsEnrichedEntityConfigured $constraint,
+        IsReferenceEntityConfigured $constraint,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn('designer');
-        $findEnrichedEntityDetails->__invoke('designer')->willReturn(null);
+        $findReferenceEntityDetails->__invoke('designer')->willReturn(null);
 
         $context->buildViolation($constraint->unknownMessage)->willReturn($violationBuilder);
-        $violationBuilder->setParameter('%enriched_entity_identifier%', 'designer')->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setParameter('%reference_entity_identifier%', 'designer')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('reference_data_name')->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
 
-    function it_does_not_builds_violation_for_a_valid_enriched_entity_collection(
-        $findEnrichedEntityDetails,
+    function it_does_not_builds_violation_for_a_valid_reference_entity_collection(
+        $findReferenceEntityDetails,
         $context,
         Attribute $attribute,
-        IsEnrichedEntityConfigured $constraint,
-        EnrichedEntityDetails $designer
+        IsReferenceEntityConfigured $constraint,
+        ReferenceEntityDetails $designer
     ) {
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getReferenceDataName()->willReturn('designer');
-        $findEnrichedEntityDetails->__invoke('designer')->willReturn($designer);
+        $findReferenceEntityDetails->__invoke('designer')->willReturn($designer);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 

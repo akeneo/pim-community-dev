@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -26,8 +26,8 @@ abstract class AbstractAttribute
     /** @var AttributeIdentifier */
     protected $identifier;
 
-    /** @var EnrichedEntity */
-    protected $enrichedEntityIdentifier;
+    /** @var ReferenceEntity */
+    protected $referenceEntityIdentifier;
 
     /** @var AttributeCode */
     protected $code;
@@ -49,7 +49,7 @@ abstract class AbstractAttribute
 
     protected function __construct(
         AttributeIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -58,7 +58,7 @@ abstract class AbstractAttribute
         AttributeValuePerLocale $valuePerLocale
     ) {
         $this->identifier = $identifier;
-        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->code = $code;
         $this->labelCollection = $labelCollection;
         $this->order = $order;
@@ -72,9 +72,9 @@ abstract class AbstractAttribute
         return $this->identifier;
     }
 
-    public function getEnrichedEntityIdentifier(): EnrichedEntityIdentifier
+    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
     {
-        return $this->enrichedEntityIdentifier;
+        return $this->referenceEntityIdentifier;
     }
 
     public function getCode(): AttributeCode
@@ -85,7 +85,7 @@ abstract class AbstractAttribute
     public function equals(AbstractAttribute $attribute): bool
     {
         return $this->identifier->equals($attribute->identifier) &&
-            $this->enrichedEntityIdentifier->equals($attribute->enrichedEntityIdentifier);
+            $this->referenceEntityIdentifier->equals($attribute->referenceEntityIdentifier);
     }
 
     public function getLabel(string $localeCode): ?string
@@ -122,7 +122,7 @@ abstract class AbstractAttribute
     {
         return [
             'identifier' => (string) $this->identifier,
-            'enriched_entity_identifier' => (string) $this->enrichedEntityIdentifier,
+            'reference_entity_identifier' => (string) $this->referenceEntityIdentifier,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),

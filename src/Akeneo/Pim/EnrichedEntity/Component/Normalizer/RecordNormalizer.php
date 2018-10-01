@@ -10,9 +10,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Normalizer;
+namespace Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

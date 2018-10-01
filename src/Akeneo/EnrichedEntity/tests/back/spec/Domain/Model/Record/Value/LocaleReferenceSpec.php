@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record\Value;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record\Value;
 
-use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
 use PhpSpec\ObjectBehavior;
 
 class LocaleReferenceSpec extends ObjectBehavior

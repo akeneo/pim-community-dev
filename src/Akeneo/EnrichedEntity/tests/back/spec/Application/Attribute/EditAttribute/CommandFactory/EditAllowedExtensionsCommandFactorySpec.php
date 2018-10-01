@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_allowed_extension_edits()
     {
         $this->supports([
-            'identifier'         => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'         => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'allowed_extensions' => ['pdf', 'png'],
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'         => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'         => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'allowed_extensions' => null,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'max_file_size' => '172.50',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -35,14 +35,14 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
         $command = $this->create([
             'identifier'         => [
                 'identifier'                 => 'portrait',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
             ],
             'allowed_extensions' => ['pdf', 'png'],
         ]);
         $command->shouldBeAnInstanceOf(EditAllowedExtensionsCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'portrait',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
         ]);
         $command->allowedExtensions->shouldBeEqualTo(['pdf', 'png']);
     }
@@ -54,7 +54,7 @@ class EditAllowedExtensionsCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'enriched_entity_identifier' => 'designer',
+                        'reference_entity_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

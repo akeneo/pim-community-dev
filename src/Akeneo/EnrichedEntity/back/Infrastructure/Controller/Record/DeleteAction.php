@@ -10,11 +10,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -46,18 +46,18 @@ class DeleteAction
         $this->securityFacade = $securityFacade;
     }
 
-    public function __invoke(Request $request, string $enrichedEntityIdentifier, string $recordCode): Response
+    public function __invoke(Request $request, string $referenceEntityIdentifier, string $recordCode): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_record_delete')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_record_delete')) {
             throw new AccessDeniedException();
         }
 
         $command = new DeleteRecordCommand();
         $command->recordCode = $recordCode;
-        $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $command->referenceEntityIdentifier = $referenceEntityIdentifier;
 
         try {
             ($this->deleteRecordHandler)($command);

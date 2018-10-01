@@ -1,23 +1,23 @@
 import * as React from 'react';
-import __ from 'akeneoenrichedentity/tools/translator';
+import __ from 'akeneoreferenceentity/tools/translator';
 import {connect} from 'react-redux';
-import {attributeCreationStart} from 'akeneoenrichedentity/domain/event/attribute/create';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {CreateState} from 'akeneoenrichedentity/application/reducer/attribute/create';
-import CreateAttributeModal from 'akeneoenrichedentity/application/component/attribute/create';
-import {denormalizeAttribute, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import EnrichedEntity, {
-  denormalizeEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {attributeEditionStartByIdentifier} from 'akeneoenrichedentity/application/action/attribute/edit';
-import AttributeEditForm from 'akeneoenrichedentity/application/component/attribute/edit';
-import Header from 'akeneoenrichedentity/application/component/enriched-entity/edit/header';
+import {attributeCreationStart} from 'akeneoreferenceentity/domain/event/attribute/create';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {CreateState} from 'akeneoreferenceentity/application/reducer/attribute/create';
+import CreateAttributeModal from 'akeneoreferenceentity/application/component/attribute/create';
+import {denormalizeAttribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
+import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
+import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {
   SecondaryAction,
   breadcrumbConfiguration,
-} from 'akeneoenrichedentity/application/component/enriched-entity/edit';
-import {deleteEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {deleteReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/edit';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -28,7 +28,7 @@ interface StateProps {
     createAttribute: boolean;
     delete: boolean;
   };
-  enrichedEntity: EnrichedEntity;
+  referenceEntity: ReferenceEntity;
   createAttribute: CreateState;
   attributes: NormalizedAttribute[];
   firstLoading: boolean;
@@ -37,7 +37,7 @@ interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
     onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
-    onDelete: (enrichedEntity: EnrichedEntity) => void;
+    onDelete: (referenceEntity: ReferenceEntity) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
@@ -53,18 +53,18 @@ const renderSystemAttribute = (type: string, identifier: string) => {
       <div className="AknFieldContainer-header AknFieldContainer-header--light">
         <label
           className="AknFieldContainer-label AknFieldContainer-label--withImage"
-          htmlFor={`pim_enriched_entity.enriched_entity.properties.system_record_${identifier}`}
+          htmlFor={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
         >
           <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-${type}.svg`} />
-          <span>{__(`pim_enriched_entity.attribute.type.${type}`)}</span>
+          <span>{__(`pim_reference_entity.attribute.type.${type}`)}</span>
         </label>
       </div>
       <div className="AknFieldContainer-inputContainer">
         <input
           type="text"
-          id={`pim_enriched_entity.enriched_entity.properties.system_record_${identifier}`}
+          id={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
           className="AknTextField AknTextField--light AknTextField--disabled"
-          value={__(`pim_enriched_entity.attribute.default.${identifier}`)}
+          value={__(`pim_reference_entity.attribute.default.${identifier}`)}
           readOnly
         />
       </div>
@@ -90,18 +90,18 @@ const renderAttributesPlaceholder = () => {
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage AknLoadingPlaceHolder"
-            htmlFor={`pim_enriched_entity.enriched_entity.properties.${attributeIdentifier}_${key}`}
+            htmlFor={`pim_reference_entity.reference_entity.properties.${attributeIdentifier}_${key}`}
           >
             <img className="AknFieldContainer-labelImage" src={`bundles/pimui/images/attribute/icon-text.svg`} />
             <span>
-              {__(`pim_enriched_entity.attribute.type.text`)} {`(${__('pim_enriched_entity.attribute.is_required')})`}
+              {__(`pim_reference_entity.attribute.type.text`)} {`(${__('pim_reference_entity.attribute.is_required')})`}
             </span>
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer AknLoadingPlaceHolder">
           <input
             type="text"
-            id={`pim_enriched_entity.enriched_entity.properties.${attributeIdentifier}_${key}`}
+            id={`pim_reference_entity.reference_entity.properties.${attributeIdentifier}_${key}`}
             className="AknTextField AknTextField--transparent"
           />
           <button className="AknIconButton AknIconButton--trash" />
@@ -139,22 +139,22 @@ class AttributeView extends React.Component<AttributeViewProps> {
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
-            htmlFor={`pim_enriched_entity.enriched_entity.properties.${attribute.getCode().stringValue()}`}
+            htmlFor={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
           >
             <img
               className="AknFieldContainer-labelImage"
               src={`bundles/pimui/images/attribute/icon-${attribute.type}.svg`}
             />
             <span>
-              {__(`pim_enriched_entity.attribute.type.${attribute.type}`)}{' '}
-              {attribute.isRequired ? `(${__('pim_enriched_entity.attribute.is_required')})` : ''}
+              {__(`pim_reference_entity.attribute.type.${attribute.type}`)}{' '}
+              {attribute.isRequired ? `(${__('pim_reference_entity.attribute.is_required')})` : ''}
             </span>
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            id={`pim_enriched_entity.enriched_entity.properties.${attribute.getCode().stringValue()}`}
+            id={`pim_reference_entity.reference_entity.properties.${attribute.getCode().stringValue()}`}
             className="AknTextField AknTextField--light AknTextField--disabled"
             value={attribute.getLabel(locale)}
             readOnly
@@ -185,12 +185,12 @@ class AttributesView extends React.Component<CreateProps> {
     return (
       <React.Fragment>
         <Header
-          label={this.props.enrichedEntity.getLabel(this.props.context.locale)}
-          image={this.props.enrichedEntity.getImage()}
+          label={this.props.referenceEntity.getLabel(this.props.context.locale)}
+          image={this.props.referenceEntity.getImage()}
           primaryAction={() => {
             return this.props.acls.createAttribute ? (
               <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
-                {__('pim_enriched_entity.attribute.button.add')}
+                {__('pim_reference_entity.attribute.button.add')}
               </button>
             ) : null;
           }}
@@ -198,7 +198,7 @@ class AttributesView extends React.Component<CreateProps> {
             return this.props.acls.delete ? (
               <SecondaryAction
                 onDelete={() => {
-                  this.props.events.onDelete(this.props.enrichedEntity);
+                  this.props.events.onDelete(this.props.referenceEntity);
                 }}
               />
             ) : null;
@@ -210,7 +210,7 @@ class AttributesView extends React.Component<CreateProps> {
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
-            <span className="group-label">{__('pim_enriched_entity.enriched_entity.attribute.title')}</span>
+            <span className="group-label">{__('pim_reference_entity.reference_entity.attribute.title')}</span>
           </header>
           {this.props.firstLoading || 0 < this.props.attributes.length ? (
             <div className="AknSubsection-container">
@@ -235,7 +235,7 @@ class AttributesView extends React.Component<CreateProps> {
                         this.addButton = button;
                       }}
                     >
-                      {__('pim_enriched_entity.attribute.button.add')}
+                      {__('pim_reference_entity.attribute.button.add')}
                     </button>
                   </React.Fragment>
                 )}
@@ -249,12 +249,12 @@ class AttributesView extends React.Component<CreateProps> {
               </div>
               <div className="AknGridContainer-noData AknGridContainer-noData--small">
                 <div className="AknGridContainer-noDataTitle">
-                  {__('pim_enriched_entity.attribute.no_data.title', {
-                    entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale),
+                  {__('pim_reference_entity.attribute.no_data.title', {
+                    entityLabel: this.props.referenceEntity.getLabel(this.props.context.locale),
                   })}
                 </div>
                 <div className="AknGridContainer-noDataSubtitle">
-                  {__('pim_enriched_entity.attribute.no_data.subtitle')}
+                  {__('pim_reference_entity.attribute.no_data.subtitle')}
                 </div>
                 <button
                   className="AknButton AknButton--action"
@@ -263,7 +263,7 @@ class AttributesView extends React.Component<CreateProps> {
                     this.addButton = button;
                   }}
                 >
-                  {__('pim_enriched_entity.attribute.button.add')}
+                  {__('pim_reference_entity.attribute.button.add')}
                 </button>
               </div>
             </React.Fragment>
@@ -277,7 +277,7 @@ class AttributesView extends React.Component<CreateProps> {
 
 export default connect(
   (state: EditState): StateProps => {
-    const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
+    const referenceEntity = denormalizeReferenceEntity(state.form.data);
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
     return {
@@ -286,9 +286,9 @@ export default connect(
       },
       acls: {
         createAttribute: true,
-        delete: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_delete'),
+        delete: securityContext.isGranted('akeneo_referenceentity_reference_entity_delete'),
       },
-      enrichedEntity,
+      referenceEntity,
       createAttribute: state.createAttribute,
       firstLoading: null === state.attributes.attributes,
       attributes: null !== state.attributes.attributes ? state.attributes.attributes : [],
@@ -303,8 +303,8 @@ export default connect(
         onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(attributeEditionStartByIdentifier(attributeIdentifier));
         },
-        onDelete: (enrichedEntity: EnrichedEntity) => {
-          dispatch(deleteEnrichedEntity(enrichedEntity));
+        onDelete: (referenceEntity: ReferenceEntity) => {
+          dispatch(deleteReferenceEntity(referenceEntity));
         },
       },
     };

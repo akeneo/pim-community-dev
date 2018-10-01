@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface EnrichedEntityExistsInterface
+interface ReferenceEntityExistsInterface
 {
-    public function withIdentifier(EnrichedEntityIdentifier $recordIdentifier): bool;
+    public function withIdentifier(ReferenceEntityIdentifier $recordIdentifier): bool;
 }

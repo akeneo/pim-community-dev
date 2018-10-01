@@ -1,13 +1,13 @@
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {redirectToRoute} from 'akeneoenrichedentity/application/event/router';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {redirectToRoute} from 'akeneoreferenceentity/application/event/router';
 
-export const redirectToEnrichedEntity = (enrichedEntity: EnrichedEntity, tab: string) => {
-  return redirectToRoute('akeneo_enriched_entities_enriched_entity_edit', {
-    identifier: enrichedEntity.getIdentifier().stringValue(),
+export const redirectToReferenceEntity = (referenceEntity: ReferenceEntity, tab: string) => {
+  return redirectToRoute('akeneo_reference_entities_reference_entity_edit', {
+    identifier: referenceEntity.getIdentifier().stringValue(),
     tab,
   });
 };
 
-export const redirectToEnrichedEntityIndex = () => {
-  return redirectToRoute('akeneo_enriched_entities_enriched_entity_index');
+export const redirectToReferenceEntityIndex = () => {
+  return redirectToRoute('akeneo_reference_entities_reference_entity_index');
 };

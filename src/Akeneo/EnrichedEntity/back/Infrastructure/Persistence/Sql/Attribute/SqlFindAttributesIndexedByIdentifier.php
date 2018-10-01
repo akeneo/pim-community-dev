@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -42,20 +42,20 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
      *
      * @return AbstractAttribute[]
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $results = $this->fetchResult($enrichedEntityIdentifier);
+        $results = $this->fetchResult($referenceEntityIdentifier);
 
         return $this->hydrateAttributes($results);
     }
 
-    private function fetchResult(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $query = <<<SQL
         SELECT
             identifier,
             code,
-            enriched_entity_identifier,
+            reference_entity_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -63,12 +63,12 @@ class SqlFindAttributesIndexedByIdentifier implements FindAttributesIndexedByIde
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_enriched_entity_attribute
-        WHERE enriched_entity_identifier = :enriched_entity_identifier;
+        FROM akeneo_reference_entity_attribute
+        WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
-            ['enriched_entity_identifier' => (string) $enrichedEntityIdentifier]
+            ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
         );
         $result = $statement->fetchAll();
 

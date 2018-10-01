@@ -1,4 +1,4 @@
-import reducer from 'akeneoenrichedentity/application/reducer/user';
+import reducer from 'akeneoreferenceentity/application/reducer/user';
 
 describe('akeneo > enriched entity > application > reducer --- user', () => {
   test('I can initialize an empty state', () => {

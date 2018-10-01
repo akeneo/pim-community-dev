@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
-import recordFetcher from 'akeneoenrichedentity/infrastructure/fetcher/record';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
+import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
 const Field = require('pim/field');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
@@ -29,11 +29,11 @@ const extendTemplateContext = (templateContext: any, records: Record[]) => {
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityField extends (Field as {new (config: any): any}) {
+class ReferenceEntityField extends (Field as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
-    this.fieldType = 'akeneo-enriched-entity-field';
+    this.fieldType = 'akeneo-reference-entity-field';
     this.events = {
       'change select': (event: any) => {
         this.errors = [];
@@ -54,7 +54,7 @@ class EnrichedEntityField extends (Field as {new (config: any): any}) {
           filters: [
             {
               value: templateContext.attribute.reference_data_name,
-              field: 'enriched_entity',
+              field: 'reference_entity',
               operator: '=',
               context: {},
             },
@@ -86,4 +86,4 @@ class EnrichedEntityField extends (Field as {new (config: any): any}) {
   }
 }
 
-module.exports = EnrichedEntityField;
+module.exports = ReferenceEntityField;

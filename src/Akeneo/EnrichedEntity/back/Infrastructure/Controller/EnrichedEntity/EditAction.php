@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,8 +29,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditAction
 {
-    /** @var EditEnrichedEntityHandler */
-    private $editEnrichedEntityHandler;
+    /** @var EditReferenceEntityHandler */
+    private $editReferenceEntityHandler;
 
     /** @var Serializer */
     private $serializer;
@@ -39,11 +39,11 @@ class EditAction
     private $validator;
 
     public function __construct(
-        EditEnrichedEntityHandler $editEnrichedEntityHandler,
+        EditReferenceEntityHandler $editReferenceEntityHandler,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
-        $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
+        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
@@ -60,14 +60,14 @@ class EditAction
             );
         }
 
-        $command = $this->serializer->deserialize($request->getContent(), EditEnrichedEntityCommand::class, 'json');
+        $command = $this->serializer->deserialize($request->getContent(), EditReferenceEntityCommand::class, 'json');
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
             return new JsonResponse($this->serializer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
         }
 
-        ($this->editEnrichedEntityHandler)($command);
+        ($this->editReferenceEntityHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

@@ -1,6 +1,6 @@
 const Enrich = require('./edit/enrich.decorator');
-const Sidebar = require('../enriched-entity/app/sidebar.decorator');
-const LocaleSwitcher = require('../enriched-entity/app/locale-switcher.decorator');
+const Sidebar = require('../reference-entity/app/sidebar.decorator');
+const LocaleSwitcher = require('../reference-entity/app/locale-switcher.decorator');
 
 const config = {
   Sidebar: {

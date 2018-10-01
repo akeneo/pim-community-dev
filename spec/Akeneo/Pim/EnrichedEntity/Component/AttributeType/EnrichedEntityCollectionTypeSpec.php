@@ -1,23 +1,23 @@
 <?php
 
-namespace spec\Akeneo\Pim\EnrichedEntity\Component\AttributeType;
+namespace spec\Akeneo\Pim\ReferenceEntity\Component\AttributeType;
 
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EnrichedEntityCollectionTypeSpec extends ObjectBehavior {
+class ReferenceEntityCollectionTypeSpec extends ObjectBehavior {
     function let() {
-        $this->beConstructedWith('akeneo_enriched_entity_collection');
+        $this->beConstructedWith('akeneo_reference_entity_collection');
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntityCollectionType::class);
+        $this->shouldHaveType(ReferenceEntityCollectionType::class);
     }
 
     function it_provide_a_name()
     {
-        $this->getName()->shouldReturn('akeneo_enriched_entity_collection');
+        $this->getName()->shouldReturn('akeneo_reference_entity_collection');
     }
 }

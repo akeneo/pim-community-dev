@@ -1,18 +1,18 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeSpec extends ObjectBehavior
@@ -21,7 +21,7 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             AttributeIdentifier::create('designer', 'image', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['fr_FR' => 'Portrait', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(0),
@@ -48,7 +48,7 @@ class ImageAttributeSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
                 'identifier'                 => 'image_designer_test',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
@@ -67,7 +67,7 @@ class ImageAttributeSpec extends ObjectBehavior
         $this->updateLabels(LabelCollection::fromArray(['fr_FR' => 'Portrait', 'de_DE' => 'Porträt']));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'de_DE' => 'Porträt'],
                 'order'                      => 0,
@@ -86,7 +86,7 @@ class ImageAttributeSpec extends ObjectBehavior
         $this->setAllowedExtensions(AttributeAllowedExtensions::fromList(['jpeg']));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
@@ -105,7 +105,7 @@ class ImageAttributeSpec extends ObjectBehavior
         $this->setMaxFileSize(AttributeMaxFileSize::fromString('1000'));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,
@@ -124,7 +124,7 @@ class ImageAttributeSpec extends ObjectBehavior
         $this->setIsRequired(AttributeIsRequired::fromBoolean(false));
         $this->normalize()->shouldBe([
                 'identifier'                 => 'image_designer_test',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
                 'code'                       => 'image',
                 'labels'                     => ['fr_FR' => 'Portrait', 'en_US' => 'Portrait'],
                 'order'                      => 0,

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Filter;
+namespace Akeneo\Pim\ReferenceEntity\Component\Filter;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute\AbstractAttributeFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
@@ -29,25 +29,25 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 /**
  * Proposal reference data filter for an Elasticsearch query
  */
-class EnrichedEntityFilter extends AbstractAttributeFilter implements AttributeFilterInterface
+class ReferenceEntityFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
     /** @var RecordExistsInterface */
     private $recordExists;
 
     /** @var ConfigurationRegistryInterface */
-    private $enrichedEntityExists;
+    private $referenceEntityExists;
 
     /**
      * @param AttributeValidatorHelper         $attrValidatorHelper
      * @param RecordExistsInterface           $recordExists
-     * @param EnrichedEntityExistsInterface   $enrichedEntityExists
+     * @param ReferenceEntityExistsInterface   $referenceEntityExists
      * @param array                           $supportedAttributeTypes
      * @param array                           $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         RecordExistsInterface $recordExists,
-        EnrichedEntityExistsInterface $enrichedEntityExists,
+        ReferenceEntityExistsInterface $referenceEntityExists,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
@@ -55,7 +55,7 @@ class EnrichedEntityFilter extends AbstractAttributeFilter implements AttributeF
         $this->recordExists = $recordExists;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
-        $this->enrichedEntityExists = $enrichedEntityExists;
+        $this->referenceEntityExists = $referenceEntityExists;
     }
     /**
      * {@inheritdoc}
@@ -137,13 +137,13 @@ class EnrichedEntityFilter extends AbstractAttributeFilter implements AttributeF
      */
     public function supportsAttribute(AttributeInterface $attribute)
     {
-        $enrichedEntityIdentifier = $attribute->getReferenceDataName();
+        $referenceEntityIdentifier = $attribute->getReferenceDataName();
 
-        $enrichedEntityExists = null !== $enrichedEntityIdentifier &&
-            !empty($enrichedEntityIdentifier) &&
-            null !== $this->enrichedEntityExists->withIdentifier(EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier));
+        $referenceEntityExists = null !== $referenceEntityIdentifier &&
+            !empty($referenceEntityIdentifier) &&
+            null !== $this->referenceEntityExists->withIdentifier(ReferenceEntityIdentifier::fromString($referenceEntityIdentifier));
 
-        return $enrichedEntityExists;
+        return $referenceEntityExists;
     }
 
     /**
@@ -160,22 +160,22 @@ class EnrichedEntityFilter extends AbstractAttributeFilter implements AttributeF
 
         foreach ($values as $recordCode) {
             FieldFilterHelper::checkIdentifier($attribute->getCode(), $recordCode, static::class);
-            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($attribute->getReferenceDataName());
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($attribute->getReferenceDataName());
             $recordCode = RecordCode::fromString($recordCode);
-            $recordExists = $this->recordExists->withEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+            $recordExists = $this->recordExists->withReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
 
             if (!$recordExists) {
                 $message = sprintf(
                     'No record "%s" for enriched entity "%s" has been found',
                     (string) $recordCode,
-                    (string) $enrichedEntityIdentifier
+                    (string) $referenceEntityIdentifier
                 );
 
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'code',
                     $message,
-                    (string) $enrichedEntityIdentifier,
+                    (string) $referenceEntityIdentifier,
                     $recordCode
                 );
             }

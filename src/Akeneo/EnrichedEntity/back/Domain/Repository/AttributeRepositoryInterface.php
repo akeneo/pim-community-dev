@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Repository;
+namespace Akeneo\ReferenceEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 interface AttributeRepositoryInterface
 {
@@ -35,11 +35,11 @@ interface AttributeRepositoryInterface
     public function getByIdentifier(AttributeIdentifier $identifier): AbstractAttribute;
 
     /**
-     * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
+     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      *
      * @return AbstractAttribute[]
      */
-    public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
+    public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 
-    public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
+    public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): AttributeIdentifier;
 }

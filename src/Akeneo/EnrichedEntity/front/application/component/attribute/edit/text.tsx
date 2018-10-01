@@ -1,19 +1,19 @@
 import * as React from 'react';
-import __ from 'akeneoenrichedentity/tools/translator';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import Switch from 'akeneoenrichedentity/application/component/app/switch';
-import {AdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
-import {TextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
-import {RegularExpression} from 'akeneoenrichedentity/domain/model/attribute/type/text/regular-expression';
+import __ from 'akeneoreferenceentity/tools/translator';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
+import Switch from 'akeneoreferenceentity/application/component/app/switch';
+import {AdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
+import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {RegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
 import {
   ValidationRuleOption,
   ValidationRule,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text/validation-rule';
-import {IsRichTextEditor} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-rich-text-editor';
-import {IsTextarea} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-textarea';
-import {MaxLength} from 'akeneoenrichedentity/domain/model/attribute/type/text/max-length';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
+import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
+import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
+import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -49,7 +49,7 @@ const getValidationRuleOptions = (): DropdownElement[] => {
   return Object.values(ValidationRuleOption).map((option: string) => {
     return {
       identifier: option,
-      label: __(`pim_enriched_entity.attribute.edit.input.options.validation_rule.${option}`),
+      label: __(`pim_reference_entity.attribute.edit.input.options.validation_rule.${option}`),
     };
   });
 };
@@ -69,15 +69,15 @@ export default ({
     <React.Fragment>
       <div className="AknFieldContainer" data-code="maxLength">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.max_length">
-            {__('pim_enriched_entity.attribute.edit.input.max_length')}
+          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.max_length">
+            {__('pim_reference_entity.attribute.edit.input.max_length')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
             className="AknTextField AknTextField--light"
-            id="pim_enriched_entity.attribute.edit.input.max_length"
+            id="pim_reference_entity.attribute.edit.input.max_length"
             name="max_length"
             value={attribute.maxLength.stringValue()}
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -100,13 +100,13 @@ export default ({
       </div>
       <div className="AknFieldContainer" data-code="isTextarea">
         <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.textarea">
-            {__('pim_enriched_entity.attribute.edit.input.textarea')}
+          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.textarea">
+            {__('pim_reference_entity.attribute.edit.input.textarea')}
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
           <Switch
-            id="pim_enriched_entity.attribute.edit.input.textarea"
+            id="pim_reference_entity.attribute.edit.input.textarea"
             value={attribute.isTextarea.booleanValue()}
             onChange={(isTextarea: boolean) =>
               onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
@@ -120,14 +120,14 @@ export default ({
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
+              htmlFor="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
             >
-              {__('pim_enriched_entity.attribute.edit.input.is_rich_text_editor')}
+              {__('pim_reference_entity.attribute.edit.input.is_rich_text_editor')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Switch
-              id="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
+              id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
               value={attribute.isRichTextEditor.booleanValue()}
               onChange={(isrichTextEditor: boolean) =>
                 onAdditionalPropertyUpdated('is_rich_text_editor', IsRichTextEditor.createFromBoolean(isrichTextEditor))
@@ -142,15 +142,15 @@ export default ({
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.attribute.edit.input.validation_rule"
+              htmlFor="pim_reference_entity.attribute.edit.input.validation_rule"
             >
-              {__('pim_enriched_entity.attribute.edit.input.validation_rule')}
+              {__('pim_reference_entity.attribute.edit.input.validation_rule')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Dropdown
               ItemView={AttributeValidationRuleItemView}
-              label={__('pim_enriched_entity.attribute.edit.input.validation_rule')}
+              label={__('pim_reference_entity.attribute.edit.input.validation_rule')}
               elements={getValidationRuleOptions()}
               selectedElement={attribute.validationRule.stringValue()}
               onSelectionChange={(value: DropdownElement) =>
@@ -167,16 +167,16 @@ export default ({
             <div className="AknFieldContainer-header AknFieldContainer-header--light">
               <label
                 className="AknFieldContainer-label"
-                htmlFor="pim_enriched_entity.attribute.edit.input.regular_expression"
+                htmlFor="pim_reference_entity.attribute.edit.input.regular_expression"
               >
-                {__('pim_enriched_entity.attribute.edit.input.regular_expression')}
+                {__('pim_reference_entity.attribute.edit.input.regular_expression')}
               </label>
             </div>
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
                 className="AknTextField AknTextField--light"
-                id="pim_enriched_entity.attribute.edit.input.regular_expression"
+                id="pim_reference_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"
                 placeholder="/[a-z]+[0-9]*/"
                 value={attribute.regularExpression.stringValue()}

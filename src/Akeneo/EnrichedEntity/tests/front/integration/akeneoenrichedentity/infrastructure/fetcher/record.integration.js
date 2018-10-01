@@ -1,6 +1,6 @@
 const timeout = 5000;
 
-describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
+describe('Akeneoreferenceentity > infrastructure > fetcher > record', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -10,7 +10,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
   it('It search for records', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/record' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity/designer/record' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -24,7 +24,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/record').default;
+      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/record').default;
 
       return await fetcher.search({
         filters: [{value: 'designer'}]

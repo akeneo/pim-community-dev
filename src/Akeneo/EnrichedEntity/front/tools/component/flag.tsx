@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Locale from 'akeneoenrichedentity/domain/model/locale';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
 
 const Flag = ({
   locale,

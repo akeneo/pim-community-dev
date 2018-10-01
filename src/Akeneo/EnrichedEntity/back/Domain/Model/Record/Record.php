@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Record;
+namespace Akeneo\ReferenceEntity\Domain\Model\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,8 +33,8 @@ class Record
     /** @var RecordCode */
     private $code;
 
-    /** @var EnrichedEntity */
-    private $enrichedEntityIdentifier;
+    /** @var ReferenceEntity */
+    private $referenceEntityIdentifier;
 
     /** @var LabelCollection */
     private $labelCollection;
@@ -47,14 +47,14 @@ class Record
 
     private function __construct(
         RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         LabelCollection $labelCollection,
         Image $image,
         ValueCollection $valueCollection
     ) {
         $this->identifier = $identifier;
-        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->code = $code;
         $this->labelCollection = $labelCollection;
         $this->image = $image;
@@ -63,7 +63,7 @@ class Record
 
     public static function create(
         RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         array $rawLabelCollection, // TODO: receive LabelCollection instead
         Image $image,
@@ -71,7 +71,7 @@ class Record
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $image, $valueCollection);
+        return new self($identifier, $referenceEntityIdentifier, $code, $labelCollection, $image, $valueCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
@@ -84,9 +84,9 @@ class Record
         return $this->code;
     }
 
-    public function getEnrichedEntityIdentifier(): EnrichedEntityIdentifier
+    public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
     {
-        return $this->enrichedEntityIdentifier;
+        return $this->referenceEntityIdentifier;
     }
 
     public function equals(Record $record): bool
@@ -139,7 +139,7 @@ class Record
         return [
             'identifier' => $this->identifier->normalize(),
             'code' => $this->code->normalize(),
-            'enrichedEntityIdentifier' => $this->enrichedEntityIdentifier->normalize(),
+            'referenceEntityIdentifier' => $this->referenceEntityIdentifier->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'values' => $this->valueCollection->normalize(),
             'image' => $this->image->normalize(),

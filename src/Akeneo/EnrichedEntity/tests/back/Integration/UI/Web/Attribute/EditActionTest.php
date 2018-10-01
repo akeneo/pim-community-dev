@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const EDIT_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_edit_rest';
+    private const EDIT_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_edit_rest';
     private const RESPONSES_DIR = 'Attribute/Edit/';
 
     /** @var Client */
@@ -50,7 +50,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -99,7 +99,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::EDIT_ATTRIBUTE_ROUTE,
             [
-                'enrichedEntityIdentifier' => 'designer',
+                'referenceEntityIdentifier' => 'designer',
                 'attributeIdentifier'      => $attributeIdentifier,
             ],
             'POST'
@@ -118,23 +118,23 @@ class EditActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_edit', true);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_edit', true);
 
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntityRepository->create(EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(ReferenceEntity::create(ReferenceEntityIdentifier::fromString('designer'),
             [],
             Image::createEmpty()
         ));
-        $enrichedEntityRepository->create(EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('brand'),
+        $referenceEntityRepository->create(ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
             [],
             Image::createEmpty()
         ));
 
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', md5('fingerprint')),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['fr_FR' => 'Nom', 'en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -147,7 +147,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $portrait = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'portrait', md5('fingerprint')),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('portrait'),
             LabelCollection::fromArray(['fr_FR' => 'Image autobiographique', 'en_US' => 'Portrait']),
             AttributeOrder::fromInteger(1),
@@ -164,7 +164,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     private function revokeEditRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_edit', false);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_edit', false);
     }
 
     public function getValidationErrorsRequests(): array
@@ -179,7 +179,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         return [
             'Unsynchronised attribute identifier'       => ['unsynchronised_attribute_identifier.json'],
-            'Unsynchronised enriched entity identifier' => ['unsynchronised_enriched_entity_identifier.json'],
+            'Unsynchronised enriched entity identifier' => ['unsynchronised_reference_entity_identifier.json'],
         ];
     }
 }

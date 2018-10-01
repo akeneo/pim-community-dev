@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKey;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ValueKeyCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKey;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ValueKeyCollection;
 use PhpSpec\ObjectBehavior;
 
 class ValueKeyCollectionSpec extends ObjectBehavior

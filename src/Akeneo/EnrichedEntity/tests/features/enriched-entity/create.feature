@@ -32,7 +32,7 @@ Feature: Create an enriched entity
   @acceptance-front
   Scenario: Creating an enriched entity
     Given the user has the following rights:
-      | akeneo_enrichedentity_enriched_entity_create | true |
+      | akeneo_referenceentity_reference_entity_create | true |
     When the user creates an enriched entity "designer" with:
       | labels                                    |
       | {"en_US": "Stylist", "fr_FR": "Styliste"} |
@@ -42,14 +42,14 @@ Feature: Create an enriched entity
   @acceptance-front
   Scenario: User do not have the right to create enriched entities
     Given the user has the following rights:
-      | akeneo_enrichedentity_enriched_entity_create | false |
+      | akeneo_referenceentity_reference_entity_create | false |
     When the user asks for the enriched entity list
     Then the user should not be able to create an enriched entity
 
   @acceptance-front
   Scenario: Cannot create an enriched entity with invalid identifier
     Given the user has the following rights:
-      | akeneo_enrichedentity_enriched_entity_create | true |
+      | akeneo_referenceentity_reference_entity_create | true |
     When the user creates an enriched entity "invalid/identifier" with:
       | labels |
       | {}     |

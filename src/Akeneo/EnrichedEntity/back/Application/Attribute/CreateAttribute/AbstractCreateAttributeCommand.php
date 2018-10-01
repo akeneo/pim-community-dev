@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -20,7 +20,7 @@ namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute;
 abstract class AbstractCreateAttributeCommand
 {
     /** @var string */
-    public $enrichedEntityIdentifier;
+    public $referenceEntityIdentifier;
 
     /** @var string */
     public $code;

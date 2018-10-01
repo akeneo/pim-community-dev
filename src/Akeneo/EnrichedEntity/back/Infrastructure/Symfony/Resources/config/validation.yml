@@ -1,184 +1,184 @@
-Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand:
+Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand:
     properties:
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
         image:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Image: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Image: ~
 
-Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand:
+Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand:
     group_sequence:
-        - CreateEnrichedEntityCommand
+        - CreateReferenceEntityCommand
         - other_constraints
     properties:
         code:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityCodeShouldBeUnique: { groups: [other_constraints] }
 
-Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand:
+Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand:
     group_sequence:
-        - DeleteEnrichedEntityCommand
+        - DeleteReferenceEntityCommand
         - other_constraints
     properties: []
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldHaveNoRecord: { groups: [other_constraints] }
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\EnrichedEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldHaveNoRecord: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToAnyProductAttribute: { groups: [other_constraints] }
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
-        - Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfigured:
+        - Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints\IsReferenceEntityConfigured:
             groups:
-                - akeneo_enriched_entity_collection
+                - akeneo_reference_entity_collection
 
-Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
+Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
     group_sequence:
         - CreateRecordCommand
         - other_constraints
     properties:
-        enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
         code:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\RecordCodeShouldBeUnique: { groups: [other_constraints] }
 
-Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand:
     properties:
         code:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
-        enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\Code: ~
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
         image:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Image: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Image: ~
     constraints:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditRecordValueCommands: ~
 
-Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand:
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand: ~
 
-Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand:
+Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand:
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditValueCommand: ~
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\EditFileValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditFileValueCommand: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:
         - CreateTextAttributeCommand
         - other_constraints
     properties:
-        enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
         code:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
         order:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxLength:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxLength: ~
         isTextarea:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
         isRichTextEditor:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
         validationRule:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
         regularExpression:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
 
-Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
+Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
     group_sequence:
         - CreateImageAttributeCommand
         - other_constraints
     properties:
-        enrichedEntityIdentifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Code: ~
+        referenceEntityIdentifier:
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\Code: ~
         code:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Code: ~
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
         order:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\Order: ~
         isRequired:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
         valuePerChannel:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
         valuePerLocale:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
         maxFileSize:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
         allowedExtensions:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldNotExist: { groups: [other_constraints] }
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand:
     group_sequence:
         - EditAttributeCommand
         - primary_constraints
         - secondary_constraints
     properties: []
     constraints:
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [primary_constraints] }
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\EditCommands: { groups: [primary_constraints] }
-        - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [secondary_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AttributeShouldExist: { groups: [primary_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\EditCommands: { groups: [primary_constraints] }
+        - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\TextPropertyUpdatesShouldBeCoherent: { groups: [secondary_constraints] }
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRequiredCommand:
     properties:
         isRequired:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRequired: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRequired: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand:
     properties:
         labels:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity\LabelCollection: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand:
     properties:
         maxLength:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxLength: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand:
     properties:
         maxFileSize:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAllowedExtensionsCommand:
     properties:
         allowedExtensions:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsTextareaCommand:
     properties:
         isTextarea:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsTextarea: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand:
     properties:
         validationRule:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\ValidationRule: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand:
     properties:
         regularExpression:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\RegularExpression: ~
 
-Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand:
+Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditIsRichTextEditorCommand:
     properties:
         isRichTextEditor:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~
+            - Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute\IsRichTextEditor: ~

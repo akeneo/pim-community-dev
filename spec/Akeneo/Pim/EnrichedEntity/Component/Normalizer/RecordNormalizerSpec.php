@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\Pim\EnrichedEntity\Component\Normalizer;
+namespace spec\Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\Pim\EnrichedEntity\Component\Normalizer\RecordNormalizer;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\Pim\ReferenceEntity\Component\Normalizer\RecordNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 class RecordNormalizerSpec extends ObjectBehavior {
     function it_is_initializable()

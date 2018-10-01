@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class RecordShouldExist extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.record.validation.code.should_exist';
+    public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.code.should_exist';
 
     public function getTargets()
     {
@@ -22,6 +22,6 @@ class RecordShouldExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.record.record_should_exist';
+        return 'akeneo_referenceentity.validator.record.record_should_exist';
     }
 }

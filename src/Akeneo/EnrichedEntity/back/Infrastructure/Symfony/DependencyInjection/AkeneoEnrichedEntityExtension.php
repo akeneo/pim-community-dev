@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AkeneoEnrichedEntityExtension extends Extension
+class AkeneoReferenceEntityExtension extends Extension
 {
     /**
      * {@inheritdoc}

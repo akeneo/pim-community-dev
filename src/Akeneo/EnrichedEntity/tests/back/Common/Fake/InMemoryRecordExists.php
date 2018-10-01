@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>
@@ -38,11 +38,11 @@ class InMemoryRecordExists implements RecordExistsInterface
         return $this->recordRepository->hasRecord($recordIdentifier);
     }
 
-    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): bool
+    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool
     {
         $hasRecord = true;
         try {
-            $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+            $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
         } catch (RecordNotFoundException $exception) {
             $hasRecord = false;
         }

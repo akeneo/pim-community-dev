@@ -1,7 +1,7 @@
-const Header = require('../../decorators/enriched-entity/app/header.decorator');
-const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
+const Header = require('../../decorators/reference-entity/app/header.decorator');
+const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
-const Records = require('../../decorators/enriched-entity/edit/records.decorator');
+const Records = require('../../decorators/reference-entity/edit/records.decorator');
 const path = require('path');
 
 const {
@@ -36,20 +36,20 @@ module.exports = async function(cucumber) {
 
   const saveRecord = async function(page) {
     page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity/designer/record' === request.url() && 'POST' === request.method()) {
+      if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
       }
     });
   };
 
-  const listRecordUpdated = async function(page, enrichedEntityIdentifier, identifier, code, labels) {
+  const listRecordUpdated = async function(page, referenceEntityIdentifier, identifier, code, labels) {
     page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity/designer/record' === request.url() && 'GET' === request.method()) {
+      if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'GET' === request.method()) {
         answerJson(request, {
           items: [
             {
               identifier: identifier,
-              enriched_entity_identifier: enrichedEntityIdentifier,
+              reference_entity_identifier: referenceEntityIdentifier,
               code: code,
               labels: labels,
             },
@@ -62,12 +62,12 @@ module.exports = async function(cucumber) {
 
   const validationMessageShown = async function(page, message) {
     page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity/designer/record' === request.url() && 'POST' === request.method()) {
+      if ('http://pim.com/rest/reference_entity/designer/record' === request.url() && 'POST' === request.method()) {
         answerJson(
           request,
           [
             {
-              messageTemplate: 'pim_enriched_entity.enriched_entity.validation.code.pattern',
+              messageTemplate: 'pim_reference_entity.reference_entity.validation.code.pattern',
               parameters: {'{{ value }}': '\u0022invalid/identifier\u0022'},
               plural: null,
               message: message,
@@ -85,11 +85,11 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const getRecordIdentifier = function(enrichedEntityIdentifier, code) {
-    return `${enrichedEntityIdentifier}_${code}_123456`;
+  const getRecordIdentifier = function(referenceEntityIdentifier, code) {
+    return `${referenceEntityIdentifier}_${code}_123456`;
   };
 
-  When('the user creates a record of {string} with:', async function(enrichedEntityIdentifier, updates) {
+  When('the user creates a record of {string} with:', async function(referenceEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
 
     const sidebar = await await getElement(this.page, 'Sidebar');
@@ -99,9 +99,9 @@ module.exports = async function(cucumber) {
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_enriched_entity.record.create.input.code', record.code);
+    await modal.fillField('pim_reference_entity.record.create.input.code', record.code);
     if (record.labels !== undefined && record.labels.en_US !== undefined) {
-      await modal.fillField('pim_enriched_entity.record.create.input.label', record.labels.en_US);
+      await modal.fillField('pim_reference_entity.record.create.input.label', record.labels.en_US);
     }
   });
 
@@ -110,11 +110,11 @@ module.exports = async function(cucumber) {
     await modal.save();
   });
 
-  Then('there is a record of {string} with:', async function(enrichedEntityIdentifier, updates) {
+  Then('there is a record of {string} with:', async function(referenceEntityIdentifier, updates) {
     const record = convertItemTable(updates)[0];
-    const recordIdentifier = getRecordIdentifier(enrichedEntityIdentifier, record.code);
+    const recordIdentifier = getRecordIdentifier(referenceEntityIdentifier, record.code);
 
-    await listRecordUpdated(this.page, enrichedEntityIdentifier, recordIdentifier, record.code, record.labels);
+    await listRecordUpdated(this.page, referenceEntityIdentifier, recordIdentifier, record.code, record.labels);
 
     const records = await await getElement(this.page, 'Records');
     await records.hasRecord(recordIdentifier);

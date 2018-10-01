@@ -1,6 +1,6 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import sanitize from 'akeneoenrichedentity/tools/sanitize';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import sanitize from 'akeneoreferenceentity/tools/sanitize';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 export interface CreateState {
   active: boolean;

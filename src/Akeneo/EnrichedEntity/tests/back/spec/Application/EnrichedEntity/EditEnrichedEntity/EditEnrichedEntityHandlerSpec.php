@@ -1,53 +1,53 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity;
+namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EditEnrichedEntityHandlerSpec extends ObjectBehavior
+class EditReferenceEntityHandlerSpec extends ObjectBehavior
 {
-    public function let(EnrichedEntityRepositoryInterface $repository, FileStorerInterface $storer)
+    public function let(ReferenceEntityRepositoryInterface $repository, FileStorerInterface $storer)
     {
         $this->beConstructedWith($repository, $storer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EditEnrichedEntityHandler::class);
+        $this->shouldHaveType(EditReferenceEntityHandler::class);
     }
 
-    function it_edits_an_enriched_entity(
-        EnrichedEntityRepositoryInterface $repository,
-        EnrichedEntity $enrichedEntity,
-        EditEnrichedEntityCommand $editEnrichedEntityCommand,
+    function it_edits_an_reference_entity(
+        ReferenceEntityRepositoryInterface $repository,
+        ReferenceEntity $referenceEntity,
+        EditReferenceEntityCommand $editReferenceEntityCommand,
         FileStorerInterface $storer,
         FileInfoInterface $fileInfo,
         Image $image
     ) {
-        $editEnrichedEntityCommand->identifier = 'designer';
-        $editEnrichedEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
-        $editEnrichedEntityCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
+        $editReferenceEntityCommand->identifier = 'designer';
+        $editReferenceEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
+        $editReferenceEntityCommand->image = ['originalFilename' => 'image.jpg', 'filePath' => '/path/image.jpg'];
 
-        $repository->getByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
-            ->willReturn($enrichedEntity);
+        $repository->getByIdentifier(Argument::type(ReferenceEntityIdentifier::class))
+            ->willReturn($referenceEntity);
 
-        $enrichedEntity->getImage()->willReturn($image);
+        $referenceEntity->getImage()->willReturn($image);
         $image->isEmpty()->willReturn(true);
 
-        $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
+        $referenceEntity->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $enrichedEntity->updateImage(Argument::type(Image::class))
+        $referenceEntity->updateImage(Argument::type(Image::class))
             ->shouldBeCalled();
 
         $storer->store(Argument::type(\SplFileInfo::class), Argument::type('string'))
@@ -59,8 +59,8 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $fileInfo->getOriginalFilename()
             ->willReturn('image.jpg');
 
-        $repository->update($enrichedEntity)->shouldBeCalled();
+        $repository->update($referenceEntity)->shouldBeCalled();
 
-        $this->__invoke($editEnrichedEntityCommand);
+        $this->__invoke($editReferenceEntityCommand);
     }
 }

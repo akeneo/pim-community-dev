@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,9 +21,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityCodeShouldBeUnique extends Constraint
+class ReferenceEntityCodeShouldBeUnique extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.enriched_entity.validation.code.should_be_unique';
+    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.code.should_be_unique';
 
     public function getTargets()
     {
@@ -32,6 +32,6 @@ class EnrichedEntityCodeShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.enriched_entity.code_is_unique';
+        return 'akeneo_referenceentity.validator.reference_entity.code_is_unique';
     }
 }

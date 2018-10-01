@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,15 +24,15 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EnrichedEntityShouldNotBeLinkedToAnyProductAttributeValidator extends ConstraintValidator
+class ReferenceEntityShouldNotBeLinkedToAnyProductAttributeValidator extends ConstraintValidator
 {
-    /** @var EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface */
-    private $enrichedEntityIsLinkedToProductAttributes;
+    /** @var ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface */
+    private $referenceEntityIsLinkedToProductAttributes;
 
     public function __construct(
-        EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface $enrichedEntityIsLinkedToProductAttributes
+        ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface $referenceEntityIsLinkedToProductAttributes
     ) {
-        $this->enrichedEntityIsLinkedToProductAttributes = $enrichedEntityIsLinkedToProductAttributes;
+        $this->referenceEntityIsLinkedToProductAttributes = $referenceEntityIsLinkedToProductAttributes;
     }
 
     public function validate($command, Constraint $constraint): void
@@ -47,11 +47,11 @@ class EnrichedEntityShouldNotBeLinkedToAnyProductAttributeValidator extends Cons
      */
     private function checkCommandType($command): void
     {
-        if (!$command instanceof DeleteEnrichedEntityCommand) {
+        if (!$command instanceof DeleteReferenceEntityCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected argument to be of class "%s", "%s" given',
-                    DeleteEnrichedEntityCommand::class,
+                    DeleteReferenceEntityCommand::class,
                     get_class($command)
                 )
             );
@@ -63,19 +63,19 @@ class EnrichedEntityShouldNotBeLinkedToAnyProductAttributeValidator extends Cons
      */
     private function checkConstraintType(Constraint $constraint): void
     {
-        if (!$constraint instanceof EnrichedEntityShouldNotBeLinkedToAnyProductAttribute) {
+        if (!$constraint instanceof ReferenceEntityShouldNotBeLinkedToAnyProductAttribute) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
     }
 
-    private function validateCommand(DeleteEnrichedEntityCommand $command): void
+    private function validateCommand(DeleteReferenceEntityCommand $command): void
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($command->identifier);
-        $isLinkedToAtLeastOneProductAttribute = ($this->enrichedEntityIsLinkedToProductAttributes)($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->identifier);
+        $isLinkedToAtLeastOneProductAttribute = ($this->referenceEntityIsLinkedToProductAttributes)($referenceEntityIdentifier);
 
         if ($isLinkedToAtLeastOneProductAttribute) {
-            $this->context->buildViolation(EnrichedEntityShouldNotBeLinkedToAnyProductAttribute::ERROR_MESSAGE)
-                ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
+            $this->context->buildViolation(ReferenceEntityShouldNotBeLinkedToAnyProductAttribute::ERROR_MESSAGE)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->addViolation();
         }
     }

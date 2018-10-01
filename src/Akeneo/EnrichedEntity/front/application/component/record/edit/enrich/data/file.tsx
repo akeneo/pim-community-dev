@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Image from 'akeneoenrichedentity/application/component/app/image';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
-import FileData, {create} from 'akeneoenrichedentity/domain/model/record/data/file';
-import __ from 'akeneoenrichedentity/tools/translator';
-import File from 'akeneoenrichedentity/domain/model/file';
+import Image from 'akeneoreferenceentity/application/component/app/image';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
+import FileData, {create} from 'akeneoreferenceentity/domain/model/record/data/file';
+import __ from 'akeneoreferenceentity/tools/translator';
+import File from 'akeneoreferenceentity/domain/model/file';
 
 const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void}) => {
   if (!(value.data instanceof FileData)) {
@@ -12,7 +12,7 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
 
   return (
     <Image
-      alt={__('pim_enriched_entity.record.value.file', {
+      alt={__('pim_reference_entity.record.value.file', {
         '{{ attribute_code }}': value.attribute.getLabel(value.locale.stringValue()),
       })}
       image={value.data.getFile()}

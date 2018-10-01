@@ -1,26 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryInterface;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistryInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditValueCommandFactoryRegistryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindAttributesIndexedByIdentifier;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -48,7 +48,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         EditValueCommandFactoryInterface $textValueCommandFactory
     ) {
         $normalizedCommand = [
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'philippe_starck',
             'labels' => [
                 'en_us' => 'Philippe Starck'
@@ -65,7 +65,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         $editDescriptionCommand = new EditTextValueCommand();
         $descriptionAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'description', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['fr_FR' => 'Description', 'en_US' => 'Description']),
             AttributeOrder::fromInteger(0),
@@ -76,7 +76,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             AttributeValidationRule::none(),
             AttributeRegularExpression::createEmpty()
         );
-        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(EnrichedEntityIdentifier::class))->willReturn([
+        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([
             'desginer_description_fingerprint' => $descriptionAttribute
         ]);
 
@@ -85,7 +85,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
 
         $command = $this->create($normalizedCommand);
         $command->shouldBeAnInstanceOf(EditRecordCommand::class);
-        $command->enrichedEntityIdentifier->shouldBeEqualTo('designer');
+        $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('philippe_starck');
         $command->labels->shouldBeEqualTo([
             'en_us' => 'Philippe Starck'
@@ -103,7 +103,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry
     ) {
         $normalizedCommand = [
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'philippe_starck',
             'labels' => [
                 'en_us' => 'Philippe Starck'
@@ -111,7 +111,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
             'values' => [ [ 'malformed data']]
         ];
 
-        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(EnrichedEntityIdentifier::class))->willReturn([]);
+        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([]);
         $editRecordValueCommandFactoryRegistry->getFactory()->shouldNotBeCalled();
         $command = $this->create($normalizedCommand);
         $command->editRecordValueCommands->shouldBeEqualTo([]);
@@ -122,7 +122,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
         EditValueCommandFactoryRegistryInterface $editRecordValueCommandFactoryRegistry
     ) {
         $normalizedCommand = [
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'philippe_starck',
             'labels' => [
                 'en_us' => 'Philippe Starck'
@@ -136,7 +136,7 @@ class EditRecordCommandFactorySpec extends ObjectBehavior
                 ],
             ],
         ];
-        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(EnrichedEntityIdentifier::class))->willReturn([]);
+        $sqlFindAttributesIndexedByIdentifier->__invoke(Argument::type(ReferenceEntityIdentifier::class))->willReturn([]);
         $editRecordValueCommandFactoryRegistry->getFactory()->shouldNotBeCalled();
         $command = $this->create($normalizedCommand);
         $command->editRecordValueCommands->shouldBeEqualTo([]);

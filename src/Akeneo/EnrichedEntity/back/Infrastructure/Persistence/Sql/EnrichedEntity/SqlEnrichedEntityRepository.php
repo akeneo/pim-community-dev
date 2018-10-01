@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -26,7 +26,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
+class SqlReferenceEntityRepository implements ReferenceEntityRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -43,16 +43,16 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
      * @throws \RuntimeException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function create(EnrichedEntity $enrichedEntity): void
+    public function create(ReferenceEntity $referenceEntity): void
     {
-        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
+        $serializedLabels = $this->getSerializedLabels($referenceEntity);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
+        INSERT INTO akeneo_reference_entity_reference_entity (identifier, labels) VALUES (:identifier, :labels);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => (string) $enrichedEntity->getIdentifier(),
+                'identifier' => (string) $referenceEntity->getIdentifier(),
                 'labels' => $serializedLabels
             ]
         );
@@ -67,20 +67,20 @@ SQL;
      * @throws \RuntimeException
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function update(EnrichedEntity $enrichedEntity): void
+    public function update(ReferenceEntity $referenceEntity): void
     {
-        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
+        $serializedLabels = $this->getSerializedLabels($referenceEntity);
         $update = <<<SQL
-        UPDATE akeneo_enriched_entity_enriched_entity
+        UPDATE akeneo_reference_entity_reference_entity
         SET labels = :labels, image = :image
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $update,
             [
-                'identifier' => (string) $enrichedEntity->getIdentifier(),
+                'identifier' => (string) $referenceEntity->getIdentifier(),
                 'labels' => $serializedLabels,
-                'image' => (null !== $enrichedEntity->getImage()) ? $enrichedEntity->getImage()->getKey() : null
+                'image' => (null !== $referenceEntity->getImage()) ? $referenceEntity->getImage()->getKey() : null
             ]
         );
 
@@ -91,11 +91,11 @@ SQL;
         }
     }
 
-    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
+    public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity
     {
         $fetch = <<<SQL
         SELECT ee.identifier, ee.labels, fi.image
-        FROM akeneo_enriched_entity_enriched_entity ee
+        FROM akeneo_reference_entity_reference_entity ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
@@ -110,10 +110,10 @@ SQL;
         $statement->closeCursor();
 
         if (!$result) {
-            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
+            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->hydrateEnrichedEntity(
+        return $this->hydrateReferenceEntity(
             $result['identifier'],
             $result['labels'],
             null !== $result['image'] ? json_decode($result['image'], true) : null
@@ -124,24 +124,24 @@ SQL;
     {
         $selectAllQuery = <<<SQL
         SELECT identifier, labels
-        FROM akeneo_enriched_entity_enriched_entity;
+        FROM akeneo_reference_entity_reference_entity;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
         $statement->closeCursor();
 
-        $enrichedEntities = [];
+        $referenceEntities = [];
         foreach ($results as $result) {
-            $enrichedEntities[] = $this->hydrateEnrichedEntity($result['identifier'], $result['labels'], null);
+            $referenceEntities[] = $this->hydrateReferenceEntity($result['identifier'], $result['labels'], null);
         }
 
-        return $enrichedEntities;
+        return $referenceEntities;
     }
 
-    public function deleteByIdentifier(EnrichedEntityIdentifier $identifier): void
+    public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void
     {
         $sql = <<<SQL
-        DELETE FROM akeneo_enriched_entity_enriched_entity
+        DELETE FROM akeneo_reference_entity_reference_entity
         WHERE identifier = :identifier;
 SQL;
 
@@ -153,35 +153,35 @@ SQL;
         );
 
         if (1 !== $affectedRows) {
-            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
+            throw ReferenceEntityNotFoundException::withIdentifier($identifier);
         }
     }
 
-    private function hydrateEnrichedEntity(
+    private function hydrateReferenceEntity(
         string $identifier,
         string $normalizedLabels,
         ?array $image
-    ): EnrichedEntity {
+    ): ReferenceEntity {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
         $entityImage = $this->hydrateImage($image);
 
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString($identifier),
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($identifier),
             $labels,
             $entityImage
         );
 
-        return $enrichedEntity;
+        return $referenceEntity;
     }
 
-    private function getSerializedLabels(EnrichedEntity $enrichedEntity): string
+    private function getSerializedLabels(ReferenceEntity $referenceEntity): string
     {
         $labels = [];
-        foreach ($enrichedEntity->getLabelCodes() as $localeCode) {
-            $labels[$localeCode] = $enrichedEntity->getLabel($localeCode);
+        foreach ($referenceEntity->getLabelCodes() as $localeCode) {
+            $labels[$localeCode] = $referenceEntity->getLabel($localeCode);
         }
 
         return json_encode($labels);

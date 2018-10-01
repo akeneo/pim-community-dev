@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,8 +21,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterEditRecordValueCommandFactoryPass implements CompilerPassInterface
 {
-    private const RECORD_VALUE_COMMAND_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.record.edit_record_value_command_factory_registry';
-    private const RECORD_VALUE_COMMAND_FACTORY_TAG = 'akeneo_enrichedentity.edit_record_value_command_factory';
+    private const RECORD_VALUE_COMMAND_FACTORY_REGISTRY = 'akeneo_referenceentity.application.registry.record.edit_record_value_command_factory_registry';
+    private const RECORD_VALUE_COMMAND_FACTORY_TAG = 'akeneo_referenceentity.edit_record_value_command_factory';
 
     /**
      * {@inheritdoc}

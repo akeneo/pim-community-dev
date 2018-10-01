@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints;
+namespace Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -20,13 +20,13 @@ use Symfony\Component\Validator\Constraint;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IsEnrichedEntityConfigured extends Constraint
+class IsReferenceEntityConfigured extends Constraint
 {
     /** @var string */
-    public $unknownMessage = 'The enriched entity "%enriched_entity_identifier%" does not exist.';
+    public $unknownMessage = 'The enriched entity "%reference_entity_identifier%" does not exist.';
 
     /** @var string */
-    public $invalidMessage = 'The enriched entity "%enriched_entity_identifier%" identifier is not valid';
+    public $invalidMessage = 'The enriched entity "%reference_entity_identifier%" identifier is not valid';
 
     /** @var string */
     public $emptyMessage = 'You need to define an enriched entity type for your attribute';
@@ -39,7 +39,7 @@ class IsEnrichedEntityConfigured extends Constraint
      */
     public function validatedBy(): string
     {
-        return 'pim_is_enriched_entity_configured_validator';
+        return 'pim_is_reference_entity_configured_validator';
     }
 
     /**

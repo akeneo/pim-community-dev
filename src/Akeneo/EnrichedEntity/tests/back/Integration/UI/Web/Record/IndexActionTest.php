@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const RECORD_LIST_ROUTE = 'akeneo_enriched_entities_record_index_rest';
+    private const RECORD_LIST_ROUTE = 'akeneo_reference_entities_record_index_rest';
 
     /** @var Client */
     private $client;
@@ -43,7 +43,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -54,14 +54,14 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::RECORD_LIST_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer']
+            ['referenceEntityIdentifier' => 'designer']
         );
 
         $expectedContent = json_encode([
             'items' => [
                 [
                     'identifier'                 => 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
-                    'enriched_entity_identifier' => 'designer',
+                    'reference_entity_identifier' => 'designer',
                     'code' => 'starck',
                     'labels'                     => [
                         'en_US' => 'Philippe Starck',
@@ -70,7 +70,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
                 ],
                 [
                     'identifier'                 => 'designer_coco_a1677570-a278-444b-ab46-baa1db199392',
-                    'enriched_entity_identifier' => 'designer',
+                    'reference_entity_identifier' => 'designer',
                     'code' => 'coco',
                     'labels'                     => [
                         'en_US' => 'Coco',
@@ -85,7 +85,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $findRecordItems = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
+        $findRecordItems = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity');
         $findRecordItems->save(
             $this->createRecordItem(
                 'designer_starck_a1677570-a278-444b-ab46-baa1db199392',
@@ -110,13 +110,13 @@ class IndexActionTest extends ControllerIntegrationTestCase
 
     private function createRecordItem(
         string $recordIdentifier,
-        string $enrichedEntityIdentifier,
+        string $referenceEntityIdentifier,
         string $code,
         array $labels
     ): RecordItem {
         $recordItem = new RecordItem();
         $recordItem->identifier = RecordIdentifier::fromString($recordIdentifier);
-        $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordItem->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         $recordItem->code = RecordCode::fromString($code);
         $recordItem->labels = LabelCollection::fromArray($labels);
         $recordItem->image = Image::createEmpty();

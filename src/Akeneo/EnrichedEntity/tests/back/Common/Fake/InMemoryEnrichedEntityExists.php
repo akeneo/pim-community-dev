@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryEnrichedEntityExists implements EnrichedEntityExistsInterface
+class InMemoryReferenceEntityExists implements ReferenceEntityExistsInterface
 {
-    /** @var InMemoryEnrichedEntityRepository */
-    private $enrichedEntityRepository;
+    /** @var InMemoryReferenceEntityRepository */
+    private $referenceEntityRepository;
 
-    public function __construct(InMemoryEnrichedEntityRepository $enrichedEntityRepository)
+    public function __construct(InMemoryReferenceEntityRepository $referenceEntityRepository)
     {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
-    public function withIdentifier(EnrichedEntityIdentifier $recordIdentifier): bool
+    public function withIdentifier(ReferenceEntityIdentifier $recordIdentifier): bool
     {
-        return $this->enrichedEntityRepository->hasRecord($recordIdentifier);
+        return $this->referenceEntityRepository->hasRecord($recordIdentifier);
     }
 }

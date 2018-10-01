@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_max_file_size_edits()
     {
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'max_file_size' => '172.50',
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'max_file_size' => null
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -35,14 +35,14 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
         $command = $this->create([
             'identifier'    => [
                 'identifier'                 => 'portrait',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
             ],
             'max_file_size' => '172.50',
         ]);
         $command->shouldBeAnInstanceOf(EditMaxFileSizeCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'portrait',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
         ]);
         $command->maxFileSize->shouldBeEqualTo('172.50');
     }
@@ -54,7 +54,7 @@ class EditMaxFileSizeCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'enriched_entity_identifier' => 'designer',
+                        'reference_entity_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

@@ -1,4 +1,4 @@
-import {createChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
+import {createChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
 
 describe('akeneo > enriched entity > domain > model --- channel reference', () => {
   test('I can create a new channel reference with a string value', () => {

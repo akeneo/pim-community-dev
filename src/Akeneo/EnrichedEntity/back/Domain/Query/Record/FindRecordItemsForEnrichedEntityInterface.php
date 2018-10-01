@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Record;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Find records by their Enriched Entity identifier
@@ -21,10 +21,10 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindRecordItemsForEnrichedEntityInterface
+interface FindRecordItemsForReferenceEntityInterface
 {
     /**
      * @return RecordItem[]
      */
-    public function __invoke(EnrichedEntityIdentifier $identifier): array;
+    public function __invoke(ReferenceEntityIdentifier $identifier): array;
 }

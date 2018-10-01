@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
-use Akeneo\EnrichedEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -40,8 +40,8 @@ final class DeleteRecordContext implements Context
     private const FINGERPRINT = 'fingerprint';
     private const RECORD_CODE = 'stark';
 
-    /** @var EnrichedEntityRepositoryInterface */
-    private $enrichedEntityRepository;
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
 
     /** @var InMemoryRecordRepository */
     private $recordRepository;
@@ -59,14 +59,14 @@ final class DeleteRecordContext implements Context
     private $violationsContext;
 
     public function __construct(
-        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
         RecordRepositoryInterface $recordRepository,
         DeleteRecordHandler $deleteRecordHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $violationsContext,
         ExceptionContext $exceptionContext
     ) {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->referenceEntityRepository = $referenceEntityRepository;
         $this->recordRepository = $recordRepository;
         $this->deleteRecordHandler = $deleteRecordHandler;
         $this->exceptionContext = $exceptionContext;
@@ -78,9 +78,9 @@ final class DeleteRecordContext implements Context
      * @Given /^an enriched entity with one record$/
      * @throws \Exception
      */
-    public function anEnrichedEntityWithTwoRecords()
+    public function anReferenceEntityWithTwoRecords()
     {
-        $this->createEnrichedEntity();
+        $this->createReferenceEntity();
         $this->createRecord();
     }
 
@@ -91,7 +91,7 @@ final class DeleteRecordContext implements Context
     {
         $command = new DeleteRecordCommand();
         $command->recordCode = self::RECORD_CODE;
-        $command->enrichedEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
+        $command->referenceEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
 
         $this->executeDeleteCommand($command);
     }
@@ -105,7 +105,7 @@ final class DeleteRecordContext implements Context
 
         $command = new DeleteRecordCommand();
         $command->recordCode = $recordCode;
-        $command->enrichedEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
+        $command->referenceEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
 
         $this->executeDeleteCommand($command);
     }
@@ -116,8 +116,8 @@ final class DeleteRecordContext implements Context
     public function theRecordShouldNotExist()
     {
         try {
-            $this->recordRepository->getByEnrichedEntityAndCode(
-                EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            $this->recordRepository->getByReferenceEntityAndCode(
+                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE)
             );
         } catch (RecordNotFoundException $exception) {
@@ -127,10 +127,10 @@ final class DeleteRecordContext implements Context
         Assert::true(false, 'The record should not exist');
     }
 
-    private function createEnrichedEntity(): void
+    private function createReferenceEntity(): void
     {
-        $this->enrichedEntityRepository->create(EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+        $this->referenceEntityRepository->create(ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
             [],
             Image::createEmpty()
         ));
@@ -140,7 +140,7 @@ final class DeleteRecordContext implements Context
     {
         $this->recordRepository->create(Record::create(
             RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-            EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE),
             [],
             Image::createEmpty(),

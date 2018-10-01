@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Query to determine if an Enriched Entity Attribute exists
@@ -28,7 +28,7 @@ interface AttributeExistsInterface
 {
     public function withIdentifier(AttributeIdentifier $identifier): bool;
 
-    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $identifier, AttributeCode $attributeCode): bool;
+    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $identifier, AttributeCode $attributeCode): bool;
 
-    public function withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeOrder $order): bool;
+    public function withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeOrder $order): bool;
 }

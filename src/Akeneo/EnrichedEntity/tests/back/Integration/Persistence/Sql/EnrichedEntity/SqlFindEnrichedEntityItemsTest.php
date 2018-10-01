@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
-class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
+class SqlFindReferenceEntityItemsTest extends SqlIntegrationTestCase
 {
-    /** @var FindEnrichedEntityItemsInterface */
-    private $findEnrichedEntityItems;
+    /** @var FindReferenceEntityItemsInterface */
+    private $findReferenceEntityItems;
 
     /** @var RecordIdentifier */
     private $starckIdentifier;
@@ -40,9 +40,9 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findEnrichedEntityItems = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
+        $this->findReferenceEntityItems = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity');
         $this->resetDB();
-        $this->loadEnrichedEntityAndRecords();
+        $this->loadReferenceEntityAndRecords();
     }
 
     /**
@@ -50,25 +50,25 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
      */
     public function it_returns_an_empty_array_when_there_is_no_records_corresponding_to_the_identifier()
     {
-        $this->assertEmpty(($this->findEnrichedEntityItems)(EnrichedEntityIdentifier::fromString('unknown_enriched_entity')));
+        $this->assertEmpty(($this->findReferenceEntityItems)(ReferenceEntityIdentifier::fromString('unknown_reference_entity')));
     }
 
     /**
      * @test
      */
-    public function it_returns_all_the_records_for_an_enriched_entity()
+    public function it_returns_all_the_records_for_an_reference_entity()
     {
-        $recordItems = ($this->findEnrichedEntityItems)(EnrichedEntityIdentifier::fromString('designer'));
+        $recordItems = ($this->findReferenceEntityItems)(ReferenceEntityIdentifier::fromString('designer'));
 
         $starck = new RecordItem();
         $starck->identifier = $this->starckIdentifier;
-        $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $starck->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $starck->code = RecordCode::fromString('starck');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
         $coco = new RecordItem();
         $coco->identifier = $this->cocoIdentifier;
-        $coco->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $coco->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $coco->code = RecordCode::fromString('coco');
         $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
 
@@ -78,30 +78,30 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntityAndRecords(): void
+    private function loadReferenceEntityAndRecords(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity = EnrichedEntity::create(
-            $enrichedEntityIdentifier,
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = ReferenceEntity::create(
+            $referenceEntityIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
 
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $starkCode = RecordCode::fromString('starck');
-        $this->starckIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $starkCode);
+        $this->starckIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $starkCode);
         $recordRepository->create(
             Record::create(
                 $this->starckIdentifier,
-                $enrichedEntityIdentifier,
+                $referenceEntityIdentifier,
                 $starkCode,
                 ['fr_Fr' => 'Philippe Starck'],
                 Image::createEmpty(),
@@ -109,11 +109,11 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
             )
         );
         $cocoCode = RecordCode::fromString('coco');
-        $this->cocoIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $cocoCode);
+        $this->cocoIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $cocoCode);
         $recordRepository->create(
             Record::create(
                 $this->cocoIdentifier,
-                $enrichedEntityIdentifier,
+                $referenceEntityIdentifier,
                 $cocoCode,
                 ['fr_Fr' => 'Coco Chanel'],
                 Image::createEmpty(),
@@ -126,8 +126,8 @@ class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
     {
         $this->assertTrue($expected->identifier->equals($actual->identifier), 'Record identifiers are not equal');
         $this->assertEquals(
-            $expected->enrichedEntityIdentifier,
-            $actual->enrichedEntityIdentifier,
+            $expected->referenceEntityIdentifier,
+            $actual->referenceEntityIdentifier,
             'Enriched entity identifier are not the same'
         );
         $expectedLabels = $expected->labels->normalize();

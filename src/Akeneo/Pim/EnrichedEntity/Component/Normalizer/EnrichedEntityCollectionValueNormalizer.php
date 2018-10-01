@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Normalizer;
+namespace Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityCollectionValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
+class ReferenceEntityCollectionValueNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
 {
     private $supportedFormats = ['indexing_product', 'indexing_product_and_product_model'];
 
@@ -44,6 +44,6 @@ class EnrichedEntityCollectionValueNormalizer extends AbstractProductValueNormal
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EnrichedEntityCollectionValue && in_array($format, $this->supportedFormats);
+        return $data instanceof ReferenceEntityCollectionValue && in_array($format, $this->supportedFormats);
     }
 }

@@ -1,30 +1,30 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoenrichedentity/tools/translator';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import Switch from 'akeneoenrichedentity/application/component/app/switch';
+import __ from 'akeneoreferenceentity/tools/translator';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import Switch from 'akeneoreferenceentity/application/component/app/switch';
 import {
   attributeEditionLabelUpdated,
   attributeEditionIsRequiredUpdated,
   attributeEditionAdditionalPropertyUpdated,
   attributeEditionCancel,
-} from 'akeneoenrichedentity/domain/event/attribute/edit';
+} from 'akeneoreferenceentity/domain/event/attribute/edit';
 import Attribute, {
   AdditionalProperty,
   denormalizeAttribute,
-} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import {saveAttribute} from 'akeneoenrichedentity/application/action/attribute/edit';
-import TextPropertyView from 'akeneoenrichedentity/application/component/attribute/edit/text';
-import ImagePropertyView from 'akeneoenrichedentity/application/component/attribute/edit/image';
-import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
-import {TextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
-import {ImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/image';
-import {deleteAttribute} from 'akeneoenrichedentity/application/action/attribute/list';
-import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
+} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {saveAttribute} from 'akeneoreferenceentity/application/action/attribute/edit';
+import TextPropertyView from 'akeneoreferenceentity/application/component/attribute/edit/text';
+import ImagePropertyView from 'akeneoreferenceentity/application/component/attribute/edit/image';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {ImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import {deleteAttribute} from 'akeneoreferenceentity/application/action/attribute/list';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 interface StateProps {
   context: {
@@ -118,7 +118,7 @@ class Edit extends React.Component<EditProps> {
   };
 
   private onAttributeDelete() {
-    const message = __('pim_enriched_entity.attribute.delete.confirm');
+    const message = __('pim_reference_entity.attribute.delete.confirm');
     if (confirm(message)) {
       this.props.events.onAttributeDelete(this.props.attribute.getIdentifier());
     }
@@ -131,9 +131,9 @@ class Edit extends React.Component<EditProps> {
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
             <header className="AknSubsection-title AknSubsection-title--sticky">
-              {__('pim_enriched_entity.attribute.edit.common.title')}
+              {__('pim_reference_entity.attribute.edit.common.title')}
               <span
-                title={__('pim_enriched_entity.attribute.edit.save')}
+                title={__('pim_reference_entity.attribute.edit.save')}
                 className="AknButtonList-item AknButton-squareIcon AknButton-squareIcon--small AknButton-squareIcon--validate"
                 tabIndex={0}
                 onClick={this.props.events.onSubmit}
@@ -147,8 +147,8 @@ class Edit extends React.Component<EditProps> {
             <div className="AknFormContainer AknFormContainer--expanded">
               <div className="AknFieldContainer" data-code="label">
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                  <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.label">
-                    {__('pim_enriched_entity.attribute.edit.input.label')}
+                  <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.label">
+                    {__('pim_reference_entity.attribute.edit.input.label')}
                   </label>
                 </div>
                 <div className="AknFieldContainer-inputContainer">
@@ -158,7 +158,7 @@ class Edit extends React.Component<EditProps> {
                       this.labelInput = input;
                     }}
                     className="AknTextField AknTextField--light"
-                    id="pim_enriched_entity.attribute.edit.input.label"
+                    id="pim_reference_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
                     onChange={this.onLabelUpdate}
@@ -174,15 +174,15 @@ class Edit extends React.Component<EditProps> {
               </div>
               <div className="AknFieldContainer" data-code="code">
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
-                  <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.code">
-                    {__('pim_enriched_entity.attribute.edit.input.code')}
+                  <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.code">
+                    {__('pim_reference_entity.attribute.edit.input.code')}
                   </label>
                 </div>
                 <div className="AknFieldContainer-inputContainer">
                   <input
                     type="text"
                     className="AknTextField AknTextField--light AknTextField--disabled"
-                    id="pim_enriched_entity.attribute.edit.input.code"
+                    id="pim_reference_entity.attribute.edit.input.code"
                     name="code"
                     value={this.props.attribute.code.stringValue()}
                     readOnly
@@ -193,14 +193,14 @@ class Edit extends React.Component<EditProps> {
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label
                     className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.value_per_channel"
+                    htmlFor="pim_reference_entity.attribute.edit.input.value_per_channel"
                   >
-                    {__('pim_enriched_entity.attribute.edit.input.value_per_channel')}
+                    {__('pim_reference_entity.attribute.edit.input.value_per_channel')}
                   </label>
                 </div>
                 <div className="AknFieldContainer-inputContainer">
                   <Switch
-                    id="pim_enriched_entity.attribute.edit.input.value_per_channel"
+                    id="pim_reference_entity.attribute.edit.input.value_per_channel"
                     value={this.props.attribute.valuePerChannel}
                     readOnly
                   />
@@ -211,14 +211,14 @@ class Edit extends React.Component<EditProps> {
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label
                     className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.value_per_locale"
+                    htmlFor="pim_reference_entity.attribute.edit.input.value_per_locale"
                   >
-                    {__('pim_enriched_entity.attribute.edit.input.value_per_locale')}
+                    {__('pim_reference_entity.attribute.edit.input.value_per_locale')}
                   </label>
                 </div>
                 <div className="AknFieldContainer-inputContainer">
                   <Switch
-                    id="pim_enriched_entity.attribute.edit.input.value_per_locale"
+                    id="pim_reference_entity.attribute.edit.input.value_per_locale"
                     value={this.props.attribute.valuePerLocale}
                     readOnly
                   />
@@ -229,14 +229,14 @@ class Edit extends React.Component<EditProps> {
                 <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label
                     className="AknFieldContainer-label"
-                    htmlFor="pim_enriched_entity.attribute.edit.input.is_required"
+                    htmlFor="pim_reference_entity.attribute.edit.input.is_required"
                   >
-                    {__('pim_enriched_entity.attribute.edit.input.is_required')}
+                    {__('pim_reference_entity.attribute.edit.input.is_required')}
                   </label>
                 </div>
                 <div className="AknFieldContainer-inputContainer">
                   <Switch
-                    id="pim_enriched_entity.attribute.edit.input.is_required"
+                    id="pim_reference_entity.attribute.edit.input.is_required"
                     value={this.props.attribute.isRequired}
                     onChange={this.props.events.onIsRequiredUpdated}
                   />
@@ -247,7 +247,7 @@ class Edit extends React.Component<EditProps> {
           </div>
           <div className="AknSubsection">
             <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: 0, paddingTop: '10px'}}>
-              {__('pim_enriched_entity.attribute.edit.additional.title')}
+              {__('pim_reference_entity.attribute.edit.additional.title')}
             </header>
             <div className="AknFormContainer AknFormContainer--expanded">
               {getAdditionalProperty(
@@ -270,7 +270,7 @@ class Edit extends React.Component<EditProps> {
               this.onAttributeDelete();
             }}
           >
-            {__('pim_enriched_entity.attribute.edit.delete')}
+            {__('pim_reference_entity.attribute.edit.delete')}
           </div>
         </div>
       </React.Fragment>

@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute;
+namespace Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>

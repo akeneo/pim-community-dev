@@ -1,8 +1,8 @@
-import {hydrator} from 'akeneoenrichedentity/application/hydrator/enriched-entity';
+import {hydrator} from 'akeneoreferenceentity/application/hydrator/reference-entity';
 import {
-  denormalizeEnrichedEntity,
-  createEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+  denormalizeReferenceEntity,
+  createReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 
 describe('akeneo > enriched entity > application > hydrator --- enriched entity', () => {
   test('I can hydrate a new enriched entity', () => {
@@ -11,7 +11,7 @@ describe('akeneo > enriched entity > application > hydrator --- enriched entity'
       expect(image).toEqual(null);
       expect(labels).toEqual({en_US: 'Designer'});
 
-      return denormalizeEnrichedEntity({identifier, labels, image});
+      return denormalizeReferenceEntity({identifier, labels, image});
     });
 
     expect(hydrate({identifier: 'designer', labels: {en_US: 'Designer'}, image: null}));

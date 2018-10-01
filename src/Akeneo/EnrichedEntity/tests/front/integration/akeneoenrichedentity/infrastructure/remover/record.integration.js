@@ -1,6 +1,6 @@
 const timeout = 5000;
 
-describe('Akeneoenrichedentity > infrastructure > remover > record', () => {
+describe('Akeneoreferenceentity > infrastructure > remover > record', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -10,7 +10,7 @@ describe('Akeneoenrichedentity > infrastructure > remover > record', () => {
   it('It deletes a record', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/record/starck' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity/designer/record/starck' === interceptedRequest.url() &&
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -20,15 +20,15 @@ describe('Akeneoenrichedentity > infrastructure > remover > record', () => {
     });
 
     await page.evaluate(async () => {
-      const createRecordCode = require('akeneoenrichedentity/domain/model/record/code').createCode;
-      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
+      const createRecordCode = require('akeneoreferenceentity/domain/model/record/code').createCode;
+      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
         .createIdentifier;
-      const remover = require('akeneoenrichedentity/infrastructure/remover/record').default;
+      const remover = require('akeneoreferenceentity/infrastructure/remover/record').default;
 
       const recordCodeToDelete = createRecordCode('starck');
-      const enrichedEntityIdentifier = createEnrichedEntityIdentifier('designer');
+      const referenceEntityIdentifier = createReferenceEntityIdentifier('designer');
 
-      return await remover.remove(enrichedEntityIdentifier, recordCodeToDelete);
+      return await remover.remove(referenceEntityIdentifier, recordCodeToDelete);
     });
   });
 });

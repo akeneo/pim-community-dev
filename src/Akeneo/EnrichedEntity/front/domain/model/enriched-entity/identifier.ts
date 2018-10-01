@@ -1,4 +1,4 @@
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/identifier';
-export * from 'akeneoenrichedentity/domain/model/identifier';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identifier';
+export * from 'akeneoreferenceentity/domain/model/identifier';
 
-export default EnrichedEntityIdentifier;
+export default ReferenceEntityIdentifier;

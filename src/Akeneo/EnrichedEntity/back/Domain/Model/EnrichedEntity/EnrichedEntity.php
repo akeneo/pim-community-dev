@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntity
+class ReferenceEntity
 {
-    /** @var EnrichedEntityIdentifier */
+    /** @var ReferenceEntityIdentifier */
     private $identifier;
 
     /** @var LabelCollection */
@@ -32,7 +32,7 @@ class EnrichedEntity
     private $image;
 
     private function __construct(
-        EnrichedEntityIdentifier $identifier,
+        ReferenceEntityIdentifier $identifier,
         LabelCollection $labelCollection,
         Image $image
     ) {
@@ -41,21 +41,21 @@ class EnrichedEntity
         $this->image = $image;
     }
 
-    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection, Image $image): self
+    public static function create(ReferenceEntityIdentifier $identifier, array $rawLabelCollection, Image $image): self
     {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
         return new self($identifier, $labelCollection, $image);
     }
 
-    public function getIdentifier(): EnrichedEntityIdentifier
+    public function getIdentifier(): ReferenceEntityIdentifier
     {
         return $this->identifier;
     }
 
-    public function equals(EnrichedEntity $enrichedEntity): bool
+    public function equals(ReferenceEntity $referenceEntity): bool
     {
-        return $this->identifier->equals($enrichedEntity->identifier);
+        return $this->identifier->equals($referenceEntity->identifier);
     }
 
     public function getLabel(string $localeCode): ?string

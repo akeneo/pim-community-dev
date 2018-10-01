@@ -1,9 +1,9 @@
-import LocaleFetcher from 'akeneoenrichedentity/domain/fetcher/locale';
-import Locale from 'akeneoenrichedentity/domain/model/locale';
-import hydrator from 'akeneoenrichedentity/application/hydrator/locale';
-import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
-import {getJSON} from 'akeneoenrichedentity/tools/fetch';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import LocaleFetcher from 'akeneoreferenceentity/domain/fetcher/locale';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+import hydrator from 'akeneoreferenceentity/application/hydrator/locale';
+import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import {getJSON} from 'akeneoreferenceentity/tools/fetch';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 

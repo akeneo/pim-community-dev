@@ -1,4 +1,4 @@
-import __ from 'akeneoenrichedentity/tools/translator';
+import __ from 'akeneoreferenceentity/tools/translator';
 
 const messenger = require('oro/messenger');
 

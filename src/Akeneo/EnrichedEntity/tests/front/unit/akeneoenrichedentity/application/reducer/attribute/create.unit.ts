@@ -1,5 +1,5 @@
-import reducer from 'akeneoenrichedentity/application/reducer/attribute/create';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
+import reducer from 'akeneoreferenceentity/application/reducer/attribute/create';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
 describe('akeneo > enriched entity > application > reducer > attribute --- create', () => {
   test('I ignore other commands', () => {

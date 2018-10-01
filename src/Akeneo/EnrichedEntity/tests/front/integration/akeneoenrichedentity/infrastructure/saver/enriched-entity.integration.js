@@ -1,6 +1,6 @@
 const timeout = 5000;
 
-describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () => {
+describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -10,7 +10,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
   it('It saves an enriched entity', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/sofa' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -20,18 +20,18 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
     });
 
     const response = await page.evaluate(async () => {
-      const createEnrichedEntity = require('akeneoenrichedentity/domain/model/enriched-entity/enriched-entity')
-        .createEnrichedEntity;
-      const createIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
-      const Image = require('akeneoenrichedentity/domain/model/file').default;
+      const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
+        .createReferenceEntity;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const Image = require('akeneoreferenceentity/domain/model/file').default;
 
-      const savedSofa = createEnrichedEntity(
+      const savedSofa = createReferenceEntity(
         createIdentifier('sofa'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty()
       );
-      const saver = require('akeneoenrichedentity/infrastructure/saver/enriched-entity').default;
+      const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
       return await saver.save(savedSofa);
     });
@@ -42,7 +42,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
   it('It creates an enriched entity', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
         'sofa' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
@@ -53,14 +53,14 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
     });
 
     const response = await page.evaluate(async () => {
-      const createEnrichedEntity = require('akeneoenrichedentity/domain/model/enriched-entity/enriched-entity')
-        .createEnrichedEntity;
-      const createIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
-      const Image = require('akeneoenrichedentity/domain/model/file').default;
-      const saver = require('akeneoenrichedentity/infrastructure/saver/enriched-entity').default;
+      const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
+        .createReferenceEntity;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const Image = require('akeneoreferenceentity/domain/model/file').default;
+      const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
-      const sofaCreated = createEnrichedEntity(
+      const sofaCreated = createReferenceEntity(
         createIdentifier('sofa'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty()
@@ -102,7 +102,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
 
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
         'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
       ) {
@@ -115,14 +115,14 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
     });
 
     const response = await page.evaluate(async () => {
-      const createEnrichedEntity = require('akeneoenrichedentity/domain/model/enriched-entity/enriched-entity')
-        .createEnrichedEntity;
-      const createIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
-      const Image = require('akeneoenrichedentity/domain/model/file').default;
-      const saver = require('akeneoenrichedentity/infrastructure/saver/enriched-entity').default;
+      const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
+        .createReferenceEntity;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const Image = require('akeneoreferenceentity/domain/model/file').default;
+      const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
-      const sofaCreated = createEnrichedEntity(
+      const sofaCreated = createReferenceEntity(
         createIdentifier('invalid/identifier'),
         createLabelCollection({en_US: 'Sofa', fr_FR: 'Canapé'}),
         Image.createEmpty()

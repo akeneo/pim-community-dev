@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -25,12 +25,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class IndexAction
 {
-    /** @var FindEnrichedEntityItemsInterface */
-    private $findEnrichedEntitiesQuery;
+    /** @var FindReferenceEntityItemsInterface */
+    private $findReferenceEntitiesQuery;
 
-    public function __construct(FindEnrichedEntityItemsInterface $findEnrichedEntitiesQuery)
+    public function __construct(FindReferenceEntityItemsInterface $findReferenceEntitiesQuery)
     {
-        $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
+        $this->findReferenceEntitiesQuery = $findReferenceEntitiesQuery;
     }
 
     /**
@@ -40,24 +40,24 @@ class IndexAction
      */
     public function __invoke(): JsonResponse
     {
-        $enrichedEntityItems = ($this->findEnrichedEntitiesQuery)();
-        $normalizedEnrichedEntityItems = $this->normalizeEnrichedEntityItems($enrichedEntityItems);
+        $referenceEntityItems = ($this->findReferenceEntitiesQuery)();
+        $normalizedReferenceEntityItems = $this->normalizeReferenceEntityItems($referenceEntityItems);
 
         return new JsonResponse([
-            'items' => $normalizedEnrichedEntityItems,
-            'total' => count($normalizedEnrichedEntityItems),
+            'items' => $normalizedReferenceEntityItems,
+            'total' => count($normalizedReferenceEntityItems),
         ]);
     }
 
     /**
-     * @param EnrichedEntityItem[] $enrichedEntityItems
+     * @param ReferenceEntityItem[] $referenceEntityItems
      *
      * @return array
      */
-    private function normalizeEnrichedEntityItems(array $enrichedEntityItems): array
+    private function normalizeReferenceEntityItems(array $referenceEntityItems): array
     {
-        return array_map(function (EnrichedEntityItem $item) {
+        return array_map(function (ReferenceEntityItem $item) {
             return $item->normalize();
-        }, $enrichedEntityItems);
+        }, $referenceEntityItems);
     }
 }

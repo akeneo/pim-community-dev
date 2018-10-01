@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -27,38 +27,38 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class CreateEnrichedEntityContext implements Context
+final class CreateReferenceEntityContext implements Context
 {
-    /** @var InMemoryEnrichedEntityRepository */
-    private $enrichedEntityRepository;
+    /** @var InMemoryReferenceEntityRepository */
+    private $referenceEntityRepository;
 
-    /** @var CreateEnrichedEntityHandler */
-    private $createEnrichedEntityHandler;
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
 
     /** @var ExceptionContext */
     private $exceptionContext;
 
     public function __construct(
-        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
-        CreateEnrichedEntityHandler $createEnrichedEntityHandler,
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        CreateReferenceEntityHandler $createReferenceEntityHandler,
         ExceptionContext $exceptionContext
     ) {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
-        $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
+        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
         $this->exceptionContext = $exceptionContext;
     }
 
     /**
      * @When /^the user creates an enriched entity "([^"]+)" with:$/
      */
-    public function theUserCreatesAnEnrichedEntityWith($code, TableNode $updateTable)
+    public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
     {
         $updates = current($updateTable->getHash());
-        $command = new CreateEnrichedEntityCommand();
+        $command = new CreateReferenceEntityCommand();
         $command->code = $code;
         $command->labels = json_decode($updates['labels'], true);
         try {
-            ($this->createEnrichedEntityHandler)($command);
+            ($this->createReferenceEntityHandler)($command);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
@@ -67,22 +67,22 @@ final class CreateEnrichedEntityContext implements Context
     /**
      * @Then /^there is an enriched entity "([^"]+)" with:$/
      */
-    public function thereIsAnEnrichedEntityWith(string $code, TableNode $enrichedEntityTable)
+    public function thereIsAnReferenceEntityWith(string $code, TableNode $referenceEntityTable)
     {
-        $expectedIdentifier = EnrichedEntityIdentifier::fromString($code);
-        $expectedInformation = current($enrichedEntityTable->getHash());
-        $actualEnrichedEntity = $this->enrichedEntityRepository->getByIdentifier($expectedIdentifier);
+        $expectedIdentifier = ReferenceEntityIdentifier::fromString($code);
+        $expectedInformation = current($referenceEntityTable->getHash());
+        $actualReferenceEntity = $this->referenceEntityRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
-            $actualEnrichedEntity
+            $actualReferenceEntity
         );
     }
 
-    private function assertSameLabels(array $expectedLabels, EnrichedEntity $actualEnrichedEntity)
+    private function assertSameLabels(array $expectedLabels, ReferenceEntity $actualReferenceEntity)
     {
         $actualLabels = [];
-        foreach ($actualEnrichedEntity->getLabelCodes() as $labelCode) {
-            $actualLabels[$labelCode] = $actualEnrichedEntity->getLabel($labelCode);
+        foreach ($actualReferenceEntity->getLabelCodes() as $labelCode) {
+            $actualLabels[$labelCode] = $actualReferenceEntity->getLabel($labelCode);
         }
 
         $differences = array_merge(
@@ -99,13 +99,13 @@ final class CreateEnrichedEntityContext implements Context
     /**
      * @Given /^there should be no enriched entity$/
      */
-    public function thereShouldBeNoEnrichedEntity()
+    public function thereShouldBeNoReferenceEntity()
     {
-        $enrichedEntityCount = $this->enrichedEntityRepository->count();
+        $referenceEntityCount = $this->referenceEntityRepository->count();
         Assert::same(
             0,
-            $enrichedEntityCount,
-            sprintf('Expected to have 0 enriched entity. %d found.', $enrichedEntityCount)
+            $referenceEntityCount,
+            sprintf('Expected to have 0 enriched entity. %d found.', $referenceEntityCount)
         );
     }
 }

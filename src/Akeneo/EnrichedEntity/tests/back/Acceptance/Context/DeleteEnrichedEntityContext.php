@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
@@ -15,40 +15,40 @@ use PHPUnit\Framework\Assert;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class DeleteEnrichedEntityContext implements Context
+final class DeleteReferenceEntityContext implements Context
 {
-    /** @var DeleteEnrichedEntityHandler */
-    private $deleteEnrichedEntityHandler;
+    /** @var DeleteReferenceEntityHandler */
+    private $deleteReferenceEntityHandler;
 
-    /** @var EnrichedEntityExistsInterface */
-    private $enrichedEntityExists;
+    /** @var ReferenceEntityExistsInterface */
+    private $referenceEntityExists;
 
     public function __construct(
-        DeleteEnrichedEntityHandler $deleteEnrichedEntityHandler,
-        EnrichedEntityExistsInterface $enrichedEntityExists
+        DeleteReferenceEntityHandler $deleteReferenceEntityHandler,
+        ReferenceEntityExistsInterface $referenceEntityExists
     ) {
-        $this->deleteEnrichedEntityHandler = $deleteEnrichedEntityHandler;
-        $this->enrichedEntityExists = $enrichedEntityExists;
+        $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
+        $this->referenceEntityExists = $referenceEntityExists;
     }
 
     /**
      * @When /^the user deletes the enriched entity "([^"]+)"$/
      */
-    public function theUserDeletesEnrichedEntity(string $identifier)
+    public function theUserDeletesReferenceEntity(string $identifier)
     {
-        $command = new DeleteEnrichedEntityCommand();
+        $command = new DeleteReferenceEntityCommand();
         $command->identifier = $identifier;
 
-        ($this->deleteEnrichedEntityHandler)($command);
+        ($this->deleteReferenceEntityHandler)($command);
     }
 
     /**
      * @Then /^there should be no enriched entity "([^"]+)"$/
      */
-    public function thereShouldBeNoEnrichedEntity(string $identifier)
+    public function thereShouldBeNoReferenceEntity(string $identifier)
     {
-        Assert::assertFalse($this->enrichedEntityExists->withIdentifier(
-            EnrichedEntityIdentifier::fromString($identifier)
+        Assert::assertFalse($this->referenceEntityExists->withIdentifier(
+            ReferenceEntityIdentifier::fromString($identifier)
         ));
     }
 }

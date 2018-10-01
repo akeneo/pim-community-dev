@@ -1,27 +1,27 @@
 <?php
 
-namespace spec\Akeneo\Pim\EnrichedEntity\Component\Normalizer;
+namespace spec\Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\Pim\EnrichedEntity\Component\Normalizer\EnrichedEntityCollectionValueNormalizer;
-use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\Pim\ReferenceEntity\Component\Normalizer\ReferenceEntityCollectionValueNormalizer;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Product\ProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Prophecy\Argument;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
-class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
+class ReferenceEntityCollectionValueNormalizerSpec extends ObjectBehavior {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntityCollectionValueNormalizer::class);
+        $this->shouldHaveType(ReferenceEntityCollectionValueNormalizer::class);
         $this->shouldBeAnInstanceOf(AbstractProductValueNormalizer::class);
     }
 
-    function it_supports_enriched_entity_collection(EnrichedEntityCollectionValue $designerValue)
+    function it_supports_reference_entity_collection(ReferenceEntityCollectionValue $designerValue)
     {
         $this->supportsNormalization($designerValue, 'flat')->shouldReturn(false);
         $this->supportsNormalization($designerValue, 'indexing_product')->shouldReturn(true);
@@ -31,7 +31,7 @@ class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
     }
 
     function it_normalize_an_empty_reference_data_collection_product_value(
-        EnrichedEntityCollectionValue $designerValue,
+        ReferenceEntityCollectionValue $designerValue,
         AttributeInterface $designer
     ) {
         $designerValue->getAttribute()->willReturn($designer);
@@ -57,7 +57,7 @@ class EnrichedEntityCollectionValueNormalizerSpec extends ObjectBehavior {
     }
 
     function it_normalize_a_reference_data_collection_product_value(
-        EnrichedEntityCollectionValue $designerValue,
+        ReferenceEntityCollectionValue $designerValue,
         AttributeInterface $designer,
         Record $dyson,
         Record $starck,

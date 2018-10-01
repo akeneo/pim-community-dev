@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\AbstractEditAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -56,7 +56,7 @@ class EditAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_edit')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_attribute_edit')) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
@@ -88,7 +88,7 @@ class EditAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         return $normalizedCommand['identifier'] !== $request->get('attributeIdentifier') ||
-            $normalizedCommand['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier');
+            $normalizedCommand['reference_entity_identifier'] !== $request->get('referenceEntityIdentifier');
     }
 
     private function getEditCommand(Request $request): AbstractEditAttributeCommand

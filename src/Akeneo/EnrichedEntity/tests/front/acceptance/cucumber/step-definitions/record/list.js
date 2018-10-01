@@ -1,6 +1,6 @@
 const path = require('path');
-const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
-const Records = require('../../decorators/enriched-entity/edit/records.decorator');
+const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
+const Records = require('../../decorators/reference-entity/edit/records.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -29,11 +29,11 @@ module.exports = async function(cucumber) {
     await sidebar.clickOnTab('record');
   };
 
-  Given('the following records for the enriched entity {string}:', async function(enrichedEntityIdentifier, records) {
+  Given('the following records for the enriched entity {string}:', async function(referenceEntityIdentifier, records) {
     const recordsSaved = records.hashes().map(normalizedRecord => {
       return {
         identifier: normalizedRecord.identifier,
-        enriched_entity_identifier: enrichedEntityIdentifier,
+        reference_entity_identifier: referenceEntityIdentifier,
         code: normalizedRecord.code,
         labels: JSON.parse(normalizedRecord.labels),
       };
@@ -41,7 +41,7 @@ module.exports = async function(cucumber) {
 
     this.page.on('request', request => {
       if (
-        `http://pim.com/rest/enriched_entity/${enrichedEntityIdentifier}/record` === request.url() &&
+        `http://pim.com/rest/reference_entity/${referenceEntityIdentifier}/record` === request.url() &&
         'GET' === request.method()
       ) {
         answerJson(request, {items: recordsSaved, total: recordsSaved.length});

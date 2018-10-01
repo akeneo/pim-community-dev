@@ -1,4 +1,4 @@
-import Value, {NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
+import Value, {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
 
 export class InvalidArgument extends Error {}
 
@@ -24,7 +24,7 @@ export const getDenormalizer = (config: ValueDenormalizerConfig) => (
   if (undefined === typeConfiguration || undefined === typeConfiguration.denormalize) {
     const confPath = `config:
     config:
-        akeneoenrichedentity/application/configuration/value:
+        akeneoreferenceentity/application/configuration/value:
             ${normalizedValue.attribute.type}:
                 denormalize: '@my_value_denormalizer'`;
 
@@ -62,7 +62,7 @@ export const getView = (config: ValueDenormalizerConfig) => (value: Value): View
   if (undefined === typeConfiguration || undefined === typeConfiguration.view) {
     const confPath = `config:
     config:
-        akeneoenrichedentity/application/configuration/value:
+        akeneoreferenceentity/application/configuration/value:
             ${attributeType}:
                 view: '@my_data_view'`;
 

@@ -1,4 +1,4 @@
-import {hydrator} from 'akeneoenrichedentity/application/hydrator/channel';
+import {hydrator} from 'akeneoreferenceentity/application/hydrator/channel';
 
 describe('akeneo > enriched entity > application > hydrator --- channel', () => {
   test('It throw an error if I pass a malformed channel', () => {

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
 

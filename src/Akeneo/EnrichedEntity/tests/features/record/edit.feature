@@ -5,7 +5,7 @@ Feature: Edit an record
 
   @acceptance-back
   Scenario: Updating a record label
-    Given an enrichedEntity and a record with french label "My label"
+    Given an referenceEntity and a record with french label "My label"
     When the user updates the french label to "My updated label"
     Then there is no exception thrown
     And there is no violations errors

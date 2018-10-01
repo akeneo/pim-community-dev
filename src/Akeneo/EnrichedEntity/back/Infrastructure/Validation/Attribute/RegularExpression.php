@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -12,5 +12,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class RegularExpression extends Constraint
 {
-    public const INVALID_REGULAR_EXPRESSION = 'pim_enriched_entity.attribute.validation.regular_expression.invalid_regular_expression';
+    public const INVALID_REGULAR_EXPRESSION = 'pim_reference_entity.attribute.validation.regular_expression.invalid_regular_expression';
 }

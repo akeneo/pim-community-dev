@@ -1,11 +1,11 @@
-import user, {UserState} from 'akeneoenrichedentity/application/reducer/user';
-import grid, {GridState} from 'akeneoenrichedentity/application/reducer/grid';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import create, {CreateState} from 'akeneoenrichedentity/application/reducer/enriched-entity/create';
+import user, {UserState} from 'akeneoreferenceentity/application/reducer/user';
+import grid, {GridState} from 'akeneoreferenceentity/application/reducer/grid';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import create, {CreateState} from 'akeneoreferenceentity/application/reducer/reference-entity/create';
 
 export interface IndexState {
   user: UserState;
-  grid: GridState<EnrichedEntity>;
+  grid: GridState<ReferenceEntity>;
   create: CreateState;
 }
 

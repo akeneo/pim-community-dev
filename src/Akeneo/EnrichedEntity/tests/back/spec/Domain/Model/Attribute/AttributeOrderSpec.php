@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
 use PhpSpec\ObjectBehavior;
 
 class AttributeOrderSpec extends ObjectBehavior

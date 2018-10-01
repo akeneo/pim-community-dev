@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Application\Record\CreateRecord;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\CreateRecord;
 
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -40,14 +40,14 @@ class CreateRecordHandlerSpec extends ObjectBehavior
     ) {
         $createRecordCommand->identifier = 'brand_intel_a1677570-a278-444b-ab46-baa1db199392';
         $createRecordCommand->code = 'intel';
-        $createRecordCommand->enrichedEntityIdentifier = 'brand';
+        $createRecordCommand->referenceEntityIdentifier = 'brand';
         $createRecordCommand->labels = [
             'en_US' => 'Intel',
             'fr_FR' => 'Intel',
         ];
 
         $recordRepository->nextIdentifier(
-            Argument::type(EnrichedEntityIdentifier::class),
+            Argument::type(ReferenceEntityIdentifier::class),
             Argument::type(RecordCode::class)
         )->shouldBeCalled();
         $recordRepository->create(Argument::type(Record::class))->shouldBeCalled();

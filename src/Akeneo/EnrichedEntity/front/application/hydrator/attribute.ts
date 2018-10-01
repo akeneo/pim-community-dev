@@ -1,15 +1,15 @@
 import Attribute, {
   denormalizeAttribute,
   NormalizedAttribute,
-} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
+} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
 
 export const hydrator = (denormalizeAttribute: (normalizedAttribute: NormalizedAttribute) => Attribute) => (
   normalizedAttribute: any
 ): Attribute => {
   const expectedKeys = [
     'identifier',
-    'enriched_entity_identifier',
+    'reference_entity_identifier',
     'code',
     'labels',
     'is_required',

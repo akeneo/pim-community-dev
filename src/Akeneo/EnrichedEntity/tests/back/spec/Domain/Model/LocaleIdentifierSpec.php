@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model;
 
-use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class LocaleIdentifierSpec extends ObjectBehavior

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -24,7 +24,7 @@ use PDO;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlEnrichedEntityExists implements EnrichedEntityExistsInterface
+class SqlReferenceEntityExists implements ReferenceEntityExistsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -34,23 +34,23 @@ class SqlEnrichedEntityExists implements EnrichedEntityExistsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): bool
+    public function withIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): bool
     {
-        $statement = $this->executeQuery($enrichedEntityIdentifier);
+        $statement = $this->executeQuery($referenceEntityIdentifier);
 
         return $this->isIdentifierExisting($statement);
     }
 
-    private function executeQuery(EnrichedEntityIdentifier $enrichedEntityIdentifier): Statement
+    private function executeQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): Statement
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_enriched_entity
+            FROM akeneo_reference_entity_reference_entity
             WHERE identifier = :identifier 
         ) as is_existing
 SQL;
-        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $enrichedEntityIdentifier]);
+        $statement = $this->sqlConnection->executeQuery($query, ['identifier' => (string) $referenceEntityIdentifier]);
 
         return $statement;
     }

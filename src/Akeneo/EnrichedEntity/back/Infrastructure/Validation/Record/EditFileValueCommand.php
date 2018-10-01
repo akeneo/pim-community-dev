@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditFileValueCommand extends Constraint
 {
-    public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_enriched_entity.record.validation.file.extension_not_allowed';
-    public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_enriched_entity.record.validation.file.file_size_exceeded';
+    public const FILE_EXTENSION_NOT_ALLOWED_MESSAGE = 'pim_reference_entity.record.validation.file.extension_not_allowed';
+    public const FILE_SIZE_EXCEEDED_MESSAGE = 'pim_reference_entity.record.validation.file.file_size_exceeded';
 
     public function getTargets()
     {

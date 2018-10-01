@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommandFactory;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditFileValueCommandFactory;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 use PhpSpec\ObjectBehavior;
 
 class EditFileValueCommandFactorySpec extends ObjectBehavior

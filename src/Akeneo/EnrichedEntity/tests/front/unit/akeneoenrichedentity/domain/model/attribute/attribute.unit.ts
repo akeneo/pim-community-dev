@@ -1,13 +1,13 @@
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {ConcreteImageAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/image';
-import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createCode} from 'akeneoenrichedentity/domain/model/attribute/code';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {ConcreteImageAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import {createIdentifier as denormalizeAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 
 const description = denormalizeAttribute({
   identifier: 'description_1234',
-  enriched_entity_identifier: 'designer',
+  reference_entity_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -23,7 +23,7 @@ const description = denormalizeAttribute({
 });
 const frontView = denormalizeAttribute({
   identifier: 'front_view_1234',
-  enriched_entity_identifier: 'designer',
+  reference_entity_identifier: 'designer',
   code: 'front_view',
   labels: {en_US: 'Front view'},
   type: 'image',
@@ -49,7 +49,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
     expect(() => {
       denormalizeAttribute({
         identifier: 'description_1234',
-        enriched_entity_identifier: 'designer',
+        reference_entity_identifier: 'designer',
         labels: {en_US: 'My label'},
         code: 'description',
         type: 'awesome',
@@ -60,7 +60,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
   expect(() => {
     new ConcreteImageAttribute(
       denormalizeAttributeIdentifier('front_view_1234'),
-      createEnrichedEntityIdentifier('designer'),
+      createReferenceEntityIdentifier('designer'),
       createCode('front_view'),
       createLabelCollection({en_US: 'Front View'}),
       true,
@@ -72,7 +72,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
   expect(() => {
     new ConcreteImageAttribute(
       denormalizeAttributeIdentifier('front_view_1234'),
-      createEnrichedEntityIdentifier('designer'),
+      createReferenceEntityIdentifier('designer'),
       createCode('front_view'),
       createLabelCollection({en_US: 'Front View'}),
       true,
@@ -83,7 +83,7 @@ describe('akeneo > attribute > domain > model --- attribute', () => {
   expect(() => {
     new ConcreteImageAttribute(
       'front_view_1234',
-      createEnrichedEntityIdentifier('designer'),
+      createReferenceEntityIdentifier('designer'),
       createCode('front_view'),
       createLabelCollection({en_US: 'Front View'}),
       true,

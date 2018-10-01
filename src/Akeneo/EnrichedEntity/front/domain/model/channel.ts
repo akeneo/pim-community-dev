@@ -1,5 +1,5 @@
-import Locale, {denormalizeLocale, ConcreteLocale} from 'akeneoenrichedentity/domain/model/locale';
-import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import Locale, {denormalizeLocale, ConcreteLocale} from 'akeneoreferenceentity/domain/model/locale';
+import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 
 export default interface Channel {
   code: string;

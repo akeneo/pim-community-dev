@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Record;
+namespace Akeneo\ReferenceEntity\Domain\Model\Record;
 
 use Webmozart\Assert\Assert;
 

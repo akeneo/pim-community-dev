@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Find the list of expected keys for the given enriched entity
@@ -26,5 +26,5 @@ interface FindValueKeyCollectionInterface
     /**
      * @return string[]
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier);
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier);
 }

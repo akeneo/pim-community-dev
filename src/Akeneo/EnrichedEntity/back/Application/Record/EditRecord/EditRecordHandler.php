@@ -10,16 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater\ValueUpdaterRegistryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 
 /**
@@ -76,9 +76,9 @@ class EditRecordHandler
 
     private function getRecord(EditRecordCommand $editRecordCommand): Record
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($editRecordCommand->enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($editRecordCommand->referenceEntityIdentifier);
         $code = RecordCode::fromString($editRecordCommand->code);
-        $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+        $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $code);
 
         return $record;
     }

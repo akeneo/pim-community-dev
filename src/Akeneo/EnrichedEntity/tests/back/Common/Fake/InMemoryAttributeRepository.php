@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,7 +35,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
             throw new \RuntimeException('Attribute already exists');
         }
 
-        $attributesForEntity = $this->findByEnrichedEntity($attribute->getEnrichedEntityIdentifier());
+        $attributesForEntity = $this->findByReferenceEntity($attribute->getReferenceEntityIdentifier());
         foreach ($attributesForEntity as $attributeForEntity) {
             if ($attribute->getOrder()->equals($attributeForEntity->getOrder())) {
                 throw new \Exception('An attribute already has this order for this enriched entity');
@@ -69,11 +69,11 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $attributes = [];
         foreach ($this->attributes as $attribute) {
-            if ($attribute->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+            if ($attribute->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
                 $attributes[] = $attribute;
             }
         }
@@ -100,13 +100,13 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
     }
 
     public function nextIdentifier(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier {
         return AttributeIdentifier::create(
-            (string) $enrichedEntityIdentifier,
+            (string) $referenceEntityIdentifier,
             (string) $attributeCode,
-            md5(sprintf('%s_%s', $enrichedEntityIdentifier, $attributeCode))
+            md5(sprintf('%s_%s', $referenceEntityIdentifier, $attributeCode))
         );
     }
 
@@ -115,18 +115,18 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
      * It's a tooling method not present in the main interface, because we need a way to retrieve attributes by their
      * code only in acceptance test. The real application will always use identifiers.
      *
-     * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
+     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      * @param AttributeCode            $code
      *
      * @return AbstractAttribute
      */
-    public function getByEnrichedEntityAndCode(string $entityCode, string $attributeCode): AbstractAttribute
+    public function getByReferenceEntityAndCode(string $entityCode, string $attributeCode): AbstractAttribute
     {
-        $entityIdentifier = EnrichedEntityIdentifier::fromString($entityCode);
+        $entityIdentifier = ReferenceEntityIdentifier::fromString($entityCode);
         $code = AttributeCode::fromString($attributeCode);
 
         foreach ($this->attributes as $attribute) {
-            if ($attribute->getCode()->equals($code) && $attribute->getEnrichedEntityIdentifier()->equals($entityIdentifier)) {
+            if ($attribute->getCode()->equals($code) && $attribute->getReferenceEntityIdentifier()->equals($entityIdentifier)) {
                 return $attribute;
             }
         }

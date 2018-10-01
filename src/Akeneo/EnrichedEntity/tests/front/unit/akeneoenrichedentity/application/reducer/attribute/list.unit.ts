@@ -1,6 +1,6 @@
-import reducer from 'akeneoenrichedentity/application/reducer/attribute/list';
-import {denormalizeMinimalAttribute} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
+import reducer from 'akeneoreferenceentity/application/reducer/attribute/list';
+import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
 describe('akeneo > enriched entity > application > reducer > attribute --- list', () => {
   test('I ignore other commands', () => {
@@ -38,14 +38,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
         {
           type: 'text',
           identifier: 'description_1234',
-          enriched_entity_identifier: 'designer',
+          reference_entity_identifier: 'designer',
           code: 'description',
           labels: {},
         },
         {
           type: 'text',
           identifier: 'name_1234',
-          enriched_entity_identifier: 'designer',
+          reference_entity_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -62,7 +62,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
         {
           type: 'text',
           identifier: 'name_1234',
-          enriched_entity_identifier: 'designer',
+          reference_entity_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -76,14 +76,14 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
         {
           type: 'text',
           identifier: 'description_1234',
-          enriched_entity_identifier: 'designer',
+          reference_entity_identifier: 'designer',
           code: 'description',
           labels: {},
         },
         {
           type: 'text',
           identifier: 'name_1234',
-          enriched_entity_identifier: 'designer',
+          reference_entity_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -100,7 +100,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
         {
           type: 'text',
           identifier: 'name_1234',
-          enriched_entity_identifier: 'designer',
+          reference_entity_identifier: 'designer',
           code: 'name',
           labels: {},
         },
@@ -116,7 +116,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
     const deletedAttribute = {
       type: 'text',
       identifier: 'description_1234',
-      enriched_entity_identifier: 'designer',
+      reference_entity_identifier: 'designer',
       code: 'description',
       labels: {},
     };

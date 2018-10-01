@@ -1,6 +1,6 @@
-const Header = require('../../decorators/enriched-entity/app/header.decorator');
+const Header = require('../../decorators/reference-entity/app/header.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
-const Grid = require('../../decorators/enriched-entity/index/grid.decorator');
+const Grid = require('../../decorators/reference-entity/index/grid.decorator');
 const {getRequestContract, listenRequest} = require('../../tools');
 const path = require('path');
 
@@ -30,15 +30,15 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const saveEnrichedEntity = async function(page) {
-    const requestContract = getRequestContract('EnrichedEntity/Create/ok.json');
+  const saveReferenceEntity = async function(page) {
+    const requestContract = getRequestContract('ReferenceEntity/Create/ok.json');
 
     return await listenRequest(page, requestContract);
   };
 
   const listEnrichedUpdated = async function(page, identifier, labels) {
     page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity' === request.url()) {
+      if ('http://pim.com/rest/reference_entity' === request.url()) {
         answerJson(request, {
           items: [
             {
@@ -54,12 +54,12 @@ module.exports = async function(cucumber) {
 
   const validationMessageShown = async function(page, message) {
     page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity' === request.url() && 'POST' === request.method()) {
+      if ('http://pim.com/rest/reference_entity' === request.url() && 'POST' === request.method()) {
         answerJson(
           request,
           [
             {
-              messageTemplate: 'pim_enriched_entity.enriched_entity.validation.code.pattern',
+              messageTemplate: 'pim_reference_entity.reference_entity.validation.code.pattern',
               parameters: {'{{ value }}': '\u0022invalid/identifier\u0022'},
               plural: null,
               message: message,
@@ -78,10 +78,10 @@ module.exports = async function(cucumber) {
   };
 
   When('the user creates an enriched entity {string} with:', async function(identifier, updates) {
-    const enrichedEntity = convertItemTable(updates)[0];
+    const referenceEntity = convertItemTable(updates)[0];
 
     await this.page.evaluate(async () => {
-      const Controller = require('pim/controller/enriched-entity/list');
+      const Controller = require('pim/controller/reference-entity/list');
       const controller = new Controller();
       controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);
@@ -91,9 +91,9 @@ module.exports = async function(cucumber) {
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_enriched_entity.enriched_entity.create.input.code', identifier);
-    if (enrichedEntity.labels !== undefined && enrichedEntity.labels.en_US !== undefined) {
-      await modal.fillField('pim_enriched_entity.enriched_entity.create.input.label', enrichedEntity.labels.en_US);
+    await modal.fillField('pim_reference_entity.reference_entity.create.input.code', identifier);
+    if (referenceEntity.labels !== undefined && referenceEntity.labels.en_US !== undefined) {
+      await modal.fillField('pim_reference_entity.reference_entity.create.input.label', referenceEntity.labels.en_US);
     }
   });
 
@@ -103,16 +103,16 @@ module.exports = async function(cucumber) {
   });
 
   Then('there is an enriched entity {string} with:', async function(identifier, updates) {
-    const enrichedEntity = convertItemTable(updates)[0];
+    const referenceEntity = convertItemTable(updates)[0];
 
-    listEnrichedUpdated(this.page, identifier, enrichedEntity.labels);
+    listEnrichedUpdated(this.page, identifier, referenceEntity.labels);
 
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
 
-    if (enrichedEntity.labels !== undefined && enrichedEntity.labels.en_US !== undefined) {
-      const label = await grid.getEnrichedEntityLabel(enrichedEntity.identifier);
-      assert.strictEqual(label, enrichedEntity.labels.en_US);
+    if (referenceEntity.labels !== undefined && referenceEntity.labels.en_US !== undefined) {
+      const label = await grid.getReferenceEntityLabel(referenceEntity.identifier);
+      assert.strictEqual(label, referenceEntity.labels.en_US);
     }
   });
 
@@ -121,7 +121,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the enriched entity will be saved', async function() {
-    await saveEnrichedEntity(this.page);
+    await saveReferenceEntity(this.page);
   });
 
   Then('a validation message is displayed {string}', async function(expectedMessage) {

@@ -1,11 +1,11 @@
-import EnrichedEntityIdentifier, {
-  createIdentifier as createEnrichedEntityIdentifier,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import ReferenceEntityIdentifier, {
+  createIdentifier as createReferenceEntityIdentifier,
+} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoenrichedentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoenrichedentity/domain/model/attribute/code';
+} from 'akeneoreferenceentity/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
 
 export enum AttributeType {
   Text = 'text',
@@ -13,7 +13,7 @@ export enum AttributeType {
 }
 
 export interface MinimalNormalizedAttribute {
-  enriched_entity_identifier: string;
+  reference_entity_identifier: string;
   type: 'text' | 'image';
   code: string;
   labels: NormalizedLabelCollection;
@@ -22,14 +22,14 @@ export interface MinimalNormalizedAttribute {
 }
 
 export default interface MinimalAttribute {
-  enrichedEntityIdentifier: EnrichedEntityIdentifier;
+  referenceEntityIdentifier: ReferenceEntityIdentifier;
   code: AttributeCode;
   labelCollection: LabelCollection;
   type: AttributeType;
   valuePerLocale: boolean;
   valuePerChannel: boolean;
   getCode: () => AttributeCode;
-  getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
+  getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
   getType(): AttributeType;
   getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
@@ -40,15 +40,15 @@ class InvalidArgumentError extends Error {}
 
 export class MinimalConcreteAttribute implements MinimalAttribute {
   protected constructor(
-    readonly enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    readonly referenceEntityIdentifier: ReferenceEntityIdentifier,
     readonly code: AttributeCode,
     readonly labelCollection: LabelCollection,
     readonly type: AttributeType,
     readonly valuePerLocale: boolean,
     readonly valuePerChannel: boolean
   ) {
-    if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifier)) {
-      throw new InvalidArgumentError('Attribute expect an EnrichedEntityIdentifier argument');
+    if (!(referenceEntityIdentifier instanceof ReferenceEntityIdentifier)) {
+      throw new InvalidArgumentError('Attribute expect an ReferenceEntityIdentifier argument');
     }
     if (!(code instanceof AttributeCode)) {
       throw new InvalidArgumentError('Attribute expect a AttributeCode argument');
@@ -71,7 +71,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public static createFromNormalized(minimalNormalizedAttribute: MinimalNormalizedAttribute) {
     return new MinimalConcreteAttribute(
-      createEnrichedEntityIdentifier(minimalNormalizedAttribute.enriched_entity_identifier),
+      createReferenceEntityIdentifier(minimalNormalizedAttribute.reference_entity_identifier),
       createCode(minimalNormalizedAttribute.code),
       createLabelCollection(minimalNormalizedAttribute.labels),
       minimalNormalizedAttribute.type as AttributeType,
@@ -80,8 +80,8 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
     );
   }
 
-  public getEnrichedEntityIdentifier(): EnrichedEntityIdentifier {
-    return this.enrichedEntityIdentifier;
+  public getReferenceEntityIdentifier(): ReferenceEntityIdentifier {
+    return this.referenceEntityIdentifier;
   }
 
   public getCode(): AttributeCode {
@@ -106,7 +106,7 @@ export class MinimalConcreteAttribute implements MinimalAttribute {
 
   public normalize(): MinimalNormalizedAttribute {
     return {
-      enriched_entity_identifier: this.enrichedEntityIdentifier.stringValue(),
+      reference_entity_identifier: this.referenceEntityIdentifier.stringValue(),
       code: this.code.stringValue(),
       type: this.getType(),
       labels: this.labelCollection.normalize(),

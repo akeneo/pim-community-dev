@@ -1,5 +1,5 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import sanitize from 'akeneoenrichedentity/tools/sanitize';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import sanitize from 'akeneoreferenceentity/tools/sanitize';
 
 export interface CreateState {
   active: boolean;

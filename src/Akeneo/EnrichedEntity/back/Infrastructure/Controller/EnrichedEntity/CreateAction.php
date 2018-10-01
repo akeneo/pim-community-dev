@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,8 +32,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    /** @var CreateEnrichedEntityHandler */
-    private $createEnrichedEntityHandler;
+    /** @var CreateReferenceEntityHandler */
+    private $createReferenceEntityHandler;
 
     /** @var NormalizerInterface */
     private $normalizer;
@@ -45,12 +45,12 @@ class CreateAction
     private $securityFacade;
 
     public function __construct(
-        CreateEnrichedEntityHandler $createEnrichedEntityHandler,
+        CreateReferenceEntityHandler $createReferenceEntityHandler,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
-        $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
+        $this->createReferenceEntityHandler = $createReferenceEntityHandler;
         $this->normalizer                  = $normalizer;
         $this->validator                   = $validator;
         $this->securityFacade              = $securityFacade;
@@ -62,7 +62,7 @@ class CreateAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_enriched_entity_create')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_create')) {
             throw new AccessDeniedException();
         }
 
@@ -72,16 +72,16 @@ class CreateAction
             return new JsonResponse($this->normalizer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
         }
 
-        ($this->createEnrichedEntityHandler)($command);
+        ($this->createReferenceEntityHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function getCreateCommand(Request $request): CreateEnrichedEntityCommand
+    private function getCreateCommand(Request $request): CreateReferenceEntityCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateEnrichedEntityCommand();
+        $command = new CreateReferenceEntityCommand();
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
 

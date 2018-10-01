@@ -1,6 +1,6 @@
 const path = require('path');
-const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
-const Attributes = require('../../decorators/enriched-entity/edit/attributes.decorator');
+const Sidebar = require('../../decorators/reference-entity/app/sidebar.decorator');
+const Attributes = require('../../decorators/reference-entity/edit/attributes.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -31,14 +31,14 @@ module.exports = async function(cucumber) {
   };
 
   Given('the following attributes for the enriched entity {string}:', async function(
-    enrichedEntityIdentifier,
+    referenceEntityIdentifier,
     attributes
   ) {
     const attributesSaved = attributes.hashes().map(normalizedAttribute => {
       if ('text' === normalizedAttribute.type) {
         return {
-          identifier: `${enrichedEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
-          enriched_entity_identifier: enrichedEntityIdentifier,
+          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          reference_entity_identifier: referenceEntityIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
           order: 0,
@@ -54,8 +54,8 @@ module.exports = async function(cucumber) {
         };
       } else if ('image' === normalizedAttribute.type) {
         return {
-          identifier: `${enrichedEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
-          enriched_entity_identifier: enrichedEntityIdentifier,
+          identifier: `${referenceEntityIdentifier}_${normalizedAttribute.code}_${attributeIdentifierSuffix}`,
+          reference_entity_identifier: referenceEntityIdentifier,
           code: normalizedAttribute.code,
           is_required: false,
           order: 1,
@@ -73,7 +73,7 @@ module.exports = async function(cucumber) {
 
     this.page.on('request', request => {
       if (
-        `http://pim.com/rest/enriched_entity/${enrichedEntityIdentifier}/attribute` === request.url() &&
+        `http://pim.com/rest/reference_entity/${referenceEntityIdentifier}/attribute` === request.url() &&
         'GET' === request.method()
       ) {
         answerJson(request, attributesSaved);
@@ -114,16 +114,16 @@ module.exports = async function(cucumber) {
 
   When('the user deletes the attribute {string} linked to the enriched entity {string}', async function(
     attributeIdentifier,
-    enrichedEntityIdentifier
+    referenceEntityIdentifier
   ) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
 
     await editAttribute(this.page, attributeIdentifier);
     this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/enriched_entity';
-      const identifier = `${enrichedEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${enrichedEntityIdentifier}/attribute/${identifier}`;
+      const baseUrl = 'http://pim.com/rest/reference_entity';
+      const identifier = `${referenceEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+      const deleteUrl = `${baseUrl}/${referenceEntityIdentifier}/attribute/${identifier}`;
       if (deleteUrl === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 204);
       }
@@ -144,7 +144,7 @@ module.exports = async function(cucumber) {
 
   When('the user cannot deletes the attribute {string} linked to the enriched entity {string}', async function(
     attributeIdentifier,
-    enrichedEntityIdentifier
+    referenceEntityIdentifier
   ) {
     await showAttributesTab(this.page);
     const attributes = await await getElement(this.page, 'Attributes');
@@ -152,9 +152,9 @@ module.exports = async function(cucumber) {
     await editAttribute(this.page, attributeIdentifier);
 
     this.page.on('request', request => {
-      const baseUrl = 'http://pim.com/rest/enriched_entity';
-      const identifier = `${enrichedEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
-      const deleteUrl = `${baseUrl}/${enrichedEntityIdentifier}/attribute/${identifier}`;
+      const baseUrl = 'http://pim.com/rest/reference_entity';
+      const identifier = `${referenceEntityIdentifier}_${attributeIdentifier}_${attributeIdentifierSuffix}`;
+      const deleteUrl = `${baseUrl}/${referenceEntityIdentifier}/attribute/${identifier}`;
       if (deleteUrl === request.url() && 'DELETE' === request.method()) {
         answerJson(request, {}, 404);
       }

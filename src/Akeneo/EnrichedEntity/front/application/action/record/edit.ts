@@ -7,24 +7,24 @@ import {
   recordEditionValueUpdated,
   recordEditionUpdated,
   recordEditionSubmission,
-} from 'akeneoenrichedentity/domain/event/record/edit';
+} from 'akeneoreferenceentity/domain/event/record/edit';
 import {
   notifyRecordWellSaved,
   notifyRecordSaveFailed,
   notifyRecordWellDeleted,
   notifyRecordDeleteFailed,
   notifyRecordDeletionErrorOccured,
-} from 'akeneoenrichedentity/application/action/record/notify';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
-import recordRemover from 'akeneoenrichedentity/infrastructure/remover/record';
-import recordFetcher from 'akeneoenrichedentity/infrastructure/fetcher/record';
-import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import File from 'akeneoenrichedentity/domain/model/file';
-import {EditState} from 'akeneoenrichedentity/application/reducer/record/edit';
-import {redirectToRecordIndex} from 'akeneoenrichedentity/application/action/record/router';
-import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
+} from 'akeneoreferenceentity/application/action/record/notify';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
+import recordRemover from 'akeneoreferenceentity/infrastructure/remover/record';
+import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
+import File from 'akeneoreferenceentity/domain/model/file';
+import {EditState} from 'akeneoreferenceentity/application/reducer/record/edit';
+import {redirectToRecordIndex} from 'akeneoreferenceentity/application/action/record/router';
+import denormalizeRecord from 'akeneoreferenceentity/application/denormalizer/record';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
 
 export const saveRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const record = denormalizeRecord(getState().form.data);
@@ -48,14 +48,14 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
   dispatch(recordEditionSucceeded());
   dispatch(notifyRecordWellSaved());
-  const savedRecord: Record = await recordFetcher.fetch(record.getEnrichedEntityIdentifier(), record.getCode());
+  const savedRecord: Record = await recordFetcher.fetch(record.getReferenceEntityIdentifier(), record.getCode());
 
   dispatch(recordEditionReceived(savedRecord));
 };
 
 export const deleteRecord = (record: Record) => async (dispatch: any): Promise<void> => {
   try {
-    const errors = await recordRemover.remove(record.getEnrichedEntityIdentifier(), record.getCode());
+    const errors = await recordRemover.remove(record.getReferenceEntityIdentifier(), record.getCode());
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
@@ -65,7 +65,7 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
     }
 
     dispatch(notifyRecordWellDeleted(record.getCode()));
-    dispatch(redirectToRecordIndex(record.getEnrichedEntityIdentifier()));
+    dispatch(redirectToRecordIndex(record.getReferenceEntityIdentifier()));
   } catch (error) {
     dispatch(notifyRecordDeleteFailed());
 
@@ -88,7 +88,7 @@ export const recordValueUpdated = (value: Value) => (dispatch: any, getState: an
   dispatch(recordEditionUpdated(getState().form.data));
 };
 
-export const backToEnrichedEntity = () => (dispatch: any, getState: any) => {
+export const backToReferenceEntity = () => (dispatch: any, getState: any) => {
   const record = denormalizeRecord(getState().form.data);
-  dispatch(redirectToRecordIndex(record.getEnrichedEntityIdentifier()));
+  dispatch(redirectToRecordIndex(record.getReferenceEntityIdentifier()));
 };

@@ -2,11 +2,11 @@ import * as $ from 'jquery';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
-import EnrichedEntityView from 'akeneoenrichedentity/application/component/enriched-entity/index';
-import createStore from 'akeneoenrichedentity/infrastructure/store';
-import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import {updateEnrichedEntityResults} from 'akeneoenrichedentity/application/action/enriched-entity/search';
-import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
+import ReferenceEntityView from 'akeneoreferenceentity/application/component/reference-entity/index';
+import createStore from 'akeneoreferenceentity/infrastructure/store';
+import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/reference-entity/index';
+import {updateReferenceEntityResults} from 'akeneoreferenceentity/application/action/reference-entity/search';
+import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -18,20 +18,20 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   }
 };
 
-class EnrichedEntityListController extends BaseController {
+class ReferenceEntityListController extends BaseController {
   renderRoute() {
-    const store = createStore(true)(enrichedEntityReducer);
+    const store = createStore(true)(referenceEntityReducer);
     store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
     store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-    store.dispatch(updateEnrichedEntityResults());
+    store.dispatch(updateReferenceEntityResults());
     document.addEventListener('keydown', shortcutDispatcher(store));
 
-    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-enriched-entity'});
+    mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
 
     ReactDOM.render(
       <Provider store={store}>
-        <EnrichedEntityView />
+        <ReferenceEntityView />
       </Provider>,
       this.el
     );
@@ -46,4 +46,4 @@ class EnrichedEntityListController extends BaseController {
   };
 }
 
-export = EnrichedEntityListController;
+export = ReferenceEntityListController;

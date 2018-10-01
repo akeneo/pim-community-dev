@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LocaleReference from 'akeneoenrichedentity/domain/model/locale-reference';
-import ChannelReference from 'akeneoenrichedentity/domain/model/channel-reference';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import {getDataView} from 'akeneoenrichedentity/application/configuration/value';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/record/edit/validaton-error';
+import LocaleReference from 'akeneoreferenceentity/domain/model/locale-reference';
+import ChannelReference from 'akeneoreferenceentity/domain/model/channel-reference';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import {getDataView} from 'akeneoreferenceentity/application/configuration/value';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/record/edit/validaton-error';
 
 export default (
   record: Record,
@@ -33,7 +33,7 @@ export default (
           <label
             title={value.attribute.getLabel(locale.stringValue())}
             className="AknFieldContainer-label"
-            htmlFor={`pim_enriched_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
+            htmlFor={`pim_reference_entity.record.enrich.${value.attribute.getCode().stringValue()}`}
           >
             {value.attribute.getLabel(locale.stringValue())}
           </label>

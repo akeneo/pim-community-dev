@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 {
@@ -38,19 +38,19 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findAttributeNextOrder = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order');
+        $this->findAttributeNextOrder = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order');
         $this->resetDB();
-        $this->loadEnrichedEntitiesAndAttributes();
+        $this->loadReferenceEntitiesAndAttributes();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_next_order_if_the_enriched_entity_already_have_attributes()
+    public function it_returns_the_next_order_if_the_reference_entity_already_have_attributes()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
-        $nextOrder = $this->findAttributeNextOrder->withEnrichedEntityIdentifier($enrichedEntityIdentifier);
+        $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
 
         $this->assertEquals(1, $nextOrder);
     }
@@ -58,43 +58,43 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_zero_if_the_enriched_entity_does_not_have_any_attribute_yet()
+    public function it_returns_zero_if_the_reference_entity_does_not_have_any_attribute_yet()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
 
-        $nextOrder = $this->findAttributeNextOrder->withEnrichedEntityIdentifier($enrichedEntityIdentifier);
+        $nextOrder = $this->findAttributeNextOrder->withReferenceEntityIdentifier($referenceEntityIdentifier);
 
         $this->assertEquals(0, $nextOrder);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntitiesAndAttributes(): void
+    private function loadReferenceEntitiesAndAttributes(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
 
-        $enrichedEntityFull = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityFull = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntityFull);
+        $referenceEntityRepository->create($referenceEntityFull);
 
         $identifier = $attributesRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name')
         );
 
         $textAttribute = TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -107,14 +107,14 @@ class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
         );
         $attributesRepository->create($textAttribute);
 
-        $enrichedEntityEmpty = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('brand'),
+        $referenceEntityEmpty = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntityEmpty);
+        $referenceEntityRepository->create($referenceEntityEmpty);
     }
 }

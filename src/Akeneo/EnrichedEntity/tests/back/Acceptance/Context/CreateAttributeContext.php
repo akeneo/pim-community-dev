@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -67,14 +67,14 @@ class CreateAttributeContext implements Context
     /**
      * @When /^the user creates a text attribute "([^"]*)" linked to the enriched entity "([^"]*)" with:$/
      */
-    public function theUserCreatesATextAttributeLinkedToTheEnrichedEntityWith(string $attributeCode, string $enrichedEntityIdentifier, TableNode $attributeData): void
+    public function theUserCreatesATextAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'text';
         $attributeData['identifier']['identifier'] = $attributeCode;
-        $attributeData['identifier']['enriched_entity_identifier'] = $enrichedEntityIdentifier;
-        $attributeData['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = (bool) $attributeData['is_required'];
@@ -96,19 +96,19 @@ class CreateAttributeContext implements Context
     /**
      * @Then /^there is a text attribute "([^"]*)" in the enriched entity "([^"]*)" with:$/
      */
-    public function thereIsAnTextAttributeInTheEnrichedEntityWith(
+    public function thereIsAnTextAttributeInTheReferenceEntityWith(
         string $attributeCode,
-        string $enrichedEntityIdentifier,
+        string $referenceEntityIdentifier,
         TableNode $attributeData
     ) {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
-        $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = (bool) $expected['is_required'];
@@ -131,13 +131,13 @@ class CreateAttributeContext implements Context
     /**
      * @Then /^there is no attribute "([^"]*)" for the enriched entity "([^"]*)"$/
      */
-    public function thereIsNoAttributeInTheEnrichedEntity(
+    public function thereIsNoAttributeInTheReferenceEntity(
         string $attributeCode,
-        string $enrichedEntityIdentifier
+        string $referenceEntityIdentifier
     ) {
         $attribute = null;
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
@@ -152,16 +152,16 @@ class CreateAttributeContext implements Context
     /**
      * @When /^the user creates an image attribute "([^"]*)" linked to the enriched entity "([^"]*)" with:$/
      */
-    public function theUserCreatesAnImageAttributeLinkedToTheEnrichedEntityWith(
+    public function theUserCreatesAnImageAttributeLinkedToTheReferenceEntityWith(
         $attributeCode,
-        $enrichedEntityIdentifier,
+        $referenceEntityIdentifier,
         TableNode $attributeData
     ) {
         $attributeData = current($attributeData->getHash());
 
         $attributeData['type'] = 'image';
         $attributeData['code'] = $attributeCode;
-        $attributeData['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
         $attributeData['is_required'] = (bool) $attributeData['is_required'];
         $attributeData['value_per_channel'] = (bool) $attributeData['value_per_channel'];
@@ -184,18 +184,18 @@ class CreateAttributeContext implements Context
      */
     public function thereIsAnAttributeWith(
         string $attributeCode,
-        string $enrichedEntityIdentifier,
+        string $referenceEntityIdentifier,
         TableNode $attributeData
     ) {
         $attributeIdentifier = $this->attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $expected = current($attributeData->getHash());
         $expected['identifier'] = (string) $attributeIdentifier;
         $expected['code'] = $attributeCode;
-        $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
+        $expected['reference_entity_identifier'] = $referenceEntityIdentifier;
         $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['is_required'] = (bool) $expected['is_required'];

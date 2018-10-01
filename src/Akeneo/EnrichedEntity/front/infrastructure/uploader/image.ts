@@ -1,5 +1,5 @@
-import Uploader from 'akeneoenrichedentity/domain/uploader/uploader';
-import Image, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
+import Uploader from 'akeneoreferenceentity/domain/uploader/uploader';
+import Image, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 import * as $ from 'jquery';
 const routing = require('routing');
 

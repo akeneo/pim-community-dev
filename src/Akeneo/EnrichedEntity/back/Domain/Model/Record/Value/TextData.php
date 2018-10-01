@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
+namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
 
 use Webmozart\Assert\Assert;
 

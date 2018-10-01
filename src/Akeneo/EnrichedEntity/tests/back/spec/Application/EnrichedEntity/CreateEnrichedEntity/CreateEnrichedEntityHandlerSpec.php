@@ -1,38 +1,38 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity;
+namespace spec\Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CreateEnrichedEntityHandlerSpec extends ObjectBehavior
+class CreateReferenceEntityHandlerSpec extends ObjectBehavior
 {
-    function let(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
+    function let(ReferenceEntityRepositoryInterface $referenceEntityRepository)
     {
-        $this->beConstructedWith($enrichedEntityRepository);
+        $this->beConstructedWith($referenceEntityRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CreateEnrichedEntityHandler::class);
+        $this->shouldHaveType(CreateReferenceEntityHandler::class);
     }
 
     function it_creates_a_new_record(
-        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
-        CreateEnrichedEntityCommand $createEnrichedEntityCommand
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        CreateReferenceEntityCommand $createReferenceEntityCommand
     ) {
-        $createEnrichedEntityCommand->code = 'brand';
-        $createEnrichedEntityCommand->labels = [
+        $createReferenceEntityCommand->code = 'brand';
+        $createReferenceEntityCommand->labels = [
             'en_US' => 'Intel',
             'fr_FR' => 'Intel',
         ];
 
-        $enrichedEntityRepository->create(Argument::type(EnrichedEntity::class))->shouldBeCalled();
+        $referenceEntityRepository->create(Argument::type(ReferenceEntity::class))->shouldBeCalled();
 
-        $this->__invoke($createEnrichedEntityCommand);
+        $this->__invoke($createReferenceEntityCommand);
     }
 }

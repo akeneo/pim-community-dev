@@ -1,8 +1,8 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 
-export default interface Remover<EnrichedEntityIdentifier, Identifier> {
+export default interface Remover<ReferenceEntityIdentifier, Identifier> {
   remove: (
-    enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
     identifier: Identifier
   ) => Promise<ValidationError[] | null>;
 }

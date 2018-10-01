@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITY_EDIT_ROUTE = 'akeneo_enriched_entities_enriched_entity_edit_rest';
+    private const ENRICHED_ENTITY_EDIT_ROUTE = 'akeneo_reference_entities_reference_entity_edit_rest';
 
     /** @var Client */
     private $client;
@@ -43,13 +43,13 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_edits_an_enriched_entity_details(): void
+    public function it_edits_an_reference_entity_details(): void
     {
         $postContent = [
             'identifier' => 'designer',
@@ -78,7 +78,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
 
         $repository = $this->getEnrichEntityRepository();
-        $entityItem = $repository->getByIdentifier(EnrichedEntityIdentifier::fromString($postContent['identifier']));
+        $entityItem = $repository->getByIdentifier(ReferenceEntityIdentifier::fromString($postContent['identifier']));
 
         Assert::assertEquals(array_keys($postContent['labels']), $entityItem->getLabelCodes());
         Assert::assertEquals($postContent['labels']['en_US'], $entityItem->getLabel('en_US'));
@@ -127,24 +127,24 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
+    private function getEnrichEntityRepository(): ReferenceEntityRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
+        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
     }
 
     private function loadFixtures(): void
     {
-        $enrichedEntityRepository = $this->getEnrichEntityRepository();
+        $referenceEntityRepository = $this->getEnrichEntityRepository();
 
-        $entityItem = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $entityItem = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'en_US' => 'Designer',
                 'fr_FR' => 'Concepteur',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($entityItem);
+        $referenceEntityRepository->create($entityItem);
 
         $user = new User();
         $user->setUsername('julia');

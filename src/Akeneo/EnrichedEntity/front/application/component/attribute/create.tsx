@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoenrichedentity/tools/translator';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import Switch from 'akeneoenrichedentity/application/component/app/switch';
+import __ from 'akeneoreferenceentity/tools/translator';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import Switch from 'akeneoreferenceentity/application/component/app/switch';
 import {
   attributeCreationCodeUpdated,
   attributeCreationLabelUpdated,
@@ -13,11 +13,11 @@ import {
   attributeCreationTypeUpdated,
   attributeCreationValuePerLocaleUpdated,
   attributeCreationValuePerChannelUpdated,
-} from 'akeneoenrichedentity/domain/event/attribute/create';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import {createAttribute} from 'akeneoenrichedentity/application/action/attribute/create';
-import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
-import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
+} from 'akeneoreferenceentity/domain/event/attribute/create';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {createAttribute} from 'akeneoreferenceentity/application/action/attribute/create';
+import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 
 interface StateProps {
   context: {
@@ -115,7 +115,7 @@ class Create extends React.Component<CreateProps> {
     return Object.values(AttributeType).map((type: string) => {
       return {
         identifier: type,
-        label: __(`pim_enriched_entity.attribute.type.${type}`),
+        label: __(`pim_reference_entity.attribute.type.${type}`),
       };
     });
   };
@@ -130,16 +130,16 @@ class Create extends React.Component<CreateProps> {
                 <img src="bundles/pimui/images/illustrations/Attribute.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
-                <div className="AknFullPage-subTitle">{__('pim_enriched_entity.attribute.create.subtitle')}</div>
-                <div className="AknFullPage-title">{__('pim_enriched_entity.attribute.create.title')}</div>
+                <div className="AknFullPage-subTitle">{__('pim_reference_entity.attribute.create.subtitle')}</div>
+                <div className="AknFullPage-title">{__('pim_reference_entity.attribute.create.title')}</div>
                 <div>
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.attribute.create.input.label"
+                        htmlFor="pim_reference_entity.attribute.create.input.label"
                       >
-                        {__('pim_enriched_entity.attribute.create.input.label')}
+                        {__('pim_reference_entity.attribute.create.input.label')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
@@ -149,7 +149,7 @@ class Create extends React.Component<CreateProps> {
                           this.labelInput = input;
                         }}
                         className="AknTextField AknTextField--light"
-                        id="pim_enriched_entity.attribute.create.input.label"
+                        id="pim_reference_entity.attribute.create.input.label"
                         name="label"
                         value={this.props.data.labels[this.props.context.locale]}
                         onChange={this.onLabelUpdate}
@@ -167,16 +167,16 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.attribute.create.input.code"
+                        htmlFor="pim_reference_entity.attribute.create.input.code"
                       >
-                        {__('pim_enriched_entity.attribute.create.input.code')}
+                        {__('pim_reference_entity.attribute.create.input.code')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
                       <input
                         type="text"
                         className="AknTextField AknTextField--light"
-                        id="pim_enriched_entity.attribute.create.input.code"
+                        id="pim_reference_entity.attribute.create.input.code"
                         name="code"
                         value={this.props.data.code}
                         onChange={this.onCodeUpdate}
@@ -189,15 +189,15 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.attribute.create.input.type"
+                        htmlFor="pim_reference_entity.attribute.create.input.type"
                       >
-                        {__('pim_enriched_entity.attribute.create.input.type')}
+                        {__('pim_reference_entity.attribute.create.input.type')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
                       <Dropdown
                         ItemView={AttributeTypeItemView}
-                        label={__('pim_enriched_entity.attribute.create.input.type')}
+                        label={__('pim_reference_entity.attribute.create.input.type')}
                         elements={this.getTypeOptions()}
                         selectedElement={this.props.data.type}
                         onSelectionChange={this.onTypeUpdate}
@@ -209,14 +209,14 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.attribute.create.input.value_per_locale"
+                        htmlFor="pim_reference_entity.attribute.create.input.value_per_locale"
                       >
-                        {__('pim_enriched_entity.attribute.create.input.value_per_locale')}
+                        {__('pim_reference_entity.attribute.create.input.value_per_locale')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
                       <Switch
-                        id="pim_enriched_entity.attribute.create.input.value_per_locale"
+                        id="pim_reference_entity.attribute.create.input.value_per_locale"
                         value={this.props.data.value_per_locale}
                         onChange={this.props.events.onValuePerLocaleUpdated}
                       />
@@ -227,14 +227,14 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.attribute.create.input.value_per_channel"
+                        htmlFor="pim_reference_entity.attribute.create.input.value_per_channel"
                       >
-                        {__('pim_enriched_entity.attribute.create.input.value_per_channel')}
+                        {__('pim_reference_entity.attribute.create.input.value_per_channel')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
                       <Switch
-                        id="pim_enriched_entity.attribute.create.input.value_per_channel"
+                        id="pim_reference_entity.attribute.create.input.value_per_channel"
                         value={this.props.data.value_per_channel}
                         onChange={this.props.events.onValuePerChannelUpdated}
                       />
@@ -251,10 +251,10 @@ class Create extends React.Component<CreateProps> {
             className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
             onClick={this.props.events.onSubmit}
           >
-            {__('pim_enriched_entity.attribute.create.confirm')}
+            {__('pim_reference_entity.attribute.create.confirm')}
           </button>
           <span
-            title={__('pim_enriched_entity.attribute.create.cancel')}
+            title={__('pim_reference_entity.attribute.create.cancel')}
             className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
             onClick={this.props.events.onCancel}
             tabIndex={0}
@@ -264,7 +264,7 @@ class Create extends React.Component<CreateProps> {
               }
             }}
           >
-            {__('pim_enriched_entity.attribute.create.cancel')}
+            {__('pim_reference_entity.attribute.create.cancel')}
           </span>
         </div>
       </div>

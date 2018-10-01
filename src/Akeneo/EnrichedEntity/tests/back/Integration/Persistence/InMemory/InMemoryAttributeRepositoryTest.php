@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\EnrichedEntity\Common\Fake\InMemoryAttributeRepository;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
@@ -50,7 +50,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -76,7 +76,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -102,7 +102,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -131,7 +131,7 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
         $textAttribute = TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -173,14 +173,14 @@ class InMemoryAttributeRepositoryTest extends TestCase
         $this->attributeRepository->getByIdentifier($identifier);
     }
 
-    public function it_creates_an_attribute_with_and_finds_it_by_enriched_entity_and_attribute_code()
+    public function it_creates_an_attribute_with_and_finds_it_by_reference_entity_and_attribute_code()
     {
         $attributeCode = AttributeCode::fromString('description');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $identifier = $this->attributeRepository->nextIdentifier($enrichedEntityIdentifier, $attributeCode);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->attributeRepository->nextIdentifier($referenceEntityIdentifier, $attributeCode);
         $attribute = TextAttribute::createTextarea(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $attributeCode,
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
@@ -191,23 +191,23 @@ class InMemoryAttributeRepositoryTest extends TestCase
             AttributeIsRichTextEditor::fromBoolean(false)
         );
         $this->attributeRepository->create($attribute);
-        $attributeFound = $this->attributeRepository->getByEnrichedEntityAndCode('designer', 'description');
+        $attributeFound = $this->attributeRepository->getByReferenceEntityAndCode('designer', 'description');
         $this->assertSame($attribute->normalize(), $attributeFound->normalize());
     }
     /**
      * @test
      */
-    public function it_throws_if_the_attribute_code_and_the_enriched_entity_are_not_found()
+    public function it_throws_if_the_attribute_code_and_the_reference_entity_are_not_found()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->attributeRepository->getByEnrichedEntityAndCode('designer', 'description');
+        $this->attributeRepository->getByReferenceEntityAndCode('designer', 'description');
     }
 
     private function createAttributeWithIdentifier(AttributeIdentifier $identifier): AbstractAttribute
     {
         return TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),

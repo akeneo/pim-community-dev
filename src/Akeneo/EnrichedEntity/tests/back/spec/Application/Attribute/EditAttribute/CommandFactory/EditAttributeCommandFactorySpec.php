@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryRegistryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxFileSizeCommand;
 use PhpSpec\ObjectBehavior;
 
 class EditAttributeCommandFactorySpec extends ObjectBehavior
@@ -24,7 +24,7 @@ class EditAttributeCommandFactorySpec extends ObjectBehavior
 
     function it_supports_attribute_edits()
     {
-        $this->supports(['identifier' => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer']])
+        $this->supports(['identifier' => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer']])
             ->shouldReturn(true);
         $this->supports(['max_file_size' => '172.50'])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -36,7 +36,7 @@ class EditAttributeCommandFactorySpec extends ObjectBehavior
         EditAttributeCommandFactoryInterface $editLabelsCommandFactory
     ) {
         $normalizedCommand = [
-            'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'labels' => ['fr_FR' => 'Image autobiographique'],
             'max_file_size' => '172.50'
         ];
@@ -49,7 +49,7 @@ class EditAttributeCommandFactorySpec extends ObjectBehavior
 
         $command = $this->create($normalizedCommand);
         $command->shouldBeAnInstanceOf(EditAttributeCommand::class);
-        $command->identifier->shouldBeEqualTo(['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer']);
+        $command->identifier->shouldBeEqualTo(['identifier' => 'portrait', 'reference_entity_identifier' => 'designer']);
         $command->editCommands->shouldBeEqualTo([$editMaxFileSizeCommand, $editLabelsCommand]);
     }
 

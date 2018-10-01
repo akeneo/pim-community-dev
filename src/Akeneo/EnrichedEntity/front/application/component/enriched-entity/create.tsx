@@ -1,15 +1,15 @@
-import {createEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/create';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
+import {createReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/create';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
+import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
 import {
-  enrichedEntityCreationCancel,
-  enrichedEntityCreationCodeUpdated,
-  enrichedEntityCreationLabelUpdated,
-} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
-import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import __ from 'akeneoenrichedentity/tools/translator';
+  referenceEntityCreationCancel,
+  referenceEntityCreationCodeUpdated,
+  referenceEntityCreationLabelUpdated,
+} from 'akeneoreferenceentity/domain/event/reference-entity/create';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import __ from 'akeneoreferenceentity/tools/translator';
 import * as React from 'react';
 import {connect} from 'react-redux';
 
@@ -71,16 +71,16 @@ class Create extends React.Component<CreateProps> {
                 <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image" />
               </div>
               <div className="AknFullPage-right">
-                <div className="AknFullPage-subTitle">{__('pim_enriched_entity.enriched_entity.create.subtitle')}</div>
-                <div className="AknFullPage-title">{__('pim_enriched_entity.enriched_entity.create.title')}</div>
+                <div className="AknFullPage-subTitle">{__('pim_reference_entity.reference_entity.create.subtitle')}</div>
+                <div className="AknFullPage-title">{__('pim_reference_entity.reference_entity.create.title')}</div>
                 <div>
                   <div className="AknFieldContainer" data-code="label">
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.enriched_entity.create.input.label"
+                        htmlFor="pim_reference_entity.reference_entity.create.input.label"
                       >
-                        {__('pim_enriched_entity.enriched_entity.create.input.label')}
+                        {__('pim_reference_entity.reference_entity.create.input.label')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer">
@@ -90,7 +90,7 @@ class Create extends React.Component<CreateProps> {
                           this.labelInput = input;
                         }}
                         className="AknTextField AknTextField--light"
-                        id="pim_enriched_entity.enriched_entity.create.input.label"
+                        id="pim_reference_entity.reference_entity.create.input.label"
                         name="label"
                         value={this.props.data.labels[this.props.context.locale]}
                         onChange={this.onLabelUpdate}
@@ -108,16 +108,16 @@ class Create extends React.Component<CreateProps> {
                     <div className="AknFieldContainer-header AknFieldContainer-header--light">
                       <label
                         className="AknFieldContainer-label"
-                        htmlFor="pim_enriched_entity.enriched_entity.create.input.code"
+                        htmlFor="pim_reference_entity.reference_entity.create.input.code"
                       >
-                        {__('pim_enriched_entity.enriched_entity.create.input.code')}
+                        {__('pim_reference_entity.reference_entity.create.input.code')}
                       </label>
                     </div>
                     <div className="AknFieldContainer-inputContainer field-input">
                       <input
                         type="text"
                         className="AknTextField AknTextField--light"
-                        id="pim_enriched_entity.enriched_entity.create.input.code"
+                        id="pim_reference_entity.reference_entity.create.input.code"
                         name="code"
                         value={this.props.data.code}
                         onChange={this.onCodeUpdate}
@@ -133,18 +133,18 @@ class Create extends React.Component<CreateProps> {
         </div>
         <div className="AknButtonList AknButtonList--right modal-footer">
           <span
-            title="{__('pim_enriched_entity.enriched_entity.create.cancel')}"
+            title="{__('pim_reference_entity.reference_entity.create.cancel')}"
             className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
             onClick={this.props.events.onCancel}
             tabIndex={0}
           >
-            {__('pim_enriched_entity.enriched_entity.create.cancel')}
+            {__('pim_reference_entity.reference_entity.create.cancel')}
           </span>
           <button
             className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
             onClick={this.props.events.onSubmit}
           >
-            {__('pim_enriched_entity.enriched_entity.create.confirm')}
+            {__('pim_reference_entity.reference_entity.create.confirm')}
           </button>
         </div>
       </div>
@@ -168,16 +168,16 @@ export default connect(
     return {
       events: {
         onCodeUpdated: (value: string) => {
-          dispatch(enrichedEntityCreationCodeUpdated(value));
+          dispatch(referenceEntityCreationCodeUpdated(value));
         },
         onLabelUpdated: (value: string, locale: string) => {
-          dispatch(enrichedEntityCreationLabelUpdated(value, locale));
+          dispatch(referenceEntityCreationLabelUpdated(value, locale));
         },
         onCancel: () => {
-          dispatch(enrichedEntityCreationCancel());
+          dispatch(referenceEntityCreationCancel());
         },
         onSubmit: () => {
-          dispatch(createEnrichedEntity());
+          dispatch(createReferenceEntity());
         },
       },
     } as DispatchProps;

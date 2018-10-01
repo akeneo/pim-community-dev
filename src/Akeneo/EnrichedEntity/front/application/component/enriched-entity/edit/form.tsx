@@ -1,19 +1,19 @@
 import * as React from 'react';
-import __ from 'akeneoenrichedentity/tools/translator';
+import __ from 'akeneoreferenceentity/tools/translator';
 import {
-  NormalizedEnrichedEntity,
-  denormalizeEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
-import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
-import File from 'akeneoenrichedentity/domain/model/file';
-import Image from 'akeneoenrichedentity/application/component/app/image';
+  NormalizedReferenceEntity,
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import File from 'akeneoreferenceentity/domain/model/file';
+import Image from 'akeneoreferenceentity/application/component/app/image';
 
 interface FormProps {
   locale: string;
-  data: NormalizedEnrichedEntity;
+  data: NormalizedReferenceEntity;
   errors: ValidationError[];
   onLabelUpdated: (value: string, locale: string) => void;
   onImageUpdated: (image: File) => void;
@@ -40,27 +40,27 @@ export default class EditForm extends React.Component<FormProps> {
   };
 
   render() {
-    const enrichedEntity = denormalizeEnrichedEntity(this.props.data);
+    const referenceEntity = denormalizeReferenceEntity(this.props.data);
 
     return (
       <div>
         <div className="AknFieldContainer" data-code="identifier">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
-              title={__('pim_enriched_entity.enriched_entity.properties.identifier')}
+              title={__('pim_reference_entity.reference_entity.properties.identifier')}
               className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.enriched_entity.properties.identifier"
+              htmlFor="pim_reference_entity.reference_entity.properties.identifier"
             >
-              {__('pim_enriched_entity.enriched_entity.properties.identifier')}
+              {__('pim_reference_entity.reference_entity.properties.identifier')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <input
               type="text"
               name="identifier"
-              id="pim_enriched_entity.enriched_entity.properties.identifier"
+              id="pim_reference_entity.reference_entity.properties.identifier"
               className="AknTextField AknTextField--light AknTextField--disabled"
-              value={enrichedEntity.getIdentifier().stringValue()}
+              value={referenceEntity.getIdentifier().stringValue()}
               readOnly
             />
           </div>
@@ -69,20 +69,20 @@ export default class EditForm extends React.Component<FormProps> {
         <div className="AknFieldContainer" data-code="label">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
-              title={__('pim_enriched_entity.enriched_entity.properties.label')}
+              title={__('pim_reference_entity.reference_entity.properties.label')}
               className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.enriched_entity.properties.label"
+              htmlFor="pim_reference_entity.reference_entity.properties.label"
             >
-              {__('pim_enriched_entity.enriched_entity.properties.label')}
+              {__('pim_reference_entity.reference_entity.properties.label')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <input
               type="text"
               name="label"
-              id="pim_enriched_entity.enriched_entity.properties.label"
+              id="pim_reference_entity.reference_entity.properties.label"
               className="AknTextField AknTextField--light"
-              value={enrichedEntity.getLabel(this.props.locale, false)}
+              value={referenceEntity.getLabel(this.props.locale, false)}
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
               ref={(input: HTMLInputElement) => {
@@ -100,19 +100,19 @@ export default class EditForm extends React.Component<FormProps> {
         <div className="AknFieldContainer" data-code="image">
           <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
-              title={__('pim_enriched_entity.enriched_entity.properties.image')}
+              title={__('pim_reference_entity.reference_entity.properties.image')}
               className="AknFieldContainer-label"
-              htmlFor="pim_enriched_entity.enriched_entity.properties.image"
+              htmlFor="pim_reference_entity.reference_entity.properties.image"
             >
-              {__('pim_enriched_entity.enriched_entity.properties.image')}
+              {__('pim_reference_entity.reference_entity.properties.image')}
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer">
             <Image
-              alt={__('pim_enriched_entity.enriched_entity.img', {
-                '{{ label }}': enrichedEntity.getLabel(this.props.locale),
+              alt={__('pim_reference_entity.reference_entity.img', {
+                '{{ label }}': referenceEntity.getLabel(this.props.locale),
               })}
-              image={enrichedEntity.getImage()}
+              image={referenceEntity.getImage()}
               wide={true}
               onImageChange={this.props.onImageUpdated}
             />

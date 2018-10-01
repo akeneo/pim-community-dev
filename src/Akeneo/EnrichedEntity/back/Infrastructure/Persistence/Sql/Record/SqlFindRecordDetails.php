@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -50,9 +50,9 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): ?RecordDetails
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails
     {
-        $result = $this->fetchResult($enrichedEntityIdentifier, $recordCode);
+        $result = $this->fetchResult($referenceEntityIdentifier, $recordCode);
 
         if (empty($result)) {
             return null;
@@ -63,20 +63,20 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         return $recordDetails;
     }
 
-    private function fetchResult(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): array
+    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): array
     {
         $query = <<<SQL
-        SELECT ee.identifier, ee.code, ee.enriched_entity_identifier, ee.labels, ee.value_collection, fi.image
-        FROM akeneo_enriched_entity_record AS ee
+        SELECT ee.identifier, ee.code, ee.reference_entity_identifier, ee.labels, ee.value_collection, fi.image
+        FROM akeneo_reference_entity_record AS ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
         ) AS fi ON fi.file_key = ee.image
-        WHERE code = :code && enriched_entity_identifier = :enriched_entity_identifier;
+        WHERE code = :code && reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'code' => (string) $recordCode,
-            'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
+            'reference_entity_identifier' => (string) $referenceEntityIdentifier,
         ]);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
@@ -84,23 +84,23 @@ SQL;
         return !$result ? [] : $result;
     }
 
-    private function getEnrichedEntityIdentifier($result): EnrichedEntityIdentifier
+    private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
     {
-        if (!isset($result['enriched_entity_identifier'])) {
+        if (!isset($result['reference_entity_identifier'])) {
             throw new \LogicException('The record should have an enriched entity identifier');
         }
-        $normalizedEnrichedEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
-            $result['enriched_entity_identifier'],
+        $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+            $result['reference_entity_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );
 
-        return EnrichedEntityIdentifier::fromString($normalizedEnrichedEntityIdentifier);
+        return ReferenceEntityIdentifier::fromString($normalizedReferenceEntityIdentifier);
     }
 
     private function hydrateRecordDetails($result): RecordDetails
     {
-        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifier($result);
-        $emptyValues = ($this->generateEmptyValues)($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($result);
+        $emptyValues = ($this->generateEmptyValues)($referenceEntityIdentifier);
 
         return $this->recordDetailsHydrator->hydrate($result, $emptyValues);
     }

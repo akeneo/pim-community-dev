@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditEnrichedEntityCommand
+class EditReferenceEntityCommand
 {
     /** @var string */
     public $identifier;

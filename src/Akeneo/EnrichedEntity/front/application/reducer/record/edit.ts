@@ -1,7 +1,7 @@
-import user, {UserState} from 'akeneoenrichedentity/application/reducer/user';
-import sidebar, {SidebarState} from 'akeneoenrichedentity/application/reducer/sidebar';
-import form, {EditionFormState} from 'akeneoenrichedentity/application/reducer/record/edit/form';
-import structure, {StructureState} from 'akeneoenrichedentity/application/reducer/structure';
+import user, {UserState} from 'akeneoreferenceentity/application/reducer/user';
+import sidebar, {SidebarState} from 'akeneoreferenceentity/application/reducer/sidebar';
+import form, {EditionFormState} from 'akeneoreferenceentity/application/reducer/record/edit/form';
+import structure, {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
 
 export interface EditState {
   user: UserState;

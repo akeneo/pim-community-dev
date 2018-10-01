@@ -1,43 +1,43 @@
 <?php
 
-namespace spec\Akeneo\Pim\EnrichedEntity\Component\Factory;
+namespace spec\Akeneo\Pim\ReferenceEntity\Component\Factory;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\Pim\EnrichedEntity\Component\Factory\EnrichedEntityCollectionValueFactory;
-use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Pim\ReferenceEntity\Component\Factory\ReferenceEntityCollectionValueFactory;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
+class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
     function let(RecordRepositoryInterface $recordRepository) {
         $this->beConstructedWith($recordRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntityCollectionValueFactory::class);
+        $this->shouldHaveType(ReferenceEntityCollectionValueFactory::class);
     }
 
-    function it_supports_enriched_entity_collection_attribute_type()
+    function it_supports_reference_entity_collection_attribute_type()
     {
         $this->supports('foo')->shouldReturn(false);
-        $this->supports('akeneo_enriched_entity_collection')->shouldReturn(true);
+        $this->supports('akeneo_reference_entity_collection')->shouldReturn(true);
     }
 
-    function it_creates_an_empty_enriched_entity_collection_product_value(
+    function it_creates_an_empty_reference_entity_collection_product_value(
         $recordRepository,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
@@ -50,21 +50,21 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(EnrichedEntityCollectionValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceEntityCollectionValue::class);
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_localizable_and_scopable_empty_enriched_entity_collection_product_value(
+    function it_creates_a_localizable_and_scopable_empty_reference_entity_collection_product_value(
         $recordRepository,
         AttributeInterface $attribute
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
@@ -78,7 +78,7 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
             null
         );
 
-        $productValue->shouldReturnAnInstanceOf(EnrichedEntityCollectionValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceEntityCollectionValue::class);
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldBeLocalizable();
         $productValue->shouldHaveLocale('en_US');
@@ -87,7 +87,7 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_an_enriched_entity_collection_product_value(
+    function it_creates_an_reference_entity_collection_product_value(
         $recordRepository,
         AttributeInterface $attribute,
         Record $starck,
@@ -96,16 +96,16 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $designerIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $starckCode = RecordCode::fromString('starck');
-        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
+        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
         $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
+        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
 
         $productValue = $this->create(
             $attribute,
@@ -114,14 +114,14 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
             ['starck', 'dyson']
         );
 
-        $productValue->shouldReturnAnInstanceOf(EnrichedEntityCollectionValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceEntityCollectionValue::class);
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldNotBeLocalizable();
         $productValue->shouldNotBeScopable();
         $productValue->shouldHaveRecord([$starck, $dyson]);
     }
 
-    function it_creates_a_localizable_and_scopable_enriched_entity_collection_product_value(
+    function it_creates_a_localizable_and_scopable_reference_entity_collection_product_value(
         $recordRepository,
         AttributeInterface $attribute,
         Record $starck,
@@ -130,16 +130,16 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $designerIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $starckCode = RecordCode::fromString('starck');
-        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
+        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $starckCode)->willReturn($starck);
         $dysonCode = RecordCode::fromString('dyson');
-        $recordRepository->getByEnrichedEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
+        $recordRepository->getByReferenceEntityAndCode($designerIdentifier, $dysonCode)->willReturn($dyson);
 
         $productValue = $this->create(
             $attribute,
@@ -148,7 +148,7 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
             ['starck', 'dyson']
         );
 
-        $productValue->shouldReturnAnInstanceOf(EnrichedEntityCollectionValue::class);
+        $productValue->shouldReturnAnInstanceOf(ReferenceEntityCollectionValue::class);
         $productValue->shouldHaveAttribute('designer');
         $productValue->shouldBeLocalizable();
         $productValue->shouldBeScopable();
@@ -160,14 +160,14 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $exception = InvalidPropertyTypeException::arrayExpected(
             'designer',
-            EnrichedEntityCollectionValueFactory::class,
+            ReferenceEntityCollectionValueFactory::class,
             true
         );
 
@@ -179,7 +179,7 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
         $attribute->getBackendType()->willReturn('reference_data_options');
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
@@ -187,7 +187,7 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'designer',
             'array key "foo" expects a string as value, "array" given',
-            EnrichedEntityCollectionValueFactory::class,
+            ReferenceEntityCollectionValueFactory::class,
             ['foo' => ['bar']]
         );
 
@@ -202,14 +202,14 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
 //        $attribute->isScopable()->willReturn(false);
 //        $attribute->isLocalizable()->willReturn(false);
 //        $attribute->getCode()->willReturn('designer');
-//        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+//        $attribute->getType()->willReturn('akeneo_reference_entity_collection');
 //        $attribute->getBackendType()->willReturn('reference_data_options');
 //        $attribute->isBackendTypeReferenceData()->willReturn(true);
 //        $attribute->getReferenceDataName()->willReturn('designer');
 //
-//        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+//        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 //        $dysonIdentifier = RecordIdentifier::fromString('dyson');
-//        $recordRepository->getByIdentifier($dysonIdentifier, $enrichedEntityIdentifier)->willReturn(null);
+//        $recordRepository->getByIdentifier($dysonIdentifier, $referenceEntityIdentifier)->willReturn(null);
 //
 //        $exception = InvalidPropertyException::validEntityCodeExpected(
 //            'designer',

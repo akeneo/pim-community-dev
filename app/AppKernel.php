@@ -83,7 +83,7 @@ class AppKernel extends Kernel
         return [
             new Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
-            new Akeneo\EnrichedEntity\Infrastructure\Symfony\AkeneoEnrichedEntityBundle(),
+            new Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle(),
             new Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle(),
             new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
             new Akeneo\Platform\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),

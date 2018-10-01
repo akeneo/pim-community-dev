@@ -1,33 +1,33 @@
-import Saver from 'akeneoenrichedentity/domain/saver/saver';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {postJSON} from 'akeneoenrichedentity/tools/fetch';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import handleError from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import Saver from 'akeneoreferenceentity/domain/saver/saver';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {postJSON} from 'akeneoreferenceentity/tools/fetch';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export interface EnrichedEntitySaver extends Saver<EnrichedEntity> {}
+export interface ReferenceEntitySaver extends Saver<ReferenceEntity> {}
 
-export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
+export class ReferenceEntitySaverImplementation implements ReferenceEntitySaver {
   constructor() {
     Object.freeze(this);
   }
 
-  async save(enrichedEntity: EnrichedEntity): Promise<ValidationError[] | null> {
+  async save(referenceEntity: ReferenceEntity): Promise<ValidationError[] | null> {
     return await postJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_edit_rest', {
-        identifier: enrichedEntity.getIdentifier().stringValue(),
+      routing.generate('akeneo_reference_entities_reference_entity_edit_rest', {
+        identifier: referenceEntity.getIdentifier().stringValue(),
       }),
-      enrichedEntity.normalize()
+      referenceEntity.normalize()
     ).catch(handleError);
   }
 
-  async create(enrichedEntity: EnrichedEntity): Promise<ValidationError[] | null> {
+  async create(referenceEntity: ReferenceEntity): Promise<ValidationError[] | null> {
     return await postJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_create_rest'),
-      enrichedEntity.normalize()
+      routing.generate('akeneo_reference_entities_reference_entity_create_rest'),
+      referenceEntity.normalize()
     ).catch(handleError);
   }
 }
 
-export default new EnrichedEntitySaverImplementation();
+export default new ReferenceEntitySaverImplementation();

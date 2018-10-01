@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute;
+namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -41,7 +41,7 @@ class CreateAttributeHandler
     public function __invoke(AbstractCreateAttributeCommand $command): void
     {
         $identifier = $this->attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
             AttributeCode::fromString($command->code)
         );
 

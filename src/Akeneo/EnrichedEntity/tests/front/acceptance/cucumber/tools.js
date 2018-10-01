@@ -7,7 +7,7 @@ const {
 
 const getRequestContract = fileName => {
   return JSON.parse(
-    fs.readFileSync(`${process.cwd()}/src/Akeneo/EnrichedEntity/tests/shared/responses/${fileName}`, 'utf-8')
+    fs.readFileSync(`${process.cwd()}/src/Akeneo/ReferenceEntity/tests/shared/responses/${fileName}`, 'utf-8')
   );
 };
 

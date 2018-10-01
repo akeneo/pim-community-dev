@@ -10,11 +10,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditRecordCommandFactory;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +86,7 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
+        return $normalizedCommand['reference_entity_identifier'] !== $request->get('referenceEntityIdentifier') ||
             $normalizedCommand['code'] !== $request->get('recordCode');
     }
 

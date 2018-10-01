@@ -1,13 +1,13 @@
-import {getValueDenormalizer} from 'akeneoenrichedentity/application/denormalizer/record/value';
-import {createValue} from 'akeneoenrichedentity/domain/model/record/value';
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {denormalizeChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
-import {denormalize as denormalizeTextData} from 'akeneoenrichedentity/domain/model/record/data/text';
+import {getValueDenormalizer} from 'akeneoreferenceentity/application/denormalizer/record/value';
+import {createValue} from 'akeneoreferenceentity/domain/model/record/value';
+import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import {denormalize as denormalizeTextData} from 'akeneoreferenceentity/domain/model/record/data/text';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  enriched_entity_identifier: 'designer',
+  reference_entity_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',

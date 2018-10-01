@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_RECORD_ROUTE = 'akeneo_enriched_entities_record_create_rest';
+    private const CREATE_RECORD_ROUTE = 'akeneo_reference_entities_record_create_rest';
 
     /** @var Client */
     private $client;
@@ -37,7 +37,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -49,7 +49,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::CREATE_RECORD_ROUTE,
             [
-                'enrichedEntityIdentifier' => 'brand',
+                'referenceEntityIdentifier' => 'brand',
             ],
             'POST',
             [
@@ -58,7 +58,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             [
                 'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
-                'enriched_entity_identifier' => 'brand',
+                'reference_entity_identifier' => 'brand',
                 'code' => 'intel',
                 'labels' => [
                     'fr_FR' => 'Intel',
@@ -79,7 +79,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::CREATE_RECORD_ROUTE,
             [
-                'enrichedEntityIdentifier' => 'brand',
+                'referenceEntityIdentifier' => 'brand',
             ],
             'POST',
             [
@@ -89,7 +89,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             [
                 'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
                 'code' => 'intel',
-                'enriched_entity_identifier' => 'brand',
+                'reference_entity_identifier' => 'brand',
             ]
         );
 
@@ -101,20 +101,20 @@ class CreateActionTest extends ControllerIntegrationTestCase
      * @dataProvider invalidIdentifiers
      *
      * @param mixed $recordCode
-     * @param mixed $enrichedEntityIdentifier
-     * @param mixed $enrichedEntityIdentifierURL
+     * @param mixed $referenceEntityIdentifier
+     * @param mixed $referenceEntityIdentifierURL
      */
     public function it_returns_an_error_when_the_record_identifier_is_not_valid(
         $recordCode,
-        $enrichedEntityIdentifier,
-        $enrichedEntityIdentifierURL,
+        $referenceEntityIdentifier,
+        $referenceEntityIdentifierURL,
         string $expectedResponse
     ) {
         $this->webClientHelper->callRoute(
             $this->client,
             self::CREATE_RECORD_ROUTE,
             [
-                'enrichedEntityIdentifier' => $enrichedEntityIdentifierURL,
+                'referenceEntityIdentifier' => $referenceEntityIdentifierURL,
             ],
             'POST',
             [
@@ -123,7 +123,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             [
                 'identifier' => 'brand_intel_a1677570-a278-444b-ab46-baa1db199392',
-                'enriched_entity_identifier' => $enrichedEntityIdentifier,
+                'reference_entity_identifier' => $referenceEntityIdentifier,
                 'code' => $recordCode,
                 'labels' => []
             ]
@@ -141,11 +141,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_an_error_when_the_record_identifier_is_not_unique()
     {
-        $urlParameters = ['enrichedEntityIdentifier' => 'designer'];
+        $urlParameters = ['referenceEntityIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
         $content = [
             'identifier'                 => 'designer_starck_1',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code'                       => 'starck',
             'labels'                     => ['fr_FR' => 'Philippe Starck'],
 
@@ -158,7 +158,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_enriched_entity.record.validation.code.should_be_unique","parameters":{"%enriched_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"enrichedEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
     }
 
     /** @test */
@@ -169,7 +169,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             $this->client,
             self::CREATE_RECORD_ROUTE,
             [
-                'enrichedEntityIdentifier' => 'michel',
+                'referenceEntityIdentifier' => 'michel',
             ],
             'POST',
             [
@@ -178,7 +178,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             [
                 'identifier' => 'michel_sardoux_a1677570-a278-444b-ab46-baa1db199392',
-                'enriched_entity_identifier' => 'michel',
+                'reference_entity_identifier' => 'michel',
                 'labels'     => [
                     'fr_FR' => 'Starck',
                     'en_US' => 'Starck',
@@ -196,13 +196,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->get('pim_user.repository.user')->save($user);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', true);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_record_create', true);
     }
 
     private function revokeCreationRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', false);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_record_create', false);
     }
 
     public function invalidIdentifiers()
@@ -214,24 +214,24 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 null,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"referenceEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"referenceEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Record Identifier is an integer'                                                            => [
                 1234123,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"referenceEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier has a dash character'                                                     => [//rework as it should not be possible
                 'invalid-code',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"pim_reference_entity.record.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"brand","code":"invalid-code","labels":[]},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',
                 'brand',
                 sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
                     $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],
@@ -239,13 +239,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'intel',
                 'invalid-code',
                 'invalid-code',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"invalid-code","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
+                '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"invalid-code","code":"intel","labels":[]},"propertyPath":"referenceEntityIdentifier","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Enriched Entity Identifier is 256 characters long'                                          => [
                 'intel',
                 $longIdentifier,
                 $longIdentifier,
                 sprintf(
-                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"referenceEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"referenceEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
                     $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],

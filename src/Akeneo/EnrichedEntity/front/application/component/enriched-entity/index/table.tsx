@@ -1,18 +1,18 @@
 import * as React from 'react';
-import ItemView from 'akeneoenrichedentity/application/component/enriched-entity/index/item';
-import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
+import ItemView from 'akeneoreferenceentity/application/component/reference-entity/index/item';
+import ReferenceEntity, {createReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 
 interface TableState {
   locale: string;
-  enrichedEntities: EnrichedEntity[];
+  referenceEntities: ReferenceEntity[];
   isLoading: boolean;
 }
 
 interface TableDispatch {
-  onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
+  onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void;
 }
 
 interface TableProps extends TableState, TableDispatch {}
@@ -23,21 +23,21 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   };
 
   componentWillReceiveProps(nextProps: TableProps) {
-    if (this.props.enrichedEntities.length !== nextProps.enrichedEntities.length) {
-      this.setState({nextItemToAddPosition: this.props.enrichedEntities.length});
+    if (this.props.referenceEntities.length !== nextProps.referenceEntities.length) {
+      this.setState({nextItemToAddPosition: this.props.referenceEntities.length});
     }
   }
 
   renderItems(
-    enrichedEntities: EnrichedEntity[],
+    referenceEntities: ReferenceEntity[],
     locale: string,
     isLoading: boolean,
-    onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void
+    onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void
   ): JSX.Element | JSX.Element[] {
-    if (0 === enrichedEntities.length && isLoading) {
-      const enrichedEntityIdentifier = createIdentifier('');
+    if (0 === referenceEntities.length && isLoading) {
+      const referenceEntityIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
-      const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection, createEmptyFile());
+      const referenceEntity = createReferenceEntity(referenceEntityIdentifier, labelCollection, createEmptyFile());
 
       return Array(4)
         .fill('placeholder')
@@ -45,23 +45,23 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
           <ItemView
             key={`${attributeIdentifier}_${key}`}
             isLoading={isLoading}
-            enrichedEntity={enrichedEntity}
+            referenceEntity={referenceEntity}
             locale={locale}
-            onRedirectToEnrichedEntity={() => {}}
+            onRedirectToReferenceEntity={() => {}}
             position={key}
           />
         ));
     }
 
-    return enrichedEntities.map((enrichedEntity: EnrichedEntity, index: number) => {
+    return referenceEntities.map((referenceEntity: ReferenceEntity, index: number) => {
       const itemPosition = index - this.state.nextItemToAddPosition;
 
       return (
         <ItemView
-          key={enrichedEntity.getIdentifier().stringValue()}
-          enrichedEntity={enrichedEntity}
+          key={referenceEntity.getIdentifier().stringValue()}
+          referenceEntity={referenceEntity}
           locale={locale}
-          onRedirectToEnrichedEntity={onRedirectToEnrichedEntity}
+          onRedirectToReferenceEntity={onRedirectToReferenceEntity}
           position={itemPosition > 0 ? itemPosition : 0}
         />
       );
@@ -69,12 +69,12 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {enrichedEntities, locale, onRedirectToEnrichedEntity, isLoading} = this.props;
+    const {referenceEntities, locale, onRedirectToReferenceEntity, isLoading} = this.props;
 
     return (
       <div className="AknGrid">
         <div className="AknGrid-body">
-          {this.renderItems(enrichedEntities, locale, isLoading, onRedirectToEnrichedEntity)}
+          {this.renderItems(referenceEntities, locale, isLoading, onRedirectToReferenceEntity)}
         </div>
       </div>
     );

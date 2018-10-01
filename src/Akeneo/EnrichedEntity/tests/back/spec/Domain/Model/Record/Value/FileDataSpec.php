@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record\Value;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record\Value;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\FileData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 

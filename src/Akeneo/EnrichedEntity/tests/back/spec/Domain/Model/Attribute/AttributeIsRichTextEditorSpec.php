@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
 use PhpSpec\ObjectBehavior;
 
 class AttributeIsRichTextEditorSpec extends ObjectBehavior

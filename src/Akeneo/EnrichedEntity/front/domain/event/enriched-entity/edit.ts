@@ -1,31 +1,31 @@
-import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import File from 'akeneoenrichedentity/domain/model/file';
+import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import File from 'akeneoreferenceentity/domain/model/file';
 
-export const enrichedEntityEditionReceived = (enrichedEntity: NormalizedEnrichedEntity) => {
-  return {type: 'ENRICHED_ENTITY_EDITION_RECEIVED', enrichedEntity};
+export const referenceEntityEditionReceived = (referenceEntity: NormalizedReferenceEntity) => {
+  return {type: 'ENRICHED_ENTITY_EDITION_RECEIVED', referenceEntity};
 };
 
-export const enrichedEntityEditionUpdated = (enrichedEntity: NormalizedEnrichedEntity) => {
-  return {type: 'ENRICHED_ENTITY_EDITION_UPDATED', enrichedEntity};
+export const referenceEntityEditionUpdated = (referenceEntity: NormalizedReferenceEntity) => {
+  return {type: 'ENRICHED_ENTITY_EDITION_UPDATED', referenceEntity};
 };
 
-export const enrichedEntityEditionLabelUpdated = (value: string, locale: string) => {
+export const referenceEntityEditionLabelUpdated = (value: string, locale: string) => {
   return {type: 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED', value, locale};
 };
 
-export const enrichedEntityEditionImageUpdated = (image: File) => {
+export const referenceEntityEditionImageUpdated = (image: File) => {
   return {type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED', image: image.normalize()};
 };
 
-export const enrichedEntityEditionSubmission = () => {
+export const referenceEntityEditionSubmission = () => {
   return {type: 'ENRICHED_ENTITY_EDITION_SUBMISSION'};
 };
 
-export const enrichedEntityEditionSucceeded = () => {
+export const referenceEntityEditionSucceeded = () => {
   return {type: 'ENRICHED_ENTITY_EDITION_SUCCEEDED'};
 };
 
-export const enrichedEntityEditionErrorOccured = (errors: ValidationError[]) => {
+export const referenceEntityEditionErrorOccured = (errors: ValidationError[]) => {
   return {type: 'ENRICHED_ENTITY_EDITION_ERROR_OCCURED', errors};
 };

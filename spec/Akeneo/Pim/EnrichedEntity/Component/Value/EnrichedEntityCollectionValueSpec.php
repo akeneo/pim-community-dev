@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\Akeneo\Pim\EnrichedEntity\Component\Value;
+namespace spec\Akeneo\Pim\ReferenceEntity\Component\Value;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
-class EnrichedEntityCollectionValueSpec extends ObjectBehavior {
+class ReferenceEntityCollectionValueSpec extends ObjectBehavior {
     function let(
         AttributeInterface $designer,
         LocaleInterface $locale,
@@ -26,7 +26,7 @@ class EnrichedEntityCollectionValueSpec extends ObjectBehavior {
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntityCollectionValue::class);
+        $this->shouldHaveType(ReferenceEntityCollectionValue::class);
         $this->shouldHaveType(ValueInterface::class);
     }
 

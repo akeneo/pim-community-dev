@@ -1,4 +1,4 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 
 export const recordCreationStart = () => {
   return {type: 'RECORD_CREATION_START'};

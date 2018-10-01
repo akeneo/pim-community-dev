@@ -1,9 +1,9 @@
-import Saver from 'akeneoenrichedentity/domain/saver/attribute';
-import Attribute, {NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {postJSON} from 'akeneoenrichedentity/tools/fetch';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import MinimalAttribute from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import handleError from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import Saver from 'akeneoreferenceentity/domain/saver/attribute';
+import Attribute, {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {postJSON} from 'akeneoreferenceentity/tools/fetch';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import MinimalAttribute from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import handleError from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -19,12 +19,12 @@ export class AttributeSaverImplementation implements AttributeSaver {
     normalizedAttribute.is_text_area = normalizedAttribute.is_textarea;
     normalizedAttribute.identifier = {
       identifier: normalizedAttribute.identifier,
-      enriched_entity_identifier: normalizedAttribute.enriched_entity_identifier,
+      reference_entity_identifier: normalizedAttribute.reference_entity_identifier,
     };
 
     return await postJSON(
-      routing.generate('akeneo_enriched_entities_attribute_edit_rest', {
-        enrichedEntityIdentifier: attribute.getEnrichedEntityIdentifier().stringValue(),
+      routing.generate('akeneo_reference_entities_attribute_edit_rest', {
+        referenceEntityIdentifier: attribute.getReferenceEntityIdentifier().stringValue(),
         attributeIdentifier: attribute.getIdentifier().identifier,
       }),
       attribute.normalize()
@@ -35,8 +35,8 @@ export class AttributeSaverImplementation implements AttributeSaver {
     const normalizedAttribute = attribute.normalize() as NormalizedAttribute;
 
     return await postJSON(
-      routing.generate('akeneo_enriched_entities_attribute_create_rest', {
-        enrichedEntityIdentifier: attribute.getEnrichedEntityIdentifier().stringValue(),
+      routing.generate('akeneo_reference_entities_attribute_create_rest', {
+        referenceEntityIdentifier: attribute.getReferenceEntityIdentifier().stringValue(),
       }),
       normalizedAttribute
     ).catch(handleError);

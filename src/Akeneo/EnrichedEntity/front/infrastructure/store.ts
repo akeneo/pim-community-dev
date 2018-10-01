@@ -1,7 +1,7 @@
 import thunkMiddleware from 'redux-thunk';
 import {applyMiddleware, createStore, Store, combineReducers} from 'redux';
-import routerMiddleware from 'akeneoenrichedentity/infrastructure/middleware/router';
-import formNotifier from 'akeneoenrichedentity/infrastructure/middleware/form-notifier';
+import routerMiddleware from 'akeneoreferenceentity/infrastructure/middleware/router';
+import formNotifier from 'akeneoreferenceentity/infrastructure/middleware/form-notifier';
 import {composeWithDevTools} from 'redux-devtools-extension';
 const router = require('pim/router');
 

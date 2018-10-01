@@ -10,11 +10,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\DeleteRecord;
+namespace Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -33,8 +33,8 @@ class DeleteRecordHandler
     public function __invoke(DeleteRecordCommand $deleteRecordCommand): void
     {
         $recordCode = RecordCode::fromString($deleteRecordCommand->recordCode);
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($deleteRecordCommand->enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($deleteRecordCommand->referenceEntityIdentifier);
 
-        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
     }
 }

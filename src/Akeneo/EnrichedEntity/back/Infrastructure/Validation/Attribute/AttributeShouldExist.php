@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeShouldExist extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.attribute.validation.code.should_exist';
+    public const ERROR_MESSAGE = 'pim_reference_entity.attribute.validation.code.should_exist';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class AttributeShouldExist extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.attribute.attribute_should_exist';
+        return 'akeneo_referenceentity.validator.attribute.attribute_should_exist';
     }
 }

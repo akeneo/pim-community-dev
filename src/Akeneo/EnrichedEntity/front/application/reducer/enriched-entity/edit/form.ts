@@ -1,30 +1,30 @@
-import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import formState, {FormState} from 'akeneoenrichedentity/application/reducer/state';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import formState, {FormState} from 'akeneoreferenceentity/application/reducer/state';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
+import {NormalizedFile} from 'akeneoreferenceentity/domain/model/file';
 
 export interface EditionFormState {
   state: FormState;
-  data: NormalizedEnrichedEntity;
+  data: NormalizedReferenceEntity;
   errors: ValidationError[];
 }
 
-const stateReducer = formState('enrichedEntity', 'ENRICHED_ENTITY_EDITION_UPDATED', 'ENRICHED_ENTITY_EDITION_RECEIVED');
+const stateReducer = formState('referenceEntity', 'ENRICHED_ENTITY_EDITION_UPDATED', 'ENRICHED_ENTITY_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: NormalizedEnrichedEntity = {identifier: '', code: '', labels: {}, image: null},
+  state: NormalizedReferenceEntity = {identifier: '', code: '', labels: {}, image: null},
   {
     type,
-    enrichedEntity,
+    referenceEntity,
     value,
     locale,
     image,
-  }: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string; image: NormalizedFile}
+  }: {type: string; referenceEntity: NormalizedReferenceEntity; value: string; locale: string; image: NormalizedFile}
 ) => {
   switch (type) {
     case 'ENRICHED_ENTITY_EDITION_RECEIVED':
-      state = enrichedEntity;
+      state = referenceEntity;
       break;
     case 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED':
       state = {...state, labels: {...state.labels, [locale]: value}};

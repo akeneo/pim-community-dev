@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditMaxLengthCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditMaxLengthCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_max_length_edits()
     {
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
             'max_length' => '154',
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
             'max_length' => null
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -35,14 +35,14 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
         $command = $this->create([
             'identifier' => [
                 'identifier'                 => 'name',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
             ],
             'max_length' => 100,
         ]);
         $command->shouldBeAnInstanceOf(EditMaxLengthCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'name',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
         ]);
         $command->maxLength->shouldBeEqualTo(100);
     }
@@ -54,7 +54,7 @@ class EditMaxLengthCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'enriched_entity_identifier' => 'designer',
+                        'reference_entity_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
+namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
 
 /**
  * It represents the intent to create a new record
@@ -21,7 +21,7 @@ namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
 class CreateRecordCommand
 {
     /** @var string */
-    public $enrichedEntityIdentifier;
+    public $referenceEntityIdentifier;
 
     /** @var string */
     public $code;

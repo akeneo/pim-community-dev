@@ -1,9 +1,9 @@
-import {NormalizedRecord} from 'akeneoenrichedentity/domain/model/record/record';
-import formState, {FormState} from 'akeneoenrichedentity/application/reducer/state';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import {NormalizedRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import formState, {FormState} from 'akeneoreferenceentity/application/reducer/state';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {combineReducers} from 'redux';
-import {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
-import {NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
+import {NormalizedFile} from 'akeneoreferenceentity/domain/model/file';
+import {NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
 
 export interface EditionFormState {
   state: FormState;
@@ -16,7 +16,7 @@ const stateReducer = formState('record', 'RECORD_EDITION_UPDATED', 'RECORD_EDITI
 const dataReducer = (
   state: NormalizedRecord = {
     identifier: '',
-    enriched_entity_identifier: '',
+    reference_entity_identifier: '',
     code: '',
     labels: {},
     image: null,

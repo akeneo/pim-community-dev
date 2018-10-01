@@ -1,12 +1,12 @@
-import Identifier, {NormalizedAttributeIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
+import Identifier, {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 import MinimalAttribute, {
   MinimalNormalizedAttribute,
   MinimalConcreteAttribute,
   AttributeType,
-} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import AttributeCode from 'akeneoenrichedentity/domain/model/attribute/code';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
+} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import AttributeCode from 'akeneoreferenceentity/domain/model/attribute/code';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import LabelCollection from 'akeneoreferenceentity/domain/model/label-collection';
 
 export interface CommonNormalizedAttribute extends MinimalNormalizedAttribute {
   identifier: NormalizedAttributeIdentifier;
@@ -26,7 +26,7 @@ export interface CommonAttribute extends MinimalAttribute {
 export abstract class CommonConcreteAttribute extends MinimalConcreteAttribute implements CommonAttribute {
   protected constructor(
     readonly identifier: Identifier,
-    enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     type: AttributeType,
@@ -35,7 +35,7 @@ export abstract class CommonConcreteAttribute extends MinimalConcreteAttribute i
     readonly order: number,
     readonly isRequired: boolean
   ) {
-    super(enrichedEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
+    super(referenceEntityIdentifier, code, labelCollection, type, valuePerLocale, valuePerChannel);
 
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('Attribute expect an AttributeIdentifier argument');

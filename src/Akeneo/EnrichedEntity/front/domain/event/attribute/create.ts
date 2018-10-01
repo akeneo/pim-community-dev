@@ -1,4 +1,4 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 
 export const attributeCreationStart = () => {
   return {type: 'ATTRIBUTE_CREATION_START'};

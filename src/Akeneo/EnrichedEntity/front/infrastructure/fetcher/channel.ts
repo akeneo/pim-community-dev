@@ -1,9 +1,9 @@
-import ChannelFetcher from 'akeneoenrichedentity/domain/fetcher/channel';
-import Channel from 'akeneoenrichedentity/domain/model/channel';
-import hydrator from 'akeneoenrichedentity/application/hydrator/channel';
-import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
-import {getJSON} from 'akeneoenrichedentity/tools/fetch';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import ChannelFetcher from 'akeneoreferenceentity/domain/fetcher/channel';
+import Channel from 'akeneoreferenceentity/domain/model/channel';
+import hydrator from 'akeneoreferenceentity/application/hydrator/channel';
+import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import {getJSON} from 'akeneoreferenceentity/tools/fetch';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 

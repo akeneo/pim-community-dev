@@ -1,5 +1,5 @@
-import {create, denormalize} from 'akeneoenrichedentity/domain/model/record/data/file';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
+import {create, denormalize} from 'akeneoreferenceentity/domain/model/record/data/file';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 
 describe('akeneo > enriched entity > domain > model > record > data --- file', () => {
   test('I can create a new FileData with a File value', () => {

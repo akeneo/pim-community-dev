@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class RecordCodeShouldBeUnique extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.record.validation.code.should_be_unique';
+    public const ERROR_MESSAGE = 'pim_reference_entity.record.validation.code.should_be_unique';
 
     public function getTargets()
     {
@@ -32,6 +32,6 @@ class RecordCodeShouldBeUnique extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.record.record_is_unique';
+        return 'akeneo_referenceentity.validator.record.record_is_unique';
     }
 }

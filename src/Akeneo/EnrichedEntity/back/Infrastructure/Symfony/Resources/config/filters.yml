@@ -1,14 +1,14 @@
 parameters:
-    akeneo_enriched_entity.query.elasticsearch.filter.enriched_entity.class: Akeneo\Pim\EnrichedEntity\Component\Filter\EnrichedEntityFilter
+    akeneo_reference_entity.query.elasticsearch.filter.reference_entity.class: Akeneo\Pim\ReferenceEntity\Component\Filter\ReferenceEntityFilter
 
 services:
-    pim.enriched_entity.query.filter.enriched_entity:
-        class: '%akeneo_enriched_entity.query.elasticsearch.filter.enriched_entity.class%'
+    pim.reference_entity.query.filter.reference_entity:
+        class: '%akeneo_reference_entity.query.elasticsearch.filter.reference_entity.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - '@akeneo_enrichedentity.infrastructure.persistence.query.record_exists'
-            - '@akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists'
-            - ['akeneo_enriched_entity_collection']
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
+            - ['akeneo_reference_entity_collection']
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }

@@ -1,4 +1,4 @@
-import Data from 'akeneoenrichedentity/domain/model/record/data';
+import Data from 'akeneoreferenceentity/domain/model/record/data';
 
 class InvalidTypeError extends Error {}
 

@@ -1,19 +1,19 @@
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-export {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+export {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {
   NormalizedTextAttribute,
   TextAttribute,
   ConcreteTextAttribute,
   TextAdditionalProperty,
   NormalizedTextAdditionalProperty,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text';
 import {
   NormalizedImageAttribute,
   ImageAttribute,
   ConcreteImageAttribute,
   ImageAdditionalProperty,
   NormalizedImageAdditionalProperty,
-} from 'akeneoenrichedentity/domain/model/attribute/type/image';
+} from 'akeneoreferenceentity/domain/model/attribute/type/image';
 
 export interface NormalizableAdditionalProperty {
   normalize(): NormalizedAdditionalProperty;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import __ from 'akeneoenrichedentity/tools/translator';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import __ from 'akeneoreferenceentity/tools/translator';
 
 export const getErrorsView = (errors: ValidationError[], field: string) => {
   const errorMessages = errors

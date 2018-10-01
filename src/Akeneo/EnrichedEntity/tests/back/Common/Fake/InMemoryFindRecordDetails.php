@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -35,19 +35,19 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
     public function save(RecordDetails $recordDetails)
     {
         $normalized = $recordDetails->normalize();
-        $enrichedEntityIdentifier = $normalized['enriched_entity_identifier'];
+        $referenceEntityIdentifier = $normalized['reference_entity_identifier'];
         $code = $normalized['code'];
 
-        $this->results[sprintf('%s____%s', $enrichedEntityIdentifier, $code)] = $recordDetails;
+        $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $code)] = $recordDetails;
     }
 
     /**
      * {@inheritdoc}
      */
     public function __invoke(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode
     ): ?RecordDetails {
-        return $this->results[sprintf('%s____%s', $enrichedEntityIdentifier, $recordCode)] ?? null;
+        return $this->results[sprintf('%s____%s', $referenceEntityIdentifier, $recordCode)] ?? null;
     }
 }

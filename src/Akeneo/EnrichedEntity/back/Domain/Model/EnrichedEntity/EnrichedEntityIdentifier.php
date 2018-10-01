@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
 
 use Webmozart\Assert\Assert;
 
@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityIdentifier
+class ReferenceEntityIdentifier
 {
     /** @var string */
     private $identifier;
@@ -57,7 +57,7 @@ class EnrichedEntityIdentifier
         return $this->identifier;
     }
 
-    public function equals(EnrichedEntityIdentifier $identifier): bool
+    public function equals(ReferenceEntityIdentifier $identifier): bool
     {
         return $this->identifier === (string) $identifier;
     }

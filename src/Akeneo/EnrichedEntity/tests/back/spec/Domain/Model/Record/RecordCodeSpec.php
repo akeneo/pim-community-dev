@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use PhpSpec\ObjectBehavior;
 
 class RecordCodeSpec extends ObjectBehavior

@@ -3,20 +3,20 @@ import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as React from 'react';
 import {Store} from 'redux';
-import __ from 'akeneoenrichedentity/tools/translator';
-import EnrichedEntityView from 'akeneoenrichedentity/application/component/enriched-entity/edit';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import createStore from 'akeneoenrichedentity/infrastructure/store';
-import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import {enrichedEntityEditionReceived} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
-import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
-import {setUpSidebar} from 'akeneoenrichedentity/application/action/sidebar';
-import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
-import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
-import {updateActivatedLocales} from 'akeneoenrichedentity/application/action/locale';
-import {updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import __ from 'akeneoreferenceentity/tools/translator';
+import ReferenceEntityView from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import createStore from 'akeneoreferenceentity/infrastructure/store';
+import referenceEntityReducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import {referenceEntityEditionReceived} from 'akeneoreferenceentity/domain/event/reference-entity/edit';
+import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoreferenceentity/domain/event/user';
+import {setUpSidebar} from 'akeneoreferenceentity/application/action/sidebar';
+import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
+import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
+import {updateActivatedLocales} from 'akeneoreferenceentity/application/action/locale';
+import {updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -27,29 +27,29 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   }
 };
 
-class EnrichedEntityEditController extends BaseController {
+class ReferenceEntityEditController extends BaseController {
   private store: Store<any>;
 
   renderRoute(route: any) {
-    enrichedEntityFetcher.fetch(createIdentifier(route.params.identifier)).then((enrichedEntity: EnrichedEntity) => {
-      this.store = createStore(true)(enrichedEntityReducer);
-      this.store.dispatch(enrichedEntityEditionReceived(enrichedEntity.normalize()));
+    referenceEntityFetcher.fetch(createIdentifier(route.params.identifier)).then((referenceEntity: ReferenceEntity) => {
+      this.store = createStore(true)(referenceEntityReducer);
+      this.store.dispatch(referenceEntityEditionReceived(referenceEntity.normalize()));
       this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
       this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
       this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-      this.store.dispatch(setUpSidebar('akeneo_enriched_entities_enriched_entity_edit') as any);
+      this.store.dispatch(setUpSidebar('akeneo_reference_entities_reference_entity_edit') as any);
       this.store.dispatch(updateCurrentTab(route.params.tab));
       this.store.dispatch(updateRecordResults());
       this.store.dispatch(updateAttributeList() as any);
       this.store.dispatch(updateActivatedLocales() as any);
       document.addEventListener('keydown', shortcutDispatcher(this.store));
 
-      mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-enriched-entity'});
+      mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-reference-entity'});
       $(window).on('beforeunload', this.beforeUnload);
 
       ReactDOM.render(
         <Provider store={this.store}>
-          <EnrichedEntityView />
+          <ReferenceEntityView />
         </Provider>,
         this.el
       );
@@ -85,4 +85,4 @@ class EnrichedEntityEditController extends BaseController {
   }
 }
 
-export = EnrichedEntityEditController;
+export = ReferenceEntityEditController;

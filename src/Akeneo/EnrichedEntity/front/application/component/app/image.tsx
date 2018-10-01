@@ -1,8 +1,8 @@
 import * as React from 'react';
-import FileModel from 'akeneoenrichedentity/domain/model/file';
-import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
-import imageUploader from 'akeneoenrichedentity/infrastructure/uploader/image';
-import loadImage from 'akeneoenrichedentity/tools/image-loader';
+import FileModel from 'akeneoreferenceentity/domain/model/file';
+import {getImageShowUrl} from 'akeneoreferenceentity/tools/media-url-generator';
+import imageUploader from 'akeneoreferenceentity/infrastructure/uploader/image';
+import loadImage from 'akeneoreferenceentity/tools/image-loader';
 
 class Image extends React.Component<
   {

@@ -11,35 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateEnrichedEntityHandler
+class CreateReferenceEntityHandler
 {
-    /** @var EnrichedEntityRepositoryInterface */
-    private $enrichedEntityRepository;
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
 
-    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
+    public function __construct(ReferenceEntityRepositoryInterface $referenceEntityRepository)
     {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
-    public function __invoke(CreateEnrichedEntityCommand $createEnrichedEntityCommand): void
+    public function __invoke(CreateReferenceEntityCommand $createReferenceEntityCommand): void
     {
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString($createEnrichedEntityCommand->code),
-            $createEnrichedEntityCommand->labels,
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString($createReferenceEntityCommand->code),
+            $createReferenceEntityCommand->labels,
             Image::createEmpty()
         );
 
-        $this->enrichedEntityRepository->create($enrichedEntity);
+        $this->referenceEntityRepository->create($referenceEntity);
     }
 }

@@ -1,6 +1,6 @@
-import Attribute from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 
 export default interface Fetcher {
-  fetchAll: (enrichedEntityIdentifier: EnrichedEntityIdentifier) => Promise<Attribute[]>;
+  fetchAll: (referenceEntityIdentifier: ReferenceEntityIdentifier) => Promise<Attribute[]>;
 }

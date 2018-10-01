@@ -3,21 +3,21 @@
  *
  * Example:
  * const RecordBuilder = require('../../common/builder/record.js');
- * const record = (new RecordBuilder()).withEnrichedEntityIdentifier('designer').build();
+ * const record = (new RecordBuilder()).withReferenceEntityIdentifier('designer').build();
  */
 
 class RecordBuilder {
   constructor() {
     this.record = {
-      enriched_entity_identifier: '',
+      reference_entity_identifier: '',
       code: '',
       labels: {},
       image: null,
     };
   }
 
-  withEnrichedEntityIdentifier(enrichedEntityIdentifier) {
-    this.record.enriched_entity_identifier = enrichedEntityIdentifier;
+  withReferenceEntityIdentifier(referenceEntityIdentifier) {
+    this.record.reference_entity_identifier = referenceEntityIdentifier;
 
     return this;
   }

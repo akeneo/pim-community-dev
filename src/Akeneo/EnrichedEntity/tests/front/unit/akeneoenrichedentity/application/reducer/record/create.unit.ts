@@ -1,4 +1,4 @@
-import reducer from 'akeneoenrichedentity/application/reducer/record/create';
+import reducer from 'akeneoreferenceentity/application/reducer/record/create';
 
 describe('akeneo > enriched entity > application > reducer > record --- create', () => {
   test('I ignore other commands', () => {

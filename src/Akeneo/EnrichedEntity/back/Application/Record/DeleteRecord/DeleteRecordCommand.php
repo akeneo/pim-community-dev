@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\DeleteRecord;
+namespace Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
@@ -22,5 +22,5 @@ class DeleteRecordCommand
     public $recordCode;
 
     /** @var string */
-    public $enrichedEntityIdentifier;
+    public $referenceEntityIdentifier;
 }

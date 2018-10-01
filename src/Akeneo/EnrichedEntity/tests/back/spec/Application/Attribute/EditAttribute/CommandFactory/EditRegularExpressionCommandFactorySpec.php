@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditRegularExpressionCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_property_regular_expression_edits()
     {
         $this->supports([
-            'identifier'         => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier'         => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
             'regular_expression' => '/\w+/',
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'         => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier'         => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
             'regular_expression' => null,
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'name', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'name', 'reference_entity_identifier' => 'designer'],
             'labels'     => 'wrong_property',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -35,14 +35,14 @@ class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
         $command = $this->create([
             'identifier' => [
                 'identifier'                 => 'name',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
             ],
             'regular_expression'   => '/\w+/',
         ]);
         $command->shouldBeAnInstanceOf(EditRegularExpressionCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'name',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
         ]);
         $command->regularExpression->shouldBeEqualTo('/\w+/');
     }
@@ -54,7 +54,7 @@ class EditRegularExpressionCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'enriched_entity_identifier' => 'designer',
+                        'reference_entity_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

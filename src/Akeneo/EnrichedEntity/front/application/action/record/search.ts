@@ -1,8 +1,8 @@
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import {Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
-import recordFetcher from 'akeneoenrichedentity/infrastructure/fetcher/record';
-import updateResultsWithFetcher from 'akeneoenrichedentity/application/action/search';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import recordFetcher from 'akeneoreferenceentity/infrastructure/fetcher/record';
+import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
 
 const stateToQuery = async (state: EditState): Promise<Query> => {
   return {
@@ -11,7 +11,7 @@ const stateToQuery = async (state: EditState): Promise<Query> => {
     page: state.grid.query.page,
     filters: [
       {
-        field: 'enriched_entity',
+        field: 'reference_entity',
         operator: '=',
         value: state.form.data.identifier,
         context: {},

@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -39,9 +39,9 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->recordExists = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.record_exists');
+        $this->recordExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.record_exists');
         $this->resetDB();
-        $this->loadEnrichedEntityDesigner();
+        $this->loadReferenceEntityDesigner();
         $this->loadRecordStarck();
     }
 
@@ -50,10 +50,10 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
      */
     public function it_tells_if_there_is_a_corresponding_record_identifier()
     {
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('Coco');
-        $recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $this->assertTrue($this->recordExists->withIdentifier($this->recordIdentifier));
         $this->assertFalse($this->recordExists->withIdentifier($recordIdentifier));
@@ -61,34 +61,34 @@ class SqlRecordExistsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntityDesigner(): void
+    private function loadReferenceEntityDesigner(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
     }
 
     public function loadRecordStarck(): void
     {
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $this->recordIdentifier = $recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $this->recordIdentifier = $recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $recordRepository->create(
             Record::create(
                 $this->recordIdentifier,
-                $enrichedEntityIdentifier,
+                $referenceEntityIdentifier,
                 $recordCode,
                 ['fr_FR' => 'Philippe Starck'],
                 Image::createEmpty(),

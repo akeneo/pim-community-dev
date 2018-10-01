@@ -1,23 +1,23 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import {NormalizedAttribute, NormalizedAdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import {NormalizedAttribute, NormalizedAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {
   NormalizedTextAttribute,
   NormalizedTextAdditionalProperty,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text';
-import {NormalizedRegularExpression} from 'akeneoenrichedentity/domain/model/attribute/type/text/regular-expression';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import {NormalizedRegularExpression} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
 import {
   NormalizedValidationRule,
   ValidationRuleOption,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text/validation-rule';
-import {NormalizedIsRichTextEditor} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-rich-text-editor';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
+import {NormalizedIsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
 import {
   NormalizedImageAttribute,
   NormalizedImageAdditionalProperty,
-} from 'akeneoenrichedentity/domain/model/attribute/type/image';
-import {NormalizedAllowedExtensions} from 'akeneoenrichedentity/domain/model/attribute/type/image/allowed-extensions';
-import {NormalizedMaxFileSize} from 'akeneoenrichedentity/domain/model/attribute/type/image/max-file-size';
-import {NormalizedIsTextarea} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-textarea';
-import {NormalizedMaxLength} from 'akeneoenrichedentity/domain/model/attribute/type/text/max-length';
+} from 'akeneoreferenceentity/domain/model/attribute/type/image';
+import {NormalizedAllowedExtensions} from 'akeneoreferenceentity/domain/model/attribute/type/image/allowed-extensions';
+import {NormalizedMaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
+import {NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
+import {NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
 
 export interface EditState {
   isActive: boolean;
@@ -35,7 +35,7 @@ const initEditState = (): EditState => ({
   originalData: '',
   data: {
     identifier: '',
-    enriched_entity_identifier: '',
+    reference_entity_identifier: '',
     code: '',
     labels: {},
     type: 'text',

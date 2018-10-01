@@ -1,4 +1,4 @@
-import {NormalizableAdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {InvalidArgumentError} from '../image';
 
 export enum AllowedExtensionsOptions {

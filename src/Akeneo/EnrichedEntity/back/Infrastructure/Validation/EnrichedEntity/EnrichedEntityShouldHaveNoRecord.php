@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\ReferenceEntity;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EnrichedEntityShouldHaveNoRecord extends Constraint
+class ReferenceEntityShouldHaveNoRecord extends Constraint
 {
-    public const ERROR_MESSAGE = 'pim_enriched_entity.enriched_entity.validation.records.should_have_no_record';
+    public const ERROR_MESSAGE = 'pim_reference_entity.reference_entity.validation.records.should_have_no_record';
 
     public function getTargets()
     {
@@ -30,6 +30,6 @@ class EnrichedEntityShouldHaveNoRecord extends Constraint
 
     public function validatedBy()
     {
-        return 'akeneo_enrichedentity.validator.enriched_entity.should_have_no_record';
+        return 'akeneo_referenceentity.validator.reference_entity.should_have_no_record';
     }
 }

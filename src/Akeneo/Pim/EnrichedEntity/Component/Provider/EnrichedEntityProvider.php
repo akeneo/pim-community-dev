@@ -10,9 +10,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Provider;
+namespace Akeneo\Pim\ReferenceEntity\Component\Provider;
 
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
@@ -22,7 +22,7 @@ use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class EnrichedEntityProvider implements FieldProviderInterface, EmptyValueProviderInterface
+class ReferenceEntityProvider implements FieldProviderInterface, EmptyValueProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class EnrichedEntityProvider implements FieldProviderInterface, EmptyValueProvid
      */
     public function getField($attribute): string
     {
-        return 'akeneo-enriched-entity-field';
+        return 'akeneo-reference-entity-field';
     }
 
     /**
@@ -46,6 +46,6 @@ class EnrichedEntityProvider implements FieldProviderInterface, EmptyValueProvid
     public function supports($element): bool
     {
         return $element instanceof AttributeInterface &&
-            EnrichedEntityCollectionType::ENRICHED_ENTITY_COLLECTION === $element->getType();
+            ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION === $element->getType();
     }
 }

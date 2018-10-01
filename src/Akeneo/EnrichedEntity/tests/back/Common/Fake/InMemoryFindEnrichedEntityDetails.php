@@ -11,41 +11,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindEnrichedEntityDetails implements FindEnrichedEntityDetailsInterface
+class InMemoryFindReferenceEntityDetails implements FindReferenceEntityDetailsInterface
 {
-    /** @var EnrichedEntityDetails[] */
+    /** @var ReferenceEntityDetails[] */
     private $results = [];
 
-    public function save(EnrichedEntityDetails $enrichedEntityDetails)
+    public function save(ReferenceEntityDetails $referenceEntityDetails)
     {
-        $key = $this->getKey($enrichedEntityDetails->identifier);
-        $this->results[$key] = $enrichedEntityDetails;
+        $key = $this->getKey($referenceEntityDetails->identifier);
+        $this->results[$key] = $referenceEntityDetails;
     }
 
     /**
      * {@inheritdoc}
      */
     public function __invoke(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
-    ): ?EnrichedEntityDetails {
-        $key = $this->getKey($enrichedEntityIdentifier);
+        ReferenceEntityIdentifier $referenceEntityIdentifier
+    ): ?ReferenceEntityDetails {
+        $key = $this->getKey($referenceEntityIdentifier);
 
         return $this->results[$key] ?? null;
     }
 
     private function getKey(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
+        ReferenceEntityIdentifier $referenceEntityIdentifier
     ): string {
-        return (string)$enrichedEntityIdentifier;
+        return (string)$referenceEntityIdentifier;
     }
 }

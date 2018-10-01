@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -30,13 +30,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-final class EditEnrichedEntityContext implements Context
+final class EditReferenceEntityContext implements Context
 {
-    /** @var EnrichedEntityRepositoryInterface */
-    private $enrichedEntityRepository;
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
 
-    /** @var EditEnrichedEntityHandler */
-    private $editEnrichedEntityHandler;
+    /** @var EditReferenceEntityHandler */
+    private $editReferenceEntityHandler;
 
     /** @var ValidatorInterface */
     private $validator;
@@ -48,19 +48,19 @@ final class EditEnrichedEntityContext implements Context
     private $constraintViolationsContext;
 
     /**
-     * @param EnrichedEntityRepositoryInterface $enrichedEntityRepository
-     * @param EditEnrichedEntityHandler         $editEnrichedEntityHandler
+     * @param ReferenceEntityRepositoryInterface $referenceEntityRepository
+     * @param EditReferenceEntityHandler         $editReferenceEntityHandler
      * @param ValidatorInterface                $validator
      * @param ConstraintViolationsContext       $constraintViolationsContext
      */
     public function __construct(
-        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
-        EditEnrichedEntityHandler $editEnrichedEntityHandler,
+        ReferenceEntityRepositoryInterface $referenceEntityRepository,
+        EditReferenceEntityHandler $editReferenceEntityHandler,
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext
     ) {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
-        $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
+        $this->referenceEntityRepository = $referenceEntityRepository;
+        $this->editReferenceEntityHandler = $editReferenceEntityHandler;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
     }
@@ -68,13 +68,13 @@ final class EditEnrichedEntityContext implements Context
     /**
      * @Given /^the following enriched entity:$/
      */
-    public function theFollowingEnrichedEntity(TableNode $enrichedEntitieTable)
+    public function theFollowingReferenceEntity(TableNode $enrichedEntitieTable)
     {
-        foreach ($enrichedEntitieTable->getHash() as $enrichedEntity) {
-            $this->enrichedEntityRepository->create(
-                EnrichedEntity::create(
-                    EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
-                    json_decode($enrichedEntity['labels'], true),
+        foreach ($enrichedEntitieTable->getHash() as $referenceEntity) {
+            $this->referenceEntityRepository->create(
+                ReferenceEntity::create(
+                    ReferenceEntityIdentifier::fromString($referenceEntity['identifier']),
+                    json_decode($referenceEntity['labels'], true),
                     Image::createEmpty()
                 )
             );
@@ -84,34 +84,34 @@ final class EditEnrichedEntityContext implements Context
     /**
      * @When /^the user updates the enriched entity "([^"]*)" with:$/
      */
-    public function theUserUpdatesTheEnrichedEntityWith(string $identifier, TableNode $updateTable)
+    public function theUserUpdatesTheReferenceEntityWith(string $identifier, TableNode $updateTable)
     {
         $updates = $updateTable->getRowsHash();
-        $command = new EditEnrichedEntityCommand();
+        $command = new EditReferenceEntityCommand();
         $command->identifier = $identifier;
         $command->labels = json_decode($updates['labels'], true);
-        ($this->editEnrichedEntityHandler)($command);
+        ($this->editReferenceEntityHandler)($command);
     }
 
     /**
      * @Then /^the enriched entity "([^"]*)" should be:$/
      */
-    public function theEnrichedEntityShouldBe(string $identifier, TableNode $enrichedEntityTable)
+    public function theReferenceEntityShouldBe(string $identifier, TableNode $referenceEntityTable)
     {
-        $expectedIdentifier = EnrichedEntityIdentifier::fromString($identifier);
-        $expectedInformation = current($enrichedEntityTable->getHash());
-        $actualEnrichedEntity = $this->enrichedEntityRepository->getByIdentifier($expectedIdentifier);
+        $expectedIdentifier = ReferenceEntityIdentifier::fromString($identifier);
+        $expectedInformation = current($referenceEntityTable->getHash());
+        $actualReferenceEntity = $this->referenceEntityRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
-            $actualEnrichedEntity
+            $actualReferenceEntity
         );
     }
 
-    private function assertSameLabels(array $expectedLabels, EnrichedEntity $actualEnrichedEntity)
+    private function assertSameLabels(array $expectedLabels, ReferenceEntity $actualReferenceEntity)
     {
         $actualLabels = [];
-        foreach ($actualEnrichedEntity->getLabelCodes() as $labelCode) {
-            $actualLabels[$labelCode] = $actualEnrichedEntity->getLabel($labelCode);
+        foreach ($actualReferenceEntity->getLabelCodes() as $labelCode) {
+            $actualLabels[$labelCode] = $actualReferenceEntity->getLabel($labelCode);
         }
 
         $differences = array_merge(
@@ -128,13 +128,13 @@ final class EditEnrichedEntityContext implements Context
     /**
      * @Given /^the enriched entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function theEnrichedEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
+    public function theReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
         $label = json_decode($label);
 
-        $this->enrichedEntityRepository->create(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString($identifier),
+        $this->referenceEntityRepository->create(
+            ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString($identifier),
                 [$localCode => $label],
                 Image::createEmpty()
             )
@@ -144,7 +144,7 @@ final class EditEnrichedEntityContext implements Context
     /**
      * @Given /^an image on an enriched entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
-    public function anImageOnAnEnrichedEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
+    public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
@@ -153,9 +153,9 @@ final class EditEnrichedEntityContext implements Context
         $file->setKey($filePath);
         $file->setOriginalFilename($filename);
 
-        $this->enrichedEntityRepository->create(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString($identifier),
+        $this->referenceEntityRepository->create(
+            ReferenceEntity::create(
+                ReferenceEntityIdentifier::fromString($identifier),
                 [],
                 Image::fromFileInfo($file)
             )
@@ -165,56 +165,56 @@ final class EditEnrichedEntityContext implements Context
     /**
      * @When /^the user updates the image of the enriched entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheImageOfTheEnrichedEntityWithPathAndFilename(string $identifier, string $filePath, string $filename): void
+    public function theUserUpdatesTheImageOfTheReferenceEntityWithPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
         $filePath = json_decode($filePath);
         $filename = json_decode($filename);
 
-        $editEnrichedEntityCommand = new EditEnrichedEntityCommand();
-        $editEnrichedEntityCommand->identifier = $identifier;
-        $editEnrichedEntityCommand->labels = [];
-        $editEnrichedEntityCommand->image = [
+        $editReferenceEntityCommand = new EditReferenceEntityCommand();
+        $editReferenceEntityCommand->identifier = $identifier;
+        $editReferenceEntityCommand->labels = [];
+        $editReferenceEntityCommand->image = [
             'filePath' => $filePath,
             'originalFilename' => $filename
         ];
-        $this->editEnrichedEntity($editEnrichedEntityCommand);
+        $this->editReferenceEntity($editReferenceEntityCommand);
     }
 
     /**
      * @When /^the user updates the enriched entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function theUserUpdatesTheEnrichedEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
+    public function theUserUpdatesTheReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
         $label = json_decode($label);
 
-        $editEnrichedEntityCommand = new EditEnrichedEntityCommand();
-        $editEnrichedEntityCommand->identifier = $identifier;
-        $editEnrichedEntityCommand->labels[$localCode] = $label;
-        $editEnrichedEntityCommand->image = null;
-        $this->editEnrichedEntity($editEnrichedEntityCommand);
+        $editReferenceEntityCommand = new EditReferenceEntityCommand();
+        $editReferenceEntityCommand->identifier = $identifier;
+        $editReferenceEntityCommand->labels[$localCode] = $label;
+        $editReferenceEntityCommand->image = null;
+        $this->editReferenceEntity($editReferenceEntityCommand);
     }
 
     /**
      * @Then /^the image of the enriched entity \'([^\']*)\' should be \'([^\']*)\'$/
      */
-    public function theImageOfTheEnrichedEntityShouldBe(string $identifier, string $filePath)
+    public function theImageOfTheReferenceEntityShouldBe(string $identifier, string $filePath)
     {
         $this->constraintViolationsContext->assertThereIsNoViolations();
 
         $filePath = json_decode($filePath);
 
-        $enrichedEntity = $this->enrichedEntityRepository
-            ->getByIdentifier(EnrichedEntityIdentifier::fromString($identifier));
+        $referenceEntity = $this->referenceEntityRepository
+            ->getByIdentifier(ReferenceEntityIdentifier::fromString($identifier));
 
-        Assert::assertEquals($enrichedEntity->getImage()->getKey(), $filePath);
+        Assert::assertEquals($referenceEntity->getImage()->getKey(), $filePath);
     }
 
-    private function editEnrichedEntity(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
+    private function editReferenceEntity(EditReferenceEntityCommand $editReferenceEntityCommand): void
     {
-        $this->constraintViolationsContext->addViolations($this->validator->validate($editEnrichedEntityCommand));
+        $this->constraintViolationsContext->addViolations($this->validator->validate($editReferenceEntityCommand));
 
         if (!$this->constraintViolationsContext->hasViolations()) {
-            ($this->editEnrichedEntityHandler)($editEnrichedEntityCommand);
+            ($this->editReferenceEntityHandler)($editReferenceEntityCommand);
         }
     }
 }

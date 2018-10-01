@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\EnrichedEntity\Common\Fake\InMemoryFindAttributesDetails;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\TextAttributeDetails;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryFindAttributesDetailsTest extends TestCase
@@ -33,15 +33,15 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_multiple_attribute_details_from_different_enriched_entity()
+    public function it_saves_multiple_attribute_details_from_different_reference_entity()
     {
-        $this->query->save($this->createEnrichedEntityDetails('designer', 'name'));
-        $this->query->save($this->createEnrichedEntityDetails('designer', 'description'));
-        $this->query->save($this->createEnrichedEntityDetails('manufacturer', 'name'));
-        $this->query->save($this->createEnrichedEntityDetails('manufacturer', 'description'));
+        $this->query->save($this->createReferenceEntityDetails('designer', 'name'));
+        $this->query->save($this->createReferenceEntityDetails('designer', 'description'));
+        $this->query->save($this->createReferenceEntityDetails('manufacturer', 'name'));
+        $this->query->save($this->createReferenceEntityDetails('manufacturer', 'description'));
 
-        $manufacturerIdentifier = EnrichedEntityIdentifier::fromString('manufacturer');
-        $designerIdentifier = EnrichedEntityIdentifier::fromString('manufacturer');
+        $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
+        $designerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
         $this->assertCount(2, ($this->query)($manufacturerIdentifier));
         $this->assertCount(2, ($this->query)($designerIdentifier));
     }
@@ -49,16 +49,16 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_enriched_entity_identifier()
+    public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_reference_entity_identifier()
     {
-        $manufacturerIdentifier = EnrichedEntityIdentifier::fromString('manufacturer');
+        $manufacturerIdentifier = ReferenceEntityIdentifier::fromString('manufacturer');
         $this->assertEmpty(($this->query)($manufacturerIdentifier));
     }
 
-    private function createEnrichedEntityDetails(string $enrichedEntityIdentifier, string $attributeCode): AbstractAttributeDetails
+    private function createReferenceEntityDetails(string $referenceEntityIdentifier, string $attributeCode): AbstractAttributeDetails
     {
         $textAttributeDetails = new TextAttributeDetails();
-        $textAttributeDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $textAttributeDetails->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         $textAttributeDetails->code = AttributeCode::fromString($attributeCode);
 
         return $textAttributeDetails;

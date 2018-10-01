@@ -1,18 +1,18 @@
-import attributeSaver from 'akeneoenrichedentity/infrastructure/saver/attribute';
+import attributeSaver from 'akeneoreferenceentity/infrastructure/saver/attribute';
 import {
   attributeEditionSucceeded,
   attributeEditionErrorOccured,
   attributeEditionStart as attributeEditionStartEvent,
   attributeEditionSubmission,
   attributeEditionCancel,
-} from 'akeneoenrichedentity/domain/event/attribute/edit';
-import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {notifyAttributeSaveFailed} from 'akeneoenrichedentity/application/action/attribute/notify';
-import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
-import {denormalizeAttribute, NormalizedAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import AttributeCode from 'akeneoenrichedentity/domain/model/code';
+} from 'akeneoreferenceentity/domain/event/attribute/edit';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {notifyAttributeSaveFailed} from 'akeneoreferenceentity/application/action/attribute/notify';
+import {updateAttributeList} from 'akeneoreferenceentity/application/action/attribute/list';
+import {denormalizeAttribute, NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import AttributeCode from 'akeneoreferenceentity/domain/model/code';
 
 export const saveAttribute = (dismiss: boolean = true) => async (
   dispatch: any,

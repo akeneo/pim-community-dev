@@ -11,27 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ImageAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsTextarea;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ImageAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\TextAttributeDetails;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -54,20 +54,20 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
     /**
      * @return AbstractAttributeDetails[]
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $results = $this->fetchResult($enrichedEntityIdentifier);
+        $results = $this->fetchResult($referenceEntityIdentifier);
 
         return $this->hydrateAttributesDetails($results);
     }
 
-    private function fetchResult(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    private function fetchResult(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $query = <<<SQL
         SELECT
             identifier,
             code,
-            enriched_entity_identifier,
+            reference_entity_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -75,12 +75,12 @@ class SqlFindAttributesDetails implements FindAttributesDetailsInterface
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_enriched_entity_attribute
-        WHERE enriched_entity_identifier = :enriched_entity_identifier;
+        FROM akeneo_reference_entity_attribute
+        WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $query,
-            ['enriched_entity_identifier' => (string) $enrichedEntityIdentifier]
+            ['reference_entity_identifier' => (string) $referenceEntityIdentifier]
         );
         $result = $statement->fetchAll();
 
@@ -96,7 +96,7 @@ SQL;
         foreach ($results as $result) {
             $identifier = $result['identifier'];
             $code = $result['code'];
-            $enrichedEntityIdentifier = $result['enriched_entity_identifier'];
+            $referenceEntityIdentifier = $result['reference_entity_identifier'];
             $labels = json_decode($result['labels'], true);
             $order = (int) $result['attribute_order'];
             $isRequired = (bool) $result['is_required'];
@@ -113,7 +113,7 @@ SQL;
 
                 $textAttributeDetails = new TextAttributeDetails();
                 $textAttributeDetails->identifier = AttributeIdentifier::fromString($identifier);
-                $textAttributeDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+                $textAttributeDetails->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
                 $textAttributeDetails->code = AttributeCode::fromString($code);
                 $textAttributeDetails->order = AttributeOrder::fromInteger($order);
                 $textAttributeDetails->labels = LabelCollection::fromArray($labels);
@@ -133,7 +133,7 @@ SQL;
 
                 $imageAttributeDetails = new ImageAttributeDetails();
                 $imageAttributeDetails->identifier = AttributeIdentifier::fromString($identifier);
-                $imageAttributeDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+                $imageAttributeDetails->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
                 $imageAttributeDetails->code = AttributeCode::fromString($code);
                 $imageAttributeDetails->order = AttributeOrder::fromInteger($order);
                 $imageAttributeDetails->labels = LabelCollection::fromArray($labels);

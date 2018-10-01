@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
-class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
+class SqlReferenceEntityRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var EnrichedEntityRepositoryInterface */
+    /** @var ReferenceEntityRepositoryInterface */
     private $repository;
 
     /** @var AttributeRepositoryInterface */
@@ -46,57 +46,57 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $this->attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->resetDB();
     }
 
     /**
      * @test
      */
-    public function it_creates_an_enriched_entity_and_returns_it()
+    public function it_creates_an_reference_entity_and_returns_it()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $identifier = ReferenceEntityIdentifier::fromString('identifier');
+        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
 
-        $this->repository->create($enrichedEntity);
+        $this->repository->create($referenceEntity);
 
-        $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
+        $referenceEntityFound = $this->repository->getByIdentifier($identifier);
+        $this->assertReferenceEntity($referenceEntity, $referenceEntityFound);
     }
 
     /**
      * @test
      */
-    public function it_throws_when_creating_an_enriched_entity_with_the_same_identifier()
+    public function it_throws_when_creating_an_reference_entity_with_the_same_identifier()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($enrichedEntity);
+        $identifier = ReferenceEntityIdentifier::fromString('identifier');
+        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($referenceEntity);
 
         $this->expectException(DBALException::class);
-        $this->repository->create($enrichedEntity);
+        $this->repository->create($referenceEntity);
     }
 
     /**
      * @test
      */
-    public function it_updates_an_enriched_entity_and_returns_it()
+    public function it_updates_an_reference_entity_and_returns_it()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($enrichedEntity);
-        $enrichedEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
+        $identifier = ReferenceEntityIdentifier::fromString('identifier');
+        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($referenceEntity);
+        $referenceEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
 
         $file = new FileInfo();
         $file->setKey('/path/image.jpg');
         $file->setOriginalFilename('image.jpg');
-        $enrichedEntity->updateImage(Image::fromFileInfo($file));
+        $referenceEntity->updateImage(Image::fromFileInfo($file));
 
-        $this->repository->update($enrichedEntity);
+        $this->repository->update($referenceEntity);
 
-        $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
-        $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
+        $referenceEntityFound = $this->repository->getByIdentifier($identifier);
+        $this->assertReferenceEntity($referenceEntity, $referenceEntityFound);
     }
 
     /**
@@ -104,39 +104,39 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $this->expectException(EnrichedEntityNotFoundException::class);
-        $this->repository->getByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
+        $this->expectException(ReferenceEntityNotFoundException::class);
+        $this->repository->getByIdentifier(ReferenceEntityIdentifier::fromString('unknown_identifier'));
     }
 
     /**
      * @test
      */
-    public function it_deletes_an_enriched_entity_given_an_identifier()
+    public function it_deletes_an_reference_entity_given_an_identifier()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($enrichedEntity);
+        $identifier = ReferenceEntityIdentifier::fromString('identifier');
+        $referenceEntity = ReferenceEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($referenceEntity);
 
         $this->repository->deleteByIdentifier($identifier);
 
-        $this->expectException(EnrichedEntityNotFoundException::class);
+        $this->expectException(ReferenceEntityNotFoundException::class);
         $this->repository->getByIdentifier($identifier);
     }
 
     /**
      * @test
      */
-    public function it_deletes_an_enriched_entity_given_an_identifier_even_if_it_has_attributes()
+    public function it_deletes_an_reference_entity_given_an_identifier_even_if_it_has_attributes()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity = EnrichedEntity::create($enrichedEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
-        $this->repository->create($enrichedEntity);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = ReferenceEntity::create($referenceEntityIdentifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur'], Image::createEmpty());
+        $this->repository->create($referenceEntity);
 
         $identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $attribute = TextAttribute::createText(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name', 'fr_FR' => 'Nom']),
             AttributeOrder::fromInteger(0),
@@ -149,46 +149,46 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
         );
         $this->attributeRepository->create($attribute);
 
-        $this->repository->deleteByIdentifier($enrichedEntityIdentifier);
+        $this->repository->deleteByIdentifier($referenceEntityIdentifier);
 
-        $this->expectException(EnrichedEntityNotFoundException::class);
-        $this->repository->getByIdentifier($enrichedEntityIdentifier);
+        $this->expectException(ReferenceEntityNotFoundException::class);
+        $this->repository->getByIdentifier($referenceEntityIdentifier);
     }
 
     /**
      * @test
      */
-    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_enriched_entity()
+    public function it_throws_an_exception_if_it_tries_to_delete_an_unknown_reference_entity()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('unknown');
+        $identifier = ReferenceEntityIdentifier::fromString('unknown');
 
-        $this->expectException(EnrichedEntityNotFoundException::class);
+        $this->expectException(ReferenceEntityNotFoundException::class);
         $this->repository->deleteByIdentifier($identifier);
     }
 
     /**
-     * @param $enrichedEntityExpected
-     * @param $enrichedEntityFound
+     * @param $referenceEntityExpected
+     * @param $referenceEntityFound
      *
      */
-    private function assertEnrichedEntity(
-        EnrichedEntity $enrichedEntityExpected,
-        EnrichedEntity $enrichedEntityFound
+    private function assertReferenceEntity(
+        ReferenceEntity $referenceEntityExpected,
+        ReferenceEntity $referenceEntityFound
     ): void {
-        $this->assertTrue($enrichedEntityExpected->equals($enrichedEntityFound));
-        $labelCodesExpected = $enrichedEntityExpected->getLabelCodes();
-        $labelCodesFound = $enrichedEntityFound->getLabelCodes();
+        $this->assertTrue($referenceEntityExpected->equals($referenceEntityFound));
+        $labelCodesExpected = $referenceEntityExpected->getLabelCodes();
+        $labelCodesFound = $referenceEntityFound->getLabelCodes();
         sort($labelCodesExpected);
         sort($labelCodesFound);
         $this->assertSame($labelCodesExpected, $labelCodesFound);
-        foreach ($enrichedEntityExpected->getLabelCodes() as $localeCode) {
-            $this->assertEquals($enrichedEntityExpected->getLabel($localeCode),
-                $enrichedEntityFound->getLabel($localeCode));
+        foreach ($referenceEntityExpected->getLabelCodes() as $localeCode) {
+            $this->assertEquals($referenceEntityExpected->getLabel($localeCode),
+                $referenceEntityFound->getLabel($localeCode));
         }
     }
 
     private function resetDB()
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 }

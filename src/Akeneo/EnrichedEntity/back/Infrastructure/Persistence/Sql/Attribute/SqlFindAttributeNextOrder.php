@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Doctrine\DBAL\Connection;
 
 class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
@@ -30,15 +30,15 @@ class SqlFindAttributeNextOrder implements FindAttributeNextOrderInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): int
+    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): int
     {
         $query = <<<SQL
         SELECT MAX(attribute_order)
-        FROM akeneo_enriched_entity_attribute
-        WHERE enriched_entity_identifier = :enriched_entity_identifier;
+        FROM akeneo_reference_entity_attribute
+        WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
+            'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
         $result = $statement->fetchColumn();
         $statement->closeCursor();

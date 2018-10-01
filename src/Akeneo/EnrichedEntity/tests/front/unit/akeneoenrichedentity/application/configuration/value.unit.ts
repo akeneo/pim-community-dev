@@ -1,4 +1,4 @@
-import {getDenormalizer, getView} from 'akeneoenrichedentity/application/configuration/value';
+import {getDenormalizer, getView} from 'akeneoreferenceentity/application/configuration/value';
 
 jest.mock('require-context', name => {});
 
@@ -49,7 +49,7 @@ export const denormalize = (normalizedBooleanData: boolean) => {
     }).toThrowError(`Cannot get the value denormalizer for type "text". The configuration should look like this:
 config:
     config:
-        akeneoenrichedentity/application/configuration/value:
+        akeneoreferenceentity/application/configuration/value:
             text:
                 denormalize: '@my_value_denormalizer'
 
@@ -104,7 +104,7 @@ export const view = (value: TextValue, onChange: (value: Value) => void) => {
     }).toThrowError(`Cannot get the data view generator for type "text". The configuration should look like this:
 config:
     config:
-        akeneoenrichedentity/application/configuration/value:
+        akeneoreferenceentity/application/configuration/value:
             text:
                 view: '@my_data_view'
 

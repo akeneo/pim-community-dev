@@ -1,22 +1,22 @@
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {denormalizeEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import attributeFetcher from 'akeneoenrichedentity/infrastructure/fetcher/attribute';
-import attributeRemover from 'akeneoenrichedentity/infrastructure/remover/attribute';
-import {attributeListUpdated} from 'akeneoenrichedentity/domain/event/attribute/list';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {denormalizeReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import attributeFetcher from 'akeneoreferenceentity/infrastructure/fetcher/attribute';
+import attributeRemover from 'akeneoreferenceentity/infrastructure/remover/attribute';
+import {attributeListUpdated} from 'akeneoreferenceentity/domain/event/attribute/list';
 import {
   notifyAttributeListUpdateFailed,
   notifyAttributeWellDeleted,
   notifyAttributeDeletionFailed,
-} from 'akeneoenrichedentity/application/action/attribute/notify';
-import {attributeDeleted} from 'akeneoenrichedentity/domain/event/attribute/list';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import {attributeEditionCancel} from 'akeneoenrichedentity/domain/event/attribute/edit';
+} from 'akeneoreferenceentity/application/action/attribute/notify';
+import {attributeDeleted} from 'akeneoreferenceentity/domain/event/attribute/list';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {attributeEditionCancel} from 'akeneoreferenceentity/domain/event/attribute/edit';
 
 export const updateAttributeList = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const enrichedEntity = denormalizeEnrichedEntity(getState().form.data);
+  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
   try {
-    const attributes = await attributeFetcher.fetchAll(enrichedEntity.getIdentifier());
+    const attributes = await attributeFetcher.fetchAll(referenceEntity.getIdentifier());
     dispatch(attributeListUpdated(attributes));
   } catch (error) {
     dispatch(notifyAttributeListUpdateFailed());
@@ -32,8 +32,8 @@ export const deleteAttribute = (attributeIdentifier: AttributeIdentifier) => asy
   dispatch(attributeEditionCancel());
   dispatch(attributeDeleted(attributeIdentifier));
   try {
-    const enrichedEntityIdentifier = createIdentifier(getState().form.data.identifier);
-    const errors = await attributeRemover.remove(enrichedEntityIdentifier, attributeIdentifier);
+    const referenceEntityIdentifier = createIdentifier(getState().form.data.identifier);
+    const errors = await attributeRemover.remove(referenceEntityIdentifier, attributeIdentifier);
 
     if (errors) {
       dispatch(notifyAttributeDeletionFailed());

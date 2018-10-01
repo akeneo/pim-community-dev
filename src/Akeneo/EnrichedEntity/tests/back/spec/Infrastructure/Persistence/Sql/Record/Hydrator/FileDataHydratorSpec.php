@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\FileDataHydrator;
 use PhpSpec\ObjectBehavior;
 
 class FileDataHydratorSpec extends ObjectBehavior

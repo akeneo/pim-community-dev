@@ -1,85 +1,85 @@
 import {
-  enrichedEntityEditionLabelUpdated,
-  enrichedEntityEditionReceived,
-  enrichedEntityEditionUpdated,
-  enrichedEntityEditionImageUpdated,
-  enrichedEntityEditionErrorOccured,
-  enrichedEntityEditionSucceeded,
-} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+  referenceEntityEditionLabelUpdated,
+  referenceEntityEditionReceived,
+  referenceEntityEditionUpdated,
+  referenceEntityEditionImageUpdated,
+  referenceEntityEditionErrorOccured,
+  referenceEntityEditionSucceeded,
+} from 'akeneoreferenceentity/domain/event/reference-entity/edit';
 import {
-  notifyEnrichedEntityWellSaved,
-  notifyEnrichedEntitySaveFailed,
-  notifyEnrichedEntityWellDeleted,
-  notifyEnrichedEntityDeleteFailed,
-  notifyEnrichedEntityDeletionErrorOccured,
-} from 'akeneoenrichedentity/application/action/enriched-entity/notify';
-import EnrichedEntity, {
-  denormalizeEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
-import enrichedEntityRemover from 'akeneoenrichedentity/infrastructure/remover/enriched-entity';
-import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import File from 'akeneoenrichedentity/domain/model/file';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {redirectToEnrichedEntityIndex} from 'akeneoenrichedentity/application/action/enriched-entity/router';
+  notifyReferenceEntityWellSaved,
+  notifyReferenceEntitySaveFailed,
+  notifyReferenceEntityWellDeleted,
+  notifyReferenceEntityDeleteFailed,
+  notifyReferenceEntityDeletionErrorOccured,
+} from 'akeneoreferenceentity/application/action/reference-entity/notify';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
+import referenceEntityRemover from 'akeneoreferenceentity/infrastructure/remover/reference-entity';
+import referenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
+import File from 'akeneoreferenceentity/domain/model/file';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {redirectToReferenceEntityIndex} from 'akeneoreferenceentity/application/action/reference-entity/router';
 
-export const saveEnrichedEntity = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const enrichedEntity = denormalizeEnrichedEntity(getState().form.data);
+export const saveReferenceEntity = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
+  const referenceEntity = denormalizeReferenceEntity(getState().form.data);
 
   try {
-    const errors = await enrichedEntitySaver.save(enrichedEntity);
+    const errors = await referenceEntitySaver.save(referenceEntity);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(enrichedEntityEditionErrorOccured(validationErrors));
-      dispatch(notifyEnrichedEntitySaveFailed());
+      dispatch(referenceEntityEditionErrorOccured(validationErrors));
+      dispatch(notifyReferenceEntitySaveFailed());
 
       return;
     }
   } catch (error) {
-    dispatch(notifyEnrichedEntitySaveFailed());
+    dispatch(notifyReferenceEntitySaveFailed());
 
     return;
   }
 
-  dispatch(enrichedEntityEditionSucceeded());
-  dispatch(notifyEnrichedEntityWellSaved());
+  dispatch(referenceEntityEditionSucceeded());
+  dispatch(notifyReferenceEntityWellSaved());
 
-  const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(enrichedEntity.getIdentifier());
+  const savedReferenceEntity: ReferenceEntity = await referenceEntityFetcher.fetch(referenceEntity.getIdentifier());
 
-  dispatch(enrichedEntityEditionReceived(savedEnrichedEntity.normalize()));
+  dispatch(referenceEntityEditionReceived(savedReferenceEntity.normalize()));
 };
 
-export const deleteEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dispatch: any): Promise<void> => {
+export const deleteReferenceEntity = (referenceEntity: ReferenceEntity) => async (dispatch: any): Promise<void> => {
   try {
-    const errors = await enrichedEntityRemover.remove(enrichedEntity.getIdentifier());
+    const errors = await referenceEntityRemover.remove(referenceEntity.getIdentifier());
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(notifyEnrichedEntityDeletionErrorOccured(validationErrors));
+      dispatch(notifyReferenceEntityDeletionErrorOccured(validationErrors));
 
       return;
     }
 
-    dispatch(notifyEnrichedEntityWellDeleted());
-    dispatch(redirectToEnrichedEntityIndex());
+    dispatch(notifyReferenceEntityWellDeleted());
+    dispatch(redirectToReferenceEntityIndex());
   } catch (error) {
-    dispatch(notifyEnrichedEntityDeleteFailed());
+    dispatch(notifyReferenceEntityDeleteFailed());
 
     throw error;
   }
 };
 
-export const enrichedEntityLabelUpdated = (value: string, locale: string) => (
+export const referenceEntityLabelUpdated = (value: string, locale: string) => (
   dispatch: any,
   getState: () => EditState
 ) => {
-  dispatch(enrichedEntityEditionLabelUpdated(value, locale));
-  dispatch(enrichedEntityEditionUpdated(getState().form.data));
+  dispatch(referenceEntityEditionLabelUpdated(value, locale));
+  dispatch(referenceEntityEditionUpdated(getState().form.data));
 };
 
-export const enrichedEntityImageUpdated = (image: File) => (dispatch: any, getState: () => EditState) => {
-  dispatch(enrichedEntityEditionImageUpdated(image));
-  dispatch(enrichedEntityEditionUpdated(getState().form.data));
+export const referenceEntityImageUpdated = (image: File) => (dispatch: any, getState: () => EditState) => {
+  dispatch(referenceEntityEditionImageUpdated(image));
+  dispatch(referenceEntityEditionUpdated(getState().form.data));
 };

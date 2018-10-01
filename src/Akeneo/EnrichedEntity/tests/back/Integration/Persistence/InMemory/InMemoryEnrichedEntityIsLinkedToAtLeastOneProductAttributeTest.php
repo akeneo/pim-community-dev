@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
@@ -25,17 +25,17 @@ use PHPUnit\Framework\TestCase;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends TestCase
+class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends TestCase
 {
-    /** @var InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute */
+    /** @var InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute */
     private $query;
 
     public function setup()
     {
-        $enrichedEntityattribute = new Attribute();
-        $enrichedEntityattribute->setCode('main_designer');
-        $enrichedEntityattribute->setType(EnrichedEntityCollectionType::ENRICHED_ENTITY_COLLECTION);
-        $enrichedEntityattribute->setProperties([
+        $referenceEntityattribute = new Attribute();
+        $referenceEntityattribute->setCode('main_designer');
+        $referenceEntityattribute->setType(ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION);
+        $referenceEntityattribute->setProperties([
             'reference_data_name' => 'designer'
         ]);
 
@@ -44,22 +44,22 @@ class InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends Tes
         $textareaAttribute->setType(AttributeTypes::TEXTAREA);
 
         $inMemoryAttributeRepository = new InMemoryAttributeRepository();
-        $inMemoryAttributeRepository->save($enrichedEntityattribute);
+        $inMemoryAttributeRepository->save($referenceEntityattribute);
         $inMemoryAttributeRepository->save($textareaAttribute);
 
-        $this->query = new InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute($inMemoryAttributeRepository);
+        $this->query = new InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute($inMemoryAttributeRepository);
     }
 
     /**
      * @test
      */
-    public function it_tells_if_an_enriched_entity_is_linked_to_at_least_one_product_attribute()
+    public function it_tells_if_an_reference_entity_is_linked_to_at_least_one_product_attribute()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = ReferenceEntityIdentifier::fromString('designer');
         $isLinked = ($this->query)($identifier);
         $this->assertTrue($isLinked);
 
-        $identifier = EnrichedEntityIdentifier::fromString('brand');
+        $identifier = ReferenceEntityIdentifier::fromString('brand');
         $isLinked = ($this->query)($identifier);
         $this->assertFalse($isLinked);
     }

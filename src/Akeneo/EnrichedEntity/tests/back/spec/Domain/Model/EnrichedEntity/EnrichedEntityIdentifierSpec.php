@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use PhpSpec\ObjectBehavior;
 
-class EnrichedEntityIdentifierSpec extends ObjectBehavior
+class ReferenceEntityIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -25,7 +25,7 @@ class EnrichedEntityIdentifierSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntityIdentifier::class);
+        $this->shouldHaveType(ReferenceEntityIdentifier::class);
     }
 
     public function it_should_contain_only_letters_numbers_and_underscores()
@@ -51,7 +51,7 @@ class EnrichedEntityIdentifierSpec extends ObjectBehavior
 
     public function it_is_possible_to_compare_it()
     {
-        $this->equals(EnrichedEntityIdentifier::fromString('an_identifier_55'))->shouldReturn(true);
-        $this->equals(EnrichedEntityIdentifier::fromString('other_identifier'))->shouldReturn(false);
+        $this->equals(ReferenceEntityIdentifier::fromString('an_identifier_55'))->shouldReturn(true);
+        $this->equals(ReferenceEntityIdentifier::fromString('other_identifier'))->shouldReturn(false);
     }
 }

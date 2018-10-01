@@ -1,12 +1,12 @@
 {
     "request": {
         "method": "POST",
-        "route": "akeneo_enriched_entities_attribute_create_rest",
+        "route": "akeneo_reference_entities_attribute_create_rest",
         "query": {
-            "enrichedEntityIdentifier": "designer"
+            "referenceEntityIdentifier": "designer"
         },
         "body": {
-            "enriched_entity_identifier": "designer",
+            "reference_entity_identifier": "designer",
             "code": "not so nice attribute",
             "type": "text",
             "labels": {
@@ -20,7 +20,7 @@
         "status": 400,
         "body": [
             {
-                "messageTemplate": "pim_enriched_entity.attribute.validation.code.pattern",
+                "messageTemplate": "pim_reference_entity.attribute.validation.code.pattern",
                 "parameters": {
                     "{{ value }}": "\"not so nice attribute\""
                 },
@@ -32,7 +32,7 @@
                     "isRichTextEditor": false,
                     "validationRule": "none",
                     "regularExpression": null,
-                    "enrichedEntityIdentifier": "designer",
+                    "referenceEntityIdentifier": "designer",
                     "code": "not so nice attribute",
                     "labels": {
                         "en_US": "Nice attribute"

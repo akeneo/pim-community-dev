@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute;
 
-use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class DeleteAttributeHandlerSpec extends ObjectBehavior

@@ -1,5 +1,5 @@
-import {channelsReceived} from 'akeneoenrichedentity/domain/event/channel';
-import channelFetcher from 'akeneoenrichedentity/infrastructure/fetcher/channel';
+import {channelsReceived} from 'akeneoreferenceentity/domain/event/channel';
+import channelFetcher from 'akeneoreferenceentity/infrastructure/fetcher/channel';
 
 export const updateChannels = () => async (dispatch: any): Promise<void> => {
   const channels = await channelFetcher.fetchAll();

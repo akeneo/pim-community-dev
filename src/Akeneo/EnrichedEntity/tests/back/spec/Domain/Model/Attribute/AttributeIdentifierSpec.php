@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class AttributeIdentifierSpec extends ObjectBehavior
@@ -44,14 +44,14 @@ class AttributeIdentifierSpec extends ObjectBehavior
     public function it_cannot_be_constructed_with_an_empty_string()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('create', ['', 'description', 'valid_fingerprint']);
-        $this->shouldThrow('\InvalidArgumentException')->during('create', ['enriched_entity_identifier', '', 'valid_fingerprint']);
-        $this->shouldThrow('\InvalidArgumentException')->during('create', ['enriched_entity_identifier', 'description', '']);
+        $this->shouldThrow('\InvalidArgumentException')->during('create', ['reference_entity_identifier', '', 'valid_fingerprint']);
+        $this->shouldThrow('\InvalidArgumentException')->during('create', ['reference_entity_identifier', 'description', '']);
     }
 
     public function it_truncates_identifier_and_code_to_be_maximum_20_characters_long()
     {
         $this->beConstructedThrough('create', [
-            'a_very_long_enriched_entity_identifier',
+            'a_very_long_reference_entity_identifier',
             'a_very_long_attribute_code',
             'fingerprint',
         ]);
@@ -67,7 +67,7 @@ class AttributeIdentifierSpec extends ObjectBehavior
             'test'
         );
         $differentIdentifier = AttributeIdentifier::create(
-            'an_other_enriched_entity_identifier',
+            'an_other_reference_entity_identifier',
             'title',
             'test'
         );
@@ -77,7 +77,7 @@ class AttributeIdentifierSpec extends ObjectBehavior
 
     public function it_can_be_constructed_from_a_string()
     {
-        $this->beConstructedThrough('fromString', ['enriched_entity_identifier_description_test']);
+        $this->beConstructedThrough('fromString', ['reference_entity_identifier_description_test']);
     }
 
     public function it_cannot_be_constructed_with_a_string_too_long()

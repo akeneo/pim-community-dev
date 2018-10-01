@@ -1,24 +1,24 @@
-import AttributeRemover from 'akeneoenrichedentity/domain/remover/attribute';
-import AttributeIdentifier from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import AttributeRemover from 'akeneoreferenceentity/domain/remover/attribute';
+import AttributeIdentifier from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {deleteJSON} from 'akeneoreferenceentity/tools/fetch';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export class AttributeRemoverImplementation implements AttributeRemover<EnrichedEntityIdentifier, AttributeIdentifier> {
+export class AttributeRemoverImplementation implements AttributeRemover<ReferenceEntityIdentifier, AttributeIdentifier> {
   constructor() {
     Object.freeze(this);
   }
 
   async remove(
-    enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
     attributeIdentifier: AttributeIdentifier
   ): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate('akeneo_enriched_entities_attribute_delete_rest', {
-        enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+      routing.generate('akeneo_reference_entities_attribute_delete_rest', {
+        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
         attributeIdentifier: attributeIdentifier.normalize(),
       })
     ).catch(errorHandler);

@@ -1,18 +1,18 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
+namespace spec\Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
 use PhpSpec\ObjectBehavior;
 
-class EnrichedEntityItemSpec extends ObjectBehavior
+class ReferenceEntityItemSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntityItem::class);
+        $this->shouldHaveType(ReferenceEntityItem::class);
     }
 
     function it_normalizes_a_read_model(Image $image)
@@ -22,7 +22,7 @@ class EnrichedEntityItemSpec extends ObjectBehavior
             'originalFilename' => 'image.jpg'
         ]);
 
-        $this->identifier = EnrichedEntityIdentifier::fromString('starck');
+        $this->identifier = ReferenceEntityIdentifier::fromString('starck');
         $this->labels = LabelCollection::fromArray([
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',

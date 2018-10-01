@@ -1,8 +1,8 @@
-import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
-import EnrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import updateResultsWithFetcher from 'akeneoenrichedentity/application/action/search';
+import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import ReferenceEntityFetcher from 'akeneoreferenceentity/infrastructure/fetcher/reference-entity';
+import updateResultsWithFetcher from 'akeneoreferenceentity/application/action/search';
 
 const stateToQuery = async (state: IndexState): Promise<Query> => {
   return {
@@ -13,7 +13,7 @@ const stateToQuery = async (state: IndexState): Promise<Query> => {
   };
 };
 
-export const updateEnrichedEntityResults = updateResultsWithFetcher<EnrichedEntity>(
-  EnrichedEntityFetcher,
+export const updateReferenceEntityResults = updateResultsWithFetcher<ReferenceEntity>(
+  ReferenceEntityFetcher,
   stateToQuery
 );

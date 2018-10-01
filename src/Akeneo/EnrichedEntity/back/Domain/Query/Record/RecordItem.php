@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Record;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
  * Read model representing a record within the list.
@@ -28,7 +28,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 class RecordItem
 {
     private const IDENTIFIER = 'identifier';
-    private const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+    private const ENRICHED_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
@@ -36,8 +36,8 @@ class RecordItem
     /** @var RecordIdentifier */
     public $identifier;
 
-    /** @var EnrichedEntityIdentifier */
-    public $enrichedEntityIdentifier;
+    /** @var ReferenceEntityIdentifier */
+    public $referenceEntityIdentifier;
 
     /** @var RecordCode */
     public $code;
@@ -52,7 +52,7 @@ class RecordItem
     {
         return [
             self::IDENTIFIER                 => $this->identifier->normalize(),
-            self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->enrichedEntityIdentifier,
+            self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->referenceEntityIdentifier,
             self::CODE                       => (string) $this->code,
             self::LABELS                     => $this->labels->normalize(),
             self::IMAGE                      => $this->image->normalize(),

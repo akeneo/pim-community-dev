@@ -10,17 +10,17 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony;
 
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeFactoryPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeHydratorPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeUpdaterPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditRecordValueCommandFactoryPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueDataHydratorPass;
-use Akeneo\EnrichedEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueUpdaterPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeFactoryPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeHydratorPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterAttributeUpdaterPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterCreateAttributeCommandFactoryPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditAttributeCommandFactoryPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterEditRecordValueCommandFactoryPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueDataHydratorPass;
+use Akeneo\ReferenceEntity\Infrastructure\Symfony\DependencyInjection\Compiler\RegisterValueUpdaterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -29,14 +29,14 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AkeneoEnrichedEntityBundle extends Bundle
+class AkeneoReferenceEntityBundle extends Bundle
 {
     /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterSerializerPass('enriched_entity_serializer'));
+        $container->addCompilerPass(new RegisterSerializerPass('reference_entity_serializer'));
         $container->addCompilerPass(new RegisterCreateAttributeCommandFactoryPass());
         $container->addCompilerPass(new RegisterEditAttributeCommandFactoryPass());
         $container->addCompilerPass(new RegisterAttributeFactoryPass());

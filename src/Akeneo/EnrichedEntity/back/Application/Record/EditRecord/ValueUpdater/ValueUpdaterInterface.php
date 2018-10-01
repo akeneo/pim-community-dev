@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\ValueUpdater;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\ValueUpdater;
 
-use Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\AbstractEditValueCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 
 interface ValueUpdaterInterface
 {

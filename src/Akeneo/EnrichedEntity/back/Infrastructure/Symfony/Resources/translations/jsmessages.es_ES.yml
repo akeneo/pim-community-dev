@@ -1,7 +1,7 @@
 pim_title:
-  akeneo_enriched_entities_enriched_entity_index: Crear una nueva entidad
-pim_enriched_entity:
-  enriched_entity:
+  akeneo_reference_entities_reference_entity_index: Crear una nueva entidad
+pim_reference_entity:
+  reference_entity:
     button:
       save: Guardar
       create: Crear
@@ -112,9 +112,9 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_enriched_entity_collection: Entidad enriquecida
+          akeneo_reference_entity_collection: Entidad enriquecida
         section:
           type_specific: Escriba los parámetros específicos
-        enriched_entity:
+        reference_entity:
           identifier: Entidad enriquecida
           default_label: Por favor, selecciona una entidad enriquecida

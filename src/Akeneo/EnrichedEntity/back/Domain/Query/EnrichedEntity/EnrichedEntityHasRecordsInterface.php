@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Tells if an Enriched Entity has some records
@@ -21,7 +21,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-interface EnrichedEntityHasRecordsInterface
+interface ReferenceEntityHasRecordsInterface
 {
-    public function __invoke(EnrichedEntityIdentifier $identifier): bool;
+    public function __invoke(ReferenceEntityIdentifier $identifier): bool;
 }

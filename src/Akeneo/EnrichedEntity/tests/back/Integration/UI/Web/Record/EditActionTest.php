@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const RECORD_EDIT_ROUTE = 'akeneo_enriched_entities_record_edit_rest';
+    private const RECORD_EDIT_ROUTE = 'akeneo_reference_entities_record_edit_rest';
 
     /** @var Client */
     private $client;
@@ -46,7 +46,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -57,7 +57,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -74,7 +74,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             self::RECORD_EDIT_ROUTE,
             [
                 'recordCode' => 'celine_dion',
-                'enrichedEntityIdentifier' => 'singer',
+                'referenceEntityIdentifier' => 'singer',
             ],
             'POST',
             [
@@ -87,8 +87,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
 
         $repository = $this->getRecordRepository();
-        $recordItem = $repository->getByEnrichedEntityAndCode(
-            EnrichedEntityIdentifier::fromString($postContent['enriched_entity_identifier']),
+        $recordItem = $repository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString($postContent['reference_entity_identifier']),
             RecordCode::fromString($postContent['code'])
         );
 
@@ -106,7 +106,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -120,7 +120,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             self::RECORD_EDIT_ROUTE,
             [
                 'recordCode' => 'celine_dion',
-                'enrichedEntityIdentifier' => 'singer',
+                'referenceEntityIdentifier' => 'singer',
             ],
             'POST',
             [
@@ -133,8 +133,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
 
         $repository = $this->getRecordRepository();
-        $recordItem = $repository->getByEnrichedEntityAndCode(
-            EnrichedEntityIdentifier::fromString($postContent['enriched_entity_identifier']),
+        $recordItem = $repository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString($postContent['reference_entity_identifier']),
             RecordCode::fromString($postContent['code'])
         );
 
@@ -155,7 +155,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             self::RECORD_EDIT_ROUTE,
             [
                 'recordCode' => 'celine_dion',
-                'enrichedEntityIdentifier' => 'singer',
+                'referenceEntityIdentifier' => 'singer',
             ],
             'POST'
         );
@@ -171,7 +171,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => 'singer_ah!_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'ah!',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -185,7 +185,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 self::RECORD_EDIT_ROUTE,
                 [
                     'recordCode' => 'celine_dion',
-                    'enrichedEntityIdentifier' => 'singer',
+                    'referenceEntityIdentifier' => 'singer',
                 ],
                 'POST',
                 [
@@ -203,7 +203,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -220,7 +220,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -243,7 +243,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -254,7 +254,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             self::RECORD_EDIT_ROUTE,
             [
                 'recordCode' => 'starck',
-                'enrichedEntityIdentifier' => 'singer',
+                'referenceEntityIdentifier' => 'singer',
             ],
             'POST',
             [
@@ -271,12 +271,12 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_if_the_enriched_entity_identifier_provided_in_the_route_is_different_from_the_body(
+    public function it_returns_an_error_if_the_reference_entity_identifier_provided_in_the_route_is_different_from_the_body(
     ) {
         $postContent = [
             'identifier' => 'singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392',
             'code' => 'celine_dion',
-            'enriched_entity_identifier' => 'singer',
+            'reference_entity_identifier' => 'singer',
             'labels' => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -287,7 +287,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             self::RECORD_EDIT_ROUTE,
             [
                 'recordCode' => 'celine_dion',
-                'enrichedEntityIdentifier' => 'coco',
+                'referenceEntityIdentifier' => 'coco',
             ],
             'POST',
             [
@@ -303,14 +303,14 @@ class EditActionTest extends ControllerIntegrationTestCase
 
     private function getRecordRepository(): RecordRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
     }
 
     private function loadFixtures(): void
     {
         $repository = $this->getRecordRepository();
 
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('singer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('singer');
         $recordCode = RecordCode::fromString('celine_dion');
 
         $imageInfo = new FileInfo();
@@ -320,7 +320,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $entityItem = Record::create(
             RecordIdentifier::fromString('singer_celine_dion_a1677570-a278-444b-ab46-baa1db199392'),
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [
                 'en_US' => 'Celine Dion',

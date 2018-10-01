@@ -1,14 +1,14 @@
-import File, {NormalizedFile} from 'akeneoenrichedentity/domain/model/file';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {NormalizedLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
-import Identifier, {NormalizedRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import ValueCollection from 'akeneoenrichedentity/domain/model/record/value-collection';
-import {NormalizedValue, NormalizedMinimalValue} from 'akeneoenrichedentity/domain/model/record/value';
+import File, {NormalizedFile} from 'akeneoreferenceentity/domain/model/file';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import LabelCollection, {NormalizedLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+import Identifier, {NormalizedRecordIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
+import ValueCollection from 'akeneoreferenceentity/domain/model/record/value-collection';
+import {NormalizedValue, NormalizedMinimalValue} from 'akeneoreferenceentity/domain/model/record/value';
 
 interface CommonNormalizedRecord {
   identifier: NormalizedRecordIdentifier;
-  enriched_entity_identifier: string;
+  reference_entity_identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
@@ -30,7 +30,7 @@ export enum NormalizeFormat {
 export default interface Record {
   getIdentifier: () => Identifier;
   getCode: () => RecordCode;
-  getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
+  getReferenceEntityIdentifier: () => ReferenceEntityIdentifier;
   getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
@@ -45,7 +45,7 @@ class InvalidArgumentError extends Error {}
 class RecordImplementation implements Record {
   private constructor(
     private identifier: Identifier,
-    private enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    private referenceEntityIdentifier: ReferenceEntityIdentifier,
     private code: RecordCode,
     private labelCollection: LabelCollection,
     private image: File,
@@ -54,8 +54,8 @@ class RecordImplementation implements Record {
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('Record expect a RecordIdentifier as identifier argument');
     }
-    if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifier)) {
-      throw new InvalidArgumentError('Record expect an EnrichedEntityIdentifier as enrichedEntityIdentifier argument');
+    if (!(referenceEntityIdentifier instanceof ReferenceEntityIdentifier)) {
+      throw new InvalidArgumentError('Record expect an ReferenceEntityIdentifier as referenceEntityIdentifier argument');
     }
     if (!(code instanceof RecordCode)) {
       throw new InvalidArgumentError('Record expect a RecordCode as code argument');
@@ -75,7 +75,7 @@ class RecordImplementation implements Record {
 
   public static create(
     identifier: Identifier,
-    enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
     recordCode: RecordCode,
     labelCollection: LabelCollection,
     image: File,
@@ -83,7 +83,7 @@ class RecordImplementation implements Record {
   ): Record {
     return new RecordImplementation(
       identifier,
-      enrichedEntityIdentifier,
+      referenceEntityIdentifier,
       recordCode,
       labelCollection,
       image,
@@ -95,8 +95,8 @@ class RecordImplementation implements Record {
     return this.identifier;
   }
 
-  public getEnrichedEntityIdentifier(): EnrichedEntityIdentifier {
-    return this.enrichedEntityIdentifier;
+  public getReferenceEntityIdentifier(): ReferenceEntityIdentifier {
+    return this.referenceEntityIdentifier;
   }
 
   public getCode(): RecordCode {
@@ -130,7 +130,7 @@ class RecordImplementation implements Record {
   public normalize(): NormalizedRecord {
     return {
       identifier: this.getIdentifier().normalize(),
-      enriched_entity_identifier: this.getEnrichedEntityIdentifier().stringValue(),
+      reference_entity_identifier: this.getReferenceEntityIdentifier().stringValue(),
       code: this.code.stringValue(),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),
@@ -141,7 +141,7 @@ class RecordImplementation implements Record {
   public normalizeMinimal(): NormalizedMinimalRecord {
     return {
       identifier: this.getIdentifier().normalize(),
-      enriched_entity_identifier: this.getEnrichedEntityIdentifier().stringValue(),
+      reference_entity_identifier: this.getReferenceEntityIdentifier().stringValue(),
       code: this.code.stringValue(),
       labels: this.getLabelCollection().normalize(),
       image: this.getImage().normalize(),

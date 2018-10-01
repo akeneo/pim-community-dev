@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -41,7 +41,7 @@ class SqlRecordExists implements RecordExistsInterface
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_record
+            FROM akeneo_reference_entity_record
             WHERE identifier = :identifier
         ) as is_existing
 SQL;
@@ -52,18 +52,18 @@ SQL;
         return $this->isIdentifierExisting($statement);
     }
 
-    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): bool
+    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): bool
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_record
-            WHERE enriched_entity_identifier = :enrichedEntityIdentifier
+            FROM akeneo_reference_entity_record
+            WHERE reference_entity_identifier = :referenceEntityIdentifier
             AND code = :code
         ) as is_existing
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enrichedEntityIdentifier' => (string) $enrichedEntityIdentifier,
+            'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
             'code' => (string) $code
         ]);
 

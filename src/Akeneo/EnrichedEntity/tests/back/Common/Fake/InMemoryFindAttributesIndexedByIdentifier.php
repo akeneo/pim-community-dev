@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @author Samir Boulil <samir.boulil@akeneo.com>
@@ -35,9 +35,9 @@ class InMemoryFindAttributesIndexedByIdentifier implements FindAttributesIndexed
     /**
      * @return AbstractAttributeDetails[]
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
-        $attributes = $this->attributeRepository->findByEnrichedEntity($enrichedEntityIdentifier);
+        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
 
         return array_reduce($attributes, function ($stack, AbstractAttribute $current) {
             $stack[(string) $current->getIdentifier()] = $current;

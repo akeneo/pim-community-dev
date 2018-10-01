@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteEnrichedEntityCommand
+class DeleteReferenceEntityCommand
 {
     /** @var string */
     public $identifier;

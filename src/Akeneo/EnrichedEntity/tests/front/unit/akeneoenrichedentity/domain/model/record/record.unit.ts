@@ -1,16 +1,16 @@
-import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
-import {createIdentifier as createRecordIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import {createRecord} from 'akeneoenrichedentity/domain/model/record/record';
-import File, {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
-import {createValueCollection} from 'akeneoenrichedentity/domain/model/record/value-collection';
+import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
+import {createIdentifier as createRecordIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
+import {createRecord} from 'akeneoreferenceentity/domain/model/record/record';
+import File, {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
 
 const michelIdentifier = createRecordIdentifier('michel');
-const designerIdentifier = createEnrichedEntityIdentifier('designer');
+const designerIdentifier = createReferenceEntityIdentifier('designer');
 const michelCode = createCode('michel');
 const michelLabels = createLabelCollection({en_US: 'Michel'});
-const sofaIdentifier = createEnrichedEntityIdentifier('sofa');
+const sofaIdentifier = createReferenceEntityIdentifier('sofa');
 const didierIdentifier = createRecordIdentifier('designer_didier_1');
 const didierCode = createCode('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
@@ -36,7 +36,7 @@ describe('akeneo > record > domain > model --- record', () => {
     }).toThrow('Record expect a LabelCollection as labelCollection argument');
     expect(() => {
       createRecord(michelIdentifier);
-    }).toThrow('Record expect an EnrichedEntityIdentifier as enrichedEntityIdentifier argument');
+    }).toThrow('Record expect an ReferenceEntityIdentifier as referenceEntityIdentifier argument');
     expect(() => {
       createRecord();
     }).toThrow('Record expect a RecordIdentifier as identifier argument');
@@ -137,7 +137,7 @@ describe('akeneo > record > domain > model --- record', () => {
 
     expect(michelRecord.normalize()).toEqual({
       identifier: 'designer_didier_1',
-      enriched_entity_identifier: 'designer',
+      reference_entity_identifier: 'designer',
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},
@@ -146,7 +146,7 @@ describe('akeneo > record > domain > model --- record', () => {
 
     expect(michelRecord.normalizeMinimal()).toEqual({
       identifier: 'designer_didier_1',
-      enriched_entity_identifier: 'designer',
+      reference_entity_identifier: 'designer',
       image: null,
       code: 'didier',
       labels: {en_US: 'Didier'},

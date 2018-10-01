@@ -1,5 +1,5 @@
 import * as React from 'react';
-import __ from 'akeneoenrichedentity/tools/translator';
+import __ from 'akeneoreferenceentity/tools/translator';
 
 const EditState = () => (
   <div className="AknTitleContainer-state">

@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_enriched_entities_attribute_edit_rest",
+    "route": "akeneo_reference_entities_attribute_edit_rest",
     "query": {
-      "enrichedEntityIdentifier": "designer",
+      "referenceEntityIdentifier": "designer",
       "attributeIdentifier": "unknown"
     },
     "body": {
       "identifier": "unknown",
-      "enriched_entity_identifier": "designer",
+      "reference_entity_identifier": "designer",
       "code": "unknown_attribute_code",
       "labels": {
         "fr_FR": "Uknown"
@@ -28,7 +28,7 @@
     "status": 400,
     "body": [
       {
-        "messageTemplate": "pim_enriched_entity.attribute.validation.code.should_exist",
+        "messageTemplate": "pim_reference_entity.attribute.validation.code.should_exist",
         "parameters": [],
         "plural": null,
         "message": "The attribute was not found",

@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -45,7 +45,7 @@ class TextAttribute extends AbstractAttribute
      * TextAttribute constructor.
      *
      * @param AttributeIdentifier        $identifier
-     * @param EnrichedEntityIdentifier   $enrichedEntityIdentifier
+     * @param ReferenceEntityIdentifier   $referenceEntityIdentifier
      * @param AttributeCode              $code
      * @param LabelCollection            $labelCollection
      * @param AttributeOrder             $order
@@ -60,7 +60,7 @@ class TextAttribute extends AbstractAttribute
      */
     protected function __construct(
         AttributeIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -89,7 +89,7 @@ class TextAttribute extends AbstractAttribute
         }
         parent::__construct(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $code,
             $labelCollection,
             $order,
@@ -107,7 +107,7 @@ class TextAttribute extends AbstractAttribute
 
     public static function createText(
         AttributeIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -120,7 +120,7 @@ class TextAttribute extends AbstractAttribute
     ) {
         return new self(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $code,
             $labelCollection,
             $order,
@@ -137,7 +137,7 @@ class TextAttribute extends AbstractAttribute
 
     public static function createTextarea(
         AttributeIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -149,7 +149,7 @@ class TextAttribute extends AbstractAttribute
     ) {
         return new self(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $code,
             $labelCollection,
             $order,

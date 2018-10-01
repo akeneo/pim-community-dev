@@ -1,48 +1,48 @@
-import Fetcher from 'akeneoenrichedentity/domain/fetcher/fetcher';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import hydrator from 'akeneoenrichedentity/application/hydrator/enriched-entity';
-import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
-import {getJSON} from 'akeneoenrichedentity/tools/fetch';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/identifier';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import Fetcher from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import hydrator from 'akeneoreferenceentity/application/hydrator/reference-entity';
+import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import {getJSON} from 'akeneoreferenceentity/tools/fetch';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/identifier';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export interface EnrichedEntityFetcher extends Fetcher<EnrichedEntityIdentifier, EnrichedEntity> {}
+export interface ReferenceEntityFetcher extends Fetcher<ReferenceEntityIdentifier, ReferenceEntity> {}
 
-export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetcher {
-  constructor(private hydrator: (backendEnrichedEntity: any) => EnrichedEntity) {
+export class ReferenceEntityFetcherImplementation implements ReferenceEntityFetcher {
+  constructor(private hydrator: (backendReferenceEntity: any) => ReferenceEntity) {
     Object.freeze(this);
   }
 
-  async fetch(identifier: EnrichedEntityIdentifier): Promise<EnrichedEntity> {
-    const backendEnrichedEntity = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_get_rest', {identifier: identifier.stringValue()})
+  async fetch(identifier: ReferenceEntityIdentifier): Promise<ReferenceEntity> {
+    const backendReferenceEntity = await getJSON(
+      routing.generate('akeneo_reference_entities_reference_entity_get_rest', {identifier: identifier.stringValue()})
     ).catch(errorHandler);
 
-    return this.hydrator(backendEnrichedEntity);
+    return this.hydrator(backendReferenceEntity);
   }
 
-  async fetchAll(): Promise<EnrichedEntity[]> {
-    const backendEnrichedEntities = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_index_rest')
+  async fetchAll(): Promise<ReferenceEntity[]> {
+    const backendReferenceEntities = await getJSON(
+      routing.generate('akeneo_reference_entities_reference_entity_index_rest')
     ).catch(errorHandler);
 
-    return hydrateAll<EnrichedEntity>(this.hydrator)(backendEnrichedEntities.items);
+    return hydrateAll<ReferenceEntity>(this.hydrator)(backendReferenceEntities.items);
   }
 
-  async search(): Promise<{items: EnrichedEntity[]; total: number}> {
-    const backendEnrichedEntities = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_index_rest')
+  async search(): Promise<{items: ReferenceEntity[]; total: number}> {
+    const backendReferenceEntities = await getJSON(
+      routing.generate('akeneo_reference_entities_reference_entity_index_rest')
     ).catch(errorHandler);
 
-    const items = hydrateAll<EnrichedEntity>(this.hydrator)(backendEnrichedEntities.items);
+    const items = hydrateAll<ReferenceEntity>(this.hydrator)(backendReferenceEntities.items);
 
     return {
       items,
-      total: backendEnrichedEntities.total,
+      total: backendReferenceEntities.total,
     };
   }
 }
 
-export default new EnrichedEntityFetcherImplementation(hydrator);
+export default new ReferenceEntityFetcherImplementation(hydrator);

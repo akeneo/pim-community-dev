@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 
 class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
 {
@@ -27,10 +27,10 @@ class InMemoryFindAttributeNextOrder implements FindAttributeNextOrderInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function withEnrichedEntityIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier): int
+    public function withReferenceEntityIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier): int
     {
         /** @var AbstractAttribute[] $attributes */
-        $attributes = $this->attributeRepository->findByEnrichedEntity($enrichedEntityIdentifier);
+        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
 
         $maxOrder = 0;
         foreach ($attributes as $attribute) {

@@ -1,16 +1,16 @@
-import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import EnrichedEntityIdentifier, {
-  createIdentifier as createEnrichedEntityIdentifier,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoenrichedentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
+import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import ReferenceEntityIdentifier, {
+  createIdentifier as createReferenceEntityIdentifier,
+} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {
   CommonNormalizedAttribute,
   CommonAttribute,
   CommonConcreteAttribute,
-} from 'akeneoenrichedentity/domain/model/attribute/common';
-import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoenrichedentity/domain/model/attribute/type/image/max-file-size';
+} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {
@@ -34,7 +34,7 @@ export class InvalidArgumentError extends Error {}
 export class ConcreteImageAttribute extends CommonConcreteAttribute implements ImageAttribute {
   private constructor(
     identifier: Identifier,
-    enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     valuePerLocale: boolean,
@@ -46,7 +46,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
   ) {
     super(
       identifier,
-      enrichedEntityIdentifier,
+      referenceEntityIdentifier,
       code,
       labelCollection,
       AttributeType.Image,
@@ -70,7 +70,7 @@ export class ConcreteImageAttribute extends CommonConcreteAttribute implements I
   public static createFromNormalized(normalizedImageAttribute: NormalizedImageAttribute) {
     return new ConcreteImageAttribute(
       createIdentifier(normalizedImageAttribute.identifier),
-      createEnrichedEntityIdentifier(normalizedImageAttribute.enriched_entity_identifier),
+      createReferenceEntityIdentifier(normalizedImageAttribute.reference_entity_identifier),
       createCode(normalizedImageAttribute.code),
       createLabelCollection(normalizedImageAttribute.labels),
       normalizedImageAttribute.value_per_locale,

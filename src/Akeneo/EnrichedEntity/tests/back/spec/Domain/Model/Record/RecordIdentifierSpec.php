@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class RecordIdentifierSpec extends ObjectBehavior
@@ -47,14 +47,14 @@ class RecordIdentifierSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', [str_repeat('a', 256)]);
     }
 
-    public function it_cannot_be_created_with_an_empty_enriched_entity_identifier()
+    public function it_cannot_be_created_with_an_empty_reference_entity_identifier()
     {
         $this->shouldThrow('\InvalidArgumentException')->during('create', ['', 'starck', 'fingerprint']);
     }
 
-    public function it_cannot_be_created_with_an_invalid_enriched_entity_identifier()
+    public function it_cannot_be_created_with_an_invalid_reference_entity_identifier()
     {
-        $this->shouldThrow('\InvalidArgumentException')->during('create', ['invalid_enriched_entity!', 'starck', 'fingerprint']);
+        $this->shouldThrow('\InvalidArgumentException')->during('create', ['invalid_reference_entity!', 'starck', 'fingerprint']);
     }
 
     public function it_cannot_be_created_with_an_empty_record_code()
@@ -85,7 +85,7 @@ class RecordIdentifierSpec extends ObjectBehavior
             'fingerprint'
         );
         $differentIdentifier = RecordIdentifier::create(
-            'an_other_enriched_entity_identifier',
+            'an_other_reference_entity_identifier',
             'other_record_identifier',
             'other_fingerprint'
         );

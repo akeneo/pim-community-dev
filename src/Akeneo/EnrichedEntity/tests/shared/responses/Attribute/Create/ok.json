@@ -1,12 +1,12 @@
 {
   "request": {
     "method": "POST",
-    "route": "akeneo_enriched_entities_attribute_create_rest",
+    "route": "akeneo_reference_entities_attribute_create_rest",
     "query": {
-      "enrichedEntityIdentifier": "designer"
+      "referenceEntityIdentifier": "designer"
     },
     "body": {
-      "enriched_entity_identifier": "designer",
+      "reference_entity_identifier": "designer",
       "code": "niceattribute",
       "type": "text",
       "labels": {

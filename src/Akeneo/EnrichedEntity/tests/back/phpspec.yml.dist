@@ -1,7 +1,7 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
-    EnrichedEntity:
-        namespace: Akeneo\EnrichedEntity
-        psr4_prefix: Akeneo\EnrichedEntity
-        spec_path: src/Akeneo/EnrichedEntity/tests/back
-        src_path: src/Akeneo/EnrichedEntity/back
+    ReferenceEntity:
+        namespace: Akeneo\ReferenceEntity
+        psr4_prefix: Akeneo\ReferenceEntity
+        spec_path: src/Akeneo/ReferenceEntity/tests/back
+        src_path: src/Akeneo/ReferenceEntity/back

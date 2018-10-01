@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Record\Value;
+namespace Akeneo\ReferenceEntity\Domain\Model\Record\Value;
 
-use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 
 /**
  * A ChannelReference expresses a link to a channel.

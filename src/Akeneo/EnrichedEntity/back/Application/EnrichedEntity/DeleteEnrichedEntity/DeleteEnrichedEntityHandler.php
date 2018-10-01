@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteEnrichedEntityHandler
+class DeleteReferenceEntityHandler
 {
-    /** @var EnrichedEntityRepositoryInterface */
-    private $enrichedEntityRepository;
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
 
-    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
+    public function __construct(ReferenceEntityRepositoryInterface $referenceEntityRepository)
     {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->referenceEntityRepository = $referenceEntityRepository;
     }
 
-    public function __invoke(DeleteEnrichedEntityCommand $deleteEnrichedEntityCommand): void
+    public function __invoke(DeleteReferenceEntityCommand $deleteReferenceEntityCommand): void
     {
-        $identifier = EnrichedEntityIdentifier::fromString($deleteEnrichedEntityCommand->identifier);
+        $identifier = ReferenceEntityIdentifier::fromString($deleteReferenceEntityCommand->identifier);
 
-        $this->enrichedEntityRepository->deleteByIdentifier($identifier);
+        $this->referenceEntityRepository->deleteByIdentifier($identifier);
     }
 }

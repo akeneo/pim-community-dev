@@ -1,4 +1,4 @@
-import {ConcreteLocale, denormalizeLocale, createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
+import {ConcreteLocale, denormalizeLocale, createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 
 describe('akeneo > enriched entity > domain > model --- locale', () => {
   test('I can create a new locale from a normalized one', () => {

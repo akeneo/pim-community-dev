@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 
 /**
  * List enriched entity items.
@@ -19,10 +19,10 @@ namespace Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity;
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindEnrichedEntityItemsInterface
+interface FindReferenceEntityItemsInterface
 {
     /**
-     * @return EnrichedEntityItem[]
+     * @return ReferenceEntityItem[]
      */
     public function __invoke(): array;
 }

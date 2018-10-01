@@ -1,5 +1,5 @@
-const Edit = require('../../decorators/enriched-entity/edit.decorator');
-const Header = require('../../decorators/enriched-entity/app/header.decorator');
+const Edit = require('../../decorators/reference-entity/edit.decorator');
+const Header = require('../../decorators/reference-entity/app/header.decorator');
 const path = require('path');
 
 const {
@@ -24,9 +24,9 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const askForEnrichedEntity = async function(identifier) {
+  const askForReferenceEntity = async function(identifier) {
     await this.page.evaluate(async identifier => {
-      const Controller = require('pim/controller/enriched-entity/edit');
+      const Controller = require('pim/controller/reference-entity/edit');
       const controller = new Controller();
       controller.renderRoute({params: {identifier, tab: 'attribute'}});
 
@@ -41,7 +41,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isLoaded, true);
   };
 
-  const changeEnrichedEntity = async function(editPage, identifier, updates) {
+  const changeReferenceEntity = async function(editPage, identifier, updates) {
     const properties = await editPage.getProperties();
 
     const labels = convertDataTable(updates).labels;
@@ -53,13 +53,13 @@ module.exports = async function(cucumber) {
     });
   };
 
-  const savedEnrichedEntityWillBe = function(page, identifier, updates) {
+  const savedReferenceEntityWillBe = function(page, identifier, updates) {
     page.on('request', request => {
-      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'POST' === request.method()) {
+      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'POST' === request.method()) {
         answerJson(request, {}, 204);
       }
 
-      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'GET' === request.method()) {
+      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'GET' === request.method()) {
         answerJson(request, convertItemTable(updates)[0], 200);
       }
     });
@@ -81,7 +81,7 @@ module.exports = async function(cucumber) {
     });
   };
 
-  When('the user asks for the enriched entity {string}', askForEnrichedEntity);
+  When('the user asks for the enriched entity {string}', askForReferenceEntity);
 
   When('the user gets the enriched entity {string} with label {string}', async function(
     expectedIdentifier,
@@ -98,33 +98,33 @@ module.exports = async function(cucumber) {
 
   When('the user updates the enriched entity {string} with:', async function(identifier, updates) {
     await answerLocaleList.apply(this);
-    await askForEnrichedEntity.apply(this, [identifier]);
+    await askForReferenceEntity.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
-    await changeEnrichedEntity(editPage, identifier, updates);
-    await savedEnrichedEntityWillBe(this.page, identifier, updates);
+    await changeReferenceEntity(editPage, identifier, updates);
+    await savedReferenceEntityWillBe(this.page, identifier, updates);
     await editPage.save();
   });
 
   When('the user changes the enriched entity {string} with:', async function(identifier, updates) {
     await answerLocaleList.apply(this);
-    await askForEnrichedEntity.apply(this, [identifier]);
+    await askForReferenceEntity.apply(this, [identifier]);
 
     const editPage = await await getElement(this.page, 'Edit');
 
-    await changeEnrichedEntity.apply(this, [editPage, identifier, updates]);
+    await changeReferenceEntity.apply(this, [editPage, identifier, updates]);
   });
 
   Then('the enriched entity {string} should be:', async function(identifier, updates) {
-    const enrichedEntity = convertItemTable(updates)[0];
+    const referenceEntity = convertItemTable(updates)[0];
 
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
-    assert.strictEqual(identifierValue, enrichedEntity.identifier);
+    assert.strictEqual(identifierValue, referenceEntity.identifier);
 
-    await Object.keys(enrichedEntity.labels).forEach(async locale => {
-      const label = enrichedEntity.labels[locale];
+    await Object.keys(referenceEntity.labels).forEach(async locale => {
+      const label = referenceEntity.labels[locale];
       await (await editPage.getLocaleSwitcher()).switchLocale(locale);
       const labelValue = await properties.getLabel();
       assert.strictEqual(labelValue, label);
@@ -132,7 +132,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the saved enriched entity {string} will be:', async function(identifier, updates) {
-    await savedEnrichedEntityWillBe(this.page, identifier, updates);
+    await savedReferenceEntityWillBe(this.page, identifier, updates);
   });
 
   Then('the user saves the changes', async function() {
@@ -149,7 +149,7 @@ module.exports = async function(cucumber) {
 
   Then('the enriched entity {string} save will fail', function(identifier) {
     this.page.on('request', request => {
-      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'POST' === request.method()) {
+      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'POST' === request.method()) {
         request.respond({
           status: 500,
           contentType: 'text/plain',
@@ -170,7 +170,7 @@ module.exports = async function(cucumber) {
     const header = await await getElement(this.page, 'Header');
 
     this.page.once('request', request => {
-      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
+      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
         request.respond({
           status: 204,
           contentType: 'application/json',
@@ -190,8 +190,8 @@ module.exports = async function(cucumber) {
     const header = await await getElement(this.page, 'Header');
     const response = JSON.stringify([
       {
-        messageTemplate: 'pim_enriched_entity.enriched_entity.validation.records.should_have_no_record',
-        parameters: {'%enriched_entity_identifier%': []},
+        messageTemplate: 'pim_reference_entity.reference_entity.validation.records.should_have_no_record',
+        parameters: {'%reference_entity_identifier%': []},
         plural: null,
         message: 'You cannot delete this entity because records exist for this entity',
         root: {identifier: `${identifier}`},
@@ -204,7 +204,7 @@ module.exports = async function(cucumber) {
     ]);
 
     this.page.once('request', request => {
-      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
+      if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'DELETE' === request.method()) {
         request.respond({
           status: 400,
           contentType: 'application/json',

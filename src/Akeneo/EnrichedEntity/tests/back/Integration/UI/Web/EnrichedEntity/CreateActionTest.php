@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_ENRICHED_ENTITY_ROUTE = 'akeneo_enriched_entities_enriched_entity_create_rest';
+    private const CREATE_ENRICHED_ENTITY_ROUTE = 'akeneo_reference_entities_reference_entity_create_rest';
 
     /** @var Client */
     private $client;
@@ -38,13 +38,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_creates_an_enriched_entity(): void
+    public function it_creates_an_reference_entity(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -69,7 +69,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_an_enriched_entity_with_no_labels(): void
+    public function it_creates_an_reference_entity_with_no_labels(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -124,7 +124,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_enriched_entity_code_is_not_unique()
+    public function it_returns_an_error_when_the_reference_entity_code_is_not_unique()
     {
         $headers = [
             'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -143,7 +143,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.code.should_be_unique","parameters":{"%enriched_entity_identifier%":"designer"},"plural":null,"message":"An enriched entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer"},"plural":null,"message":"An enriched entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
         );
     }
 
@@ -228,7 +228,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->get('pim_user.repository.user')->save($user);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_enriched_entity_create', true);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_create', true);
     }
 
     public function invalidIdentifiers()
@@ -244,7 +244,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
             ],
             'Identifier has a dash character' => [
                 'invalid-code',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"code":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"code":"invalid-code","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Identifier is 256 characters'    => [
                 str_repeat('a', 256),
@@ -270,6 +270,6 @@ class CreateActionTest extends ControllerIntegrationTestCase
     private function revokeCreationRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_enriched_entity_create', false);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_reference_entity_create', false);
     }
 }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class EditTextValueCommand extends Constraint
 {
-    public const TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION = 'pim_enriched_entity.record.validation.text.incompatible_with_regular_expression';
+    public const TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION = 'pim_reference_entity.record.validation.text.incompatible_with_regular_expression';
 
     public function getTargets()
     {

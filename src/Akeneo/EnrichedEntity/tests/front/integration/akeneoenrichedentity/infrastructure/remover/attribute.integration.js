@@ -1,6 +1,6 @@
 const timeout = 5000;
 
-describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
+describe('Akeneoreferenceentity > infrastructure > remover > attribute', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -10,7 +10,7 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
   it('It deletes an attribute', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/attribute/name_1234' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity/designer/attribute/name_1234' === interceptedRequest.url() &&
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -20,15 +20,15 @@ describe('Akeneoenrichedentity > infrastructure > remover > attribute', () => {
     });
 
     await page.evaluate(async () => {
-      const createIdentifier = require('akeneoenrichedentity/domain/model/attribute/identifier').createIdentifier;
-      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
+      const createIdentifier = require('akeneoreferenceentity/domain/model/attribute/identifier').createIdentifier;
+      const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
         .createIdentifier;
-      const remover = require('akeneoenrichedentity/infrastructure/remover/attribute').default;
+      const remover = require('akeneoreferenceentity/infrastructure/remover/attribute').default;
 
       const attributeIdentifierToDelete = createIdentifier('name_1234');
-      const enrichedEntityIdentifierToDelete = createEnrichedEntityIdentifier('designer');
+      const referenceEntityIdentifierToDelete = createReferenceEntityIdentifier('designer');
 
-      return await remover.remove(enrichedEntityIdentifierToDelete, attributeIdentifierToDelete);
+      return await remover.remove(referenceEntityIdentifierToDelete, attributeIdentifierToDelete);
     });
   });
 });

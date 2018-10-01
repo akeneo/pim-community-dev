@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Finds a list of attribute details by their enriched entity identifiers
@@ -26,5 +26,5 @@ interface FindAttributesIndexedByIdentifierInterface
     /**
      * @return AbstractAttributeDetails[]
      */
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier): array;
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier): array;
 }

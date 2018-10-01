@@ -1,8 +1,8 @@
-import Value, {createValue, NormalizedValue} from 'akeneoenrichedentity/domain/model/record/value';
-import {denormalizeChannelReference} from 'akeneoenrichedentity/domain/model/channel-reference';
-import {denormalizeLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {getDataDenormalizer, Denormalizer} from 'akeneoenrichedentity/application/configuration/value';
+import Value, {createValue, NormalizedValue} from 'akeneoreferenceentity/domain/model/record/value';
+import {denormalizeChannelReference} from 'akeneoreferenceentity/domain/model/channel-reference';
+import {denormalizeLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
+import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {getDataDenormalizer, Denormalizer} from 'akeneoreferenceentity/application/configuration/value';
 
 export const getValueDenormalizer = (getDataDenormalizer: (normalizedValue: NormalizedValue) => Denormalizer) => (
   normalizedValue: NormalizedValue

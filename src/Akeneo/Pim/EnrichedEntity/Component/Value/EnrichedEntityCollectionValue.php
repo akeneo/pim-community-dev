@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Value;
+namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -22,7 +22,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityCollectionValue extends AbstractValue implements EnrichedEntityCollectionValueInterface
+class ReferenceEntityCollectionValue extends AbstractValue implements ReferenceEntityCollectionValueInterface
 {
     /** @var Record[] */
     protected $records;

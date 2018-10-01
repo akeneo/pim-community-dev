@@ -1,52 +1,52 @@
-import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import LabelCollection, {
   NormalizedLabelCollection,
   createLabelCollection,
-} from 'akeneoenrichedentity/domain/model/label-collection';
-import File, {NormalizedFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
+} from 'akeneoreferenceentity/domain/model/label-collection';
+import File, {NormalizedFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 
-export interface NormalizedEnrichedEntity {
+export interface NormalizedReferenceEntity {
   identifier: string;
   code: string;
   labels: NormalizedLabelCollection;
   image: NormalizedFile;
 }
 
-export default interface EnrichedEntity {
+export default interface ReferenceEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string, defaultValue?: boolean) => string;
   getLabelCollection: () => LabelCollection;
   getImage: () => File;
-  equals: (enrichedEntity: EnrichedEntity) => boolean;
-  normalize: () => NormalizedEnrichedEntity;
+  equals: (referenceEntity: ReferenceEntity) => boolean;
+  normalize: () => NormalizedReferenceEntity;
 }
 class InvalidArgumentError extends Error {}
 
-class EnrichedEntityImplementation implements EnrichedEntity {
+class ReferenceEntityImplementation implements ReferenceEntity {
   private constructor(private identifier: Identifier, private labelCollection: LabelCollection, private image: File) {
     if (!(identifier instanceof Identifier)) {
-      throw new InvalidArgumentError('EnrichedEntity expect an EnrichedEntityIdentifier as identifier argument');
+      throw new InvalidArgumentError('ReferenceEntity expect an ReferenceEntityIdentifier as identifier argument');
     }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('EnrichedEntity expect a LabelCollection as labelCollection argument');
+      throw new InvalidArgumentError('ReferenceEntity expect a LabelCollection as labelCollection argument');
     }
     if (!(image instanceof File)) {
-      throw new InvalidArgumentError('EnrichedEntity expect a File as image argument');
+      throw new InvalidArgumentError('ReferenceEntity expect a File as image argument');
     }
 
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection, image: File): EnrichedEntity {
-    return new EnrichedEntityImplementation(identifier, labelCollection, image);
+  public static create(identifier: Identifier, labelCollection: LabelCollection, image: File): ReferenceEntity {
+    return new ReferenceEntityImplementation(identifier, labelCollection, image);
   }
 
-  public static createFromNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
-    const identifier = createIdentifier(normalizedEnrichedEntity.identifier);
-    const labelCollection = createLabelCollection(normalizedEnrichedEntity.labels);
-    const image = denormalizeFile(normalizedEnrichedEntity.image);
+  public static createFromNormalized(normalizedReferenceEntity: NormalizedReferenceEntity): ReferenceEntity {
+    const identifier = createIdentifier(normalizedReferenceEntity.identifier);
+    const labelCollection = createLabelCollection(normalizedReferenceEntity.labels);
+    const image = denormalizeFile(normalizedReferenceEntity.image);
 
-    return EnrichedEntityImplementation.create(identifier, labelCollection, image);
+    return ReferenceEntityImplementation.create(identifier, labelCollection, image);
   }
 
   public getIdentifier(): Identifier {
@@ -69,11 +69,11 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.image;
   }
 
-  public equals(enrichedEntity: EnrichedEntity): boolean {
-    return enrichedEntity.getIdentifier().equals(this.identifier);
+  public equals(referenceEntity: ReferenceEntity): boolean {
+    return referenceEntity.getIdentifier().equals(this.identifier);
   }
 
-  public normalize(): NormalizedEnrichedEntity {
+  public normalize(): NormalizedReferenceEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
       code: this.getIdentifier().stringValue(),
@@ -83,5 +83,5 @@ class EnrichedEntityImplementation implements EnrichedEntity {
   }
 }
 
-export const createEnrichedEntity = EnrichedEntityImplementation.create;
-export const denormalizeEnrichedEntity = EnrichedEntityImplementation.createFromNormalized;
+export const createReferenceEntity = ReferenceEntityImplementation.create;
+export const denormalizeReferenceEntity = ReferenceEntityImplementation.createFromNormalized;

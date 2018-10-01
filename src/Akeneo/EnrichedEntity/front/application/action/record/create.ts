@@ -1,23 +1,23 @@
-import {notifyRecordCreateFailed, notifyRecordWellCreated} from 'akeneoenrichedentity/application/action/record/notify';
-import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {recordCreationErrorOccured, recordCreationSucceeded} from 'akeneoenrichedentity/domain/event/record/create';
-import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
-import {createRecord as recordFactory} from 'akeneoenrichedentity/domain/model/record/record';
-import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
-import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
-import {createValueCollection} from 'akeneoenrichedentity/domain/model/record/value-collection';
+import {notifyRecordCreateFailed, notifyRecordWellCreated} from 'akeneoreferenceentity/application/action/record/notify';
+import {updateRecordResults} from 'akeneoreferenceentity/application/action/record/search';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {recordCreationErrorOccured, recordCreationSucceeded} from 'akeneoreferenceentity/domain/event/record/create';
+import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
+import {createRecord as recordFactory} from 'akeneoreferenceentity/domain/model/record/record';
+import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
+import recordSaver from 'akeneoreferenceentity/infrastructure/saver/record';
+import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
+import {createValueCollection} from 'akeneoreferenceentity/domain/model/record/value-collection';
 
 export const createRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
-  const enrichedEntity = getState().form.data;
+  const referenceEntity = getState().form.data;
   const {code, labels} = getState().createRecord.data;
   const record = recordFactory(
     createIdentifier(code),
-    createEnrichedEntityIdentifier(enrichedEntity.identifier),
+    createReferenceEntityIdentifier(referenceEntity.identifier),
     createCode(code),
     createLabelCollection(labels),
     createEmptyFile(),

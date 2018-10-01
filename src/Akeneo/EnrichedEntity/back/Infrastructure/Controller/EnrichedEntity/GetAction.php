@@ -10,11 +10,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -26,34 +26,34 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetAction
 {
-    /** @var FindEnrichedEntityDetailsInterface */
-    private $findOneEnrichedEntityQuery;
+    /** @var FindReferenceEntityDetailsInterface */
+    private $findOneReferenceEntityQuery;
 
-    public function __construct(FindEnrichedEntityDetailsInterface $findOneEnrichedEntityQuery)
+    public function __construct(FindReferenceEntityDetailsInterface $findOneReferenceEntityQuery)
     {
-        $this->findOneEnrichedEntityQuery = $findOneEnrichedEntityQuery;
+        $this->findOneReferenceEntityQuery = $findOneReferenceEntityQuery;
     }
 
     public function __invoke(string $identifier): JsonResponse
     {
-        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($identifier);
-        $enrichedEntityDetails = $this->findEnrichedEntityDetailsOr404($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($identifier);
+        $referenceEntityDetails = $this->findReferenceEntityDetailsOr404($referenceEntityIdentifier);
 
-        return new JsonResponse($enrichedEntityDetails->normalize());
+        return new JsonResponse($referenceEntityDetails->normalize());
     }
 
-    private function getEnrichedEntityIdentifierOr404(string $identifier): EnrichedEntityIdentifier
+    private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
     {
         try {
-            return EnrichedEntityIdentifier::fromString($identifier);
+            return ReferenceEntityIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
     }
 
-    private function findEnrichedEntityDetailsOr404(EnrichedEntityIdentifier $identifier): EnrichedEntityDetails
+    private function findReferenceEntityDetailsOr404(ReferenceEntityIdentifier $identifier): ReferenceEntityDetails
     {
-        $result = ($this->findOneEnrichedEntityQuery)($identifier);
+        $result = ($this->findOneReferenceEntityQuery)($identifier);
         if (null === $result) {
             throw new NotFoundHttpException();
         }

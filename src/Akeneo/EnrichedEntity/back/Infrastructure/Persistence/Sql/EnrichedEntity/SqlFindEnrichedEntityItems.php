@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -28,7 +28,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
+class SqlFindReferenceEntityItems implements FindReferenceEntityItemsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -47,23 +47,23 @@ class SqlFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
     public function __invoke(): array
     {
         $results = $this->fetchResults();
-        $enrichedEntityItems = [];
+        $referenceEntityItems = [];
         foreach ($results as $result) {
-            $enrichedEntityItems[] = $this->hydrateEnrichedEntityItem(
+            $referenceEntityItems[] = $this->hydrateReferenceEntityItem(
                 $result['identifier'],
                 $result['labels'],
                 $result['image']
             );
         }
 
-        return $enrichedEntityItems;
+        return $referenceEntityItems;
     }
 
     private function fetchResults(): array
     {
         $query = <<<SQL
         SELECT ee.identifier, ee.labels, fi.image
-        FROM akeneo_enriched_entity_enriched_entity AS ee
+        FROM akeneo_reference_entity_reference_entity AS ee
         LEFT JOIN (
           SELECT file_key, JSON_OBJECT("file_key", file_key, "original_filename", original_filename) as image
           FROM akeneo_file_storage_file_info
@@ -76,11 +76,11 @@ SQL;
         return $results;
     }
 
-    private function hydrateEnrichedEntityItem(
+    private function hydrateReferenceEntityItem(
         string $identifier,
         string $normalizedLabels,
         ?string $rawFile
-    ): EnrichedEntityItem {
+    ): ReferenceEntityItem {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($normalizedLabels, $platform);
@@ -96,11 +96,11 @@ SQL;
             $image = Image::fromFileInfo($file);
         }
 
-        $enrichedEntityItem = new EnrichedEntityItem();
-        $enrichedEntityItem->identifier = EnrichedEntityIdentifier::fromString($identifier);
-        $enrichedEntityItem->labels = LabelCollection::fromArray($labels);
-        $enrichedEntityItem->image = $image;
+        $referenceEntityItem = new ReferenceEntityItem();
+        $referenceEntityItem->identifier = ReferenceEntityIdentifier::fromString($identifier);
+        $referenceEntityItem->labels = LabelCollection::fromArray($labels);
+        $referenceEntityItem->image = $image;
 
-        return $enrichedEntityItem;
+        return $referenceEntityItem;
     }
 }

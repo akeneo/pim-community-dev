@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

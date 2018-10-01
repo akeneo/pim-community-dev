@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class ImageAttributeFactorySpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
     function it_creates_an_image_attribute_with_command(AttributeIdentifier $identifier)
     {
         $command = new CreateImageAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
             'fr_FR' => 'Nom'
@@ -41,7 +41,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier' => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,
@@ -57,7 +57,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
     function it_creates_an_image_attribute_with_no_max_file_size_limit(AttributeIdentifier $identifier)
     {
         $command = new CreateImageAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
             'fr_FR' => 'Nom'
@@ -73,7 +73,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier' => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,
@@ -89,7 +89,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
     function it_creates_an_image_attribute_with_extensions_all_allowed(AttributeIdentifier $identifier)
     {
         $command = new CreateImageAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
             'fr_FR' => 'Nom'
@@ -105,7 +105,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier' => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 0,

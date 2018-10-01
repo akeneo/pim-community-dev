@@ -1,5 +1,5 @@
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-const Grid = require('../../decorators/enriched-entity/index/grid.decorator');
+const ReferenceEntityBuilder = require('../../../../common/builder/reference-entity.js');
+const Grid = require('../../decorators/reference-entity/index/grid.decorator');
 const path = require('path');
 
 const {
@@ -20,49 +20,49 @@ module.exports = async function(cucumber) {
 
   const getElement = createElementDecorator(config);
 
-  const givenEnrichedEntities = function(enrichedEntities) {
-    const enrichedEntityResponse = enrichedEntities.hashes().map(function(enrichedEntity) {
-      const enrichedEntityBuilder = new EnrichedEntityBuilder();
+  const givenReferenceEntities = function(referenceEntities) {
+    const referenceEntityResponse = referenceEntities.hashes().map(function(referenceEntity) {
+      const referenceEntityBuilder = new ReferenceEntityBuilder();
 
-      if (undefined !== enrichedEntity.identifier) {
-        enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
+      if (undefined !== referenceEntity.identifier) {
+        referenceEntityBuilder.withIdentifier(referenceEntity.identifier);
       }
-      if (undefined !== enrichedEntity.labels) {
-        enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
+      if (undefined !== referenceEntity.labels) {
+        referenceEntityBuilder.withLabels(JSON.parse(referenceEntity.labels));
       }
-      if (undefined !== enrichedEntity.image) {
-        enrichedEntityBuilder.withImage(JSON.parse(enrichedEntity.image));
+      if (undefined !== referenceEntity.image) {
+        referenceEntityBuilder.withImage(JSON.parse(referenceEntity.image));
       } else {
-        enrichedEntityBuilder.withImage(null);
+        referenceEntityBuilder.withImage(null);
       }
 
-      return enrichedEntityBuilder.build();
+      return referenceEntityBuilder.build();
     });
 
-    enrichedEntityResponse.forEach(enrichedEntity => {
+    referenceEntityResponse.forEach(referenceEntity => {
       this.page.on('request', request => {
         if (
-          `http://pim.com/rest/enriched_entity/${enrichedEntity.identifier}` === request.url() &&
+          `http://pim.com/rest/reference_entity/${referenceEntity.identifier}` === request.url() &&
           'GET' === request.method()
         ) {
-          answerJson(request, enrichedEntity);
+          answerJson(request, referenceEntity);
         }
       });
     });
 
     this.page.on('request', request => {
-      if ('http://pim.com/rest/enriched_entity' === request.url()) {
-        answerJson(request, {items: enrichedEntityResponse, total: 1000});
+      if ('http://pim.com/rest/reference_entity' === request.url()) {
+        answerJson(request, {items: referenceEntityResponse, total: 1000});
       }
     });
   };
-  Given('the following enriched entities to list:', givenEnrichedEntities);
-  Given('the following enriched entities to show:', givenEnrichedEntities);
-  Given('the following enriched entity:', givenEnrichedEntities);
+  Given('the following enriched entities to list:', givenReferenceEntities);
+  Given('the following enriched entities to show:', givenReferenceEntities);
+  Given('the following enriched entity:', givenReferenceEntities);
 
   When('the user asks for the enriched entity list', async function() {
     await this.page.evaluate(async () => {
-      const Controller = require('pim/controller/enriched-entity/list');
+      const Controller = require('pim/controller/reference-entity/list');
       const controller = new Controller();
       controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);

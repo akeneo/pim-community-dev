@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 
 interface CreateAttributeCommandFactoryInterface
 {

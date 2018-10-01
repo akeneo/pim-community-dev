@@ -1,6 +1,6 @@
 const timeout = 5000;
 
-describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
+describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -10,7 +10,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
   it('It lists the attributes of an enriched entity', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/designer/attribute' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity/designer/attribute' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -18,7 +18,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
           body: JSON.stringify([
             {
               identifier: 'description_1234',
-              enriched_entity_identifier: 'designer',
+              reference_entity_identifier: 'designer',
               code: 'description',
               is_required: true,
               order: 0,
@@ -36,7 +36,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
             },
             {
               identifier: 'side_view_1234',
-              enriched_entity_identifier: 'designer',
+              reference_entity_identifier: 'designer',
               code: 'side_view',
               is_required: false,
               order: 1,
@@ -55,11 +55,11 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/attribute').default;
-      const identifierModule = 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-      const enrichedEntityIdentifier = require(identifierModule).createIdentifier('designer');
+      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/attribute').default;
+      const identifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+      const referenceEntityIdentifier = require(identifierModule).createIdentifier('designer');
 
-      return await fetcher.fetchAll(enrichedEntityIdentifier);
+      return await fetcher.fetchAll(referenceEntityIdentifier);
     });
 
     // Missing properties such as "maxFileSize" and "AllowedExtensions"
@@ -68,7 +68,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
         code: {
           code: 'description',
         },
-        enrichedEntityIdentifier: {
+        referenceEntityIdentifier: {
           identifier: 'designer',
         },
         identifier: {
@@ -100,7 +100,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > attribute', () => {
         code: {
           code: 'side_view',
         },
-        enrichedEntityIdentifier: {
+        referenceEntityIdentifier: {
           identifier: 'designer',
         },
         identifier: {

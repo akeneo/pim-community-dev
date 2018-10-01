@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Record;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * Generate empty values structure for a given Enriched Entity
@@ -23,5 +23,5 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
  */
 interface GenerateEmptyValuesInterface
 {
-    public function __invoke(EnrichedEntityIdentifier $identifier): array;
+    public function __invoke(ReferenceEntityIdentifier $identifier): array;
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Record\DeleteRecord;
+namespace spec\Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
 
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class DeleteRecordHandlerSpec extends ObjectBehavior
@@ -25,12 +25,12 @@ class DeleteRecordHandlerSpec extends ObjectBehavior
     {
         $command = new DeleteRecordCommand();
         $command->recordCode = 'record_code';
-        $command->enrichedEntityIdentifier = 'entity_identifier';
+        $command->referenceEntityIdentifier = 'entity_identifier';
 
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
 
-        $repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode)->shouldBeCalled();
+        $repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode)->shouldBeCalled();
 
         $this->__invoke($command);
     }

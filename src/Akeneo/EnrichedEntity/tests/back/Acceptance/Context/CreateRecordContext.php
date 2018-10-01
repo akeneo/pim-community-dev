@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -53,13 +53,13 @@ final class CreateRecordContext implements Context
      */
     public function theUserCreatesARecordWith(
         string $code,
-        string $enrichedEntityIdentifier,
+        string $referenceEntityIdentifier,
         TableNode $updateTable
     ) {
         $updates = current($updateTable->getHash());
         $command = new CreateRecordCommand();
         $command->code = $code;
-        $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $command->referenceEntityIdentifier = $referenceEntityIdentifier;
         $command->labels = json_decode($updates['labels'], true);
         try {
             ($this->createRecordHandler)($command);
@@ -71,17 +71,17 @@ final class CreateRecordContext implements Context
     /**
      * @Then /^there is a record with:$/
      */
-    public function thereIsARecordWith(TableNode $enrichedEntityTable)
+    public function thereIsARecordWith(TableNode $referenceEntityTable)
     {
-        $expectedInformation = current($enrichedEntityTable->getHash());
+        $expectedInformation = current($referenceEntityTable->getHash());
         $expectedIdentifier = $this->recordRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($expectedInformation['entity_identifier']),
+            ReferenceEntityIdentifier::fromString($expectedInformation['entity_identifier']),
             RecordCode::fromString($expectedInformation['code'])
         );
-        $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier);
+        $actualReferenceEntity = $this->recordRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
-            $actualEnrichedEntity
+            $actualReferenceEntity
         );
     }
 
@@ -108,11 +108,11 @@ final class CreateRecordContext implements Context
      */
     public function thereShouldBeNoRecord()
     {
-        $enrichedEntityCount = $this->recordRepository->count();
+        $referenceEntityCount = $this->recordRepository->count();
         Assert::same(
             0,
-            $enrichedEntityCount,
-            sprintf('Expected to have 0 enriched entity. %d found.', $enrichedEntityCount)
+            $referenceEntityCount,
+            sprintf('Expected to have 0 enriched entity. %d found.', $referenceEntityCount)
         );
     }
 }

@@ -1,5 +1,5 @@
-pim_enriched_entity:
-  enriched_entity:
+pim_reference_entity:
+  reference_entity:
     button:
       save: Salva
       create: Crea

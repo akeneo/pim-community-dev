@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
+import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 
 class SibebarMissConfigurationError extends Error {}
 
@@ -34,7 +34,7 @@ export class TabsProvider {
       const confPath = `
 config:
     config:
-        akeneoenrichedentity/application/configuration/sidebar:
+        akeneoreferenceentity/application/configuration/sidebar:
             ${sidebarIdentifier}:
                 tabs:
                     tab-code:
@@ -61,7 +61,7 @@ Actual conf: ${JSON.stringify(this.configuration)}`
       const confPath = `
 config:
     config:
-        akeneoenrichedentity/application/configuration/sidebar:
+        akeneoreferenceentity/application/configuration/sidebar:
             ${sidebarIdentifier}:
                 tabs:
                     ${code}:

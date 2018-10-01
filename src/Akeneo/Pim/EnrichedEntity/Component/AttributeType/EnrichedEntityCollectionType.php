@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\AttributeType;
+namespace Akeneo\Pim\ReferenceEntity\Component\AttributeType;
 
 use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
 
@@ -19,9 +19,9 @@ use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class EnrichedEntityCollectionType extends AbstractAttributeType
+class ReferenceEntityCollectionType extends AbstractAttributeType
 {
-    const ENRICHED_ENTITY_COLLECTION = 'akeneo_enriched_entity_collection';
+    const ENRICHED_ENTITY_COLLECTION = 'akeneo_reference_entity_collection';
 
     /**
      * {@inheritdoc}

@@ -1,4 +1,4 @@
-import {hydrator} from 'akeneoenrichedentity/application/hydrator/locale';
+import {hydrator} from 'akeneoreferenceentity/application/hydrator/locale';
 
 describe('akeneo > enriched entity > application > hydrator --- locale', () => {
   test('I can hydrate a new locale', () => {

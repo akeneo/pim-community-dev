@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -67,15 +67,15 @@ class RecordCodeShouldBeUniqueValidator extends ConstraintValidator
 
     private function validateCommand(CreateRecordCommand $command): void
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
         $code = RecordCode::fromString($command->code);
-        $alreadyExists = $this->recordExists->withEnrichedEntityAndCode(
-            $enrichedEntityIdentifier,
+        $alreadyExists = $this->recordExists->withReferenceEntityAndCode(
+            $referenceEntityIdentifier,
             $code
         );
         if ($alreadyExists) {
             $this->context->buildViolation(RecordCodeShouldBeUnique::ERROR_MESSAGE)
-                ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->setParameter('%code%', $code)
                 ->atPath('code')
                 ->addViolation();

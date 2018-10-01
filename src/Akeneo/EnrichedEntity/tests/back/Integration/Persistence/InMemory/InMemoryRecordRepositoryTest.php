@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\InMemory;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\EnrichedEntity\Common\Fake\InMemoryRecordRepository;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -40,9 +40,9 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_creates_a_record_and_returns_it()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -51,7 +51,7 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::fromFileInfo($imageInfo),
@@ -69,12 +69,12 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_throws_when_creating_an_existing_record_with_same_identifier()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -91,12 +91,12 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_updates_a_record_and_returns_it()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -116,12 +116,12 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_throws_when_updating_a_non_existing_record()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -139,12 +139,12 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $this->assertEquals(0, $this->recordRepository->count());
 
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -156,10 +156,10 @@ class InMemoryRecordRepositoryTest extends TestCase
         $this->assertEquals(1, $this->recordRepository->count());
 
         $recordIdentifier = RecordCode::fromString('record_identifier');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordIdentifier);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordIdentifier);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordIdentifier,
             [],
             Image::createEmpty(),
@@ -173,12 +173,12 @@ class InMemoryRecordRepositoryTest extends TestCase
 
     public function it_tells_if_it_has_a_record_identifier()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -195,9 +195,9 @@ class InMemoryRecordRepositoryTest extends TestCase
     public function it_throws_if_the_code_is_not_found()
     {
         $this->expectException(RecordNotFoundException::class);
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('unknown_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $this->recordRepository->getByIdentifier($identifier);
     }
@@ -205,12 +205,12 @@ class InMemoryRecordRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_the_enriched_entity_identifier_is_not_found()
+    public function it_throws_if_the_reference_entity_identifier_is_not_found()
     {
         $this->expectException(RecordNotFoundException::class);
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('unknown_enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown_reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $this->recordRepository->getByIdentifier($identifier);
     }
@@ -220,12 +220,12 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_deletes_a_record_by_code_and_entity_identifier()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -233,7 +233,7 @@ class InMemoryRecordRepositoryTest extends TestCase
         );
         $this->recordRepository->create($record);
 
-        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
 
         $hasRecord = 0 !== $this->recordRepository->count();
         Assert::assertFalse($hasRecord, 'Expected record to be removed, but was not');
@@ -244,12 +244,12 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_throws_if_trying_to_delete_an_unknown_record()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('reference_entity_identifier');
         $recordCode = RecordCode::fromString('record_code');
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -260,6 +260,6 @@ class InMemoryRecordRepositoryTest extends TestCase
         $unknownCode = RecordCode::fromString('unknown_code');
 
         $this->expectException(RecordNotFoundException::class);
-        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $unknownCode);
+        $this->recordRepository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $unknownCode);
     }
 }

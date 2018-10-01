@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditLabelsCommandFactory;
 use PhpSpec\ObjectBehavior;
 
 class EditLabelsCommandFactorySpec extends ObjectBehavior
@@ -16,15 +16,15 @@ class EditLabelsCommandFactorySpec extends ObjectBehavior
     function it_only_supports_attribute_labels_edits()
     {
         $this->supports([
-            'identifier' => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'labels'     => ['fr_FR' => 'Nickname'],
         ])->shouldReturn(true);
         $this->supports([
-            'identifier' => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier' => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'labels'     => null
         ])->shouldReturn(true);
         $this->supports([
-            'identifier'    => ['identifier' => 'portrait', 'enriched_entity_identifier' => 'designer'],
+            'identifier'    => ['identifier' => 'portrait', 'reference_entity_identifier' => 'designer'],
             'max_file_size' => '172.50',
         ])->shouldReturn(false);
         $this->supports(['dummy' => 10])->shouldReturn(false);
@@ -35,14 +35,14 @@ class EditLabelsCommandFactorySpec extends ObjectBehavior
         $command = $this->create([
             'identifier' => [
                 'identifier'                 => 'portrait',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
             ],
             'labels'     => ['fr_FR' => 'Nickname'],
         ]);
         $command->shouldBeAnInstanceOf(EditLabelsCommand::class);
         $command->identifier->shouldBeEqualTo([
             'identifier'                 => 'portrait',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
         ]);
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nickname']);
     }
@@ -54,7 +54,7 @@ class EditLabelsCommandFactorySpec extends ObjectBehavior
                 [
                     'identifier'     => [
                         'identifier'                 => 'portrait',
-                        'enriched_entity_identifier' => 'designer',
+                        'reference_entity_identifier' => 'designer',
                     ],
                     'wrong_property' => 10,
                 ],

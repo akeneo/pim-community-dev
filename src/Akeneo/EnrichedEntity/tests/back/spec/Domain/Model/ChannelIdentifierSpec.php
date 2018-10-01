@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model;
 
-use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class ChannelIdentifierSpec extends ObjectBehavior

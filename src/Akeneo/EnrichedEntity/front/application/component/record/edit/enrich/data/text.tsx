@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
-import TextData, {create} from 'akeneoenrichedentity/domain/model/record/data/text';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
-import {ConcreteTextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
-import RichTextEditor from 'akeneoenrichedentity/application/component/app/rich-text-editor';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
+import TextData, {create} from 'akeneoreferenceentity/domain/model/record/data/text';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import {createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
+import {ConcreteTextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
+import RichTextEditor from 'akeneoreferenceentity/application/component/app/rich-text-editor';
 
 const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Value) => void; onSubmit: () => void}) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {

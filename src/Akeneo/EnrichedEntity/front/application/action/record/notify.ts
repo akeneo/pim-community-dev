@@ -1,29 +1,29 @@
-import notify from 'akeneoenrichedentity/application/event/notify';
-import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import notify from 'akeneoreferenceentity/application/event/notify';
+import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 
 export const notifyRecordWellCreated = () => {
-  return notify('success', 'pim_enriched_entity.record.notification.create.success');
+  return notify('success', 'pim_reference_entity.record.notification.create.success');
 };
 
 export const notifyRecordCreateFailed = () => {
-  return notify('error', 'pim_enriched_entity.record.notification.create.fail');
+  return notify('error', 'pim_reference_entity.record.notification.create.fail');
 };
 
 export const notifyRecordWellSaved = () => {
-  return notify('success', 'pim_enriched_entity.record.notification.save.success');
+  return notify('success', 'pim_reference_entity.record.notification.save.success');
 };
 
 export const notifyRecordSaveFailed = () => {
-  return notify('error', 'pim_enriched_entity.record.notification.save.fail');
+  return notify('error', 'pim_reference_entity.record.notification.save.fail');
 };
 
 export const notifyRecordWellDeleted = (recordCode: RecordCode) => {
-  return notify('success', 'pim_enriched_entity.record.notification.delete.success', {code: recordCode.stringValue()});
+  return notify('success', 'pim_reference_entity.record.notification.delete.success', {code: recordCode.stringValue()});
 };
 
 export const notifyRecordDeleteFailed = () => {
-  return notify('error', 'pim_enriched_entity.record.notification.delete.fail');
+  return notify('error', 'pim_reference_entity.record.notification.delete.fail');
 };
 
 export const notifyRecordDeletionErrorOccured = (errors: ValidationError[]) => {

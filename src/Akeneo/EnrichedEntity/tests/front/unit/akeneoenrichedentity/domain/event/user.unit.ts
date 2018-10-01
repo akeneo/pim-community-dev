@@ -1,4 +1,4 @@
-import {catalogLocaleChanged, uiLocaleChanged, catalogChannelChanged} from 'akeneoenrichedentity/domain/event/user';
+import {catalogLocaleChanged, uiLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 
 describe('akeneo > enriched entity > domain > event --- user', () => {
   test('I can create a catalogLocaleChanged event', () => {

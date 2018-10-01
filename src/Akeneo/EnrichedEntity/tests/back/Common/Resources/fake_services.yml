@@ -1,77 +1,77 @@
 services:
     # Repositories
-    akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityRepository
+    akeneo_referenceentity.infrastructure.persistence.repository.reference_entity:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityRepository
 
-    akeneo_enrichedentity.infrastructure.persistence.repository.record:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryRecordRepository
+    akeneo_referenceentity.infrastructure.persistence.repository.record:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordRepository
 
-    akeneo_enrichedentity.infrastructure.persistence.repository.attribute:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryAttributeRepository
+    akeneo_referenceentity.infrastructure.persistence.repository.attribute:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeRepository
 
     pim_user.repository.user:
         class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
 
     # Query functions
-    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindEnrichedEntityItems
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_items:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityItems
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindEnrichedEntityDetails
+    akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityDetails
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindRecordDetails
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordDetails
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindRecordItemsForEnrichedEntity
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_items_for_reference_entity:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindRecordItemsForReferenceEntity
 
-    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_exists:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityExists
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityExists
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.record_exists:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryRecordExists
+    akeneo_referenceentity.infrastructure.persistence.query.record_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryRecordExists
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryAttributeExists
+    akeneo_referenceentity.infrastructure.persistence.query.attribute_exists:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryAttributeExists
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_attribute_next_order:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindAttributeNextOrder
+    akeneo_referenceentity.infrastructure.persistence.query.find_attribute_next_order:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributeNextOrder
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindAttributesDetails
+    akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails
 
-    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_has_records:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityHasRecords
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityHasRecords
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_is_linked_to_at_least_one_product_attribute:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute
+    akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_product_attribute:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute
         arguments:
             - '@pim_catalog.repository.attribute'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_value_key_collection:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindValueKeyCollection
+    akeneo_referenceentity.infrastructure.persistence.query.find_value_key_collection:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindValueKeyCollection
 
-    akeneo_enrichedentity.infrastructure.persistence.query.generate_empty_values:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryGenerateEmptyValues
+    akeneo_referenceentity.infrastructure.persistence.query.generate_empty_values:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGenerateEmptyValues
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
-        class: Akeneo\EnrichedEntity\Common\Fake\InMemoryFindAttributesIndexedByIdentifier
+    akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesIndexedByIdentifier
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.repository.attribute'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
     # Third party services
     oro_security.security_facade:
-        class: Akeneo\EnrichedEntity\Common\Fake\SecurityFacadeStub
+        class: Akeneo\ReferenceEntity\Common\Fake\SecurityFacadeStub
         arguments:
             - '@security.authorization_checker'
             - '@oro_security.acl.annotation_provider'

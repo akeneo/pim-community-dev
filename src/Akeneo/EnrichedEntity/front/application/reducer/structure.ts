@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
-import Locale from 'akeneoenrichedentity/domain/model/locale';
-import Channel from 'akeneoenrichedentity/domain/model/channel';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+import Channel from 'akeneoreferenceentity/domain/model/channel';
 
 export interface StructureState {
   locales: Locale[];

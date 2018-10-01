@@ -1,6 +1,6 @@
 services:
-    akeneo_enrichedentity.event_subscriber.installer:
-        class: Akeneo\EnrichedEntity\Infrastructure\Symfony\Command\EnrichedEntityResetFixturesCommand
+    akeneo_referenceentity.event_subscriber.installer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\ReferenceEntityResetFixturesCommand
         arguments:
             - '@filesystem'
             - '%kernel.project_dir%'

@@ -1,25 +1,25 @@
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {deleteJSON} from 'akeneoenrichedentity/tools/fetch';
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Remover from 'akeneoenrichedentity/domain/remover/remover';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {deleteJSON} from 'akeneoreferenceentity/tools/fetch';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import Remover from 'akeneoreferenceentity/domain/remover/remover';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
-export interface EnrichedEntityRemover extends Remover<EnrichedEntityIdentifier> {}
+export interface ReferenceEntityRemover extends Remover<ReferenceEntityIdentifier> {}
 
-export class EnrichedEntityRemoverImplementation implements EnrichedEntityRemover {
+export class ReferenceEntityRemoverImplementation implements ReferenceEntityRemover {
   constructor() {
     Object.freeze(this);
   }
 
-  async remove(attributeIdentifier: EnrichedEntityIdentifier): Promise<ValidationError[] | null> {
+  async remove(attributeIdentifier: ReferenceEntityIdentifier): Promise<ValidationError[] | null> {
     return await deleteJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entity_delete_rest', {
+      routing.generate('akeneo_reference_entities_reference_entity_delete_rest', {
         identifier: attributeIdentifier.stringValue(),
       })
     ).catch(errorHandler);
   }
 }
 
-export default new EnrichedEntityRemoverImplementation();
+export default new ReferenceEntityRemoverImplementation();

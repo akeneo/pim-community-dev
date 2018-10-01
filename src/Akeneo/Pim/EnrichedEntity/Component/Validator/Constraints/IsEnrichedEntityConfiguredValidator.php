@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints;
+namespace Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -24,22 +24,22 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class IsEnrichedEntityConfiguredValidator extends ConstraintValidator
+class IsReferenceEntityConfiguredValidator extends ConstraintValidator
 {
     /** @var array */
-    protected $enrichedEntityTypes;
+    protected $referenceEntityTypes;
 
-    /** @var FindEnrichedEntityDetailsInterface */
-    protected $findEnrichedEntityDetails;
+    /** @var FindReferenceEntityDetailsInterface */
+    protected $findReferenceEntityDetails;
 
     /**
-     * @param array                              $enrichedEntityTypes
-     * @param FindEnrichedEntityDetailsInterface $findEnrichedEntityDetails
+     * @param array                              $referenceEntityTypes
+     * @param FindReferenceEntityDetailsInterface $findReferenceEntityDetails
      */
-    public function __construct(array $enrichedEntityTypes, FindEnrichedEntityDetailsInterface $findEnrichedEntityDetails)
+    public function __construct(array $referenceEntityTypes, FindReferenceEntityDetailsInterface $findReferenceEntityDetails)
     {
-        $this->enrichedEntityTypes       = $enrichedEntityTypes;
-        $this->findEnrichedEntityDetails = $findEnrichedEntityDetails;
+        $this->referenceEntityTypes       = $referenceEntityTypes;
+        $this->findReferenceEntityDetails = $findReferenceEntityDetails;
     }
 
     /**
@@ -47,26 +47,26 @@ class IsEnrichedEntityConfiguredValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
-        $rawEnrichedEntityIdentifier = $attribute->getReferenceDataName();
+        $rawReferenceEntityIdentifier = $attribute->getReferenceDataName();
 
-        if (null === $rawEnrichedEntityIdentifier || '' === $rawEnrichedEntityIdentifier) {
+        if (null === $rawReferenceEntityIdentifier || '' === $rawReferenceEntityIdentifier) {
             $this->addEmptyViolation($this->context, $constraint);
 
             return;
         }
 
         try {
-            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($rawEnrichedEntityIdentifier);
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($rawReferenceEntityIdentifier);
         } catch (\InvalidArgumentException $e) {
-            $this->addInvalidViolation($this->context, $constraint, $rawEnrichedEntityIdentifier);
+            $this->addInvalidViolation($this->context, $constraint, $rawReferenceEntityIdentifier);
 
             return;
         }
 
-        if (in_array($attribute->getType(), $this->enrichedEntityTypes) &&
-            null === ($this->findEnrichedEntityDetails)($enrichedEntityIdentifier)
+        if (in_array($attribute->getType(), $this->referenceEntityTypes) &&
+            null === ($this->findReferenceEntityDetails)($referenceEntityIdentifier)
         ) {
-            $this->addUnknownViolation($this->context, $constraint, $rawEnrichedEntityIdentifier);
+            $this->addUnknownViolation($this->context, $constraint, $rawReferenceEntityIdentifier);
         }
     }
 
@@ -81,11 +81,11 @@ class IsEnrichedEntityConfiguredValidator extends ConstraintValidator
     private function addInvalidViolation(
         ExecutionContextInterface $context,
         Constraint $constraint,
-        string $rawEnrichedEntityIdentifier
+        string $rawReferenceEntityIdentifier
     ) {
         $this->context
             ->buildViolation($constraint->invalidMessage)
-            ->setParameter('%enriched_entity_identifier%', $rawEnrichedEntityIdentifier)
+            ->setParameter('%reference_entity_identifier%', $rawReferenceEntityIdentifier)
             ->atPath($constraint->propertyPath)
             ->addViolation();
     }
@@ -93,11 +93,11 @@ class IsEnrichedEntityConfiguredValidator extends ConstraintValidator
     private function addUnknownViolation(
         ExecutionContextInterface $context,
         Constraint $constraint,
-        string $rawEnrichedEntityIdentifier
+        string $rawReferenceEntityIdentifier
     ) {
         $this->context
             ->buildViolation($constraint->unknownMessage)
-            ->setParameter('%enriched_entity_identifier%', $rawEnrichedEntityIdentifier)
+            ->setParameter('%reference_entity_identifier%', $rawReferenceEntityIdentifier)
             ->atPath($constraint->propertyPath)
             ->addViolation();
     }

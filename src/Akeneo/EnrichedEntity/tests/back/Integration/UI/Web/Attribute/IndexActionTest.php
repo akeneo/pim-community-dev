@@ -11,37 +11,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Attribute;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ImageAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsTextarea;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ImageAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\TextAttributeDetails;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
     private const RESPONSES_DIR = 'Attribute/ListDetails/';
-    private const INDEX_ATTRIBUTE_ROUTE = 'akeneo_enriched_entities_attribute_index_rest';
+    private const INDEX_ATTRIBUTE_ROUTE = 'akeneo_reference_entities_attribute_index_rest';
 
     /** @var Client */
     private $client;
@@ -56,13 +56,13 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_lists_all_attributes_for_an_enriched_entity(): void
+    public function it_lists_all_attributes_for_an_reference_entity(): void
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'ok.json');
     }
@@ -70,7 +70,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_list_if_the_enriched_entity_does_not_have_any_attributes(): void
+    public function it_returns_an_empty_list_if_the_reference_entity_does_not_have_any_attributes(): void
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'empty_list.json');
     }
@@ -78,7 +78,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_a_not_found_response_when_the_enriched_entity_identifier_does_not_exists(): void
+    public function it_returns_a_not_found_response_when_the_reference_entity_identifier_does_not_exists(): void
     {
         $this->webClientHelper->assertRequest($this->client, self::RESPONSES_DIR . 'not_found.json');
     }
@@ -90,21 +90,21 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->get('pim_user.repository.user')->save($user);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_attribute_create', true);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_attribute_create', true);
 
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntityRepository->create(EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityRepository->create(ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [],
             Image::createEmpty()
         ));
-        $enrichedEntityRepository->create(EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('brand'),
+        $referenceEntityRepository->create(ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
             [],
             Image::createEmpty()
         ));
 
-        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details');
+        $inMemoryFindAttributesDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
         $inMemoryFindAttributesDetailsQuery->save($this->createNameAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createEmailAttribute());
         $inMemoryFindAttributesDetailsQuery->save($this->createPortraitAttribute());
@@ -114,7 +114,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $nameAttribute = new TextAttributeDetails();
         $nameAttribute->identifier = AttributeIdentifier::create('designer', 'name', md5('fingerprint'));
-        $nameAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $nameAttribute->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $nameAttribute->code = AttributeCode::fromString('name');
         $nameAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
         $nameAttribute->order = AttributeOrder::fromInteger(0);
@@ -134,7 +134,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $emailAttribute = new TextAttributeDetails();
         $emailAttribute->identifier = AttributeIdentifier::create('designer', 'email', md5('fingerprint'));
-        $emailAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $emailAttribute->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $emailAttribute->code = AttributeCode::fromString('email');
         $emailAttribute->labels = LabelCollection::fromArray(['en_US' => 'Name']);
         $emailAttribute->order = AttributeOrder::fromInteger(0);
@@ -154,7 +154,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
     {
         $imageAttribute = new ImageAttributeDetails();
         $imageAttribute->identifier = AttributeIdentifier::create('designer', 'image', md5('fingerprint'));
-        $imageAttribute->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $imageAttribute->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $imageAttribute->code = AttributeCode::fromString('name');
         $imageAttribute->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
         $imageAttribute->order = AttributeOrder::fromInteger(1);

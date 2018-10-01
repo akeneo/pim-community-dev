@@ -10,14 +10,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
+namespace Akeneo\ReferenceEntity\Application\Record\CreateRecord;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -36,12 +36,12 @@ class CreateRecordHandler
     public function __invoke(CreateRecordCommand $createRecordCommand): void
     {
         $code = RecordCode::fromString($createRecordCommand->code);
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($createRecordCommand->enrichedEntityIdentifier);
-        $identifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $code);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($createRecordCommand->referenceEntityIdentifier);
+        $identifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $code);
 
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $code,
             $createRecordCommand->labels,
             Image::createEmpty(),

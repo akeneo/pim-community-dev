@@ -1,4 +1,4 @@
-import Channel from 'akeneoenrichedentity/domain/model/channel';
+import Channel from 'akeneoreferenceentity/domain/model/channel';
 
 export default interface Fetcher {
   fetchAll: () => Promise<Channel[]>;

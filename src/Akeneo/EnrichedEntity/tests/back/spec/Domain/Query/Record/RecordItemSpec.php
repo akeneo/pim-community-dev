@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Query\Record;
+namespace spec\Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordItem;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordItem;
 use PhpSpec\ObjectBehavior;
 
 class RecordItemSpec extends ObjectBehavior
@@ -21,7 +21,7 @@ class RecordItemSpec extends ObjectBehavior
     {
         $this->identifier = RecordIdentifier::fromString('designer_starck_fingerprint');
         $this->code = RecordCode::fromString('starck');
-        $this->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $this->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $this->labels = LabelCollection::fromArray([
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
@@ -31,7 +31,7 @@ class RecordItemSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'identifier'                 => 'designer_starck_fingerprint',
-                'enriched_entity_identifier' => 'designer',
+                'reference_entity_identifier' => 'designer',
                 'code' => 'starck',
                 'labels'                     => [
                     'fr_FR' => 'Philippe starck',

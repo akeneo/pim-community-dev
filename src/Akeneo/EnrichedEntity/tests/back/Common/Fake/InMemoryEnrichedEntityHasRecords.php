@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityHasRecordsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryEnrichedEntityHasRecords implements EnrichedEntityHasRecordsInterface
+class InMemoryReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
 {
     /** @var InMemoryRecordRepository */
     private $recordRepository;
@@ -30,8 +30,8 @@ class InMemoryEnrichedEntityHasRecords implements EnrichedEntityHasRecordsInterf
         $this->recordRepository = $recordRepository;
     }
 
-    public function __invoke(EnrichedEntityIdentifier $identifier): bool
+    public function __invoke(ReferenceEntityIdentifier $identifier): bool
     {
-        return $this->recordRepository->enrichedEntityHasRecords($identifier);
+        return $this->recordRepository->referenceEntityHasRecords($identifier);
     }
 }

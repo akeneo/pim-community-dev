@@ -1,8 +1,8 @@
-akeneo_enrichedentity:
+akeneo_referenceentity:
     acl_group:
-        enriched_entity: Enriched entities
+        reference_entity: Enriched entities
     acl:
-        enriched_entity:
+        reference_entity:
             create: Create an entity
             delete: Delete an entity
         record:

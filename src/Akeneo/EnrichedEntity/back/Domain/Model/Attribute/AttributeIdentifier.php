@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
 use Webmozart\Assert\Assert;
 
@@ -52,11 +52,11 @@ class AttributeIdentifier
         return new self($identifier);
     }
 
-    public static function create(string $enrichedEntityIdentifier, string $attributeCode, string $fingerprint): self
+    public static function create(string $referenceEntityIdentifier, string $attributeCode, string $fingerprint): self
     {
-        Assert::stringNotEmpty($enrichedEntityIdentifier, 'Enriched entity identifier cannot be empty');
+        Assert::stringNotEmpty($referenceEntityIdentifier, 'Enriched entity identifier cannot be empty');
         Assert::regex(
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
                 'Enriched entity identifier may contain only letters, numbers and underscores. "%s" given',
@@ -88,7 +88,7 @@ class AttributeIdentifier
             sprintf(
                 '%s_%s_%s',
                 substr($attributeCode, 0, 20),
-                substr($enrichedEntityIdentifier, 0, 20),
+                substr($referenceEntityIdentifier, 0, 20),
                 $fingerprint
             )
         );

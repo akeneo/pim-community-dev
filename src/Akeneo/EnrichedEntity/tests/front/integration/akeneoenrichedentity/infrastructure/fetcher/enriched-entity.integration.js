@@ -1,8 +1,8 @@
 const timeout = 5000;
 
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
+const ReferenceEntityBuilder = require('../../../../common/builder/reference-entity.js');
 
-describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', () => {
+describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', () => {
   let page = global.__PAGE__;
 
   beforeEach(async () => {
@@ -11,7 +11,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
   it('It search for enriched entities', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com/rest/enriched_entity' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
+      if ('http://pim.com/rest/reference_entity' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
         interceptedRequest.respond({
           contentType: 'application/json',
           body: JSON.stringify({
@@ -23,7 +23,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/enriched-entity').default;
+      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/reference-entity').default;
 
       return await fetcher.search();
     });
@@ -37,10 +37,10 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
   it('It fetches one enriched entity', async () => {
     page.on('request', interceptedRequest => {
       if (
-        'http://pim.com/rest/enriched_entity/sofa' === interceptedRequest.url() &&
+        'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
-        const enrichedEntity = new EnrichedEntityBuilder()
+        const referenceEntity = new ReferenceEntityBuilder()
           .withIdentifier('sofa')
           .withLabels({
             en_US: 'Sofa',
@@ -54,17 +54,17 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify(enrichedEntity),
+          body: JSON.stringify(referenceEntity),
         });
       }
     });
 
     const response = await page.evaluate(async () => {
-      const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/enriched-entity').default;
-      const identifierModule = 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-      const enrichedEntityIdentifier = require(identifierModule).createIdentifier('sofa');
+      const fetcher = require('akeneoreferenceentity/infrastructure/fetcher/reference-entity').default;
+      const identifierModule = 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+      const referenceEntityIdentifier = require(identifierModule).createIdentifier('sofa');
 
-      return await fetcher.fetch(enrichedEntityIdentifier);
+      return await fetcher.fetch(referenceEntityIdentifier);
     });
 
     expect(response).toEqual({

@@ -11,66 +11,66 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrationTestCase
+class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlIntegrationTestCase
 {
-    /** @var EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface */
+    /** @var ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface */
     private $query;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.enriched_entity_is_linked_to_at_least_one_product_attribute');
+        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.reference_entity_is_linked_to_at_least_one_product_attribute');
         $this->resetDB();
-        $this->loadEnrichedEntity();
+        $this->loadReferenceEntity();
         $this->loadAttributeGroupAndAttribute();
     }
 
     /**
      * @test
      */
-    public function it_tells_if_an_enriched_entity_is_linked_to_at_least_one_product_attribute()
+    public function it_tells_if_an_reference_entity_is_linked_to_at_least_one_product_attribute()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = ReferenceEntityIdentifier::fromString('designer');
         $isLinked = ($this->query)($identifier);
         $this->assertTrue($isLinked);
 
-        $identifier = EnrichedEntityIdentifier::fromString('brand');
+        $identifier = ReferenceEntityIdentifier::fromString('brand');
         $isLinked = ($this->query)($identifier);
         $this->assertFalse($isLinked);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntity(): void
+    private function loadReferenceEntity(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
     }
 
     private function loadAttributeGroupAndAttribute(): void
@@ -95,7 +95,7 @@ class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInteg
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         $attribute = $this->get('pim_catalog.factory.attribute')
-            ->createAttribute(EnrichedEntityCollectionType::ENRICHED_ENTITY_COLLECTION);
+            ->createAttribute(ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION);
         $this->get('pim_catalog.updater.attribute')
             ->update($attribute, [
                 'code' => 'main_designer',

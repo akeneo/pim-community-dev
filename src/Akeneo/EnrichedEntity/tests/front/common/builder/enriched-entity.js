@@ -2,39 +2,39 @@
  * Generate an enriched entity
  *
  * Example:
- * const EnrichedEntityBuilder = require('../../common/builder/enriched-entity.js');
- * const enrichedEntity = (new EnrichedEntityBuilder()).withIdentifier('designer').build();
+ * const ReferenceEntityBuilder = require('../../common/builder/reference-entity.js');
+ * const referenceEntity = (new ReferenceEntityBuilder()).withIdentifier('designer').build();
  */
 
-class EnrichedEntityBuilder {
+class ReferenceEntityBuilder {
   constructor() {
-    this.enrichedEntity = {
+    this.referenceEntity = {
       identifier: '',
       labels: {},
     };
   }
 
   withIdentifier(identifier) {
-    this.enrichedEntity.identifier = identifier;
+    this.referenceEntity.identifier = identifier;
 
     return this;
   }
 
   withLabels(labels) {
-    this.enrichedEntity.labels = labels;
+    this.referenceEntity.labels = labels;
 
     return this;
   }
 
   withImage(image) {
-    this.enrichedEntity.image = image;
+    this.referenceEntity.image = image;
 
     return this;
   }
 
   build() {
-    return this.enrichedEntity;
+    return this.referenceEntity;
   }
 }
 
-module.exports = EnrichedEntityBuilder;
+module.exports = ReferenceEntityBuilder;

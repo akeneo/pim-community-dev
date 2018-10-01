@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {EditState as State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
-import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
-import sidebarProvider from 'akeneoenrichedentity/application/configuration/sidebar';
-import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
-import __ from 'akeneoenrichedentity/tools/translator';
+import {EditState as State} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
+import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
+import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
+import CreateRecordModal from 'akeneoreferenceentity/application/component/record/create';
+import __ from 'akeneoreferenceentity/tools/translator';
 
 interface StateProps {
   sidebar: {
@@ -29,12 +29,12 @@ export const SecondaryAction = ({onDelete}: {onDelete: () => void}) => {
           <button
             className="AknDropdown-menuLink"
             onClick={() => {
-              if (confirm(__('pim_enriched_entity.enriched_entity.module.delete.confirm'))) {
+              if (confirm(__('pim_reference_entity.reference_entity.module.delete.confirm'))) {
                 onDelete();
               }
             }}
           >
-            {__('pim_enriched_entity.enriched_entity.module.delete.button')}
+            {__('pim_reference_entity.reference_entity.module.delete.button')}
           </button>
         </div>
       </div>
@@ -46,20 +46,20 @@ export const breadcrumbConfiguration = [
   {
     action: {
       type: 'redirect',
-      route: 'akeneo_enriched_entities_enriched_entity_edit',
+      route: 'akeneo_reference_entities_reference_entity_edit',
     },
-    label: __('pim_enriched_entity.enriched_entity.title'),
+    label: __('pim_reference_entity.reference_entity.title'),
   },
 ];
 
 interface EditProps extends StateProps, DispatchProps {}
 
-class EnrichedEntityEditView extends React.Component<EditProps> {
+class ReferenceEntityEditView extends React.Component<EditProps> {
   public props: EditProps;
 
   render(): JSX.Element | JSX.Element[] {
     const TabView = sidebarProvider.getView(
-      'akeneo_enriched_entities_enriched_entity_edit',
+      'akeneo_reference_entities_reference_entity_edit',
       this.props.sidebar.currentTab
     );
 
@@ -95,4 +95,4 @@ export default connect(
       },
     };
   }
-)(EnrichedEntityEditView);
+)(ReferenceEntityEditView);

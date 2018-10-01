@@ -1,12 +1,12 @@
-import RecordFetcher from 'akeneoenrichedentity/domain/fetcher/record';
-import {Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import hydrator from 'akeneoenrichedentity/application/hydrator/record';
-import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
-import {getJSON} from 'akeneoenrichedentity/tools/fetch';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import RecordFetcher from 'akeneoreferenceentity/domain/fetcher/record';
+import {Query} from 'akeneoreferenceentity/domain/fetcher/fetcher';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import hydrator from 'akeneoreferenceentity/application/hydrator/record';
+import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import {getJSON} from 'akeneoreferenceentity/tools/fetch';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import RecordCode from 'akeneoreferenceentity/domain/model/record/code';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -15,10 +15,10 @@ export class RecordFetcherImplementation implements RecordFetcher {
     Object.freeze(this);
   }
 
-  async fetch(enrichedEntityIdentifier: EnrichedEntityIdentifier, recordCode: RecordCode): Promise<Record> {
+  async fetch(referenceEntityIdentifier: ReferenceEntityIdentifier, recordCode: RecordCode): Promise<Record> {
     const backendRecord = await getJSON(
-      routing.generate('akeneo_enriched_entities_records_get_rest', {
-        enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+      routing.generate('akeneo_reference_entities_records_get_rest', {
+        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
         recordCode: recordCode.stringValue(),
       })
     ).catch(errorHandler);
@@ -31,9 +31,9 @@ export class RecordFetcherImplementation implements RecordFetcher {
     });
   }
 
-  async fetchAll(enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Record[]> {
+  async fetchAll(referenceEntityIdentifier: ReferenceEntityIdentifier): Promise<Record[]> {
     const backendRecords = await getJSON(
-      routing.generate('akeneo_enriched_entities_record_index_rest', {enrichedEntityIdentifier})
+      routing.generate('akeneo_reference_entities_record_index_rest', {referenceEntityIdentifier})
     ).catch(errorHandler);
 
     return hydrateAll<Record>(this.hydrator)(backendRecords.items);
@@ -41,9 +41,9 @@ export class RecordFetcherImplementation implements RecordFetcher {
 
   async search(query: Query): Promise<{items: Record[]; total: number}> {
     const backendRecords = await getJSON(
-      routing.generate('akeneo_enriched_entities_record_index_rest', {
+      routing.generate('akeneo_reference_entities_record_index_rest', {
         // This is temporary, as soon as we will have a QB in backend it will be way simpler
-        enrichedEntityIdentifier: query.filters[0].value,
+        referenceEntityIdentifier: query.filters[0].value,
       })
     ).catch(errorHandler);
     const items = hydrateAll<Record>(this.hydrator)(

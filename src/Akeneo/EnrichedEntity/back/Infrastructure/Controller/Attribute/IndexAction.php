@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityExistsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -31,21 +31,21 @@ class IndexAction
     /** @var FindAttributesDetailsInterface */
     private $findAttributesDetails;
 
-    /** @var EnrichedEntityExistsInterface */
-    private $enrichedEntityExists;
+    /** @var ReferenceEntityExistsInterface */
+    private $referenceEntityExists;
 
     public function __construct(
         FindAttributesDetailsInterface $findAttributesDetails,
-        EnrichedEntityExistsInterface $enrichedEntityExists
+        ReferenceEntityExistsInterface $referenceEntityExists
     ) {
         $this->findAttributesDetails = $findAttributesDetails;
-        $this->enrichedEntityExists = $enrichedEntityExists;
+        $this->referenceEntityExists = $referenceEntityExists;
     }
 
-    public function __invoke(string $enrichedEntityIdentifier): JsonResponse
+    public function __invoke(string $referenceEntityIdentifier): JsonResponse
     {
-        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
-        $attributesDetails = ($this->findAttributesDetails)($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
+        $attributesDetails = ($this->findAttributesDetails)($referenceEntityIdentifier);
         $normalizedAttributesDetails = $this->normalizeAttributesDetails($attributesDetails);
 
         return new JsonResponse($normalizedAttributesDetails);
@@ -54,19 +54,19 @@ class IndexAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getEnrichedEntityIdentifierOr404(string $identifier): EnrichedEntityIdentifier
+    private function getReferenceEntityIdentifierOr404(string $identifier): ReferenceEntityIdentifier
     {
         try {
-            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($identifier);
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($identifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        if (!$this->enrichedEntityExists->withIdentifier($enrichedEntityIdentifier)) {
+        if (!$this->referenceEntityExists->withIdentifier($referenceEntityIdentifier)) {
             throw new NotFoundHttpException();
         }
 
-        return $enrichedEntityIdentifier;
+        return $referenceEntityIdentifier;
     }
 
     /**

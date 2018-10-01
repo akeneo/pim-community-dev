@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
-use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -32,8 +32,8 @@ class RecordShouldExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $attributeExists = $this->recordExists->withEnrichedEntityAndCode(
-            EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier),
+        $attributeExists = $this->recordExists->withReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier),
             RecordCode::fromString($command->recordCode)
         );
 

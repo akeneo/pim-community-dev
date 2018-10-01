@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -47,16 +47,16 @@ class InMemoryAttributeExists implements AttributeExistsInterface
         return $found;
     }
 
-    public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, AttributeCode $attributeCode): bool
+    public function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, AttributeCode $attributeCode): bool
     {
         $attributes = $this->attributeRepository->getAttributes();
         $found = false;
 
         foreach ($attributes as $attribute) {
-            $sameEnrichedEntity = $attribute->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier);
+            $sameReferenceEntity = $attribute->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier);
             $sameCode = $attribute->getCode()->equals($attributeCode);
 
-            if ($sameEnrichedEntity && $sameCode) {
+            if ($sameReferenceEntity && $sameCode) {
                 $found = true;
             }
         }
@@ -64,13 +64,13 @@ class InMemoryAttributeExists implements AttributeExistsInterface
         return $found;
     }
 
-    public function withEnrichedEntityIdentifierAndOrder(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+    public function withReferenceEntityIdentifierAndOrder(
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeOrder $order
     ): bool {
         $attributes = $this->attributeRepository->getAttributes();
         foreach ($attributes as $attribute) {
-            if ((string) $enrichedEntityIdentifier === (string) $attribute->getEnrichedEntityIdentifier() &&
+            if ((string) $referenceEntityIdentifier === (string) $attribute->getReferenceEntityIdentifier() &&
                 $attribute->hasOrder($order)
             ) {
                 return true;

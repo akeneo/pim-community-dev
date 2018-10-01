@@ -1,5 +1,5 @@
-import Channel, {denormalizeChannel} from 'akeneoenrichedentity/domain/model/channel';
-import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
+import Channel, {denormalizeChannel} from 'akeneoreferenceentity/domain/model/channel';
+import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
 
 export const hydrator = (denormalizeChannel: (normalizedChannel: any) => Channel) => (
   normalizedChannel: any

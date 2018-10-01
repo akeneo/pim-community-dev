@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Locale from 'akeneoenrichedentity/domain/model/locale';
-import __ from 'akeneoenrichedentity/tools/translator';
-import Flag from 'akeneoenrichedentity/tools/component/flag';
-import Dropdown, {DropdownElement} from 'akeneoenrichedentity/application/component/app/dropdown';
+import Locale from 'akeneoreferenceentity/domain/model/locale';
+import __ from 'akeneoreferenceentity/tools/translator';
+import Flag from 'akeneoreferenceentity/tools/component/flag';
+import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
 
 const LocaleItemView = ({
   isOpen,

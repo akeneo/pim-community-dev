@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindEnrichedEntityItems implements FindEnrichedEntityItemsInterface
+class InMemoryFindReferenceEntityItems implements FindReferenceEntityItemsInterface
 {
-    /** @var EnrichedEntityItem[] */
+    /** @var ReferenceEntityItem[] */
     private $results = [];
 
-    public function save(EnrichedEntityItem $enrichedEntityDetails)
+    public function save(ReferenceEntityItem $referenceEntityDetails)
     {
-        $this->results[] = $enrichedEntityDetails;
+        $this->results[] = $referenceEntityDetails;
     }
 
     /**

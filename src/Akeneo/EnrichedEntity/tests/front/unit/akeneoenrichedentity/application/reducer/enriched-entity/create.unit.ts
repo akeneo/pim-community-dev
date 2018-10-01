@@ -1,6 +1,6 @@
-import reducer from 'akeneoenrichedentity/application/reducer/enriched-entity/create';
+import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/create';
 
-describe('akeneo > enriched entity > application > reducer > enriched-entity --- create', () => {
+describe('akeneo > enriched entity > application > reducer > reference-entity --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

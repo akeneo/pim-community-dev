@@ -1,10 +1,10 @@
-import AttributeFetcher from 'akeneoenrichedentity/domain/fetcher/attribute';
-import Attribute from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import hydrator from 'akeneoenrichedentity/application/hydrator/attribute';
-import hydrateAll from 'akeneoenrichedentity/application/hydrator/hydrator';
-import {getJSON} from 'akeneoenrichedentity/tools/fetch';
-import errorHandler from 'akeneoenrichedentity/infrastructure/tools/error-handler';
+import AttributeFetcher from 'akeneoreferenceentity/domain/fetcher/attribute';
+import Attribute from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import ReferenceEntityIdentifier from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import hydrator from 'akeneoreferenceentity/application/hydrator/attribute';
+import hydrateAll from 'akeneoreferenceentity/application/hydrator/hydrator';
+import {getJSON} from 'akeneoreferenceentity/tools/fetch';
+import errorHandler from 'akeneoreferenceentity/infrastructure/tools/error-handler';
 
 const routing = require('routing');
 
@@ -13,10 +13,10 @@ export class AttributeFetcherImplementation implements AttributeFetcher {
     Object.freeze(this);
   }
 
-  async fetchAll(enrichedEntityIdentifier: EnrichedEntityIdentifier): Promise<Attribute[]> {
+  async fetchAll(referenceEntityIdentifier: ReferenceEntityIdentifier): Promise<Attribute[]> {
     const backendAttributes = await getJSON(
-      routing.generate('akeneo_enriched_entities_attribute_index_rest', {
-        enrichedEntityIdentifier: enrichedEntityIdentifier.stringValue(),
+      routing.generate('akeneo_reference_entities_attribute_index_rest', {
+        referenceEntityIdentifier: referenceEntityIdentifier.stringValue(),
       })
     ).catch(errorHandler);
 

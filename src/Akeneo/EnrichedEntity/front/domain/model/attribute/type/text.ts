@@ -1,30 +1,30 @@
-import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/attribute/identifier';
-import EnrichedEntityIdentifier, {
-  createIdentifier as createEnrichedEntityIdentifier,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import AttributeCode, {createCode} from 'akeneoenrichedentity/domain/model/attribute/code';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
+import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import ReferenceEntityIdentifier, {
+  createIdentifier as createReferenceEntityIdentifier,
+} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import AttributeCode, {createCode} from 'akeneoreferenceentity/domain/model/attribute/code';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {
   CommonNormalizedAttribute,
   CommonAttribute,
   CommonConcreteAttribute,
-} from 'akeneoenrichedentity/domain/model/attribute/common';
-import {MaxLength, NormalizedMaxLength} from 'akeneoenrichedentity/domain/model/attribute/type/text/max-length';
-import {IsTextarea, NormalizedIsTextarea} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-textarea';
+} from 'akeneoreferenceentity/domain/model/attribute/common';
+import {MaxLength, NormalizedMaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
+import {IsTextarea, NormalizedIsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {
   IsRichTextEditor,
   NormalizedIsRichTextEditor,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text/is-rich-text-editor';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
 import {
   ValidationRule,
   NormalizedValidationRule,
   ValidationRuleOption,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text/validation-rule';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
 import {
   RegularExpression,
   NormalizedRegularExpression,
-} from 'akeneoenrichedentity/domain/model/attribute/type/text/regular-expression';
+} from 'akeneoreferenceentity/domain/model/attribute/type/text/regular-expression';
 
 export type TextAdditionalProperty = MaxLength | IsTextarea | IsRichTextEditor | ValidationRule | RegularExpression;
 export type NormalizedTextAdditionalProperty =
@@ -57,7 +57,7 @@ export class InvalidArgumentError extends Error {}
 export class ConcreteTextAttribute extends CommonConcreteAttribute implements TextAttribute {
   private constructor(
     identifier: Identifier,
-    enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    referenceEntityIdentifier: ReferenceEntityIdentifier,
     code: AttributeCode,
     labelCollection: LabelCollection,
     valuePerLocale: boolean,
@@ -72,7 +72,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
   ) {
     super(
       identifier,
-      enrichedEntityIdentifier,
+      referenceEntityIdentifier,
       code,
       labelCollection,
       AttributeType.Text,
@@ -122,7 +122,7 @@ export class ConcreteTextAttribute extends CommonConcreteAttribute implements Te
   public static createFromNormalized(normalizedTextAttribute: NormalizedTextAttribute) {
     return new ConcreteTextAttribute(
       createIdentifier(normalizedTextAttribute.identifier),
-      createEnrichedEntityIdentifier(normalizedTextAttribute.enriched_entity_identifier),
+      createReferenceEntityIdentifier(normalizedTextAttribute.reference_entity_identifier),
       createCode(normalizedTextAttribute.code),
       createLabelCollection(normalizedTextAttribute.labels),
       normalizedTextAttribute.value_per_locale,

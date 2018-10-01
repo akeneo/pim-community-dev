@@ -1,4 +1,4 @@
-import {TabsProvider} from 'akeneoenrichedentity/application/configuration/sidebar';
+import {TabsProvider} from 'akeneoreferenceentity/application/configuration/sidebar';
 
 jest.mock('require-context', name => {});
 
@@ -35,7 +35,7 @@ describe('akeneo > enriched entity > application > configuration --- sidebar', (
       const confPath = `
 config:
     config:
-        akeneoenrichedentity/application/configuration/sidebar:
+        akeneoreferenceentity/application/configuration/sidebar:
             my_view:
                 tabs:
                     tab-code:
@@ -74,7 +74,7 @@ Actual conf: {\"my_view\":{}}`;
       const confPath = `
 config:
     config:
-        akeneoenrichedentity/application/configuration/sidebar:
+        akeneoreferenceentity/application/configuration/sidebar:
             my_view:
                 tabs:
                     first:

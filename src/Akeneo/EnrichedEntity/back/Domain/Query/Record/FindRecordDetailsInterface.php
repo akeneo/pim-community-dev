@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Record;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 /**
  * Find a record by its composite identifier (made of its Enriched Entity identifier
@@ -25,5 +25,5 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
  */
 interface FindRecordDetailsInterface
 {
-    public function __invoke(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $recordCode): ?RecordDetails;
+    public function __invoke(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $recordCode): ?RecordDetails;
 }

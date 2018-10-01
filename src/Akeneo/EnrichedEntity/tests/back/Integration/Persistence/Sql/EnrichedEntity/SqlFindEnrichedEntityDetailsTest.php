@@ -11,29 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\FindEnrichedEntityDetailsInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityDetailsInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
-class SqlFindEnrichedEntityDetailsTest extends SqlIntegrationTestCase
+class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindEnrichedEntityDetailsInterface */
-    private $findEnrichedEntityDetails;
+    /** @var FindReferenceEntityDetailsInterface */
+    private $findReferenceEntityDetails;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->findEnrichedEntityDetails = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
+        $this->findReferenceEntityDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details');
         $this->resetDB();
-        $this->loadEnrichedEntity();
+        $this->loadReferenceEntity();
     }
 
     /**
@@ -41,44 +41,44 @@ class SqlFindEnrichedEntityDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_null_when_there_is_no_result_for_the_given_identifier()
     {
-        $result = ($this->findEnrichedEntityDetails)(EnrichedEntityIdentifier::fromString('unknown_enriched_entity'));
+        $result = ($this->findReferenceEntityDetails)(ReferenceEntityIdentifier::fromString('unknown_reference_entity'));
         Assert::assertNull($result);
     }
 
     /**
      * @test
      */
-    public function it_finds_one_enriched_entity_by_its_identifier()
+    public function it_finds_one_reference_entity_by_its_identifier()
     {
-        $entity = ($this->findEnrichedEntityDetails)(EnrichedEntityIdentifier::fromString('designer'));
+        $entity = ($this->findReferenceEntityDetails)(ReferenceEntityIdentifier::fromString('designer'));
 
-        $designer = new EnrichedEntityDetails();
-        $designer->identifier = EnrichedEntityIdentifier::fromString('designer');
+        $designer = new ReferenceEntityDetails();
+        $designer->identifier = ReferenceEntityIdentifier::fromString('designer');
         $designer->labels = LabelCollection::fromArray(['fr_FR' => 'Concepteur', 'en_US' => 'Designer']);
 
-        $this->assertEnrichedEntityItem($designer, $entity);
+        $this->assertReferenceEntityItem($designer, $entity);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntity(): void
+    private function loadReferenceEntity(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function assertEnrichedEntityItem(EnrichedEntityDetails $expected, EnrichedEntityDetails $actual): void
+    private function assertReferenceEntityItem(ReferenceEntityDetails $expected, ReferenceEntityDetails $actual): void
     {
         $this->assertTrue($expected->identifier->equals($actual->identifier), 'Enriched entity identifiers are not equal');
         $expectedLabels = $expected->labels->normalize();

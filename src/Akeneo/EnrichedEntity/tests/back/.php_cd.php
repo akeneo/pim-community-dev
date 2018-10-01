@@ -9,27 +9,27 @@ $builder = new RuleBuilder();
 
 $rules = [
     $builder->only([
-        'Akeneo\EnrichedEntity',
+        'Akeneo\ReferenceEntity',
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert'
-    ])->in('Akeneo\EnrichedEntity\Domain'),
+    ])->in('Akeneo\ReferenceEntity\Domain'),
     $builder->only([
-        'Akeneo\EnrichedEntity\Domain',
+        'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
-    ])->in('Akeneo\EnrichedEntity\Application'),
+    ])->in('Akeneo\ReferenceEntity\Application'),
     $builder->only([
-        'Akeneo\EnrichedEntity\Application',
-        'Akeneo\EnrichedEntity\Domain',
+        'Akeneo\ReferenceEntity\Application',
+        'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
-        'Akeneo\Pim\EnrichedEntity\Component',
+        'Akeneo\Pim\ReferenceEntity\Component',
         'Doctrine\DBAL',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'PDO',
         'Akeneo\Platform\Bundle\InstallerBundle',
         'Ramsey\Uuid\Uuid',
         'Symfony',
-    ])->in('Akeneo\EnrichedEntity\Infrastructure'),
+    ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 
 $config = new Configuration($rules, $finder);

@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Repository;
+namespace Akeneo\ReferenceEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

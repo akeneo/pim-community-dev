@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
-use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -56,12 +56,12 @@ class CreateAction
         $this->securityFacade      = $securityFacade;
     }
 
-    public function __invoke(Request $request, string $enrichedEntityIdentifier): Response
+    public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_record_create')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_record_create')) {
             throw new AccessDeniedException();
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
@@ -93,7 +93,7 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier');
+        return $normalizedCommand['reference_entity_identifier'] !== $request->get('referenceEntityIdentifier');
     }
 
     private function getCreateCommand(Request $request): CreateRecordCommand
@@ -101,7 +101,7 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = new CreateRecordCommand();
-        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\Command;
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -31,9 +31,9 @@ use Symfony\Component\Finder\Finder;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implements EventSubscriberInterface
+class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implements EventSubscriberInterface
 {
-    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:enriched-entity:reset-fixtures';
+    private const RESET_FIXTURES_COMMAND_NAME = 'akeneo:reference-entity:reset-fixtures';
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
     /** @var Filesystem */
@@ -96,7 +96,7 @@ class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implement
     public function installAssets(GenericEvent $event): void
     {
         $originDir = __DIR__.'/../../../../front';
-        $targetDir = $this->projectDir.'/web/bundles/akeneoenrichedentity';
+        $targetDir = $this->projectDir.'/web/bundles/akeneoreferenceentity';
         if ($event->getArgument('symlink')) {
             $this->relativeSymlinkWithFallback($originDir, $targetDir);
         } else {
@@ -107,36 +107,36 @@ class EnrichedEntityResetFixturesCommand extends ContainerAwareCommand implement
     public function createSchema(): void
     {
         $sql = <<<SQL
-DROP TABLE IF EXISTS `akeneo_enriched_entity_attribute`;
-DROP TABLE IF EXISTS `akeneo_enriched_entity_record`;
-DROP TABLE IF EXISTS `akeneo_enriched_entity_enriched_entity`;
+DROP TABLE IF EXISTS `akeneo_reference_entity_attribute`;
+DROP TABLE IF EXISTS `akeneo_reference_entity_record`;
+DROP TABLE IF EXISTS `akeneo_reference_entity_reference_entity`;
 
-CREATE TABLE `akeneo_enriched_entity_enriched_entity` (
+CREATE TABLE `akeneo_reference_entity_reference_entity` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `image` VARCHAR(255) NULL,
     PRIMARY KEY (`id`),
-    UNIQUE `akeneoenriched_entity_enriched_entity_identifier_index` (`identifier`)
+    UNIQUE `akeneoreference_entity_reference_entity_identifier_index` (`identifier`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `akeneo_enriched_entity_record` (
+CREATE TABLE `akeneo_reference_entity_record` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(255) NOT NULL,
     `code` VARCHAR(255) NOT NULL,
-    `enriched_entity_identifier` VARCHAR(255) NOT NULL,
+    `reference_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `image` VARCHAR(255) NULL,
     `value_collection` JSON NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE `akeneoenriched_entity_record_identifier_index` (`identifier`, `enriched_entity_identifier`),
-    CONSTRAINT akeneoenriched_entity_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
+    UNIQUE `akeneoreference_entity_record_identifier_index` (`identifier`, `reference_entity_identifier`),
+    CONSTRAINT akeneoreference_entity_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `akeneo_enriched_entity_attribute` (
+CREATE TABLE `akeneo_reference_entity_attribute` (
     `identifier` VARCHAR(255) NOT NULL,
     `code` VARCHAR(255) NOT NULL,
-    `enriched_entity_identifier` VARCHAR(255) NOT NULL,
+    `reference_entity_identifier` VARCHAR(255) NOT NULL,
     `labels` JSON NOT NULL,
     `attribute_type` VARCHAR(255) NOT NULL,
     `attribute_order` INT NOT NULL,
@@ -145,9 +145,9 @@ CREATE TABLE `akeneo_enriched_entity_attribute` (
     `value_per_locale` BOOLEAN NOT NULL,
     `additional_properties` JSON NOT NULL,
     PRIMARY KEY (`identifier`),
-    UNIQUE `attribute_identifier_index` (`code`, `enriched_entity_identifier`),
-    UNIQUE `attribute_enriched_entity_order_index` (`enriched_entity_identifier`, `attribute_order`),
-    CONSTRAINT attribute_enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
+    UNIQUE `attribute_identifier_index` (`code`, `reference_entity_identifier`),
+    UNIQUE `attribute_reference_entity_order_index` (`reference_entity_identifier`, `attribute_order`),
+    CONSTRAINT attribute_reference_entity_identifier_foreign_key FOREIGN KEY (`reference_entity_identifier`) REFERENCES `akeneo_reference_entity_reference_entity` (identifier)
       ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
@@ -157,7 +157,7 @@ SQL;
 
     public function loadFixtures(): void
     {
-        $this->loadEnrichedEntities();
+        $this->loadReferenceEntities();
         $this->loadRecords();
         $this->loadAttributes();
     }
@@ -231,7 +231,7 @@ SQL;
         $this->filesystem->mirror($originDir, $targetDir, Finder::create()->ignoreDotFiles(false)->in($originDir));
     }
 
-    private function uploadEnrichedEntityImage($code): FileInfoInterface
+    private function uploadReferenceEntityImage($code): FileInfoInterface
     {
         $path = sprintf('/../Resources/fixtures/files/%s.jpg', $code);
         $rawFile = new \SplFileInfo(__DIR__.$path);
@@ -239,13 +239,13 @@ SQL;
         return $this->storer->store($rawFile, self::CATALOG_STORAGE_ALIAS);
     }
 
-    private function loadEnrichedEntities(): void
+    private function loadReferenceEntities(): void
     {
-        $designer = $this->uploadEnrichedEntityImage('designer');
-        $brand = $this->uploadEnrichedEntityImage('brand');
+        $designer = $this->uploadReferenceEntityImage('designer');
+        $brand = $this->uploadReferenceEntityImage('brand');
 
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`, `image`)
+INSERT INTO `akeneo_reference_entity_reference_entity` (`identifier`, `labels`, `image`)
 VALUES
   ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}', :designer),
   ('brand', '{"fr_FR": "Marque"}', :brand);
@@ -261,11 +261,11 @@ SQL;
 
     private function loadRecords(): void
     {
-        $starck_image = $this->uploadEnrichedEntityImage('philippe_starck');
-        $arad_image = $this->uploadEnrichedEntityImage('ron_arad');
+        $starck_image = $this->uploadReferenceEntityImage('philippe_starck');
+        $arad_image = $this->uploadReferenceEntityImage('ron_arad');
 
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_record` (`identifier`, `code`, `enriched_entity_identifier`, `labels`, `value_collection`, image)
+INSERT INTO `akeneo_reference_entity_record` (`identifier`, `code`, `reference_entity_identifier`, `labels`, `value_collection`, image)
 VALUES
   ('designer_starck_1', 'starck', 'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}', :starck_image),
   ('designer_dyson_2',  'dyson', 'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}', NULL),
@@ -288,10 +288,10 @@ SQL;
     private function loadAttributes(): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_enriched_entity_attribute` (
+INSERT INTO `akeneo_reference_entity_attribute` (
   `identifier`,
   `code`,
-  `enriched_entity_identifier`,
+  `reference_entity_identifier`,
   `labels`,
   `attribute_type`,
   `attribute_order`,

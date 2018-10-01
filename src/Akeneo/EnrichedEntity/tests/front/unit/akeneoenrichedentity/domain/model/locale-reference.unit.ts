@@ -1,4 +1,4 @@
-import {createLocaleReference} from 'akeneoenrichedentity/domain/model/locale-reference';
+import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-reference';
 
 describe('akeneo > enriched entity > domain > model --- locale reference', () => {
   test('I can create a new locale reference with a string value', () => {

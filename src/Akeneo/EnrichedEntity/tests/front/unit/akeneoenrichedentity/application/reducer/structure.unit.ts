@@ -1,4 +1,4 @@
-import reducer from 'akeneoenrichedentity/application/reducer/structure';
+import reducer from 'akeneoreferenceentity/application/reducer/structure';
 
 describe('akeneo > enriched entity > application > reducer --- structure[', () => {
   test('I ignore other commands', () => {

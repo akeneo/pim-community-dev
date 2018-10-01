@@ -1,5 +1,5 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import Attribute, {NormalizableAdditionalProperty} from 'akeneoenrichedentity/domain/model/attribute/attribute';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import Attribute, {NormalizableAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 
 export const attributeEditionStart = (attribute: Attribute) => {
   return {type: 'ATTRIBUTE_EDITION_START', attribute: attribute.normalize()};

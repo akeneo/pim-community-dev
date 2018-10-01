@@ -1,7 +1,7 @@
-import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import File from 'akeneoenrichedentity/domain/model/file';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
-import Value from 'akeneoenrichedentity/domain/model/record/value';
+import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
+import File from 'akeneoreferenceentity/domain/model/file';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
+import Value from 'akeneoreferenceentity/domain/model/record/value';
 
 export const recordEditionReceived = (record: Record) => {
   return {type: 'RECORD_EDITION_RECEIVED', record: record.normalize()};

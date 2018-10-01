@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
 use PhpSpec\ObjectBehavior;
 
 class TextAttributeFactorySpec extends ObjectBehavior
@@ -27,7 +27,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
     function it_creates_a_simple_text_attribute_with_a_command(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
         $command->order = 0;
@@ -43,7 +43,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
             'order'                      => 0,
@@ -62,7 +62,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
     function it_creates_a_simple_text_attribute_having_no_validation_with_a_command(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
         $command->order = 0;
@@ -78,7 +78,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
             'order'                      => 0,
@@ -97,7 +97,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
     function it_creates_a_simple_text_attribute_with_no_max_length_limit(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
             'fr_FR' => 'Nom'
@@ -114,7 +114,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
             'order'                      => 0,
@@ -133,7 +133,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
     function it_creates_a_simple_text_attribute_with_a_regular_expression_validation(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = [
             'fr_FR' => 'Nom'
@@ -151,7 +151,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
             'order'                      => 0,
@@ -170,7 +170,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
     function it_creates_a_textarea_with_rich_editor(AttributeIdentifier $identifier)
     {
         $command = new CreateTextAttributeCommand();
-        $command->enrichedEntityIdentifier = 'designer';
+        $command->referenceEntityIdentifier = 'designer';
         $command->code = 'name';
         $command->labels = ['fr_FR' => 'Nom'];
         $command->order = 0;
@@ -185,7 +185,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
 
         $this->create($command, $identifier)->normalize()->shouldReturn([
             'identifier'                 => 'name_designer_test',
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code'                       => 'name',
             'labels'                     => ['fr_FR' => 'Nom'],
             'order'                      => 0,

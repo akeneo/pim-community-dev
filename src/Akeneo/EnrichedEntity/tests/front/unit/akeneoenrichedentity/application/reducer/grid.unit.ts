@@ -1,4 +1,4 @@
-import reducer, {createState, createQuery, NormalizedFilter} from 'akeneoenrichedentity/application/reducer/grid';
+import reducer, {createState, createQuery, NormalizedFilter} from 'akeneoreferenceentity/application/reducer/grid';
 
 describe('akeneo > enriched entity > application > reducer --- grid', () => {
   test('I can initialize an empty state', () => {

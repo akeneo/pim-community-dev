@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query\Record;
+namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
  * Read model representing a record's details.
@@ -28,7 +28,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 class RecordDetails
 {
     private const IDENTIFIER = 'identifier';
-    private const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+    private const ENRICHED_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
@@ -37,8 +37,8 @@ class RecordDetails
     /** @var RecordIdentifier */
     private $identifier;
 
-    /** @var EnrichedEntityIdentifier */
-    private $enrichedEntityIdentifier;
+    /** @var ReferenceEntityIdentifier */
+    private $referenceEntityIdentifier;
 
     /** @var RecordCode */
     private $code;
@@ -54,14 +54,14 @@ class RecordDetails
 
     public function __construct(
         RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $code,
         LabelCollection $labels,
         Image $image,
         array $values
     ) {
         $this->identifier = $identifier;
-        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $this->referenceEntityIdentifier = $referenceEntityIdentifier;
         $this->code = $code;
         $this->labels = $labels;
         $this->values = $values;
@@ -72,7 +72,7 @@ class RecordDetails
     {
         return [
             self::IDENTIFIER                 => $this->identifier->normalize(),
-            self::ENRICHED_ENTITY_IDENTIFIER => $this->enrichedEntityIdentifier->normalize(),
+            self::ENRICHED_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
             self::CODE                       => $this->code->normalize(),
             self::LABELS                     => $this->labels->normalize(),
             self::IMAGE                      => $this->image->normalize(),

@@ -1,15 +1,15 @@
-import user, {UserState} from 'akeneoenrichedentity/application/reducer/user';
-import sidebar, {SidebarState} from 'akeneoenrichedentity/application/reducer/sidebar';
-import grid, {GridState} from 'akeneoenrichedentity/application/reducer/grid';
-import createRecord, {CreateState as CreateRecordState} from 'akeneoenrichedentity/application/reducer/record/create';
-import form, {EditionFormState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
-import Record from 'akeneoenrichedentity/domain/model/record/record';
+import user, {UserState} from 'akeneoreferenceentity/application/reducer/user';
+import sidebar, {SidebarState} from 'akeneoreferenceentity/application/reducer/sidebar';
+import grid, {GridState} from 'akeneoreferenceentity/application/reducer/grid';
+import createRecord, {CreateState as CreateRecordState} from 'akeneoreferenceentity/application/reducer/record/create';
+import form, {EditionFormState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
+import Record from 'akeneoreferenceentity/domain/model/record/record';
 import createAttribute, {
   CreateState as CreateAttributeState,
-} from 'akeneoenrichedentity/application/reducer/attribute/create';
-import structure, {StructureState} from 'akeneoenrichedentity/application/reducer/structure';
-import attributes, {ListState} from 'akeneoenrichedentity/application/reducer/attribute/list';
-import attribute, {EditState as EditAttributeState} from 'akeneoenrichedentity/application/reducer/attribute/edit';
+} from 'akeneoreferenceentity/application/reducer/attribute/create';
+import structure, {StructureState} from 'akeneoreferenceentity/application/reducer/structure';
+import attributes, {ListState} from 'akeneoreferenceentity/application/reducer/attribute/list';
+import attribute, {EditState as EditAttributeState} from 'akeneoreferenceentity/application/reducer/attribute/edit';
 
 export interface EditState {
   user: UserState;

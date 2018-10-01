@@ -1,6 +1,6 @@
 const path = require('path');
-const AttributeEdit = require('../../decorators/enriched-entity/edit/attribute/edit.decorator');
-const Edit = require('../../decorators/enriched-entity/edit.decorator');
+const AttributeEdit = require('../../decorators/reference-entity/edit/attribute/edit.decorator');
+const Edit = require('../../decorators/reference-entity/edit.decorator');
 
 const {
   decorators: {createElementDecorator},

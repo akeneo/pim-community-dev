@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 class SqlAttributeExistsTest extends SqlIntegrationTestCase
@@ -40,9 +40,9 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->attributeExists = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.attribute_exists');
+        $this->attributeExists = $this->get('akeneo_referenceentity.infrastructure.persistence.query.attribute_exists');
         $this->resetDB();
-        $this->loadEnrichedEntity();
+        $this->loadReferenceEntity();
     }
 
     /**
@@ -67,12 +67,12 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_says_if_the_attribute_exists_for_the_given_enriched_entity_identifier_and_order()
+    public function it_says_if_the_attribute_exists_for_the_given_reference_entity_identifier_and_order()
     {
         $this->loadAttribute('designer', 'name', 1);
 
-        $isExistingAtOrder1 = $this->attributeExists->withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(1));
-        $isExistingAtOrder2 = $this->attributeExists->withEnrichedEntityIdentifierAndOrder(EnrichedEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
+        $isExistingAtOrder1 = $this->attributeExists->withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(1));
+        $isExistingAtOrder2 = $this->attributeExists->withReferenceEntityIdentifierAndOrder(ReferenceEntityIdentifier::fromString('designer'), AttributeOrder::fromInteger(2));
 
         Assert::assertTrue($isExistingAtOrder1);
         Assert::assertFalse($isExistingAtOrder2);
@@ -80,35 +80,35 @@ class SqlAttributeExistsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntity(): void
+    private function loadReferenceEntity(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
     }
 
-    private function loadAttribute(string $enrichedEntityIdentifier, string $attributeCode, int $order = 0): AttributeIdentifier
+    private function loadAttribute(string $referenceEntityIdentifier, string $attributeCode, int $order = 0): AttributeIdentifier
     {
-        $attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $identifier = $attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
         $attributeRepository->create(
             TextAttribute::createText(
                 $identifier,
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
                 AttributeCode::fromString($attributeCode),
                 LabelCollection::fromArray(['fr_FR' => 'dummy label']),
                 AttributeOrder::fromInteger($order),

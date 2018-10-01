@@ -1,16 +1,16 @@
-import EnrichedEntity, {
-  denormalizeEnrichedEntity,
-  NormalizedEnrichedEntity,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
+import ReferenceEntity, {
+  denormalizeReferenceEntity,
+  NormalizedReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {validateKeys} from 'akeneoreferenceentity/application/hydrator/hydrator';
 
 export const hydrator = (
-  denormalizeEnrichedEntity: (normalizedEnrichedEntity: NormalizedEnrichedEntity) => EnrichedEntity
-) => (backendEnrichedEntity: any): EnrichedEntity => {
+  denormalizeReferenceEntity: (normalizedReferenceEntity: NormalizedReferenceEntity) => ReferenceEntity
+) => (backendReferenceEntity: any): ReferenceEntity => {
   const expectedKeys = ['identifier', 'labels', 'image'];
 
-  validateKeys(backendEnrichedEntity, expectedKeys, 'The provided raw enriched entity seems to be malformed.');
-  return denormalizeEnrichedEntity(backendEnrichedEntity);
+  validateKeys(backendReferenceEntity, expectedKeys, 'The provided raw enriched entity seems to be malformed.');
+  return denormalizeReferenceEntity(backendReferenceEntity);
 };
 
-export default hydrator(denormalizeEnrichedEntity);
+export default hydrator(denormalizeReferenceEntity);

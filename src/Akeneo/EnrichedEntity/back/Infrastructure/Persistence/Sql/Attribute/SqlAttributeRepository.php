@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AbstractAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\AttributeHydratorRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Types\Type;
@@ -50,10 +50,10 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         $normalizedAttribute = $attribute->normalize();
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $insert = <<<SQL
-        INSERT INTO akeneo_enriched_entity_attribute (
+        INSERT INTO akeneo_reference_entity_attribute (
             identifier,
             code,
-            enriched_entity_identifier,
+            reference_entity_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -65,7 +65,7 @@ class SqlAttributeRepository implements AttributeRepositoryInterface
         VALUES (
             :identifier,
             :code,
-            :enriched_entity_identifier,
+            :reference_entity_identifier,
             :labels,
             :attribute_type,
             :attribute_order,
@@ -80,7 +80,7 @@ SQL;
             [
                 'identifier'                 => $normalizedAttribute['identifier'],
                 'code'                       => $normalizedAttribute['code'],
-                'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
+                'reference_entity_identifier' => $normalizedAttribute['reference_entity_identifier'],
                 'labels'                     => json_encode($normalizedAttribute['labels']),
                 'attribute_type'             => $normalizedAttribute['type'],
                 'attribute_order'            => $normalizedAttribute['order'],
@@ -107,7 +107,7 @@ SQL;
         $normalizedAttribute = $attribute->normalize();
         $additionalProperties = $this->getAdditionalProperties($normalizedAttribute);
         $update = <<<SQL
-        UPDATE akeneo_enriched_entity_attribute SET
+        UPDATE akeneo_reference_entity_attribute SET
             labels = :labels,
             attribute_order = :attribute_order,
             is_required = :is_required,
@@ -118,7 +118,7 @@ SQL;
             $update,
             [
                 'identifier'                 => $normalizedAttribute['identifier'],
-                'enriched_entity_identifier' => $normalizedAttribute['enriched_entity_identifier'],
+                'reference_entity_identifier' => $normalizedAttribute['reference_entity_identifier'],
                 'labels'                     => $normalizedAttribute['labels'],
                 'attribute_order'            => $normalizedAttribute['order'],
                 'is_required'                => $normalizedAttribute['is_required'],
@@ -147,7 +147,7 @@ SQL;
         SELECT
             identifier,
             code,
-            enriched_entity_identifier,
+            reference_entity_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -155,7 +155,7 @@ SQL;
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_enriched_entity_attribute
+        FROM akeneo_reference_entity_attribute
         WHERE identifier = :identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
@@ -174,17 +174,17 @@ SQL;
     }
 
     /**
-     * @param EnrichedEntityIdentifier $enrichedEntityIdentifier
+     * @param ReferenceEntityIdentifier $referenceEntityIdentifier
      *
      * @return AbstractAttribute[]
      * @throws DBALException
      */
-    public function findByEnrichedEntity(EnrichedEntityIdentifier $enrichedEntityIdentifier): array
+    public function findByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): array
     {
         $fetch = <<<SQL
         SELECT
             identifier,
-            enriched_entity_identifier,
+            reference_entity_identifier,
             labels,
             attribute_type,
             attribute_order,
@@ -192,13 +192,13 @@ SQL;
             value_per_channel,
             value_per_locale,
             additional_properties
-        FROM akeneo_enriched_entity_attribute
-        WHERE enriched_entity_identifier = :enriched_entity_identifier;
+        FROM akeneo_reference_entity_attribute
+        WHERE reference_entity_identifier = :reference_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'enriched_entity_identifier' => $enrichedEntityIdentifier,
+                'reference_entity_identifier' => $referenceEntityIdentifier,
             ]
         );
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -216,7 +216,7 @@ SQL;
     private function getAdditionalProperties(array $normalizedAttribute): array
     {
         unset($normalizedAttribute['identifier']);
-        unset($normalizedAttribute['enriched_entity_identifier']);
+        unset($normalizedAttribute['reference_entity_identifier']);
         unset($normalizedAttribute['code']);
         unset($normalizedAttribute['labels']);
         unset($normalizedAttribute['order']);
@@ -235,7 +235,7 @@ SQL;
     public function deleteByIdentifier(AttributeIdentifier $identifier): void
     {
         $sql = <<<SQL
-        DELETE FROM akeneo_enriched_entity_attribute
+        DELETE FROM akeneo_reference_entity_attribute
         WHERE identifier = :identifier;
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -250,11 +250,11 @@ SQL;
     }
 
     public function nextIdentifier(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $attributeCode
     ): AttributeIdentifier {
         return AttributeIdentifier::create(
-            (string) $enrichedEntityIdentifier,
+            (string) $referenceEntityIdentifier,
             (string) $attributeCode,
             Uuid::uuid4()->toString()
         );

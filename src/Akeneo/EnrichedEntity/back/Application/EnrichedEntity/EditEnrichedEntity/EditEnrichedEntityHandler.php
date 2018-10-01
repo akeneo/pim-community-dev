@@ -10,12 +10,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity;
+namespace Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
@@ -23,44 +23,44 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class EditEnrichedEntityHandler
+class EditReferenceEntityHandler
 {
     private const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 
-    /** @var EnrichedEntityRepositoryInterface */
-    private $enrichedEntityRepository;
+    /** @var ReferenceEntityRepositoryInterface */
+    private $referenceEntityRepository;
 
     /** @var FileStorerInterface */
     private $storer;
 
-    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository, FileStorerInterface $storer)
+    public function __construct(ReferenceEntityRepositoryInterface $referenceEntityRepository, FileStorerInterface $storer)
     {
-        $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->referenceEntityRepository = $referenceEntityRepository;
         $this->storer = $storer;
     }
 
-    public function __invoke(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
+    public function __invoke(EditReferenceEntityCommand $editReferenceEntityCommand): void
     {
-        $identifier = EnrichedEntityIdentifier::fromString($editEnrichedEntityCommand->identifier);
-        $labelCollection = LabelCollection::fromArray($editEnrichedEntityCommand->labels);
+        $identifier = ReferenceEntityIdentifier::fromString($editReferenceEntityCommand->identifier);
+        $labelCollection = LabelCollection::fromArray($editReferenceEntityCommand->labels);
 
-        $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
-        $enrichedEntity->updateLabels($labelCollection);
+        $referenceEntity = $this->referenceEntityRepository->getByIdentifier($identifier);
+        $referenceEntity->updateLabels($labelCollection);
 
-        if (null !== $editEnrichedEntityCommand->image) {
-            $existingImage = $enrichedEntity->getImage();
+        if (null !== $editReferenceEntityCommand->image) {
+            $existingImage = $referenceEntity->getImage();
             // If we want to update the image and it's not already in file storage, we store it
             if (
                 $existingImage->isEmpty() ||
-                $existingImage->getKey() !== $editEnrichedEntityCommand->image['filePath']
+                $existingImage->getKey() !== $editReferenceEntityCommand->image['filePath']
             ) {
-                $storedFile = $this->storeFile($editEnrichedEntityCommand->image);
+                $storedFile = $this->storeFile($editReferenceEntityCommand->image);
                 $image = Image::fromFileInfo($storedFile);
-                $enrichedEntity->updateImage($image);
+                $referenceEntity->updateImage($image);
             }
         }
 
-        $this->enrichedEntityRepository->update($enrichedEntity);
+        $this->referenceEntityRepository->update($referenceEntity);
     }
 
     private function storeFile(array $image): FileInfoInterface

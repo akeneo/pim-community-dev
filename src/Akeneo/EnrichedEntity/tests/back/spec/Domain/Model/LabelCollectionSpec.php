@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model;
 
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
 

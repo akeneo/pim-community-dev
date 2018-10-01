@@ -1,11 +1,11 @@
 - See if it's possible to have the routing declared only in our bundle (we will see later with black hawks how to do it)
-- Application/EnrichedEntity/Show/ShowEnrichedEntityHandler should handle only one command it should maybe return only a ReadModel
-- Discuss about Domain/Model/EnrichedEntity/EnrichedEntity getters: they break the tell don't ask principle.
-- rename Domain/Model/EnrichedEntity/EnrichedEntityIdentifier:fromString to create: we cannot create them another way
+- Application/ReferenceEntity/Show/ShowReferenceEntityHandler should handle only one command it should maybe return only a ReadModel
+- Discuss about Domain/Model/ReferenceEntity/ReferenceEntity getters: they break the tell don't ask principle.
+- rename Domain/Model/ReferenceEntity/ReferenceEntityIdentifier:fromString to create: we cannot create them another way
 - create a read model for the read cases
 - Move the InMemory repository in the business code
 - Create builders for entities in the backend
-- Create LabelCollection from outside the domain object EnrichedEntity
+- Create LabelCollection from outside the domain object ReferenceEntity
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
 - add normalizer for enriched entity
@@ -22,7 +22,7 @@
 - split create and edit model in files
 - add acceptance test for attribute edit validation (front)
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
-  (See validation of "Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
+  (See validation of "Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
 - rework constructors to receive domain models (label collection)
 - fix the enriched entity field on the pef to be able to search when the search will work (front)
 - PIM-7677: Better storage management. https://akeneo.atlassian.net/browse/PIM-7677

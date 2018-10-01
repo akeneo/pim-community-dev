@@ -1,4 +1,4 @@
-import File, {createFile, createEmptyFile, denormalizeFile} from 'akeneoenrichedentity/domain/model/file';
+import File, {createFile, createEmptyFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 
 describe('akeneo > enriched entity > domain > model --- file', () => {
   test('I can create a new file', () => {

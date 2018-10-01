@@ -10,9 +10,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>

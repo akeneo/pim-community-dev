@@ -10,14 +10,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Factory;
+namespace Akeneo\Pim\ReferenceEntity\Component\Factory;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
-use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -31,7 +31,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  * @author    Julien Sanchez (julien@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
+class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
 {
     /** @var RecordRepositoryInterface */
     private $recordRepository;
@@ -55,7 +55,7 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
             $data = [];
         }
 
-        $value = new EnrichedEntityCollectionValue(
+        $value = new ReferenceEntityCollectionValue(
             $attribute,
             $channelCode,
             $localeCode,
@@ -70,7 +70,7 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
      */
     public function supports($attributeType): bool
     {
-        return $attributeType === EnrichedEntityCollectionType::ENRICHED_ENTITY_COLLECTION;
+        return $attributeType === ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION;
     }
 
     /**
@@ -114,12 +114,12 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
         $collection = [];
 
         foreach ($recordCodes as $code) {
-            $enrichedEntityIdentifier = $attribute->getReferenceDataName();
-            $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+            $referenceEntityIdentifier = $attribute->getReferenceDataName();
+            $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
             $recordCode = RecordCode::fromString($code);
 
             try {
-                $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+                $record = $this->recordRepository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
             } catch (RecordNotFoundException $e) {
                 // The record has been removed, we can go on and continue to load the rest of the records.
 

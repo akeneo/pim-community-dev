@@ -1,46 +1,46 @@
-import {createEnrichedEntity as enrichedEntityFactory} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
+import {createReferenceEntity as referenceEntityFactory} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
+import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
+import referenceEntitySaver from 'akeneoreferenceentity/infrastructure/saver/reference-entity';
 import {
-  enrichedEntityCreationSucceeded,
-  enrichedEntityCreationErrorOccured,
-} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
+  referenceEntityCreationSucceeded,
+  referenceEntityCreationErrorOccured,
+} from 'akeneoreferenceentity/domain/event/reference-entity/create';
 import {
-  notifyEnrichedEntityWellCreated,
-  notifyEnrichedEntityCreateFailed,
-} from 'akeneoenrichedentity/application/action/enriched-entity/notify';
-import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
-import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
-import {createEmptyFile} from 'akeneoenrichedentity/domain/model/file';
+  notifyReferenceEntityWellCreated,
+  notifyReferenceEntityCreateFailed,
+} from 'akeneoreferenceentity/application/action/reference-entity/notify';
+import ValidationError, {createValidationError} from 'akeneoreferenceentity/domain/model/validation-error';
+import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
+import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
+import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';
 
-export const createEnrichedEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
+export const createReferenceEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
   const {code, labels} = getState().create.data;
-  const enrichedEntity = enrichedEntityFactory(
+  const referenceEntity = referenceEntityFactory(
     createIdentifier(code),
     createLabelCollection(labels),
     createEmptyFile()
   );
   try {
-    let errors = await enrichedEntitySaver.create(enrichedEntity);
+    let errors = await referenceEntitySaver.create(referenceEntity);
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
-      dispatch(enrichedEntityCreationErrorOccured(validationErrors));
-      dispatch(notifyEnrichedEntityCreateFailed());
+      dispatch(referenceEntityCreationErrorOccured(validationErrors));
+      dispatch(notifyReferenceEntityCreateFailed());
 
       return;
     }
   } catch (error) {
-    dispatch(notifyEnrichedEntityCreateFailed());
+    dispatch(notifyReferenceEntityCreateFailed());
 
     return;
   }
 
-  dispatch(enrichedEntityCreationSucceeded());
-  dispatch(notifyEnrichedEntityWellCreated());
-  dispatch(redirectToEnrichedEntity(enrichedEntity, 'attribute'));
+  dispatch(referenceEntityCreationSucceeded());
+  dispatch(notifyReferenceEntityWellCreated());
+  dispatch(redirectToReferenceEntity(referenceEntity, 'attribute'));
 
   return;
 };

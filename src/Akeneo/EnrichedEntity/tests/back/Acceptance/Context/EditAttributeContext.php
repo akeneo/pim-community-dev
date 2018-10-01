@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Acceptance\Context;
+namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditAttributeCommandFactoryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -81,14 +81,14 @@ class EditAttributeContext implements Context
                 $identifier = AttributeIdentifier::fromString($attribute['identifier']);
             } else {
                 $identifier = $this->attributeRepository->nextIdentifier(
-                    EnrichedEntityIdentifier::fromString($attribute['entity_identifier']),
+                    ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
                     AttributeCode::fromString($attribute['code'])
                 );
             }
 
             $this->attributeRepository->create(TextAttribute::createText(
                 $identifier,
-                EnrichedEntityIdentifier::fromString($attribute['entity_identifier']),
+                ReferenceEntityIdentifier::fromString($attribute['entity_identifier']),
                 AttributeCode::fromString($attribute['code']),
                 LabelCollection::fromArray(json_decode($attribute['labels'], true)),
                 AttributeOrder::fromInteger((int) $attribute['order']),
@@ -108,7 +108,7 @@ class EditAttributeContext implements Context
     public function theUserDeletesTheAttribute(string $attributeCode, string $entityIdentifier)
     {
         $identifier = $this->attributeRepository->nextIdentifier(
-            EnrichedEntityIdentifier::fromString($entityIdentifier),
+            ReferenceEntityIdentifier::fromString($entityIdentifier),
             AttributeCode::fromString($attributeCode)
         );
 
@@ -118,7 +118,7 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextAttributeAndTheLabelEqualTo(
+    public function anReferenceEntityWithATextAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $localeCode,
         string $label
@@ -128,7 +128,7 @@ class EditAttributeContext implements Context
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([$localeCode => $label]),
             AttributeOrder::fromInteger(0),
@@ -156,14 +156,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' non required$/
      */
-    public function anEnrichedEntityWithATextAttributeNonRequired(string $attributeCode)
+    public function anReferenceEntityWithATextAttributeNonRequired(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -199,14 +199,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' and max length (\d+)$/
      */
-    public function anEnrichedEntityWithATextAttributeAndMaxLength(string $attributeCode, int $maxLength)
+    public function anReferenceEntityWithATextAttributeAndMaxLength(string $attributeCode, int $maxLength)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -248,7 +248,7 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithAImageAttributeAndTheLabelEqualTo(
+    public function anReferenceEntityWithAImageAttributeAndTheLabelEqualTo(
         string $attributeCode,
         string $label,
         string $localeCode
@@ -258,7 +258,7 @@ class EditAttributeContext implements Context
 
         $this->attributeRepository->create(ImageAttribute::create(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([$localeCode => $label]),
             AttributeOrder::fromInteger(0),
@@ -273,14 +273,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
+    public function anReferenceEntityWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(ImageAttribute::create(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -321,9 +321,9 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' and no allowed extensions$/
      */
-    public function anEnrichedEntityWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
+    public function anReferenceEntityWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
     {
-        $this->anEnrichedEntityWithAnImageAttributeWithAllowedExtensions($attributeCode, '[]');
+        $this->anReferenceEntityWithAnImageAttributeWithAllowedExtensions($attributeCode, '[]');
     }
 
     /**
@@ -433,14 +433,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an image attribute \'([^\']*)\' non required$/
      */
-    public function anEnrichedEntityWithAnImageAttributeNonRequired(string $attributeCode)
+    public function anReferenceEntityWithAnImageAttributeNonRequired(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(ImageAttribute::create(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -455,7 +455,7 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithAnImageAttributeWithAllowedExtensions(
+    public function anReferenceEntityWithAnImageAttributeWithAllowedExtensions(
         string $attributeCode,
         string $normalizedExtensions
     ): void {
@@ -465,7 +465,7 @@ class EditAttributeContext implements Context
         $extensions = json_decode($normalizedExtensions);
         $this->attributeRepository->create(ImageAttribute::create(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -480,14 +480,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text area attribute \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextareaAttribute(string $attributeCode)
+    public function anReferenceEntityWithATextareaAttribute(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createTextarea(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -530,14 +530,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextAttribute(string $attributeCode)
+    public function anReferenceEntityWithATextAttribute(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -569,14 +569,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' with no validation rule$/
      */
-    public function anEnrichedEntityWithATextAttributeWithNoValidationRule(string $attributeCode)
+    public function anReferenceEntityWithATextAttributeWithNoValidationRule(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -619,7 +619,7 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
      */
-    public function anEnrichedEntityWithATextAttributeWithARegularExpression(
+    public function anReferenceEntityWithATextAttributeWithARegularExpression(
         string $attributeCode,
         string $regularExpression
     ) {
@@ -628,7 +628,7 @@ class EditAttributeContext implements Context
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -744,14 +744,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with a text area attribute \'([^\']*)\' with no rich text editor$/
      */
-    public function anEnrichedEntityWithATextareaAttributeWithNoRichTextEditor(string $attributeCode)
+    public function anReferenceEntityWithATextareaAttributeWithNoRichTextEditor(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createTextarea(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -851,14 +851,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an attribute \'([^\']*)\' having a single value for all locales$/
      */
-    public function anEnrichedEntityWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
+    public function anReferenceEntityWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),
@@ -900,14 +900,14 @@ class EditAttributeContext implements Context
     /**
      * @Given /^an enriched entity with an attribute \'([^\']*)\' having a single value for all channels$/
      */
-    public function anEnrichedEntityWithAnAttributeNotHavingOneValuePerChannel(string $attributeCode)
+    public function anReferenceEntityWithAnAttributeNotHavingOneValuePerChannel(string $attributeCode)
     {
         $identifier = AttributeIdentifier::create('dummy_identifier', $attributeCode, md5('fingerprint'));
         $this->attributeIdentifiers['dummy_identifier'][$attributeCode] = $identifier;
 
         $this->attributeRepository->create(TextAttribute::createText(
             $identifier,
-            EnrichedEntityIdentifier::fromString('dummy_identifier'),
+            ReferenceEntityIdentifier::fromString('dummy_identifier'),
             AttributeCode::fromString($attributeCode),
             LabelCollection::fromArray([]),
             AttributeOrder::fromInteger(0),

@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Attribute;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsTextarea;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AbstractAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\ImageAttributeDetails;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\TextAttributeDetails;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRichTextEditor;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsTextarea;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AbstractAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\ImageAttributeDetails;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\TextAttributeDetails;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 {
@@ -47,17 +47,17 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findAttributesDetails = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_attributes_details');
+        $this->findAttributesDetails = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details');
         $this->resetDB();
-        $this->loadEnrichedEntitiesAndAttributes();
+        $this->loadReferenceEntitiesAndAttributes();
     }
 
     /**
      * @test
      */
-    public function it_returns_the_attributes_details_for_an_enriched_entity()
+    public function it_returns_the_attributes_details_for_an_reference_entity()
     {
-        $attributeDetails = ($this->findAttributesDetails)(EnrichedEntityIdentifier::fromString('designer'));
+        $attributeDetails = ($this->findAttributesDetails)(ReferenceEntityIdentifier::fromString('designer'));
 
         $this->assertCount(5, $attributeDetails);
         $this->assertNameAttribute($attributeDetails);
@@ -70,36 +70,36 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_if_the_enriched_entity_does_not_have_any_attributes()
+    public function it_returns_an_empty_array_if_the_reference_entity_does_not_have_any_attributes()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('brand');
-        $attributeDetails = ($this->findAttributesDetails)($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('brand');
+        $attributeDetails = ($this->findAttributesDetails)($referenceEntityIdentifier);
         $this->assertCount(0, $attributeDetails);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntitiesAndAttributes(): void
+    private function loadReferenceEntitiesAndAttributes(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
 
-        $enrichedEntityFull = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $referenceEntityFull = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntityFull);
+        $referenceEntityRepository->create($referenceEntityFull);
 
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -112,7 +112,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         );
         $email = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'email', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('email'),
             LabelCollection::fromArray(['en_US' => 'Email']),
             AttributeOrder::fromInteger(1),
@@ -125,7 +125,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         );
         $customRegex = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'regex', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('regex'),
             LabelCollection::fromArray(['en_US' => 'Regex']),
             AttributeOrder::fromInteger(2),
@@ -138,7 +138,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         );
         $longDescription = TextAttribute::createTextarea(
             AttributeIdentifier::create('designer', 'long_description', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('long_description'),
             LabelCollection::fromArray(['en_US' => 'Long description']),
             AttributeOrder::fromInteger(3),
@@ -150,7 +150,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         );
         $imageAttribute = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Portrait']),
             AttributeOrder::fromInteger(4),
@@ -166,15 +166,15 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $attributesRepository->create($longDescription);
         $attributesRepository->create($imageAttribute);
 
-        $enrichedEntityEmpty = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('brand'),
+        $referenceEntityEmpty = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('brand'),
             [
                 'fr_FR' => 'Marque',
                 'en_US' => 'Brand',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntityEmpty);
+        $referenceEntityRepository->create($referenceEntityEmpty);
     }
 
     /**
@@ -186,7 +186,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $actualName = $this->getAttributeWithCode($attributeDetails, 'name');
         $expectedName = new TextAttributeDetails();
         $expectedName->identifier = AttributeIdentifier::create('designer', 'name', 'test');
-        $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('name');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Name']);
         $expectedName->order = AttributeOrder::fromInteger(0);
@@ -206,7 +206,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'email');
         $expectedName = new TextAttributeDetails();
         $expectedName->identifier = AttributeIdentifier::create('designer', 'email', 'test');
-        $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('email');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Email']);
         $expectedName->order = AttributeOrder::fromInteger(1);
@@ -226,7 +226,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'regex');
         $expectedName = new TextAttributeDetails();
         $expectedName->identifier = AttributeIdentifier::create('designer', 'regex', 'test');
-        $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('regex');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Regex']);
         $expectedName->order = AttributeOrder::fromInteger(2);
@@ -246,7 +246,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $actualEmail = $this->getAttributeWithCode($attributeDetails, 'long_description');
         $expectedName = new TextAttributeDetails();
         $expectedName->identifier = AttributeIdentifier::create('designer', 'long_description', 'test');
-        $expectedName->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedName->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $expectedName->code = AttributeCode::fromString('long_description');
         $expectedName->labels = LabelCollection::fromArray(['en_US' => 'Long description']);
         $expectedName->order = AttributeOrder::fromInteger(3);
@@ -270,7 +270,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
         $actualImage = $this->getAttributeWithCode($attributeDetails, 'image');
         $expectedImage = new ImageAttributeDetails();
         $expectedImage->identifier = AttributeIdentifier::create('designer', 'image', 'test');
-        $expectedImage->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedImage->referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $expectedImage->code = AttributeCode::fromString('name');
         $expectedImage->labels = LabelCollection::fromArray(['en_US' => 'Portrait']);
         $expectedImage->order = AttributeOrder::fromInteger(4);
@@ -296,7 +296,7 @@ class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
     private function assertAttributeDetails(AbstractAttributeDetails $expected, AbstractAttributeDetails $actual)
     {
         $this->assertEquals($expected->identifier, $actual->identifier);
-        $this->assertEquals($expected->enrichedEntityIdentifier, $actual->enrichedEntityIdentifier);
+        $this->assertEquals($expected->referenceEntityIdentifier, $actual->referenceEntityIdentifier);
         $expectedLabels = $expected->labels->normalize();
         $actualLabels = $actual->labels->normalize();
         $this->assertEmpty(

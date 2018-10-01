@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

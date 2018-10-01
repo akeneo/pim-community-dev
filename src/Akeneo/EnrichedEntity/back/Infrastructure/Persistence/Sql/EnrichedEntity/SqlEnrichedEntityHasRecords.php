@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityHasRecordsInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityHasRecordsInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -24,7 +24,7 @@ use PDO;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlEnrichedEntityHasRecords implements EnrichedEntityHasRecordsInterface
+class SqlReferenceEntityHasRecords implements ReferenceEntityHasRecordsInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -34,30 +34,30 @@ class SqlEnrichedEntityHasRecords implements EnrichedEntityHasRecordsInterface
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(EnrichedEntityIdentifier $identifier): bool
+    public function __invoke(ReferenceEntityIdentifier $identifier): bool
     {
         $statement = $this->executeQuery($identifier);
 
-        return $this->doesEnrichedEntityHaveRecords($statement);
+        return $this->doesReferenceEntityHaveRecords($statement);
     }
 
-    private function executeQuery(EnrichedEntityIdentifier $enrichedEntityIdentifier): Statement
+    private function executeQuery(ReferenceEntityIdentifier $referenceEntityIdentifier): Statement
     {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1
-            FROM akeneo_enriched_entity_record
-            WHERE enriched_entity_identifier = :enriched_entity_identifier
+            FROM akeneo_reference_entity_record
+            WHERE reference_entity_identifier = :reference_entity_identifier
         ) as has_records
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => $enrichedEntityIdentifier,
+            'reference_entity_identifier' => $referenceEntityIdentifier,
         ]);
 
         return $statement;
     }
 
-    private function doesEnrichedEntityHaveRecords(Statement $statement): bool
+    private function doesReferenceEntityHaveRecords(Statement $statement): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(PDO::FETCH_ASSOC);

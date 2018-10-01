@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -67,12 +67,12 @@ class CreateAction
         $this->attributeCommandFactoryRegistry = $attributeCommandFactoryRegistry;
     }
 
-    public function __invoke(Request $request, string $enrichedEntityIdentifier): Response
+    public function __invoke(Request $request, string $referenceEntityIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_create')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_attribute_create')) {
             throw new AccessDeniedException();
         }
         if (!$this->isAttributeTypeProvided($request)) {
@@ -102,8 +102,8 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = $this->attributeCommandFactoryRegistry->getFactory($normalizedCommand)->create($normalizedCommand);
-        $command->order = $this->attributeNextOrder->withEnrichedEntityIdentifier(
-            EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier)
+        $command->order = $this->attributeNextOrder->withReferenceEntityIdentifier(
+            ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier)
         );
 
         return $command;

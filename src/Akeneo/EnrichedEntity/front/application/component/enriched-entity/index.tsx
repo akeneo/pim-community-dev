@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoenrichedentity/tools/translator';
-import Table from 'akeneoenrichedentity/application/component/enriched-entity/index/table';
-import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
-import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import {enrichedEntityCreationStart} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
-import CreateEnrichedEntityModal from 'akeneoenrichedentity/application/component/enriched-entity/create';
+import __ from 'akeneoreferenceentity/tools/translator';
+import Table from 'akeneoreferenceentity/application/component/reference-entity/index/table';
+import Breadcrumb from 'akeneoreferenceentity/application/component/app/breadcrumb';
+import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
+import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
+import {IndexState} from 'akeneoreferenceentity/application/reducer/reference-entity/index';
+import {referenceEntityCreationStart} from 'akeneoreferenceentity/domain/event/reference-entity/create';
+import CreateReferenceEntityModal from 'akeneoreferenceentity/application/component/reference-entity/create';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -17,7 +17,7 @@ interface StateProps {
   };
 
   grid: {
-    enrichedEntities: EnrichedEntity[];
+    referenceEntities: ReferenceEntity[];
     total: number;
     isLoading: boolean;
   };
@@ -33,11 +33,11 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
+    onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => void;
     onCreationStart: () => void;
   };
 }
-class EnrichedEntityListView extends React.Component<StateProps & DispatchProps> {
+class ReferenceEntityListView extends React.Component<StateProps & DispatchProps> {
   private createButton: HTMLButtonElement;
 
   componentDidMount() {
@@ -66,9 +66,9 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
                           {
                             action: {
                               type: 'redirect',
-                              route: 'akeneo_enriched_entities_enriched_entity_edit',
+                              route: 'akeneo_reference_entities_reference_entity_edit',
                             },
-                            label: __('pim_enriched_entity.enriched_entity.title'),
+                            label: __('pim_reference_entity.reference_entity.title'),
                           },
                         ]}
                       />
@@ -76,7 +76,7 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
                     <div className="AknTitleContainer-buttonsContainer">
                       <PimView
                         className="AknTitleContainer-userMenu"
-                        viewName="pim-enriched-entity-index-user-navigation"
+                        viewName="pim-reference-entity-index-user-navigation"
                       />
                       {acls.create ? (
                         <div className="AknButtonList">
@@ -88,7 +88,7 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
                             className="AknButton AknButton--apply AknButtonList-item"
                             onClick={events.onCreationStart}
                           >
-                            {__('pim_enriched_entity.enriched_entity.button.create')}
+                            {__('pim_reference_entity.reference_entity.button.create')}
                           </button>
                         </div>
                       ) : null}
@@ -97,8 +97,8 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
                   <div className="AknTitleContainer-line">
                     <div className="AknTitleContainer-title">
                       <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
-                        {__('pim_enriched_entity.enriched_entity.index.grid.count', {
-                          count: grid.enrichedEntities.length,
+                        {__('pim_reference_entity.reference_entity.index.grid.count', {
+                          count: grid.referenceEntities.length,
                         })}
                       </span>
                     </div>
@@ -124,16 +124,16 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
             <div className="AknGrid--gallery">
               <div className="AknGridContainer AknGridContainer--withCheckbox">
                 <Table
-                  onRedirectToEnrichedEntity={events.onRedirectToEnrichedEntity}
+                  onRedirectToReferenceEntity={events.onRedirectToReferenceEntity}
                   locale={context.locale}
-                  enrichedEntities={grid.enrichedEntities}
+                  referenceEntities={grid.referenceEntities}
                   isLoading={grid.isLoading}
                 />
               </div>
             </div>
           </div>
         </div>
-        {create.active ? <CreateEnrichedEntityModal /> : null}
+        {create.active ? <CreateReferenceEntityModal /> : null}
       </div>
     );
   }
@@ -142,7 +142,7 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
 export default connect(
   (state: IndexState): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const enrichedEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
+    const referenceEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
     const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
 
     return {
@@ -150,7 +150,7 @@ export default connect(
         locale,
       },
       grid: {
-        enrichedEntities,
+        referenceEntities,
         total,
         isLoading: state.grid.isFetching && state.grid.items.length === 0,
       },
@@ -158,20 +158,20 @@ export default connect(
         active: state.create.active,
       },
       acls: {
-        create: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_create'),
+        create: securityContext.isGranted('akeneo_referenceentity_reference_entity_create'),
       },
     };
   },
   (dispatch: any): DispatchProps => {
     return {
       events: {
-        onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => {
-          dispatch(redirectToEnrichedEntity(enrichedEntity, 'record'));
+        onRedirectToReferenceEntity: (referenceEntity: ReferenceEntity) => {
+          dispatch(redirectToReferenceEntity(referenceEntity, 'record'));
         },
         onCreationStart: () => {
-          dispatch(enrichedEntityCreationStart());
+          dispatch(referenceEntityCreationStart());
         },
       },
     };
   }
-)(EnrichedEntityListView);
+)(ReferenceEntityListView);

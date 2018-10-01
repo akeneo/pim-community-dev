@@ -1,9 +1,9 @@
 {
   "request": {
     "method": "GET",
-    "route": "akeneo_enriched_entities_attribute_index_rest",
+    "route": "akeneo_reference_entities_attribute_index_rest",
     "query": {
-      "enrichedEntityIdentifier": "designer"
+      "referenceEntityIdentifier": "designer"
     }
   },
   "response": {
@@ -11,7 +11,7 @@
     "body": [
       {
         "identifier": "name_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "enriched_entity_identifier": "designer",
+        "reference_entity_identifier": "designer",
         "code": "name",
         "labels": {
           "en_US": "Name"
@@ -29,7 +29,7 @@
       },
       {
         "identifier": "email_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "enriched_entity_identifier": "designer",
+        "reference_entity_identifier": "designer",
         "code": "email",
         "labels": {
           "en_US": "Name"
@@ -47,7 +47,7 @@
       },
       {
         "identifier": "image_designer_52609e00b7ee307e79eb100099b9a8bf",
-        "enriched_entity_identifier": "designer",
+        "reference_entity_identifier": "designer",
         "code": "name",
         "labels": {
           "en_US": "Portrait"

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -36,11 +36,11 @@ class GetAction
         $this->findRecordDetailsQuery = $findRecordDetailsQuery;
     }
 
-    public function __invoke(string $enrichedEntityIdentifier, string $recordCode): JsonResponse
+    public function __invoke(string $referenceEntityIdentifier, string $recordCode): JsonResponse
     {
         $recordCode = $this->getRecordCodeOr404($recordCode);
-        $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
-        $recordDetails = $this->findRecordDetailsOr404($enrichedEntityIdentifier, $recordCode);
+        $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
+        $recordDetails = $this->findRecordDetailsOr404($referenceEntityIdentifier, $recordCode);
 
         return new JsonResponse($recordDetails->normalize());
     }
@@ -60,10 +60,10 @@ class GetAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getEnrichedEntityIdentifierOr404(string $enrichedEntityIdentifier): EnrichedEntityIdentifier
+    private function getReferenceEntityIdentifierOr404(string $referenceEntityIdentifier): ReferenceEntityIdentifier
     {
         try {
-            return EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+            return ReferenceEntityIdentifier::fromString($referenceEntityIdentifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }
@@ -73,10 +73,10 @@ class GetAction
      * @throws NotFoundHttpException
      */
     private function findRecordDetailsOr404(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         RecordCode $recordCode
     ): RecordDetails {
-        $result = ($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordCode);
+        $result = ($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode);
 
         if (null === $result) {
             throw new NotFoundHttpException();

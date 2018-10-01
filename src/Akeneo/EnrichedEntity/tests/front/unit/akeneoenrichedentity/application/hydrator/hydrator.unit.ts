@@ -1,4 +1,4 @@
-import hydrateAll, {validateKeys, InvalidRawObjectError} from 'akeneoenrichedentity/application/hydrator/hydrator';
+import hydrateAll, {validateKeys, InvalidRawObjectError} from 'akeneoreferenceentity/application/hydrator/hydrator';
 
 describe('akeneo > enriched entity > application > hydrator --- hydrator', () => {
   test('I can hydrate a collection of elements', () => {

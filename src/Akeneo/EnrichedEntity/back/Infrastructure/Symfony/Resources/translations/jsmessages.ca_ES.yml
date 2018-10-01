@@ -1,8 +1,8 @@
 pim_title:
-  akeneo_enriched_entities_enriched_entity_index: Crear una nova entitat
-  akeneo_enriched_entities_record_edit: Editar un registre
-pim_enriched_entity:
-  enriched_entity:
+  akeneo_reference_entities_reference_entity_index: Crear una nova entitat
+  akeneo_reference_entities_record_edit: Editar un registre
+pim_reference_entity:
+  reference_entity:
     button:
       save: Desar
       create: Crear
@@ -117,9 +117,9 @@ pim_enrich:
     attribute:
       property:
         type:
-          akeneo_enriched_entity_collection: Enriquir entitat
+          akeneo_reference_entity_collection: Enriquir entitat
         section:
           type_specific: Escriu els paràmetres específics
-        enriched_entity:
+        reference_entity:
           identifier: Enriquir entitat
           default_label: Si us plau, selecciona una entitat enriquida

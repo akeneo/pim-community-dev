@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Attribute;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\AttributeExistsInterface;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeExistsInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -42,16 +42,16 @@ class AttributeShouldNotExistValidator extends ConstraintValidator
         $this->checkConstraintType($constraint);
         $this->checkCommandType($command);
 
-        $enrichedEntityIdentifier = $command->enrichedEntityIdentifier;
+        $referenceEntityIdentifier = $command->referenceEntityIdentifier;
         $code = $command->code;
-        $alreadyExists = $this->attributeExists->withEnrichedEntityAndCode(
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+        $alreadyExists = $this->attributeExists->withReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
             AttributeCode::fromString($code)
         );
 
         if ($alreadyExists) {
             $this->context->buildViolation(AttributeShouldNotExist::ERROR_MESSAGE)
-                ->setParameter('%enriched_entity_identifier%', $enrichedEntityIdentifier)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->setParameter('%code%', $code)
                 ->atPath('code')
                 ->addViolation();

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
+namespace spec\Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
-use Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\RecordDetailsHydratorInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\Hydrator\ValueHydratorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use PhpSpec\ObjectBehavior;
@@ -39,7 +39,7 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
             [
                 'identifier'                 => 'wow_game_A8E76F8A76E87F6A',
                 'code'                       => 'world_of_warcraft',
-                'enriched_entity_identifier' => 'game',
+                'reference_entity_identifier' => 'game',
                 'labels'                     => json_encode($labels),
                 'value_collection'           => json_encode([]),
             ],
@@ -48,7 +48,7 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
 
         $recordDetails->normalize()->shouldReturn([
             'identifier' => 'wow_game_A8E76F8A76E87F6A',
-            'enriched_entity_identifier' => 'game',
+            'reference_entity_identifier' => 'game',
             'code' => 'world_of_warcraft',
             'labels' => $labels,
             'image' => null,
@@ -140,7 +140,7 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
             [
                 'identifier' => 'wow_game_A8E76F8A76E87F6A',
                 'code' => 'world_of_warcraft',
-                'enriched_entity_identifier' => 'game',
+                'reference_entity_identifier' => 'game',
                 'labels' => json_encode([]),
                 'value_collection' => json_encode($rawValues),
             ],
@@ -212,7 +212,7 @@ class RecordDetailsHydratorSpec extends ObjectBehavior
             [
                 'identifier'                 => 'wow_game_A8E76F8A76E87F6A',
                 'code'                       => 'world_of_warcraft',
-                'enriched_entity_identifier' => 'game',
+                'reference_entity_identifier' => 'game',
                 'labels'                     => json_encode([]),
                 'value_collection'           => json_encode($rawValues),
             ],

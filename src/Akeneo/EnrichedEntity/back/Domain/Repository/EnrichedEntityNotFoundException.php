@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Repository;
+namespace Akeneo\ReferenceEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityNotFoundException extends \RuntimeException
+class ReferenceEntityNotFoundException extends \RuntimeException
 {
-    public static function withIdentifier(EnrichedEntityIdentifier $identifier): self
+    public static function withIdentifier(ReferenceEntityIdentifier $identifier): self
     {
         $message = sprintf(
             'Could not find enriched entity with identifier "%s"',

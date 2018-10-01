@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface;
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProductAttributeRepository;
 
@@ -23,7 +23,7 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProd
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute implements EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface
+class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute implements ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface
 {
     /** @var InMemoryProductAttributeRepository */
     private $inMemoryAttributeRepository;
@@ -33,10 +33,10 @@ class InMemoryEnrichedEntityIsLinkedToAtLeastOneProductAttribute implements Enri
         $this->inMemoryAttributeRepository = $inMemoryAttributeRepository;
     }
 
-    public function __invoke(EnrichedEntityIdentifier $identifier): bool
+    public function __invoke(ReferenceEntityIdentifier $identifier): bool
     {
         $attributes = $this->inMemoryAttributeRepository->findBy([
-            'attributeType' => EnrichedEntityCollectionType::ENRICHED_ENTITY_COLLECTION,
+            'attributeType' => ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION,
         ]);
 
         $linkedEntities = [];

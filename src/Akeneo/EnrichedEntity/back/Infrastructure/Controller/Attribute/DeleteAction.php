@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\Attribute;
 
-use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
+use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,12 +45,12 @@ class DeleteAction
         $this->deleteAttributeHandler = $deleteAttributeHandler;
     }
 
-    public function __invoke(Request $request, string $enrichedEntityIdentifier, string $attributeIdentifier): Response
+    public function __invoke(Request $request, string $referenceEntityIdentifier, string $attributeIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_delete')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_attribute_delete')) {
             throw new AccessDeniedException();
         }
 

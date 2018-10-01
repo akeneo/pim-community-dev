@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoenrichedentity/tools/translator';
-import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {toggleSidebar, updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
-import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
+import __ from 'akeneoreferenceentity/tools/translator';
+import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
+import {toggleSidebar, updateCurrentTab} from 'akeneoreferenceentity/application/event/sidebar';
+import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 
 interface SidebarOwnProps {
   backButton?: () => JSX.Element;
@@ -53,7 +53,7 @@ class Sidebar extends React.Component<SidebarProps> {
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
               {undefined !== BackButton ? <BackButton /> : null}
-              <div className="AknColumn-title">{__('pim_enriched_entity.enriched_entity.title')}</div>
+              <div className="AknColumn-title">{__('pim_reference_entity.reference_entity.title')}</div>
               {this.props.tabs.map((tab: any) => {
                 const activeClass = this.props.currentTab === tab.code ? 'AknColumn-navigationLink--active' : '';
 

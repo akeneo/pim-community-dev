@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Repository;
+namespace Akeneo\ReferenceEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,12 +33,12 @@ class RecordNotFoundException extends \RuntimeException
         return new self($message);
     }
 
-    public static function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): self
+    public static function withReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): self
     {
         $message = sprintf(
             'Could not find record with code "%s" for enriched entity "%s"',
             (string) $code,
-            (string) $enrichedEntityIdentifier
+            (string) $referenceEntityIdentifier
         );
 
         return new self($message);

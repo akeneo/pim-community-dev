@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -42,13 +42,13 @@ class EditRecordCommandFactory
         }
 
         $command = new EditRecordCommand();
-        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
         $command->editRecordValueCommands = [];
 
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($command->enrichedEntityIdentifier);
-        $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($enrichedEntityIdentifier);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);
+        $attributesIndexedByIdentifier = ($this->sqlFindAttributesIndexedByIdentifier)($referenceEntityIdentifier);
 
         foreach ($normalizedCommand['values'] as $normalizedValue) {
             if (!$this->isUserIntputCorrectlyFormed($normalizedValue)) {
@@ -71,7 +71,7 @@ class EditRecordCommandFactory
 
     private function isValid(array $normalizedCommand): bool
     {
-        return array_key_exists('enriched_entity_identifier', $normalizedCommand)
+        return array_key_exists('reference_entity_identifier', $normalizedCommand)
             && array_key_exists('code', $normalizedCommand)
             && array_key_exists('labels', $normalizedCommand)
             && array_key_exists('values', $normalizedCommand);

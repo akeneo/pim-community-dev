@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface;
-use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use PDO;
@@ -24,7 +24,7 @@ use PDO;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttribute implements EnrichedEntityIsLinkedToAtLeastOneProductAttributeInterface
+class SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute implements ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -34,9 +34,9 @@ class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttribute implements EnrichedE
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function __invoke(EnrichedEntityIdentifier $identifier): bool
+    public function __invoke(ReferenceEntityIdentifier $identifier): bool
     {
-        return $this->isEnrichedEntityLinkedToAtLeastOneProductAttribute($identifier);
+        return $this->isReferenceEntityLinkedToAtLeastOneProductAttribute($identifier);
     }
 
     private function fetchResults(): array
@@ -47,7 +47,7 @@ class SqlEnrichedEntityIsLinkedToAtLeastOneProductAttribute implements EnrichedE
         WHERE attribute_type = :attribute_type;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'attribute_type' => EnrichedEntityCollectionType::ENRICHED_ENTITY_COLLECTION,
+            'attribute_type' => ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION,
         ]);
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -56,7 +56,7 @@ SQL;
         return $results;
     }
 
-    private function isEnrichedEntityLinkedToAtLeastOneProductAttribute(EnrichedEntityIdentifier $identifier): bool
+    private function isReferenceEntityLinkedToAtLeastOneProductAttribute(ReferenceEntityIdentifier $identifier): bool
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $results = $this->fetchResults();

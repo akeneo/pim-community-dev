@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
+namespace Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory;
 
 /**
  * It represents the intent to edit a record
@@ -21,7 +21,7 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord\CommandFactory;
 class EditRecordCommand
 {
     /** @var string */
-    public $enrichedEntityIdentifier;
+    public $referenceEntityIdentifier;
 
     /** @var string */
     public $code;

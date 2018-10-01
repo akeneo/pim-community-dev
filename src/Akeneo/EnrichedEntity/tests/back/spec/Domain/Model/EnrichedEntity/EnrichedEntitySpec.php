@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
+namespace spec\Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
-class EnrichedEntitySpec extends ObjectBehavior
+class ReferenceEntitySpec extends ObjectBehavior
 {
     public function let()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = ReferenceEntityIdentifier::fromString('designer');
         $labelCollection = [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
@@ -33,32 +33,32 @@ class EnrichedEntitySpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(EnrichedEntity::class);
+        $this->shouldHaveType(ReferenceEntity::class);
     }
 
     public function it_returns_its_identifier()
     {
-        $identifier = EnrichedEntityIdentifier::fromString('designer');
+        $identifier = ReferenceEntityIdentifier::fromString('designer');
         $this->getIdentifier()->shouldBeLike($identifier);
     }
 
-    public function it_is_comparable_to_another_enriched_entity()
+    public function it_is_comparable_to_another_reference_entity()
     {
-        $sameIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $sameEnrichedEntity = EnrichedEntity::create(
+        $sameIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $sameReferenceEntity = ReferenceEntity::create(
             $sameIdentifier,
             [],
             Image::createEmpty()
         );
-        $this->equals($sameEnrichedEntity)->shouldReturn(true);
+        $this->equals($sameReferenceEntity)->shouldReturn(true);
 
-        $anotherIdentifier = EnrichedEntityIdentifier::fromString('same_identifier');
-        $sameEnrichedEntity = EnrichedEntity::create(
+        $anotherIdentifier = ReferenceEntityIdentifier::fromString('same_identifier');
+        $sameReferenceEntity = ReferenceEntity::create(
             $anotherIdentifier,
             [],
             Image::createEmpty()
         );
-        $this->equals($sameEnrichedEntity)->shouldReturn(false);
+        $this->equals($sameReferenceEntity)->shouldReturn(false);
     }
 
     public function it_returns_the_translated_label() {
@@ -67,7 +67,7 @@ class EnrichedEntitySpec extends ObjectBehavior
         $this->getLabel('ru_RU')->shouldReturn(null);
     }
 
-    public function it_returns_the_locale_code_from_which_the_enriched_entity_is_translated($labelCollection) {
+    public function it_returns_the_locale_code_from_which_the_reference_entity_is_translated($labelCollection) {
         $this->getLabelCodes()->shouldReturn(['en_US', 'fr_FR']);
     }
 

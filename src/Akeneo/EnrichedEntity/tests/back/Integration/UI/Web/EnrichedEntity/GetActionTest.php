@@ -11,22 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntity\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
+    private const ENRICHED_ENTITY_DETAIL_ROUTE = 'akeneo_reference_entities_reference_entity_get_rest';
 
     /** @var Client */
     private $client;
@@ -41,13 +41,13 @@ class GetActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
      * @test
      */
-    public function it_returns_an_enriched_entity_details(): void
+    public function it_returns_an_reference_entity_details(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -77,7 +77,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITY_DETAIL_ROUTE,
-            ['identifier' => 'unknown_enriched_entity'],
+            ['identifier' => 'unknown_reference_entity'],
             'GET'
         );
         $this->webClientHelper->assert404NotFound($this->client->getResponse());
@@ -85,14 +85,14 @@ class GetActionTest extends ControllerIntegrationTestCase
 
     private function loadFixtures(): void
     {
-        $queryHandler = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
+        $queryHandler = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_details');
 
         $file = new FileInfo();
         $file->setKey('/path/image.jpg');
         $file->setOriginalFilename('image.jpg');
 
-        $entityItem = new EnrichedEntityDetails();
-        $entityItem->identifier = (EnrichedEntityIdentifier::fromString('designer'));
+        $entityItem = new ReferenceEntityDetails();
+        $entityItem->identifier = (ReferenceEntityIdentifier::fromString('designer'));
         $entityItem->labels = LabelCollection::fromArray([
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',

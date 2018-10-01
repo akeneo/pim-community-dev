@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\DeleteEnrichedEntity\DeleteEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler;
+use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,19 +42,19 @@ class DeleteAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var DeleteEnrichedEntityHandler */
-    private $deleteEnrichedEntityHandler;
+    /** @var DeleteReferenceEntityHandler */
+    private $deleteReferenceEntityHandler;
 
     public function __construct(
         SecurityFacade $securityFacade,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        DeleteEnrichedEntityHandler $deleteEnrichedEntityHandler
+        DeleteReferenceEntityHandler $deleteReferenceEntityHandler
     ) {
         $this->securityFacade = $securityFacade;
         $this->normalizer = $normalizer;
         $this->validator = $validator;
-        $this->deleteEnrichedEntityHandler = $deleteEnrichedEntityHandler;
+        $this->deleteReferenceEntityHandler = $deleteReferenceEntityHandler;
     }
 
     public function __invoke(Request $request, string $identifier): Response
@@ -63,7 +63,7 @@ class DeleteAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_enriched_entity_delete')) {
+        if (!$this->securityFacade->isGranted('akeneo_referenceentity_reference_entity_delete')) {
             throw new AccessDeniedException();
         }
 
@@ -78,17 +78,17 @@ class DeleteAction
         }
 
         try {
-            ($this->deleteEnrichedEntityHandler)($command);
-        } catch (EnrichedEntityNotFoundException $e) {
+            ($this->deleteReferenceEntityHandler)($command);
+        } catch (ReferenceEntityNotFoundException $e) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function getDeleteCommand(string $identifier): DeleteEnrichedEntityCommand
+    private function getDeleteCommand(string $identifier): DeleteReferenceEntityCommand
     {
-        $command = new DeleteEnrichedEntityCommand();
+        $command = new DeleteReferenceEntityCommand();
         $command->identifier = $identifier;
 
         return $command;

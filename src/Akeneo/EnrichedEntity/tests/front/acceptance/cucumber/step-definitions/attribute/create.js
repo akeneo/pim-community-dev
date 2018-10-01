@@ -1,6 +1,6 @@
-const Header = require('../../decorators/enriched-entity/app/header.decorator');
+const Header = require('../../decorators/reference-entity/app/header.decorator');
 const Modal = require('../../decorators/create/modal.decorator');
-const Grid = require('../../decorators/enriched-entity/index/grid.decorator');
+const Grid = require('../../decorators/reference-entity/index/grid.decorator');
 const {getRequestContract, listenRequest} = require('../../tools');
 const path = require('path');
 
@@ -31,7 +31,7 @@ module.exports = async function(cucumber) {
 
   const startCreate = async function(page) {
     await page.evaluate(async () => {
-      const Controller = require('pim/controller/enriched-entity/edit');
+      const Controller = require('pim/controller/reference-entity/edit');
       const controller = new Controller();
       controller.renderRoute({params: {identifier: 'designer', tab: 'attribute'}});
       await document.getElementById('app').appendChild(controller.el);
@@ -46,18 +46,18 @@ module.exports = async function(cucumber) {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_enriched_entity.attribute.create.input.code', 'niceattribute');
-    await modal.fillField('pim_enriched_entity.attribute.create.input.label', 'Nice attribute');
-    await modal.switchField('pim_enriched_entity.attribute.create.input.value_per_channel', true);
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'niceattribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
   });
 
   When('the user creates an attribute with an invalid code', async function() {
     await startCreate(this.page);
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.fillField('pim_enriched_entity.attribute.create.input.code', 'not so nice attribute');
-    await modal.fillField('pim_enriched_entity.attribute.create.input.label', 'Nice attribute');
-    await modal.switchField('pim_enriched_entity.attribute.create.input.value_per_channel', true);
+    await modal.fillField('pim_reference_entity.attribute.create.input.code', 'not so nice attribute');
+    await modal.fillField('pim_reference_entity.attribute.create.input.label', 'Nice attribute');
+    await modal.switchField('pim_reference_entity.attribute.create.input.value_per_channel', true);
   });
 
   Then('the user saves the valid attribute', async function() {

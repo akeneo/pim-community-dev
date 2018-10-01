@@ -11,38 +11,38 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxFileSize;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\LocaleIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\FileData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeAllowedExtensions;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxFileSize;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\FileData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\DBALException;
 
@@ -55,9 +55,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+        $this->repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
         $this->resetDB();
-        $this->loadEnrichedEntityWithAttributes();
+        $this->loadReferenceEntityWithAttributes();
     }
 
     /**
@@ -66,11 +66,11 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function it_creates_a_record_with_no_values_and_returns_it()
     {
         $recordCode = RecordCode::fromString('starck');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
             Image::createEmpty(),
@@ -86,14 +86,14 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_creates_a_record_with_no_values_and_finds_it_by_enriched_entity_and_record_code()
+    public function it_creates_a_record_with_no_values_and_finds_it_by_reference_entity_and_record_code()
     {
         $recordCode = RecordCode::fromString('starck');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
             Image::createEmpty(),
@@ -102,7 +102,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->create($record);
 
-        $recordFound = $this->repository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $recordFound = $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 
@@ -112,8 +112,8 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     public function it_creates_a_record_with_values_and_returns_it()
     {
         $recordCode = RecordCode::fromString('starck');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $fileInfo = new FileInfo();
         $fileInfo
@@ -127,7 +127,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
             Image::fromFileInfo($imageInfo),
@@ -152,7 +152,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $recordFound = $this->repository->getByIdentifier($identifier);
         $this->assertSame($record->normalize(), $recordFound->normalize());
 
-        $recordFound = $this->repository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $recordFound = $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
         $this->assertSame($record->normalize(), $recordFound->normalize());
     }
 
@@ -161,12 +161,12 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_creating_a_record_with_the_same_identifier()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
             Image::createEmpty(),
@@ -183,9 +183,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_updates_a_record_and_returns_it()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $fileInfo = new FileInfo();
         $fileInfo
@@ -194,7 +194,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             ['en_US' => 'Starck', 'fr_FR' => 'Starck'],
             Image::createEmpty(),
@@ -251,13 +251,13 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         $this->assertEquals(0, $this->repository->count());
 
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
 
         $recordCode = RecordCode::fromString('record_identifier');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -269,10 +269,10 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->assertEquals(1, $this->repository->count());
 
         $recordCode = RecordCode::fromString('record_identifier2');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -286,9 +286,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
     public function it_retrieve_the_next_identifier()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $nextIdentifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $nextIdentifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $this->assertNotEmpty($nextIdentifier);
     }
@@ -300,9 +300,9 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         $this->expectException(RecordNotFoundException::class);
 
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('unknown_identifier');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
 
         $this->repository->getByIdentifier($identifier);
     }
@@ -312,11 +312,11 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_deletes_a_record_by_code_and_entity_identifier()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $identifier = $this->repository->nextIdentifier($referenceEntityIdentifier, $recordCode);
         $record = Record::create($identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             [],
             Image::createEmpty(),
@@ -324,10 +324,10 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         );
         $this->repository->create($record);
 
-        $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
 
         $this->expectException(RecordNotFoundException::class);
-        $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
     }
 
     /**
@@ -335,34 +335,34 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_if_trying_to_delete_an_unknown_record()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $unknownCode = RecordCode::fromString('unknown_code');
 
         $this->expectException(RecordNotFoundException::class);
-        $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $unknownCode);
+        $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $unknownCode);
     }
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntityWithAttributes(): void
+    private function loadReferenceEntityWithAttributes(): void
     {
-        $repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntity = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
+        $repository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntity = ReferenceEntity::create(
+            ReferenceEntityIdentifier::fromString('designer'),
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer'
             ],
             Image::createEmpty()
         );
-        $repository->create($enrichedEntity);
+        $repository->create($referenceEntity);
 
         $name = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -375,7 +375,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         );
         $image = ImageAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'fingerprint'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
             LabelCollection::fromArray(['en_US' => 'Image']),
             AttributeOrder::fromInteger(1),
@@ -385,7 +385,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
             AttributeMaxFileSize::fromString('250.2'),
             AttributeAllowedExtensions::fromList(['png'])
         );
-        $attributesRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $attributesRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $attributesRepository->create($name);
         $attributesRepository->create($image);
     }

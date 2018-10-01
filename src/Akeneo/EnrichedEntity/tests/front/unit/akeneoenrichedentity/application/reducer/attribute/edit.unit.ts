@@ -1,11 +1,11 @@
-import reducer from 'akeneoenrichedentity/application/reducer/attribute/edit';
-import {AttributeType} from 'akeneoenrichedentity/domain/model/attribute/minimal';
-import {denormalizeAttribute} from 'akeneoenrichedentity/domain/model/attribute/attribute';
-import {ValidationRuleOption} from 'akeneoenrichedentity/domain/model/attribute/type/text/validation-rule';
+import reducer from 'akeneoreferenceentity/application/reducer/attribute/edit';
+import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
+import {denormalizeAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {ValidationRuleOption} from 'akeneoreferenceentity/domain/model/attribute/type/text/validation-rule';
 
 const normalizedDescription = {
   identifier: 'description_1234',
-  enriched_entity_identifier: 'designer',
+  reference_entity_identifier: 'designer',
   code: 'description',
   labels: {en_US: 'Description'},
   type: 'text',
@@ -38,7 +38,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     isActive: false,
     data: {
       identifier: '',
-      enriched_entity_identifier: '',
+      reference_entity_identifier: '',
       code: '',
       labels: {},
       type: 'text',

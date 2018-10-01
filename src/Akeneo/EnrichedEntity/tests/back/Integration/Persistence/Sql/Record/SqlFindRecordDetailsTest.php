@@ -11,35 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\Persistence\Sql\Record;
+namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIsRequired;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeMaxLength;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeOrder;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeRegularExpression;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValidationRule;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerChannel;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeValuePerLocale;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\TextAttribute;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ChannelReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\LocaleReference;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\TextData;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\Value;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Query\Record\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\Domain\Query\Record\RecordDetails;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeIsRequired;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeOrder;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeRegularExpression;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValidationRule;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerChannel;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeValuePerLocale;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\TextAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ChannelReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\LocaleReference;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\TextData;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;
+use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
@@ -60,11 +60,11 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->findRecordDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_details');
-        $this->recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
-        $this->attributeRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.attribute');
+        $this->findRecordDetailsQuery = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_details');
+        $this->recordRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
+        $this->attributeRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.attribute');
         $this->resetDB();
-        $this->loadEnrichedEntityAndRecords();
+        $this->loadReferenceEntityAndRecords();
     }
 
     /**
@@ -72,9 +72,9 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_null_when_there_is_no_records()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('unknown_enriched_entity');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('unknown_reference_entity');
         $recordCode = RecordCode::fromString('unknown_record_code');
-        $this->assertNull(($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordCode));
+        $this->assertNull(($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode));
     }
 
     /**
@@ -82,9 +82,9 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
      */
     public function it_returns_the_record_details()
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
-        $actualStarck = ($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordCode);
+        $actualStarck = ($this->findRecordDetailsQuery)($referenceEntityIdentifier, $recordCode);
         $nameAttribute = $this->attributeRepository->getByIdentifier(
             AttributeIdentifier::create('designer', 'name', 'fingerprint')
         );
@@ -126,7 +126,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
         $expectedStarck = new RecordDetails(
             $this->recordIdentifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $recordCode,
             LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']),
             Image::fromFileInfo($imageInfo),
@@ -138,22 +138,22 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
     private function resetDB(): void
     {
-        $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();
+        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
     }
 
-    private function loadEnrichedEntityAndRecords(): void
+    private function loadReferenceEntityAndRecords(): void
     {
-        $enrichedEntityRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.enriched_entity');
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity = EnrichedEntity::create(
-            $enrichedEntityIdentifier,
+        $referenceEntityRepository = $this->get('akeneo_referenceentity.infrastructure.persistence.repository.reference_entity');
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $referenceEntity = ReferenceEntity::create(
+            $referenceEntityIdentifier,
             [
                 'fr_FR' => 'Concepteur',
                 'en_US' => 'Designer',
             ],
             Image::createEmpty()
         );
-        $enrichedEntityRepository->create($enrichedEntity);
+        $referenceEntityRepository->create($referenceEntity);
 
         $value = Value::create(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
@@ -164,7 +164,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
         $textAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'name', 'fingerprint'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('name'),
             LabelCollection::fromArray(['en_US' => 'Name']),
             AttributeOrder::fromInteger(0),
@@ -179,7 +179,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 
         $localizedTextAttribute = TextAttribute::createText(
             AttributeIdentifier::create('designer', 'description', 'fingerprint'),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             AttributeCode::fromString('description'),
             LabelCollection::fromArray(['en_US' => 'description']),
             AttributeOrder::fromInteger(1),
@@ -193,7 +193,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         $this->attributeRepository->create($localizedTextAttribute);
 
         $starckCode = RecordCode::fromString('starck');
-        $this->recordIdentifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $starckCode);
+        $this->recordIdentifier = $this->recordRepository->nextIdentifier($referenceEntityIdentifier, $starckCode);
 
         $imageInfo = new FileInfo();
         $imageInfo
@@ -203,7 +203,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         $this->recordRepository->create(
             Record::create(
                 $this->recordIdentifier,
-                $enrichedEntityIdentifier,
+                $referenceEntityIdentifier,
                 $starckCode,
                 ['fr_FR' => 'Philippe Starck'],
                 Image::fromFileInfo($imageInfo),

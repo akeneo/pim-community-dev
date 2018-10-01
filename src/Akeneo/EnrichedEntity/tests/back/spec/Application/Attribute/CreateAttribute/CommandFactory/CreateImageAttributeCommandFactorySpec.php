@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory;
+namespace spec\Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateImageAttributeCommandFactory;
+use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
 use PhpSpec\ObjectBehavior;
 
 class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     function it_creates_a_command_to_create_an_image_attribute()
     {
         $command = $this->create([
-            'enriched_entity_identifier' => 'designer',
+            'reference_entity_identifier' => 'designer',
             'code' => 'name',
             'labels' => ['fr_FR' => 'Nom'],
             'order' => 1,
@@ -33,7 +33,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
             'allowed_extensions' => ['pdf', 'png'],
         ]);
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
-        $command->enrichedEntityIdentifier->shouldBeEqualTo('designer');
+        $command->referenceEntityIdentifier->shouldBeEqualTo('designer');
         $command->code->shouldBeEqualTo('name');
         $command->labels->shouldBeEqualTo(['fr_FR' => 'Nom']);
         $command->order->shouldBeEqualTo(1);
@@ -48,7 +48,7 @@ class CreateImageAttributeCommandFactorySpec extends ObjectBehavior
     {
         $command = $this->create([]);
         $command->shouldBeAnInstanceOf(CreateImageAttributeCommand::class);
-        $command->enrichedEntityIdentifier->shouldBeEqualTo(null);
+        $command->referenceEntityIdentifier->shouldBeEqualTo(null);
         $command->code->shouldBeEqualTo(null);
         $command->labels->shouldBeEqualTo(null);
         $command->order->shouldBeEqualTo(null);

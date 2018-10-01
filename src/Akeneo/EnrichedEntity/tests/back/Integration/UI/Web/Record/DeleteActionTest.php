@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Integration\UI\Web\Record;
+namespace Akeneo\ReferenceEntity\Integration\UI\Web\Record;
 
-use Akeneo\EnrichedEntity\Common\Helper\AuthenticatedClientFactory;
-use Akeneo\EnrichedEntity\Common\Helper\WebClientHelper;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Image;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\EnrichedEntity\Integration\ControllerIntegrationTestCase;
+use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
+use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Image;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteActionTest extends ControllerIntegrationTestCase
 {
-    private const DELETE_RECORD_ROUTE = 'akeneo_enriched_entities_record_delete_rest';
+    private const DELETE_RECORD_ROUTE = 'akeneo_reference_entities_record_delete_rest';
     private const RESPONSES_DIR = 'Record/Delete/';
 
     /* @var Client */
@@ -49,7 +49,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->loadFixtures();
         $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
-        $this->webClientHelper = $this->get('akeneoenriched_entity.tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneoreference_entity.tests.helper.web_client_helper');
     }
 
     /**
@@ -84,7 +84,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
             self::DELETE_RECORD_ROUTE,
             [
                 'recordCode' => 'name',
-                'enrichedEntityIdentifier' => 'designer',
+                'referenceEntityIdentifier' => 'designer',
             ],
             'DELETE'
         );
@@ -98,7 +98,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $recordItem = Record::create(
             RecordIdentifier::create('designer', 'starck', md5('fingerprint')),
-            EnrichedEntityIdentifier::fromString('designer'),
+            ReferenceEntityIdentifier::fromString('designer'),
             RecordCode::fromString('starck'),
             [],
             Image::createEmpty(),
@@ -111,17 +111,17 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->get('pim_user.repository.user')->save($user);
 
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_delete', true);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_record_delete', true);
     }
 
     private function getRecordRepository(): RecordRepositoryInterface
     {
-        return $this->get('akeneo_enrichedentity.infrastructure.persistence.repository.record');
+        return $this->get('akeneo_referenceentity.infrastructure.persistence.repository.record');
     }
 
     private function revokeDeletionRights(): void
     {
         $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_delete', false);
+        $securityFacadeStub->setIsGranted('akeneo_referenceentity_record_delete', false);
     }
 }

@@ -1,10 +1,10 @@
 pim_title:
-    akeneo_enriched_entities_enriched_entity_index: Create a new entity
-    akeneo_enriched_entities_enriched_entity_edit: Edit an enriched entity
-    akeneo_enriched_entities_record_edit: Edit a record
+    akeneo_reference_entities_reference_entity_index: Create a new entity
+    akeneo_reference_entities_reference_entity_edit: Edit an enriched entity
+    akeneo_reference_entities_record_edit: Edit a record
 
-pim_enriched_entity:
-    enriched_entity:
+pim_reference_entity:
+    reference_entity:
         validation:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
@@ -168,9 +168,9 @@ pim_enrich:
         attribute:
             property:
                 type:
-                    akeneo_enriched_entity_collection: Enriched entity
+                    akeneo_reference_entity_collection: Enriched entity
                 section:
                     type_specific: Type specific parameters
-                enriched_entity:
+                reference_entity:
                     identifier: Enriched entity
                     default_label: Please select an enriched entity

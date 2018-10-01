@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\EnrichedEntity\Component\Value;
+namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
@@ -20,7 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface EnrichedEntityCollectionValueInterface extends ValueInterface
+interface ReferenceEntityCollectionValueInterface extends ValueInterface
 {
     /**
      * @return Record[]

@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Repository;
+namespace Akeneo\ReferenceEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
-interface EnrichedEntityRepositoryInterface
+interface ReferenceEntityRepositoryInterface
 {
-    public function create(EnrichedEntity $enrichedEntity): void;
+    public function create(ReferenceEntity $referenceEntity): void;
 
-    public function update(EnrichedEntity $enrichedEntity): void;
-
-    /**
-     * @throws EnrichedEntityNotFoundException
-     */
-    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
+    public function update(ReferenceEntity $referenceEntity): void;
 
     /**
-     * @throws EnrichedEntityNotFoundException
+     * @throws ReferenceEntityNotFoundException
      */
-    public function deleteByIdentifier(EnrichedEntityIdentifier $identifier): void;
+    public function getByIdentifier(ReferenceEntityIdentifier $identifier): ReferenceEntity;
+
+    /**
+     * @throws ReferenceEntityNotFoundException
+     */
+    public function deleteByIdentifier(ReferenceEntityIdentifier $identifier): void;
 }

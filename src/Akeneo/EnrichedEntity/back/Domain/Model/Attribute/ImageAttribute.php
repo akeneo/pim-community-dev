@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Model\Attribute;
+namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -33,7 +33,7 @@ class ImageAttribute extends AbstractAttribute
 
     protected function __construct(
         AttributeIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -43,7 +43,7 @@ class ImageAttribute extends AbstractAttribute
         AttributeMaxFileSize $maxFileSize,
         AttributeAllowedExtensions $extensions
     ) {
-        parent::__construct($identifier, $enrichedEntityIdentifier, $code, $labelCollection, $order, $isRequired,
+        parent::__construct($identifier, $referenceEntityIdentifier, $code, $labelCollection, $order, $isRequired,
             $valuePerChannel, $valuePerLocale);
 
         $this->maxFileSize = $maxFileSize;
@@ -52,7 +52,7 @@ class ImageAttribute extends AbstractAttribute
 
     public static function create(
         AttributeIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
         AttributeOrder $order,
@@ -64,7 +64,7 @@ class ImageAttribute extends AbstractAttribute
     ): self {
         return new self(
             $identifier,
-            $enrichedEntityIdentifier,
+            $referenceEntityIdentifier,
             $code,
             $labelCollection,
             $order,

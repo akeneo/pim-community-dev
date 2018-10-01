@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Common\Fake;
+namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -55,27 +55,27 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return $this->records[$identifier->__toString()];
     }
 
-    public function getByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): Record
+    public function getByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): Record
     {
         foreach ($this->records as $record) {
-            if ($record->getCode()->equals($code) && $record->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+            if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
                 return $record;
             }
         }
 
-        throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+        throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
-    public function deleteByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): void
+    public function deleteByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): void
     {
         foreach ($this->records as $index => $record) {
-            if ($record->getCode()->equals($code) && $record->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+            if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
                 unset($this->records[$index]);
                 return;
             }
         }
 
-        throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+        throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
     }
 
     public function count(): int
@@ -88,10 +88,10 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return isset($this->records[$identifier->__toString()]);
     }
 
-    public function enrichedEntityHasRecords(EnrichedEntityIdentifier $enrichedEntityIdentifier)
+    public function referenceEntityHasRecords(ReferenceEntityIdentifier $referenceEntityIdentifier)
     {
         foreach ($this->records as $record) {
-            if ($record->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
                 return true;
             }
         }
@@ -99,10 +99,10 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         return false;
     }
 
-    public function nextIdentifier(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): RecordIdentifier
+    public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): RecordIdentifier
     {
         return RecordIdentifier::create(
-            $enrichedEntityIdentifier->__toString(),
+            $referenceEntityIdentifier->__toString(),
             $code->__toString(),
             md5('fingerprint')
         );
