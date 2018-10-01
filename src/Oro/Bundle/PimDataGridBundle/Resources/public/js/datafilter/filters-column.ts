@@ -34,7 +34,7 @@ class FiltersColumn extends BaseView {
         <div>Filters</div>
     </button>
     <div class="filter-selector"><div>
-    <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton AknFilterBox-list filter-list select-filter-widget pimmultiselect">
+    <div class="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-addFilterButton AknFilterBox-column filter-list select-filter-widget pimmultiselect">
         <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
         <div class="AknLoadingMask loading-mask filter-loading" style="top: 50px"></div>
         <div class="filters-column"></div>
@@ -89,12 +89,12 @@ class FiltersColumn extends BaseView {
       $(this.filterList).show()
 
       timer = setTimeout(() => {
-        $(this.filterList).addClass('AknFilterBox-list--expanded')
+        $(this.filterList).addClass('AknFilterBox-column--expanded')
         $(this.searchSelector, this.filterList).focus();
         clearTimeout(timer);
       }, 100);
     } else {
-      $(this.filterList).removeClass('AknFilterBox-list--expanded')
+      $(this.filterList).removeClass('AknFilterBox-column--expanded')
       timer = setTimeout(() => {
         $(this.filterList).hide();
         clearTimeout(timer);
