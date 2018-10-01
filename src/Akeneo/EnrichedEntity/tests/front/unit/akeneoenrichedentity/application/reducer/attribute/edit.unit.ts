@@ -292,6 +292,24 @@ describe('akeneo > enriched entity > application > reducer > attribute --- edit'
     });
   });
 
+  test('I does not update the textarea property of the attribute if the form is not active', () => {
+    const state = {
+      isActive: false,
+      data: {
+        type: 'text',
+        is_rich_text_editor: false,
+      },
+      errors: [],
+    };
+    const newState = reducer(state, {
+      type: 'ATTRIBUTE_EDITION_ADDITIONAL_PROPERTY_UPDATED',
+      propertyCode: 'is_textarea',
+      propertyValue: true,
+    });
+
+    expect(newState).toEqual(state);
+  });
+
   test('I can update the textarea property of the attribute to false', () => {
     const state = {
       isActive: true,
