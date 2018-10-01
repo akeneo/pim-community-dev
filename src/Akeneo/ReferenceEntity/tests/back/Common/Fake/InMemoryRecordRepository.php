@@ -1,0 +1,110 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\ReferenceEntity\Common\Fake;
+
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
+
+/**
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ */
+class InMemoryRecordRepository implements RecordRepositoryInterface
+{
+    /** @var Record[] */
+    protected $records = [];
+
+    public function create(Record $record): void
+    {
+        if (isset($this->records[$record->getIdentifier()->__toString()])) {
+            throw new \RuntimeException('Record already exists');
+        }
+        $this->records[$record->getIdentifier()->__toString()] = $record;
+    }
+
+    public function update(Record $record): void
+    {
+        if (!isset($this->records[$record->getIdentifier()->__toString()])) {
+            throw new \RuntimeException('Expected to update one record, but none was saved');
+        }
+
+        $this->records[$record->getIdentifier()->__toString()] = $record;
+    }
+
+    public function getByIdentifier(RecordIdentifier $identifier): Record
+    {
+        if (!isset($this->records[$identifier->__toString()])) {
+            throw RecordNotFoundException::withIdentifier($identifier);
+        }
+
+        return $this->records[$identifier->__toString()];
+    }
+
+    public function getByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): Record
+    {
+        foreach ($this->records as $record) {
+            if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+                return $record;
+            }
+        }
+
+        throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
+    }
+
+    public function deleteByReferenceEntityAndCode(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): void
+    {
+        foreach ($this->records as $index => $record) {
+            if ($record->getCode()->equals($code) && $record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+                unset($this->records[$index]);
+                return;
+            }
+        }
+
+        throw RecordNotFoundException::withReferenceEntityAndCode($referenceEntityIdentifier, $code);
+    }
+
+    public function count(): int
+    {
+        return count($this->records);
+    }
+
+    public function hasRecord(RecordIdentifier $identifier)
+    {
+        return isset($this->records[$identifier->__toString()]);
+    }
+
+    public function referenceEntityHasRecords(ReferenceEntityIdentifier $referenceEntityIdentifier)
+    {
+        foreach ($this->records as $record) {
+            if ($record->getReferenceEntityIdentifier()->equals($referenceEntityIdentifier)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function nextIdentifier(ReferenceEntityIdentifier $referenceEntityIdentifier, RecordCode $code): RecordIdentifier
+    {
+        return RecordIdentifier::create(
+            $referenceEntityIdentifier->__toString(),
+            $code->__toString(),
+            md5('fingerprint')
+        );
+    }
+}

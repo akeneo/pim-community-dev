@@ -1,0 +1,125 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Crear una nova entitat
+  akeneo_reference_entities_record_edit: Editar un registre
+pim_reference_entity:
+  reference_entity:
+    button:
+      save: Desar
+      create: Crear
+    title: Entitats
+    tab:
+      records: Registres
+      attribute: Atributs
+      properties: Propietats
+    properties:
+      title: Propietats de l'entitat
+      identifier: Identificador
+      label: Etiqueta
+    module:
+      delete:
+        button: Suprimir
+        confirm: Segur que voleu suprimir aquesta entitat?
+    index:
+      grid:
+        count: "{{ count }} resultats"
+    create:
+      header:
+        title: Crear
+      subtitle: Entitats
+      title: Crear una nova entitat
+      input:
+        label: Etiqueta
+        code: Codi (requerit)
+      confirm: confirmar
+    notification:
+      save:
+        fail: S'ha produït un error durant el guardat de l'entitat enriquida
+      create:
+        success: Entitat enriquida creada correctament.
+  record:
+    button:
+      save: Desar
+      create: Afegir nou
+    enrich:
+      code: Codi
+      label: Etiqueta
+    title: Registres
+    create:
+      header:
+        title: Crear
+      subtitle: Entitats
+      title: Afegir nou {{ entityLabel }}
+      input:
+        label: Etiqueta
+        code: Codi (requerit)
+      confirm: confirmar
+    tab:
+      enrich: Enriquir
+    notification:
+      save:
+        success: Registre actualitzat correctament.
+      create:
+        success: Registre creat correctament.
+  attribute:
+    default:
+      code: Codi
+      label: Etiqueta
+      image: Imatge
+    type:
+      text: Texte
+      image: Imatge
+    button:
+      add: Afegeix un atribut
+    create:
+      header:
+        title: Crear
+      subtitle: Entitats
+      title: Afegir un nou atribut
+      input:
+        code: Codi (requerit)
+        label: Etiqueta
+        type: Tipus d'atribut
+        value_per_locale: Valor per local
+        value_per_channel: Valor per canal
+      confirm: confirmar
+    edit:
+      delete: Eliminar l'atribut
+      input:
+        code: Codi (requerit)
+        label: Etiqueta
+        type: Tipus d'atribut
+        value_per_locale: Valor per local
+        value_per_channel: Valor per canal
+        max_length: Màxim de caràcters
+        textarea: Àrea de Text
+        is_rich_text_editor: Editor de text enriquit
+        max_file_size: Mida màxima de l'arxiu (MB)
+        allowed_extensions: Extensions permeses
+        validation_rule: Regla de validació
+        regular_expression: Expressió regular
+        options:
+          validation_rule:
+            none: Cap
+            email: Correu electrònic
+            regular_expression: Expressió regular
+            url: URL
+    notification:
+      save:
+        success: Atribut actualitzat correctament.
+      create:
+        success: Atribut creat correctament.
+      delete:
+        success: Atribut eliminat correctament.
+pim_enrich:
+  confirmation:
+    discard_changes: 'Perdreu els canvis a la "{{ entity }}" entitat si sortiu de la pàgina.'
+  entity:
+    attribute:
+      property:
+        type:
+          akeneo_reference_entity_collection: Enriquir entitat
+        section:
+          type_specific: Escriu els paràmetres específics
+        reference_entity:
+          identifier: Enriquir entitat
+          default_label: Si us plau, selecciona una entitat enriquida

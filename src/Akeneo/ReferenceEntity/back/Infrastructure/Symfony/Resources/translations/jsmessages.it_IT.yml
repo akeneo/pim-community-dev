@@ -1,0 +1,83 @@
+pim_reference_entity:
+  reference_entity:
+    button:
+      save: Salva
+      create: Crea
+    tab:
+      attribute: Attributi
+      properties: Proprietà
+    properties:
+      identifier: Identificatore
+      label: Etichetta
+    module:
+      delete:
+        button: Eliminare
+    create:
+      header:
+        title: Crea
+      input:
+        label: Etichetta
+      confirm: conferma
+  record:
+    button:
+      save: Salva
+      create: Aggiungi nuovo
+    enrich:
+      code: Codice
+      label: Etichetta
+    create:
+      header:
+        title: Crea
+      input:
+        label: Etichetta
+      confirm: conferma
+    tab:
+      enrich: Catalogo
+  attribute:
+    default:
+      code: Codice
+      label: Etichetta
+      image: Immagine
+    type:
+      text: Testo
+      image: Immagine
+    create:
+      header:
+        title: Crea
+      input:
+        label: Etichetta
+        type: Tipo di attributo
+        value_per_locale: Valore per impostazioni internazionali
+        value_per_channel: Valore per canale
+      confirm: conferma
+    edit:
+      input:
+        label: Etichetta
+        type: Tipo di attributo
+        value_per_locale: Valore per impostazioni internazionali
+        value_per_channel: Valore per canale
+        max_length: Numero massimo di caratteri
+        textarea: Area di testo
+        max_file_size: Dimensione massima del file (MB)
+        allowed_extensions: Estensioni consentite
+        validation_rule: Regola di convalida
+        regular_expression: Espressione regolare
+        options:
+          validation_rule:
+            none: Nessun
+            email: E-mail
+            regular_expression: Espressione regolare
+            url: URL
+    notification:
+      save:
+        success: Attributo aggiornato con successo.
+      create:
+        success: Attributo creato con successo.
+      delete:
+        success: Attributo eliminato correttamente.
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Digita parametri specifici

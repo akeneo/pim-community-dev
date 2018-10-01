@@ -1,9 +1,0 @@
-akeneo_enrichedentity:
-  acl_group:
-    enriched_entity: Enriquir entitat
-  acl:
-    enriched_entity:
-      create: Crear una entitat
-      delete: Suprimir una entitat
-    record:
-      create: Crear registre

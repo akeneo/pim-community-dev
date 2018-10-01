@@ -1,0 +1,53 @@
+services:
+    # Reference entities
+    akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_referenceentity.application.reference_entity.create_reference_entity_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler:
+        class: Akeneo\ReferenceEntity\Application\ReferenceEntity\DeleteReferenceEntity\DeleteReferenceEntityHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+
+    # Attributes
+    akeneo_referenceentity.application.attribute.create_attribute_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler
+        arguments:
+            - '@akeneo_referenceentity.application.registry.attribute_factory'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.application.attribute.delete_attribute_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.application.attribute.edit_attribute_handler:
+        class: Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\EditAttributeHandler
+        arguments:
+            - '@akeneo_referenceentity.application.edit_attribute.attribute_updater.attribute_updater_registry'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    # Records
+    akeneo_referenceentity.application.record.create_record_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.application.record.edit_record_handler:
+            class: Akeneo\ReferenceEntity\Application\Record\EditRecord\EditRecordHandler
+            arguments:
+                - '@akeneo_referenceentity.application.registry.edit_record.record_value_updater.record_value_updater_registry'
+                - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+                - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_referenceentity.application.record.delete_record_handler:
+        class: Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordHandler
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'

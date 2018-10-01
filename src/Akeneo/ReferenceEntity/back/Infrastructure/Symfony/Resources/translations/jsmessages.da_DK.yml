@@ -1,0 +1,83 @@
+pim_reference_entity:
+  reference_entity:
+    button:
+      save: Gem
+      create: Opret
+    tab:
+      attribute: Egenskaber
+      properties: Egenskaber
+    properties:
+      identifier: Id
+      label: Etiket
+    module:
+      delete:
+        button: Slet
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+      confirm: bekræft
+  record:
+    button:
+      save: Gem
+      create: Tilføj ny
+    enrich:
+      code: Kode
+      label: Etiket
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+      confirm: bekræft
+    tab:
+      enrich: Berige
+  attribute:
+    default:
+      code: Kode
+      label: Etiket
+      image: Billede
+    type:
+      text: Tekst
+      image: Billede
+    create:
+      header:
+        title: Opret
+      input:
+        label: Etiket
+        type: Attributtype
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+      confirm: bekræft
+    edit:
+      input:
+        label: Etiket
+        type: Attributtype
+        value_per_locale: Værdi pr. landestandard
+        value_per_channel: Værdi pr. kanal
+        max_length: Maks. tegn
+        textarea: Tekstområde
+        max_file_size: Maks. filstørrelse (MB)
+        allowed_extensions: Tilladte filendelser
+        validation_rule: Valideringsregel
+        regular_expression: Regulære udtryk
+        options:
+          validation_rule:
+            none: Ingen
+            email: E-mail
+            regular_expression: Regulære udtryk
+            url: URL
+    notification:
+      save:
+        success: Atributten blev opdateret.
+      create:
+        success: Atributten blev oprettet.
+      delete:
+        success: Atributten blev slettet.
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Specifik type parametre

@@ -1,0 +1,11 @@
+services:
+    akeneo_referenceentity.event_subscriber.installer:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\ReferenceEntityResetFixturesCommand
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+            - '@doctrine.dbal.default_connection'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: 'console.command'}

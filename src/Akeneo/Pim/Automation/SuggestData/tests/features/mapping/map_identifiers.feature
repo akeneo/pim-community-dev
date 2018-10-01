@@ -116,7 +116,7 @@ Feature: Map the PIM identifiers with PIM.ai identifiers
       | pim_catalog_boolean               |
       | pim_catalog_metric                |
       | pim_catalog_date                  |
-      | akeneo_enriched_entity_collection |
+      | akeneo_reference_entity_collection |
 
   Scenario: Fails to map PIM.ai attribute with unexisting PIM attribute
     Given an empty identifiers mapping

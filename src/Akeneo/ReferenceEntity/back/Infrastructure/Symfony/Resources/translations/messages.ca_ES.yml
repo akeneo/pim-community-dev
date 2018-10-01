@@ -1,0 +1,9 @@
+akeneo_referenceentity:
+  acl_group:
+    reference_entity: Enriquir entitat
+  acl:
+    reference_entity:
+      create: Crear una entitat
+      delete: Suprimir una entitat
+    record:
+      create: Crear registre

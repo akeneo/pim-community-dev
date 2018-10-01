@@ -1,0 +1,78 @@
+akeneo_reference_entities_reference_entity_index:
+    path: '/reference_entity'
+
+akeneo_reference_entities_reference_entity_edit:
+    path: '/reference_entity/{identifier}/{tab}'
+
+akeneo_reference_entities_record_edit:
+    path: '/reference_entity/{referenceEntityIdentifier}/record/{recordCode}/{tab}'
+
+akeneo_reference_entities_reference_entity_index_rest:
+    path: '/rest/reference_entity'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.index }
+    methods: [GET]
+
+akeneo_reference_entities_reference_entity_create_rest:
+    path: '/rest/reference_entity'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.create }
+    methods: [POST]
+
+akeneo_reference_entities_reference_entity_get_rest:
+    path: '/rest/reference_entity/{identifier}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.get }
+    methods: [GET]
+
+akeneo_reference_entities_reference_entity_edit_rest:
+    path: '/rest/reference_entity/{identifier}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.edit }
+    methods: [POST]
+
+akeneo_reference_entities_reference_entity_delete_rest:
+    path: '/rest/reference_entity/{identifier}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.reference_entity.delete }
+    methods: [DELETE]
+
+akeneo_reference_entities_record_index_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/record'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.index }
+    methods: [GET]
+
+akeneo_reference_entities_record_create_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/record'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.create }
+    methods: [POST]
+
+akeneo_reference_entities_records_get_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.get }
+    methods: [GET]
+
+akeneo_reference_entities_record_edit_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.edit }
+    methods: [POST]
+
+akeneo_reference_entities_record_delete_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/record/{recordCode}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.record.delete }
+    methods: [DELETE]
+
+akeneo_reference_entities_attribute_index_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.index }
+    methods: [GET]
+
+akeneo_reference_entities_attribute_create_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.create }
+    methods: [POST]
+
+akeneo_reference_entities_attribute_delete_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute/{attributeIdentifier}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.delete }
+    methods: [DELETE]
+
+akeneo_reference_entities_attribute_edit_rest:
+    path: '/rest/reference_entity/{referenceEntityIdentifier}/attribute/{attributeIdentifier}'
+    defaults: { _controller: akeneo_referenceentity.infrastructure.action.attribute.edit }
+    methods: [POST]

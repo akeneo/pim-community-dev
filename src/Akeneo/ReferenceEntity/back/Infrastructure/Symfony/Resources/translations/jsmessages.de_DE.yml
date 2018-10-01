@@ -1,0 +1,82 @@
+pim_reference_entity:
+  reference_entity:
+    button:
+      save: Speichern
+      create: Anlegen
+    tab:
+      attribute: Attribute
+      properties: Eigenschaften
+    properties:
+      identifier: Kennung
+      label: Bezeichnung
+    module:
+      delete:
+        button: Löschen
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+      confirm: Bestätigen
+  record:
+    button:
+      save: Speichern
+    enrich:
+      code: Code
+      label: Bezeichnung
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+      confirm: Bestätigen
+    tab:
+      enrich: Anreichern
+  attribute:
+    default:
+      code: Code
+      label: Bezeichnung
+      image: Abbildung
+    type:
+      text: Text
+      image: Abbildung
+    create:
+      header:
+        title: Anlegen
+      input:
+        label: Bezeichnung
+        type: Attributtyp
+        value_per_locale: Wert je Gebietsschema
+        value_per_channel: Wert je Ausgabekanal
+      confirm: Bestätigen
+    edit:
+      input:
+        label: Bezeichnung
+        type: Attributtyp
+        value_per_locale: Wert je Gebietsschema
+        value_per_channel: Wert je Ausgabekanal
+        max_length: Max. Zeichen
+        textarea: Textbereich
+        max_file_size: Maximale Dateigröße (MB)
+        allowed_extensions: Zulässige Dateiendungen
+        validation_rule: Validierungsregel
+        regular_expression: Regulärer Ausdruck
+        options:
+          validation_rule:
+            none: Keine
+            email: E-Mail
+            regular_expression: Regulärer Ausdruck
+            url: URL
+    notification:
+      save:
+        success: Attribut erfolgreich aktualisiert.
+      create:
+        success: Attribut erfolgreich erstellt.
+      delete:
+        success: Attribut erfolgreich gelöscht.
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Spezifische Parameter

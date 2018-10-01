@@ -1,0 +1,10 @@
+services:
+    akeneoreference_entity.tests.helper.web_client_helper:
+        class: Akeneo\ReferenceEntity\Common\Helper\WebClientHelper
+        arguments:
+            - '@router'
+
+    akeneoreference_entity.tests.helper.database_helper:
+        class: Akeneo\ReferenceEntity\Integration\Persistence\Helper\DatabaseHelper
+        arguments:
+            - '@database_connection'

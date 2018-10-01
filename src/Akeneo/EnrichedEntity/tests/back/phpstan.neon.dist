@@ -1,6 +1,0 @@
-parameters:
-    level: 1
-    paths:
-        - %rootDir%/../../../src/Akeneo/EnrichedEntity
-    excludes_analyse:
-        - %rootDir%/../../../src/Akeneo/EnrichedEntity/tests/back/spec/*

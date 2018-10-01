@@ -1,0 +1,7 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+suites:
+    ReferenceEntity:
+        namespace: Akeneo\ReferenceEntity
+        psr4_prefix: Akeneo\ReferenceEntity
+        spec_path: src/Akeneo/ReferenceEntity/tests/back
+        src_path: src/Akeneo/ReferenceEntity/back
