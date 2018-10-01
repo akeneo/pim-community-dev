@@ -45,19 +45,6 @@
     border-radius: 0;
   }
 
-  &--withBottomBorder {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid @AknMediumGrey;
-    border-radius: 0;
-
-    &:focus {
-      outline: none;
-      border-color: @AknBlue;
-    }
-  }
-
   &--withDashedBottomBorder {
     border-top: none;
     border-left: none;
@@ -101,9 +88,9 @@
     width: @AknMaxFormWidth;
   }
 
-  &--disabled,
-  &[readonly],
-  &[disabled] {
+  &--disabled:not(.AknTextField--light),
+  &[readonly]:not(.AknTextField--light),
+  &[disabled]:not(.AknTextField--light) {
     background: @AknDisabledInputColor;
     background-image: url("../../../images/icon-lock.svg");
     background-repeat: no-repeat;
@@ -111,6 +98,32 @@
     padding-right: @AknFormHeight - 4px;
     color: @AknLightFontColor;
     cursor: not-allowed;
+  }
+
+  &--light {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid @AknMediumGrey;
+    border-radius: 0;
+    padding: 0;
+    font-size: 15px;
+
+    &:focus {
+      outline: none;
+      border-color: @AknBlue;
+    }
+
+    &.AknTextField--disabled {
+      border-bottom: 1px dotted @AknMediumGrey;
+      background-image: url("../../../images/icon-lock2.svg");
+      background-repeat: no-repeat;
+      background-size: 16px;
+      background-position: ~"calc(100% - 12px)" center;
+      padding-right: @AknFormHeight - 4px;
+      color: @AknGrey;
+      cursor: not-allowed;
+    }
   }
 
   &--localizable {
