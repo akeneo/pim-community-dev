@@ -1,9 +1,9 @@
 const LocaleSwitcher = async (nodeElement, createElementDecorator, page) => {
   const switchLocale = async locale => {
-    await page.waitForSelector('.AknDropdown.locale-switcher');
+    await page.waitForSelector('.locale-switcher.AknDropdown');
     const openButton = await nodeElement.$('.AknActionButton[data-identifier]');
     await openButton.click();
-    await page.waitForSelector('.AknDropdown.locale-switcher .AknDropdown-menuLink');
+    await page.waitForSelector('.locale-switcher.AknDropdown .AknDropdown-menuLink');
     const localeButton = await nodeElement.$(`.AknDropdown-menuLink[data-identifier="${locale}"]`);
     await localeButton.click();
 

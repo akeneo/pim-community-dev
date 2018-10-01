@@ -64,7 +64,7 @@ module.exports = async function(cucumber) {
               plural: null,
               message: message,
               root: {identifier: 'invalid/identifier', labels: []},
-              propertyPath: 'identifier',
+              propertyPath: 'code',
               invalidValue: 'invalid/identifier',
               constraint: {defaultOption: null, requiredOptions: [], targets: 'property', payload: null},
               cause: null,

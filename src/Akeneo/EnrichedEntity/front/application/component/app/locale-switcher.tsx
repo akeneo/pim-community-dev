@@ -78,7 +78,7 @@ const LocaleSwitcher = ({
       ItemView={LocaleItemView}
       ButtonView={LocaleButtonView}
       onSelectionChange={(locale: DropdownElement) => onLocaleChange(locale.original)}
-      className={className}
+      className={'locale-switcher ' + className}
     />
   );
 };
