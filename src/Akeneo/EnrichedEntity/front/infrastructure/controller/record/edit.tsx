@@ -22,7 +22,7 @@ const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 
-const shortcutDispatcher = (store: any) => (event: any) => {
+const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
   if ('Escape' === event.code) {
     store.dispatch({type: 'DISMISS'});
   }

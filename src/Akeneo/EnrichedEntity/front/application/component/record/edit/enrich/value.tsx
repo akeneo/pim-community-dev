@@ -12,7 +12,8 @@ export default (
   channel: ChannelReference,
   locale: LocaleReference,
   errors: ValidationError[],
-  onValueChange: (value: Value) => void
+  onValueChange: (value: Value) => void,
+  onFieldSubmit: () => void
 ) => {
   const visibleValues = record
     .getValueCollection()
@@ -28,7 +29,7 @@ export default (
         className="AknFieldContainer"
         data-code={value.attribute.getCode().stringValue()}
       >
-        <div className="AknFieldContainer-header AknFieldContainer-header--small">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
           <label
             title={value.attribute.getLabel(locale.stringValue())}
             className="AknFieldContainer-label"
@@ -38,7 +39,7 @@ export default (
           </label>
         </div>
         <div className="AknFieldContainer-inputContainer">
-          <DataView value={value} onChange={onValueChange} />
+          <DataView value={value} onChange={onValueChange} onSubmit={onFieldSubmit} />
         </div>
         {getErrorsView(errors, value)}
       </div>

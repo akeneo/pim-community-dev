@@ -23,9 +23,9 @@ export default ({
   errors: ValidationError[];
 }) => {
   return (
-    <div>
+    <React.Fragment>
       <div className="AknFieldContainer" data-code="maxFileSize">
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.max_file_size">
             {__('pim_enriched_entity.attribute.edit.input.max_file_size')}
           </label>
@@ -33,7 +33,7 @@ export default ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className="AknTextField"
+            className="AknTextField AknTextField--light"
             id="pim_enriched_entity.attribute.edit.input.max_file_size"
             name="max_file_size"
             value={attribute.maxFileSize.stringValue()}
@@ -56,7 +56,7 @@ export default ({
         {getErrorsView(errors, 'maxFileSize')}
       </div>
       <div className="AknFieldContainer" data-code="allowedExtensions">
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label"
             htmlFor="pim_enriched_entity.attribute.edit.input.allowed_extensions"
@@ -79,6 +79,6 @@ export default ({
         </div>
         {getErrorsView(errors, 'allowedExtensions')}
       </div>
-    </div>
+    </React.Fragment>
   );
 };

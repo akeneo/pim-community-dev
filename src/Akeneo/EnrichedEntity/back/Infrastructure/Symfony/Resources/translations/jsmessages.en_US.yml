@@ -20,8 +20,9 @@ pim_enriched_entity:
             properties: Properties
         properties:
             title: Entity properties
-            identifier: Identifier
+            identifier: Code
             label: Label
+            image: Image
         attribute:
             title: Record attributes
         module:
@@ -62,6 +63,7 @@ pim_enriched_entity:
             save: Save
             create: Add new
             delete: Delete
+            back: Back to list
         enrich:
             title: Record attributes
             code: Code
@@ -76,8 +78,14 @@ pim_enriched_entity:
                 label: Label
                 code: Code (required)
             confirm: confirm
+
         delete:
             confirm: Are you sure you want to delete "{{ recordLabel }}"? If it's linked to products, the links to the products will be removed.
+        grid:
+            column:
+                code: Code
+                image: Image
+                label: Label
         tab:
             enrich: Enrich
         notification:

@@ -20,7 +20,8 @@ export default ({
     '' !== record.getIdentifier().identifier
       ? `#${router.generate('akeneo_enriched_entities_record_edit', {
           enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
-          identifier: record.getIdentifier().identifier,
+          recordCode: record.getCode().stringValue(),
+          tab: 'enrich',
         })}`
       : '';
 

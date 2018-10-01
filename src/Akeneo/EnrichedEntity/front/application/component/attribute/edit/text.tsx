@@ -66,9 +66,9 @@ export default ({
   errors: ValidationError[];
 }) => {
   return (
-    <div className="AknFormContainer">
+    <React.Fragment>
       <div className="AknFieldContainer" data-code="maxLength">
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.max_length">
             {__('pim_enriched_entity.attribute.edit.input.max_length')}
           </label>
@@ -76,7 +76,7 @@ export default ({
         <div className="AknFieldContainer-inputContainer">
           <input
             type="text"
-            className="AknTextField"
+            className="AknTextField AknTextField--light"
             id="pim_enriched_entity.attribute.edit.input.max_length"
             name="max_length"
             value={attribute.maxLength.stringValue()}
@@ -99,7 +99,7 @@ export default ({
         {getErrorsView(errors, 'maxLength')}
       </div>
       <div className="AknFieldContainer" data-code="isTextarea">
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.textarea">
             {__('pim_enriched_entity.attribute.edit.input.textarea')}
           </label>
@@ -117,7 +117,7 @@ export default ({
       </div>
       {attribute.isTextarea.booleanValue() && (
         <div className="AknFieldContainer" data-code="isRichTextEditor">
-          <div className="AknFieldContainer-header">
+          <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
               htmlFor="pim_enriched_entity.attribute.edit.input.is_rich_text_editor"
@@ -139,7 +139,7 @@ export default ({
       )}
       {!attribute.isTextarea.booleanValue() && (
         <div className="AknFieldContainer" data-code="validationRule">
-          <div className="AknFieldContainer-header">
+          <div className="AknFieldContainer-header AknFieldContainer-header--light">
             <label
               className="AknFieldContainer-label"
               htmlFor="pim_enriched_entity.attribute.edit.input.validation_rule"
@@ -164,7 +164,7 @@ export default ({
       {!attribute.isTextarea.booleanValue() &&
         attribute.validationRule.stringValue() === ValidationRuleOption.RegularExpression && (
           <div className="AknFieldContainer" data-code="regularExpression">
-            <div className="AknFieldContainer-header">
+            <div className="AknFieldContainer-header AknFieldContainer-header--light">
               <label
                 className="AknFieldContainer-label"
                 htmlFor="pim_enriched_entity.attribute.edit.input.regular_expression"
@@ -175,7 +175,7 @@ export default ({
             <div className="AknFieldContainer-inputContainer">
               <input
                 type="text"
-                className="AknTextField"
+                className="AknTextField AknTextField--light"
                 id="pim_enriched_entity.attribute.edit.input.regular_expression"
                 name="regular_expression"
                 placeholder="/[a-z]+[0-9]*/"
@@ -196,6 +196,6 @@ export default ({
             {getErrorsView(errors, 'regularExpression')}
           </div>
         )}
-    </div>
+    </React.Fragment>
   );
 };

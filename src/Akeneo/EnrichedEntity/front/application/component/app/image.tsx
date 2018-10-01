@@ -9,7 +9,7 @@ class Image extends React.Component<
     image: FileModel;
     alt: string;
     wide?: boolean;
-    onImageChange: (image: FileModel) => void;
+    onImageChange?: (image: FileModel) => void;
   },
   {
     dropping: boolean;
@@ -66,7 +66,9 @@ class Image extends React.Component<
     if (!this.props.image.isEmpty()) {
       this.stopEvent(event);
       this.setState({removing: false, dropping: true});
-      this.props.onImageChange(FileModel.createEmpty());
+      if (undefined !== this.props.onImageChange) {
+        this.props.onImageChange(FileModel.createEmpty());
+      }
     }
   };
 
@@ -92,7 +94,9 @@ class Image extends React.Component<
         this.setState({ratio});
       });
       await loadImage(getImageShowUrl(image, true === this.props.wide ? 'preview' : 'thumbnail'));
-      this.props.onImageChange(image);
+      if (undefined !== this.props.onImageChange) {
+        this.props.onImageChange(image);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -102,6 +106,24 @@ class Image extends React.Component<
 
   render() {
     const wide = undefined === this.props.wide ? false : this.props.wide;
+    const imageUrl = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
+
+    // If the image is in read only mode, we return a simple version of the component
+    if (undefined === this.props.onImageChange) {
+      const className = `AknImage
+        ${wide ? 'AknImage--wide' : ''}
+      `;
+
+      return (
+        <div className={className}>
+          {true === this.props.wide && !this.props.image.isEmpty() ? (
+            <div className="AknImage-drop" style={{backgroundImage: `url("${imageUrl}")`}} />
+          ) : null}
+          <img className="AknImage-display" src={imageUrl} />
+        </div>
+      );
+    }
+
     const className = `AknImage AknImage--editable
       ${this.state.dropping && !this.state.loading ? 'AknImage--dropping' : ''}
       ${this.state.removing && !this.state.loading ? 'AknImage--removing' : ''}
@@ -109,7 +131,6 @@ class Image extends React.Component<
       ${wide ? 'AknImage--wide' : ''}
     `;
 
-    const imageUrl = getImageShowUrl(this.props.image, true === this.props.wide ? 'preview' : 'thumbnail');
     const style =
       0 === this.state.ratio
         ? {width: `${this.state.ratio * 100}%`, transition: 'width 0s'}

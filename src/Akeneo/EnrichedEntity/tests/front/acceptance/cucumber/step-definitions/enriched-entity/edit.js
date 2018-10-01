@@ -33,7 +33,7 @@ module.exports = async function(cucumber) {
       await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
-    await this.page.waitFor('.AknDefault-mainContent[data-tab="attribute"] .content');
+    await this.page.waitFor('.AknDefault-mainContent[data-tab="attribute"] .AknSubsection-container');
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const isLoaded = await properties.isLoaded();

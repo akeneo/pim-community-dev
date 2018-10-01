@@ -57,10 +57,12 @@ const LocaleSwitcher = ({
   localeCode,
   locales,
   onLocaleChange,
+  className = '',
 }: {
   localeCode: string;
   locales: Locale[];
   onLocaleChange: (locale: Locale) => void;
+  className?: string;
 }) => {
   return (
     <Dropdown
@@ -76,7 +78,7 @@ const LocaleSwitcher = ({
       ItemView={LocaleItemView}
       ButtonView={LocaleButtonView}
       onSelectionChange={(locale: DropdownElement) => onLocaleChange(locale.original)}
-      className="locale-switcher"
+      className={'locale-switcher ' + className}
     />
   );
 };

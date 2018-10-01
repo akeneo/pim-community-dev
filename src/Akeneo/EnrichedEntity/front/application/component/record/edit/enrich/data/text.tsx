@@ -6,7 +6,7 @@ import {createLocaleFromCode} from 'akeneoenrichedentity/domain/model/locale';
 import {ConcreteTextAttribute} from 'akeneoenrichedentity/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoenrichedentity/application/component/app/rich-text-editor';
 
-const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void}) => {
+const View = ({value, onChange, onSubmit}: {value: Value; onChange: (value: Value) => void; onSubmit: () => void}) => {
   if (!(value.data instanceof TextData && value.attribute instanceof ConcreteTextAttribute)) {
     return null;
   }
@@ -29,7 +29,7 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
           <RichTextEditor value={value.data.stringValue()} onChange={onValueChange} />
         ) : (
           <textarea
-            className={`AknTextareaField AknTextareaField--withBottomBorder AknTextareaField--narrow ${
+            className={`AknTextareaField AknTextareaField--light AknTextareaField--narrow ${
               value.attribute.valuePerLocale ? 'AknTextareaField--localizable' : ''
             }`}
             value={value.data.stringValue()}
@@ -40,12 +40,17 @@ const View = ({value, onChange}: {value: Value; onChange: (value: Value) => void
         )
       ) : (
         <input
-          className={`AknTextField AknTextField--narrow AknTextField--withBottomBorder ${
+          className={`AknTextField AknTextField--narrow AknTextField--light ${
             value.attribute.valuePerLocale ? 'AknTextField--localizable' : ''
           }`}
           value={value.data.stringValue()}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             onValueChange(event.currentTarget.value);
+          }}
+          onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+            if ('Enter' === event.key) {
+              onSubmit();
+            }
           }}
         />
       )}

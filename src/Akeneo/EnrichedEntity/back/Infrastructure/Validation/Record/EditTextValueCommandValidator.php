@@ -108,7 +108,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
     private function checkValidationRule(EditTextValueCommand $command)
     : ConstraintViolationListInterface
     {
-        if ($command->attribute->hasValidationRule()) {
+        if ($command->attribute->hasValidationRule() || null === $command->text) {
             return new ConstraintViolationList();
         }
 
@@ -117,7 +117,7 @@ class EditTextValueCommandValidator extends ConstraintValidator
             $attribute = $command->attribute;
             return $validator->validate($command->text, [
                 new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) use ($attribute) {
-                    if (!preg_match((string) $attribute->getRegularExpression(), $value)) {
+                    if (!preg_match_all((string) $attribute->getRegularExpression(), $value)) {
                         return $this->context
                             ->buildViolation(EditTextValueCommandConstraint::TEXT_INCOMPATIBLE_WITH_REGULAR_EXPRESSION)
                             ->setParameter('%regular_expression%', (string) $attribute->getRegularExpression())

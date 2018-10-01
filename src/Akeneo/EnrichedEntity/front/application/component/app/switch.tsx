@@ -32,8 +32,13 @@ const Switch = ({
         type="checkbox"
         className="AknSwitch-input"
         checked={value}
-        onChange={(event: any) => {
-          if (!readOnly && onChange) onChange(event.target.checked);
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          if (undefined === event.target) {
+            return;
+          }
+          const checkbox = event.target as HTMLInputElement;
+
+          if (!readOnly && onChange) onChange(checkbox.checked);
         }}
       />
       <span className="AknSwitch-slider" />

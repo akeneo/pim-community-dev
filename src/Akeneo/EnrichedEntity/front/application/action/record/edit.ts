@@ -87,3 +87,8 @@ export const recordValueUpdated = (value: Value) => (dispatch: any, getState: an
   dispatch(recordEditionValueUpdated(value));
   dispatch(recordEditionUpdated(getState().form.data));
 };
+
+export const backToEnrichedEntity = () => (dispatch: any, getState: any) => {
+  const record = denormalizeRecord(getState().form.data);
+  dispatch(redirectToRecordIndex(record.getEnrichedEntityIdentifier()));
+};

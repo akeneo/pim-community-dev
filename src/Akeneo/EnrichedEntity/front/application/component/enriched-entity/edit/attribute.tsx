@@ -12,10 +12,21 @@ import EnrichedEntity, {
 } from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {attributeEditionStartByIdentifier} from 'akeneoenrichedentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoenrichedentity/application/component/attribute/edit';
+import Header from 'akeneoenrichedentity/application/component/enriched-entity/edit/header';
+import {
+  SecondaryAction,
+  breadcrumbConfiguration,
+} from 'akeneoenrichedentity/application/component/enriched-entity/edit';
+import {deleteEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
     locale: string;
+  };
+  acls: {
+    createAttribute: boolean;
+    delete: boolean;
   };
   enrichedEntity: EnrichedEntity;
   createAttribute: CreateState;
@@ -26,6 +37,7 @@ interface DispatchProps {
   events: {
     onAttributeCreationStart: () => void;
     onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => void;
+    onDelete: (enrichedEntity: EnrichedEntity) => void;
   };
 }
 interface CreateProps extends StateProps, DispatchProps {}
@@ -38,7 +50,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
       data-identifier={`system_record_${identifier}`}
       data-type={type}
     >
-      <div className="AknFieldContainer-header">
+      <div className="AknFieldContainer-header AknFieldContainer-header--light">
         <label
           className="AknFieldContainer-label AknFieldContainer-label--withImage"
           htmlFor={`pim_enriched_entity.enriched_entity.properties.system_record_${identifier}`}
@@ -51,7 +63,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
         <input
           type="text"
           id={`pim_enriched_entity.enriched_entity.properties.system_record_${identifier}`}
-          className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
+          className="AknTextField AknTextField--light AknTextField--disabled"
           value={__(`pim_enriched_entity.attribute.default.${identifier}`)}
           readOnly
         />
@@ -75,7 +87,7 @@ const renderAttributesPlaceholder = () => {
     .fill('placeholder')
     .map((attributeIdentifier, key) => (
       <div key={key} className="AknFieldContainer" data-placeholder="true">
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage AknLoadingPlaceHolder"
             htmlFor={`pim_enriched_entity.enriched_entity.properties.${attributeIdentifier}_${key}`}
@@ -124,7 +136,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
         data-identifier={attribute.getCode().stringValue()}
         data-type={attribute.getType()}
       >
-        <div className="AknFieldContainer-header">
+        <div className="AknFieldContainer-header AknFieldContainer-header--light">
           <label
             className="AknFieldContainer-label AknFieldContainer-label--withImage"
             htmlFor={`pim_enriched_entity.enriched_entity.properties.${attribute.getCode().stringValue()}`}
@@ -143,7 +155,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
           <input
             type="text"
             id={`pim_enriched_entity.enriched_entity.properties.${attribute.getCode().stringValue()}`}
-            className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
+            className="AknTextField AknTextField--light AknTextField--disabled"
             value={attribute.getLabel(locale)}
             readOnly
           />
@@ -171,68 +183,94 @@ class AttributesView extends React.Component<CreateProps> {
 
   render() {
     return (
-      <div className="AknSubsection">
-        <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
-          <span className="group-label">{__('pim_enriched_entity.enriched_entity.attribute.title')}</span>
-        </header>
-        {this.props.firstLoading || 0 < this.props.attributes.length ? (
-          <div className="AknSubsection-container">
-            <div className="AknFormContainer AknFormContainer--withPadding">
-              {renderSystemAttributes()}
-              {this.props.firstLoading ? (
-                renderAttributesPlaceholder()
-              ) : (
-                <React.Fragment>
-                  {this.props.attributes.map((attribute: NormalizedAttribute) => (
-                    <AttributeView
-                      key={attribute.identifier}
-                      attribute={attribute}
-                      onAttributeEdit={this.props.events.onAttributeEdit}
-                      locale={this.props.context.locale}
-                    />
-                  ))}
-                  <button
-                    className="AknButton AknButton--action"
-                    onClick={this.props.events.onAttributeCreationStart}
-                    ref={(button: HTMLButtonElement) => {
-                      this.addButton = button;
-                    }}
-                  >
-                    {__('pim_enriched_entity.attribute.button.add')}
-                  </button>
-                </React.Fragment>
-              )}
-            </div>
-            <AttributeEditForm />
-          </div>
-        ) : (
-          <React.Fragment>
-            <div className="AknSubsection-container">
-              <div className="AknFormContainer AknFormContainer--withPadding">{renderSystemAttributes()}</div>
-            </div>
-            <div className="AknGridContainer-noData AknGridContainer-noData--small">
-              <div className="AknGridContainer-noDataTitle">
-                {__('pim_enriched_entity.attribute.no_data.title', {
-                  entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale),
-                })}
-              </div>
-              <div className="AknGridContainer-noDataSubtitle">
-                {__('pim_enriched_entity.attribute.no_data.subtitle')}
-              </div>
-              <button
-                className="AknButton AknButton--action"
-                onClick={this.props.events.onAttributeCreationStart}
-                ref={(button: HTMLButtonElement) => {
-                  this.addButton = button;
-                }}
-              >
+      <React.Fragment>
+        <Header
+          label={this.props.enrichedEntity.getLabel(this.props.context.locale)}
+          image={this.props.enrichedEntity.getImage()}
+          primaryAction={() => {
+            return this.props.acls.createAttribute ? (
+              <button className="AknButton AknButton--action" onClick={this.props.events.onAttributeCreationStart}>
                 {__('pim_enriched_entity.attribute.button.add')}
               </button>
+            ) : null;
+          }}
+          secondaryActions={() => {
+            return this.props.acls.delete ? (
+              <SecondaryAction
+                onDelete={() => {
+                  this.props.events.onDelete(this.props.enrichedEntity);
+                }}
+              />
+            ) : null;
+          }}
+          withLocaleSwitcher={true}
+          withChannelSwitcher={false}
+          isDirty={false}
+          breadcrumbConfiguration={breadcrumbConfiguration}
+        />
+        <div className="AknSubsection">
+          <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: '192px'}}>
+            <span className="group-label">{__('pim_enriched_entity.enriched_entity.attribute.title')}</span>
+          </header>
+          {this.props.firstLoading || 0 < this.props.attributes.length ? (
+            <div className="AknSubsection-container">
+              <div className="AknFormContainer AknFormContainer--withPadding">
+                {renderSystemAttributes()}
+                {this.props.firstLoading ? (
+                  renderAttributesPlaceholder()
+                ) : (
+                  <React.Fragment>
+                    {this.props.attributes.map((attribute: NormalizedAttribute) => (
+                      <AttributeView
+                        key={attribute.identifier}
+                        attribute={attribute}
+                        onAttributeEdit={this.props.events.onAttributeEdit}
+                        locale={this.props.context.locale}
+                      />
+                    ))}
+                    <button
+                      className="AknButton AknButton--action"
+                      onClick={this.props.events.onAttributeCreationStart}
+                      ref={(button: HTMLButtonElement) => {
+                        this.addButton = button;
+                      }}
+                    >
+                      {__('pim_enriched_entity.attribute.button.add')}
+                    </button>
+                  </React.Fragment>
+                )}
+              </div>
+              <AttributeEditForm />
             </div>
-          </React.Fragment>
-        )}
-        {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
-      </div>
+          ) : (
+            <React.Fragment>
+              <div className="AknSubsection-container">
+                <div className="AknFormContainer AknFormContainer--withPadding">{renderSystemAttributes()}</div>
+              </div>
+              <div className="AknGridContainer-noData AknGridContainer-noData--small">
+                <div className="AknGridContainer-noDataTitle">
+                  {__('pim_enriched_entity.attribute.no_data.title', {
+                    entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale),
+                  })}
+                </div>
+                <div className="AknGridContainer-noDataSubtitle">
+                  {__('pim_enriched_entity.attribute.no_data.subtitle')}
+                </div>
+                <button
+                  className="AknButton AknButton--action"
+                  onClick={this.props.events.onAttributeCreationStart}
+                  ref={(button: HTMLButtonElement) => {
+                    this.addButton = button;
+                  }}
+                >
+                  {__('pim_enriched_entity.attribute.button.add')}
+                </button>
+              </div>
+            </React.Fragment>
+          )}
+          {this.props.createAttribute.active ? <CreateAttributeModal /> : null}
+        </div>
+      </React.Fragment>
     );
   }
 }
@@ -245,6 +283,10 @@ export default connect(
     return {
       context: {
         locale,
+      },
+      acls: {
+        createAttribute: true,
+        delete: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_delete'),
       },
       enrichedEntity,
       createAttribute: state.createAttribute,
@@ -260,6 +302,9 @@ export default connect(
         },
         onAttributeEdit: (attributeIdentifier: AttributeIdentifier) => {
           dispatch(attributeEditionStartByIdentifier(attributeIdentifier));
+        },
+        onDelete: (enrichedEntity: EnrichedEntity) => {
+          dispatch(deleteEnrichedEntity(enrichedEntity));
         },
       },
     };

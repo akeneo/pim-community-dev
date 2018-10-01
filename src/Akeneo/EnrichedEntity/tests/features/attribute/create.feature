@@ -9,7 +9,7 @@ Feature: Create an attribute linked to an enriched entity
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
   @acceptance-back
-  Scenario: Creating an image attribute linked to an enriched entity
+  Scenario: Create an image attribute linked to an enriched entity
     When the user creates an image attribute "image" linked to the enriched entity "designer" with:
       | code  | labels                                    | is_required | order | value_per_channel | value_per_locale | max_file_size | allowed_extensions |
       | image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     |
@@ -18,7 +18,7 @@ Feature: Create an attribute linked to an enriched entity
       | image | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 250.0         | ["png", "jpg"]     | image |
 
   @acceptance-back
-  Scenario: Creating a text attribute linked to an enriched entity
+  Scenario: Create a text attribute linked to an enriched entity
     When the user creates a text attribute "name" linked to the enriched entity "designer" with:
       | code | labels                                    | is_required | order | value_per_channel | value_per_locale | max_length |
       | name | {"en_US": "Stylist", "fr_FR": "Styliste"} | true        | 0     | true              | false            | 44         |
@@ -58,3 +58,15 @@ Feature: Create an attribute linked to an enriched entity
       | invalid_attribute_code | message                                                  |
       | labels                 | The code cannot be any of those values: "%code, labels%" |
       | code                   | The code cannot be any of those values: "%code, labels%" |
+
+  @acceptance-front
+  Scenario: Create a simple valid text attribute
+    When the user creates a valid attribute
+    And the user saves the valid attribute
+    Then the user should not see any validation error
+
+  @acceptance-front
+  Scenario: Create an invalid text attribute
+    When the user creates an attribute with an invalid code
+    And the user saves the attribute with an invalid code
+    Then the user should see the validation error "This field may only contain letters, numbers and underscores."

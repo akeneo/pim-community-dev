@@ -40,7 +40,7 @@ export const createEnrichedEntity = () => async (dispatch: any, getState: () => 
 
   dispatch(enrichedEntityCreationSucceeded());
   dispatch(notifyEnrichedEntityWellCreated());
-  dispatch(redirectToEnrichedEntity(enrichedEntity));
+  dispatch(redirectToEnrichedEntity(enrichedEntity, 'attribute'));
 
   return;
 };

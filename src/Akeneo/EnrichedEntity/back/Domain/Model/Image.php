@@ -17,36 +17,32 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 class Image
 {
-    /** @var string|null */
-    private $key;
+    /** @var FileInfoInterface|null */
+    private $file;
 
-    /** @var string|null */
-    private $originalFilename;
-
-    private function __construct(?string $key, ?string $originalFilename)
+    private function __construct(?FileInfoInterface $file)
     {
-        $this->key = $key;
-        $this->originalFilename = $originalFilename;
+        $this->file = $file;
     }
 
     public static function fromFileInfo(FileInfoInterface $fileInfo): self
     {
-        return new self($fileInfo->getKey(), $fileInfo->getOriginalFilename());
+        return new self($fileInfo);
     }
 
     public static function createEmpty(): self
     {
-        return new self(null, null);
+        return new self(null);
     }
 
     public function getKey(): string
     {
-        return $this->key;
+        return $this->file->getKey();
     }
 
     public function isEmpty(): bool
     {
-        return null === $this->key;
+        return null === $this->file;
     }
 
     public function normalize(): ?array
@@ -56,8 +52,8 @@ class Image
         }
 
         return [
-            'filePath' => $this->key,
-            'originalFilename' => $this->originalFilename
+            'filePath' => $this->file->getKey(),
+            'originalFilename' => $this->file->getOriginalFilename()
         ];
     }
 }

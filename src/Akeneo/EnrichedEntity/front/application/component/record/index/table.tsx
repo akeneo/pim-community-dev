@@ -2,6 +2,7 @@ import ItemView from 'akeneoenrichedentity/application/component/record/index/it
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 import * as React from 'react';
 import denormalizeRecord from 'akeneoenrichedentity/application/denormalizer/record';
+import __ from 'akeneoenrichedentity/tools/translator';
 
 interface TableState {
   locale: string;
@@ -73,7 +74,14 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     const {records, locale, onRedirectToRecord, isLoading} = this.props;
 
     return (
-      <table className="AknGrid">
+      <table className="AknGrid AknGrid--light">
+        <thead className="AknGrid-header">
+          <tr className="AknGrid-bodyRow">
+            <th className="AknGrid-headerCell">{__('pim_enriched_entity.record.grid.column.image')}</th>
+            <th className="AknGrid-headerCell">{__('pim_enriched_entity.record.grid.column.label')}</th>
+            <th className="AknGrid-headerCell">{__('pim_enriched_entity.record.grid.column.code')}</th>
+          </tr>
+        </thead>
         <tbody className="AknGrid-body">{this.renderItems(records, locale, isLoading, onRedirectToRecord)}</tbody>
       </table>
     );

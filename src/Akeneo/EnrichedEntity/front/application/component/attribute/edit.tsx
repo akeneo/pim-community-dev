@@ -144,9 +144,9 @@ class Edit extends React.Component<EditProps> {
                 }}
               />
             </header>
-            <div className="AknFormContainer">
+            <div className="AknFormContainer AknFormContainer--expanded">
               <div className="AknFieldContainer" data-code="label">
-                <div className="AknFieldContainer-header">
+                <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.label">
                     {__('pim_enriched_entity.attribute.edit.input.label')}
                   </label>
@@ -157,7 +157,7 @@ class Edit extends React.Component<EditProps> {
                     ref={(input: HTMLInputElement) => {
                       this.labelInput = input;
                     }}
-                    className="AknTextField"
+                    className="AknTextField AknTextField--light"
                     id="pim_enriched_entity.attribute.edit.input.label"
                     name="label"
                     value={this.props.attribute.getLabel(this.props.context.locale, false)}
@@ -173,7 +173,7 @@ class Edit extends React.Component<EditProps> {
                 {getErrorsView(this.props.errors, 'labels')}
               </div>
               <div className="AknFieldContainer" data-code="code">
-                <div className="AknFieldContainer-header">
+                <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.attribute.edit.input.code">
                     {__('pim_enriched_entity.attribute.edit.input.code')}
                   </label>
@@ -181,7 +181,7 @@ class Edit extends React.Component<EditProps> {
                 <div className="AknFieldContainer-inputContainer">
                   <input
                     type="text"
-                    className="AknTextField"
+                    className="AknTextField AknTextField--light AknTextField--disabled"
                     id="pim_enriched_entity.attribute.edit.input.code"
                     name="code"
                     value={this.props.attribute.code.stringValue()}
@@ -190,7 +190,7 @@ class Edit extends React.Component<EditProps> {
                 </div>
               </div>
               <div className="AknFieldContainer" data-code="valuePerChannel">
-                <div className="AknFieldContainer-header">
+                <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label
                     className="AknFieldContainer-label"
                     htmlFor="pim_enriched_entity.attribute.edit.input.value_per_channel"
@@ -208,7 +208,7 @@ class Edit extends React.Component<EditProps> {
                 {getErrorsView(this.props.errors, 'valuePerChannel')}
               </div>
               <div className="AknFieldContainer" data-code="valuePerLocale">
-                <div className="AknFieldContainer-header">
+                <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label
                     className="AknFieldContainer-label"
                     htmlFor="pim_enriched_entity.attribute.edit.input.value_per_locale"
@@ -226,7 +226,7 @@ class Edit extends React.Component<EditProps> {
                 {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
               <div className="AknFieldContainer" data-code="isRequired">
-                <div className="AknFieldContainer-header">
+                <div className="AknFieldContainer-header AknFieldContainer-header--light">
                   <label
                     className="AknFieldContainer-label"
                     htmlFor="pim_enriched_entity.attribute.edit.input.is_required"
@@ -249,12 +249,14 @@ class Edit extends React.Component<EditProps> {
             <header className="AknSubsection-title AknSubsection-title--sticky" style={{top: 0, paddingTop: '10px'}}>
               {__('pim_enriched_entity.attribute.edit.additional.title')}
             </header>
-            {getAdditionalProperty(
-              this.props.attribute,
-              this.props.events.onAdditionalPropertyUpdated,
-              this.props.events.onSubmit,
-              this.props.errors
-            )}
+            <div className="AknFormContainer AknFormContainer--expanded">
+              {getAdditionalProperty(
+                this.props.attribute,
+                this.props.events.onAdditionalPropertyUpdated,
+                this.props.events.onSubmit,
+                this.props.errors
+              )}
+            </div>
           </div>
           <div
             className="AknButton AknButton--delete"

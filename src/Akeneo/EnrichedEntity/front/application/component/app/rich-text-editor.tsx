@@ -49,8 +49,28 @@ export default class RichTextEditor extends React.Component<RichTextEditorProps,
     return (
       <React.Fragment>
         <Editor
+          toolbar={{
+            options: [
+              'inline',
+              'blockType',
+              'fontSize',
+              'fontFamily',
+              'list',
+              'textAlign',
+              'colorPicker',
+              'link',
+              'embedded',
+              'emoji',
+              'image',
+              'remove',
+              'history',
+            ],
+            inline: {
+              options: ['bold', 'italic'],
+            },
+          }}
           editorState={editorState}
-          editorClassName="AknTextareaField AknTextareaField--withBottomBorder"
+          editorClassName="AknTextareaField AknTextareaField--light"
           onEditorStateChange={this.onEditorStateChange}
         />
       </React.Fragment>

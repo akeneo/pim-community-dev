@@ -40,8 +40,8 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
 
     public function hydrate(array $row, array $emptyValues): RecordDetails
     {
-        $labels = json_decode($row['labels'], true);
-        $valueCollection = json_decode($row['value_collection'], true);
+        $labels = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['labels'], $this->platform);
+        $valueCollection = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['value_collection'], $this->platform);
         $recordIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($row['identifier'], $this->platform);
         $enrichedEntityIdentifier = Type::getType(Type::STRING)
@@ -59,16 +59,11 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         $recordImage = Image::createEmpty();
-
-        if (isset($row['image'])) {
-            $image = json_decode($row['image'], true);
-            $imageKey = Type::getType(Type::STRING)
-                ->convertToPHPValue($image['file_key'], $this->platform);
-            $imageFilename = Type::getType(Type::STRING)
-                ->convertToPHPValue($image['original_filename'], $this->platform);
+        if (isset($row['image']) && null !== $row['image']) {
+            $image = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['image'], $this->platform);
             $file = new FileInfo();
-            $file->setKey($imageKey);
-            $file->setOriginalFilename($imageFilename);
+            $file->setKey($image['file_key']);
+            $file->setOriginalFilename($image['original_filename']);
             $recordImage = Image::fromFileInfo($file);
         }
 

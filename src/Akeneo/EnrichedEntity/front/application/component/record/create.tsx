@@ -51,15 +51,15 @@ class Create extends React.Component<CreateProps> {
     }
   }
 
-  private onRecordCodeUpdate = (event: any) => {
+  private onRecordCodeUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.events.onRecordCodeUpdated(event.target.value);
   };
 
-  private onLabelUpdate = (event: any) => {
+  private onLabelUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.events.onLabelUpdated(event.target.value, this.props.context.locale);
   };
 
-  private onKeyPress = (event: any) => {
+  private onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if ('Enter' === event.key) {
       this.props.events.onSubmit();
     }
@@ -82,7 +82,7 @@ class Create extends React.Component<CreateProps> {
                   })}
                 </div>
                 <div className="AknFieldContainer" data-code="label">
-                  <div className="AknFieldContainer-header">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
                     <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.record.create.input.label">
                       {__('pim_enriched_entity.record.create.input.label')}
                     </label>
@@ -93,7 +93,7 @@ class Create extends React.Component<CreateProps> {
                         this.labelInput = input;
                       }}
                       type="text"
-                      className="AknTextField"
+                      className="AknTextField AknTextField--light"
                       id="pim_enriched_entity.record.create.input.label"
                       name="label"
                       value={this.props.data.labels[this.props.context.locale]}
@@ -109,7 +109,7 @@ class Create extends React.Component<CreateProps> {
                   {getErrorsView(this.props.errors, 'labels')}
                 </div>
                 <div className="AknFieldContainer" data-code="code">
-                  <div className="AknFieldContainer-header">
+                  <div className="AknFieldContainer-header AknFieldContainer-header--light">
                     <label className="AknFieldContainer-label" htmlFor="pim_enriched_entity.record.create.input.code">
                       {__('pim_enriched_entity.record.create.input.code')}
                     </label>
@@ -117,7 +117,7 @@ class Create extends React.Component<CreateProps> {
                   <div className="AknFieldContainer-inputContainer">
                     <input
                       type="text"
-                      className="AknTextField"
+                      className="AknTextField AknTextField--light"
                       id="pim_enriched_entity.record.create.input.code"
                       name="code"
                       value={this.props.data.code}

@@ -3,6 +3,8 @@ const router = require('pim/router');
 
 class InvalidItemTypeError extends Error {}
 
+export type BreadcrumbConfiguration = BreadcrumbItem[];
+
 interface BreadcrumbItem {
   action: {
     type: string;
@@ -31,7 +33,7 @@ const renderRedirect = (item: BreadcrumbItem, key: number, last: boolean) => {
   return (
     <a
       key={key}
-      onClick={(event: any) => {
+      onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
         event.preventDefault();
 
         if (path !== window.location.hash) {

@@ -21,11 +21,11 @@ use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 class EditRecordValueCommandFactory
 {
     /** @var EditValueCommandFactoryRegistryInterface */
-    private $commandFactoryRegistry;
+    private $valueCommandFactoryRegistry;
 
-    public function __construct(EditValueCommandFactoryRegistryInterface $commandFactoryRegistry)
+    public function __construct(EditValueCommandFactoryRegistryInterface $valueCommandFactoryRegistry)
     {
-        $this->commandFactoryRegistry = $commandFactoryRegistry;
+        $this->valueCommandFactoryRegistry = $valueCommandFactoryRegistry;
     }
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
@@ -34,7 +34,7 @@ class EditRecordValueCommandFactory
         $command->attribute = $attribute;
         $command->channel = $normalizedValue['channel'];
         $command->locale = $normalizedValue['locale'];
-        $command->data = $this->commandFactoryRegistry
+        $command->data = $this->valueCommandFactoryRegistry
             ->getFactory($attribute)
             ->create($attribute, $normalizedValue['data']);
 
