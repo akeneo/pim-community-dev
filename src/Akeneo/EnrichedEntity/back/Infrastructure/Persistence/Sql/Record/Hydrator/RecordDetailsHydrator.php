@@ -59,7 +59,7 @@ class RecordDetailsHydrator implements RecordDetailsHydratorInterface
         }
 
         $recordImage = Image::createEmpty();
-        if (null !== $row['image']) {
+        if (isset($row['image']) && null !== $row['image']) {
             $image = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($row['image'], $this->platform);
             $file = new FileInfo();
             $file->setKey($image['file_key']);
