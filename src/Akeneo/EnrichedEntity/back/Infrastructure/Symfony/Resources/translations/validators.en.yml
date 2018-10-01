@@ -13,6 +13,7 @@ pim_enriched_entity:
             code:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'The record code already exists for enriched entity "%enriched_entity_identifier%" and record code "%code%"'
+                should_exist: 'The record was not found'
             text:
                 incompatible_with_regular_expression: 'The text is incompatible with the regular expression "%regular_expression%"'
             file:

@@ -307,6 +307,41 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->getByIdentifier($identifier);
     }
 
+    /**
+     * @test
+     */
+    public function it_deletes_a_record_by_code_and_entity_identifier()
+    {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $recordCode = RecordCode::fromString('starck');
+        $identifier = $this->repository->nextIdentifier($enrichedEntityIdentifier, $recordCode);
+        $record = Record::create($identifier,
+            $enrichedEntityIdentifier,
+            $recordCode,
+            [],
+            Image::createEmpty(),
+            ValueCollection::fromValues([])
+        );
+        $this->repository->create($record);
+
+        $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+
+        $this->expectException(RecordNotFoundException::class);
+        $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_trying_to_delete_an_unknown_record()
+    {
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $unknownCode = RecordCode::fromString('unknown_code');
+
+        $this->expectException(RecordNotFoundException::class);
+        $this->repository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $unknownCode);
+    }
+
     private function resetDB(): void
     {
         $this->get('akeneoenriched_entity.tests.helper.database_helper')->resetDatabase();

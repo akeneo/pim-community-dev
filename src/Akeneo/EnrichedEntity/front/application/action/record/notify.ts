@@ -1,4 +1,5 @@
 import notify from 'akeneoenrichedentity/application/event/notify';
+import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
 export const notifyRecordWellCreated = () => {
@@ -17,8 +18,8 @@ export const notifyRecordSaveFailed = () => {
   return notify('error', 'pim_enriched_entity.record.notification.save.fail');
 };
 
-export const notifyRecordWellDeleted = () => {
-  return notify('success', 'pim_enriched_entity.record.notification.delete.success');
+export const notifyRecordWellDeleted = (recordCode: RecordCode) => {
+  return notify('success', 'pim_enriched_entity.record.notification.delete.success', {code: recordCode.stringValue()});
 };
 
 export const notifyRecordDeleteFailed = () => {

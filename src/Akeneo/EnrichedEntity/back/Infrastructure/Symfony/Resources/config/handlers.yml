@@ -46,3 +46,8 @@ services:
                 - '@akeneo_enrichedentity.application.registry.edit_record.record_value_updater.record_value_updater_registry'
                 - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'
                 - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_enrichedentity.application.record.delete_record_handler:
+        class: Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.repository.record'

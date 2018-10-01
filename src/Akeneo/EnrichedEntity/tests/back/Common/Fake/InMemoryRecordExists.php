@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\Record\RecordExistsInterface;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 
 /**
  * Samir Boulil <samir.boulil@akeneo.com>
@@ -39,8 +40,13 @@ class InMemoryRecordExists implements RecordExistsInterface
 
     public function withEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): bool
     {
-        $recordIdentifier = $this->recordRepository->nextIdentifier($enrichedEntityIdentifier, $code);
+        $hasRecord = true;
+        try {
+            $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+        } catch (RecordNotFoundException $exception) {
+            $hasRecord = false;
+        }
 
-        return $this->recordRepository->hasRecord($recordIdentifier);
+        return $hasRecord;
     }
 }

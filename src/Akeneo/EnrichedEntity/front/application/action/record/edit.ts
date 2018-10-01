@@ -55,7 +55,7 @@ export const saveRecord = () => async (dispatch: any, getState: () => EditState)
 
 export const deleteRecord = (record: Record) => async (dispatch: any): Promise<void> => {
   try {
-    const errors = await recordRemover.remove(record.getEnrichedEntityIdentifier(), record.getIdentifier());
+    const errors = await recordRemover.remove(record.getEnrichedEntityIdentifier(), record.getCode());
 
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
@@ -64,7 +64,7 @@ export const deleteRecord = (record: Record) => async (dispatch: any): Promise<v
       return;
     }
 
-    dispatch(notifyRecordWellDeleted());
+    dispatch(notifyRecordWellDeleted(record.getCode()));
     dispatch(redirectToRecordIndex(record.getEnrichedEntityIdentifier()));
   } catch (error) {
     dispatch(notifyRecordDeleteFailed());

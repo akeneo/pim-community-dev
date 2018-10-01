@@ -59,7 +59,8 @@ class RecordEditView extends React.Component<EditProps> {
   public props: EditProps;
 
   private onClickDelete = () => {
-    if (confirm(__('pim_enriched_entity.record.module.delete.confirm'))) {
+    const label = this.props.record.labels[this.props.context.locale];
+    if (confirm(__('pim_enriched_entity.record.delete.confirm', {'recordLabel': label}))) {
       const record = denormalizeRecord(this.props.record);
 
       this.props.events.onDelete(record);
@@ -75,7 +76,7 @@ class RecordEditView extends React.Component<EditProps> {
             <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
             <div>
               <button className="AknDropdown-menuLink" onClick={() => this.onClickDelete()}>
-                {__('pim_enriched_entity.record.module.delete.button')}
+                {__('pim_enriched_entity.record.button.delete')}
               </button>
             </div>
           </div>

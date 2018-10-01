@@ -177,6 +177,27 @@ SQL;
         return $this->hydrateRecord($result);
     }
 
+    public function deleteByEnrichedEntityAndCode(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code
+    ): void {
+        $sql = <<<SQL
+        DELETE FROM akeneo_enriched_entity_record 
+        WHERE code = :code AND enriched_entity_identifier = :enriched_entity_identifier;
+SQL;
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'code' => (string) $code,
+                'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
+            ]
+        );
+
+        if (0 === $affectedRows) {
+            throw new RecordNotFoundException();
+        }
+    }
+
     public function nextIdentifier(
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordCode $code

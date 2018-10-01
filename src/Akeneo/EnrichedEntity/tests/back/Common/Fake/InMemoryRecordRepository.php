@@ -66,6 +66,18 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
     }
 
+    public function deleteByEnrichedEntityAndCode(EnrichedEntityIdentifier $enrichedEntityIdentifier, RecordCode $code): void
+    {
+        foreach ($this->records as $index => $record) {
+            if ($record->getCode()->equals($code) && $record->getEnrichedEntityIdentifier()->equals($enrichedEntityIdentifier)) {
+                unset($this->records[$index]);
+                return;
+            }
+        }
+
+        throw RecordNotFoundException::withEnrichedEntityAndCode($enrichedEntityIdentifier, $code);
+    }
+
     public function count(): int
     {
         return count($this->records);

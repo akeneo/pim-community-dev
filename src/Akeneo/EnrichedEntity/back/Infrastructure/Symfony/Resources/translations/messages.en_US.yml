@@ -7,6 +7,7 @@ akeneo_enrichedentity:
             delete: Delete an entity
         record:
             create: Create a record
+            delete: Delete a record
         attribute:
             create: Add an attribute to an enriched entity
             edit: Edit an attribute of an enriched entity

@@ -13,6 +13,11 @@ akeneo_enrichedentity_record_create:
     label: akeneo_enrichedentity.acl.record.create
     group_name: akeneo_enrichedentity.acl_group.enriched_entity
 
+akeneo_enrichedentity_record_delete:
+    type: action
+    label: akeneo_enrichedentity.acl.record.delete
+    group_name: akeneo_enrichedentity.acl_group.enriched_entity
+
 akeneo_enrichedentity_attribute_create:
     type: action
     label: akeneo_enrichedentity.acl.attribute.create

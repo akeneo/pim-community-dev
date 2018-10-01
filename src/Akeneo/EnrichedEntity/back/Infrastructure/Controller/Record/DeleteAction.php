@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /*
@@ -11,11 +10,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute;
+namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\DeleteAttribute\DeleteAttributeHandler;
-use Akeneo\EnrichedEntity\Domain\Repository\AttributeNotFoundException;
+use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
+use Akeneo\EnrichedEntity\Application\Record\DeleteRecord\DeleteRecordHandler;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,40 +25,43 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * Delete a record
+ *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class DeleteAction
 {
+    /** @var DeleteRecordHandler */
+    private $deleteRecordHandler;
+
     /** @var SecurityFacade */
     private $securityFacade;
 
-    /** @var DeleteAttributeHandler */
-    private $deleteAttributeHandler;
-
     public function __construct(
-        DeleteAttributeHandler $deleteAttributeHandler,
+        DeleteRecordHandler $deleteRecordHandler,
         SecurityFacade $securityFacade
     ) {
+        $this->deleteRecordHandler = $deleteRecordHandler;
         $this->securityFacade = $securityFacade;
-        $this->deleteAttributeHandler = $deleteAttributeHandler;
     }
 
-    public function __invoke(Request $request, string $enrichedEntityIdentifier, string $attributeIdentifier): Response
+    public function __invoke(Request $request, string $enrichedEntityIdentifier, string $recordCode): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_attribute_delete')) {
+        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_record_delete')) {
             throw new AccessDeniedException();
         }
 
-        $command = new DeleteAttributeCommand();
-        $command->attributeIdentifier = $attributeIdentifier;
+        $command = new DeleteRecordCommand();
+        $command->recordCode = $recordCode;
+        $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
 
         try {
-            ($this->deleteAttributeHandler)($command);
-        } catch (AttributeNotFoundException $e) {
+            ($this->deleteRecordHandler)($command);
+        } catch (RecordNotFoundException $exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

@@ -62,3 +62,9 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.edit_record_value_commands' }
 
+    akeneo_enrichedentity.infrastructure.validation.record.record_should_exist:
+        class: Akeneo\EnrichedEntity\Infrastructure\Validation\Record\RecordShouldExistValidator
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.record_exists'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'akeneo_enrichedentity.validator.record.record_should_exist' }
