@@ -45,6 +45,7 @@ final class AttributesMappingContext implements Context
     /**
      * @param GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler
      * @param UpdateAttributesMappingByFamilyHandler $updateAttributesMappingByFamilyHandler
+     * @param SearchFamiliesHandler $searchFamiliesHandler
      */
     public function __construct(
         GetAttributesMappingByFamilyHandler $getAttributesMappingByFamilyHandler,
@@ -98,7 +99,7 @@ final class AttributesMappingContext implements Context
                     'type' => 'text',
                 ],
                 'attribute' => $mapping['pim_attribute_code'],
-                'status' => (int) $mapping['status'],
+                'status' => (int) $this->getStatusMapping()[$mapping['status']],
             ];
         }
 
@@ -148,11 +149,7 @@ final class AttributesMappingContext implements Context
 
     private function buildExpectedAttributesMapping(TableNode $expectedAttributes)
     {
-        $statusMapping = [
-            'pending' => AttributeMapping::ATTRIBUTE_PENDING,
-            'active' => AttributeMapping::ATTRIBUTE_MAPPED,
-            'inactive' => AttributeMapping::ATTRIBUTE_UNMAPPED,
-        ];
+        $statusMapping = $this->getStatusMapping();
 
         $expectedAttributes = $expectedAttributes->getColumnsHash();
         foreach ($expectedAttributes as $index => $attribute) {
@@ -160,5 +157,14 @@ final class AttributesMappingContext implements Context
         }
 
         return $expectedAttributes;
+    }
+
+    private function getStatusMapping()
+    {
+        return [
+            'pending' => AttributeMapping::ATTRIBUTE_PENDING,
+            'active' => AttributeMapping::ATTRIBUTE_MAPPED,
+            'inactive' => AttributeMapping::ATTRIBUTE_UNMAPPED,
+        ];
     }
 }
