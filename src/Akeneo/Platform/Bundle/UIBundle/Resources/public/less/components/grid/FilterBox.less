@@ -129,6 +129,19 @@
     }
   }
 
+  &-list {
+    width: 230px;
+    display: none;
+    top: -191px;
+    left: 59px;
+    position:absolute;
+    overflow: scroll;
+
+    &--expanded {
+      left: 360px;
+    }
+  }
+
   &--search &-filter {
     display: flex;
     height: @searchHeight;
