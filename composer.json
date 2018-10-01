@@ -44,7 +44,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-PIM-7435-fix-review",
+        "akeneo/pim-community-dev": "3.0.x-dev@dev",
         "phpspec/php-diff": "1.0.2",
         "guzzlehttp/guzzle": "6.3.3"
     },
