@@ -62,12 +62,14 @@ class SubscriptionWebservice implements SubscriptionApiInterface
                 'form_params' => [$params],
             ]);
 
-            return new ApiResponse(
-                $response->getStatusCode(),
-                new SubscriptionCollection(json_decode($response->getBody()->getContents(), true))
-            );
-        } catch (ServerException $e) {
-            throw new PimAiServerException(sprintf('Something went wrong on PIM.ai side during product subscription : ', $e->getMessage()));
+            $content = json_decode($response->getBody()->getContents(), true);
+            if (null === $content) {
+                throw new PimAiServerException('Empty response');
+            }
+
+            return new ApiResponse($response->getStatusCode(), new SubscriptionCollection($content));
+        } catch (ServerException | PimAiServerException $e) {
+            throw new PimAiServerException(sprintf('Something went wrong on PIM.ai side during product subscription: %s', $e->getMessage()));
         } catch (ClientException $e) {
             if (Response::HTTP_PAYMENT_REQUIRED === $e->getCode()) {
                 throw new InsufficientCreditsException('Not enough credits on PIM.ai to subscribe');
