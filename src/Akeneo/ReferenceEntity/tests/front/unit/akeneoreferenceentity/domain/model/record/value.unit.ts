@@ -25,7 +25,7 @@ const ecommerce = denormalizeChannelReference('ecommerce');
 const enUS = denormalizeLocaleReference('en_US');
 const data = denormalizeTextData('a nice description');
 
-describe('akeneo > enriched entity > domain > model > record --- value', () => {
+describe('akeneo > reference entity > domain > model > record --- value', () => {
   test('I can create a new value with a text data', () => {
     expect(createValue(description, denormalizeChannelReference(null), enUS, data).normalize()).toEqual({
       attribute: normalizedDescription,

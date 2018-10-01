@@ -30,7 +30,7 @@ module.exports = async function(cucumber) {
     await sidebar.clickOnTab('attribute');
   };
 
-  Given('the following attributes for the enriched entity {string}:', async function(
+  Given('the following attributes for the reference entity {string}:', async function(
     referenceEntityIdentifier,
     attributes
   ) {
@@ -112,7 +112,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isEmpty, true);
   });
 
-  When('the user deletes the attribute {string} linked to the enriched entity {string}', async function(
+  When('the user deletes the attribute {string} linked to the reference entity {string}', async function(
     attributeIdentifier,
     referenceEntityIdentifier
   ) {
@@ -142,7 +142,7 @@ module.exports = async function(cucumber) {
     await attributes.cancelDeletion();
   });
 
-  When('the user cannot deletes the attribute {string} linked to the enriched entity {string}', async function(
+  When('the user cannot deletes the attribute {string} linked to the reference entity {string}', async function(
     attributeIdentifier,
     referenceEntityIdentifier
   ) {

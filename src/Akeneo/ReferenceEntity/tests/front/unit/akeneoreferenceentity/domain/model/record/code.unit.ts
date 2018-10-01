@@ -1,6 +1,6 @@
 import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
 
-describe('akeneo > enriched entity > domain > model --- code', () => {
+describe('akeneo > reference entity > domain > model --- code', () => {
   test('I can create a new code with a string value', () => {
     expect(createCode('michel').code).toBe('michel');
   });

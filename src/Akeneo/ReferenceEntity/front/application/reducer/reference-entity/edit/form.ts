@@ -12,8 +12,8 @@ export interface EditionFormState {
 
 const stateReducer = formState(
   'referenceEntity',
-  'ENRICHED_ENTITY_EDITION_UPDATED',
-  'ENRICHED_ENTITY_EDITION_RECEIVED'
+  'REFERENCE_ENTITY_EDITION_UPDATED',
+  'REFERENCE_ENTITY_EDITION_RECEIVED'
 );
 
 const dataReducer = (
@@ -27,13 +27,13 @@ const dataReducer = (
   }: {type: string; referenceEntity: NormalizedReferenceEntity; value: string; locale: string; image: NormalizedFile}
 ) => {
   switch (type) {
-    case 'ENRICHED_ENTITY_EDITION_RECEIVED':
+    case 'REFERENCE_ENTITY_EDITION_RECEIVED':
       state = referenceEntity;
       break;
-    case 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED':
+    case 'REFERENCE_ENTITY_EDITION_LABEL_UPDATED':
       state = {...state, labels: {...state.labels, [locale]: value}};
       break;
-    case 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED':
+    case 'REFERENCE_ENTITY_EDITION_IMAGE_UPDATED':
       state = {...state, image};
       break;
     default:
@@ -45,10 +45,10 @@ const dataReducer = (
 
 const errorsReducer = (state: ValidationError[] = [], action: {type: string; errors: ValidationError[]}) => {
   switch (action.type) {
-    case 'ENRICHED_ENTITY_EDITION_SUBMISSION':
+    case 'REFERENCE_ENTITY_EDITION_SUBMISSION':
       state = [];
       break;
-    case 'ENRICHED_ENTITY_EDITION_ERROR_OCCURED':
+    case 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED':
       state = action.errors;
       break;
     default:

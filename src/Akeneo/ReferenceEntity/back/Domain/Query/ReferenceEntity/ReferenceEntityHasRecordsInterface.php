@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Tells if an Enriched Entity has some records
+ * Tells if an Reference Entity has some records
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

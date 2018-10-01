@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Query to find the next Enriched Entity Attribute order
+ * Query to find the next Reference Entity Attribute order
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

@@ -7,7 +7,7 @@ describe('Akeneoreferenceentity > infrastructure > remover > reference-entity', 
     await page.reload();
   }, timeout);
 
-  it('It deletes an enriched entity', async () => {
+  it('It deletes an reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity/designer' === interceptedRequest.url() &&

@@ -9,7 +9,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
     await page.reload();
   }, timeout);
 
-  it('It search for enriched entities', async () => {
+  it('It search for reference entities', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
@@ -37,7 +37,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
     });
   });
 
-  it('It fetches one enriched entity', async () => {
+  it('It fetches one reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&

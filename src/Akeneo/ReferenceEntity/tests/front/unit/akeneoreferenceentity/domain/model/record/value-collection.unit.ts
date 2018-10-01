@@ -39,7 +39,7 @@ const name = denormalizeAttribute({
 const nameMobileValue = createValue(name, mobile, denormalizeLocaleReference(null), awesomeName);
 const nameEcommerceValue = createValue(name, ecommerce, denormalizeLocaleReference(null), awesomeName);
 
-describe('akeneo > enriched entity > domain > model > record --- value collection', () => {
+describe('akeneo > reference entity > domain > model > record --- value collection', () => {
   test('I can create a new value collection', () => {
     expect(createValueCollection([descriptionEnUsValue]).normalize()).toEqual([
       {

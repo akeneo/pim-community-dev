@@ -1,6 +1,6 @@
 pim_title:
     akeneo_reference_entities_reference_entity_index: Create a new entity
-    akeneo_reference_entities_reference_entity_edit: Edit an enriched entity
+    akeneo_reference_entities_reference_entity_edit: Edit an reference entity
     akeneo_reference_entities_record_edit: Edit a record
 
 pim_reference_entity:
@@ -13,7 +13,7 @@ pim_reference_entity:
             save: Save
             create: Create
         title: Entities
-        img: The main image of the enriched entity named "{{ label }}"
+        img: The main image of the reference entity named "{{ label }}"
         tab:
             records: Records
             attribute: Attributes
@@ -43,14 +43,14 @@ pim_reference_entity:
             confirm: confirm
         notification:
             save:
-                success: Enriched entity successfully updated.
-                fail: An error occured during the save of the enriched entity
+                success: Reference entity successfully updated.
+                fail: An error occured during the save of the reference entity
             create:
-                success: Enriched entity successfully created.
-                fail: An error occured during the creation of the enriched entity
+                success: Reference entity successfully created.
+                fail: An error occured during the creation of the reference entity
             delete:
-                success: Enriched entity successfully deleted.
-                fail: An error occured during the deletion of the enriched entity
+                success: Reference entity successfully deleted.
+                fail: An error occured during the deletion of the reference entity
     record:
         validation:
             code:
@@ -168,9 +168,9 @@ pim_enrich:
         attribute:
             property:
                 type:
-                    akeneo_reference_entity_collection: Enriched entity
+                    akeneo_reference_entity_collection: Reference entity
                 section:
                     type_specific: Type specific parameters
                 reference_entity:
-                    identifier: Enriched entity
-                    default_label: Please select an enriched entity
+                    identifier: Reference entity
+                    default_label: Please select an reference entity

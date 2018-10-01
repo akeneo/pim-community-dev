@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Tells if an Enriched Entity is linked to at least one product attribute
+ * Tells if an Reference Entity is linked to at least one product attribute
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

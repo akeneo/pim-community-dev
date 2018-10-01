@@ -66,7 +66,7 @@ class CreateAction
         }
         if ($this->hasDesynchronizedIdentifier($request)) {
             return new JsonResponse(
-                'Enriched Entity Identifier provided in the route and the one given in the body of your request are different',
+                'Reference Entity Identifier provided in the route and the one given in the body of your request are different',
                 Response::HTTP_BAD_REQUEST
             );
         }

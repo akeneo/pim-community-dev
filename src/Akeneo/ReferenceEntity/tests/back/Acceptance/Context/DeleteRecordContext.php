@@ -36,7 +36,7 @@ use Webmozart\Assert\Assert;
  */
 final class DeleteRecordContext implements Context
 {
-    private const ENRICHED_ENTITY_IDENTIFIER = 'designer';
+    private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
     private const FINGERPRINT = 'fingerprint';
     private const RECORD_CODE = 'stark';
 
@@ -75,7 +75,7 @@ final class DeleteRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with one record$/
+     * @Given /^an reference entity with one record$/
      * @throws \Exception
      */
     public function anReferenceEntityWithTwoRecords()
@@ -91,7 +91,7 @@ final class DeleteRecordContext implements Context
     {
         $command = new DeleteRecordCommand();
         $command->recordCode = self::RECORD_CODE;
-        $command->referenceEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
+        $command->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER;
 
         $this->executeDeleteCommand($command);
     }
@@ -105,7 +105,7 @@ final class DeleteRecordContext implements Context
 
         $command = new DeleteRecordCommand();
         $command->recordCode = $recordCode;
-        $command->referenceEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
+        $command->referenceEntityIdentifier = self::REFERENCE_ENTITY_IDENTIFIER;
 
         $this->executeDeleteCommand($command);
     }
@@ -117,7 +117,7 @@ final class DeleteRecordContext implements Context
     {
         try {
             $this->recordRepository->getByReferenceEntityAndCode(
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE)
             );
         } catch (RecordNotFoundException $exception) {
@@ -130,7 +130,7 @@ final class DeleteRecordContext implements Context
     private function createReferenceEntity(): void
     {
         $this->referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             [],
             Image::createEmpty()
         ));
@@ -139,8 +139,8 @@ final class DeleteRecordContext implements Context
     private function createRecord(): void
     {
         $this->recordRepository->create(Record::create(
-            RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE),
             [],
             Image::createEmpty(),

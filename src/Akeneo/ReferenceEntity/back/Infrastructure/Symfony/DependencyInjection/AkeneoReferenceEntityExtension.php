@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Akeneo Enriched Entity extension
+ * Akeneo Reference Entity extension
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */

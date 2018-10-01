@@ -1,6 +1,6 @@
 import reducer from 'akeneoreferenceentity/application/reducer/structure';
 
-describe('akeneo > enriched entity > application > reducer --- structure[', () => {
+describe('akeneo > reference entity > application > reducer --- structure[', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

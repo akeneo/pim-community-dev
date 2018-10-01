@@ -19,7 +19,7 @@ use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\Hydrator\Att
 use Doctrine\DBAL\Connection;
 
 /**
- * Query to generate all empty values given the structure of an enriched entity
+ * Query to generate all empty values given the structure of an reference entity
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

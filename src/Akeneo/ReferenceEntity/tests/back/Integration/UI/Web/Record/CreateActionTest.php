@@ -158,7 +158,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for enriched entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
+            '[{"messageTemplate":"pim_reference_entity.record.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":[],"%code%":[]},"plural":null,"message":"The record code already exists for reference entity \u0022designer\u0022 and record code \u0022starck\u0022","root":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"propertyPath":"code","invalidValue":{"referenceEntityIdentifier":"designer","code":"starck","labels":{"fr_FR":"Philippe Starck"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]');
     }
 
     /** @test */
@@ -235,12 +235,12 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],
-            'Enriched Entity Identifier has a dash character'                                            => [
+            'Reference Entity Identifier has a dash character'                                            => [
                 'intel',
                 'invalid-code',
                 'invalid-code',
                 '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.pattern","parameters":{"{{ value }}":"\u0022invalid-code\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"referenceEntityIdentifier":"invalid-code","code":"intel","labels":[]},"propertyPath":"referenceEntityIdentifier","invalidValue":"invalid-code","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
-            'Enriched Entity Identifier is 256 characters long'                                          => [
+            'Reference Entity Identifier is 256 characters long'                                          => [
                 'intel',
                 $longIdentifier,
                 $longIdentifier,
@@ -249,11 +249,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     $longIdentifier, $longIdentifier, $longIdentifier
                 ),
             ],
-            'Enriched Entity Identifier in the URL is different from the one in the body of the Request' => [
+            'Reference Entity Identifier in the URL is different from the one in the body of the Request' => [
                 'intel',
                 'brand',
                 'brandy',
-                '"Enriched Entity Identifier provided in the route and the one given in the body of your request are different"',
+                '"Reference Entity Identifier provided in the route and the one given in the body of your request are different"',
             ],
         ];
     }

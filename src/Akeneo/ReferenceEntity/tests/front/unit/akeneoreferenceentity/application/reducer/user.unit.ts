@@ -1,6 +1,6 @@
 import reducer from 'akeneoreferenceentity/application/reducer/user';
 
-describe('akeneo > enriched entity > application > reducer --- user', () => {
+describe('akeneo > reference entity > application > reducer --- user', () => {
   test('I can initialize an empty state', () => {
     const newState = reducer(undefined, {
       type: 'GO_FIRST_PAGE',

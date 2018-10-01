@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find one enriched entity by its identifier.
+ * Find one reference entity by its identifier.
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

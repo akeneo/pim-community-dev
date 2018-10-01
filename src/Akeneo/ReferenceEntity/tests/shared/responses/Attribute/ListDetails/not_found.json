@@ -3,7 +3,7 @@
     "method": "GET",
     "route": "akeneo_reference_entities_attribute_index_rest",
     "query": {
-      "referenceEntityIdentifier": "unknown_enriched_Entity"
+      "referenceEntityIdentifier": "unknown_reference_Entity"
     }
   },
   "response": {

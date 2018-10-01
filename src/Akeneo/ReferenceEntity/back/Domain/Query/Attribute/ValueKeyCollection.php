@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
  * For an attribute, there could be a multiple combination of value keys,
  * depending on Channel & Locale (if it has multiple values per channel and/or locale).
  *
- * For instance, let's have the attribute "name" for the enriched entity "brand".
+ * For instance, let's have the attribute "name" for the reference entity "brand".
  * It has distinct values per channel, for "ecommerce" and "mobile".
  * It has distinct values per locale, for "fr_FR" and "en_US".
  *

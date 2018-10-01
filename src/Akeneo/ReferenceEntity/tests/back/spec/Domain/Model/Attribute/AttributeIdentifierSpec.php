@@ -9,7 +9,7 @@ class AttributeIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('create', ['an_enriched_identifier', 'description', 'test']);
+        $this->beConstructedThrough('create', ['an_reference_entity_identifier', 'description', 'test']);
     }
 
     public function it_is_initializable()
@@ -56,13 +56,13 @@ class AttributeIdentifierSpec extends ObjectBehavior
             'fingerprint',
         ]);
 
-        $this->normalize()->shouldReturn('a_very_long_attribut_a_very_long_reference_fingerprint');
+        $this->normalize()->shouldReturn('a_very_long_attribut_a_very_long_referenc_fingerprint');
     }
 
     public function it_is_possible_to_compare_it()
     {
         $sameIdentifier = AttributeIdentifier::create(
-            'an_enriched_identifier',
+            'an_reference_entity_identifier',
             'description',
             'test'
         );
@@ -93,6 +93,6 @@ class AttributeIdentifierSpec extends ObjectBehavior
 
     public function it_normalize_itself()
     {
-        $this->normalize()->shouldReturn('description_an_enriched_identifi_test');
+        $this->normalize()->shouldReturn('description_an_reference_entity__test');
     }
 }

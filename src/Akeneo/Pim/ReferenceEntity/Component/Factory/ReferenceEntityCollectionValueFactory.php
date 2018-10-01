@@ -24,7 +24,7 @@ use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
- * Factory that creates enriched entity product values.
+ * Factory that creates reference entity product values.
  *
  * @internal  Please, do not use this class directly. You must use \Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory.
  *
@@ -70,7 +70,7 @@ class ReferenceEntityCollectionValueFactory implements ValueFactoryInterface
      */
     public function supports($attributeType): bool
     {
-        return $attributeType === ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION;
+        return $attributeType === ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION;
     }
 
     /**

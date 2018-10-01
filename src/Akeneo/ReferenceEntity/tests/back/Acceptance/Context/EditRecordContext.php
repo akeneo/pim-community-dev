@@ -63,7 +63,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class EditRecordContext implements Context
 {
-    private const ENRICHED_ENTITY_IDENTIFIER = 'designer';
+    private const REFERENCE_ENTITY_IDENTIFIER = 'designer';
     private const FINGERPRINT = 'fingerprint';
     private const RECORD_CODE = 'stark';
 
@@ -140,7 +140,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute$/
+     * @Given /^an reference entity with a text attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttribute()
@@ -149,11 +149,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -168,13 +168,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this enriched entity with a value of "([^"]*)" for the text attribute$/
+     * @Given /^a record belonging to this reference entity with a value of "([^"]*)" for the text attribute$/
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueOfFor(string $textData)
     {
         $textValue = Value::create(
             AttributeIdentifier::create(
-                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::REFERENCE_ENTITY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -191,7 +191,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheTextOfOfTheRecordTo(string $newData): void
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -212,12 +212,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheTextValueFor(string $expectedValue): void
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -228,7 +228,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute$/
+     * @Given /^an reference entity with an image attribute$/
      */
     public function anReferenceEntityWithAImageAttribute()
     {
@@ -236,11 +236,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -254,7 +254,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this enriched entity with the file "([^"]*)" for the image attribute$/
+     * @Given /^a record belonging to this reference entity with the file "([^"]*)" for the image attribute$/
      */
     public function aRecordBelongingToThisReferenceEntityWithATheFileForTheImageAttribute(string $originalFilename)
     {
@@ -264,7 +264,7 @@ final class EditRecordContext implements Context
 
         $fileValue = Value::create(
             AttributeIdentifier::create(
-                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::REFERENCE_ENTITY_IDENTIFIER,
                 self::IMAGE_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -281,7 +281,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordTo()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -306,12 +306,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheImageForThisAttribute()
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -334,7 +334,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute with max length (\d+)$/
+     * @Given /^an reference entity with a text attribute with max length (\d+)$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithMaxLength(int $maxLength)
@@ -342,11 +342,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -361,7 +361,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute with an email validation rule$/
+     * @Given /^an reference entity with a text attribute with an email validation rule$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithAnEmailValidationRule()
@@ -369,11 +369,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -388,7 +388,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
+     * @Given /^an reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithARegularExpressionValidationRuleLike(string $regularExpression
@@ -396,11 +396,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -420,7 +420,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheTextAttributeOfTheRecordToAnInvalidValue()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -436,7 +436,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute with an url validation rule$/
+     * @Given /^an reference entity with a text attribute with an url validation rule$/
      * @throws \Exception
      */
     public function anReferenceEntityWithATextAttributeWithAnUrlValidationRule()
@@ -444,11 +444,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -468,7 +468,7 @@ final class EditRecordContext implements Context
     public function theUserEmptiesTheTextAttributeOfTheRecord()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -490,12 +490,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveAnEmptyValueForThisAttribute()
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -505,7 +505,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a localizable attribute$/
+     * @Given /^an reference entity with a localizable attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithALocalizableAttribute()
@@ -514,11 +514,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -533,13 +533,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this enriched entity with a value for the french locale$/
+     * @Given /^a record belonging to this reference entity with a value for the french locale$/
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueForTheFrenchLocale()
     {
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::REFERENCE_ENTITY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -556,7 +556,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheAttributeOfTheRecordForTheFrenchLocale()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -577,12 +577,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheFrenchLocale()
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
             )
@@ -593,7 +593,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a scopable attribute$/
+     * @Given /^an reference entity with a scopable attribute$/
      * @throws \Exception
      */
     public function anReferenceEntityWithAScopableAttribute()
@@ -602,11 +602,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -621,13 +621,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this enriched entity with a value for the ecommerce channel$/
+     * @Given /^a record belonging to this reference entity with a value for the ecommerce channel$/
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueForTheEcommerceChannel()
     {
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::REFERENCE_ENTITY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -644,7 +644,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheAttributeOfTheRecordForTheEcommerceChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -665,12 +665,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannel()
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
                 LocaleReference::noReference()
             )
@@ -680,7 +680,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a scopable and localizable attribute$/
+     * @Given /^an reference entity with a scopable and localizable attribute$/
      */
     public function anReferenceEntityWithAScopableAndLocalizableAttribute()
     {
@@ -688,11 +688,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             TextAttribute::createText(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::TEXT_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::TEXT_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -707,13 +707,13 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^a record belonging to this enriched entity with a value for the ecommerce channel and french locale$/
+     * @Given /^a record belonging to this reference entity with a value for the ecommerce channel and french locale$/
      */
     public function aRecordBelongingToThisReferenceEntityWithAValueForTheEcommerceChannelAndFrenchLocale()
     {
         $localizedValue = Value::create(
             AttributeIdentifier::create(
-                self::ENRICHED_ENTITY_IDENTIFIER,
+                self::REFERENCE_ENTITY_IDENTIFIER,
                 self::TEXT_ATTRIBUTE_CODE,
                 self::FINGERPRINT
             ),
@@ -730,7 +730,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheAttributeOfTheRecordForTheEcommerceChannelAndFrenchLocale()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -751,12 +751,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheEcommerceChannelAndTheFrenchLocale()
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
             )
@@ -771,7 +771,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheAttributeOfTheRecordForAnInvalidChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -792,7 +792,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheAttributeOfTheRecordForAnUnknownChannel()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -813,7 +813,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidFilepath()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -846,7 +846,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordToAnInvalidFileName()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -870,7 +870,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordWithABiggerFileThanTheLimit()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -894,7 +894,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordWithASmallerFileThanTheLimit()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -913,18 +913,18 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute having a max file size of 15ko$/
+     * @Given /^an reference entity with an image attribute having a max file size of 15ko$/
      */
     public function anReferenceEntityWithAnImageAttributeHavingAMaxFileSizeOf10k()
     {
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -943,7 +943,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordWithAFileHavingADeniedExtension()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -967,7 +967,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheImageAttributeOfTheRecordWithAFileHavingAValidExtension()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -986,7 +986,7 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute allowing only files with extension png$/
+     * @Given /^an reference entity with an image attribute allowing only files with extension png$/
      */
     public function anReferenceEntityWithAnImageAttributeAllowingOnlyFilesWithExtensionJpeg()
     {
@@ -994,11 +994,11 @@ final class EditRecordContext implements Context
         $this->attributeRepository->create(
             ImageAttribute::create(
                 AttributeIdentifier::create(
-                    self::ENRICHED_ENTITY_IDENTIFIER,
+                    self::REFERENCE_ENTITY_IDENTIFIER,
                     self::IMAGE_ATTRIBUTE_CODE,
                     self::FINGERPRINT
                 ),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 AttributeCode::fromString(self::IMAGE_ATTRIBUTE_CODE),
                 LabelCollection::fromArray([]),
                 AttributeOrder::fromInteger(1),
@@ -1017,7 +1017,7 @@ final class EditRecordContext implements Context
     public function theUserRemovesAnImageFromTheRecordForThisAttribute()
     {
         $editCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [],
             'values'                     => [
@@ -1038,12 +1038,12 @@ final class EditRecordContext implements Context
     public function theRecordShouldNotHaveAnyImageForThisAttribute()
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -1059,8 +1059,8 @@ final class EditRecordContext implements Context
         $this->createReferenceEntity();
         $this->recordRepository->create(
             Record::create(
-                RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
                 ['fr_FR' => $label],
                 Image::createEmpty(),
@@ -1075,7 +1075,7 @@ final class EditRecordContext implements Context
     public function theUserUpdatesTheLabelTo(string $updatedLabel)
     {
         $editLabelCommand = $this->editRecordCommandFactory->create([
-            'reference_entity_identifier' => self::ENRICHED_ENTITY_IDENTIFIER,
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
             'code'                       => self::RECORD_CODE,
             'labels'                     => [
                 'fr_FR' => $updatedLabel
@@ -1091,7 +1091,7 @@ final class EditRecordContext implements Context
     public function theRecordShouldHaveTheLabel(string $expectedLabel)
     {
         $record = $this->recordRepository->getByReferenceEntityAndCode(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             RecordCode::fromString(self::RECORD_CODE)
         );
         Assert::assertEquals($expectedLabel, $record->getLabel('fr_FR'), 'Labels are not equal');
@@ -1100,7 +1100,7 @@ final class EditRecordContext implements Context
     private function createReferenceEntity(): void
     {
         $this->referenceEntityRepository->create(ReferenceEntity::create(
-            ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
             [],
             Image::createEmpty()
         ));
@@ -1110,8 +1110,8 @@ final class EditRecordContext implements Context
     {
         $this->recordRepository->create(
             Record::create(
-                RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
-                ReferenceEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
+                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
                 RecordCode::fromString(self::RECORD_CODE),
                 [],
                 Image::createEmpty(),

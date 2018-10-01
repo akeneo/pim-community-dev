@@ -1,6 +1,6 @@
 import reducer from 'akeneoreferenceentity/application/reducer/state';
 
-describe('akeneo > enriched entity > application > reducer --- edit-form', () => {
+describe('akeneo > reference entity > application > reducer --- edit-form', () => {
   const editFormReducer = reducer('entity', 'ENTITY_UPDATED', 'ENTITY_RECEIVED');
   test('I ignore other commands', () => {
     const state = {

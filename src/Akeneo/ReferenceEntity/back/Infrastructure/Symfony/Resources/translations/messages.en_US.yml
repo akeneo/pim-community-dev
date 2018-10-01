@@ -1,6 +1,6 @@
 akeneo_referenceentity:
     acl_group:
-        reference_entity: Enriched entities
+        reference_entity: Reference entities
     acl:
         reference_entity:
             create: Create an entity
@@ -9,5 +9,5 @@ akeneo_referenceentity:
             create: Create a record
             delete: Delete a record
         attribute:
-            create: Add an attribute to an enriched entity
-            edit: Edit an attribute of an enriched entity
+            create: Add an attribute to an reference entity
+            edit: Edit an attribute of an reference entity

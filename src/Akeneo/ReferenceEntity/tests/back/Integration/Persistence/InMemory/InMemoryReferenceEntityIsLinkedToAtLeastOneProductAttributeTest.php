@@ -34,7 +34,7 @@ class InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends Te
     {
         $referenceEntityattribute = new Attribute();
         $referenceEntityattribute->setCode('main_designer');
-        $referenceEntityattribute->setType(ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION);
+        $referenceEntityattribute->setType(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
         $referenceEntityattribute->setProperties([
             'reference_data_name' => 'designer'
         ]);

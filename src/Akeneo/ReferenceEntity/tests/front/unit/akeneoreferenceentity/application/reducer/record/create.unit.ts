@@ -1,6 +1,6 @@
 import reducer from 'akeneoreferenceentity/application/reducer/record/create';
 
-describe('akeneo > enriched entity > application > reducer > record --- create', () => {
+describe('akeneo > reference entity > application > reducer > record --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

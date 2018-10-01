@@ -1,5 +1,5 @@
 /**
- * Generate an enriched entity
+ * Generate an reference entity
  *
  * Example:
  * const ReferenceEntityBuilder = require('../../common/builder/reference-entity.js');

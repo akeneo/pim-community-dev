@@ -11,14 +11,14 @@ const michelLabels = createLabelCollection({en_US: 'Michel'});
 const didierIdentifier = createIdentifier('didier');
 const didierLabels = createLabelCollection({en_US: 'Didier'});
 
-describe('akeneo > enriched entity > domain > model --- enriched entity', () => {
-  test('I can create a new enriched entity with a identifier and labels', () => {
+describe('akeneo > reference entity > domain > model --- reference entity', () => {
+  test('I can create a new reference entity with a identifier and labels', () => {
     expect(createReferenceEntity(michelIdentifier, michelLabels, createEmptyFile()).getIdentifier()).toBe(
       michelIdentifier
     );
   });
 
-  test('I cannot create a malformed enriched entity', () => {
+  test('I cannot create a malformed reference entity', () => {
     expect(() => {
       createReferenceEntity(michelIdentifier);
     }).toThrow('ReferenceEntity expect a LabelCollection as labelCollection argument');
@@ -39,7 +39,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
     }).toThrow('ReferenceEntity expect a File as image argument');
   });
 
-  test('I can compare two enriched entities', () => {
+  test('I can compare two reference entities', () => {
     const michelLabels = createLabelCollection({en_US: 'Michel'});
     expect(
       createReferenceEntity(didierIdentifier, didierLabels, createEmptyFile()).equals(
@@ -65,7 +65,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
     );
   });
 
-  test('I can normalize an enriched entity', () => {
+  test('I can normalize an reference entity', () => {
     const michelReferenceEntity = createReferenceEntity(michelIdentifier, michelLabels, createEmptyFile());
 
     expect(michelReferenceEntity.normalize()).toEqual({
@@ -76,7 +76,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
     });
   });
 
-  test('I can normalize an enriched entity', () => {
+  test('I can normalize an reference entity', () => {
     const michelReferenceEntity = denormalizeReferenceEntity({
       identifier: 'michel',
       labels: {

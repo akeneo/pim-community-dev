@@ -2,7 +2,7 @@ import {getDenormalizer, getView} from 'akeneoreferenceentity/application/config
 
 jest.mock('require-context', name => {});
 
-describe('akeneo > enriched entity > application > configuration --- value', () => {
+describe('akeneo > reference entity > application > configuration --- value', () => {
   test('I can get a value denormalizer', () => {
     const getValueDenormalizer = getDenormalizer({
       text: {

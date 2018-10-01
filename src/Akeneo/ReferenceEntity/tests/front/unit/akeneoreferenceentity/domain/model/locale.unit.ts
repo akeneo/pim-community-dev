@@ -1,6 +1,6 @@
 import {ConcreteLocale, denormalizeLocale, createLocaleFromCode} from 'akeneoreferenceentity/domain/model/locale';
 
-describe('akeneo > enriched entity > domain > model --- locale', () => {
+describe('akeneo > reference entity > domain > model --- locale', () => {
   test('I can create a new locale from a normalized one', () => {
     const locale = denormalizeLocale({
       code: 'en_US',

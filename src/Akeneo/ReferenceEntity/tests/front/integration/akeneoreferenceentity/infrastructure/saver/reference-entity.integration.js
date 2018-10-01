@@ -7,7 +7,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     await page.reload();
   }, timeout);
 
-  it('It saves an enriched entity', async () => {
+  it('It saves an reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity/sofa' === interceptedRequest.url() &&
@@ -41,7 +41,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     expect(response).toEqual(undefined);
   });
 
-  it('It creates an enriched entity', async () => {
+  it('It creates an reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
@@ -76,7 +76,7 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     expect(response).toEqual(undefined);
   });
 
-  it('It returns errors when we create an invalid enriched entity', async () => {
+  it('It returns errors when we create an invalid reference entity', async () => {
     const responseMessage = [
       {
         messageTemplate: 'This value should not be blank.',

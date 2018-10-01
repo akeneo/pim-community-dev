@@ -37,13 +37,13 @@ class IndexAction
     }
 
     /**
-     * Get all records belonging to an enriched entity.
+     * Get all records belonging to an reference entity.
      */
     public function __invoke(string $referenceEntityIdentifier): JsonResponse
     {
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
-        $enrichedRecordItems = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier);
-        $normalizedRecordItems = $this->normalizeReferenceEntityItems($enrichedRecordItems);
+        $recordItems = ($this->findRecordItemsForReferenceEntityQuery)($referenceEntityIdentifier);
+        $normalizedRecordItems = $this->normalizeReferenceEntityItems($recordItems);
 
         return new JsonResponse([
             'items' => $normalizedRecordItems,

@@ -4,7 +4,7 @@ Feature: Create a record
   I want to create a record
 
   Background:
-    Given the following enriched entity:
+    Given the following reference entity:
       | identifier | labels                                       | image |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} | null  |
 
@@ -36,7 +36,7 @@ Feature: Create a record
 
   @acceptance-front
   Scenario: Creating a record
-    When the user asks for the enriched entity "designer"
+    When the user asks for the reference entity "designer"
     Given the user has the following rights:
       | akeneo_referenceentity_record_create | true |
     And the user creates a record of "designer" with:
@@ -50,7 +50,7 @@ Feature: Create a record
 
 #  @acceptance-front
 #  Scenario: Cannot create a record with invalid identifier
-#    When the user asks for the enriched entity "designer"
+#    When the user asks for the reference entity "designer"
 #    Given the user has the following rights:
 #      | akeneo_referenceentity_record_create | true |
 #    And the user creates a record of "designer" with:

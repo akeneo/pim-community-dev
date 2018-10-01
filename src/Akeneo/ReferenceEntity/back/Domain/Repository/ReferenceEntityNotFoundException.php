@@ -24,7 +24,7 @@ class ReferenceEntityNotFoundException extends \RuntimeException
     public static function withIdentifier(ReferenceEntityIdentifier $identifier): self
     {
         $message = sprintf(
-            'Could not find enriched entity with identifier "%s"',
+            'Could not find reference entity with identifier "%s"',
             (string) $identifier
         );
 

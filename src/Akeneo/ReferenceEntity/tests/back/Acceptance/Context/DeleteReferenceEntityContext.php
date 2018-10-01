@@ -32,7 +32,7 @@ final class DeleteReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user deletes the enriched entity "([^"]+)"$/
+     * @When /^the user deletes the reference entity "([^"]+)"$/
      */
     public function theUserDeletesReferenceEntity(string $identifier)
     {
@@ -43,7 +43,7 @@ final class DeleteReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^there should be no enriched entity "([^"]+)"$/
+     * @Then /^there should be no reference entity "([^"]+)"$/
      */
     public function thereShouldBeNoReferenceEntity(string $identifier)
     {

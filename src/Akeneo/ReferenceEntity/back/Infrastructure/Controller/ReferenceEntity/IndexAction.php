@@ -18,7 +18,7 @@ use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * List enriched entities
+ * List reference entities
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -34,7 +34,7 @@ class IndexAction
     }
 
     /**
-     * Get all enriched entities
+     * Get all reference entities
      *
      * @return JsonResponse
      */

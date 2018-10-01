@@ -60,7 +60,7 @@ class ReferenceEntityEditController extends BaseController {
 
   beforeUnload = () => {
     if (this.isDirty()) {
-      return __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
+      return __('pim_enrich.confirmation.discard_changes', {entity: 'reference entity'});
     }
 
     document.removeEventListener('keypress', shortcutDispatcher);
@@ -69,7 +69,7 @@ class ReferenceEntityEditController extends BaseController {
   };
 
   canLeave() {
-    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
+    const message = __('pim_enrich.confirmation.discard_changes', {entity: 'reference entity'});
 
     return this.isDirty() ? confirm(message) : true;
   }

@@ -135,7 +135,7 @@ class SqlFindRecordItemsForReferenceEntityTest extends SqlIntegrationTestCase
         $this->assertEquals(
             $expected->referenceEntityIdentifier,
             $actual->referenceEntityIdentifier,
-            'Enriched entity identifier are not the same'
+            'Reference entity identifier are not the same'
         );
         $expectedLabels = $expected->labels->normalize();
         $actualLabels = $actual->labels->normalize();

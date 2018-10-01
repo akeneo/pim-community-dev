@@ -56,11 +56,11 @@ module.exports = async function(cucumber) {
       }
     });
   };
-  Given('the following enriched entities to list:', givenReferenceEntities);
-  Given('the following enriched entities to show:', givenReferenceEntities);
-  Given('the following enriched entity:', givenReferenceEntities);
+  Given('the following reference entities to list:', givenReferenceEntities);
+  Given('the following reference entities to show:', givenReferenceEntities);
+  Given('the following reference entity:', givenReferenceEntities);
 
-  When('the user asks for the enriched entity list', async function() {
+  When('the user asks for the reference entity list', async function() {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/reference-entity/list');
       const controller = new Controller();
@@ -83,18 +83,18 @@ module.exports = async function(cucumber) {
     assert.equal(title.trim(), `${total} result${total > 1 ? 's' : ''}`);
   });
 
-  Then('the user gets an enriched entity {string}', async function(identifier) {
+  Then('the user gets an reference entity {string}', async function(identifier) {
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);
   });
 
-  Then('there is no enriched entity', async function() {
+  Then('there is no reference entity', async function() {
     const grid = await await getElement(this.page, 'Grid');
     const rows = await grid.getRows();
     assert.equal(rows.length, 0);
   });
 
-  Then('the user asks for the next enriched entities', async function() {
+  Then('the user asks for the next reference entities', async function() {
     this.page.evaluate(() => {
       window.scrollBy(0, window.innerHeight);
     });

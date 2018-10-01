@@ -1,5 +1,5 @@
 /**
- * Generate an enriched entity
+ * Generate an reference entity
  *
  * Example:
  * const RecordBuilder = require('../../common/builder/record.js');

@@ -27,7 +27,7 @@ const enUS = denormalizeLocaleReference('en_US');
 const data = denormalizeTextData('a nice description');
 const descriptionenUS = createValue(description, denormalizeChannelReference(null), enUS, data).normalize();
 
-describe('akeneo > enriched entity > application > denormalizer > record --- value', () => {
+describe('akeneo > reference entity > application > denormalizer > record --- value', () => {
   test('I can denormalize a value', () => {
     const denormalizeValue = getValueDenormalizer(() => () => {
       return denormalizeTextData('a nice description');

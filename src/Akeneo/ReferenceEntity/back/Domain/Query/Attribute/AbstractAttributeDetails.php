@@ -29,7 +29,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 abstract class AbstractAttributeDetails
 {
     public const IDENTIFIER = 'identifier';
-    public const ENRICHED_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    public const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     public const CODE = 'code';
     public const LABELS = 'labels';
     public const IS_REQUIRED = 'is_required';
@@ -66,7 +66,7 @@ abstract class AbstractAttributeDetails
     {
         return [
             self::IDENTIFIER                 => $this->identifier->normalize(),
-            self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->referenceEntityIdentifier,
+            self::REFERENCE_ENTITY_IDENTIFIER => (string) $this->referenceEntityIdentifier,
             self::CODE                       => (string) $this->code,
             self::LABELS                     => $this->labels->normalize(),
             self::IS_REQUIRED                => $this->isRequired->normalize(),

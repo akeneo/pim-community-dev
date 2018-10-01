@@ -9,7 +9,7 @@ export const hydrator = (
 ) => (backendReferenceEntity: any): ReferenceEntity => {
   const expectedKeys = ['identifier', 'labels', 'image'];
 
-  validateKeys(backendReferenceEntity, expectedKeys, 'The provided raw enriched entity seems to be malformed.');
+  validateKeys(backendReferenceEntity, expectedKeys, 'The provided raw reference entity seems to be malformed.');
   return denormalizeReferenceEntity(backendReferenceEntity);
 };
 

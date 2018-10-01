@@ -47,7 +47,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttribute implements Referenc
         WHERE attribute_type = :attribute_type;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'attribute_type' => ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION,
+            'attribute_type' => ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION,
         ]);
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);

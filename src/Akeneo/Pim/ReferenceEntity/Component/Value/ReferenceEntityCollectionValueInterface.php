@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 
 /**
- * Product value interface for a collection of enriched entity
+ * Product value interface for a collection of reference entity
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

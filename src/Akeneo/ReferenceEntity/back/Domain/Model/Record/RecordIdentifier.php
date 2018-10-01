@@ -49,12 +49,12 @@ class RecordIdentifier
 
     public static function create(string $referenceEntityIdentifier, string $code, string $fingerprint): self
     {
-        Assert::stringNotEmpty($referenceEntityIdentifier, 'Enriched entity identifier cannot be empty');
+        Assert::stringNotEmpty($referenceEntityIdentifier, 'Reference entity identifier cannot be empty');
         Assert::regex(
             $referenceEntityIdentifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Enriched entity identifier may contain only letters, numbers and underscores. "%s" given',
+                'Reference entity identifier may contain only letters, numbers and underscores. "%s" given',
                 $referenceEntityIdentifier
             )
         );

@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITY_EDIT_ROUTE = 'akeneo_reference_entities_reference_entity_edit_rest';
+    private const REFERENCE_ENTITY_EDIT_ROUTE = 'akeneo_reference_entities_reference_entity_edit_rest';
 
     /** @var Client */
     private $client;
@@ -65,7 +65,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_EDIT_ROUTE,
+            self::REFERENCE_ENTITY_EDIT_ROUTE,
             ['identifier' => 'designer'],
             'POST',
             [
@@ -92,7 +92,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_EDIT_ROUTE,
+            self::REFERENCE_ENTITY_EDIT_ROUTE,
             ['identifier' => 'brand'],
             'POST',
             [
@@ -108,7 +108,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             ]
         );
 
-        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"Enriched entity identifier provided in the route and the one given in the body of your request are different"');
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"Reference entity identifier provided in the route and the one given in the body of your request are different"');
     }
 
     /**
@@ -119,7 +119,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_EDIT_ROUTE,
+            self::REFERENCE_ENTITY_EDIT_ROUTE,
             ['identifier' => 'any_id'],
             'POST'
         );

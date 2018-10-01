@@ -2,7 +2,7 @@ import {TabsProvider} from 'akeneoreferenceentity/application/configuration/side
 
 jest.mock('require-context', name => {});
 
-describe('akeneo > enriched entity > application > configuration --- sidebar', () => {
+describe('akeneo > reference entity > application > configuration --- sidebar', () => {
   test('I can get the tab list', () => {
     const tabProvider = TabsProvider.create(
       {

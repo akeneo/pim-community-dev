@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find a record by its composite identifier (made of its Enriched Entity identifier
+ * Find a record by its composite identifier (made of its Reference Entity identifier
  * and its own Record identifier)
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>

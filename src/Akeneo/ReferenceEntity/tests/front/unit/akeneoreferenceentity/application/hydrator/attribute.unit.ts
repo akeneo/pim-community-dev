@@ -1,6 +1,6 @@
 import {hydrator} from 'akeneoreferenceentity/application/hydrator/attribute';
 
-describe('akeneo > enriched entity > application > hydrator --- attribute', () => {
+describe('akeneo > reference entity > application > hydrator --- attribute', () => {
   test('I can hydrate a new attribute', () => {
     const hydrate = hydrator(
       ({identifier, reference_entity_identifier, code, labels, is_required, valuePerLocale, valuePerChannel, type}) => {

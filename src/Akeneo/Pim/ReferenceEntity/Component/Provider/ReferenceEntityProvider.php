@@ -18,7 +18,7 @@ use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 
 /**
- * Field provider for enriched entity
+ * Field provider for reference entity
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
@@ -46,6 +46,6 @@ class ReferenceEntityProvider implements FieldProviderInterface, EmptyValueProvi
     public function supports($element): bool
     {
         return $element instanceof AttributeInterface &&
-            ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION === $element->getType();
+            ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION === $element->getType();
     }
 }

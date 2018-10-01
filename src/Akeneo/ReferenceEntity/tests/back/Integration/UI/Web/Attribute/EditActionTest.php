@@ -179,7 +179,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         return [
             'Unsynchronised attribute identifier'       => ['unsynchronised_attribute_identifier.json'],
-            'Unsynchronised enriched entity identifier' => ['unsynchronised_reference_entity_identifier.json'],
+            'Unsynchronised reference entity identifier' => ['unsynchronised_reference_entity_identifier.json'],
         ];
     }
 }

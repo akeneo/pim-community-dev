@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find records by their Enriched Entity identifier
+ * Find records by their Reference Entity identifier
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

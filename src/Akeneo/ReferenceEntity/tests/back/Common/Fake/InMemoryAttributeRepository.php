@@ -38,7 +38,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         $attributesForEntity = $this->findByReferenceEntity($attribute->getReferenceEntityIdentifier());
         foreach ($attributesForEntity as $attributeForEntity) {
             if ($attribute->getOrder()->equals($attributeForEntity->getOrder())) {
-                throw new \Exception('An attribute already has this order for this enriched entity');
+                throw new \Exception('An attribute already has this order for this reference entity');
             }
         }
 

@@ -8,12 +8,12 @@
 - Create LabelCollection from outside the domain object ReferenceEntity
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
-- add normalizer for enriched entity
+- add normalizer for reference entity
 - fix the form to take into account what the backend answered
 - test integration controller edit
-- add pqb filter, grid filter and peb filter for the enriched entity value
+- add pqb filter, grid filter and peb filter for the reference entity value
 - Add remaining ACLs
-- Extract the buttons of the edit enriched entity view so it comes from each of the tabs
+- Extract the buttons of the edit reference entity view so it comes from each of the tabs
 - switch to view models
 - Change read models to enforce properties are coherent (front)
 - remove index in error throw by the model constructor (front)
@@ -24,13 +24,13 @@
 - for imports of attributes (case never happens with UI): Add validation of editCommands depending on the property updated, check the type (text/image) if it's supported (today an error is thrown saying it didn't find an updater by the registry)
   (See validation of "Akeneo\ReferenceEntity\Application\Attribute\EditAttribute\CommandFactory\EditValidationRuleCommand" and the primary constraint) (back)
 - rework constructors to receive domain models (label collection)
-- fix the enriched entity field on the pef to be able to search when the search will work (front)
+- fix the reference entity field on the pef to be able to search when the search will work (front)
 - PIM-7677: Better storage management. https://akeneo.atlassian.net/browse/PIM-7677
 - Add builder for our backend tests
 
 DONE:
 
-- rename "I get an enriched entity" acceptance step [DONE]
+- rename "I get an reference entity" acceptance step [DONE]
 - manage breadcrumb [DONE]
 - add loading placeholder [DONE]
 - rename hidrate -> hydrate [DONE]

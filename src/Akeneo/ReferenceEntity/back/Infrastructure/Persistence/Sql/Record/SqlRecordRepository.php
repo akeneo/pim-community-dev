@@ -222,7 +222,7 @@ SQL;
     private function getReferenceEntityIdentifier($result): ReferenceEntityIdentifier
     {
         if (!isset($result['reference_entity_identifier'])) {
-            throw new \LogicException('The record should have an enriched entity identifier');
+            throw new \LogicException('The record should have an reference entity identifier');
         }
         $normalizedReferenceEntityIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
             $result['reference_entity_identifier'],

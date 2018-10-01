@@ -81,9 +81,9 @@ module.exports = async function(cucumber) {
     });
   };
 
-  When('the user asks for the enriched entity {string}', askForReferenceEntity);
+  When('the user asks for the reference entity {string}', askForReferenceEntity);
 
-  When('the user gets the enriched entity {string} with label {string}', async function(
+  When('the user gets the reference entity {string} with label {string}', async function(
     expectedIdentifier,
     expectedLabel
   ) {
@@ -96,7 +96,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(labelValue, expectedLabel);
   });
 
-  When('the user updates the enriched entity {string} with:', async function(identifier, updates) {
+  When('the user updates the reference entity {string} with:', async function(identifier, updates) {
     await answerLocaleList.apply(this);
     await askForReferenceEntity.apply(this, [identifier]);
 
@@ -106,7 +106,7 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  When('the user changes the enriched entity {string} with:', async function(identifier, updates) {
+  When('the user changes the reference entity {string} with:', async function(identifier, updates) {
     await answerLocaleList.apply(this);
     await askForReferenceEntity.apply(this, [identifier]);
 
@@ -115,7 +115,7 @@ module.exports = async function(cucumber) {
     await changeReferenceEntity.apply(this, [editPage, identifier, updates]);
   });
 
-  Then('the enriched entity {string} should be:', async function(identifier, updates) {
+  Then('the reference entity {string} should be:', async function(identifier, updates) {
     const referenceEntity = convertItemTable(updates)[0];
 
     const editPage = await await getElement(this.page, 'Edit');
@@ -131,7 +131,7 @@ module.exports = async function(cucumber) {
     });
   });
 
-  Then('the saved enriched entity {string} will be:', async function(identifier, updates) {
+  Then('the saved reference entity {string} will be:', async function(identifier, updates) {
     await savedReferenceEntityWillBe(this.page, identifier, updates);
   });
 
@@ -147,7 +147,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasSuccessNotification, true);
   });
 
-  Then('the enriched entity {string} save will fail', function(identifier) {
+  Then('the reference entity {string} save will fail', function(identifier) {
     this.page.on('request', request => {
       if (`http://pim.com/rest/reference_entity/${identifier}` === request.url() && 'POST' === request.method()) {
         request.respond({
@@ -166,7 +166,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(hasErrorNotification, true);
   });
 
-  When('the user deletes the enriched entity {string}', async function(identifier) {
+  When('the user deletes the reference entity {string}', async function(identifier) {
     const header = await await getElement(this.page, 'Header');
 
     this.page.once('request', request => {
@@ -186,7 +186,7 @@ module.exports = async function(cucumber) {
     header.clickOnDeleteButton();
   });
 
-  When('the user fails to delete the enriched entity {string}', async function(identifier) {
+  When('the user fails to delete the reference entity {string}', async function(identifier) {
     const header = await await getElement(this.page, 'Header');
     const response = JSON.stringify([
       {
@@ -220,7 +220,7 @@ module.exports = async function(cucumber) {
     header.clickOnDeleteButton();
   });
 
-  When('the user refuses to delete the current enriched entity', async function() {
+  When('the user refuses to delete the current reference entity', async function() {
     const header = await await getElement(this.page, 'Header');
 
     this.page.once('dialog', async dialog => {

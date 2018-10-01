@@ -95,7 +95,7 @@ class SqlReferenceEntityIsLinkedToAtLeastOneProductAttributeTest extends SqlInte
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         $attribute = $this->get('pim_catalog.factory.attribute')
-            ->createAttribute(ReferenceEntityCollectionType::ENRICHED_ENTITY_COLLECTION);
+            ->createAttribute(ReferenceEntityCollectionType::REFERENCE_ENTITY_COLLECTION);
         $this->get('pim_catalog.updater.attribute')
             ->update($attribute, [
                 'code' => 'main_designer',

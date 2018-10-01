@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Find the list of expected keys for the given enriched entity
+ * Find the list of expected keys for the given reference entity
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITY_DETAIL_ROUTE = 'akeneo_reference_entities_reference_entity_get_rest';
+    private const REFERENCE_ENTITY_DETAIL_ROUTE = 'akeneo_reference_entities_reference_entity_get_rest';
 
     /** @var Client */
     private $client;
@@ -51,7 +51,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DETAIL_ROUTE,
+            self::REFERENCE_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'designer']
         );
 
@@ -76,7 +76,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DETAIL_ROUTE,
+            self::REFERENCE_ENTITY_DETAIL_ROUTE,
             ['identifier' => 'unknown_reference_entity'],
             'GET'
         );

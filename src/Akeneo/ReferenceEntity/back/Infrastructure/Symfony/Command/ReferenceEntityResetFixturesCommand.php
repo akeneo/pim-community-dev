@@ -25,7 +25,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
- * This commands reset the database fixtures for the enriched entity.
+ * This commands reset the database fixtures for the reference entity.
  * It also is an event listener used during the PIM isntallation.
  *
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -67,7 +67,7 @@ class ReferenceEntityResetFixturesCommand extends ContainerAwareCommand implemen
     {
         $this
             ->setName(self::RESET_FIXTURES_COMMAND_NAME)
-            ->setDescription('Resets the fixtures of the enriched entity bounded context.')
+            ->setDescription('Resets the fixtures of the reference entity bounded context.')
             ->setHidden(true);
     }
 
@@ -255,7 +255,7 @@ SQL;
             'brand' => $brand->getKey()
         ]);
         if (0 === $affectedRows) {
-            throw new \LogicException('An issue occured while installing the enriched entities.');
+            throw new \LogicException('An issue occured while installing the reference entities.');
         }
     }
 
@@ -320,7 +320,7 @@ SQL;
 
         $affectedRows = $this->dbal->exec($sql);
         if (0 === $affectedRows) {
-            throw new \LogicException('An issue occured while installing the enriched entities.');
+            throw new \LogicException('An issue occured while installing the reference entities.');
         }
     }
 }

@@ -1,6 +1,6 @@
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/record/identifier';
 
-describe('akeneo > enriched entity > domain > model --- identifier', () => {
+describe('akeneo > reference entity > domain > model --- identifier', () => {
   test('I can create a new identifier with a string value', () => {
     expect(createIdentifier('michel').identifier).toBe('michel');
   });
@@ -9,7 +9,7 @@ describe('akeneo > enriched entity > domain > model --- identifier', () => {
     expect(createIdentifier('michel').stringValue()).toBe('michel');
   });
 
-  test('I cannot create a new identifier with a value for enriched entity identifier other than a string', () => {
+  test('I cannot create a new identifier with a value for reference entity identifier other than a string', () => {
     expect(() => {
       createIdentifier(12);
     }).toThrow('RecordIdentifier expect a string as parameter to be created');

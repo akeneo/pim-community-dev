@@ -1,6 +1,6 @@
 import File, {createFile, createEmptyFile, denormalizeFile} from 'akeneoreferenceentity/domain/model/file';
 
-describe('akeneo > enriched entity > domain > model --- file', () => {
+describe('akeneo > reference entity > domain > model --- file', () => {
   test('I can create a new file', () => {
     expect(createFile('file/path.png', 'my_filename.png').normalize()).toEqual({
       originalFilename: 'my_filename.png',

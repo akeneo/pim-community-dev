@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * Checks if the enriched entity is well configured for attribute entity.
+ * Checks if the reference entity is well configured for attribute entity.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

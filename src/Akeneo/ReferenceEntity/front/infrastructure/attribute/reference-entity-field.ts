@@ -8,7 +8,7 @@ const UserContext = require('pim/user-context');
 const template = _.template(require('pim/template/form/common/fields/select'));
 
 /**
- * Enriched entity field for attribute form
+ * Reference entity field for attribute form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

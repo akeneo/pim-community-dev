@@ -215,7 +215,7 @@ class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior {
 //            'designer',
 //            'record code',
 //            sprintf(
-//                'The code of the enriched entity "%s" does not exist',
+//                'The code of the reference entity "%s" does not exist',
 //                'designer'
 //            ),
 //            static::class,

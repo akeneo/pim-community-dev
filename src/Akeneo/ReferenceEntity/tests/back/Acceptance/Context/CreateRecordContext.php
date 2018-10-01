@@ -112,7 +112,7 @@ final class CreateRecordContext implements Context
         Assert::same(
             0,
             $referenceEntityCount,
-            sprintf('Expected to have 0 enriched entity. %d found.', $referenceEntityCount)
+            sprintf('Expected to have 0 reference entity. %d found.', $referenceEntityCount)
         );
     }
 }

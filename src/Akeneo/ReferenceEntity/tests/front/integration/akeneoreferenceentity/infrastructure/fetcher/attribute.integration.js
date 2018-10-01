@@ -7,7 +7,7 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > attribute', () => {
     await page.reload();
   }, timeout);
 
-  it('It lists the attributes of an enriched entity', async () => {
+  it('It lists the attributes of an reference entity', async () => {
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/reference_entity/designer/attribute' === interceptedRequest.url() &&

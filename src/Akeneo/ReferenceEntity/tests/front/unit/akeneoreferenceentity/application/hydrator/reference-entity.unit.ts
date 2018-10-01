@@ -4,8 +4,8 @@ import {
   createReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 
-describe('akeneo > enriched entity > application > hydrator --- enriched entity', () => {
-  test('I can hydrate a new enriched entity', () => {
+describe('akeneo > reference entity > application > hydrator --- reference entity', () => {
+  test('I can hydrate a new reference entity', () => {
     const hydrate = hydrator(({identifier, labels, image}) => {
       expect(identifier).toEqual('designer');
       expect(image).toEqual(null);
@@ -17,7 +17,7 @@ describe('akeneo > enriched entity > application > hydrator --- enriched entity'
     expect(hydrate({identifier: 'designer', labels: {en_US: 'Designer'}, image: null}));
   });
 
-  test('It throw an error if I pass a malformed enriched entity', () => {
+  test('It throw an error if I pass a malformed reference entity', () => {
     expect(() => hydrator()({})).toThrow();
     expect(() => hydrator()({labels: {}})).toThrow();
     expect(() => hydrator()({identifier: 'sofa'})).toThrow();

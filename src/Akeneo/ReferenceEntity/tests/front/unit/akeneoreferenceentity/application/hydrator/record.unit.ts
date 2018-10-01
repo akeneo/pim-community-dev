@@ -1,6 +1,6 @@
 import hydrator from 'akeneoreferenceentity/application/hydrator/record';
 
-describe('akeneo > enriched entity > application > hydrator --- record', () => {
+describe('akeneo > reference entity > application > hydrator --- record', () => {
   test('I can hydrate a new record', () => {
     expect(
       hydrator({

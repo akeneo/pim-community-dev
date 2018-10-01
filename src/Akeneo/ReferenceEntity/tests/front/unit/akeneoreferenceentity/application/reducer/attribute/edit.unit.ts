@@ -20,7 +20,7 @@ const normalizedDescription = {
   regular_expression: null,
 };
 
-describe('akeneo > enriched entity > application > reducer > attribute --- edit', () => {
+describe('akeneo > reference entity > application > reducer > attribute --- edit', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

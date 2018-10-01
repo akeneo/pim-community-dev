@@ -5,7 +5,7 @@ Feature: Delete one record
 
   @acceptance-back
   Scenario: Deleting a record
-    Given an enriched entity with one record
+    Given an reference entity with one record
     When the user deletes the record
     Then there is no exception thrown
     And there is no violations errors

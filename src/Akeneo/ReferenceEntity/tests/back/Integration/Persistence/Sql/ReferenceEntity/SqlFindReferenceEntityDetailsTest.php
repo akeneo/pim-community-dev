@@ -80,7 +80,7 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
 
     private function assertReferenceEntityItem(ReferenceEntityDetails $expected, ReferenceEntityDetails $actual): void
     {
-        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Enriched entity identifiers are not equal');
+        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Reference entity identifiers are not equal');
         $expectedLabels = $expected->labels->normalize();
         $actualLabels = $actual->labels->normalize();
         $this->assertEmpty(
@@ -88,7 +88,7 @@ class SqlFindReferenceEntityDetailsTest extends SqlIntegrationTestCase
                 array_diff($expectedLabels, $actualLabels),
                 array_diff($actualLabels, $expectedLabels)
             ),
-            'Labels for the enriched entity items are not the same'
+            'Labels for the reference entity items are not the same'
         );
     }
 }

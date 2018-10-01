@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DeleteActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITY_DELETE_ROUTE = 'akeneo_reference_entities_reference_entity_delete_rest';
+    private const REFERENCE_ENTITY_DELETE_ROUTE = 'akeneo_reference_entities_reference_entity_delete_rest';
 
     /** @var Client */
     private $client;
@@ -48,7 +48,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
             ['identifier' => 'designer'],
             'DELETE',
             [
@@ -67,7 +67,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
             ['identifier' => 'designer'],
             'DELETE'
         );
@@ -79,11 +79,11 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_if_the_enriched_identifier_is_not_valid()
+    public function it_throws_an_error_if_the_reference_entity_identifier_is_not_valid()
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
             ['identifier' => 'des igner'],
             'DELETE',
             [
@@ -103,7 +103,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
             ['identifier' => 'designer'],
             'DELETE',
             [
@@ -121,7 +121,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
             ['identifier' => 'unknown'],
             'DELETE',
             [
@@ -139,7 +139,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::ENRICHED_ENTITY_DELETE_ROUTE,
+            self::REFERENCE_ENTITY_DELETE_ROUTE,
             ['identifier' => 'brand'],
             'DELETE',
             [

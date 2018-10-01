@@ -1,20 +1,20 @@
-Feature: List enriched entities
-  In order to see what enriched entities I have
+Feature: List reference entities
+  In order to see what reference entities I have
   As a user
-  I want see a list of enriched entities
+  I want see a list of reference entities
 
   @acceptance-front
-  Scenario: List existing enriched entities
-    Given the following enriched entities to list:
+  Scenario: List existing reference entities
+    Given the following reference entities to list:
       | identifier |
       | designer   |
       | sofa       |
-    When the user asks for the enriched entity list
+    When the user asks for the reference entity list
     Then the user gets a selection of 2 items out of 2 items in total
-    And the user gets an enriched entity "designer"
-    And the user gets an enriched entity "sofa"
+    And the user gets an reference entity "designer"
+    And the user gets an reference entity "sofa"
 
   @acceptance-front
-  Scenario: Shows an empty list if there is no enriched entity
-    When the user asks for the enriched entity list
-    Then there is no enriched entity
+  Scenario: Shows an empty list if there is no reference entity
+    When the user asks for the reference entity list
+    Then there is no reference entity

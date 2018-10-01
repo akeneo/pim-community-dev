@@ -15,19 +15,19 @@ namespace Akeneo\Pim\ReferenceEntity\Component\AttributeType;
 use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
 
 /**
- * Enriched entity collection type
+ * Reference entity collection type
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
 class ReferenceEntityCollectionType extends AbstractAttributeType
 {
-    const ENRICHED_ENTITY_COLLECTION = 'akeneo_reference_entity_collection';
+    const REFERENCE_ENTITY_COLLECTION = 'akeneo_reference_entity_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getName(): string
     {
-        return static::ENRICHED_ENTITY_COLLECTION;
+        return static::REFERENCE_ENTITY_COLLECTION;
     }
 }

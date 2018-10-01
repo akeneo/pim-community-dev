@@ -49,7 +49,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user creates an enriched entity "([^"]+)" with:$/
+     * @When /^the user creates an reference entity "([^"]+)" with:$/
      */
     public function theUserCreatesAnReferenceEntityWith($code, TableNode $updateTable)
     {
@@ -65,7 +65,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^there is an enriched entity "([^"]+)" with:$/
+     * @Then /^there is an reference entity "([^"]+)" with:$/
      */
     public function thereIsAnReferenceEntityWith(string $code, TableNode $referenceEntityTable)
     {
@@ -97,7 +97,7 @@ final class CreateReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^there should be no enriched entity$/
+     * @Given /^there should be no reference entity$/
      */
     public function thereShouldBeNoReferenceEntity()
     {
@@ -105,7 +105,7 @@ final class CreateReferenceEntityContext implements Context
         Assert::same(
             0,
             $referenceEntityCount,
-            sprintf('Expected to have 0 enriched entity. %d found.', $referenceEntityCount)
+            sprintf('Expected to have 0 reference entity. %d found.', $referenceEntityCount)
         );
     }
 }

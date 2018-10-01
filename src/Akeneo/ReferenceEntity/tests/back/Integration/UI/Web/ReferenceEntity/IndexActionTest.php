@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    private const ENRICHED_ENTITY_LIST_ROUTE = 'akeneo_reference_entities_reference_entity_index_rest';
+    private const REFERENCE_ENTITY_LIST_ROUTE = 'akeneo_reference_entities_reference_entity_index_rest';
 
     /** @var Client */
     private $client;
@@ -49,7 +49,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
      */
     public function it_returns_a_list_of_reference_entities(): void
     {
-        $this->webClientHelper->callRoute($this->client, self::ENRICHED_ENTITY_LIST_ROUTE);
+        $this->webClientHelper->callRoute($this->client, self::REFERENCE_ENTITY_LIST_ROUTE);
 
         $expectedContent = json_encode([
             'items' => [

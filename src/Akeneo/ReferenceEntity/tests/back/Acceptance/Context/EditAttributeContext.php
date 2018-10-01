@@ -103,7 +103,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @When /^the user deletes the attribute "(.+)" linked to the enriched entity "(.+)"$/
+     * @When /^the user deletes the attribute "(.+)" linked to the reference entity "(.+)"$/
      */
     public function theUserDeletesTheAttribute(string $attributeCode, string $entityIdentifier)
     {
@@ -116,7 +116,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
     public function anReferenceEntityWithATextAttributeAndTheLabelEqualTo(
         string $attributeCode,
@@ -154,7 +154,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' non required$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\' non required$/
      */
     public function anReferenceEntityWithATextAttributeNonRequired(string $attributeCode)
     {
@@ -197,7 +197,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' and max length (\d+)$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\' and max length (\d+)$/
      */
     public function anReferenceEntityWithATextAttributeAndMaxLength(string $attributeCode, int $maxLength)
     {
@@ -246,7 +246,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^an reference entity with an image attribute \'([^\']*)\' and the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
     public function anReferenceEntityWithAImageAttributeAndTheLabelEqualTo(
         string $attributeCode,
@@ -271,7 +271,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
+     * @Given /^an reference entity with an image attribute \'([^\']*)\' with max file size \'([^\']*)\'$/
      */
     public function anReferenceEntityWithATextAttributeAndMaxFileSize(string $attributeCode, string $maxFileSize): void
     {
@@ -319,7 +319,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' and no allowed extensions$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\' and no allowed extensions$/
      */
     public function anReferenceEntityWithATextAttributeAndNoAllowedExtensions(string $attributeCode)
     {
@@ -431,7 +431,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute \'([^\']*)\' non required$/
+     * @Given /^an reference entity with an image attribute \'([^\']*)\' non required$/
      */
     public function anReferenceEntityWithAnImageAttributeNonRequired(string $attributeCode)
     {
@@ -453,7 +453,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
+     * @Given /^an reference entity with an image attribute \'([^\']*)\' with allowed extensions: \'([^\']*)\'$/
      */
     public function anReferenceEntityWithAnImageAttributeWithAllowedExtensions(
         string $attributeCode,
@@ -478,7 +478,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text area attribute \'([^\']*)\'$/
+     * @Given /^an reference entity with a text area attribute \'([^\']*)\'$/
      */
     public function anReferenceEntityWithATextareaAttribute(string $attributeCode)
     {
@@ -528,7 +528,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\'$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\'$/
      */
     public function anReferenceEntityWithATextAttribute(string $attributeCode)
     {
@@ -567,7 +567,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' with no validation rule$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\' with no validation rule$/
      */
     public function anReferenceEntityWithATextAttributeWithNoValidationRule(string $attributeCode)
     {
@@ -617,7 +617,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
+     * @Given /^an reference entity with a text attribute \'([^\']*)\' with a regular expression \'([^\']*)\'$/
      */
     public function anReferenceEntityWithATextAttributeWithARegularExpression(
         string $attributeCode,
@@ -742,7 +742,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with a text area attribute \'([^\']*)\' with no rich text editor$/
+     * @Given /^an reference entity with a text area attribute \'([^\']*)\' with no rich text editor$/
      */
     public function anReferenceEntityWithATextareaAttributeWithNoRichTextEditor(string $attributeCode)
     {
@@ -849,7 +849,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an attribute \'([^\']*)\' having a single value for all locales$/
+     * @Given /^an reference entity with an attribute \'([^\']*)\' having a single value for all locales$/
      */
     public function anReferenceEntityWithAnAttributeNotHavingOneValuePerLocale(string $attributeCode)
     {
@@ -898,7 +898,7 @@ class EditAttributeContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with an attribute \'([^\']*)\' having a single value for all channels$/
+     * @Given /^an reference entity with an attribute \'([^\']*)\' having a single value for all channels$/
      */
     public function anReferenceEntityWithAnAttributeNotHavingOneValuePerChannel(string $attributeCode)
     {

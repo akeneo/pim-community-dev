@@ -248,7 +248,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_an_error_when_the_attribute_code_is_not_unique_in_the_enriched_identifier()
+    public function it_returns_an_error_when_the_attribute_code_is_not_unique_in_the_reference_entity_identifier()
     {
         $urlParameters = ['referenceEntityIdentifier' => 'designer'];
         $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest', 'CONTENT_TYPE' => 'application/json'];
@@ -267,7 +267,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute($this->client, self::CREATE_ATTRIBUTE_ROUTE, $urlParameters, $method, $headers,
             $content);
 
-        $expectedContent = '[{"messageTemplate":"pim_reference_entity.attribute.validation.code.should_not_exist","parameters":{"%reference_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"The attribute already exists for the enriched entity \u0022designer\u0022 and the attribute code \u0022name\u0022","root":{"maxFileSize":null,"allowedExtensions":[],"referenceEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":{"maxFileSize":null,"allowedExtensions":[],"referenceEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
+        $expectedContent = '[{"messageTemplate":"pim_reference_entity.attribute.validation.code.should_not_exist","parameters":{"%reference_entity_identifier%":"designer","%code%":"name"},"plural":null,"message":"The attribute already exists for the reference entity \u0022designer\u0022 and the attribute code \u0022name\u0022","root":{"maxFileSize":null,"allowedExtensions":[],"referenceEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"propertyPath":"code","invalidValue":{"maxFileSize":null,"allowedExtensions":[],"referenceEntityIdentifier":"designer","code":"name","labels":[],"order":1,"isRequired":false,"valuePerChannel":false,"valuePerLocale":false},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]';
 
         $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, $expectedContent);
     }

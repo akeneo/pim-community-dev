@@ -16,7 +16,7 @@ namespace Akeneo\ReferenceEntity\Domain\Query\Record;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 
 /**
- * Generate empty values structure for a given Enriched Entity
+ * Generate empty values structure for a given Reference Entity
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)

@@ -1,6 +1,6 @@
 import {catalogLocaleChanged, uiLocaleChanged, catalogChannelChanged} from 'akeneoreferenceentity/domain/event/user';
 
-describe('akeneo > enriched entity > domain > event --- user', () => {
+describe('akeneo > reference entity > domain > event --- user', () => {
   test('I can create a catalogLocaleChanged event', () => {
     expect(catalogLocaleChanged('en_US')).toEqual({type: 'LOCALE_CHANGED', locale: 'en_US', target: 'catalog'});
   });

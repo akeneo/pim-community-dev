@@ -30,7 +30,7 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
     public function create(ReferenceEntity $referenceEntity): void
     {
         if (isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
-            throw new \RuntimeException('Enriched entity already exists');
+            throw new \RuntimeException('Reference entity already exists');
         }
         $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
     }
@@ -38,7 +38,7 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
     public function update(ReferenceEntity $referenceEntity): void
     {
         if (!isset($this->referenceEntities[(string) $referenceEntity->getIdentifier()])) {
-            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
+            throw new \RuntimeException('Expected to save one reference entity, but none was saved');
         }
         $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
     }

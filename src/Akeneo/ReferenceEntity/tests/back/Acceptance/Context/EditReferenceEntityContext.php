@@ -66,11 +66,11 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^the following enriched entity:$/
+     * @Given /^the following reference entity:$/
      */
-    public function theFollowingReferenceEntity(TableNode $enrichedEntitieTable)
+    public function theFollowingReferenceEntity(TableNode $referenceEntitiesTable)
     {
-        foreach ($enrichedEntitieTable->getHash() as $referenceEntity) {
+        foreach ($referenceEntitiesTable->getHash() as $referenceEntity) {
             $this->referenceEntityRepository->create(
                 ReferenceEntity::create(
                     ReferenceEntityIdentifier::fromString($referenceEntity['identifier']),
@@ -82,7 +82,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user updates the enriched entity "([^"]*)" with:$/
+     * @When /^the user updates the reference entity "([^"]*)" with:$/
      */
     public function theUserUpdatesTheReferenceEntityWith(string $identifier, TableNode $updateTable)
     {
@@ -94,7 +94,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^the enriched entity "([^"]*)" should be:$/
+     * @Then /^the reference entity "([^"]*)" should be:$/
      */
     public function theReferenceEntityShouldBe(string $identifier, TableNode $referenceEntityTable)
     {
@@ -126,7 +126,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^the enriched entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @Given /^the reference entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
     public function theReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
@@ -142,7 +142,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Given /^an image on an enriched entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @Given /^an image on an reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
     public function anImageOnAnReferenceEntityWitPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
@@ -163,7 +163,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user updates the image of the enriched entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     * @When /^the user updates the image of the reference entity \'([^\']*)\' with path \'([^\']*)\' and filename \'([^\']*)\'$/
      */
     public function theUserUpdatesTheImageOfTheReferenceEntityWithPathAndFilename(string $identifier, string $filePath, string $filename): void
     {
@@ -181,7 +181,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @When /^the user updates the enriched entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
+     * @When /^the user updates the reference entity \'([^\']*)\' with the label \'([^\']*)\' equal to \'([^\']*)\'$/
      */
     public function theUserUpdatesTheReferenceEntityWithTheLabelEqualTo(string $identifier, string $localCode, string $label)
     {
@@ -195,7 +195,7 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
-     * @Then /^the image of the enriched entity \'([^\']*)\' should be \'([^\']*)\'$/
+     * @Then /^the image of the reference entity \'([^\']*)\' should be \'([^\']*)\'$/
      */
     public function theImageOfTheReferenceEntityShouldBe(string $identifier, string $filePath)
     {

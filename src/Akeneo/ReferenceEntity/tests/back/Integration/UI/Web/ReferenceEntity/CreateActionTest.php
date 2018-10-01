@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateActionTest extends ControllerIntegrationTestCase
 {
-    private const CREATE_ENRICHED_ENTITY_ROUTE = 'akeneo_reference_entities_reference_entity_create_rest';
+    private const CREATE_REFERENCE_ENTITY_ROUTE = 'akeneo_reference_entities_reference_entity_create_rest';
 
     /** @var Client */
     private $client;
@@ -48,7 +48,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITY_ROUTE,
+            self::CREATE_REFERENCE_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -73,7 +73,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITY_ROUTE,
+            self::CREATE_REFERENCE_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -99,7 +99,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
     ): void {
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITY_ROUTE,
+            self::CREATE_REFERENCE_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -137,13 +137,13 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'en_US' => 'Designer',
             ],
         ];
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITY_ROUTE, [], 'POST', $headers, $content);
-        $this->webClientHelper->callRoute($this->client, self::CREATE_ENRICHED_ENTITY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_REFERENCE_ENTITY_ROUTE, [], 'POST', $headers, $content);
+        $this->webClientHelper->callRoute($this->client, self::CREATE_REFERENCE_ENTITY_ROUTE, [], 'POST', $headers, $content);
 
         $this->webClientHelper->assertResponse(
             $this->client->getResponse(),
             Response::HTTP_BAD_REQUEST,
-            '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer"},"plural":null,"message":"An enriched entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
+            '[{"messageTemplate":"pim_reference_entity.reference_entity.validation.code.should_be_unique","parameters":{"%reference_entity_identifier%":"designer"},"plural":null,"message":"An reference entity already exists with code \u0022designer\u0022","root":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"propertyPath":"code","invalidValue":{"code":"designer","labels":{"fr_FR":"Concepteur","en_US":"Designer"}},"constraint":{"targets":"class","defaultOption":null,"requiredOptions":[],"payload":null},"cause":null,"code":null}]'
         );
     }
 
@@ -162,7 +162,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITY_ROUTE,
+            self::CREATE_REFERENCE_ENTITY_ROUTE,
             [],
             'POST',
             [
@@ -186,7 +186,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITY_ROUTE,
+            self::CREATE_REFERENCE_ENTITY_ROUTE,
             [
                 'code' => 'celine_dion',
             ],
@@ -202,7 +202,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->revokeCreationRights();
         $this->webClientHelper->callRoute(
             $this->client,
-            self::CREATE_ENRICHED_ENTITY_ROUTE,
+            self::CREATE_REFERENCE_ENTITY_ROUTE,
             [],
             'POST',
             [

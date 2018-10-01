@@ -19,7 +19,7 @@ const initialState = {
   },
 };
 
-describe('akeneo > enriched entity > application > reducer > reference-entity --- edit', () => {
+describe('akeneo > reference entity > application > reducer > reference-entity --- edit', () => {
   test('I ignore other commands', () => {
     const newState = reducer(initialState, {
       type: 'ANOTHER_ACTION',
@@ -36,7 +36,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
     expect(newState).toEqual(initialState);
   });
 
-  test('I can receive an enriched entity', () => {
+  test('I can receive an reference entity', () => {
     const state = {};
     const normalizedReferenceEntity = {
       identifier: 'designer',
@@ -46,7 +46,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
       image: null,
     };
     const newState = reducer(state, {
-      type: 'ENRICHED_ENTITY_EDITION_RECEIVED',
+      type: 'REFERENCE_ENTITY_EDITION_RECEIVED',
       referenceEntity: normalizedReferenceEntity,
     });
 
@@ -57,7 +57,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
     });
   });
 
-  test('I can update the label of the enriched entity', () => {
+  test('I can update the label of the reference entity', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -73,7 +73,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
       },
     };
     const newState = reducer(previousState, {
-      type: 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED',
+      type: 'REFERENCE_ENTITY_EDITION_LABEL_UPDATED',
       value: 'Famous Designer',
       locale: 'en_US',
     });
@@ -91,7 +91,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
     });
   });
 
-  test('I can add a new label of the enriched entity', () => {
+  test('I can add a new label of the reference entity', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -107,7 +107,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
       },
     };
     const newState = reducer(previousState, {
-      type: 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED',
+      type: 'REFERENCE_ENTITY_EDITION_LABEL_UPDATED',
       value: 'Concepteur',
       locale: 'fr_FR',
     });
@@ -126,7 +126,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
     });
   });
 
-  test('I can update the image of the enriched entity', () => {
+  test('I can update the image of the reference entity', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -142,7 +142,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
       },
     };
     const newState = reducer(previousState, {
-      type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED',
+      type: 'REFERENCE_ENTITY_EDITION_IMAGE_UPDATED',
       image: {my: 'image'},
     });
 
@@ -159,7 +159,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
     });
   });
 
-  test('I can successfully save the enriched entity', () => {
+  test('I can successfully save the reference entity', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -177,7 +177,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
       },
     };
     const newState = reducer(previousState, {
-      type: 'ENRICHED_ENTITY_EDITION_SUBMISSION',
+      type: 'REFERENCE_ENTITY_EDITION_SUBMISSION',
     });
 
     expect(newState).toEqual({
@@ -191,7 +191,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
     });
   });
 
-  test('I cannot save the enriched entity', () => {
+  test('I cannot save the reference entity', () => {
     const previousState = {
       data: {
         identifier: '',
@@ -205,7 +205,7 @@ describe('akeneo > enriched entity > application > reducer > reference-entity --
       },
     };
     const newState = reducer(previousState, {
-      type: 'ENRICHED_ENTITY_EDITION_ERROR_OCCURED',
+      type: 'REFERENCE_ENTITY_EDITION_ERROR_OCCURED',
       errors: [
         {
           my: 'error',

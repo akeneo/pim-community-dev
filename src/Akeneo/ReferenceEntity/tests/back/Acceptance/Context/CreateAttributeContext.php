@@ -65,7 +65,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates a text attribute "([^"]*)" linked to the enriched entity "([^"]*)" with:$/
+     * @When /^the user creates a text attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
      */
     public function theUserCreatesATextAttributeLinkedToTheReferenceEntityWith(string $attributeCode, string $referenceEntityIdentifier, TableNode $attributeData): void
     {
@@ -94,7 +94,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is a text attribute "([^"]*)" in the enriched entity "([^"]*)" with:$/
+     * @Then /^there is a text attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
      */
     public function thereIsAnTextAttributeInTheReferenceEntityWith(
         string $attributeCode,
@@ -129,7 +129,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is no attribute "([^"]*)" for the enriched entity "([^"]*)"$/
+     * @Then /^there is no attribute "([^"]*)" for the reference entity "([^"]*)"$/
      */
     public function thereIsNoAttributeInTheReferenceEntity(
         string $attributeCode,
@@ -150,7 +150,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @When /^the user creates an image attribute "([^"]*)" linked to the enriched entity "([^"]*)" with:$/
+     * @When /^the user creates an image attribute "([^"]*)" linked to the reference entity "([^"]*)" with:$/
      */
     public function theUserCreatesAnImageAttributeLinkedToTheReferenceEntityWith(
         $attributeCode,
@@ -180,7 +180,7 @@ class CreateAttributeContext implements Context
     }
 
     /**
-     * @Then /^there is an image attribute "([^"]*)" in the enriched entity "([^"]*)" with:$/
+     * @Then /^there is an image attribute "([^"]*)" in the reference entity "([^"]*)" with:$/
      */
     public function thereIsAnAttributeWith(
         string $attributeCode,

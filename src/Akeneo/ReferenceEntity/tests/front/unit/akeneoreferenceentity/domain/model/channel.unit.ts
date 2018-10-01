@@ -2,7 +2,7 @@ import {ConcreteChannel, denormalizeChannel} from 'akeneoreferenceentity/domain/
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {denormalizeLocale} from 'akeneoreferenceentity/domain/model/locale';
 
-describe('akeneo > enriched entity > domain > model --- channel', () => {
+describe('akeneo > reference entity > domain > model --- channel', () => {
   test('I can create a new channel from a normalized one', () => {
     const channel = denormalizeChannel({
       code: 'ecommerce',

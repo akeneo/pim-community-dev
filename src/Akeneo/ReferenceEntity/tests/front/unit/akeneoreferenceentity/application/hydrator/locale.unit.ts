@@ -1,6 +1,6 @@
 import {hydrator} from 'akeneoreferenceentity/application/hydrator/locale';
 
-describe('akeneo > enriched entity > application > hydrator --- locale', () => {
+describe('akeneo > reference entity > application > hydrator --- locale', () => {
   test('I can hydrate a new locale', () => {
     const hydrate = hydrator(({code, label, region, language}) => {
       expect(code).toEqual('en_US');

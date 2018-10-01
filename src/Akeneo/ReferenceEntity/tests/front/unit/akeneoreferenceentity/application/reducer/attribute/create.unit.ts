@@ -1,7 +1,7 @@
 import reducer from 'akeneoreferenceentity/application/reducer/attribute/create';
 import {AttributeType} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 
-describe('akeneo > enriched entity > application > reducer > attribute --- create', () => {
+describe('akeneo > reference entity > application > reducer > attribute --- create', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {

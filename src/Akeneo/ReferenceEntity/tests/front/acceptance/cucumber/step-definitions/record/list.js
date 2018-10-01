@@ -29,7 +29,7 @@ module.exports = async function(cucumber) {
     await sidebar.clickOnTab('record');
   };
 
-  Given('the following records for the enriched entity {string}:', async function(referenceEntityIdentifier, records) {
+  Given('the following records for the reference entity {string}:', async function(referenceEntityIdentifier, records) {
     const recordsSaved = records.hashes().map(normalizedRecord => {
       return {
         identifier: normalizedRecord.identifier,

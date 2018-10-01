@@ -15,7 +15,7 @@ namespace Akeneo\Pim\ReferenceEntity\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Checks if the enriched entity is well configured for attribute entity.
+ * Checks if the reference entity is well configured for attribute entity.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -23,13 +23,13 @@ use Symfony\Component\Validator\Constraint;
 class IsReferenceEntityConfigured extends Constraint
 {
     /** @var string */
-    public $unknownMessage = 'The enriched entity "%reference_entity_identifier%" does not exist.';
+    public $unknownMessage = 'The reference entity "%reference_entity_identifier%" does not exist.';
 
     /** @var string */
-    public $invalidMessage = 'The enriched entity "%reference_entity_identifier%" identifier is not valid';
+    public $invalidMessage = 'The reference entity "%reference_entity_identifier%" identifier is not valid';
 
     /** @var string */
-    public $emptyMessage = 'You need to define an enriched entity type for your attribute';
+    public $emptyMessage = 'You need to define an reference entity type for your attribute';
 
     /** @var string */
     public $propertyPath = 'reference_data_name';

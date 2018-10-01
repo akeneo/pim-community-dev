@@ -24,7 +24,7 @@ const extendTemplateContext = (templateContext: any, records: Record[]) => {
 };
 
 /**
- * Enriched entity field for attribute form
+ * Reference entity field for attribute form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

@@ -58,7 +58,7 @@ SQL;
         );
         if ($affectedRows !== 1) {
             throw new \RuntimeException(
-                sprintf('Expected to create one enriched entity, but %d were affected', $affectedRows)
+                sprintf('Expected to create one reference entity, but %d were affected', $affectedRows)
             );
         }
     }
@@ -86,7 +86,7 @@ SQL;
 
         if ($affectedRows > 1) {
             throw new \RuntimeException(
-                sprintf('Expected to update one enriched entity, but %d rows were affected.', $affectedRows)
+                sprintf('Expected to update one reference entity, but %d rows were affected.', $affectedRows)
             );
         }
     }

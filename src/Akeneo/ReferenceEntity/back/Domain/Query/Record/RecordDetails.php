@@ -28,7 +28,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 class RecordDetails
 {
     private const IDENTIFIER = 'identifier';
-    private const ENRICHED_ENTITY_IDENTIFIER = 'reference_entity_identifier';
+    private const REFERENCE_ENTITY_IDENTIFIER = 'reference_entity_identifier';
     private const CODE = 'code';
     private const LABELS = 'labels';
     private const IMAGE = 'image';
@@ -72,7 +72,7 @@ class RecordDetails
     {
         return [
             self::IDENTIFIER                 => $this->identifier->normalize(),
-            self::ENRICHED_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
+            self::REFERENCE_ENTITY_IDENTIFIER => $this->referenceEntityIdentifier->normalize(),
             self::CODE                       => $this->code->normalize(),
             self::LABELS                     => $this->labels->normalize(),
             self::IMAGE                      => $this->image->normalize(),

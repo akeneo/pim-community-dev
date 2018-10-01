@@ -166,7 +166,7 @@ class ReferenceEntityFilter extends AbstractAttributeFilter implements Attribute
 
             if (!$recordExists) {
                 $message = sprintf(
-                    'No record "%s" for enriched entity "%s" has been found',
+                    'No record "%s" for reference entity "%s" has been found',
                     (string) $recordCode,
                     (string) $referenceEntityIdentifier
                 );

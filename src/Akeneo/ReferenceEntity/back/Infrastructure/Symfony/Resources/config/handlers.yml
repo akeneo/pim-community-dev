@@ -1,5 +1,5 @@
 services:
-    # Enriched entities
+    # Reference entities
     akeneo_referenceentity.application.reference_entity.edit_reference_entity_handler:
         class: Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityHandler
         arguments:

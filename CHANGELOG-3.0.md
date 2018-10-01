@@ -1,8 +1,8 @@
 # 3.0
 
-## Manage enriched entities
+## Manage reference entities
 
-- PIM-7380: List enriched entities
+- PIM-7380: List reference entities
 
 ## Technical improvement
 

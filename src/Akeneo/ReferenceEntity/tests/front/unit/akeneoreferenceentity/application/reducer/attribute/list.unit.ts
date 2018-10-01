@@ -2,7 +2,7 @@ import reducer from 'akeneoreferenceentity/application/reducer/attribute/list';
 import {denormalizeMinimalAttribute} from 'akeneoreferenceentity/domain/model/attribute/minimal';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
 
-describe('akeneo > enriched entity > application > reducer > attribute --- list', () => {
+describe('akeneo > reference entity > application > reducer > attribute --- list', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
@@ -70,7 +70,7 @@ describe('akeneo > enriched entity > application > reducer > attribute --- list'
     });
   });
 
-  test('I delete an attribute only in the right enriched entity', () => {
+  test('I delete an attribute only in the right reference entity', () => {
     const state = {
       attributes: [
         {
