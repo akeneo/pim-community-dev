@@ -5,14 +5,13 @@ Feature: Delete one record
 
   @acceptance-back
   Scenario: Deleting a record
-    Given an enriched entity with two records
-    When the user deletes the first record
+    Given an enriched entity with one record
+    When the user deletes the record
     Then there is no exception thrown
-#    And there is no violations errors
-    And the first record should not exist anymore
+    And there is no violations errors
+    And the record should not exist anymore
 
   @acceptance-back
   Scenario: Deleting a unknown record
-    Given an enriched entity with two records
-    When the user deletes a wrong record
+    When the user tries to delete record that does not exist
     Then an exception is thrown

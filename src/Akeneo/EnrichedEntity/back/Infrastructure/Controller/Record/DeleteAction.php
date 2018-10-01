@@ -80,7 +80,7 @@ class DeleteAction
 
         try {
             ($this->deleteRecordHandler)($command);
-        } catch (RecordNotFoundException | \InvalidArgumentException $e) {
+        } catch (RecordNotFoundException $exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

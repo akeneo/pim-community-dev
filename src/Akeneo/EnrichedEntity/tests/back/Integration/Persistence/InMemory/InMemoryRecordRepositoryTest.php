@@ -22,6 +22,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
@@ -234,8 +235,8 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
 
-        $this->expectException(RecordNotFoundException::class);
-        $this->recordRepository->deleteByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
+        $hasRecord = 0 !== $this->recordRepository->count();
+        Assert::assertFalse($hasRecord, 'Expected record to be removed, but was not');
     }
 
     /**

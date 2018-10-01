@@ -14,7 +14,6 @@ namespace Akeneo\Pim\EnrichedEntity\Component\Factory;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\AttributeType\EnrichedEntityCollectionType;
@@ -22,7 +21,6 @@ use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -123,6 +121,8 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
             try {
                 $record = $this->recordRepository->getByEnrichedEntityAndCode($enrichedEntityIdentifier, $recordCode);
             } catch (RecordNotFoundException $e) {
+                // The record has been removed, we can go on and continue to load the rest of the records.
+
                 continue;
             }
 

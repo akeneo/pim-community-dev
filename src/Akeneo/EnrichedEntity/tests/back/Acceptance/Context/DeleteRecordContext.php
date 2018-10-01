@@ -38,8 +38,7 @@ final class DeleteRecordContext implements Context
 {
     private const ENRICHED_ENTITY_IDENTIFIER = 'designer';
     private const FINGERPRINT = 'fingerprint';
-    private const RECORD_CODE_ONE = 'stark';
-    private const RECORD_CODE_TWO = 'dyson';
+    private const RECORD_CODE = 'stark';
 
     /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
@@ -76,32 +75,29 @@ final class DeleteRecordContext implements Context
     }
 
     /**
-     * @Given /^an enriched entity with two records$/
+     * @Given /^an enriched entity with one record$/
      * @throws \Exception
      */
     public function anEnrichedEntityWithTwoRecords()
     {
         $this->createEnrichedEntity();
-        $this->createRecord(self::RECORD_CODE_ONE);
-        $this->createRecord(self::RECORD_CODE_TWO);
+        $this->createRecord();
     }
 
     /**
-     * @When /^the user deletes the (first|second) record$/
+     * @When /^the user deletes the record$/
      */
-    public function theUserDeletesTheRecord(string $whichRecord): void
+    public function theUserDeletesTheRecord(): void
     {
-        $recordCode = ('first' === $whichRecord) ? self::RECORD_CODE_ONE : self::RECORD_CODE_TWO;
-
         $command = new DeleteRecordCommand();
-        $command->recordCode = $recordCode;
+        $command->recordCode = self::RECORD_CODE;
         $command->enrichedEntityIdentifier = self::ENRICHED_ENTITY_IDENTIFIER;
 
         $this->executeDeleteCommand($command);
     }
 
     /**
-     * @When /^the user deletes a wrong record$/
+     * @When /^the user tries to delete record that does not exist$/
      */
     public function theUserDeletesAWrongRecord(): void
     {
@@ -115,22 +111,20 @@ final class DeleteRecordContext implements Context
     }
 
     /**
-     * @Then /^the (first|second) record should not exist anymore$/
+     * @Then /^the record should not exist anymore$/
      */
-    public function theRecordShouldNotExist(string $whichRecord)
+    public function theRecordShouldNotExist()
     {
-        $recordCode = ('first' === $whichRecord) ? self::RECORD_CODE_ONE : self::RECORD_CODE_TWO;
-
         try {
             $this->recordRepository->getByEnrichedEntityAndCode(
                 EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
-                RecordCode::fromString($recordCode)
+                RecordCode::fromString(self::RECORD_CODE)
             );
-        } catch (RecordNotFoundException $e) {
+        } catch (RecordNotFoundException $exception) {
             return;
         }
 
-        Assert::true(false, sprintf('The %s record should not exist', $whichRecord));
+        Assert::true(false, sprintf('The record should not exist', $whichRecord));
     }
 
     private function createEnrichedEntity(): void
@@ -142,12 +136,12 @@ final class DeleteRecordContext implements Context
         ));
     }
 
-    private function createRecord(string $recordCode): void
+    private function createRecord(): void
     {
         $this->recordRepository->create(Record::create(
-            RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, $recordCode, self::FINGERPRINT),
+            RecordIdentifier::create(self::ENRICHED_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
             EnrichedEntityIdentifier::fromString(self::ENRICHED_ENTITY_IDENTIFIER),
-            RecordCode::fromString($recordCode),
+            RecordCode::fromString(self::RECORD_CODE),
             [],
             Image::createEmpty(),
             ValueCollection::fromValues([])
