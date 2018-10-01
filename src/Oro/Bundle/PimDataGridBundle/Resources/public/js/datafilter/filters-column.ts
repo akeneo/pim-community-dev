@@ -121,10 +121,15 @@ class FiltersColumn extends BaseView {
   }
 
   mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]): GridFilter[] {
+    const enabledFilters = Object.keys(this.gridCollection.state.filters)
     const filters = [...originalFilters, ...addedFilters];
     const uniqueFilters: GridFilter[] = [];
 
     filters.forEach(mergedFilter => {
+      if (enabledFilters.includes(mergedFilter.name)) {
+        mergedFilter.enabled = true;
+      }
+
       if (undefined === uniqueFilters.find(searchedFilter => searchedFilter.name === mergedFilter.name)) {
         uniqueFilters.push(mergedFilter);
       }
@@ -259,13 +264,6 @@ class FiltersColumn extends BaseView {
 
   triggerFiltersUpdated() {
     mediator.trigger('filters-column:update-filters', this.loadedFilters, this.gridCollection);
-  }
-
-  getSelectedFilters() {
-    return $(this.filterList)
-      .find('input[checked]')
-      .map((_, el: HTMLElement) => $(el).attr('id'))
-      .toArray();
   }
 
   renderFilterGroup(filters: GridFilter[], groupName: string): string {

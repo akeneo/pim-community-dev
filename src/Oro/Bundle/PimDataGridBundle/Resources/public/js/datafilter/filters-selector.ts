@@ -140,6 +140,7 @@ class FiltersColumn extends BaseView {
       if (false === filter.enabled) {
         filterModule.disable();
       } else {
+        filterModule.enabled = false;
         filterModule.enable();
       }
 
