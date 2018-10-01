@@ -8,7 +8,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableAsColumnInProductGrid as ListAttributesUseableAsColumnInProductGridQuery;
 
-
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

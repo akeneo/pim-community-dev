@@ -26,6 +26,7 @@ class FiltersColumn extends BaseView {
   public opened = false;
   public page: number = 1;
   public timer: number;
+  public searchSelector: string;
 
   readonly config: FiltersConfig;
   readonly template: string = `
@@ -49,19 +50,19 @@ class FiltersColumn extends BaseView {
             <a><%- groupName %></a>
         </li>
         <% filters.forEach(filter => { %>
-        <li>
-            <label for="<%- filter.name %>" title="" class="ui-corner-all ui-state-hover">
-                <input
-                id="<%- filter.name %>"
-                name="multiselect_add-filter-select"
-                type="checkbox" value="<%- filter.name %>"
-                title="<%- filter.label %>"
-                <%- filter.enabled ? 'checked="checked"' : ''  %>
-                <%- true === ignoredFilters.includes(filter.name) ? 'disabled="true"' : ''  %>
-                  aria-selected="true">
-                    <span><%- filter.label %></span>
-            </label>
-        </li>
+          <li>
+              <label for="<%- filter.name %>" title="" class="ui-corner-all ui-state-hover">
+                  <input
+                  id="<%- filter.name %>"
+                  name="multiselect_add-filter-select"
+                  type="checkbox" value="<%- filter.name %>"
+                  title="<%- filter.label %>"
+                  <%- filter.enabled ? 'checked="checked"' : ''  %>
+                  <%- true === ignoredFilters.includes(filter.name) ? 'disabled="true"' : ''  %>
+                    aria-selected="true">
+                      <span><%- filter.label %></span>
+              </label>
+          </li>
         <% }) %>
     </ul>`;
 
@@ -73,6 +74,7 @@ class FiltersColumn extends BaseView {
     this.gridCollection = {};
     this.ignoredFilters = ['scope'];
     this.loadedFilters = [];
+    this.searchSelector = 'input[type="search"]'
   }
 
   public events(): Backbone.EventsHash {
@@ -90,7 +92,7 @@ class FiltersColumn extends BaseView {
 
       timer = setTimeout(() => {
         $(this.filterList).css({left: 360});
-        $('input[type="search"]', this.filterList).focus();
+        $(this.searchSelector, this.filterList).focus();
         clearTimeout(timer);
       }, 100);
     } else {
@@ -165,7 +167,7 @@ class FiltersColumn extends BaseView {
 
     if (27 === event.keyCode) {
       $(this.filterList)
-        .find('input[type="search"]')
+        .find(this.searchSelector)
         .val('')
         .trigger('keyup');
       return this.togglePanel();
@@ -182,7 +184,7 @@ class FiltersColumn extends BaseView {
     this.showLoading();
 
     const searchValue: any = $(this.filterList)
-      .find('input[type="search"]')
+      .find(this.searchSelector)
       .val();
 
     if (searchValue.length === 0) {
@@ -191,19 +193,21 @@ class FiltersColumn extends BaseView {
 
     return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
       const filters: GridFilter[] = this.defaultFilters.concat(loadedFilters);
-
       this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, filters);
+      const searchedFilters = this.filterBySearchTerm(filters, searchValue);
 
-      return this.renderFilters(
-        filters.filter((filter: GridFilter) => {
-          const label: string = filter.label.toLowerCase();
-          const name: string = filter.name.toLowerCase();
-          const search: string = searchValue.toLowerCase();
-
-          return label.includes(search) || name.includes(search);
-        })
-      );
+      return this.renderFilters(searchedFilters);
     });
+  }
+
+  filterBySearchTerm(filters: GridFilter[], searchValue: string) {
+    return filters.filter((filter: GridFilter) => {
+      const label: string = filter.label.toLowerCase();
+      const name: string = filter.name.toLowerCase();
+      const search: string = searchValue.toLowerCase();
+
+      return label.includes(search) || name.includes(search);
+    })
   }
 
   listenToListScroll(): void {
@@ -294,7 +298,7 @@ class FiltersColumn extends BaseView {
     this.$el.html(_.template(this.template));
     this.filterList = $('.filter-list').appendTo($('body'));
 
-    $('input[type="search"]', this.filterList).on('keyup', this.searchFilters.bind(this));
+    $(this.searchSelector, this.filterList).on('keyup', this.searchFilters.bind(this));
     $('.filter-list', this.filterList).on('scroll', this.searchFilters.bind(this));
     $('.close', this.filterList).on('click', this.togglePanel.bind(this));
 

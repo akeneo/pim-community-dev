@@ -679,7 +679,6 @@ class Grid extends Index
             }
 
             return true;
-
         }, sprintf('Could not find filter item %s', $filterName));
     }
 
