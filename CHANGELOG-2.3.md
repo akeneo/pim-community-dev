@@ -1,5 +1,7 @@
 # 2.3.x
 
+# 2.3.10 (2018-10-01)
+
 ## Bug fixes
 
 - PIM-7629: Fix category filter in product grid.
