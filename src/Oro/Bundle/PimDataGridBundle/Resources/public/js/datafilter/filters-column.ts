@@ -296,6 +296,13 @@ class FiltersColumn extends BaseView {
 
     return this;
   }
+
+  shutdown() {
+    $(this.filterList).off().remove()
+    this.filterList = null
+
+    BaseView.prototype.shutdown.apply(this, arguments);
+  }
 }
 
 export = FiltersColumn;
