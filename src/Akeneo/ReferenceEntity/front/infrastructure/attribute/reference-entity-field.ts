@@ -58,7 +58,9 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
 
   getChoices() {
     return this.referenceEntities.reduce((result: {[key: string]: string}, referenceEntity: ReferenceEntity) => {
-      result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(UserContext.get('catalogLocale'));
+      result[referenceEntity.getIdentifier().stringValue()] = referenceEntity.getLabel(
+        UserContext.get('catalogLocale')
+      );
 
       return result;
     }, {});

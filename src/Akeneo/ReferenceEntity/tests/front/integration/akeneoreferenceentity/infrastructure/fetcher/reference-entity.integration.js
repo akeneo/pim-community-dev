@@ -11,7 +11,10 @@ describe('Akeneoreferenceentity > infrastructure > fetcher > reference-entity', 
 
   it('It search for enriched entities', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com/rest/reference_entity' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
+      if (
+        'http://pim.com/rest/reference_entity' === interceptedRequest.url() &&
+        'GET' === interceptedRequest.method()
+      ) {
         interceptedRequest.respond({
           contentType: 'application/json',
           body: JSON.stringify({

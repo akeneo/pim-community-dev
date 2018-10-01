@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Domain\Model\Attribute;
 
+use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -12,15 +12,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\ReferenceEntity\Component\Factory;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
-use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
-use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
-use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**

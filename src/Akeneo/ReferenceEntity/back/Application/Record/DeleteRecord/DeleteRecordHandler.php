@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Application\Record\DeleteRecord;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**

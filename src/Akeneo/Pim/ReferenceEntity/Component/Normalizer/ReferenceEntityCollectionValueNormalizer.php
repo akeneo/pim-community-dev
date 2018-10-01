@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\ReferenceEntity\Component\Normalizer;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
-use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
+use Akeneo\Pim\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

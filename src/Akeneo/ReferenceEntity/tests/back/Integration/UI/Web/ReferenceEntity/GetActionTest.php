@@ -15,9 +15,9 @@ namespace Akeneo\ReferenceEntity\Integration\UI\Web\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Common\Helper\AuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LabelCollection;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityDetails;
 use Akeneo\ReferenceEntity\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;

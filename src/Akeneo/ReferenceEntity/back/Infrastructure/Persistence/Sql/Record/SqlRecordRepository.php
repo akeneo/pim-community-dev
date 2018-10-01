@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindAttributesIndexedByIdentifierInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Attribute\FindValueKeyCollectionInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;

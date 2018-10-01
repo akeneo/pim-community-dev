@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity;
 
+use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
-use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use PDO;

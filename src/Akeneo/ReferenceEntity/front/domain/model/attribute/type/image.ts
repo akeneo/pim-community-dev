@@ -10,7 +10,10 @@ import {
   CommonAttribute,
   CommonConcreteAttribute,
 } from 'akeneoreferenceentity/domain/model/attribute/common';
-import {NormalizedMaxFileSize, MaxFileSize} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
+import {
+  NormalizedMaxFileSize,
+  MaxFileSize,
+} from 'akeneoreferenceentity/domain/model/attribute/type/image/max-file-size';
 import {NormalizedAllowedExtensions, AllowedExtensions} from './image/allowed-extensions';
 
 export interface NormalizedImageAttribute extends CommonNormalizedAttribute {

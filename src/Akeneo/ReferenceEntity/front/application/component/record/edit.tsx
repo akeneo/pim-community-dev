@@ -81,7 +81,7 @@ class RecordEditView extends React.Component<EditProps> {
 
   private onClickDelete = () => {
     const label = this.props.record.labels[this.props.context.locale];
-    if (confirm(__('pim_reference_entity.record.delete.confirm', {'recordLabel': label}))) {
+    if (confirm(__('pim_reference_entity.record.delete.confirm', {recordLabel: label}))) {
       const record = denormalizeRecord(this.props.record);
 
       this.props.events.onDelete(record);

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Controller\ReferenceEntity;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

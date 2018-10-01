@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\InMemory;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute;
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryReferenceEntityIsLinkedToAtLeastOneProductAttribute;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use PHPUnit\Framework\TestCase;
 

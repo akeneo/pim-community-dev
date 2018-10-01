@@ -29,7 +29,8 @@ describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
       const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
         .createIdentifier;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+        .createLabelCollection;
       const saver = require('akeneoreferenceentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(
@@ -97,7 +98,8 @@ describe('Akeneoreferenceentity > infrastructure > saver > record', () => {
       const createReferenceEntityIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
         .createIdentifier;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+        .createLabelCollection;
       const createValueCollection = require('akeneoreferenceentity/domain/model/record/value-collection')
         .createValueCollection;
       const saver = require('akeneoreferenceentity/infrastructure/saver/record').default;

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import ItemView from 'akeneoreferenceentity/application/component/reference-entity/index/item';
-import ReferenceEntity, {createReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {
+  createReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import {createEmptyFile} from 'akeneoreferenceentity/domain/model/file';

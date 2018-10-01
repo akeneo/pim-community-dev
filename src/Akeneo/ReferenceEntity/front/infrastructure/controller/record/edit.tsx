@@ -33,7 +33,10 @@ class RecordEditController extends BaseController {
 
   renderRoute(route: any) {
     recordFetcher
-      .fetch(createReferenceEntityIdentifier(route.params.referenceEntityIdentifier), createCode(route.params.recordCode))
+      .fetch(
+        createReferenceEntityIdentifier(route.params.referenceEntityIdentifier),
+        createCode(route.params.recordCode)
+      )
       .then((record: Record) => {
         this.store = createStore(true)(recordReducer);
         this.store.dispatch(recordEditionReceived(record));

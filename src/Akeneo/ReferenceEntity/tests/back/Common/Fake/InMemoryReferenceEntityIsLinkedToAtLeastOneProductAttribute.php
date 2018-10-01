@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\Pim\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityIsLinkedToAtLeastOneProductAttributeInterface;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProductAttributeRepository;
 
 /**

@@ -1,5 +1,8 @@
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
-import {NormalizedAttribute, NormalizedAdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
+import {
+  NormalizedAttribute,
+  NormalizedAdditionalProperty,
+} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {
   NormalizedTextAttribute,
   NormalizedTextAdditionalProperty,

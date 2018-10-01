@@ -10,7 +10,11 @@ export interface EditionFormState {
   errors: ValidationError[];
 }
 
-const stateReducer = formState('referenceEntity', 'ENRICHED_ENTITY_EDITION_UPDATED', 'ENRICHED_ENTITY_EDITION_RECEIVED');
+const stateReducer = formState(
+  'referenceEntity',
+  'ENRICHED_ENTITY_EDITION_UPDATED',
+  'ENRICHED_ENTITY_EDITION_RECEIVED'
+);
 
 const dataReducer = (
   state: NormalizedReferenceEntity = {identifier: '', code: '', labels: {}, image: null},

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Common\Fake;
 
-use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
 use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\FindReferenceEntityItemsInterface;
+use Akeneo\ReferenceEntity\Domain\Query\ReferenceEntity\ReferenceEntityItem;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

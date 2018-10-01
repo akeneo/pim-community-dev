@@ -56,7 +56,7 @@ class AttributeIdentifierSpec extends ObjectBehavior
             'fingerprint',
         ]);
 
-        $this->normalize()->shouldReturn('a_very_long_attribut_a_very_long_enriched_fingerprint');
+        $this->normalize()->shouldReturn('a_very_long_attribut_a_very_long_reference_fingerprint');
     }
 
     public function it_is_possible_to_compare_it()

@@ -22,8 +22,10 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     const response = await page.evaluate(async () => {
       const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
         .createReferenceEntity;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+        .createIdentifier;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+        .createLabelCollection;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
 
       const savedSofa = createReferenceEntity(
@@ -55,8 +57,10 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     const response = await page.evaluate(async () => {
       const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
         .createReferenceEntity;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+        .createIdentifier;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+        .createLabelCollection;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
       const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 
@@ -117,8 +121,10 @@ describe('Akeneoreferenceentity > infrastructure > saver > reference-entity', ()
     const response = await page.evaluate(async () => {
       const createReferenceEntity = require('akeneoreferenceentity/domain/model/reference-entity/reference-entity')
         .createReferenceEntity;
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection').createLabelCollection;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+        .createIdentifier;
+      const createLabelCollection = require('akeneoreferenceentity/domain/model/label-collection')
+        .createLabelCollection;
       const Image = require('akeneoreferenceentity/domain/model/file').default;
       const saver = require('akeneoreferenceentity/infrastructure/saver/reference-entity').default;
 

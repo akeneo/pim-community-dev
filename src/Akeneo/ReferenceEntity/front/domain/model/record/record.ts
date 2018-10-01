@@ -55,7 +55,9 @@ class RecordImplementation implements Record {
       throw new InvalidArgumentError('Record expect a RecordIdentifier as identifier argument');
     }
     if (!(referenceEntityIdentifier instanceof ReferenceEntityIdentifier)) {
-      throw new InvalidArgumentError('Record expect an ReferenceEntityIdentifier as referenceEntityIdentifier argument');
+      throw new InvalidArgumentError(
+        'Record expect an ReferenceEntityIdentifier as referenceEntityIdentifier argument'
+      );
     }
     if (!(code instanceof RecordCode)) {
       throw new InvalidArgumentError('Record expect a RecordCode as code argument');

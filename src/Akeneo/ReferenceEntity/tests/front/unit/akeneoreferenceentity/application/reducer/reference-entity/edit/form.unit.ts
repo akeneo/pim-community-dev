@@ -1,6 +1,8 @@
 import LabelCollection, {createLabelCollection} from 'akeneoreferenceentity/domain/model/label-collection';
 import Identifier, {createIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
-import ReferenceEntity, {createReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import ReferenceEntity, {
+  createReferenceEntity,
+} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import reducer from 'akeneoreferenceentity/application/reducer/reference-entity/edit/form';
 
 const initialState = {

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
-use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordDetailsInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\GenerateEmptyValuesInterface;
 use Akeneo\ReferenceEntity\Domain\Query\Record\RecordDetails;

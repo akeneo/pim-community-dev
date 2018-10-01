@@ -14,13 +14,14 @@ describe('Akeneoreferenceentity > infrastructure > remover > reference-entity', 
         'DELETE' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204
+          status: 204,
         });
       }
     });
 
     await page.evaluate(async () => {
-      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier').createIdentifier;
+      const createIdentifier = require('akeneoreferenceentity/domain/model/reference-entity/identifier')
+        .createIdentifier;
       const remover = require('akeneoreferenceentity/infrastructure/remover/reference-entity').default;
 
       const identifierToDelete = createIdentifier('designer');

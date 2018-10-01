@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\ReferenceEntity\Component\Value;
 
-use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 
 /**
  * Product value for enriched entity

@@ -28,12 +28,12 @@ describe('>>>COMPONENT --- switch', () => {
   test('Do not trigger if read only', () => {
     var value = true;
     const switchView = mount(
-        <Switch
-            value={value}
-            onChange={newValue => {
-              value = newValue;
-            }}
-        />
+      <Switch
+        value={value}
+        onChange={newValue => {
+          value = newValue;
+        }}
+      />
     );
 
     expect(switchView.find('.AknSwitch').is('[aria-checked="true"]')).toEqual(true);
