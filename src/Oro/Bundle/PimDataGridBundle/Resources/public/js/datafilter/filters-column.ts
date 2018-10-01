@@ -2,6 +2,7 @@ import BaseView = require('pimenrich/js/view/base');
 import * as _ from 'underscore';
 
 const mediator = require('oro/mediator');
+const Routing = require('routing');
 
 interface FiltersConfig {
   title: string;
@@ -16,14 +17,15 @@ interface GridFilter {
 }
 
 class FiltersColumn extends BaseView {
-  public timer: number;
   public defaultFilters: GridFilter[] = [];
-  public loadedFilters: GridFilter[] = [];
-  public gridCollection: any;
-  public page: number = 1;
-  public opened = false;
   public filterList: JQuery<HTMLElement>;
+  public gridCollection: any;
   public ignoredFilters: string[];
+  public loadedFilters: GridFilter[] = [];
+  public loading: boolean;
+  public opened = false;
+  public page: number = 1;
+  public timer: number;
 
   readonly config: FiltersConfig;
   readonly template: string = `
@@ -35,6 +37,7 @@ class FiltersColumn extends BaseView {
         style="width: 230px;display: none;top: -191px;left: 59px;position:absolute;overflow: scroll"
     >
         <div class="ui-multiselect-filter"><input placeholder="" type="search"></div>
+        <div class="AknLoadingMask loading-mask filter-loading" style="top: 50px"></div>
         <div class="filters-column"></div>
         <div class="AknColumn-bottomButtonContainer AknColumn-bottomButtonContainer--sticky"><div class="AknButton AknButton--apply close">Done</div></div>
     </div>
@@ -67,9 +70,9 @@ class FiltersColumn extends BaseView {
 
     this.config = {...this.config, ...options.config};
     this.defaultFilters = [];
-    this.loadedFilters = [];
-    this.ignoredFilters = ['scope'];
     this.gridCollection = {};
+    this.ignoredFilters = ['scope'];
+    this.loadedFilters = [];
   }
 
   public events(): Backbone.EventsHash {
@@ -113,12 +116,11 @@ class FiltersColumn extends BaseView {
   }
 
   fetchFilters(search?: string | null, page: number = this.page) {
-    // TODO: Use route generator
-    const url = 'datagrid/product-grid/attributes-filters';
+    const url = Routing.generate('pim_datagrid_productgrid_attributes_filters')
     return $.get(search ? `${url}?search=${search}` : `${url}?page=${page}`);
   }
 
-  mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]) {
+  mergeAddedFilters(originalFilters: GridFilter[], addedFilters: GridFilter[]): GridFilter[] {
     const filters = [...originalFilters, ...addedFilters];
     const uniqueFilters: GridFilter[] = [];
 
@@ -172,6 +174,8 @@ class FiltersColumn extends BaseView {
   }
 
   doSearch() {
+    this.showLoading();
+
     const searchValue: any = $(this.filterList)
       .find('input[type="search"]')
       .val();
@@ -225,6 +229,7 @@ class FiltersColumn extends BaseView {
     const checkbox = $('input[type="checkbox"]', filterColumn);
     checkbox.off('change');
     checkbox.on('change', this.toggleFilter.bind(this));
+    this.hideLoading();
   }
 
   loadFilterList(gridCollection: any, gridElement: JQuery<HTMLElement>): void {
@@ -232,6 +237,7 @@ class FiltersColumn extends BaseView {
 
     this.defaultFilters = metadata.filters;
     this.gridCollection = gridCollection;
+    this.showLoading();
 
     this.fetchFilters().then((loadedFilters: GridFilter[]) => {
       this.loadedFilters = this.mergeAddedFilters(this.defaultFilters, loadedFilters);
@@ -266,7 +272,7 @@ class FiltersColumn extends BaseView {
     return _.template(this.filterGroupTemplate)({
       filters,
       groupName,
-      ignoredFilters: this.ignoredFilters
+      ignoredFilters: this.ignoredFilters,
     });
   }
 
@@ -294,14 +300,25 @@ class FiltersColumn extends BaseView {
     $('.filter-list', this.filterList).on('scroll', this.searchFilters.bind(this));
     $('.close', this.filterList).on('click', this.togglePanel.bind(this));
 
+    this.hideLoading();
+
     return this;
   }
 
   shutdown() {
-    $(this.filterList).off().remove()
-    this.filterList = null
+    $(this.filterList)
+      .off()
+      .remove();
 
     BaseView.prototype.shutdown.apply(this, arguments);
+  }
+
+  showLoading() {
+    $('.filter-loading').show();
+  }
+
+  hideLoading() {
+    $('.filter-loading').hide();
   }
 }
 

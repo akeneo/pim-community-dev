@@ -14,7 +14,7 @@ interface FilterModule extends Backbone.View<any> {
   getValue: () => FilterValue;
   setValue: (value: FilterValue | number) => FilterModule;
   extend: (filterDefinition: FilterDefinition) => any;
-  moveFilter?: (collection: any, element: any) => void
+  moveFilter?: (collection: any, element: any) => void;
 }
 
 interface FilterDefinition {
@@ -118,7 +118,7 @@ class FiltersColumn extends BaseView {
       }
 
       if (undefined !== filterModule.moveFilter) {
-        filterModule.moveFilter(datagridCollection, this.getRoot())
+        filterModule.moveFilter(datagridCollection, this.getRoot());
       }
     });
 
