@@ -88,7 +88,8 @@ SQL;
 
         $image = Image::createEmpty();
         if (null !== $rawFile) {
-            $rawFile = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($rawFile, $platform);;
+            $rawFile = Type::getType(Type::JSON_ARRAY)->convertToPHPValue($rawFile, $platform);
+            ;
             $file = new FileInfo();
             $file->setKey($rawFile['file_key']);
             $file->setOriginalFilename($rawFile['original_filename']);
