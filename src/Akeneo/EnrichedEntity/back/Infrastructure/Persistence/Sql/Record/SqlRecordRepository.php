@@ -193,7 +193,7 @@ SQL;
             ]
         );
 
-        if ($affectedRows === 0) {
+        if (0 === $affectedRows) {
             throw new RecordNotFoundException();
         }
     }

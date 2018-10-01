@@ -124,7 +124,7 @@ final class DeleteRecordContext implements Context
             return;
         }
 
-        Assert::true(false, sprintf('The record should not exist', $whichRecord));
+        Assert::true(false, 'The record should not exist');
     }
 
     private function createEnrichedEntity(): void

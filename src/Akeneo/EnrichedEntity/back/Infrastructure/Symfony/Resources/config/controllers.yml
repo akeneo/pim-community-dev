@@ -64,8 +64,6 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\DeleteAction
         arguments:
             - '@akeneo_enrichedentity.application.attribute.delete_attribute_handler'
-            - '@serializer'
-            - '@validator'
             - '@oro_security.security_facade'
 
     #  Records
@@ -99,6 +97,4 @@ services:
         class: Akeneo\EnrichedEntity\Infrastructure\Controller\Record\DeleteAction
         arguments:
             - '@akeneo_enrichedentity.application.record.delete_record_handler'
-            - '@serializer'
-            - '@validator'
             - '@oro_security.security_facade'

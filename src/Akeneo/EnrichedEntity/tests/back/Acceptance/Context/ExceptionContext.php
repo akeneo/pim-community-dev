@@ -40,7 +40,7 @@ final class ExceptionContext implements Context
      */
     public function anExceptionIsThrown()
     {
-        Assert::notNull($this->exceptionThrown);
+        Assert::notNull($this->exceptionThrown, 'An exception was expected, but none was thrown.');
     }
 
     /**

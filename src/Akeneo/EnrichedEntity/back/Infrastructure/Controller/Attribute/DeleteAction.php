@@ -34,23 +34,13 @@ class DeleteAction
     /** @var SecurityFacade */
     private $securityFacade;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
     /** @var DeleteAttributeHandler */
     private $deleteAttributeHandler;
 
     public function __construct(
         DeleteAttributeHandler $deleteAttributeHandler,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
         $this->securityFacade = $securityFacade;
         $this->deleteAttributeHandler = $deleteAttributeHandler;
     }
@@ -66,15 +56,6 @@ class DeleteAction
 
         $command = new DeleteAttributeCommand();
         $command->attributeIdentifier = $attributeIdentifier;
-
-        $violations = $this->validator->validate($command);
-
-        if ($violations->count() > 0) {
-            return new JsonResponse(
-                $this->normalizer->normalize($violations, 'internal_api'),
-                Response::HTTP_BAD_REQUEST
-            );
-        }
 
         try {
             ($this->deleteAttributeHandler)($command);

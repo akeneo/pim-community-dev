@@ -36,7 +36,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
     private const DELETE_RECORD_ROUTE = 'akeneo_enriched_entities_record_delete_rest';
     private const RESPONSES_DIR = 'Record/Delete/';
 
-    /** @var Client */
+    /* @var Client */
     private $client;
 
     /** @var WebClientHelper */

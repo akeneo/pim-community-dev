@@ -35,25 +35,15 @@ class DeleteAction
     /** @var DeleteRecordHandler */
     private $deleteRecordHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
-
     /** @var SecurityFacade */
     private $securityFacade;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     public function __construct(
         DeleteRecordHandler $deleteRecordHandler,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
         SecurityFacade $securityFacade
     ) {
         $this->deleteRecordHandler = $deleteRecordHandler;
-        $this->validator = $validator;
         $this->securityFacade = $securityFacade;
-        $this->normalizer = $normalizer;
     }
 
     public function __invoke(Request $request, string $enrichedEntityIdentifier, string $recordCode): Response
@@ -68,15 +58,6 @@ class DeleteAction
         $command = new DeleteRecordCommand();
         $command->recordCode = $recordCode;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-
-        $violations = $this->validator->validate($command);
-
-        if ($violations->count() > 0) {
-            return new JsonResponse(
-                $this->normalizer->normalize($violations, 'internal_api'),
-                Response::HTTP_BAD_REQUEST
-            );
-        }
 
         try {
             ($this->deleteRecordHandler)($command);
