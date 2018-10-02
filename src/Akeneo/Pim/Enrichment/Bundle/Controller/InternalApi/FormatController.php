@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\LocalizationBundle\Controller;
+namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
