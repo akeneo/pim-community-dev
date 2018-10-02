@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\EventSubscriber;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\InitPimAiUserCommand;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;

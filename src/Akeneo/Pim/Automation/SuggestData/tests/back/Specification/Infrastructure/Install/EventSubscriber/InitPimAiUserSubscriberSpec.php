@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\EventSubscriber;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber;
 
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Command\InitPimAiUserCommand;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\EventSubscriber\InitPimAiUserSubscriber;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Install\EventSubscriber\InitPimAiUserSubscriber;
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
