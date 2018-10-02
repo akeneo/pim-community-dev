@@ -44,3 +44,12 @@ services:
             - '@pim_catalog.version_provider'
         tags:
             - { name: twig.extension }
+
+    pim_enrich.twig.view_element_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension'
+        arguments:
+            - '@pim_enrich.view_element.registry'
+            - '@templating'
+            - '%kernel.debug%'
+        tags:
+            - { name: twig.extension }
