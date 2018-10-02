@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.twig.locale_extension.class:       Pim\Bundle\EnrichBundle\Twig\LocaleExtension
     pim_enrich.twig.view_element_extension.class: Pim\Bundle\EnrichBundle\Twig\ViewElementExtension
     pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
     pim_enrich.twig.version_extension.class:      Pim\Bundle\EnrichBundle\Twig\VersionExtension
@@ -7,12 +6,7 @@ parameters:
 
 services:
     # Twig extensions
-    pim_enrich.twig.locale_extension:
-        class: '%pim_enrich.twig.locale_extension.class%'
-        arguments:
-            - '@pim_user.context.user'
-        tags:
-            - { name: twig.extension }
+
 
     pim_enrich.twig.view_element_extension:
         class: '%pim_enrich.twig.view_element_extension.class%'

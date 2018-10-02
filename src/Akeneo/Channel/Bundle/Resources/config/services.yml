@@ -223,3 +223,10 @@ services:
                 xlsx_locale_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
+
+    pim_enrich.twig.locale_extension:
+        class: 'Akeneo\Channel\Bundle\Twig\LocaleExtension'
+        arguments:
+            - '@pim_user.context.user'
+        tags:
+            - { name: twig.extension }
