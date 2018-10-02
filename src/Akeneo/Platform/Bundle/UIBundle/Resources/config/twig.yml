@@ -37,3 +37,10 @@ services:
             - '@translator'
         tags:
             - { name: twig.extension }
+
+    pim_enrich.twig.version_extension:
+        class: 'Akeneo\Platform\Bundle\UIBundle\Twig\VersionExtension'
+        arguments:
+            - '@pim_catalog.version_provider'
+        tags:
+            - { name: twig.extension }

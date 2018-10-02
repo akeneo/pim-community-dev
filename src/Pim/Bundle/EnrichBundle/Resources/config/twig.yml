@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.twig.view_element_extension.class: Pim\Bundle\EnrichBundle\Twig\ViewElementExtension
     pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
-    pim_enrich.twig.version_extension.class:      Pim\Bundle\EnrichBundle\Twig\VersionExtension
     pim_enrich.twig.translations_extension.class: Pim\Bundle\EnrichBundle\Twig\TranslationsExtension
 
 services:
@@ -19,13 +18,6 @@ services:
 
     pim_enrich.twig.object_class_extension:
         class: '%pim_enrich.twig.object_class_extension.class%'
-        tags:
-            - { name: twig.extension }
-
-    pim_enrich.twig.version_extension:
-        class: '%pim_enrich.twig.version_extension.class%'
-        arguments:
-            - '@pim_catalog.version_provider'
         tags:
             - { name: twig.extension }
 
