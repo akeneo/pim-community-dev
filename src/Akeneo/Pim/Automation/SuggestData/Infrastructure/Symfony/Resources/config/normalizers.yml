@@ -8,10 +8,10 @@ services:
             - '@pim_catalog.repository.attribute'
 
     akeneo.pim.automation.suggest_data.normalizers.attributes_mapping:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\AttributesMappingNormalizer'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\AttributesMappingNormalizer'
 
     akeneo.pim.automation.suggest_data.infrastructure.data_provider.adapter.normalizer.attributes_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer'
 
     akeneo.pim.automation.suggest_data.normalizers.families:
-        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\FamiliesNormalizer'
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\FamiliesNormalizer'

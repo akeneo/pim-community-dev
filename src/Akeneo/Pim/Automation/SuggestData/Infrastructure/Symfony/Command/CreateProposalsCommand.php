@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Command;
+namespace Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsCommand as AppCommand;
 use Akeneo\Pim\Automation\SuggestData\Application\Proposal\Command\CreateProposalsHandler;
