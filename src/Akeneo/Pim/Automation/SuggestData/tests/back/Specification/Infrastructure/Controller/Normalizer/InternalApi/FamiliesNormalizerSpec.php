@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi;
+namespace Specification\Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi;
 
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\Family;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\Read\FamilyCollection;
-use Akeneo\Pim\Automation\SuggestData\Infrastructure\Normalizer\InternalApi\FamiliesNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\Controller\Normalizer\InternalApi\FamiliesNormalizer;
 use PhpSpec\ObjectBehavior;
 
 /**
