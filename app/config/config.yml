@@ -1,5 +1,6 @@
 imports:
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/pimee.yml' }
+    - { resource: '@AkeneoReferenceEntityBundle/Resources/config/search/elasticsearch.yml' }
     - { resource: pim_parameters.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }

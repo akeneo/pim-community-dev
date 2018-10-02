@@ -1,0 +1,6 @@
+mappings:
+    pimee_workflow_published_product:
+        properties:
+            # "completeness" property is handled by the "completeness" dynamic template
+            code:
+                type: 'keyword'
