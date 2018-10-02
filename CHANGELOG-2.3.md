@@ -10,6 +10,7 @@
 - PIM-7671: Fix associations tab cannot display more than 24 associated products/product models or 25 groups.
 - PIM-7668: Fix issues with timezone in various screen, to always use current user timezone.
 - PIM-7656: Fix a bug preventing a link insertion in WYSIWYG mass edit field.
+- PIM-7670: Fix issue on SKU filters when changing context
 
 # 2.3.9 (2018-09-25)
 
