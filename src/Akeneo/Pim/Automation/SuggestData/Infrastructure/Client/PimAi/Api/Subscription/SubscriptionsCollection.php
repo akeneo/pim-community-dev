@@ -41,10 +41,8 @@ class SubscriptionsCollection implements \Iterator
         array $collection
     ) {
         $this->subscriptionWebservice = $subscriptionWebservice;
-        $this->subscriptions = isset($collection['_embedded']['subscription']) ?
-            $collection['_embedded']['subscription'] : [];
-        $this->nextPageUri = isset($collection['_links']['next']['href']) ?
-            $collection['_links']['next']['href'] : null;
+        $this->subscriptions = $collection['_embedded']['subscription'] ?? [];
+        $this->nextPageUri = $collection['_links']['next']['href'] ?? null;
         $this->index = 0;
     }
 
@@ -65,7 +63,7 @@ class SubscriptionsCollection implements \Iterator
      */
     public function next(): void
     {
-        $this->index++;
+        ++$this->index;
     }
 
     /**

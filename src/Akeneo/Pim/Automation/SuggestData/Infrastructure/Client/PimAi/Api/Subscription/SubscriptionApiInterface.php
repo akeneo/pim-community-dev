@@ -34,14 +34,14 @@ interface SubscriptionApiInterface
     /**
      * TODO: Rename this method. It does not fetch products.
      *
-     * @param string|null $uri In case you have a pre-encoded uri.
-     *
-     * @return SubscriptionsCollection
+     * @param string|null $uri in case you have a pre-encoded uri
      *
      * @throws BadRequestException
      * @throws InsufficientCreditsException
      * @throws InvalidTokenException
      * @throws PimAiServerException
+     *
+     * @return SubscriptionsCollection
      */
     public function fetchProducts(string $uri = null): SubscriptionsCollection;
 

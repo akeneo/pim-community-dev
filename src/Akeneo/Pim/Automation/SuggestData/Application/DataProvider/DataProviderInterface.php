@@ -39,9 +39,9 @@ interface DataProviderInterface
     public function authenticate(string $token): bool;
 
     /**
-     * @return \Iterator
-     *
      * @throws ProductSubscriptionException
+     *
+     * @return \Iterator
      */
     public function fetch(): \Iterator;
 
