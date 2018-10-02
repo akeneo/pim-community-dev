@@ -50,22 +50,6 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-
-            // Akeneo external bounded contexts
-            'Akeneo\Tool\Component\StorageUtils',
-
-            // External dependencies
-            'Symfony\Component\Console',
-            'Symfony\Component\Validator',
-            // TODO: this dependency could be removed with lazy-loaded commands
-            'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
-        ]
-    )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Command'),
-
-    $builder->only(
-        [
-            'Akeneo\Pim\Automation\SuggestData\Domain',
-            'Akeneo\Pim\Automation\SuggestData\Application',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector',
 
             // Akeneo external bounded contexts
@@ -104,7 +88,7 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Command',
+            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony\Command',
 
             // Akeneo external bounded contexts
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
@@ -148,17 +132,20 @@ $rules = [
         [
             'Akeneo\Pim\Automation\SuggestData\Domain',
             'Akeneo\Pim\Automation\SuggestData\Application',
-            // TODO: the next line could be removed with lazy-loaded commands
-            'Akeneo\Pim\Automation\SuggestData\Infrastructure\Command',
             'Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony',
+
+            // Akeneo external bounded contexts
+            'Akeneo\Tool\Component\StorageUtils',
 
             // external dependencies
             'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
             // TODO: the next line could be removed with lazy-loaded commands
+            'Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand',
             'Symfony\Component\Console',
             'Symfony\Component\Config',
             'Symfony\Component\DependencyInjection',
             'Symfony\Component\HttpKernel',
+            'Symfony\Component\Validator',
         ]
     )->in('Akeneo\Pim\Automation\SuggestData\Infrastructure\Symfony'),
 ];
