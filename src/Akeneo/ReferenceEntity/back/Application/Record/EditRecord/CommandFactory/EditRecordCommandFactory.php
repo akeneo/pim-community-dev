@@ -45,6 +45,7 @@ class EditRecordCommandFactory
         $command->referenceEntityIdentifier = $normalizedCommand['reference_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
+        $command->image = $normalizedCommand['image'] ?? null;
         $command->editRecordValueCommands = [];
 
         $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString($command->referenceEntityIdentifier);

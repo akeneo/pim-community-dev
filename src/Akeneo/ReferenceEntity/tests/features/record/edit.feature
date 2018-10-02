@@ -5,11 +5,36 @@ Feature: Edit an record
 
   @acceptance-back
   Scenario: Updating a record label
-    Given an referenceEntity and a record with french label "My label"
+    Given a reference entity and a record with french label "My label"
     When the user updates the french label to "My updated label"
     Then there is no exception thrown
     And there is no violations errors
     And the record should have the french label "My updated label"
+
+  @acceptance-back
+  Scenario: Updating a record default image
+    Given a referenceEntity and a record with an image
+    When the user updates the record default image with a valid file
+    And the record should have the new default image
+
+  @acceptance-back
+  Scenario: Updating a record with an empty image
+    Given a referenceEntity and a record with an image
+    When the user updates the record default image with an empty image
+    And the record should have an empty image
+
+  @acceptance-back
+  Scenario Outline: Updating a record default image with an invalid file
+    Given a referenceEntity and a record with an image
+    When the user updates the record default image with path '<wrong_path>' and filename '<wrong_filename>'
+    Then there should be a validation error on the property 'image' with message '<message>'
+
+  Examples:
+  | wrong_path        | wrong_filename | message                              |
+  | false             | "image.jpg"    | This value should not be blank.      |
+  | 150               | "image.jpg"    | This value should be of type string. |
+  | "/path/image.jpg" | false          | This value should not be blank.      |
+  | "/path/image.jpg" | 150            | This value should be of type string. |
 
   # ValuePerChannel / ValuePerLocale
   @acceptance-back

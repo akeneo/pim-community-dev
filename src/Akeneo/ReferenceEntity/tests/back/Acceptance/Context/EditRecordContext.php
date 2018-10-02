@@ -70,6 +70,11 @@ final class EditRecordContext implements Context
     private const ECOMMERCE_CHANNEL_CODE = 'ecommerce';
     private const FRENCH_LOCALE_CODE = 'fr_FR';
 
+    private const DUMMY_IMAGE_FILEPATH = '/a/b/dummy_filename.png';
+    private const DUMMY_IMAGE_FILENAME = 'dummy_filename.png';
+    private const UPDATED_IMAGE_FILEPATH = '/a/b/updated_filename.png';
+    private const UPDATED_IMAGE_FILENAME = 'updated_filename.png';
+
     private const TEXT_ATTRIBUTE_CODE = 'name';
     private const TEXT_ATTRIBUTE_IDENTIFIER = 'name_designer_fingerprint';
     private const IMAGE_ATTRIBUTE_CODE = 'primary_picture';
@@ -78,7 +83,6 @@ final class EditRecordContext implements Context
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
 
     private const DUMMY_FILEPATH_PREFIX = '/a/dummy/key';
-    private const UPDATED_FILE_PATH_PREFIX = '/tmp/an/updated/file/';
     private const INVALID_FILEPATH_VALUE = false;
     private const UPDATED_DUMMY_FILENAME = 'dummy_filename.png';
     private const INVALID_FILENAME = 144;
@@ -117,7 +121,6 @@ final class EditRecordContext implements Context
 
     /** @var ConstraintViolationsContext */
     private $violationsContext;
-
 
     public function __construct(
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
@@ -217,7 +220,11 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -276,6 +283,63 @@ final class EditRecordContext implements Context
     }
 
     /**
+     * @When /^the user updates the record default image with a valid file$/
+     */
+    public function theUserUpdatesTheRecordDefaultImage()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code' => self::RECORD_CODE,
+            'labels' => [],
+            'image' => [
+                'originalFilename' => self::UPDATED_IMAGE_FILENAME,
+                'filePath' => self::UPDATED_IMAGE_FILEPATH,
+            ],
+            'values' => []
+        ]);
+
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the record default image with an empty image$/
+     */
+    public function theUserUpdatesTheRecordDefaultImageWithAnEmpty()
+    {
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code' => self::RECORD_CODE,
+            'labels' => [],
+            'image' => null,
+            'values' => []
+        ]);
+
+        $this->executeCommand($editCommand);
+    }
+
+    /**
+     * @When /^the user updates the record default image with path \'([^\']*)\' and filename \'([^\']*)\'$/
+     */
+    public function theUserUpdatesTheRecordDefaultImageWithPathAndFilename(string $filePath, string $filename)
+    {
+        $filePath = json_decode($filePath);
+        $filename = json_decode($filename);
+
+        $editCommand = $this->editRecordCommandFactory->create([
+            'reference_entity_identifier' => self::REFERENCE_ENTITY_IDENTIFIER,
+            'code' => self::RECORD_CODE,
+            'labels' => [],
+            'image' => [
+                'originalFilename' => $filename,
+                'filePath' => $filePath,
+            ],
+            'values' => []
+        ]);
+
+        $this->executeCommand($editCommand);
+    }
+
+    /**
      * @When /^the user updates the image attribute of the record with a valid file$/
      */
     public function theUserUpdatesTheImageAttributeOfTheRecordTo()
@@ -311,7 +375,11 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -330,7 +398,10 @@ final class EditRecordContext implements Context
     public function thereShouldBeAValidationErrorOnThePropertyTextAttributeWithMessage(string $expectedMessage)
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
-        $this->violationsContext->assertViolationOnPropertyWithMesssage('values.' . self::TEXT_ATTRIBUTE_CODE, $expectedMessage);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::TEXT_ATTRIBUTE_CODE,
+            $expectedMessage
+        );
     }
 
     /**
@@ -391,7 +462,8 @@ final class EditRecordContext implements Context
      * @Given /^an reference entity with a text attribute with a regular expression validation rule like "([^"]*)"$/
      * @throws \Exception
      */
-    public function anReferenceEntityWithATextAttributeWithARegularExpressionValidationRuleLike(string $regularExpression
+    public function anReferenceEntityWithATextAttributeWithARegularExpressionValidationRuleLike(
+        string $regularExpression
     ): void {
         $this->attributeRepository->create(
             TextAttribute::createText(
@@ -495,7 +567,11 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -572,6 +648,46 @@ final class EditRecordContext implements Context
     }
 
     /**
+     * @Given /^the record should have the new default image$/
+     */
+    public function theRecordShouldHaveTheNewDefaultImage()
+    {
+        $this->violationsContext->assertThereIsNoViolations();
+        $this->exceptionContext->thereIsNoExceptionThrown();
+
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+
+        $recordImage = $record->getImage();
+        Assert::assertFalse($recordImage->isEmpty());
+
+        $normalizeData = $recordImage->normalize();
+        Assert::assertArrayHasKey('originalFilename', $normalizeData);
+        Assert::assertArrayHasKey('filePath', $normalizeData);
+        Assert::assertEquals(self::UPDATED_IMAGE_FILENAME, $normalizeData['originalFilename']);
+        Assert::assertEquals(self::UPDATED_IMAGE_FILEPATH, $normalizeData['filePath']);
+    }
+
+    /**
+     * @Given /^the record should have an empty image$/
+     */
+    public function theRecordShouldHaveAnEmptyImage()
+    {
+        $this->violationsContext->assertThereIsNoViolations();
+        $this->exceptionContext->thereIsNoExceptionThrown();
+
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+            RecordCode::fromString(self::RECORD_CODE)
+        );
+
+        $recordImage = $record->getImage();
+        Assert::assertTrue($recordImage->isEmpty());
+    }
+
+    /**
      * @Given /^the record should have the updated value for this attribute and the french locale$/
      */
     public function theRecordShouldHaveTheUpdatedValueForThisAttributeAndTheFrenchLocale()
@@ -582,7 +698,8 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT),
                 ChannelReference::noReference(),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
             )
@@ -670,7 +787,11 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
                 LocaleReference::noReference()
             )
@@ -756,7 +877,11 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::TEXT_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::TEXT_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode(self::ECOMMERCE_CHANNEL_CODE)),
                 LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode(self::FRENCH_LOCALE_CODE))
             )
@@ -832,12 +957,23 @@ final class EditRecordContext implements Context
     }
 
     /**
+     * @Then /^there should be a validation error on the default image with message "([^"]+)"$/
+     */
+    public function thereShouldBeAValidationErrorOnTheDefaultImageWithMessage(string $expectedMessage): void
+    {
+        $this->violationsContext->assertViolation($expectedMessage);
+    }
+
+    /**
      * @Then /^there should be a validation error on the property image attribute with message "([^"]*)"$/
      */
     public function thereShouldBeAValidationErrorOnThePropertyImageAttributeWithMessage(string $expectedMessage): void
     {
         $this->violationsContext->assertThereShouldBeViolations(1);
-        $this->violationsContext->assertViolationOnPropertyWithMesssage('values.' . self::IMAGE_ATTRIBUTE_CODE, $expectedMessage);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::IMAGE_ATTRIBUTE_CODE,
+            $expectedMessage
+        );
     }
 
     /**
@@ -1043,7 +1179,11 @@ final class EditRecordContext implements Context
         );
         $value = $record->findValue(
             ValueKey::create(
-                AttributeIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::IMAGE_ATTRIBUTE_CODE, self::FINGERPRINT),
+                AttributeIdentifier::create(
+                    self::REFERENCE_ENTITY_IDENTIFIER,
+                    self::IMAGE_ATTRIBUTE_CODE,
+                    self::FINGERPRINT
+                ),
                 ChannelReference::noReference(),
                 LocaleReference::noReference()
             )
@@ -1052,9 +1192,9 @@ final class EditRecordContext implements Context
     }
 
     /**
-     * @Given /^an referenceEntity and a record with french label "([^"]*)"$/
+     * @Given /^a reference entity and a record with french label "([^"]*)"$/
      */
-    public function anReferenceEntityAndARecordWithLabel(string $label): void
+    public function aReferenceEntityAndARecordWithLabel(string $label): void
     {
         $this->createReferenceEntity();
         $this->recordRepository->create(
@@ -1064,6 +1204,30 @@ final class EditRecordContext implements Context
                 RecordCode::fromString(self::RECORD_CODE),
                 ['fr_FR' => $label],
                 Image::createEmpty(),
+                ValueCollection::fromValues([])
+            )
+        );
+    }
+
+    /**
+     * @Given /^a referenceEntity and a record with an image$/
+     */
+    public function aReferenceEntityAndARecordWithAnImage(): void
+    {
+        $this->createReferenceEntity();
+
+        $imageInfo = new FileInfo();
+        $imageInfo
+            ->setOriginalFilename(self::DUMMY_IMAGE_FILENAME)
+            ->setKey(self::DUMMY_IMAGE_FILEPATH);
+
+        $this->recordRepository->create(
+            Record::create(
+                RecordIdentifier::create(self::REFERENCE_ENTITY_IDENTIFIER, self::RECORD_CODE, self::FINGERPRINT),
+                ReferenceEntityIdentifier::fromString(self::REFERENCE_ENTITY_IDENTIFIER),
+                RecordCode::fromString(self::RECORD_CODE),
+                ['fr_FR' => 'fr_label'],
+                Image::fromFileInfo($imageInfo),
                 ValueCollection::fromValues([])
             )
         );
