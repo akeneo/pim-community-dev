@@ -16,7 +16,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Domain\Model\Write;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeMapping
 {

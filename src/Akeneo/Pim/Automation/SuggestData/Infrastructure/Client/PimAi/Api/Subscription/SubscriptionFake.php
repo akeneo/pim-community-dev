@@ -69,7 +69,7 @@ final class SubscriptionFake implements SubscriptionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function fetchProducts(): ApiResponse
+    public function fetchProducts(string $uri = null): SubscriptionsCollection
     {
         switch ($this->status) {
             case self::STATUS_EXPIRED_TOKEN:
@@ -81,15 +81,13 @@ final class SubscriptionFake implements SubscriptionApiInterface
 
         $filename = sprintf('fetch-%s.json', $this->lastFetchDate);
 
-        return new ApiResponse(
-            200,
-            new SubscriptionCollection(
-                json_decode(
-                    file_get_contents(
-                        sprintf(__DIR__ . '/../resources/%s', $filename)
-                    ),
-                    true
-                )
+        return new SubscriptionsCollection(
+            $this,
+            json_decode(
+                file_get_contents(
+                    sprintf(__DIR__ . '/../resources/%s', $filename)
+                ),
+                true
             )
         );
     }

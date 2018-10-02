@@ -1,9 +1,6 @@
 {
   "_links": {
-    "subscription": [],
-    "next": {
-      "href": "\/api\/subscriptions\/updated-since\/yesterday?limit=100"
-    }
+    "subscription": []
   },
   "_embedded": {
     "subscription": [

@@ -20,7 +20,6 @@ use Akeneo\Pim\Automation\SuggestData\Domain\Model\AttributesMappingResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionRequest;
 use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionResponse;
-use Akeneo\Pim\Automation\SuggestData\Domain\Model\ProductSubscriptionsResponse;
 use Akeneo\Pim\Automation\SuggestData\Domain\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\Exception\ClientException;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\Api\AttributesMapping\AttributesMappingApiInterface;
@@ -31,6 +30,7 @@ use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\At
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\Client\PimAi\ValueObject\Subscription;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\AttributesMappingNormalizer;
 use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\Normalizer\IdentifiersMappingNormalizer;
+use Akeneo\Pim\Automation\SuggestData\Infrastructure\DataProvider\SubscriptionsCursor;
 
 /**
  * PIM.ai implementation to connect to a data provider.
@@ -134,27 +134,17 @@ class PimAI implements DataProviderInterface
     }
 
     /**
-     * TODO: Deal with pagination (see APAI-192).
-     *
-     * @return ProductSubscriptionsResponse
+     * {@inheritdoc}
      */
-    public function fetch(): ProductSubscriptionsResponse
+    public function fetch(): \Iterator
     {
         try {
-            $clientResponse = $this->subscriptionApi->fetchProducts();
+            $subscriptionsPage = $this->subscriptionApi->fetchProducts();
         } catch (ClientException $e) {
             throw new ProductSubscriptionException($e->getMessage());
         }
 
-        $subscriptions = $clientResponse->content()->getSubscriptions();
-
-        $subscriptionsResponse = new ProductSubscriptionsResponse();
-        foreach ($subscriptions as $subscription) {
-            $subscriptionResponse = $this->buildSubscriptionResponse($subscription);
-            $subscriptionsResponse->add($subscriptionResponse);
-        }
-
-        return $subscriptionsResponse;
+        return new SubscriptionsCursor($subscriptionsPage);
     }
 
     /**

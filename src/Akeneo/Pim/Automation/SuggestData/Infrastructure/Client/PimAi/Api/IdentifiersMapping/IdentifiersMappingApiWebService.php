@@ -46,7 +46,7 @@ class IdentifiersMappingApiWebService implements IdentifiersMappingApiInterface
      */
     public function update(array $mapping): void
     {
-        $route = $this->uriGenerator->generate('/mapping/identifiers');
+        $route = $this->uriGenerator->generate('/api/mapping/identifiers');
 
         $this->httpClient->request('PUT', $route, [
             'form_params' => $mapping,

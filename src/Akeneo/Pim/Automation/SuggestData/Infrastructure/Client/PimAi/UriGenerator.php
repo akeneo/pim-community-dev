@@ -52,6 +52,14 @@ class UriGenerator
     }
 
     /**
+     * @return string
+     */
+    public function getBaseUri(): string
+    {
+        return $this->baseUri;
+    }
+
+    /**
      * @param array $uriParameters
      *
      * @return array
