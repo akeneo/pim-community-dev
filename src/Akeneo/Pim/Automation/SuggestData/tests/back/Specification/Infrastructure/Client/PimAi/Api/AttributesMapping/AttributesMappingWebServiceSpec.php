@@ -68,7 +68,7 @@ class AttributesMappingWebServiceSpec extends ObjectBehavior
     private function getApiJsonReturn(): string
     {
         return
-<<<JSON
+        <<<JSON
 [
   {
     "from": {

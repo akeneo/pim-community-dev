@@ -36,10 +36,7 @@ class ActivateSuggestDataConnection
      * Activates the connection to the the data provider.
      * Throws an invalid argument exception if anything goes wrong during the activation.
      *
-     * @param string $code
      * @param array $configuration
-     *
-     * @throws \InvalidArgumentException
      */
     public function activate(array $configuration): void
     {

@@ -46,7 +46,7 @@ class PimAiConfigurationContext implements Context
     /**
      * Make this context statefull. Useful for testing configuration retrieval.
      *
-     * @var null|Configuration
+     * @var null|array
      */
     private $retrievedConfiguration;
 
@@ -74,14 +74,14 @@ class PimAiConfigurationContext implements Context
      */
     public function pimAiHasNotBeenConfigured(): void
     {
-        $configuration = $this->configurationRepository->find(Configuration::PIM_AI_CODE);
-        Assert::isNull($configuration);
+        $configuration = $this->configurationRepository->find();
+        Assert::assertNull($configuration);
     }
 
     /**
      * @Given PIM.ai is configured with a valid token
      */
-    public function pimAiIsConfiguredWithAValidToken(): void
+    public function pimAiIsConfiguredWithValidToken(): void
     {
         $configuration = new Configuration(['token' => static::PIM_AI_VALID_TOKEN]);
         $this->configurationRepository->save($configuration);
@@ -99,7 +99,7 @@ class PimAiConfigurationContext implements Context
     /**
      * @When a system administrator configures PIM.ai using a valid token
      */
-    public function configuresPimAiUsingAValidToken(): void
+    public function configuresPimAiUsingValidToken(): void
     {
         $success = $this->activatePimAiConnection(static::PIM_AI_VALID_TOKEN);
         Assert::assertTrue($success);
@@ -119,7 +119,7 @@ class PimAiConfigurationContext implements Context
      */
     public function retrievesTheConfiguration(): void
     {
-        $this->retrievedConfiguration = $this->getNormalizedConfiguration->retrieve(Configuration::PIM_AI_CODE);
+        $this->retrievedConfiguration = $this->getNormalizedConfiguration->retrieve();
     }
 
     /**
