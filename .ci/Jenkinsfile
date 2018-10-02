@@ -79,18 +79,26 @@ stage("Test") {
                 script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --no-interaction --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
-            "back-php-cs-fixer": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
-                junit: "junit_output.xml"
-            )},
+            "back-code-style": {
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
+                    junit: "junit_output.xml"
+                )
+                testif(
+                    condition: launchUnitTests.equals("yes"),
+                    container: tag,
+                    script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Pim/Automation/SuggestData/tests/back/.php_cs.php --format=junit > %workspace%/junit_suggest_data_output.xml",
+                    junit: "junit_suggest_data_output.xml"
+                )
+            },
             "back-check-pullup": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/akeneo/pim-community-dev/bin/check-pullup"
             )},
-            "front-lint": {testif(
+            "front-code-style": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
