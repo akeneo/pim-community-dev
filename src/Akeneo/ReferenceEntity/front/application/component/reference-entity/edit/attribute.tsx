@@ -62,6 +62,7 @@ const renderSystemAttribute = (type: string, identifier: string) => {
       <div className="AknFieldContainer-inputContainer">
         <input
           type="text"
+          tabIndex={-1}
           id={`pim_reference_entity.reference_entity.properties.system_record_${identifier}`}
           className="AknTextField AknTextField--light AknTextField--disabled"
           value={__(`pim_reference_entity.attribute.default.${identifier}`)}
@@ -158,6 +159,7 @@ class AttributeView extends React.Component<AttributeViewProps> {
             className="AknTextField AknTextField--light AknTextField--disabled"
             value={attribute.getLabel(locale)}
             readOnly
+            tabIndex={-1}
           />
           <button
             className="AknIconButton AknIconButton--edit"

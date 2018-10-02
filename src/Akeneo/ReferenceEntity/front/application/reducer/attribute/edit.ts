@@ -62,10 +62,7 @@ const textAttributeReducer = (
 ): NormalizedTextAttribute => {
   switch (propertyCode) {
     case 'max_length':
-      return {
-        ...normalizedAttribute,
-        max_length: propertyValue as NormalizedMaxLength,
-      };
+      return {...normalizedAttribute, max_length: propertyValue as NormalizedMaxLength};
     case 'is_textarea':
       const is_textarea = propertyValue as NormalizedIsTextarea;
       return {
@@ -222,14 +219,11 @@ export default (
       };
       break;
     case 'ATTRIBUTE_EDITION_LABEL_UPDATED':
-      if (!state.isActive || state.data.labels[locale] === value) {
+      if (state.data.labels[locale] === value || !state.isActive) {
         return state;
       }
 
-      const labelUpdatedAttribute = {
-        ...state.data,
-        labels: {...state.data.labels, [locale]: value},
-      };
+      const labelUpdatedAttribute = {...state.data, labels: {...state.data.labels, [locale]: value}};
 
       state = {
         ...state,
@@ -238,7 +232,7 @@ export default (
       };
       break;
     case 'ATTRIBUTE_EDITION_IS_REQUIRED_UPDATED':
-      if (!state.isActive || state.data.is_required === is_required) {
+      if (state.data.is_required === is_required || !state.isActive) {
         return state;
       }
 

@@ -190,12 +190,13 @@ class RecordEditView extends React.Component<EditProps> {
                           channelCode={this.props.context.channel}
                           channels={this.props.structure.channels}
                           locale={this.props.context.locale}
+                          className="AknDropdown--right"
                           onChannelChange={this.props.events.onChannelChanged}
                         />
                         <LocaleSwitcher
                           localeCode={this.props.context.locale}
                           locales={this.props.structure.locales}
-                          className="AknDropdown--left"
+                          className="AknDropdown--right"
                           onLocaleChange={this.props.events.onLocaleChanged}
                         />
                       </div>

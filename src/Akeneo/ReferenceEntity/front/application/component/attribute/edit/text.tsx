@@ -2,7 +2,6 @@ import * as React from 'react';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
-import Switch from 'akeneoreferenceentity/application/component/app/switch';
 import {AdditionalProperty} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import Dropdown, {DropdownElement} from 'akeneoreferenceentity/application/component/app/dropdown';
 import {TextAttribute} from 'akeneoreferenceentity/domain/model/attribute/type/text';
@@ -14,6 +13,7 @@ import {
 import {IsRichTextEditor} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-rich-text-editor';
 import {IsTextarea} from 'akeneoreferenceentity/domain/model/attribute/type/text/is-textarea';
 import {MaxLength} from 'akeneoreferenceentity/domain/model/attribute/type/text/max-length';
+import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 
 const AttributeValidationRuleItemView = ({
   isOpen,
@@ -98,41 +98,61 @@ export default ({
         </div>
         {getErrorsView(errors, 'maxLength')}
       </div>
-      <div className="AknFieldContainer" data-code="isTextarea">
-        <div className="AknFieldContainer-header AknFieldContainer-header--light">
-          <label className="AknFieldContainer-label" htmlFor="pim_reference_entity.attribute.edit.input.textarea">
-            {__('pim_reference_entity.attribute.edit.input.textarea')}
+      <div className="AknFieldContainer AknFieldContainer--packed" data-code="isTextarea">
+        <div className="AknFieldContainer-header">
+          <label
+            className="AknFieldContainer-label AknFieldContainer-label--inline"
+            htmlFor="pim_reference_entity.attribute.edit.input.textarea"
+          >
+            <Checkbox
+              id="pim_reference_entity.attribute.edit.input.textarea"
+              value={attribute.isTextarea.booleanValue()}
+              onChange={(isTextarea: boolean) =>
+                onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
+              }
+            />
+            <span
+              onClick={() => {
+                onAdditionalPropertyUpdated(
+                  'is_textarea',
+                  IsTextarea.createFromBoolean(!attribute.isTextarea.booleanValue())
+                );
+              }}
+            >
+              {__('pim_reference_entity.attribute.edit.input.textarea')}
+            </span>
           </label>
-        </div>
-        <div className="AknFieldContainer-inputContainer">
-          <Switch
-            id="pim_reference_entity.attribute.edit.input.textarea"
-            value={attribute.isTextarea.booleanValue()}
-            onChange={(isTextarea: boolean) =>
-              onAdditionalPropertyUpdated('is_textarea', IsTextarea.createFromBoolean(isTextarea))
-            }
-          />
         </div>
         {getErrorsView(errors, 'isTextarea')}
       </div>
       {attribute.isTextarea.booleanValue() && (
-        <div className="AknFieldContainer" data-code="isRichTextEditor">
-          <div className="AknFieldContainer-header AknFieldContainer-header--light">
+        <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRichTextEditor">
+          <div className="AknFieldContainer-header">
             <label
-              className="AknFieldContainer-label"
+              className="AknFieldContainer-label AknFieldContainer-label--inline"
               htmlFor="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
             >
-              {__('pim_reference_entity.attribute.edit.input.is_rich_text_editor')}
+              <Checkbox
+                id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
+                value={attribute.isRichTextEditor.booleanValue()}
+                onChange={(isrichTextEditor: boolean) =>
+                  onAdditionalPropertyUpdated(
+                    'is_rich_text_editor',
+                    IsRichTextEditor.createFromBoolean(isrichTextEditor)
+                  )
+                }
+              />
+              <span
+                onClick={() => {
+                  onAdditionalPropertyUpdated(
+                    'is_rich_text_editor',
+                    IsRichTextEditor.createFromBoolean(!attribute.isRichTextEditor.booleanValue())
+                  );
+                }}
+              >
+                {__('pim_reference_entity.attribute.edit.input.is_rich_text_editor')}
+              </span>
             </label>
-          </div>
-          <div className="AknFieldContainer-inputContainer">
-            <Switch
-              id="pim_reference_entity.attribute.edit.input.is_rich_text_editor"
-              value={attribute.isRichTextEditor.booleanValue()}
-              onChange={(isrichTextEditor: boolean) =>
-                onAdditionalPropertyUpdated('is_rich_text_editor', IsRichTextEditor.createFromBoolean(isrichTextEditor))
-              }
-            />
           </div>
           {getErrorsView(errors, 'richTextEditor')}
         </div>

@@ -5,7 +5,7 @@ import ValidationError from 'akeneoreferenceentity/domain/model/validation-error
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import {EditState} from 'akeneoreferenceentity/application/reducer/reference-entity/edit';
-import Switch from 'akeneoreferenceentity/application/component/app/switch';
+import Checkbox from 'akeneoreferenceentity/application/component/app/checkbox';
 import {
   attributeEditionLabelUpdated,
   attributeEditionIsRequiredUpdated,
@@ -127,7 +127,7 @@ class Edit extends React.Component<EditProps> {
   render(): JSX.Element | JSX.Element[] | null {
     return (
       <React.Fragment>
-        <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`}>
+        <div className={`AknQuickEdit ${!this.props.isActive ? 'AknQuickEdit--hidden' : ''}`} ref="quickEdit">
           <div className={`AknLoadingMask ${!this.props.isSaving ? 'AknLoadingMask--hidden' : ''}`} />
           <div className="AknSubsection">
             <header className="AknSubsection-title AknSubsection-title--sticky">
@@ -186,62 +186,63 @@ class Edit extends React.Component<EditProps> {
                     name="code"
                     value={this.props.attribute.code.stringValue()}
                     readOnly
+                    tabIndex={-1}
                   />
                 </div>
               </div>
-              <div className="AknFieldContainer" data-code="valuePerChannel">
-                <div className="AknFieldContainer-header AknFieldContainer-header--light">
+              <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerChannel">
+                <div className="AknFieldContainer-header">
                   <label
                     className="AknFieldContainer-label"
                     htmlFor="pim_reference_entity.attribute.edit.input.value_per_channel"
                   >
+                    <Checkbox
+                      id="pim_reference_entity.attribute.edit.input.value_per_channel"
+                      value={this.props.attribute.valuePerChannel}
+                      readOnly
+                    />
                     {__('pim_reference_entity.attribute.edit.input.value_per_channel')}
                   </label>
                 </div>
-                <div className="AknFieldContainer-inputContainer">
-                  <Switch
-                    id="pim_reference_entity.attribute.edit.input.value_per_channel"
-                    value={this.props.attribute.valuePerChannel}
-                    readOnly
-                  />
-                </div>
                 {getErrorsView(this.props.errors, 'valuePerChannel')}
               </div>
-              <div className="AknFieldContainer" data-code="valuePerLocale">
-                <div className="AknFieldContainer-header AknFieldContainer-header--light">
+              <div className="AknFieldContainer AknFieldContainer--packed" data-code="valuePerLocale">
+                <div className="AknFieldContainer-header">
                   <label
                     className="AknFieldContainer-label"
                     htmlFor="pim_reference_entity.attribute.edit.input.value_per_locale"
                   >
+                    <Checkbox
+                      id="pim_reference_entity.attribute.edit.input.value_per_locale"
+                      value={this.props.attribute.valuePerLocale}
+                      readOnly
+                    />
                     {__('pim_reference_entity.attribute.edit.input.value_per_locale')}
                   </label>
                 </div>
-                <div className="AknFieldContainer-inputContainer">
-                  <Switch
-                    id="pim_reference_entity.attribute.edit.input.value_per_locale"
-                    value={this.props.attribute.valuePerLocale}
-                    readOnly
-                  />
-                </div>
                 {getErrorsView(this.props.errors, 'valuePerLocale')}
               </div>
-              <div className="AknFieldContainer" data-code="isRequired">
-                <div className="AknFieldContainer-header AknFieldContainer-header--light">
+              <div className="AknFieldContainer AknFieldContainer--packed" data-code="isRequired">
+                <div className="AknFieldContainer-header">
                   <label
-                    className="AknFieldContainer-label"
+                    className="AknFieldContainer-label AknFieldContainer-label--inline"
                     htmlFor="pim_reference_entity.attribute.edit.input.is_required"
                   >
-                    {__('pim_reference_entity.attribute.edit.input.is_required')}
+                    <Checkbox
+                      id="pim_reference_entity.attribute.edit.input.is_required"
+                      value={this.props.attribute.isRequired}
+                      onChange={this.props.events.onIsRequiredUpdated}
+                    />
+                    <span
+                      onClick={() => {
+                        this.props.events.onIsRequiredUpdated(!this.props.attribute.isRequired);
+                      }}
+                    >
+                      {__('pim_reference_entity.attribute.edit.input.is_required')}
+                    </span>
                   </label>
                 </div>
-                <div className="AknFieldContainer-inputContainer">
-                  <Switch
-                    id="pim_reference_entity.attribute.edit.input.is_required"
-                    value={this.props.attribute.isRequired}
-                    onChange={this.props.events.onIsRequiredUpdated}
-                  />
-                  {getErrorsView(this.props.errors, 'isRequired')}
-                </div>
+                {getErrorsView(this.props.errors, 'isRequired')}
               </div>
             </div>
           </div>

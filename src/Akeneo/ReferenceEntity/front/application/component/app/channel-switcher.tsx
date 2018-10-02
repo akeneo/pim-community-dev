@@ -33,7 +33,7 @@ const ChannelItemView = ({
 
 const ChannelButtonView = ({selectedElement, onClick}: {selectedElement: DropdownElement; onClick: () => void}) => (
   <div
-    className="AknActionButton AknActionButton--withoutBorder"
+    className="AknActionButton AknActionButton--light AknActionButton--withoutBorder"
     data-identifier={selectedElement.identifier}
     onClick={onClick}
     tabIndex={0}
