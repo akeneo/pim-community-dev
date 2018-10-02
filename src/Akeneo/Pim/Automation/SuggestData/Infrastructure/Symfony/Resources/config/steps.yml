@@ -1,0 +1,39 @@
+services:
+    akeneo.pim.automation.suggest_data.connector.step.validate_configuration.subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step\ConfigurationValidatorStep'
+        arguments:
+            - 'validate_configuration'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.suggest_data.connector.validation.connection_status'
+                - '@akeneo.pim.automation.suggest_data.connector.validation.identifiers_mapping'
+
+    akeneo.pim.automation.suggest_data.connector.step.validate_configuration.unsubscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Infrastructure\Connector\Step\ConfigurationValidatorStep'
+        arguments:
+            - 'validate_configuration'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.suggest_data.connector.validation.connection_status'
+
+    akeneo.pim.automation.suggest_data.connector.step.subscribe_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'subscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product'
+            - '@akeneo.pim.automation.suggest_data.connector.processor.subscription'
+            - '@akeneo.pim.automation.suggest_data.connector.writer.subscription'
+
+    akeneo.pim.automation.suggest_data.connector.step.unsubscribe_products:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'subscribe_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product'
+            - '@akeneo.pim.automation.suggest_data.connector.processor.unsubscription'
+            - '@akeneo.pim.automation.suggest_data.connector.writer.unsubscription'

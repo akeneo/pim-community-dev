@@ -107,3 +107,13 @@ akeneo_suggest_data:
                     description: Please select the action you want to apply on the products selected on the grid
                     subscribe_label: Subscribe
                     unsubscribe_label: Unsubscribe
+
+batch_jobs:
+    suggest_data_subscribe_products:
+        label: Franklin Insights bulk subscription
+        validate_configuration.label: Validate Franklin Insights configuration
+        subscribe_products.label: Subscribe products
+    suggest_data_unsubscribe_products:
+        label: Franklin Insights bulk unsubscription
+        validate_configuration.label: Validate Franklin Insights configuration
+        unsubscribe_products.label: Unsubscribe products
