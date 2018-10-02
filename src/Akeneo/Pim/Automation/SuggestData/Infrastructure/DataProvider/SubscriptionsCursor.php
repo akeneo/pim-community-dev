@@ -57,7 +57,7 @@ class SubscriptionsCursor implements \Iterator
      */
     public function next(): void
     {
-        $this->mainIndex++;
+        ++$this->mainIndex;
         $this->currentCollection->next();
 
         if (!$this->currentCollection->valid() && $this->currentCollection->hasNextPage()) {

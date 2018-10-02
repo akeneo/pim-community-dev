@@ -12,19 +12,19 @@ use PhpSpec\ObjectBehavior;
 
 class SubscriptionsCursorSpec extends ObjectBehavior
 {
-    public function let(SubscriptionsCollection $currentPage)
+    public function let(SubscriptionsCollection $currentPage): void
     {
         $this->beConstructedWith($currentPage);
     }
 
-    public function it_is_an_iterator()
+    public function it_is_an_iterator(): void
     {
         $this->shouldImplement(\Iterator::class);
 
         $this->shouldHaveType(SubscriptionsCursor::class);
     }
 
-    public function it_returns_the_current_value_as_a_response_if_it_has_one($currentPage, Subscription $subscription)
+    public function it_returns_the_current_value_as_a_response_if_it_has_one($currentPage, Subscription $subscription): void
     {
         $currentPage->current()->willReturn($subscription);
         $subscription->getTrackerId()->willReturn(42);
@@ -35,14 +35,14 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $productSubscriptionResponse->shouldBeAnInstanceOf(ProductSubscriptionResponse::class);
     }
 
-    public function it_returns_null_if_the_current_value_is_null($currentPage)
+    public function it_returns_null_if_the_current_value_is_null($currentPage): void
     {
         $currentPage->current()->willReturn(null);
 
         $this->current()->shouldReturn(null);
     }
 
-    public function it_says_it_is_valid($currentPage)
+    public function it_says_it_is_valid($currentPage): void
     {
         $currentPage->valid()->willReturn(true, false);
 
@@ -50,7 +50,7 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $this->valid()->shouldReturn(false);
     }
 
-    public function it_increments_the_index_and_returns_the_current_index($currentPage)
+    public function it_increments_the_index_and_returns_the_current_index($currentPage): void
     {
         $this->key()->shouldReturn(0);
 
@@ -62,7 +62,7 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $this->key()->shouldReturn(1);
     }
 
-    public function it_loads_the_next_page_if_current_index_is_not_valid($currentPage, SubscriptionsCollection $nextPage)
+    public function it_loads_the_next_page_if_current_index_is_not_valid($currentPage, SubscriptionsCollection $nextPage): void
     {
         $currentPage->next()->shouldBeCalled();
         $currentPage->valid()->willReturn(false);
@@ -74,7 +74,7 @@ class SubscriptionsCursorSpec extends ObjectBehavior
 
     public function it_does_not_load_the_next_page_if_current_index_is_not_valid_but_it_has_not_next_page(
         $currentPage
-    ) {
+    ): void {
         $currentPage->next()->shouldBeCalled();
         $currentPage->valid()->willReturn(false);
         $currentPage->hasNextPage()->willReturn(false);
@@ -83,7 +83,7 @@ class SubscriptionsCursorSpec extends ObjectBehavior
         $this->next();
     }
 
-    public function it_rewinds_the_index($currentPage)
+    public function it_rewinds_the_index($currentPage): void
     {
         $this->key()->shouldReturn(0);
 

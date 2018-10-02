@@ -107,7 +107,7 @@ class SubscriptionWebserviceSpec extends ObjectBehavior
         $httpClient,
         ResponseInterface $response,
         StreamInterface $stream
-    ) {
+    ): void {
         $uriGenerator->generate('/api/subscriptions/updated-since/yesterday')->willReturn('route')->shouldBeCalled();
         $httpClient->request('GET', 'route')->willReturn($response)->shouldBeCalled();
 
@@ -136,7 +136,7 @@ JSON;
         $httpClient,
         ResponseInterface $response,
         StreamInterface $stream
-    ) {
+    ): void {
         $uriGenerator->getBaseUri()->willReturn('BASE_URI')->shouldBeCalled();
         $httpClient->request('GET', 'BASE_URI/my/uri')->willReturn($response)->shouldBeCalled();
 
@@ -163,7 +163,7 @@ JSON;
     public function it_throws_a_pim_ai_server_exception_if_something_went_wrong_with_pim_ai(
         $uriGenerator,
         $httpClient
-    ) {
+    ): void {
         $request = new Request('GET', '/my/uri');
         $response = new Response(500);
         $clientException = new ServerException('An exception message', $request, $response);
@@ -180,7 +180,7 @@ JSON;
             ->during('fetchProducts', ['/my/uri']);
     }
 
-    public function it_throws_an_insufficient_credit_exception($uriGenerator, $httpClient)
+    public function it_throws_an_insufficient_credit_exception($uriGenerator, $httpClient): void
     {
         $request = new Request('GET', '/my/uri');
         $response = new Response(402);
@@ -196,7 +196,7 @@ JSON;
             ->during('fetchProducts', ['/my/uri']);
     }
 
-    public function it_throws_an_invalid_token_exception($uriGenerator, $httpClient)
+    public function it_throws_an_invalid_token_exception($uriGenerator, $httpClient): void
     {
         $request = new Request('GET', '/my/uri');
         $response = new Response(403);
@@ -212,7 +212,7 @@ JSON;
             ->during('fetchProducts', ['/my/uri']);
     }
 
-    public function it_throws_a_bad_request_exception($uriGenerator, $httpClient)
+    public function it_throws_a_bad_request_exception($uriGenerator, $httpClient): void
     {
         $request = new Request('GET', '/my/uri');
         $response = new Response(400);

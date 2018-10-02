@@ -276,7 +276,7 @@ class PimAISpec extends ObjectBehavior
     }
 
     // Next specs are about `fetch()` method and don't need more spec.
-    public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page)
+    public function it_fetches_products_subscriptions($subscriptionApi, SubscriptionsCollection $page): void
     {
         $subscriptionApi->fetchProducts()->willReturn($page);
 
@@ -284,7 +284,7 @@ class PimAISpec extends ObjectBehavior
         $cursor->shouldBeAnInstanceOf(SubscriptionsCursor::class);
     }
 
-    public function it_throws_product_subscription_exception_if_something_went_wrong_during_fetch($subscriptionApi)
+    public function it_throws_product_subscription_exception_if_something_went_wrong_during_fetch($subscriptionApi): void
     {
         $clientException = new ClientException('An exception message');
         $subscriptionApi->fetchProducts()->willThrow($clientException);
@@ -292,7 +292,7 @@ class PimAISpec extends ObjectBehavior
         $this->shouldThrow(new ProductSubscriptionException('An exception message'))->during('fetch');
     }
 
-    function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
+    public function it_updates_attributes_mapping($attributesMappingApi, $attributesMappingNormalizer): void
     {
         $familyCode = 'foobar';
         $attributesMapping = ['foo' => 'bar'];

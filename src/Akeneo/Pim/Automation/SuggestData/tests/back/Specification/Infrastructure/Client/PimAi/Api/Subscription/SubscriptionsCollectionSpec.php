@@ -12,7 +12,7 @@ use Prophecy\Argument;
 
 class SubscriptionsCollectionSpec extends ObjectBehavior
 {
-    function it_is_initializable(SubscriptionWebservice $webservice)
+    public function it_is_initializable(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
@@ -20,7 +20,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->shouldImplement(\Iterator::class);
     }
 
-    function it_rewinds_the_index(SubscriptionWebservice $webservice)
+    public function it_rewinds_the_index(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
@@ -34,21 +34,21 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->key()->shouldReturn(0);
     }
 
-    function it_says_it_has_next_page_if_it_has_one(SubscriptionWebservice $webservice)
+    public function it_says_it_has_next_page_if_it_has_one(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
         $this->hasNextPage()->shouldReturn(true);
     }
 
-    function it_says_it_has_not_next_page_if_it_has_not_one(SubscriptionWebservice $webservice)
+    public function it_says_it_has_not_next_page_if_it_has_not_one(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
         $this->hasNextPage()->shouldReturn(false);
     }
 
-    function it_returns_the_current_value_if_it_has_one(SubscriptionWebservice $webservice)
+    public function it_returns_the_current_value_if_it_has_one(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
@@ -62,7 +62,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->current()->shouldReturn(null);
     }
 
-    function it_is_able_to_get_next_page(SubscriptionWebservice $webservice, SubscriptionsCollection $nextPage)
+    public function it_is_able_to_get_next_page(SubscriptionWebservice $webservice, SubscriptionsCollection $nextPage): void
     {
         $this->beConstructedWith($webservice, $this->getRawFirstPage());
 
@@ -70,7 +70,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->getNextPage()->shouldReturn($nextPage);
     }
 
-    function it_returns_null_if_has_not_next_page(SubscriptionWebservice $webservice)
+    public function it_returns_null_if_has_not_next_page(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
@@ -79,7 +79,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
         $this->getNextPage()->shouldReturn(null);
     }
 
-    function it_says_if_it_is_valid_or_not(SubscriptionWebservice $webservice)
+    public function it_says_if_it_is_valid_or_not(SubscriptionWebservice $webservice): void
     {
         $this->beConstructedWith($webservice, $this->getRawLastPage());
 
@@ -121,7 +121,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'asin' => '1111-aaaa',
                     'mpn_brand' => [
                         'mpn' => '1111-aaaa',
-                        'brand' => 'Netgear'
+                        'brand' => 'Netgear',
                     ],
                 ],
                 'attributes' => [
@@ -134,7 +134,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'family' => [
                         'code' => 'memory_card',
                         'label' => [
-                            'en_US' => 'Memory Card'
+                            'en_US' => 'Memory Card',
                         ],
                     ],
                 ],
@@ -144,11 +144,11 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                 'message' => '',
                 '_links' => [
                     'self' => [
-                        'href' => '/api/subscriptions/1111-aaaa'
+                        'href' => '/api/subscriptions/1111-aaaa',
                     ],
                     'cancel' => [
                         'href' => '/api/subscriptions/1111-aaaa',
-                        'type' => 'application/prs.hal-forms+json'
+                        'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
             ],
@@ -159,7 +159,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'asin' => '2222-bbbb',
                     'mpn_brand' => [
                         'mpn' => '2222-bbbb',
-                        'brand' => 'Frederic Fekkai'
+                        'brand' => 'Frederic Fekkai',
                     ],
                 ],
                 'attributes' => [
@@ -171,7 +171,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'family' => [
                         'code' => 'memory_card',
                         'label' => [
-                            'en_US' => 'Memory Card'
+                            'en_US' => 'Memory Card',
                         ],
                     ],
                 ],
@@ -181,11 +181,11 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                 'message' => '',
                 '_links' => [
                     'self' => [
-                        'href' => '/api/subscriptions/2222-bbbb'
+                        'href' => '/api/subscriptions/2222-bbbb',
                     ],
                     'cancel' => [
                         'href' => '/api/subscriptions/2222-bbbb',
-                        'type' => 'application/prs.hal-forms+json'
+                        'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
             ],
@@ -196,7 +196,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'asin' => '3333-cccc',
                     'mpn_brand' => [
                         'mpn' => '3333-cccc',
-                        'brand' => 'Netgear'
+                        'brand' => 'Netgear',
                     ],
                 ],
                 'attributes' => [
@@ -209,7 +209,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                     'family' => [
                         'code' => 'memory_card',
                         'label' => [
-                            'en_US' => 'Memory Card'
+                            'en_US' => 'Memory Card',
                         ],
                     ],
                 ],
@@ -219,11 +219,11 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                 'message' => '',
                 '_links' => [
                     'self' => [
-                        'href' => '/api/subscriptions/3333-cccc'
+                        'href' => '/api/subscriptions/3333-cccc',
                     ],
                     'cancel' => [
                         'href' => '/api/subscriptions/3333-cccc',
-                        'type' => 'application/prs.hal-forms+json'
+                        'type' => 'application/prs.hal-forms+json',
                     ],
                 ],
             ],
@@ -241,7 +241,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
             '_links' => [
                 'subscription' => [],
                 'next' => [
-                    'href' => '/next/uri'
+                    'href' => '/next/uri',
                 ],
             ],
             '_embedded' => [
@@ -251,7 +251,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                 ],
             ],
             'total' => 3,
-            'limit' => 2
+            'limit' => 2,
         ];
     }
 
@@ -270,7 +270,7 @@ class SubscriptionsCollectionSpec extends ObjectBehavior
                 ],
             ],
             'total' => 3,
-            'limit' => 2
+            'limit' => 2,
         ];
     }
 }
