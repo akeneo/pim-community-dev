@@ -95,8 +95,7 @@ stage("Test") {
                 testif(
                     condition: launchUnitTests.equals("yes"),
                     container: tag,
-                    script: "cd /var/www/pim && vendor/bin/phpcs --report=junit > %workspace%/php_code_sniffer_output.xml",
-                    junit: "php_code_sniffer_output.xml"
+                    script: "cd /var/www/pim && vendor/bin/phpcs"
                 )
             },
             "back-check-pullup": {testif(
