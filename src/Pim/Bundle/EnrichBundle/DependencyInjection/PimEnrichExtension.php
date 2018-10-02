@@ -60,7 +60,6 @@ class PimEnrichExtension extends Extension
         $loader->load('resolvers.yml');
         $loader->load('steps.yml');
         $loader->load('structure_version.yml');
-        $loader->load('twig.yml');
         $loader->load('version_strategy.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/attribute.yml');

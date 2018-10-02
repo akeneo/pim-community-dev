@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Twig;
+namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Doctrine\Common\Util\ClassUtils;
 
