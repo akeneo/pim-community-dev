@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,13 +21,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(SerializerInterface $serializer, CollectionFilterInterface $filter)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $serializer->implement(NormalizerInterface::class);
 
         $this->beConstructedWith($filter);
         $this->setSerializer($serializer);
@@ -35,8 +37,8 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_is_a_serializer_aware_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldBeAnInstanceOf(NormalizerInterface::class);
+        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
     }
 
     function it_supports_flat_normalization_of_product(ProductInterface $product)

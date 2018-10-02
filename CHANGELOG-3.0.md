@@ -16,7 +16,8 @@
 
 ## BC breaks
 
-- Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\CategoryNormalizer` to `Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer`
+- Move `Pim\Component\VersioningBundle\Normalizer\Flat\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer`
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter` to `Oro\Bundle\PimDataGridBundle\Extension\Sorter\Produc\ReferenceDataSorter`
 - Move `Pim\Bundle\ReferenceDataBundle\DataGrid\Normalizer\ReferenceDataCollectionNormalizer` to `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`

@@ -548,7 +548,8 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Buffer/Akene
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Console/Akeneo\\Tool\\Component\\Console/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Localization/Akeneo\\Tool\\Component\\Localization/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Versioning/Akeneo\\Tool\\Component\\Versioning/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat/Akeneo\\Pim\\Enrichment\\Component\\Category\\Normalizer\\Versioning/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\CategoryNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Category\\Normalizer\\Versioning/CategoryNormalizer/g`
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\Normalizer\\Flat\\ProductNormalizer/Akeneo\\Pim\\Enrichment\\Component\\Product\\Normalizer\\Versioning/ProductNormalizer/g`
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\MeasureBundle/Akeneo\\Tool\\Bundle\\MeasureBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileStorage/Akeneo\\Tool\\Component\\FileStorage/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\FileStorageBundle/Akeneo\\Tool\\Bundle\\FileStorageBundle/g'
